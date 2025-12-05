@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useFallbackTranslation } from '@/features/infrastructure/i18n';
-import { GenericTable, ColumnDefinition, FilterDefinition } from '@/features/infrastructure/shared/components/table';
+import { useFallbackTranslation } from '@websites/infrastructure/i18n';
+import { GenericTable, ColumnDefinition, FilterDefinition } from '@websites/ui';
 
 interface PrecinctData {
     id: number;                // Unique identifier for the precinct

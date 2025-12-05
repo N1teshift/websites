@@ -1,6 +1,6 @@
 import React from "react";
 import BaseMathObjectSettingsContainer from "./BaseMathObjectSettingsContainer";
-import Dropdown from "@components/ui/Dropdown";
+import { Dropdown } from "@websites/ui";
 import { FunctionSettings, MathObjectContainerProps, FunctionName, functionNameOptions } from "@math/types/index";
 
 /**

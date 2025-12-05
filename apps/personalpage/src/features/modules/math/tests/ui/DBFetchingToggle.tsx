@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { getCache, makeCacheKey } from '@/features/infrastructure/cache';
-import { useFallbackTranslation } from '@/features/infrastructure/i18n';
+import { getCache, makeCacheKey } from '@websites/infrastructure/cache';
+import { useFallbackTranslation } from '@websites/infrastructure/i18n';
 
 export interface DBFetchingToggleProps {
     /** Whether database fetching is currently enabled. */

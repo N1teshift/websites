@@ -6,7 +6,7 @@ import ConceptSelector from '../shared/ConceptSelector';
 import QuestionSection from '../shared/QuestionSection';
 import GlobalContextInfo from '../shared/GlobalContextInfo';
 import LabelWithInfo from '../shared/LabelWithInfo';
-import Dropdown from '@/features/infrastructure/shared/components/ui/Dropdown';
+import Dropdown from '@websites/ui';
 
 interface InquirySectionProps {
     unitPlan: UnitPlanData;

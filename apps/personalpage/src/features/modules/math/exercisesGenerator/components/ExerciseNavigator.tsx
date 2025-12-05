@@ -1,4 +1,4 @@
-import { useFallbackTranslation } from "@/features/infrastructure/i18n";
+import { useFallbackTranslation } from "@websites/infrastructure/i18n";
 
 type ExerciseNavigatorProps = {
     currentIndex: number;

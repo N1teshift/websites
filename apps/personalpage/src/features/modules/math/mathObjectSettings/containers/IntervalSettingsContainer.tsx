@@ -1,6 +1,6 @@
 import React from "react";
 import BaseMathObjectSettingsContainer from "./BaseMathObjectSettingsContainer";
-import { Dropdown, BooleanToggle, NumberInput } from "@components/ui";
+import { Dropdown, BooleanToggle, NumberInput } from "@websites/ui";
 import {
     IntervalType, intervalTypeOptions, CapitalLetters, capitalLettersOptions, IntervalSettings, MathObjectContainerProps
 } from "@math/types/index";

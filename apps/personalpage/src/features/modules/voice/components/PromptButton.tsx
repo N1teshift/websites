@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button } from "@websites/ui";
 import PromptModal from "./PromptModal";
-import { useFallbackTranslation } from "@/features/infrastructure/i18n";
+import { useFallbackTranslation } from "@websites/infrastructure/i18n";
 import { PromptData } from "@ai/types";
 
 interface PromptButtonProps {

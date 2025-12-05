@@ -7,12 +7,12 @@
  */
 
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getOAuth2Client, createGoogleCalendarEvent } from '@/features/infrastructure/api/google';
+import { getOAuth2Client, createGoogleCalendarEvent } from '@websites/infrastructure/api/google';
 import { transformToGoogleEvent } from '../../../features/modules/calendar/utils/eventTransformer';
 import { SharedEventDetails } from '../../../features/modules/calendar/types';
 import { createComponentLogger } from '@websites/infrastructure/logging';
 import { sendCalendarEventEmail } from '../../../features/modules/calendar/utils/emailFormatter';
-import { getUserInfo } from '@/features/infrastructure/auth/oauth';
+import { getUserInfo } from '@websites/infrastructure/auth/oauth';
 
 const logger = createComponentLogger('GoogleCallback');
 

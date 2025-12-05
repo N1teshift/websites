@@ -1,6 +1,6 @@
 import React from "react";
 import BaseMathObjectSettingsContainer from "./BaseMathObjectSettingsContainer";
-import { NumberInput, Dropdown } from "@components/ui";
+import { NumberInput, Dropdown } from "@websites/ui";
 import { PowerInput, PowerOrderToggle } from "../ui";
 import {
     ExpressionSettings, CombinationType, combinationTypeOptions, MathObjectContainerProps, DEFAULT_TERM_SETTINGS

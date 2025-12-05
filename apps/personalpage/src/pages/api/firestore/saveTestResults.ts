@@ -1,5 +1,5 @@
-import { createPostHandler } from '@/features/infrastructure/api/routeHandlers';
-import { firestoreService } from '@/features/infrastructure/api/firebase';
+import { createPostHandler } from '@websites/infrastructure/api/routeHandlers';
+import { firestoreService } from '@websites/infrastructure/api/firebase';
 
 /**
  * API route handler for saving test results to Firestore.

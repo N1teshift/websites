@@ -1,4 +1,4 @@
-import { Dropdown, NumberInput } from "@components/ui";
+import { Dropdown, NumberInput } from "@websites/ui";
 import {
     exerciseTypeOptions, topicTypeOptions, difficultyTypeOptions, ExerciseType, TopicType,
     DifficultyType, ExerciseDocumentData

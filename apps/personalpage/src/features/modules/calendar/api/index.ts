@@ -1,5 +1,5 @@
-import { createGoogleCalendarClient } from '@/features/infrastructure/api/google';
-import { createMicrosoftCalendarClient } from '@/features/infrastructure/api/microsoft';
+import { GoogleCalendarClient } from '@websites/infrastructure/clients/google';
+import { MicrosoftCalendarClient } from '@websites/infrastructure/clients/microsoft';
 import { createComponentLogger } from '@websites/infrastructure/logging';
 import { AvailabilityCheckResult, BookingOptions } from '../types';
 
@@ -16,7 +16,7 @@ export async function checkGoogleAvailability(
   try {
     logger.debug('Checking Google Calendar availability', { startDateTime, endDateTime, calendarId });
     
-    const googleClient = createGoogleCalendarClient();
+    const googleClient = new GoogleCalendarClient();
     const result = await googleClient.checkAvailability(calendarId, startDateTime, endDateTime);
     
     const isAvailable = result.busy.length === 0;
@@ -48,7 +48,7 @@ export async function checkMicrosoftAvailability(
   try {
     logger.debug('Checking Microsoft Calendar availability', { startDateTime, endDateTime, calendarId });
     
-    const microsoftClient = createMicrosoftCalendarClient();
+    const microsoftClient = new MicrosoftCalendarClient();
     const result = await microsoftClient.checkAvailability(calendarId, startDateTime, endDateTime);
     
     const isAvailable = result.busy.length === 0;
@@ -79,7 +79,7 @@ export async function bookGoogleCalendar(options: BookingOptions): Promise<unkno
       summary: options.summary 
     });
     
-    const googleClient = createGoogleCalendarClient();
+    const googleClient = new GoogleCalendarClient();
     const calendarId = options.calendarId || 'primary';
     
     const eventData = {
@@ -123,7 +123,7 @@ export async function bookMicrosoftCalendar(options: BookingOptions): Promise<un
       summary: options.summary 
     });
     
-    const microsoftClient = createMicrosoftCalendarClient();
+    const microsoftClient = new MicrosoftCalendarClient();
     const calendarId = options.calendarId || 'default';
     
     const eventData = {

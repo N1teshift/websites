@@ -6,7 +6,7 @@
  */
 
 import { NextApiRequest, NextApiResponse } from "next";
-import { createMSALClient } from "@/features/infrastructure/api/microsoft/auth/microsoftAuth";
+import { createMSALClient } from "@websites/infrastructure/api/microsoft/auth/microsoftAuth";
 import { extractEventDetailsFromQuery } from '../../../features/modules/calendar/utils/eventDetailsExtractor';
 import { createComponentLogger } from '@websites/infrastructure/logging';
 

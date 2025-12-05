@@ -1,5 +1,5 @@
 import React from "react";
-import { SuccessMessage } from "@components/ui";
+import { SuccessMessage } from "@websites/ui";
 import { Calendar, SidebarContent } from "@calendar/components/index";
 import { EventDetails, RegistrationMethod, CalendarEventInput, CalendarEventClickInfo, CalendarSlotSelectInfo } from "@calendar/types";
 

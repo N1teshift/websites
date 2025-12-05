@@ -23,7 +23,7 @@ import { filterTests } from './filter';
 import { analyzeTestStats, analyzeGeneratedTests, compareTestTypes } from './analytics';
 import { colors } from './utils';
 import { TestStat } from '../../../features/modules/math/types/testsTypes';
-import { clearNamespaceCache } from '@/features/infrastructure/cache';
+import { clearNamespaceCache } from '@websites/infrastructure/cache';
 
 // Main function
 export const main = async () => {

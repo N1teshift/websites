@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { Button, LoadingScreen } from "@websites/ui";
-import MathItemsDisplay from "@/features/infrastructure/shared/components/ui/MathItemsDisplay";
+import MathItemsDisplay from "@websites/ui";
 import { isFeatureEnabled } from '@/config/features';
 import { createComponentLogger } from "@websites/infrastructure/logging";
 

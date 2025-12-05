@@ -1,5 +1,5 @@
 import React from 'react';
-import { useFallbackTranslation } from '@/features/infrastructure/i18n';
+import { useFallbackTranslation } from '@websites/infrastructure/i18n';
 import { CalendarEventClickInfo } from '../types';
 
 interface EventDetailsProps { event: CalendarEventClickInfo; }

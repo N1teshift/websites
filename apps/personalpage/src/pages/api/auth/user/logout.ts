@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { clearSessionCookie } from '@/features/infrastructure/auth/session';
+import { clearSessionCookie } from '@websites/infrastructure/auth/session';
 import { createComponentLogger } from '@websites/infrastructure/logging';
 
 const logger = createComponentLogger('UserLogout');

@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { createComponentLogger } from '@websites/infrastructure/logging';
-import { apiRequest } from '@/features/infrastructure/api';
+import { apiRequest } from '@websites/infrastructure/api';
 import { AvailabilityCheckResult } from '../types';
 
 /**

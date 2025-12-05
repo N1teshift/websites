@@ -9,7 +9,6 @@ const BUILD_DIR = path.join(
 
 // Path alias mappings based on tsconfig.test.json
 const PATH_ALIASES = {
-    '@components': 'infrastructure/shared/components',
     '@lib': 'infrastructure/shared/lib',
     '@styles': 'styles',
     '@utils': 'infrastructure/shared/utils',
@@ -19,7 +18,7 @@ const PATH_ALIASES = {
     '@exerciseGenerator': 'features/modules/math/exerciseGenerator',
     '@services': 'services',
     '@shared': 'infrastructure/shared',
-    '@ai': 'features/infrastructure/ai'
+    '@ai': 'features/modules/ai'
 };
 
 // Simple regex patterns to match imports without worrying about path modifications

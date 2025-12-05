@@ -1,6 +1,6 @@
 import { FaLinkedin, FaEnvelope } from 'react-icons/fa';
 import { useAboutMeData } from '../hooks';
-import { Card } from '@/features/infrastructure/shared/components/ui/Card';
+import { Card } from '@websites/ui';
 
 export default function AboutMePage() {
     const { t, techSkills, experience, projects, education, languages, interests, softSkills } = useAboutMeData();

@@ -1,7 +1,7 @@
 import React from "react";
 import EventDetails from "./EventDetails";
 import EventCreationForm from "./EventCreationForm";
-import { useFallbackTranslation } from "@/features/infrastructure/i18n";
+import { useFallbackTranslation } from "@websites/infrastructure/i18n";
 import { EventDetails as EventDetailsType, RegistrationMethod, CalendarEventClickInfo, CalendarSlotSelectInfo, CalendarEventInput } from "../types";
 
 interface SidebarContentProps {

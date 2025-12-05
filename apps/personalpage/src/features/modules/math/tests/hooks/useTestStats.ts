@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { fetchTestStats } from '../utils/testResultsApi';
 import { TestStat } from '../../types/testsTypes';
 import { TestCase } from '../../tests/cases/TestCase'; 
-import { getCache, setCache, makeCacheKey } from '@/features/infrastructure/cache';
+import { getCache, setCache, makeCacheKey } from '@websites/infrastructure/cache';
 import { createComponentLogger } from '@websites/infrastructure/logging';
 
 /**

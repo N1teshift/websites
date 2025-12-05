@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { UnitPlanData, SubunitData } from '../../types/UnitPlanTypes';
 import { useFallbackTranslation } from '@websites/infrastructure/i18n/client';
 import { FiTrash2 } from 'react-icons/fi';
-import IconButton from '@/features/infrastructure/shared/components/ui/IconButton';
-import Dropdown from '@/features/infrastructure/shared/components/ui/Dropdown';
+import IconButton from '@websites/ui';
+import Dropdown from '@websites/ui';
 
 interface ResourcesSectionProps {
     unitPlan: UnitPlanData;

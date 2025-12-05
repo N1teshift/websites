@@ -5,9 +5,9 @@ import { RenderQuestion } from "./renderers/RenderQuestion";
 import { RenderOptions } from "./renderers/RenderOptions";
 import { MathObjectSettings } from "@math/types/index";
 import MathObjectSettingsListContainer from "../../../math/mathObjectSettings/components/MathObjectSettingsListContainer";
-import CollapsibleSection from "@components/ui/CollapsibleSection";
+import { CollapsibleSection } from "@websites/ui";
 import { convertToMathObjectSettings, convertToMathInput } from "../../../math/mathObjectSettings/utils/mathObjectUtils";
-import { useFallbackTranslation } from "@/features/infrastructure/i18n";
+import { useFallbackTranslation } from "@websites/infrastructure/i18n";
 
 interface ExerciseEditorProps {
     selectedExercise: ExerciseDocumentData;

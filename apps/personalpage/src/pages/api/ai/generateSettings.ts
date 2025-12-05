@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { generateSettings } from '@/features/infrastructure/ai/core/objectGeneration';
+import { generateSettings } from '@ai/core/objectGeneration';
 import { createComponentLogger } from '@websites/infrastructure/logging';
-import { createApiHandler } from '@/features/infrastructure/api/routeHandlers';
+import { createApiHandler } from '@websites/infrastructure/api/routeHandlers';
 
 const logger = createComponentLogger('GenerateSettingsAPI');
 

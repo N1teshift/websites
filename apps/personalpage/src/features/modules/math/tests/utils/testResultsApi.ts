@@ -1,6 +1,6 @@
 import { TestResultData, TestSummary } from "@math/types/testsTypes";
 import { createComponentLogger } from '@websites/infrastructure/logging';
-import { saveData, fetchData } from '@/features/infrastructure/api';
+import { saveData, fetchData } from '@websites/infrastructure/api';
 
 interface ApiResponse<T> {
   success: boolean;

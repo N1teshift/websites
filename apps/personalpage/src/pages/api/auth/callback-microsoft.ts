@@ -7,8 +7,8 @@
  */
 
 import { NextApiRequest, NextApiResponse } from 'next';
-import { createMSALClient } from '@/features/infrastructure/api/microsoft/auth/microsoftAuth';
-import { createMicrosoftCalendarEvent, getMicrosoftConfig } from '@/features/infrastructure/api/microsoft';
+import { createMSALClient } from '@websites/infrastructure/api/microsoft/auth/microsoftAuth';
+import { createMicrosoftCalendarEvent, getMicrosoftConfig } from '@websites/infrastructure/api/microsoft';
 import { transformToMicrosoftEvent } from '../../../features/modules/calendar/utils/eventTransformer';
 import { SharedEventDetails } from '../../../features/modules/calendar/types';
 import { createComponentLogger } from '@websites/infrastructure/logging';

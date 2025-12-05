@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { generateLoginAuthUrl, OAuthState } from '@/features/infrastructure/auth/oauth';
+import { generateLoginAuthUrl, OAuthState } from '@websites/infrastructure/auth/oauth';
 import { createComponentLogger } from '@websites/infrastructure/logging';
 
 const logger = createComponentLogger('UserLogin');

@@ -4,7 +4,7 @@ import {
     coefficientsRuleOptions, CoefficientsRule, CoefficientsSettings, MathObjectContainerProps, DEFAULT_COEFFICIENT_SETTINGS
 } from "@math/types/index";
 import useInterfaceType from "../hooks/useInterfaceType";
-import { NumberInput, CheckboxGroup } from "@components/ui";
+import { NumberInput, CheckboxGroup } from "@websites/ui";
 import useCollectionCountSync from "../hooks/useCollectionCountSync";
 
 /**

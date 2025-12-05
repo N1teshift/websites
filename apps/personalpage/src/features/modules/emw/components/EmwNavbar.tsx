@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { useFallbackTranslation } from '@/features/infrastructure/i18n';
+import { useFallbackTranslation } from '@websites/infrastructure/i18n';
 
 const EmwNavbar: React.FC = () => {
     const { t } = useFallbackTranslation();

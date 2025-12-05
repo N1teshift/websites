@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { SubunitData, UnitPlanData } from '../../types/UnitPlanTypes';
 import { useFallbackTranslation } from '@websites/infrastructure/i18n/client';
 import { FiTrash2, FiChevronDown, FiChevronUp } from 'react-icons/fi';
-import IconButton from '@/features/infrastructure/shared/components/ui/IconButton';
+import IconButton from '@websites/ui';
 import FormField from './FormField';
 
 interface SubunitCardProps {

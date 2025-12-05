@@ -14,12 +14,11 @@ const config = {
   // Module paths configuration (matching tsconfig.json)
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
-    '^@components/(.*)$': '<rootDir>/src/features/infrastructure/shared/components/$1',
     '^@lib/(.*)$': '<rootDir>/src/features/infrastructure/shared/lib/$1',
     '^@utils/(.*)$': '<rootDir>/src/features/infrastructure/shared/utils/$1',
     '^@features/(.*)$': '<rootDir>/src/features/$1',
     '^@math/(.*)$': '<rootDir>/src/features/modules/math/$1',
-    '^@ai/(.*)$': '<rootDir>/src/features/infrastructure/ai/$1',
+    '^@ai/(.*)$': '<rootDir>/src/features/modules/ai/$1',
     '^@tests/(.*)$': '<rootDir>/src/features/modules/math/tests/$1',
     '^@styles/(.*)$': '<rootDir>/src/styles/$1',
     '^@calendar/(.*)$': '<rootDir>/src/features/modules/calendar/$1',

@@ -1,4 +1,4 @@
-import { apiRequest } from "@/features/infrastructure/api";
+import { apiRequest } from "@websites/infrastructure/api";
 
 export const resetTestStats = async (refreshStats: () => void) => {
     try {

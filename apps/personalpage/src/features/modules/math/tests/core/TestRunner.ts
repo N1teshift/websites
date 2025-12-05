@@ -12,7 +12,7 @@ import { isTestCase } from '../utils/common/typeGuards';
 import { GeneratedMathObjects } from "@ai/types";
 import { validateObjectPresence } from '../utils/common/commonValidators';
 import { createComponentLogger } from '@websites/infrastructure/logging';
-import { hasCache, getCache, setCache, makeCacheKey } from '@/features/infrastructure/cache';
+import { hasCache, getCache, setCache, makeCacheKey } from '@websites/infrastructure/cache';
 import { normalizeTokenUsage } from "@ai/shared/utils/tokenUtils";
 import { generate } from "../../shared/Orchestrator";
 import { canProcessObjectType, getObjectTypeCapability } from "@ai/shared/utils/systemCapabilities";

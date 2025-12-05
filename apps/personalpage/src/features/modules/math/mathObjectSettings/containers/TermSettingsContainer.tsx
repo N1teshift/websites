@@ -1,6 +1,6 @@
 import React from "react";
 import { PowerInput, PowerOrderToggle, TermIdsInput } from "../ui";
-import { Dropdown } from "@components/ui";
+import { Dropdown } from "@websites/ui";
 import BaseMathObjectSettingsContainer from "./BaseMathObjectSettingsContainer";
 import { VariableName, variableNameOptions, TermSettings, MathObjectContainerProps } from "@math/types/index";
 

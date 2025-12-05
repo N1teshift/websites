@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
-import { useFallbackTranslation } from '@/features/infrastructure/i18n';
-import BaseToggleSwitch from "@components/ui/BaseToggleSwitch";
+import { useFallbackTranslation } from '@websites/infrastructure/i18n';
+import { BaseToggleSwitch } from "@websites/ui";
 import useInterfaceType from "../hooks/useInterfaceType";
 import { InterfaceType } from "@math/types/index";
 

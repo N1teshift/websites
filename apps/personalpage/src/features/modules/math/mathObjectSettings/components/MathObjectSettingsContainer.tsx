@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import SettingsRenderer from "./SettingsRenderer";
 import ObjectRow from "./ObjectRow";
 import InterfaceContext from "./InterfaceContext";
-import { CollapsibleSection } from "@components/ui/index";
+import { CollapsibleSection } from "@websites/ui";
 import { MathObjectSettings } from "../../types/mathObjectSettingsInterfaces";
 
 export interface MathObjectSettingsContainerProps {

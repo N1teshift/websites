@@ -1,6 +1,6 @@
 import React from "react";
 import { ToolbarProps, View } from "react-big-calendar";
-import { useFallbackTranslation } from "@/features/infrastructure/i18n";
+import { useFallbackTranslation } from "@websites/infrastructure/i18n";
 
 interface CalendarToolbarProps extends ToolbarProps<any> {
     canNavigatePrev: boolean;

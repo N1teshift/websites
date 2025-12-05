@@ -1,6 +1,6 @@
-import { parseAndRenderMath } from "@components/mathParser";
+import { parseAndRenderMath } from "@math/shared/components";
 import React, { useState, useEffect } from "react";
-import { useFallbackTranslation } from "@/features/infrastructure/i18n";
+import { useFallbackTranslation } from "@websites/infrastructure/i18n";
 
 /**
  * Substitutes {inputN} placeholders in an array of question lines with corresponding example values.

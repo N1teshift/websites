@@ -1,7 +1,7 @@
 import admin from "firebase-admin";
 import { TestResultData, normalizeError } from "@math/types/testsTypes";
 import { TestCase } from "../cases";
-import { TokenUsage } from "@/features/infrastructure/ai/types";
+import { TokenUsage } from "@ai/types";
 
 /**
  * Prepares a data object suitable for Firestore from a test result.

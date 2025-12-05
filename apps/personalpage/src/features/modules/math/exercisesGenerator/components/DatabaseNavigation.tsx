@@ -1,8 +1,8 @@
 import React from "react";
-import Dropdown from "@components/ui/Dropdown";
+import { Dropdown } from "@websites/ui";
 import ExerciseNavigator from "./ExerciseNavigator";
 import { NavigationState } from "../types";
-import { useFallbackTranslation } from "@/features/infrastructure/i18n";
+import { useFallbackTranslation } from "@websites/infrastructure/i18n";
 
 /**
  * Props for the DatabaseNavigation component, extending NavigationState

@@ -1,10 +1,10 @@
 import { useState, useCallback, useRef, useMemo } from "react";
 import NProgress from 'nprogress';
 import { GraphEvent } from "../types";
-import { getCache, setCache, makeCacheKey, clearCache } from "@/features/infrastructure/cache";
+import { getCache, setCache, makeCacheKey, clearCache } from "@websites/infrastructure/cache";
 import { TemporaryEvent } from "../types";
 import { createComponentLogger } from "@websites/infrastructure/logging";
-import { apiRequest } from "@/features/infrastructure/api";
+import { apiRequest } from "@websites/infrastructure/api";
 
 // 5 minutes cache expiry (in ms) - module scope constant
 const CACHE_EXPIRY_MS = 5 * 60 * 1000;

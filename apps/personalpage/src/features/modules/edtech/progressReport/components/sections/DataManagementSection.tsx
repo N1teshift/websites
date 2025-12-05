@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useFallbackTranslation } from '@websites/infrastructure/i18n/client';
-import JSONFileUpload from '@/features/infrastructure/shared/components/ui/JSONFileUpload';
+import JSONFileUpload from '@websites/ui';
 import ExcelFileUpload from './ExcelFileUpload';
 import { ProgressReportData } from '../../types/ProgressReportTypes';
 

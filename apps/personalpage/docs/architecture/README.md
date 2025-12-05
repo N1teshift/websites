@@ -15,18 +15,15 @@ The `docs/` root now contains only three curated collections for easier navigati
 
 ### 🏗️ **architecture/**
 System architecture and core infrastructure documentation.
+
+> **📦 Infrastructure Documentation Migration**: Many infrastructure patterns have been moved to `@websites/infrastructure` package. See [Infrastructure Documentation](../../../../packages/infrastructure/docs/README.md) for consolidated guides.
+
 - `IS_IT_WORTH_IT.md` - **Honest assessment: Should you refactor?** 💡 **READ THIS FIRST**
 - `APP_ROUTER_MIGRATION_ASSESSMENT.md` - **App Router migration evaluation** 🔄
 - `ARCHITECTURE_ANALYSIS.md` - Complete architecture analysis vs Feature-Sliced Design
 - `VIOLATIONS_SUMMARY.md` - Actual violations found in codebase
 - `FSD_QUICK_REFERENCE.md` - Quick reference for FSD alignment improvements
-- `CACHING_STRATEGY.md` - Caching strategy and patterns
-- `LOGGING.md` - Logging system documentation (console-based)
-- `ERRORS.md` - Error handling patterns and strategies
-- `INTERNATIONALIZATION.md` - i18n approach and conventions
 - `NAME_ALIAS_SYSTEM.md` - Name alias system architecture
-- `ENV_SETUP.md` / `ENV_VARIABLES.md` - Environment provisioning and secrets inventory
-- `GOOGLE_CLOUD_SETUP.md` - Cloud resource setup
 - `NEW_PAGE_SETUP.md` / `SCRIPTS.md` - Platform setup and scripting guides
 - `PERFORMANCE_OPTIMIZATION_INVESTIGATION.md` - Performance deep dive
 - `investigations/` - Active decisions (`DECISION_GUIDE.md`, `INVESTIGATION_ANALYSIS_REPORT.md`)
@@ -165,8 +162,8 @@ Historical refactoring documentation (consolidated into REFACTORING_HISTORY.md).
 Start here:
 1. **`features/progress-report/reference/current-status.md`** - Understand current database schema
 2. `architecture/NEW_PAGE_SETUP.md` - Learn how to add new pages
-3. `architecture/INTERNATIONALIZATION.md` - Understand i18n patterns
-4. `architecture/LOGGING.md` - Use the logging system
+3. [Infrastructure i18n Guide](../../../../packages/infrastructure/docs/guides/i18n.md) - Understand i18n patterns
+4. [Infrastructure Logging Guide](../../../../packages/infrastructure/docs/guides/logging.md) - Use the logging system
 5. `architecture/SCRIPTS.md` - Write scripts correctly
 
 ### For Feature Development
@@ -174,7 +171,7 @@ Start here:
 2. Review `features/[feature-name]/` for related documentation
 3. Check `architecture/` for system patterns
 4. Follow `architecture/NEW_PAGE_SETUP.md` for page creation
-5. Use `architecture/CACHING_STRATEGY.md` for caching needs
+5. Use [Infrastructure Caching Guide](../../../../packages/infrastructure/docs/guides/caching.md) for caching needs
 
 ### For Progress Report Data Work
 1. **Start with `features/progress-report/reference/current-status.md`** - Current schema reference
@@ -185,7 +182,7 @@ Start here:
 
 ### For Bug Fixes
 1. Check `features/[feature-name]/fixes/` for similar issues
-2. Review `architecture/ERRORS.md` for error handling
+2. Review [Infrastructure Error Handling Guide](../../../../packages/infrastructure/docs/guides/error-handling.md) for error handling
 3. Document your fix in `features/[feature-name]/fixes/`
 
 ### For Cambridge Missions

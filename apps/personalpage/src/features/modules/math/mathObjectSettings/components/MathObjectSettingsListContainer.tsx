@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useMemo } from "react";
 import { MathObjectSettings, InterfaceType, DEFAULT_MATH_OBJECT_SETTINGS } from "@math/types/index";
 import MathObjectSettingsList from "./MathObjectSettingsList";
 import InterfaceContext from "./InterfaceContext";
-import { IconButton } from "@components/ui/index";
+import { IconButton } from "@websites/ui";
 import { FiPlusCircle } from "react-icons/fi";
 
 /**

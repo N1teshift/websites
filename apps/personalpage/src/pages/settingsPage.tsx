@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import Layout from '@/features/infrastructure/shared/components/ui/Layout';
-import { Button } from '@/features/infrastructure/shared/components/ui/Button';
-import { useAuth } from '@/features/infrastructure/auth/AuthContext';
+import { Layout } from '@websites/ui';
+import { Button } from '@websites/ui';
+import { useAuth } from '@websites/infrastructure/auth/providers';
 import { useFallbackTranslation } from '@websites/infrastructure/i18n/client';
 import { createComponentLogger } from '@websites/infrastructure/logging';
 

@@ -3,7 +3,7 @@ import {
     ObjectType, objectTypeOptions, DependencyType, dependencyTypeOptions,
     InterfaceType, CoefficientSettings, MathObjectSettings
 } from "@math/types/index";
-import { Dropdown, TextArea, NumberInput, IconButton } from "@components/ui/index";
+import { Dropdown, TextArea, NumberInput, IconButton } from "@websites/ui";
 import { FiTrash2 } from "react-icons/fi";
 import MathObjectDescription from "./MathObjectDescription";
 

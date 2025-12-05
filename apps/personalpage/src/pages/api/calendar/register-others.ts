@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { createComponentLogger } from '@websites/infrastructure/logging';
-import { createGoogleCalendarClient } from '@/features/infrastructure/api/google';
+import { createGoogleCalendarClient } from '@websites/infrastructure/api/google';
 import { sendCalendarEventEmail } from '../../../features/modules/calendar/utils/emailFormatter';
 
 const logger = createComponentLogger('RegisterOthers', 'handler');

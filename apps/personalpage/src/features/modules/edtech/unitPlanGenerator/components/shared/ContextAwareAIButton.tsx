@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { UnitPlanData, SubunitData } from '../../types/UnitPlanTypes';
-import { UnitPlanGenerationOptions } from '@/features/infrastructure/ai/shared/services/unitPlanAI';
-import { getModelResponse } from '@/features/infrastructure/ai/shared/services/openaiResponsesClient';
-import { ResponsesResult } from '@/features/infrastructure/ai/types';
+import { UnitPlanGenerationOptions } from '@ai/shared/services/unitPlanAI';
+import { getModelResponse } from '@ai/shared/services/openaiResponsesClient';
+import { ResponsesResult } from '@ai/types';
 import { createComponentLogger } from '@websites/infrastructure/logging';
 
 interface ContextAwareAIButtonProps<K extends keyof UnitPlanData | string> {

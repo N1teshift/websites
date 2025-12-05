@@ -1,7 +1,7 @@
 import React from 'react';
 import { useFallbackTranslation } from '@websites/infrastructure/i18n/client';
 import { FiTrash2 } from 'react-icons/fi';
-import IconButton from '@/features/infrastructure/shared/components/ui/IconButton';
+import IconButton from '@websites/ui';
 
 interface EditableListSectionProps {
   title: string;

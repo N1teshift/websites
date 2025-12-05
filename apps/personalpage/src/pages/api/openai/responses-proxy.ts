@@ -1,5 +1,5 @@
-import { createPostHandler } from '@/features/infrastructure/api/routeHandlers';
-import { openaiService } from '@/features/infrastructure/api/openai/openaiService';
+import { createPostHandler } from '@websites/infrastructure/api/routeHandlers';
+import { openaiService } from '@websites/infrastructure/clients/openai/openaiService';
 
 /**
  * Refactored OpenAI responses proxy using centralized API pattern

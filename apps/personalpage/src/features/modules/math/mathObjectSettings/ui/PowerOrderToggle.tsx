@@ -1,5 +1,5 @@
 import React from "react";
-import { useFallbackTranslation } from "@/features/infrastructure/i18n";
+import { useFallbackTranslation } from "@websites/infrastructure/i18n";
 
 
 export interface PowerOrderToggleProps {

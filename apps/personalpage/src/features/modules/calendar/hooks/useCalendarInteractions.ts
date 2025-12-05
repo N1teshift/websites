@@ -4,7 +4,7 @@ import { createTemporaryEvent, parseRegistrationInfoFromUrl } from "@calendar/ut
 import { RegistrationMethod, EventDetails, TemporaryEvent, CalendarEventClickInfo, CalendarSlotSelectInfo, AvailabilityCheckResult } from "@calendar/types";
 import { ParsedUrlQuery } from "querystring";
 import { createComponentLogger } from "@websites/infrastructure/logging";
-import { apiRequest } from "@/features/infrastructure/api";
+import { apiRequest } from "@websites/infrastructure/api";
 
 const CONFIRMATION_TIMEOUT_MS = 30_000;
 const CONFIRMATION_POLL_INTERVAL_MS = 4_000;

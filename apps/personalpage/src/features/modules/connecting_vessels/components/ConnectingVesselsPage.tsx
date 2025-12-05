@@ -1,7 +1,5 @@
-import { useFallbackTranslation } from '@/features/infrastructure/i18n';
-import ImageCarousel from '@/features/infrastructure/shared/components/ui/ImageCarousel';
-import { Card } from '@/features/infrastructure/shared/components/ui/Card';
-import { Button } from '@/features/infrastructure/shared/components/ui/Button';
+import { useFallbackTranslation } from '@websites/infrastructure/i18n';
+import { ImageCarousel, Card, Button } from '@websites/ui';
 
 export default function ConnectingVesselsPage() {
     const { t } = useFallbackTranslation(["connecting_vessels", "links", "common"]);

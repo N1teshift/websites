@@ -1,6 +1,6 @@
 import React from 'react';
 import { TestSummary } from '@math/types/testsTypes';
-import { useFallbackTranslation } from '@/features/infrastructure/i18n';
+import { useFallbackTranslation } from '@websites/infrastructure/i18n';
 
 /**
  * Displays a formatted summary of test execution results.

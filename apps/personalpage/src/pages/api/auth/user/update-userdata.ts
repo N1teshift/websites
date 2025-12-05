@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getSession } from '@/features/infrastructure/auth/session';
-import { updateUserPreferences } from '@/features/infrastructure/auth/userService';
+import { getSession } from '@websites/infrastructure/auth/session';
+import { updateUserPreferences } from '@websites/infrastructure/auth/userService';
 import { createComponentLogger } from '@websites/infrastructure/logging';
 
 const logger = createComponentLogger('UpdatePreferences');

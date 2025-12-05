@@ -1,6 +1,6 @@
 import React from 'react';
-import { Button } from "@components/ui";
-import { useFallbackTranslation } from '@/features/infrastructure/i18n';
+import { Button } from "@websites/ui";
+import { useFallbackTranslation } from '@websites/infrastructure/i18n';
 
 export type AISystem = 'legacy' | 'langgraph';
 

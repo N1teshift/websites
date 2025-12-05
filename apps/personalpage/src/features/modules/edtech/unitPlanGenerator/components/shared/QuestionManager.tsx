@@ -3,7 +3,7 @@ import { isFeatureEnabled } from '@/config/features';
 import { useFallbackTranslation } from '@websites/infrastructure/i18n/client';
 import LabelWithInfo from './LabelWithInfo';
 import { FiTrash2 } from 'react-icons/fi';
-import IconButton from '@/features/infrastructure/shared/components/ui/IconButton';
+import IconButton from '@websites/ui';
 import FieldCompletionIndicator from '../ui/FieldCompletionIndicator';
 import { UnitPlanData } from '../../types/UnitPlanTypes';
 

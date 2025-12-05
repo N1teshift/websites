@@ -1,6 +1,6 @@
 import { readFileSync } from 'fs';
 import { join } from 'path';
-import { sendEmail } from '@/features/infrastructure/api/email';
+import { sendEmail } from '@websites/infrastructure/api/email';
 
 export interface CalendarEmailData {
   userName: string;

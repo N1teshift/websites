@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getSession } from '@/features/infrastructure/auth/session';
-import { getUserById } from '@/features/infrastructure/auth/userService';
+import { getSession } from '@websites/infrastructure/auth/session';
+import { getUserById } from '@websites/infrastructure/auth/userService';
 import { createComponentLogger } from '@websites/infrastructure/logging';
 
 const logger = createComponentLogger('AuthStatus');

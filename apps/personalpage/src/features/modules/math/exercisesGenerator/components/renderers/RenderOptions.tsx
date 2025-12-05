@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { parseAndRenderMath } from "@components/mathParser";
-import { useFallbackTranslation } from "@/features/infrastructure/i18n";
+import { parseAndRenderMath } from "@math/shared/components";
+import { useFallbackTranslation } from "@websites/infrastructure/i18n";
 
 
 interface RenderOptionsProps {

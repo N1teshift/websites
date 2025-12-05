@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getOAuth2Client } from "@/features/infrastructure/api/google/auth/googleAuth";
+import { getOAuth2Client } from "@websites/infrastructure/api/google/auth/googleAuth";
 import { extractEventDetailsFromQuery } from '../../../features/modules/calendar/utils/eventDetailsExtractor';
 
 /**

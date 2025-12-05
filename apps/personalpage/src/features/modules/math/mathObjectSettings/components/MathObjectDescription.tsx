@@ -4,7 +4,7 @@ import {
     FunctionSettings, PointSettings, SetSettings, IntervalSettings, InequalitySettings, ExpressionSettings,
     MathObjectSettingsType, InterfaceType
 } from "@math/types/index";
-import { parseAndRenderMath } from "@components/mathParser";
+import { parseAndRenderMath } from "@math/shared/components";
 import {
     generateCoefficientDescription, generateCoefficientsDescription, generateTermDescription,
     generateTermsDescription, generateExpressionDescription, generateEquationDescription,

@@ -1,11 +1,11 @@
 import admin from "firebase-admin";
 import { TestResultData, TestStatDocument } from "@math/types/testsTypes";
-import { getFirestoreInstance } from "@/features/infrastructure/api/firebase";
+import { getFirestoreInstance } from "@websites/infrastructure/api/firebase";
 import { 
   commitBatch, 
   processInChunks,
   type BatchOperationResult 
-} from "@/features/infrastructure/api/firebase";
+} from "@websites/infrastructure/api/firebase";
 import {
   prepareFirestoreData,
   calculateUpdatedStats,

@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { exchangeLoginCodeForTokens, getUserInfo } from '@/features/infrastructure/auth/oauth';
-import { getOrCreateUser } from '@/features/infrastructure/auth/userService';
-import { createSessionToken, setSessionCookie } from '@/features/infrastructure/auth/session';
+import { exchangeLoginCodeForTokens, getUserInfo } from '@websites/infrastructure/auth/oauth';
+import { getOrCreateUser } from '@websites/infrastructure/auth/userService';
+import { createSessionToken, setSessionCookie } from '@websites/infrastructure/auth/session';
 import { createComponentLogger } from '@websites/infrastructure/logging';
 
 const logger = createComponentLogger('UserAuthCallback');

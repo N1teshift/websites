@@ -3,7 +3,7 @@ import { Button } from "@websites/ui";
 import { PromptData } from "@ai/types";
 import { useVoiceRecognition } from "../hooks/useVoiceRecognition";
 import { generateSettings } from "@ai/core/objectGeneration";
-import ToastNotification from "@/features/infrastructure/shared/components/ui/ToastNotification";
+import ToastNotification from "@websites/ui";
 import { useFallbackTranslation } from "@websites/infrastructure/i18n/client";
 
 interface VoicePromptButtonProps {

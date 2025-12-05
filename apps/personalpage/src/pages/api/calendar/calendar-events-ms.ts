@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { createMicrosoftCalendarClient } from "@/features/infrastructure/api/microsoft";
+import { createMicrosoftCalendarClient } from "@websites/infrastructure/api/microsoft";
 import { createComponentLogger } from "@websites/infrastructure/logging";
 
 

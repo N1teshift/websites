@@ -1,7 +1,7 @@
 import React from "react";
 import BaseMathObjectSettingsContainer from "./BaseMathObjectSettingsContainer";
 import { PowerInput, PowerOrderToggle } from "../ui";
-import { Dropdown } from "@components/ui";
+import { Dropdown } from "@websites/ui";
 import { combinationTypeOptions, CombinationType, TermsSettings, MathObjectContainerProps } from "@math/types/index";
 
 /**

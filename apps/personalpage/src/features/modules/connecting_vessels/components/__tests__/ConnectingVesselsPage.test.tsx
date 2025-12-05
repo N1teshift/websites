@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import ConnectingVesselsPage from '../ConnectingVesselsPage';
-import { useFallbackTranslation } from '@/features/infrastructure/i18n';
+import { useFallbackTranslation } from '@websites/infrastructure/i18n';
 
-jest.mock('@/features/infrastructure/i18n', () => ({
+jest.mock('@websites/infrastructure/i18n', () => ({
   useFallbackTranslation: jest.fn(),
 }));
 
@@ -20,7 +20,7 @@ const mockImageCarousel = jest.fn(({ images }: { images: MockImage[] }) => (
   </div>
 ));
 
-jest.mock('@/features/infrastructure/shared/components/ui/ImageCarousel', () => ({
+jest.mock('@websites/ui', () => ({
   __esModule: true,
   default: (props: { images: MockImage[] }) => mockImageCarousel(props),
 }));

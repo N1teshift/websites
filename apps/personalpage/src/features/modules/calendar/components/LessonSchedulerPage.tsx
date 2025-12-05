@@ -10,7 +10,7 @@ import { getSuccessMessageKey } from "../utils/eventRegistrationUtils";
 import { RegistrationMethod, EventDetails } from "../types";
 
 import { CalendarEventClickInfo, CalendarSlotSelectInfo } from "../types";
-import ToastNotification from "@/features/infrastructure/shared/components/ui/ToastNotification";
+import ToastNotification from "@websites/ui";
 
 export default function LessonSchedulerPage() {
     // Calendar events data and operations

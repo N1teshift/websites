@@ -4,10 +4,11 @@ import { useTestExecution, useTestSelection, useTestStats, useTestDateFormatter 
 import { resetTestStats } from '@tests/utils/common';
 import TestResultsSummary, { TestControls, AISystem } from '@math/tests/ui/index';
 import SystemFlowDiagram from '@math/tests/ui/SystemFlowDiagram';
-import { GenericTable, ColumnDefinition, FilterDefinition, StatusIndicator, PropertyTags, MathDisplay } from '@components/table/index';
+import { GenericTable, ColumnDefinition, FilterDefinition, StatusIndicator } from '@websites/ui';
+import { PropertyTags, MathDisplay } from '@math/shared/components';
 import { SuccessMessage, ToastNotification } from '@websites/ui';
-import { useAuth } from '@/features/infrastructure/auth/AuthContext';
-import { useFallbackTranslation } from '@/features/infrastructure/i18n';
+import { useAuth } from '@websites/infrastructure/auth/providers';
+import { useFallbackTranslation } from '@websites/infrastructure/i18n';
 
 /**
  * MathObjectsGeneratorTests page component.

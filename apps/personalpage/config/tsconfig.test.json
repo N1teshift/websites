@@ -16,7 +16,6 @@
         "incremental": true,
         "baseUrl": "src",
         "paths": {
-            "@components/*": ["infrastructure/shared/components/*"],
             "@lib/*": ["infrastructure/shared/lib/*"],
             "@styles/*": ["styles/*"],
             "@utils/*": ["infrastructure/shared/utils/*"],
@@ -26,7 +25,7 @@
             "@exerciseGenerator/*": ["features/modules/math/exerciseGenerator/*"],
             "@services/*": ["services/*"],
             "@shared/*": ["infrastructure/shared/*"],
-            "@ai/*": ["features/infrastructure/ai/*"],
+            "@ai/*": ["features/modules/ai/*"],
             "@progressReport/*": ["features/modules/edtech/progressReport/*"]
         }
     },

@@ -1,6 +1,6 @@
 import React from "react";
 import BaseMathObjectSettingsContainer from "./BaseMathObjectSettingsContainer";
-import { Dropdown, CheckboxGroup } from "@components/ui";
+import { Dropdown, CheckboxGroup } from "@websites/ui";
 import RangeInput from "../ui/RangeInput";
 import {
     numberSetOptions, coeficientRuleOptions, RepresentationType, CoefficientSettings, MathObjectContainerProps

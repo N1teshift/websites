@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect, useMemo } from "react";
 import { Calendar as BigCalendar, View, SlotInfo } from "react-big-calendar";
-import { useFallbackTranslation } from '@/features/infrastructure/i18n';
+import { useFallbackTranslation } from '@websites/infrastructure/i18n';
 import { createComponentLogger } from "@websites/infrastructure/logging";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { startOfWeek, isBefore, format } from "date-fns";
@@ -10,7 +10,7 @@ import { useCalendarEvents, useSlotOverlapChecker } from "../hooks/useCalendarEv
 import { useCalendarTimeBounds } from "../hooks/useCalendarTimeBounds";
 import { useCalendarStyling } from "../hooks/useCalendarStyling";
 import CalendarToolbar from "./CalendarToolbar";
-import ToastNotification from "@/features/infrastructure/shared/components/ui/ToastNotification";
+import ToastNotification from "@websites/ui";
 
 const SLOT_DURATION_MINUTES = 30;
 const SLOT_DURATION_MS = SLOT_DURATION_MINUTES * 60 * 1000;

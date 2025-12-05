@@ -1,8 +1,7 @@
 import React from 'react';
-import { useFallbackTranslation } from '@/features/infrastructure/i18n';
+import { useFallbackTranslation } from '@websites/infrastructure/i18n';
 import { FaExternalLinkAlt } from 'react-icons/fa';
-import { Card } from '@/features/infrastructure/shared/components/ui/Card';
-import { Button } from '@/features/infrastructure/shared/components/ui/Button';
+import { Card, Button } from '@websites/ui';
 
 export default function MusicPage() {
   const { t } = useFallbackTranslation();

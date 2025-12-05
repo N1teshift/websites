@@ -1,6 +1,6 @@
 import React from "react";
-import CollapsibleSection from "@components/ui/CollapsibleSection";
-import { useFallbackTranslation } from '@/features/infrastructure/i18n';
+import { CollapsibleSection } from "@websites/ui";
+import { useFallbackTranslation } from '@websites/infrastructure/i18n';
 
 interface RenderMetadataProps {
     bookMetadata: {

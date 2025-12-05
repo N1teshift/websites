@@ -1,7 +1,6 @@
 import React from "react";
 import BaseMathObjectSettingsContainer from "./BaseMathObjectSettingsContainer";
-import Dropdown from "@components/ui/Dropdown";
-import BooleanToggle from "@components/ui/BooleanToggle";
+import { Dropdown, BooleanToggle } from "@websites/ui";
 import { SetSettings, MathObjectContainerProps, CapitalLetters, capitalLettersOptions } from "@math/types/index";
 
 /**
