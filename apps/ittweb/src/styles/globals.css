@@ -1,0 +1,55 @@
+@import './modules/vendor.css';
+@import './modules/tokens.css';
+@import './modules/base.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  .font-medieval-brand {
+    @apply text-amber-400 font-medieval font-bold;
+    font-family: 'MedievalSharp', cursive;
+    font-weight: 700;
+  }
+  
+  .font-medieval-brand-hover {
+    @apply text-amber-400 hover:text-amber-300 font-medieval font-bold transition-colors;
+    font-family: 'MedievalSharp', cursive;
+    font-weight: 700;
+  }
+
+  /* Card variants */
+  .card-medieval {
+    @apply bg-black/30 backdrop-blur-sm border border-amber-500/30 rounded-lg;
+  }
+
+  .card-medieval-hover {
+    @apply card-medieval hover:border-amber-400/50 transition-colors;
+  }
+
+  .section-medieval {
+    @apply card-medieval p-6;
+  }
+
+  /* Link styles */
+  .link-amber {
+    @apply text-amber-400 hover:text-amber-300 transition-colors;
+  }
+
+  /* Header styles */
+  .header-glass {
+    @apply bg-black/30 backdrop-blur-sm border-b border-amber-500/30;
+  }
+
+  /* Container utilities */
+  .container-responsive {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+}

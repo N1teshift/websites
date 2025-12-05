@@ -1,0 +1,333 @@
+name: Workflow Monitor
+
+on:
+  workflow_run:
+    workflows: ["Test", "Build", "Deploy", "Security", "Bundle Size"]
+    types: [completed]
+  schedule:
+    # Run daily check at 9 AM UTC to ensure workflows are running
+    - cron: '0 9 * * *'
+  workflow_dispatch:
+    # Allow manual trigger for status check
+
+jobs:
+  monitor-workflows:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      actions: read
+      
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Get workflow run information
+        id: workflow_info
+        if: github.event_name == 'workflow_run'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          WORKFLOW_NAME="${{ github.event.workflow_run.name }}"
+          WORKFLOW_CONCLUSION="${{ github.event.workflow_run.conclusion }}"
+          WORKFLOW_RUN_ID="${{ github.event.workflow_run.id }}"
+          COMMIT_SHA="${{ github.event.workflow_run.head_sha }}"
+          WORKFLOW_URL="${{ github.event.workflow_run.html_url }}"
+          TRIGGER_EVENT="${{ github.event.workflow_run.event }}"
+          
+          echo "workflow_name=$WORKFLOW_NAME" >> $GITHUB_OUTPUT
+          echo "workflow_conclusion=$WORKFLOW_CONCLUSION" >> $GITHUB_OUTPUT
+          echo "workflow_run_id=$WORKFLOW_RUN_ID" >> $GITHUB_OUTPUT
+          echo "commit_sha=$COMMIT_SHA" >> $GITHUB_OUTPUT
+          echo "workflow_url=$WORKFLOW_URL" >> $GITHUB_OUTPUT
+          echo "trigger_event=$TRIGGER_EVENT" >> $GITHUB_OUTPUT
+
+      - name: Get commit message
+        id: commit_info
+        if: github.event_name == 'workflow_run'
+        run: |
+          COMMIT_MSG=$(git log -1 --pretty=format:"%s" ${{ github.event.workflow_run.head_sha }} 2>/dev/null || echo "Unable to fetch commit message")
+          COMMIT_AUTHOR=$(git log -1 --pretty=format:"%an" ${{ github.event.workflow_run.head_sha }} 2>/dev/null || echo "Unknown")
+          echo "commit_msg<<EOF" >> $GITHUB_OUTPUT
+          echo "$COMMIT_MSG" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+          echo "commit_author=$COMMIT_AUTHOR" >> $GITHUB_OUTPUT
+
+      - name: Check for existing failure issue
+        id: check_issue
+        if: github.event_name == 'workflow_run' && steps.workflow_info.outputs.workflow_conclusion == 'failure'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const workflowName = '${{ steps.workflow_info.outputs.workflow_name }}';
+            const commitSha = '${{ steps.workflow_info.outputs.commit_sha }}';
+            
+            // Search for existing issues with same workflow and commit
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'workflow-failure',
+              per_page: 100
+            });
+            
+            const existingIssue = issues.find(issue => 
+              issue.body && 
+              issue.body.includes(workflowName) && 
+              issue.body.includes(commitSha.substring(0, 7))
+            );
+            
+            if (existingIssue) {
+              core.setOutput('issue_number', existingIssue.number);
+              core.setOutput('issue_exists', 'true');
+            } else {
+              core.setOutput('issue_exists', 'false');
+            }
+
+      - name: Create or update failure issue
+        if: github.event_name == 'workflow_run' && steps.workflow_info.outputs.workflow_conclusion == 'failure' && steps.check_issue.outputs.issue_exists == 'false'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const workflowName = '${{ steps.workflow_info.outputs.workflow_name }}';
+            const workflowUrl = '${{ steps.workflow_info.outputs.workflow_url }}';
+            const workflowRunId = '${{ steps.workflow_info.outputs.workflow_run_id }}';
+            const commitSha = '${{ steps.workflow_info.outputs.commit_sha }}';
+            const commitMsg = `${{ steps.commit_info.outputs.commit_msg }}`;
+            const commitAuthor = '${{ steps.commit_info.outputs.commit_author }}';
+            const triggerEvent = '${{ steps.workflow_info.outputs.trigger_event }}';
+            
+            const shortSha = commitSha.substring(0, 7);
+            const commitUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/commit/${commitSha}`;
+            
+            const issueBody = '## Workflow Failure: ' + workflowName + '\n\n' +
+              '**Status**: Failed\n' +
+              '**Workflow Run**: [View Run](' + workflowUrl + ') (ID: ' + workflowRunId + ')\n' +
+              '**Trigger**: ' + triggerEvent + '\n\n' +
+              '### Commit Information\n' +
+              '- **Commit**: [' + shortSha + '](' + commitUrl + ')\n' +
+              '- **Message**: ' + commitMsg + '\n' +
+              '- **Author**: ' + commitAuthor + '\n\n' +
+              '### Next Steps\n' +
+              '1. Review the [workflow run](' + workflowUrl + ') for detailed error logs\n' +
+              '2. Check if this is a recurring issue\n' +
+              '3. Fix the underlying problem\n' +
+              '4. Close this issue when resolved\n\n' +
+              '### Investigation Notes\n' +
+              '_Add investigation findings here..._\n\n' +
+              '---\n' +
+              '*This issue was automatically created by the Workflow Monitor workflow.*';
+
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: 'Workflow Failure: ' + workflowName + ' - ' + shortSha,
+              body: issueBody,
+              labels: ['workflow-failure', 'ci/cd', 'devops']
+            });
+
+      - name: Comment on existing issue
+        if: github.event_name == 'workflow_run' && steps.workflow_info.outputs.workflow_conclusion == 'failure' && steps.check_issue.outputs.issue_exists == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const workflowName = '${{ steps.workflow_info.outputs.workflow_name }}';
+            const workflowUrl = '${{ steps.workflow_info.outputs.workflow_url }}';
+            const workflowRunId = '${{ steps.workflow_info.outputs.workflow_run_id }}';
+            const commitSha = '${{ steps.workflow_info.outputs.commit_sha }}';
+            
+            const shortSha = commitSha.substring(0, 7);
+            const commentBody = 'Another failure detected for **' + workflowName + '**:\n\n' +
+              '- **Run**: [' + workflowRunId + '](' + workflowUrl + ')\n' +
+              '- **Commit**: ' + shortSha + '\n' +
+              '- **Time**: ' + new Date().toISOString() + '\n\n' +
+              'This appears to be a recurring issue. Please investigate.';
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: parseInt('${{ steps.check_issue.outputs.issue_number }}'),
+              body: commentBody
+            });
+
+      - name: Generate workflow status report
+        id: status_report
+        if: always()
+        run: |
+          mkdir -p /tmp/workflow-status
+          
+          TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          DATE=$(date -u +"%Y-%m-%d")
+          
+          if [ "${{ github.event_name }}" = "workflow_run" ]; then
+            WORKFLOW_NAME="${{ steps.workflow_info.outputs.workflow_name }}"
+            WORKFLOW_CONCLUSION="${{ steps.workflow_info.outputs.workflow_conclusion }}"
+            WORKFLOW_RUN_ID="${{ steps.workflow_info.outputs.workflow_run_id }}"
+            WORKFLOW_URL="${{ steps.workflow_info.outputs.workflow_url }}"
+            COMMIT_SHA="${{ steps.workflow_info.outputs.commit_sha }}"
+            
+            STATUS_FILE="/tmp/workflow-status/${WORKFLOW_NAME,,}-status.md"
+            STATUS_FILE_NAME="${WORKFLOW_NAME,,}-status.md"
+            
+            # Create or update status file in temp location
+            {
+              echo "# ${WORKFLOW_NAME} Workflow Status"
+              echo ""
+              echo "**Last Run**: ${TIMESTAMP}"
+              if [ "$WORKFLOW_CONCLUSION" = "success" ]; then
+                echo "**Status**: Success"
+              else
+                echo "**Status**: Failed"
+              fi
+              echo "**Run ID**: ${WORKFLOW_RUN_ID}"
+              echo "**Workflow URL**: ${WORKFLOW_URL}"
+              echo "**Commit**: ${COMMIT_SHA:0:7}"
+              echo ""
+              echo "## Latest Run Details"
+              echo ""
+              echo "- **Conclusion**: ${WORKFLOW_CONCLUSION}"
+              echo "- **Trigger**: ${{ steps.workflow_info.outputs.trigger_event }}"
+              echo "- **Run ID**: ${WORKFLOW_RUN_ID}"
+              echo "- **View Run**: [${WORKFLOW_URL}](${WORKFLOW_URL})"
+              echo ""
+              echo "## Recent History"
+              echo ""
+              echo "### ${DATE}"
+              if [ "$WORKFLOW_CONCLUSION" = "success" ]; then
+                echo "- **Status**: Success"
+              else
+                echo "- **Status**: Failed"
+              fi
+              echo "- **Run**: [${WORKFLOW_RUN_ID}](${WORKFLOW_URL})"
+              echo "- **Commit**: [${COMMIT_SHA:0:7}](https://github.com/${{ github.repository }}/commit/${COMMIT_SHA})"
+              echo ""
+              echo "---"
+              echo "*Last updated: ${TIMESTAMP}*"
+              echo "*Status file auto-generated by Workflow Monitor*"
+            } > "$STATUS_FILE"
+          else
+            # Scheduled or manual run - fetch recent workflow runs from API
+            echo "Fetching recent workflow runs from GitHub API..."
+            mkdir -p /tmp/workflow-status
+            
+            WORKFLOW_NAMES=("Test" "Build" "Deploy" "Security" "Bundle Size")
+            
+            for WORKFLOW_NAME in "${WORKFLOW_NAMES[@]}"; do
+              STATUS_FILE="/tmp/workflow-status/${WORKFLOW_NAME,,}-status.md"
+              
+              # Use GitHub CLI or API to get latest run (simplified - using placeholder for now)
+              # In a real implementation, we'd use gh cli or curl to GitHub API
+              {
+                echo "# ${WORKFLOW_NAME} Workflow Status"
+                echo ""
+                echo "**Last Check**: ${TIMESTAMP}"
+                echo "**Status**: Checking..."
+                echo "**Note**: Status will be updated on next workflow_run event"
+                echo ""
+                echo "---"
+                echo "*Last updated: ${TIMESTAMP}*"
+                echo "*Status check generated by Workflow Monitor on scheduled/manual run*"
+              } > "$STATUS_FILE"
+            done
+            
+            STATUS_FILE="/tmp/workflow-status/overview.md"
+            STATUS_FILE_NAME="overview.md"
+            {
+              echo "# Workflow Status Overview"
+              echo ""
+              echo "**Generated**: ${TIMESTAMP}"
+              echo ""
+              echo "## Workflow Status"
+              echo ""
+              echo "Check individual workflow status files for detailed information:"
+              echo "- test-status.md - Test workflow"
+              echo "- build-status.md - Build workflow"
+              echo "- deploy-status.md - Deploy workflow"
+              echo "- security-status.md - Security workflow"
+              echo "- bundle-size-status.md - Bundle Size workflow"
+              echo ""
+              echo "## Quick Status"
+              echo ""
+              echo "_Individual workflow status files will be updated on next workflow run._"
+              echo ""
+              echo "**Note**: For immediate status, check the GitHub Actions tab in your repository."
+              echo ""
+              echo "---"
+              echo "*Last updated: ${TIMESTAMP}*"
+              echo "*Generated by Workflow Monitor on scheduled/manual run*"
+            } > "$STATUS_FILE"
+          fi
+          
+          # Always set status_file output so commit step can run
+          echo "status_file=${STATUS_FILE}" >> $GITHUB_OUTPUT
+          echo "status_file_name=${STATUS_FILE_NAME}" >> $GITHUB_OUTPUT
+          echo "has_status_file=true" >> $GITHUB_OUTPUT
+
+      - name: Create workflow summary
+        if: github.event_name == 'workflow_run'
+        run: |
+          WORKFLOW_NAME="${{ steps.workflow_info.outputs.workflow_name }}"
+          WORKFLOW_CONCLUSION="${{ steps.workflow_info.outputs.workflow_conclusion }}"
+          WORKFLOW_URL="${{ steps.workflow_info.outputs.workflow_url }}"
+          
+          if [ "$WORKFLOW_CONCLUSION" = "success" ]; then
+            EMOJI="✅"
+            STATUS="Success"
+          else
+            EMOJI="❌"
+            STATUS="Failed"
+          fi
+          
+          echo "## Workflow Monitor Result" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "${EMOJI} **${WORKFLOW_NAME}** - ${STATUS}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "[View Workflow Run](${WORKFLOW_URL})" >> $GITHUB_STEP_SUMMARY
+          
+          if [ "$WORKFLOW_CONCLUSION" = "failure" ]; then
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "⚠️ A GitHub issue has been created or updated for this failure." >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Commit and push status files
+        if: always()
+        run: |
+          # Configure git
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          
+          # Check if status files exist
+          if [ ! -d "/tmp/workflow-status" ] || [ -z "$(ls -A /tmp/workflow-status/*.md 2>/dev/null)" ]; then
+            echo "No status files to commit"
+            exit 0
+          fi
+          
+          # Ensure we're on main branch
+          git fetch origin main
+          git checkout main
+          
+          # Copy status files from temp location to repository
+          mkdir -p .workflow/progress/workflow-status
+          cp /tmp/workflow-status/*.md .workflow/progress/workflow-status/ 2>/dev/null || true
+          
+          # Check if any files were copied
+          if [ -z "$(ls -A .workflow/progress/workflow-status/*.md 2>/dev/null)" ]; then
+            echo "No status files to commit after copy"
+            exit 0
+          fi
+          
+          # Add and commit status files
+          git add .workflow/progress/workflow-status/*.md
+          
+          # Commit if there are changes
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            echo "Committing status files..."
+            git commit -m "chore: Update workflow status files [skip ci]" || echo "Commit failed or no changes"
+            git push origin main || echo "Push failed"
+          fi
+
