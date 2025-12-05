@@ -1,0 +1,46 @@
+{
+    "basic_information": "Основная информация",
+    "school_name": "Название школы",
+    "enter_school_name": "Введите название школы...",
+    "school_name_info": "Официальное название вашего образовательного учреждения, которое будет отображаться в документе плана модуля.",
+    "unit_title": "Название модуля",
+    "enter_unit_title": "Введите название модуля...",
+    "unit_title_info": "Описательное название для этого модуля обучения. Это должно четко указывать, чему будут учиться учащиеся.",
+    "academic_year": "Учебный год",
+    "select_academic_year": "Выберите учебный год...",
+    "academic_year_info": "Выберите учебный год, когда будет преподаваться этот модуль.",
+    "subject": "Предмет",
+    "select_subject": "Выберите предмет...",
+    "subject_info": "Выберите предметную область для этого модуля. Это определяет, какие концепции, командные термины и ATL навыки доступны для выбора.",
+    "subject_arts": "Искусство",
+    "subject_design": "Дизайн",
+    "subject_individuals_societies": "Индивиды и общества",
+    "subject_language_acquisition": "Изучение языка",
+    "subject_language_literature": "Язык и литература",
+    "subject_mathematics": "Математика",
+    "subject_physical_health_education": "Физическое и здоровье образование",
+    "subject_sciences": "Науки",
+    "myp_year": "Год MYP",
+    "select_myp_year": "Выберите год MYP...",
+    "myp_year_info": "Выберите уровень года MYP, для которого предназначен этот модуль.",
+    "myp_year_1": "MYP 1 год",
+    "myp_year_2": "MYP 2 год",
+    "myp_year_3": "MYP 3 год",
+    "myp_year_4": "MYP 4 год",
+    "myp_year_5": "MYP 5 год",
+    "contributing_teachers": "Участвующие учителя",
+    "enter_teacher_name": "Введите имя учителя...",
+    "contributing_teachers_info": "Добавьте учителей, которые участвуют в разработке и реализации этого плана модуля.",
+    "number_of_lessons": "Количество уроков",
+    "number_of_lessons_info": "Это автоматически рассчитывается на основе количества карточек подразделов на вкладке Содержание."
+    ,"display_mode_label": "Режим отображения"
+    ,"display_mode_info": "Выберите, как поля будут отображаться в плане модуля. Режим «Текущий» показывает традиционные макеты полей, режим «Улучшенный» показывает современные упрощённые интерфейсы, а режим «Полный» показывает все поля из обоих режимов."
+    ,"display_mode_current": "Текущий"
+    ,"display_mode_enhanced": "Улучшенный"
+    ,"display_mode_full": "Полный"
+    ,"display_mode_current_description": "Традиционные макеты полей"
+    ,"display_mode_enhanced_description": "Современные упрощённые интерфейсы"
+    ,"display_mode_full_description": "Все поля из обоих режимов"
+    ,"display_mode_disabled_tooltip": "Временно отключено для обслуживания"
+}
+

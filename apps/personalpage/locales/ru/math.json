@@ -1,0 +1,131 @@
+{
+  "object_type": "Тип объекта",
+  "coefficient": "Коэффициент",
+  "coefficients": "Коэффициенты",
+  "term": "Термин",
+  "terms": "Термины",
+  "expression": "Выражение",
+  "equation": "Уравнение",
+  "equations": "Уравнения",
+  "inequality": "Неравенство",
+  "function": "Функция",
+  "functions": "Функции",
+  "exercise": "Задание",
+  "exercises": "Задания",
+  "point": "Точка",
+  "points": "Точки",
+  "interval": "Интервал",
+  "set": "Множество",
+  "sets": "Множества",
+
+
+  "number_set": "Множество чисел",
+  "real": "Действительное",
+  "irrational": "Иррациональное",
+  "irrationals": "Иррациональные",
+  "rational": "Рациональное",
+  "rationals": "Рациональные",
+  "integer": "Целый",
+  "natural": "Натуральный",
+
+
+  "representation_type": "Тип выражения",
+  "representation": "Выражение",
+  "decimal": "Десятичный",
+  "mixed": "Смешанный",
+  "root": "Корень",
+  "fraction": "Дробь",
+  "logarithm": "Логарифм",
+
+
+  "coefficient_constraints": "Коэффициенты",
+  "odd": "Нечетный",
+  "even": "Четный",
+  "square": "Квадрат",
+  "cube": "Куб",
+  "prime": "Простой",
+  "nonzero": "Не равно 0",
+  "positive": "Положительный",
+  "negative": "Отрицательный",
+  "unit": "Единица",
+
+  "range": "Интервал",
+
+
+  "coefficients_set_constraints": "Коэффициенты",
+  "increasing": "Возрастающий",
+  "decreasing": "Убывающий",
+  "neq": "Не равно",
+
+  "collection_count": "Коллекция",
+
+
+  "power_settings": "Степень",
+  "power": "Степень",
+  "powers": "Степени",
+  "first_f": "Первый",
+  "term_orders": "Степени",
+  "variable": "Переменная",
+
+
+  "combination_type": "Тип комбинации",
+  "addition": "Сложение",
+  "subtraction": "Вычитание",
+  "division": "Деление",
+  "multiplication": "Умножение",
+  "root_sq_div": "Корень, квадрат, деление",
+  "none": "Нет",
+
+
+  "expression_count": "Количество выражений",
+
+
+  "inequality_type": "Тип неравенства",
+  "less": "Меньше",
+  "greater": "Больше",
+  "leq": "Меньше или равно",
+  "geq": "Больше или равно",
+
+
+  "function_name": "Имя функции",
+  "point_name": "Имя точки",
+  "set_name": "Имя множества",
+  "interval_name": "Имя интервала",
+
+
+  "interval_type": "Тип интервала",
+  "closed": "Закрытый",
+  "open": "Открытый",
+  "closed_open": "Закрытый/Открытый",
+  "open_closed": "Открытый/Закрытый",
+
+  "minimum_length": "Минимальная длина",
+
+
+
+
+  "quantity": "Количество",
+  "generated_content_will_be_here": "Сгенерированный контент будет здесь",
+
+  "unit_integer": "Единичный целый",
+  "nonzero_integer": "Не нулевой целый",
+  "homogenic": "Однородный",
+  "nonhomogenic": "Не однородный",
+  "any": "Все",
+  "polynomial": "Полином",
+  "polynomials": "Полиномы",
+  "m_monomials": "Многочлены",
+  "m_polynomials": "Многочлены",
+  "geometry": "Геометрия",
+  "additional_constraints": "Дополнительные условия",
+  "order": "Порядок",
+  "no_math_items_available": "Нет математических объектов",
+  "dependency": "Зависимость",
+  "belongs_to": "Принадлежит интервалу",
+  "doesnt_belong": "Не принадлежит интервалу",
+  "upper_minus:0.1": "0.1 меньше верхнего предела",
+  "lower_minus:0.1": "0.1 меньше нижнего предела",
+  "upper_minus:1": "1 меньше верхнего предела",
+  "lower_minus:1": "1 меньше нижнего предела",
+  "priority": "Приоритет"
+}

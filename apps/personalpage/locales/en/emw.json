@@ -1,0 +1,20 @@
+{
+  "eu_parliament_elections": "Elections to the European Parliament",
+  "home_note_1": "In task editing, only one photo can be uploaded at a time, but you can edit again and again to upload additional photos.",
+  "home_note_2": "In complaint creation, multiple photos can be uploaded at once.",
+  "home_notes_title": "Notes:",
+  "home_welcome_title": "Welcome to the Election Monitoring Wizard.",
+  "login_description": "To continue, please log in using your Google account.",
+  "login_title": "Login to Election Monitoring Wizard",
+  "municipal_elections": "Municipal council and mayoral elections",
+  "nav_counties": "Observation (Counties)",
+  "nav_counting_precincts": "Counting Observation (Precincts)",
+  "nav_home": "Home",
+  "nav_my_tasks": "My Tasks",
+  "nav_voting_precincts": "Voting Observation (Precincts)",
+  "observer_count": "Observers",
+  "precinct_id": "ID",
+  "precinct_name": "Name",
+  "presidential_elections": "Presidential elections",
+  "seimas_elections": "Elections to the Seimas"
+}

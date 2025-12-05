@@ -1,0 +1,37 @@
+{
+    "atl_skills": "ATL Skills",
+    "atl_skills_strategies": "ATL Skills & Strategies",
+    "atl_skills_title": "ATL Skills",
+    "atl_skills_info": "Approaches to Learning (ATL) skills are the fundamental skills students need for success in school and life. These are organized into 5 categories: Thinking, Communication, Social, Self-management, and Research.",
+    "atl_skills_math_only": "ATL skills are only available for mathematics subject. Please select mathematics as your subject to access ATL skills.",
+    "atl_skills_help": "Select the Approaches to Learning (ATL) skills that will be developed in this unit. Currently limited to skills approved for mathematics.",
+    "no_atl_skills_selected": "No ATL skills selected yet. Choose from the available skills above.",
+    "no_atl_skills_specified": "No ATL skills specified",
+    "atl_strategies": "ATL Strategies",
+    "atl_strategies_info": "Describe the specific strategies, routines, tools, and scaffolds you will explicitly teach and use to develop the selected ATL skills. These are the practical methods and classroom practices that help students develop and practice the chosen skills throughout the unit.",
+    "no_atl_strategies_specified": "No ATL strategies specified",
+    "atl_category": {
+        "Communication": "Communication",
+        "Self-management": "Self-management",
+        "Thinking": "Thinking"
+    },
+    "atl_subcategory": {
+        "Communication through language": "Communication through language",
+        "Organization skills": "Organization skills",
+        "Critical thinking": "Critical thinking",
+        "Creative thinking": "Creative thinking"
+    },
+    "atl_skill": {
+        "understand-mathematical-notation": "Understand and use mathematical notation",
+        "take-effective-notes": "Take effective notes in class",
+        "create-assessment-plans": "Create plans to prepare for summative assessments (examinations and performances)",
+        "bring-necessary-equipment": "Bring necessary equipment and supplies to class",
+        "interpret-data": "Interpret data",
+        "draw-conclusions": "Draw reasonable conclusions and generalizations",
+        "analyze-synthesize-concepts": "Analyze complex concepts and projects into their constituent parts and synthesize them to create new understanding",
+        "propose-evaluate-solutions": "Propose and evaluate a variety of solutions",
+        "use-models-simulations": "Use models and simulations to explore complex systems and issues",
+        "use-visible-thinking": "Use visible thinking strategies and techniques"
+    }
+}
+

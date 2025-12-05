@@ -1,0 +1,31 @@
+{
+  "music": "Muzika",
+  "my_tracks": "Mano Takeliai",
+  "my_likes": "Mano Patinka",
+  "loading_tracks": "Kraunami takeliai...",
+  "loading_likes": "Kraunami patinka...",
+  "no_tracks_found": "Takelių nerasta",
+  "no_likes_found": "Patinka nerasta",
+  "error_loading_tracks": "Klaida kraunant takelius",
+  "error_loading_likes": "Klaida kraunant patinka",
+  "play_track": "Groti takelį",
+  "pause_track": "Pristabdyti takelį",
+  "track_duration": "Trukmė",
+  "track_plays": "atkūrimai",
+  "track_likes": "patinka",
+  "track_comments": "komentarai",
+  "track_reposts": "perkelti",
+  "follow_on_soundcloud": "Sekti SoundCloud",
+  "view_on_soundcloud": "Peržiūrėti SoundCloud",
+  "soundcloud_profile": "SoundCloud Profilis",
+  "refresh_data": "Atnaujinti Duomenis",
+  "tabs": {
+    "tracks": "Takeliai",
+    "likes": "Patinka"
+  },
+  "stats": {
+    "total_tracks": "Iš viso Takelių",
+    "total_likes": "Iš viso Patinka",
+    "total_plays": "Iš viso Atkūrimų"
+  }
+}

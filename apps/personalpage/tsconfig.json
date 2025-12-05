@@ -1,0 +1,31 @@
+{
+  "extends": "@websites/config/tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["src/*"],
+      "@components/*": ["src/features/infrastructure/shared/components/*"],
+      "@lib/*": ["src/features/infrastructure/shared/lib/*"],
+      "@utils/*": ["src/features/infrastructure/shared/utils/*"],
+      "@math/*": ["src/features/modules/math/*"],
+      "@ai/*": ["src/features/infrastructure/ai/*"],
+      "@tests/*": ["src/features/modules/math/tests/*"],
+      "@styles/*": ["src/styles/*"],
+      "@calendar/*": ["src/features/modules/calendar/*"],
+      "@voice/*": ["src/features/modules/voice/*"],
+      "@projects/*": ["src/features/projects/*"],
+      "@progressReport/*": ["src/features/modules/edtech/progressReport/*"],
+      "@websites/ui": ["../../packages/ui/src"],
+      "@websites/ui/*": ["../../packages/ui/src/*"],
+      "@websites/infrastructure": ["../../packages/infrastructure/src"],
+      "@websites/infrastructure/*": ["../../packages/infrastructure/src/*"]
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/features/infrastructure/ai/schemas/mathObjects/coefficients.ts"],
+  "exclude": ["node_modules", "langgraphjs", "scripts"]
+}

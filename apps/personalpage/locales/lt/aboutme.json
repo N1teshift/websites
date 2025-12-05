@@ -1,0 +1,175 @@
+{
+  "education": [
+    {
+      "dates": "2022 – 2023",
+      "degree": "Pedagogo kvalifikacija",
+      "institution": "Vytauto Didžiojo Universitetas"
+    },
+    {
+      "dates": "2017 – 2020",
+      "degree": "Matematikos magistro laipsnis",
+      "institution": "Vilniaus Universitetas"
+    },
+    {
+      "dates": "2013 – 2017",
+      "degree": "Matematikos ir matematikos taikymų bakalauro laipsnis (Psichologijos mažasis bakalauro laipsnis)",
+      "institution": "Vilniaus Universitetas"
+    }
+  ],
+  "educationTitle": "Išsilavinimas",
+  "email": "simonasbernotas@protonmail.com",
+  "experience": [
+    {
+      "company": "Karalienės Mortos Mokykla",
+      "dates": "2025 - dabar",
+      "location": "Vilnius, Lietuva",
+      "responsibilities": [],
+      "title": "Matematikos mokytojas"
+    },
+    {
+      "dates": "2024-2025",
+      "location": "Vilnius, Lietuva",
+      "responsibilities": [
+        "Kuriu matematikos mokytojams skirtų įrankių rinkinį, kurio deka pedagogų pasiruošimo laikas sumažės 99 %",
+        "Kuriu natūralios kalbos sąsajas, leidžiančias ne IT specialistams dėstytojams akimirksniu generuoti užduočių rinkinius",
+        "Naudoju DI asistentus kodavimo, testavimo ir dokumentavimo procesų spartinimui"
+      ],
+      "title": "Matematikos mokytojas ir DI įrankių inžinierius"
+    },
+    {
+      "company": "Vilniaus J. Basanavičiaus gimnazija",
+      "dates": "2020 – 2024",
+      "location": "Vilnius, Lietuva",
+      "responsibilities": [
+        "Vedžiau įtraukiančias matematikos pamokas maždaug 180 mokinių per metus",
+        "Parengiau LaTeX formatu matematikos uždavinių ir mokymosi turinio rinkinius"
+      ],
+      "title": "Matematikos mokytojas"
+    },
+    {
+      "company": "Edrana Baltic",
+      "dates": "2019 – 2020",
+      "location": "Vilnius, Lietuva",
+      "responsibilities": [
+        "Testavau buhalterinę programinę įrangą"
+      ],
+      "title": "Programinės įrangos testuotojas"
+    },
+    {
+      "company": "Lietuvos darbo rinkos Institutas",
+      "dates": "2017",
+      "location": "Vilnius, Lietuva",
+      "responsibilities": [
+        "Rinkau, tvarkiau ir vizualizavau darbo rinkos duomenis metinėms ataskaitoms"
+      ],
+      "title": "Duomenų analitikas praktikantas"
+    }
+  ],
+  "experienceTitle": "Profesinė patirtis",
+  "interests": [
+    "Savanoriavimas",
+    "Šachmatai",
+    "Kelionės"
+  ],
+  "interestsTitle": "Pomėgiai",
+  "languages": [
+    {
+      "language": "Lietuvių",
+      "level": "gimtoji"
+    },
+    {
+      "language": "Anglų",
+      "level": "C1 (laisvai)"
+    },
+    {
+      "language": "Prancūzų",
+      "level": "B2 (pažengęs)"
+    }
+  ],
+  "languagesTitle": "Kalbos",
+  "linkedin": "linkedin.com/in/simonas-bernotas-743537361",
+  "linkedinAria": "Simono Bernoto LinkedIn profilis",
+  "linkedinDisplay": "LinkedIn profilis",
+  "location": "Vilnius, Lietuva (ES pilietis)",
+  "name": "Simonas Bernotas",
+  "pageTitle": "Apie mane - Simonas Bernotas",
+  "phone": "+37062262856",
+  "portfolio": "simonasbernotas.vercel.app",
+  "projects": [
+    {
+      "description": "Pilno spektro internetinė aplikacija pamokų planavimui ir mokytojų bendradarbiavimui; modulinis matematikos objektų/užduočių generatorius; LLM paremta natūralios kalbos sąsaja; OCR pagrindu veikiantis matematikos užduočių vertinimo prototipas; automatizuoti DI testai našumo ir kaštų stebėsenai",
+      "title": "EdTech platforma ir DI darbo eiga (asmeninis projektas, 2025)"
+    },
+    {
+      "description": "Individualus Redmine apvalkalas Stebėtojų Gildijos organizacijai, kuris aptarnavo 150 savanorių ir leido realiu laiku sukompresuotas nuotraukas įkelti į Redmine sistemą, automatiškai sukurti ataskaitas ir išsiųsti skundus Vyriausiajai rinkimų komisijai",
+      "title": "LR rinkimų stebėjimo koordinavimo tinklapis (asmeninis projektas, 2024)"
+    }
+  ],
+  "projectsTitle": "Pagrindiniai projektai",
+  "softSkills": [
+    "Analitinis mąstymas",
+    "Bendradarbiavimas sprendžiant problemas",
+    "Proaktyvus smalsumas"
+  ],
+  "softSkillsTitle": "Asmeninės savybės",
+  "summaryContent": "Analitinis pedagogas inžinierius, turintis 4 metų patirtį viduriniojo ugdymo matematikos mokyme ir daugiau nei 2 metų patirtį kaip pilno spektro DI įrankių kūrėjas. Sukūrė ir įdiegė dirbtinio intelekto paremtą matematikos turinio generatorių, leidžiantį automatizuoti mokymo medžiagos kūrimą, žymiai sumažinti pedagogų pasiruošimo pamokoms laiką ir spręsti sudėtingas klasės problemas su vartotojams draugiškais programiniais sprendimais.",
+  "summaryTitle": "Profesinė santrauka",
+  "techSkills": {
+    "backend": {
+      "items": [
+        "Python",
+        "Node.js",
+        "Express",
+        "RESTful API design",
+        "OAuth 2.0 (Microsoft Entra ID/MSAL, Google OAuth)"
+      ],
+      "title": "Back-End & APIs"
+    },
+    "data": {
+      "items": [
+        "Data modelling",
+        "JSON schema enforcement",
+        "custom test-suite design",
+        "token-usage tracking"
+      ],
+      "title": "Data & Testing"
+    },
+    "enterprise": {
+      "items": [
+        "Microsoft Graph (Calendar & Teams)",
+        "Google Cloud (Calendar, Service Accounts)",
+        "Redmine API",
+        "Nodemailer (Gmail OAuth)"
+      ],
+      "title": "Enterprise Integrations"
+    },
+    "frontend": {
+      "items": [
+        "React",
+        "Next.js",
+        "TypeScript",
+        "Tailwind CSS",
+        "i18next"
+      ],
+      "title": "Front-End"
+    },
+    "fullstack": {
+      "items": [
+        "LangChain & LangGraph",
+        "OpenAI API",
+        "Firebase Admin SDK & Firestore",
+        "Vercel"
+      ],
+      "title": "Full-Stack & Cloud"
+    },
+    "tooling": {
+      "items": [
+        "Git/GitHub",
+        "ESLint",
+        "Basic CI/CD"
+      ],
+      "title": "Tooling & Workflow"
+    }
+  },
+  "techSkillsTitle": "Techniniai įgūdžiai"
+}

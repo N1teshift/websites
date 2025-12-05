@@ -1,0 +1,8 @@
+{
+  "functions": {
+    "src/pages/api/ai/generateSettings.ts": {
+      "maxDuration": 60
+    }
+  }
+}
+

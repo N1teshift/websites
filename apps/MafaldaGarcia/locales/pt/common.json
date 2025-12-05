@@ -1,0 +1,296 @@
+{
+  "navigation": {
+    "home": "Início",
+    "about": "Sobre",
+    "works": "Trabalhos",
+    "contact": "Contato",
+    "philosophy": "Filosofia",
+    "education": "Educação",
+    "majorWorks": "Trabalhos Principais",
+    "publications": "Publicações",
+    "gallery": "Galeria"
+  },
+  "hero": {
+    "title": "Mafalda Garcia",
+    "subtitle": "Artista de Performance",
+    "description": "Explorando artivismo, rituais e bem-estar através do diálogo interdisciplinar",
+    "paragraph1": "Comecei a explorar a arte performática como um espaço seguro para expressar meus sentimentos e ideias sobre a vida pós-pós-moderna. Durante muito tempo mantive tudo dentro de mim, até descobrir esta forma poderosa de comunicar; sem palavras, usando apenas meu corpo como ferramenta para o diálogo interdisciplinar, não como uma fuga da realidade, mas como uma forma profunda de expressar o que está acontecendo dentro e fora de mim.",
+    "paragraph2": "Permite-me conectar com outros em silêncio profundo, gritar sem usar minha voz, e mergulhar em um laboratório onde posso descobrir minhas próprias perguntas e convidar outros a encontrar as deles.",
+    "ctaButton": "Explorar Meu Trabalho"
+  },
+  "sections": {
+    "exploration": "Exploração",
+    "performances": "Performances",
+    "works": "Trabalhos",
+    "publications": "Publicações",
+    "visualJourney": "Jornada Visual",
+    "contact": "Contato"
+  },
+  "philosophy": {
+    "title": "CORPO, MINHA TELA. NOSSA VOZ",
+    "subtitle": "Artivismo, rituais e bem-estar",
+    "paragraph1": "Todas as minhas obras de arte refletem uma jornada de reflexão, ação ao vivo e o resultado é criar um espaço aberto de integração. O silêncio é minha linguagem, o movimento minha pontuação, e a cena nossa paisagem mundana.",
+    "paragraph2": "Os rituais são meu meio para incorporar novas perspectivas e estados de espírito, permitindo-me criar instalações corpo-humano e manifestos sobre tópicos importantes na cena contemporânea.",
+    "paragraph3": "O bem-estar está no centro da minha arte, guiando-me enquanto busco o caminho para a mudança que desejo ver no mundo."
+  },
+  "education": {
+    "title": "Educação e Formação",
+    "education": "Educação",
+    "training": "Formação e Workshops",
+    "degrees": {
+      "philosophy": "Licenciatura em Filosofia",
+      "arts": "Mestrado em Artes na Educação"
+    },
+    "institutions": {
+      "coimbra": "Faculdade de Humanidades, Universidade de Coimbra",
+      "lisbon": "Faculdade de Belas Artes, Universidade de Lisboa"
+    },
+    "years": {
+      "philosophy": "2010",
+      "arts": "2017"
+    },
+    "workshops": {
+      "streetTheatre": "Workshop de Teatro de Rua",
+      "communityTheatre": "Métodos de Teatro Comunitário",
+      "performingArt": "Arte Performática: Movimento, Energia e Criatividade",
+      "voiceBody": "Voz e Corpo – Workshop de Artes Performáticas",
+      "aesthetics": "Curso de Estética",
+      "internship": "Estágio em Artes Performáticas",
+      "conference": "Participou na 1ª Conferência Internacional sobre Investigação em Arte"
+    },
+    "workshopDetails": {
+      "streetTheatre": "com Adrian Schvarzstein (2023)",
+      "communityTheatre": "BATS Baltic Applied Theatre School (2021)",
+      "performingArt": "Centro VOZDUKH (2020)",
+      "voiceBody": "Centro de Movimento e Arte SOU (2012)",
+      "aesthetics": "AR.CO - Centro de Arte, Lisboa (2011)",
+      "internship": "ControversasIdeias, Palmela (2011)",
+      "conference": "FBAUL (2010)"
+    }
+  },
+  "works": {
+    "title": "Trabalhos e Contribuições",
+    "workItems": {
+      "rogovka": {
+        "title": "2023 Setembro - Rogovka, Letónia",
+        "description": "Rogovkys dzejis voga - Performance num ato musical de Kristaps Višs e Dana Vasiļjeva, baseado num poema de Mārīte Slišāne."
+      },
+      "rezekne": {
+        "title": "2023 Agosto - Rezekne, Letónia",
+        "description": "Festival NESKARTS - Performance e Instalação \"Serviços Existenciais, ES\""
+      },
+      "klaipeda": {
+        "title": "2023 Julho - Klaipėda, Lituânia",
+        "description": "XXII FESTIVAL INTERNACIONAL DE TEATRO DE RUA \"ŠERMUKŠNIS\" - Performance de Teatro de Rua \"You are...\" com Trupe Šermukšnis"
+      },
+      "leiria": {
+        "title": "2022 Setembro - Leiria, Portugal",
+        "description": "É culpa da humanidade - Lançamento do No. 999 - \"Nascido do caos no mundo.\" - Interpretação performática de poemas e prosa escritos por Bruno Abgrund"
+      },
+      "lisbon2019dec": {
+        "title": "2019 Dezembro - Lisboa, Portugal",
+        "description": "RA GALLERY - Performance e Instalação Audiovisual \"Respirando Vida\" com Helga Rodrigues e Paulo Uliarud"
+      },
+      "lisbon2019nov": {
+        "title": "2019 Novembro - Lisboa, Portugal",
+        "description": "Fórum de Liberdade e Pensamento Crítico II - Performance e instalação audiovisual \"Linhas Invisíveis\" com Co.collective"
+      },
+      "lisbon2018aug": {
+        "title": "2018 Agosto - Lisboa, Portugal",
+        "description": "Zaratan Contemporary Art Gallery - Ciclo de Performance 'Do Lumiar' - Performance e Instalação audiovisual ao vivo \"Free Doom\" com Co.Collective"
+      },
+      "rezekne2019": {
+        "title": "2019 Junho - Rezekne, Letónia",
+        "description": "ART HOUSE - Participação no videoclipe 'WEB' da banda Ave Jahbahus."
+      },
+      "lisbon2018jul": {
+        "title": "2018 Julho - Lisboa, Portugal",
+        "description": "Fórum de Liberdade e Pensamento Crítico I - Performance e instalação audiovisual ao vivo \"Free Doom\" com Co.Collective"
+      },
+      "lisbon2017nov": {
+        "title": "2017 Novembro - Lisboa, Portugal",
+        "description": "RA GALLERY - Performance e Instalação Audiovisual \"Tiresias\" com Doutor Aeiu Ton e Paulo Uliarud"
+      },
+      "lisbon2017oct": {
+        "title": "2017 Outubro - Lisboa, Portugal",
+        "description": "CABARET TORTO - Performance e Instalação audiovisual \"Obscura\" com Nun Vau Collective"
+      },
+      "marinha2017may": {
+        "title": "2017 Maio - Marinha Grande, Portugal",
+        "description": "VOZ DO OPERÁRIO GALLERY - Performance e Instalação de Áudio \"Transfiguração\" - Exposição de Pedro Matos (Artista Visual)"
+      },
+      "leiria2017may": {
+        "title": "2017 Maio - Leiria, Portugal",
+        "description": "FESTIVAL A PORTA - Performance e Instalação Audiovisual \"Esta Porta abre Janelas\""
+      },
+      "barreiro2016dec": {
+        "title": "2016 Dezembro - Barreiro, Portugal",
+        "description": "V Embarcação do Capitão - TEXAS BAR - Performance com a banda Horse Head Cutters"
+      },
+      "barreiro2016nov": {
+        "title": "2016 Novembro - Barreiro, Portugal",
+        "description": "IV Embarcação do Capitão - TEXAS BAR - Performance e Instalação Audiovisual \"Olho por Olho, Dente por Dente!\" (Olho por olho, dente por dente)"
+      },
+      "lisbon2016oct1": {
+        "title": "2016 Outubro - Lisboa, Portugal",
+        "description": "DESTERRO GALLERY - Performance e Instalação Visual \"Santa Paciência\" (Santa Paciência) com VUD Collective - Exposição Colaborativa Borderline"
+      },
+      "lisbon2016oct2": {
+        "title": "2016 Outubro - Lisboa, Portugal",
+        "description": "MUTE GALLERY - Performance e Instalação Audiovisual \"Abscôndito\" com Ekidna Kollektiv durante a exposição de arte do artista visual Nuno Lacerda"
+      },
+      "leiria2016aug": {
+        "title": "2016 Agosto - Leiria, Portugal",
+        "description": "FESTIVAL ENTREMURALHAS . ART GALLERY - Performance e Instalação Audiovisual \"Ouroboros\" com Kinesis Collective"
+      },
+      "leiria2016jul1": {
+        "title": "2016 Julho - Leiria, Portugal",
+        "description": "CENTRO HISTÓRICO - Performance e Instalação Audiovisual \"Sete Mandamentos\" (Os Sete Mandamentos) com Assalto Collective - Exposição Colaborativa"
+      },
+      "barreiro2016jul": {
+        "title": "2016 Julho - Barreiro, Portugal",
+        "description": "TEXAS BAR - Performance e Instalação Audiovisual \"Gnōthi seauton\" (Conhece-te a ti mesmo) & \"Preenchimentos\" (Preenchimentos)"
+      },
+      "leiria2016jun": {
+        "title": "2016 Junho - Leiria, Portugal",
+        "description": "FESTIVAL A PORTA - Performance e Instalação Audiovisual \"Preenchimentos\" (Preenchimentos)"
+      },
+      "portomos2016may": {
+        "title": "2016 Maio - Porto Mós, Portugal",
+        "description": "MATINÉS DA ALDEIA TREMOCEIRA - Performance e Instalação Audiovisual \"Preenchimentos\" (Preenchimentos)"
+      },
+      "lisbon2014jan": {
+        "title": "2014 Janeiro - Lisboa, Portugal",
+        "description": "FACULDADE DE BELAS ARTES - UNIVERSIDADE DE LISBOA - Performance e Instalação Audiovisual \"Preenchimentos\" (Preenchimentos)"
+      }
+    }
+  },
+  "majorWorks": {
+    "existentialServices": {
+      "title": "Serviços Existenciais, ES",
+      "year": "2023",
+      "duration": "4 horas",
+      "concept": "Serviços Existenciais convida-nos a entrar num espaço interior—um que reside dentro de cada um de nós, mas permanece intimamente conectado ao coletivo. É um espaço onde o tempo desacelera, instando-nos a despertar o filósofo dentro de nós, a questionar, a refletir e a envolver-nos com a essência da nossa existência.",
+      "description": "Concebida como uma versão lúdica de um escritório governamental, a instalação apresentava um cenário de escritório improvisado onde Mafalda Garcia envolveu quase 100 visitantes numa experiência única. Os participantes podiam escolher entre quatro idiomas - Letão, Latgaliano, Inglês e Russo - para responder a perguntas provocadoras de pensamento. Estas perguntas, que eram de natureza filosófica, incluíam respostas de múltipla escolha, abertas e visuais.\n\nA ideia era convidar os visitantes para um momento de introspeção, encorajando-os a pensar sobre o momento presente, suas origens, sua direção, e conceitos fundamentais como identidade e moralidade. Perguntas simples levavam a respostas complexas, tornando a instalação um experimento social que encorajava conexão e diálogo significativo.",
+      "credits": "Mafalda Garcia\nFotos: Créditos fotográficos por Laura Māliņas e Mafalda Garcia",
+      "location": "NESKARTS, Rezekne, Letónia"
+    },
+    "youAre": {
+      "title": "You are....",
+      "year": "2023",
+      "duration": "1 hora",
+      "concept": "Esta performance de rua foi criada exclusivamente para o XXII FESTIVAL INTERNACIONAL DE TEATRO DE RUA \"ŠERMUKŠNIS\" durante um workshop criativo. É uma tradução dos eventos que ocorreram em 1923 para a linguagem do teatro de rua, transmitida sem palavras. A inspiração por trás disso vem da história de soldados lituanos disfarçando-se de locais e tentando conquistar a região de Klaipeda.",
+      "description": "A equipe criativa do espetáculo reimaginou os conceitos de \"intrusão, invasão, golpe,\" que normalmente carregam conotações negativas. Eles buscaram transformar essas noções em algo positivo. Assim, nasceu a ideia de \"conquistar\" a região de Klaipeda, não através do uso de armas, mas através do poder das canções.",
+      "credits": "Diretor – Adrian Schvarzstein (Espanha)\nDiretor Assistente – Jūratė Širvytė (Lituânia)\nConsultor Histórico – Vasilijus Safronovas (Lituânia)\nElenco: Oleg Bosyuk (Ucrânia), Kseniia Buryka (Ucrânia), Andrius Doleris, Mafalda Garcia (Portugal), Edvardas Giedraitis, Jūratė Jocienė, Aleksas Mažonas, Justinas Mažūnas, Arūnas Mozeris, Sofija Ostrovskytė, Carolina Pailhe (Argentina), Mingailė Rutkauskaitė, Liepa Šaltė, Danielė Vaičiulytė, Irina Tabak.\n\nCobertura da Imprensa e Mídia:\nhttps://ve.lt/gyvenimas/kultura/klaipedoje-vyksta-tarptautinis-gatves-teatro-festivalis-sermuksnis\nhttps://kauno.diena.lt/naujienos/klaipeda/menas-ir-pramogos/tarptautinis-gatves-teatru-festivalis-sermuksnis-nuspalvino-klaipeda-1131522",
+      "location": "XXII FESTIVAL INTERNACIONAL DE TEATRO DE RUA \"ŠERMUKŠNIS\", Klaipeda, Lituânia"
+    },
+    "freeDoom": {
+      "title": "Free Doom",
+      "year": "2018",
+      "duration": "20 minutos",
+      "concept": "Co.collective é um coletivo ativista e transdisciplinar que acredita na colaboração como o princípio que ativa a criatividade e a criticidade. Suas instalações são sensoriais e interativas, buscando levar o espectador-ator para um habitat de sinestesia e ação.",
+      "description": "\"Free Doom\" é uma instalação audiovisual e performativa que visa ser um manifesto sobre a liberdade no século XXI. Em uma era líquida e ambígua, somos empurrados para a cidadania passiva localmente e a cidadania apática globalmente. Neste manifesto, usando linguagem não-verbal, levamos o espectador a refletir sobre os conflitos libertários de hoje, do estático ao movimento, o que temos em nossas mãos?\n\n'Em um mundo cheio de sede, ficamos com as pedras no caminho'",
+      "credits": "Projeção Analógica: Paulo Uliarud\nDesigner de Som: Doutor Aeiu Ton\nAdereços/Cenário/Performadora: Mafalda Silvgar (Garcia)\n\nHistórico de Performance:\nFórum de Liberdade e Pensamento Crítico I (Curador: David Zink)\nGaleria Zaratan",
+      "location": "LISBOA, Portugal"
+    },
+    "invisibleLines": {
+      "title": "Invisible Lines",
+      "year": "2019",
+      "duration": "25 minutos",
+      "concept": "Este manifesto performativo consistirá em uma instalação sensorial que convida o espectador/participante a refletir sobre as linhas invisíveis que existem em nosso mundo e que promovem divisões sociais.",
+      "description": "Divisões: De que lado estamos? De que lado da linha queremos estar? Quem cria essas linhas? Não seremos nós, com nossa apatia social em nosso refúgio. Nós nos cercamos de telas, gostamos de assistir pela janela da passividade.... Nos dá um certo prazer sentir que não cabe a nós.\n\nHoje vivemos em tempos de denúncia de nossos vizinhos, de ódio, ressentimento e covardia.\n\nQue poder temos? As linhas que nos aprisionam são as mesmas que nos libertam? São as mesmas linhas que nos libertam?\n\nOu somos as linhas das linhas?",
+      "credits": "Projeção ao vivo: Paulo Uliarud\nDesign de som: Doutor Aeiu Ton\nAdereços/Cenário/Performadora: Mafalda Garcia\nFotografia por Kah Smith\n\nHistórico de Performance:\nFórum de Liberdade e Pensamento Crítico II (Curador: David Zink)\nGaleria RA",
+      "location": "LISBOA, Portugal"
+    },
+    "santaPaciencia": {
+      "title": "Santa Paciência (Holy Patient)",
+      "year": "2016",
+      "duration": "5 horas",
+      "concept": "\"Santa Paciência, da pornografia mundana à canonização: vamos levantar nossos dedos irmãs simplesmente dizendo não, não mais opressão dos nossos corpos, estamos aqui, seres pensantes.\" Uma peça de arte feminista apresentada como um manifesto performático e uma exposição fotográfica, apresentada na exposição colaborativa Borderline, mostrando artistas mulheres.",
+      "description": "Este trabalho visava criar não apenas um espaço para colaboração artística, mas também uma plataforma aberta onde o público podia participar ativamente. Convidava à reflexão sobre como a feminilidade é moldada pelas expectativas sociais, sobrecarregada por stigmas, e constrangida pelas pressões da padronização. Através da performance e narrativa visual, a peça desafiava estas normas, encorajando diálogo e expressão coletiva.",
+      "credits": "Créditos: Mafalda Silvgar e VUD Collective\nFotos: Créditos fotográficos por Kevin Flores\nVídeo: https://www.facebook.com/Vudisart/videos/1249483141798028",
+      "location": "DESTERRO, Lisboa, Portugal"
+    },
+    "obscura": {
+      "title": "Obscura",
+      "year": "2016",
+      "duration": "45 minutos",
+      "concept": "Esta obra de arte nasceu de um laboratório de improvisação—um diálogo entre performer e designer de som. Criou uma atmosfera imersiva onde a performer se despojou de sua identidade, transformando-se em um personagem que nos conectava todos através de nossas sombras e monólogos interiores.",
+      "description": "Um momento chave da performance foi a libertação da rede, onde as fronteiras entre corpo, tinta e solo se dissolveram. A fusão de materiais simbolizava a dissolução do ego e do caráter, um retorno a um estado primal de unidade com a natureza. Em vez de resistir ao desconhecido, a performance convidava o público a abraçar seus próprios 'caminhos pantanosos'—não com medo, mas com a coragem de vê-los como uma parte essencial da existência.",
+      "credits": "Performadora: Mafalda Silvgar\nDesigner de som: Ricardo Silva",
+      "location": "CABARET TORTO, Lisboa, Portugal"
+    },
+    "ouroborus": {
+      "title": "Ouroborus",
+      "year": "2016",
+      "duration": "12 horas",
+      "concept": "Kinesis Collective é um grupo de artistas transdisciplinares que misturam fotografia, performance e instalação com uma jornada sonora ao vivo. Esta exposição viva estava em constante transformação, capturando os movimentos e sons dos visitantes conforme entravam no espaço.",
+      "description": "Apresentada no Festival Entremuralhas durante dois dias, a performance explorou o tema do corpo feminino e poder, inspirando-se na mitologia do Ouroboros. Ambientada no Salão do Rei do castelo medieval de Leiria (Portugal), o cenário histórico e atmosférico amplificou a natureza imersiva e reflexiva da peça.",
+      "credits": "Fotógrafa: Carolina Sepúlveda\nDesigner de som: Pedro André Serrano\nAdereços/Cenário/Performadora: Mafalda Garcia\nSuporte técnico: João Rino e Daniel Fabião",
+      "location": "FESTIVAL ENTREMURALHAS, Leiria, Portugal"
+    },
+    "abscôndito": {
+      "title": "Abscôndito",
+      "year": "2016",
+      "duration": "30 minutos",
+      "concept": "Esta performance foi criada em colaboração com Ekidna Kollektiv durante a exposição de arte do artista visual Nuno Lacerda. A obra explora temas de ocultação e revelação, usando o corpo como meio para expressar narrativas escondidas.",
+      "description": "A performance cria um diálogo entre o visível e invisível, o revelado e oculto. Através do movimento e som, convida os espectadores a questionar o que está sob a superfície, tanto na arte quanto na experiência humana.",
+      "credits": "Performadora: Mafalda Garcia\nDesign de som: Ekidna Kollektiv\nExposição: Exposição de Arte de Nuno Lacerda",
+      "location": "MUTE GALLERY, Lisboa, Portugal"
+    }
+  },
+  "publications": {
+    "title": "Publicações",
+    "subtitle": "Documentando jornadas artísticas através de vários meios e colaborações",
+    "items": {
+      "zaratan": {
+        "title": "Zaratan Contemporany Art Gallery",
+        "subtitle": "Ciclo de Performance 'Do Lumiar'",
+        "description": "Performance e Instalação audiovisual ao vivo \"Free Doom\"\n\npor Co.Collective",
+        "location": "Lisboa, PT",
+        "year": "2018"
+      },
+      "freedomForum": {
+        "title": "Fórum de Liberdade e Pensamento Crítico I",
+        "subtitle": "|| debates, poesia, arte e música ||",
+        "description": "Performance e Instalação audiovisual ao vivo \"Free Doom\"\n\npor Co.Collective",
+        "location": "Lisboa, PT",
+        "year": "2018"
+      },
+      "criatura": {
+        "title": "Criatura Instável (Creature unstable)",
+        "subtitle": "Fotografia, Poesia e Impressão Risográfica",
+        "description": "Foto por Carolina Sepúlveda\n\nPerformadora e poema por Mafalda Garcia\n\nImpresso por Sal Nunkachov",
+        "location": "Leiria, PT",
+        "year": "2016"
+      }
+    }
+  },
+  "gallery": {
+    "quote": "No espaço entre movimento e quietude, entre som e silêncio, encontramos a essência do que significa ser humano. Cada performance é um fragmento de criação, um momento de verdade capturado na dança efémera da existência.",
+    "author": "— Mafalda Garcia"
+  },
+  "contact": {
+    "title": "CONTACTE-ME",
+    "address": "MORADA",
+    "phone": "Telefone",
+    "email": "Email",
+    "addressDetails": "Ausekļi\", Rjabki, Sakstagala pag.,<br />Rēzeknes nov., LV-4645<br />letónia",
+    "phoneNumber": "(00371) 23551790",
+    "emailAddress": "mafalda.garsija@gmail.com"
+  },
+  "ui": {
+    "contactMe": "Contacte-me",
+    "language": "Idioma:",
+    "yearOfCreation": "Ano de Criação:",
+    "duration": "Duração:",
+    "conceptDescription": "Conceito e Descrição",
+    "credits": "Créditos",
+    "location": "Localização",
+    "workImage": "Imagem do Trabalho",
+    "contactImage": "Imagem de Contacto",
+    "educationImage": "Imagem de Educação",
+    "publicationsWelcomeImage": "Imagem de Boas-vindas das Publicações"
+  },
+  "loading": "Carregando o portfólio de Mafalda Garcia..."
+}

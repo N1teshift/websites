@@ -1,0 +1,296 @@
+{
+  "navigation": {
+    "home": "Sākums",
+    "about": "Par mani",
+    "works": "Darbi",
+    "contact": "Kontakts",
+    "philosophy": "Filozofija",
+    "education": "Izglītība",
+    "majorWorks": "Galvenie darbi",
+    "publications": "Publikācijas",
+    "gallery": "Galerija"
+  },
+  "hero": {
+    "title": "Mafalda Garcia",
+    "subtitle": "Performances māksliniece",
+    "description": "Izpētot artivismu, rituālus un labsajūtu caur starpdisciplināru dialogu",
+    "paragraph1": "Es sāku izpētīt performances mākslu kā drošu vietu, kur izteikt savas jūtas un idejas par pēcpēcmoderno dzīvi. Ilgu laiku es turēju visu sevī, līdz atklāju šo spēcīgo komunikācijas veidu; bez vārdiem, izmantojot tikai savu ķermeni kā rīku starpdisciplināram dialogam, ne kā bēgu no realitātes, bet kā dziļu veidu, kā izteikt to, kas notiek manī un ap mani.",
+    "paragraph2": "Tas ļauj man saistīties ar citiem dziļā klusumā, kliegt, neizmantojot savu balsi, un ienirt laboratorijā, kur es varu atklāt savus jautājumus un uzaicināt citus atrast savus.",
+    "ctaButton": "Izpētīt manus darbus"
+  },
+  "sections": {
+    "exploration": "Izpēte",
+    "performances": "Performances",
+    "works": "Darbi",
+    "publications": "Publikācijas",
+    "visualJourney": "Vizuālais ceļojums",
+    "contact": "Kontakts"
+  },
+  "philosophy": {
+    "title": "ĶERMIENIS, MANA TĀFELE. MŪSU BALSS",
+    "subtitle": "Artivisms, rituāli un labsajūta",
+    "paragraph1": "Visi mani mākslas darbi atspoguļo pārdomu ceļojumu, dzīvo darbību un rezultāts ir radīt atvērtu integrācijas telpu. Klusums ir mana valoda, kustība mana pieturzīme, un skatuve mūsu ikdienas ainava.",
+    "paragraph2": "Rituāli ir mans līdzeklis jaunu perspektīvu un prāta stāvokļu iekļaušanai, ļaujot man radīt cilvēka-ķermeņa instalācijas un manifestus par svarīgiem tematiem mūsdienu ainavā.",
+    "paragraph3": "Labsajūta ir manas mākslas pamatā, vadot mani, kamēr es meklēju ceļu uz pārmaiņām, ko vēlos redzēt pasaulē."
+  },
+  "education": {
+    "title": "Izglītība un apmācība",
+    "education": "Izglītība",
+    "training": "Apmācība un semināri",
+    "degrees": {
+      "philosophy": "Filozofijas bakalaura grāds",
+      "arts": "Mākslas maģistra grāds izglītībā"
+    },
+    "institutions": {
+      "coimbra": "Humanitāro zinātņu fakultāte, Koimbras Universitāte",
+      "lisbon": "Tēlotājmākslas fakultāte, Lisabonas Universitāte"
+    },
+    "years": {
+      "philosophy": "2010",
+      "arts": "2017"
+    },
+    "workshops": {
+      "streetTheatre": "Ielas teātra seminārs",
+      "communityTheatre": "Kopienas teātra metodes",
+      "performingArt": "Performances māksla: Kustība, enerģija un radošums",
+      "voiceBody": "Balss un ķermenis – Performances mākslas seminārs",
+      "aesthetics": "Estētikas kurss",
+      "internship": "Performances mākslas prakse",
+      "conference": "Piedalījās 1. Starptautiskajā mākslas pētījumu konferencē"
+    },
+    "workshopDetails": {
+      "streetTheatre": "ar Adrian Schvarzstein (2023)",
+      "communityTheatre": "BATS Baltic Applied Theatre School (2021)",
+      "performingArt": "VOZDUKH centrs (2020)",
+      "voiceBody": "SOU Kustības un mākslas centrs (2012)",
+      "aesthetics": "AR.CO - Mākslas centrs, Lisabona (2011)",
+      "internship": "ControversasIdeias, Palmela (2011)",
+      "conference": "FBAUL (2010)"
+    }
+  },
+  "works": {
+    "title": "Darbi un ieguldījumi",
+    "workItems": {
+      "rogovka": {
+        "title": "2023. gada septembris - Rogovka, Latvija",
+        "description": "Rogovkys dzejis voga - Performance mūzikas aktā ar Kristaps Višs un Dana Vasiļjeva, balstīts uz Mārīte Slišāne dzejoli."
+      },
+      "rezekne": {
+        "title": "2023. gada augusts - Rēzekne, Latvija",
+        "description": "NESKARTS festivāls - Performance un instalācija \"Eksistenciālie pakalpojumi, ES\""
+      },
+      "klaipeda": {
+        "title": "2023. gada jūlijs - Klaipėda, Lietuva",
+        "description": "XXII STARPTAUTISKAIS IELAS TEĀTRA FESTIVĀLS \"ŠERMUKŠNIS\" - Ielas teātra performance \"You are...\" ar Trupe Šermukšnis"
+      },
+      "leiria": {
+        "title": "2022. gada septembris - Leiria, Portugāle",
+        "description": "Tā ir cilvēces vaina - Nr. 999 izlaišana - \"Dzimis no haosa pasaulē.\" - Dzejolu un prozas performatīvā interpretācija, ko uzrakstījis Bruno Abgrund"
+      },
+      "lisbon2019dec": {
+        "title": "2019. gada decembris - Lisabona, Portugāle",
+        "description": "RA GALLERY - Performance un audiovizuālā instalācija \"Elpošanas dzīvība\" ar Helga Rodrigues un Paulo Uliarud"
+      },
+      "lisbon2019nov": {
+        "title": "2019. gada novembris - Lisabona, Portugāle",
+        "description": "Brīvības un kritisko domāšanu forums II - Performance un audiovizuālā instalācija \"Neredzamās līnijas\" ar Co.collective"
+      },
+      "lisbon2018aug": {
+        "title": "2018. gada augusts - Lisabona, Portugāle",
+        "description": "Zaratan Contemporary Art Gallery - Performance cikls 'Do Lumiar' - Performance un audiovizuālā dzīvā instalācija \"Free Doom\" ar Co.Collective"
+      },
+      "rezekne2019": {
+        "title": "2019. gada jūnijs - Rēzekne, Latvija",
+        "description": "ART HOUSE - Dalība mūzikas videoklipā 'WEB' no grupas Ave Jahbahus."
+      },
+      "lisbon2018jul": {
+        "title": "2018. gada jūlijs - Lisabona, Portugāle",
+        "description": "Brīvības un kritisko domāšanu forums I - Performance un audiovizuālā dzīvā instalācija \"Free Doom\" ar Co.Collective"
+      },
+      "lisbon2017nov": {
+        "title": "2017. gada novembris - Lisabona, Portugāle",
+        "description": "RA GALLERY - Performance un audiovizuālā instalācija \"Tiresias\" ar Doutor Aeiu Ton un Paulo Uliarud"
+      },
+      "lisbon2017oct": {
+        "title": "2017. gada oktobris - Lisabona, Portugāle",
+        "description": "CABARET TORTO - Performance un audiovizuālā instalācija \"Obscura\" ar Nun Vau Collective"
+      },
+      "marinha2017may": {
+        "title": "2017. gada maijs - Marinha Grande, Portugāle",
+        "description": "VOZ DO OPERÁRIO GALLERY - Performance un audio instalācija \"Transfiguração\" - Pedro Matos izstāde (Vizuālais mākslinieks)"
+      },
+      "leiria2017may": {
+        "title": "2017. gada maijs - Leiria, Portugāle",
+        "description": "FESTIVAL A PORTA - Performance un audiovizuālā instalācija \"Esta Porta abre Janelas\""
+      },
+      "barreiro2016dec": {
+        "title": "2016. gada decembris - Barreiro, Portugāle",
+        "description": "V Embarcação do Capitão - TEXAS BAR - Performance ar grupu Horse Head Cutters"
+      },
+      "barreiro2016nov": {
+        "title": "2016. gada novembris - Barreiro, Portugāle",
+        "description": "IV Embarcação do Capitão - TEXAS BAR - Performance un audiovizuālā instalācija \"Olho por Olho, Dente por Dente!\" (Acs pret aci, zobs pret zobu)"
+      },
+      "lisbon2016oct1": {
+        "title": "2016. gada oktobris - Lisabona, Portugāle",
+        "description": "DESTERRO GALLERY - Performance un vizuālā instalācija \"Santa Paciência\" (Svētā pacietība) ar VUD Collective - Borderline sadarbības mākslas izstāde"
+      },
+      "lisbon2016oct2": {
+        "title": "2016. gada oktobris - Lisabona, Portugāle",
+        "description": "MUTE GALLERY - Performance un audiovizuālā instalācija \"Abscôndito\" ar Ekidna Kollektiv vizuālā mākslinieka Nuno Lacerda mākslas izstādes laikā"
+      },
+      "leiria2016aug": {
+        "title": "2016. gada augusts - Leiria, Portugāle",
+        "description": "FESTIVAL ENTREMURALHAS . ART GALLERY - Performance un audiovizuālā instalācija \"Ouroboros\" ar Kinesis Collective"
+      },
+      "leiria2016jul1": {
+        "title": "2016. gada jūlijs - Leiria, Portugāle",
+        "description": "VĒSTURISKAIS CENTRS - Performance un audiovizuālā instalācija \"Sete Mandamentos\" (Septiņi baušļi) ar Assalto Collective - Sadarbības izstāde"
+      },
+      "barreiro2016jul": {
+        "title": "2016. gada jūlijs - Barreiro, Portugāle",
+        "description": "TEXAS BAR - Performance un audiovizuālā instalācija \"Gnōthi seauton\" (Pazīsti sevi) & \"Preenchimentos\" (Pildījumi)"
+      },
+      "leiria2016jun": {
+        "title": "2016. gada jūnijs - Leiria, Portugāle",
+        "description": "FESTIVAL A PORTA - Performance un audiovizuālā instalācija \"Preenchimentos\" (Pildījumi)"
+      },
+      "portomos2016may": {
+        "title": "2016. gada maijs - Porto Mós, Portugāle",
+        "description": "MATINÉS DA ALDEIA TREMOCEIRA - Performance un audiovizuālā instalācija \"Preenchimentos\" (Pildījumi)"
+      },
+      "lisbon2014jan": {
+        "title": "2014. gada janvāris - Lisabona, Portugāle",
+        "description": "TĒLOTĀJMĀKSLAS FAKULTĀTE - LISABONAS UNIVERSITĀTE - Performance un audiovizuālā instalācija \"Preenchimentos\" (Pildījumi)"
+      }
+    }
+  },
+  "majorWorks": {
+    "existentialServices": {
+      "title": "Eksistenciālie pakalpojumi, ES",
+      "year": "2023",
+      "duration": "4 stundas",
+      "concept": "Eksistenciālie pakalpojumi aicina mūs ienākt iekšējā telpā—vienā, kas atrodas katrā no mums, bet paliek cieši saistīta ar kolektīvu. Tā ir telpa, kur laiks palēninās, mudinot mūs pamodināt filozofu sevī, jautāt, pārdomāt un iesaistīties ar mūsu eksistences būtību.",
+      "description": "Izstrādāta kā spēlīga valdības biroja versija, instalācija ietvēra improvizētu biroja iestatījumu, kur Mafalda Garcia iesaistīja gandrīz 100 apmeklētājus unikālā pieredzē. Dalībnieki varēja izvēlēties starp četrām valodām - latviešu, latgaliešu, angļu un krievu - lai atbildētu uz domāšanu rosinājošiem jautājumiem. Šie jautājumi, kas bija filozofiska rakstura, ietvēra daudzkārtējas izvēles, atvērtas un vizuālas atbildes.\n\nIdeja bija uzaicināt apmeklētājus pārdomu brīdī, mudinot viņus domāt par tagadējo brīdi, viņu izcelsmi, viņu virzienu un fundamentāliem jēdzieniem, piemēram, identitātei un morālei. Vienkārši jautājumi noveda pie sarežģītām atbildēm, padarot instalāciju par sociālu eksperimentu, kas mudināja saikni un jēgpilnu dialogu.",
+      "credits": "Mafalda Garcia\nFoto: Foto kredīti no Laura Māliņas un Mafalda Garcia",
+      "location": "NESKARTS, Rēzekne, Latvija"
+    },
+    "youAre": {
+      "title": "You are....",
+      "year": "2023",
+      "duration": "1 stunda",
+      "concept": "Šī ielas performance tika izveidota ekskluzīvi XXII STARPTAUTISKAJAM IELAS TEĀTRA FESTIVĀLAM \"ŠERMUKŠNIS\" radoša semināra laikā. Tā ir 1923. gada notikumu tulkojums ielas teātra valodā, kas tiek pārraidīts bez vārdiem. Iedvesma aiz tā nāk no stāsta par lietuviešu karavīriem, kas maskējās par vietējiem iedzīvotājiem un mēģināja iekarot Klaipēdas reģionu.",
+      "description": "Izrādes radošā komanda ir pārdomājusi \"iebrukuma, invāzijas, apvērsuma\" jēdzienus, kuriem parasti ir negatīvas konotācijas. Viņi centās pārveidot šīs koncepcijas par kaut ko pozitīvu. Tādējādi dzima ideja \"iekarot\" Klaipēdas reģionu, nevis ar ieroču palīdzību, bet gan ar dziesmu spēku.",
+      "credits": "Režisors – Adrian Schvarzstein (Spānija)\nRežisora asistents – Jūratė Širvytė (Lietuva)\nVēstures konsultants – Vasilijus Safronovas (Lietuva)\nAktieri: Oleg Bosyuk (Ukraina), Kseniia Buryka (Ukraina), Andrius Doleris, Mafalda Garcia (Portugāle), Edvardas Giedraitis, Jūratė Jocienė, Aleksas Mažonas, Justinas Mažūnas, Arūnas Mozeris, Sofija Ostrovskytė, Carolina Pailhe (Argentīna), Mingailė Rutkauskaitė, Liepa Šaltė, Danielė Vaičiulytė, Irina Tabak.\n\nPreses un mediju pārklājums:\nhttps://ve.lt/gyvenimas/kultura/klaipedoje-vyksta-tarptautinis-gatves-teatro-festivalis-sermuksnis\nhttps://kauno.diena.lt/naujienos/klaipeda/menas-ir-pramogos/tarptautinis-gatves-teatru-festivalis-sermuksnis-nuspalvino-klaipeda-1131522",
+      "location": "XXII STARPTAUTISKAIS IELAS TEĀTRA FESTIVĀLS \"ŠERMUKŠNIS\", Klaipēda, Lietuva"
+    },
+    "freeDoom": {
+      "title": "Free Doom",
+      "year": "2018",
+      "duration": "20 minūtes",
+      "concept": "Co.collective ir aktīvistu un transdisciplinārs kolektīvs, kas tic sadarbībai kā principam, kas aktivizē radošumu un kritiskumu. Tā instalācijas ir sensoras un interaktīvas, cenšoties aizvest skatītāju-aktieri sinestēzijas un darbības vidē.",
+      "description": "\"Free Doom\" ir audiovizuāla un performatīva instalācija, kas mērķē būt manifesta par brīvību 21. gadsimtā. Šķidrā un neskaidrā laikmetā mūs grūž uz pasīvu pilsonību lokāli un apātisku pilsonību globāli. Šajā manifestā, izmantojot neverbālu valodu, mēs vedam skatītāju pārdomāt mūsdienu libertāro konfliktus, no statiskā uz kustību, kas mums ir rokās?\n\n'Pasaulē pilnā slāpes mums paliek akmeņi ceļā'",
+      "credits": "Analoģiskā projekcija: Paulo Uliarud\nSkaņas dizaineris: Doutor Aeiu Ton\nRekvizīti/Scenogrāfija/Performere: Mafalda Silvgar (Garcia)\n\nPerformance vēsture:\nBrīvības un kritisko domāšanu forums I (Kurators: David Zink)\nZaratan galerija",
+      "location": "LISABONA, Portugāle"
+    },
+    "invisibleLines": {
+      "title": "Invisible Lines",
+      "year": "2019",
+      "duration": "25 minūtes",
+      "concept": "Šis performatīvais manifesta sastāvēs no sensoras instalācijas, kas aicina skatītāju/dalībnieku pārdomāt par neredzamajām līnijām, kas pastāv mūsu pasaulē un kas veicina sociālas dalības.",
+      "description": "Dalības: Kurā pusē mēs esam? Kurā līnijas pusē mēs vēlamies būt? Kas rada šīs līnijas? Tas nebūsim mēs, ar savu sociālo apātiju savā patvērumā. Mēs sev apkārt izveidojam ekrānus, mums patīk skatīties caur pasivitātes logu.... Tas mums dod zināmu prieku just, ka tas nav mūsu ziņā.\n\nMūsdienās mēs dzīvojam laikos, kad denuncējam savus kaimiņus, naida, ļaunprātības un gļēvuma laikos.\n\nKādu spēku mums ir? Vai līnijas, kas mūs ieslodza, ir tās pašas, kas mūs atbrīvo? Vai tās ir tās pašas līnijas, kas mūs atbrīvo?\n\nVai mēs esam līniju līnijas?",
+      "credits": "Dzīvā projekcija: Paulo Uliarud\nSkaņas dizains: Doutor Aeiu Ton\nRekvizīti/Scenogrāfija/Performere: Mafalda Garcia\nFotogrāfija: Kah Smith\n\nPerformance vēsture:\nBrīvības un kritisko domāšanu forums II (Kurators: David Zink)\nRA galerija",
+      "location": "LISABONA, Portugāle"
+    },
+    "santaPaciencia": {
+      "title": "Santa Paciência (Svētā pacietība)",
+      "year": "2016",
+      "duration": "5 stundas",
+      "concept": "\"Svētā pacietība, no pasaulīgās pornogrāfijas līdz kanonizācijai: pacelsim savus pirkstus, māsas, vienkārši sakot nē, vairs nekādas mūsu ķermeņu apspiešanas, mēs esam šeit, domājoši būtnes.\" Feminista mākslas darbs, kas tika prezentēts gan kā performatīvs manifesta, gan fotogrāfiska izstāde, kas tika parādīta sadarbības izstādē Borderline, parādot sieviešu mākslinieces.",
+      "description": "Šis darbs mērķēja radīt ne tikai telpu mākslinieciskai sadarbībai, bet arī atvērtu platformu, kur publika varēja aktīvi piedalīties. Tas uzaicināja pārdomāt, kā sievišķība tiek veidota no sabiedrības gaidījumiem, slogota ar stigmu un ierobežota ar standartizācijas spiedienu. Caur performance un vizuālo stāstījumu darbs apstrīdēja šīs normas, mudinot dialogu un kolektīvu izpausmi.",
+      "credits": "Kredīti: Mafalda Silvgar un VUD Collective\nFoto: Foto kredīti no Kevin Flores\nVideo: https://www.facebook.com/Vudisart/videos/1249483141798028",
+      "location": "DESTERRO, Lisabona, Portugāle"
+    },
+    "obscura": {
+      "title": "Obscura",
+      "year": "2016",
+      "duration": "45 minūtes",
+      "concept": "Šis mākslas darbs dzima no improvizācijas laboratorijas—dialoga starp performeri un skaņas dizaineri. Tas radīja iegremdējošu atmosfēru, kur performer atbrīvojās no savas identitātes, pārveidojoties par tēlu, kas mūs visus savienoja caur mūsu ēnām un iekšējiem monologiem.",
+      "description": "Galvenais performance moments bija atbrīvošanās no tīkla, kur robežas starp ķermeni, krāsu un augsni izšķīra. Materiālu saplūšana simbolizēja ego un rakstura izšķīršanu, atgriešanos primitīvā stāvoklī vienotībā ar dabu. Tā vietā, lai pretotos nezināmajam, performance aicināja auditoriju pieņemt savus 'purvainos ceļus'—ne ar bailēm, bet ar drosmi redzēt tos kā būtisku eksistences daļu.",
+      "credits": "Performere: Mafalda Silvgar\nSkaņas dizaineris: Ricardo Silva",
+      "location": "CABARET TORTO, Lisabona, Portugāle"
+    },
+    "ouroborus": {
+      "title": "Ouroborus",
+      "year": "2016",
+      "duration": "12 stundas",
+      "concept": "Kinesis Collective ir transdisciplināru mākslinieku grupa, kas sajauk fotogrāfiju, performance un instalāciju ar dzīvu skaņas ceļojumu. Šī dzīvā izstāde bija pastāvīgā pārveidē, uztverot apmeklētāju kustības un skaņas, kad viņi ienāca telpā.",
+      "description": "Prezentēta Entremuralhas festivālā divas dienas, performance izpētīja sievišķā ķermeņa un varas tēmu, iedvesmojoties no Ouroboros mitoloģijas. Iestatīta Leirijas (Portugāle) viduslaiku pils Karaļa zālē, vēsturiskais un atmosfēriskais iestatījums pastiprināja gabala iegremdējošo un pārdomājošo dabu.",
+      "credits": "Fotogrāfs: Carolina Sepúlveda\nSkaņas dizaineris: Pedro André Serrano\nRekvizīti/Scenogrāfija/Performere: Mafalda Garcia\nTehniskā atbalsts: João Rino un Daniel Fabião",
+      "location": "FESTIVAL ENTREMURALHAS, Leirija, Portugāle"
+    },
+    "abscôndito": {
+      "title": "Abscôndito",
+      "year": "2016",
+      "duration": "30 minūtes",
+      "concept": "Šī performance tika izveidota sadarbībā ar Ekidna Kollektiv vizuālā mākslinieka Nuno Lacerda mākslas izstādes laikā. Darbs izpēta slēpšanas un atklāšanas tēmas, izmantojot ķermeni kā līdzekli slēpto stāstu izteikšanai.",
+      "description": "Performance rada dialogu starp redzamo un neredzamo, atklāto un slēpto. Caur kustību un skaņu tā aicina skatītājus jautāt, kas atrodas zem virsmas, gan mākslā, gan cilvēka pieredzē.",
+      "credits": "Performere: Mafalda Garcia\nSkaņas dizains: Ekidna Kollektiv\nIzvstāde: Nuno Lacerda mākslas izstāde",
+      "location": "MUTE GALLERY, Lisabona, Portugāle"
+    }
+  },
+  "publications": {
+    "title": "Publikācijas",
+    "subtitle": "Dokumentējot mākslinieciskos ceļojumus caur dažādiem medijiem un sadarbību",
+    "items": {
+      "zaratan": {
+        "title": "Zaratan Contemporany Art Gallery",
+        "subtitle": "Performance cikls 'Do Lumiar'",
+        "description": "Performance un audiovizuālā dzīvā instalācija \"Free Doom\"\n\nno Co.Collective",
+        "location": "Lisabona, PT",
+        "year": "2018"
+      },
+      "freedomForum": {
+        "title": "Brīvības un kritisko domāšanu forums I",
+        "subtitle": "|| debates, dzeja, māksla un mūzika ||",
+        "description": "Performance un audiovizuālā dzīvā instalācija \"Free Doom\"\n\nno Co.Collective",
+        "location": "Lisabona, PT",
+        "year": "2018"
+      },
+      "criatura": {
+        "title": "Criatura Instável (Nestabīga radība)",
+        "subtitle": "Fotogrāfija, dzeja un risogrāfiska drukāšana",
+        "description": "Foto: Carolina Sepúlveda\n\nPerformere un dzejolis: Mafalda Garcia\n\nIzdrukājis: Sal Nunkachov",
+        "location": "Leiria, PT",
+        "year": "2016"
+      }
+    }
+  },
+  "gallery": {
+    "quote": "Telpā starp kustību un miera stāvokli, starp skaņu un klusumu, mēs atrodam to, ko nozīmē būt cilvēkam. Katra performance ir radīšanas fragments, patiesības brīdis, kas tiek uztverts efemērā dejā eksistences.",
+    "author": "— Mafalda Garcia"
+  },
+  "contact": {
+    "title": "SAZINĀTIES AR MANI",
+    "address": "ADRESE",
+    "phone": "Tālrunis",
+    "email": "E-pasts",
+    "addressDetails": "Ausekļi\", Rjabki, Sakstagala pag.,<br />Rēzeknes nov., LV-4645<br />latvija",
+    "phoneNumber": "(00371) 23551790",
+    "emailAddress": "mafalda.garsija@gmail.com"
+  },
+  "ui": {
+    "contactMe": "Sazināties ar mani",
+    "language": "Valoda:",
+    "yearOfCreation": "Radošanas gads:",
+    "duration": "Ilgums:",
+    "conceptDescription": "Koncepts un apraksts",
+    "credits": "Kredīti",
+    "location": "Vieta",
+    "workImage": "Darba attēls",
+    "contactImage": "Kontakta attēls",
+    "educationImage": "Izglītības attēls",
+    "publicationsWelcomeImage": "Publikāciju sagaidīšanas attēls"
+  },
+  "loading": "Ielādē Mafalda Garcia portfeli..."
+}

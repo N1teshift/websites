@@ -1,0 +1,21 @@
+{
+    "book": "Книга",
+    "section": "Раздел",
+    "exercise_id": "ID задания",
+    "type": "Тип",
+    "topic": "Тема",
+    "difficulty": "Сложность",
+    "steps": "Шаги",
+    "author": "Автор",
+    "exercise_number": "Номер задания",
+    "date_created": "Дата создания",
+    "last_modified": "Последнее изменение",
+    "question": "Вопрос",
+    "answer_options": "Варианты ответов",
+    "easy": "Легкий",
+    "medium": "Средний",
+    "hard": "Сложный",
+    "test": "Тест",
+    "text": "Текст",
+    "exercise_type_no_options": "Этот тип упражнения не поддерживает отображение вариантов ответов"
+}

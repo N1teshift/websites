@@ -1,0 +1,37 @@
+{
+    "event_join_success": "Congratulations, You have successfully registered for a lesson",
+    "no_event_selected_or_slot_selected": "Select a timeslot",
+    "occupied": "Occupied",
+    "start_time": "Lesson starts",
+    "end_time": "Lesson ends",
+    "occupied_timeslot": "Lesson timeslot is occupied",
+    "plan_new_lesson": "Plan a new lesson",
+    "selected_lesson_start_time": "The selected lesson start time",
+    "email": {
+        "subject": "Math lesson meeting details",
+        "body": "Dear {{userName}},\n\nYour scheduled mathematics lesson meeting has been successfully created. Below are the details:\n\nDate and Time: {{startDateTime}} to {{endDateTime}}\nJoin Link: {{meetingLink}}\n\nPlease click the link at the time of your meeting to join.\n\nBest regards,\nSimonas Bernotas"
+    },
+    "minutes_kilmininkas": "minutes",
+  "identify_and_register": "Identify and register",
+  "math_lesson": "Math lesson",
+
+  "success_google": "You have successfully registered for a lesson with Google",
+  "success_microsoft": "You have successfully registered for a lesson with Microsoft",
+  "success_guest": "You have successfully registered for a lesson as a guest",
+  "lesson_scheduler_disabled": "Calendar integration for lesson planning. Feature available but disabled.",
+  "soonest_available_slot": "Soonest available time slot is {{time}}.",
+  "today": "Today",
+  "back": "Back",
+  "previous": "Previous",
+  "next": "Next",
+  "month": "Month",
+  "week": "Week",
+  "day": "Day",
+  "continue_as_guest": "Continue as guest",
+  "your_name": "Your name",
+  "your_email": "Your email",
+  "your_phone_number": "Your phone number",
+  "register": "Register",
+  "register_with_google_account": "Register with my Google account",
+  "event_confirmation_timeout": "We could not confirm your booking within 30 seconds. Please refresh or try again."
+}

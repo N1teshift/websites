@@ -1,0 +1,24 @@
+{
+  "extends": "@websites/config/tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@components/*": ["src/features/shared/components/*"],
+      "@lib/*": ["src/features/shared/lib/*"],
+      "@utils/*": ["src/features/shared/utils/*"],
+      "@styles/*": ["src/styles/*"],
+      "@websites/ui": ["../../packages/ui/src"],
+      "@websites/ui/*": ["../../packages/ui/src/*"],
+      "@websites/infrastructure": ["../../packages/infrastructure/src"],
+      "@websites/infrastructure/*": ["../../packages/infrastructure/src/*"]
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"]
+}

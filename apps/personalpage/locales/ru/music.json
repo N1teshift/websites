@@ -1,0 +1,31 @@
+{
+  "music": "Музыка",
+  "my_tracks": "Мои Треки",
+  "my_likes": "Мои Лайки",
+  "loading_tracks": "Загрузка треков...",
+  "loading_likes": "Загрузка лайков...",
+  "no_tracks_found": "Треки не найдены",
+  "no_likes_found": "Лайки не найдены",
+  "error_loading_tracks": "Ошибка загрузки треков",
+  "error_loading_likes": "Ошибка загрузки лайков",
+  "play_track": "Воспроизвести трек",
+  "pause_track": "Приостановить трек",
+  "track_duration": "Длительность",
+  "track_plays": "воспроизведений",
+  "track_likes": "лайков",
+  "track_comments": "комментариев",
+  "track_reposts": "репостов",
+  "follow_on_soundcloud": "Подписаться на SoundCloud",
+  "view_on_soundcloud": "Посмотреть на SoundCloud",
+  "soundcloud_profile": "Профиль SoundCloud",
+  "refresh_data": "Обновить Данные",
+  "tabs": {
+    "tracks": "Треки",
+    "likes": "Лайки"
+  },
+  "stats": {
+    "total_tracks": "Всего Треков",
+    "total_likes": "Всего Лайков",
+    "total_plays": "Всего Воспроизведений"
+  }
+}

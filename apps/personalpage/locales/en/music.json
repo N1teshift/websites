@@ -1,0 +1,31 @@
+{
+  "music": "Music",
+  "my_tracks": "My Tracks",
+  "my_likes": "My Likes",
+  "loading_tracks": "Loading tracks...",
+  "loading_likes": "Loading likes...",
+  "no_tracks_found": "No tracks found",
+  "no_likes_found": "No likes found",
+  "error_loading_tracks": "Error loading tracks",
+  "error_loading_likes": "Error loading likes",
+  "play_track": "Play track",
+  "pause_track": "Pause track",
+  "track_duration": "Duration",
+  "track_plays": "plays",
+  "track_likes": "likes",
+  "track_comments": "comments",
+  "track_reposts": "reposts",
+  "follow_on_soundcloud": "Follow on SoundCloud",
+  "view_on_soundcloud": "View on SoundCloud",
+  "soundcloud_profile": "SoundCloud Profile",
+  "refresh_data": "Refresh Data",
+  "tabs": {
+    "tracks": "Tracks",
+    "likes": "Likes"
+  },
+  "stats": {
+    "total_tracks": "Total Tracks",
+    "total_likes": "Total Likes",
+    "total_plays": "Total Plays"
+  }
+}

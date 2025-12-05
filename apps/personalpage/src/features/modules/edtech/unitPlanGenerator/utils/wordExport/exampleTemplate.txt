@@ -1,0 +1,75 @@
+MYP UNIT PLAN TEMPLATE
+
+SCHOOL INFORMATION
+School Name: {schoolName}
+Academic Year: {academicYear}
+Subject: {subject}
+MYP Year: {mypYear}
+
+UNIT OVERVIEW
+Unit Title: {unitTitle}
+
+CONCEPTS AND UNDERSTANDINGS
+Specified Concepts: {specifiedConcepts}
+Conceptual Understandings: {conceptualUnderstandings}
+
+GLOBAL CONTEXT
+Context: {globalContext}
+Explanation: {globalContextExplanation}
+
+INQUIRY
+Statement: {inquiryStatement}
+
+Questions:
+
+Factual Questions:
+{#factualQuestions}
+• {.}
+{/factualQuestions}
+
+Conceptual Questions:
+{#conceptualQuestions}
+• {.}
+{/conceptualQuestions}
+
+Debatable Questions:
+{#debatableQuestions}
+• {.}
+{/debatableQuestions}
+
+ASSESSMENT
+Title: {assessmentTitle}
+Type: {assessmentType}
+Objectives: {objectives}
+Command Terms: {commandTerms}
+
+Summative Assessment:
+{summativeAssessment}
+
+TEACHING AND LEARNING
+Subunits:
+{#subunits}
+Subunit {number}: {title}
+Description: {description}
+Lessons: {lessonsPerSubunit}
+Interim Assessment: {interimAssessment}
+Formative Assessment: {formativeAssessment}
+
+{/subunits}
+
+RESOURCES
+{resources}
+
+COMMUNITY ENGAGEMENT
+{communityEngagement}
+
+REFLECTION
+Prior to Teaching: {reflectionPriorToTeaching}
+During Teaching: {reflectionDuringTeaching}
+After Teaching: {reflectionAfterTeaching}
+Future Planning: {reflectionFuturePlanning}
+
+CONTRIBUTING TEACHERS
+{contributingTeachers}
+
+Total Lessons: {lessonCount}

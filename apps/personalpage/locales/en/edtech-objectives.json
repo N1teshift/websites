@@ -1,0 +1,28 @@
+{
+    "objective": {
+        "A": "A - Knowing and Understanding",
+        "B": "B - Investigating Patterns",
+        "C": "C - Communicating",
+        "D": "D - Applying Mathematics in Real-Life Contexts"
+    },
+    "strand": {
+        "A-i": "Select appropriate mathematics when solving problems in both familiar and unfamiliar situations",
+        "A-ii": "Apply the selected mathematics successfully when solving problems",
+        "A-iii": "Solve problems correctly in a variety of contexts",
+        "B-i": "Select and apply mathematical problem-solving techniques to discover complex patterns",
+        "B-ii": "Describe patterns as general rules consistent with findings",
+        "B-iii": "Prove, or verify and justify, general rules",
+        "C-i": "Use appropriate mathematical language (notation, symbols and terminology) in both oral and written explanations",
+        "C-ii": "Use appropriate forms of mathematical representation to present information",
+        "C-iii": "Move between different forms of mathematical representation",
+        "C-iv": "Communicate complete, coherent and concise mathematical lines of reasoning",
+        "C-v": "Organize information using a logical structure",
+        "D-i": "Identify relevant elements of authentic real-life situations",
+        "D-ii": "Select appropriate mathematical strategies when solving authentic real-life situations",
+        "D-iii": "Apply the selected mathematical strategies successfully to reach a solution",
+        "D-iv": "Justify the degree of accuracy of a solution",
+        "D-v": "Justify whether a solution makes sense in the context of the authentic real-life situation"
+    },
+    "strand_focus": "This strand focuses on"
+}
+

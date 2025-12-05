@@ -1,0 +1,75 @@
+{
+
+  "category": "Категория",
+
+
+  "visible_columns": "Видимые колонки",
+  "test_id": "ID теста",
+  "prompt": "Запрос",
+  "generated_example": "Сгенерированный пример",
+  "expected_values": "Ожидаемые значения",
+  "success_rate": "Коэффициент успеха",
+  "last_run": "Последний запуск",
+
+
+
+
+  "passed": "Пройден",
+  "failed": "Не пройден",
+  "running": "Выполняется",
+  "not_generated": "Не сгенерирован",
+
+  "test_summary": "Результаты тестирования",
+  "passed_tests": "Пройденные тесты",
+  "failed_tests": "Не пройденные тесты",
+  "total_tests": "Всего тестов",
+  "pass_rate": "Коэффициент успеха",
+  "total_time": "Всего времени",
+  "total_tokens": "Всего токенов",
+  "total_prompt_tokens": "Всего prompt токенов",
+  "total_completion_tokens": "Всего completion токенов",
+  "estimated_cost": "Оценка стоимости",
+  "history": "История",
+  "show_object_type": "Показать тип объекта",
+  "hide_object_type": "Скрыть тип объекта",
+  "test_runner_title": "Инструмент для тестирования",
+  "tests_with_errors": "Тесты с ошибками",
+  "average_time": "Среднее время",
+  "total_input_tokens": "Всего input токенов",
+  "total_output_tokens": "Всего output токенов",
+
+
+  "run_selected_tests": "Выполнить выбранные тесты",
+  "running_tests": "Выполняются тесты",
+
+
+  "reset_test_stats": "Сбросить статистику тестирования",
+  "reset_test_stats_confirmation": "Это действие сбросит вашу статистику тестирования и историю. Вы уверены, что хотите это сделать?",
+  "resetting_test_stats": "Сброс статистики тестирования...",
+
+
+  "db_fetching": "DB fetching",
+  "database_fetching": "Database fetching",
+  "enabled": "Включено",
+  "disabled": "Выключено",
+  "fresh_data_will_be_fetched_from_the_database_as_needed": "Новые данные будут получаться из базы данных по мере необходимости",
+  "cannot_toggle_fetching_while_tests_are_running": "Невозможно изменить получение данных, пока выполняются тесты",
+  "toggle_database_fetching_when_disabled_the_app_will_use_cached_data_only": "Keisti duomenų gavimo. Kai išjungtas, programa bus naudojama tik cache.",
+  "on": "Включено",
+  "off": "Выключено",
+  "no_cache_available": "Нет кэша",
+
+
+  "total": "Всего",
+  "execution_time": "Время выполнения",
+  "cost": "Стоимость",
+  "token_usage": "Использование токенов",
+  "input": "Ввод",
+  "output": "Вывод",
+  "no_data": "Нет данных",
+
+
+
+  "not_run": "Не выполнен",
+  "results_saved_successfully": "Результаты успешно сохранены!"
+}

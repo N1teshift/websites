@@ -1,0 +1,20 @@
+{
+  "eu_parliament_elections": "Rinkimai į Europos Parlamentą",
+  "home_note_1": "Užduočių redagavime galima įkelti tik vieną nuotrauką, bet po to galima redaguoti vėl ir vėl įkelti papildomą nuotrauką.",
+  "home_note_2": "Skundo kūrime galima įkelti daug nuotraukų vienu metu.",
+  "home_notes_title": "Pastabos:",
+  "home_welcome_title": "Sveiki atvykę į Stebėtojų Gildijos rinkimų stebėjimo vedlį.",
+  "login_description": "Norėdami tęsti, prisijunkite naudodami savo Google paskyrą.",
+  "login_title": "Prisijungimas prie Stebėtojų Gildijos rinkimų stebėjimo vedlio",
+  "municipal_elections": "Savivaldybių tarybų ir merų rinkimai",
+  "nav_counties": "Stebėjimas apygardose",
+  "nav_counting_precincts": "Skaičiavimo stebėjimas apylinkėse",
+  "nav_home": "Pagrindinis",
+  "nav_my_tasks": "Mano užduotys",
+  "nav_voting_precincts": "Balsavimo stebėjimas apylinkėse",
+  "observer_count": "Stebėtojai",
+  "precinct_id": "ID",
+  "precinct_name": "Pavadinimas",
+  "presidential_elections": "Respublikos Prezidento rinkimai",
+  "seimas_elections": "Lietuvos Respublikos Seimo rinkimai"
+}

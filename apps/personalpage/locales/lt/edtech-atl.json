@@ -1,0 +1,37 @@
+{
+    "atl_skills": "ATL įgūdžiai",
+    "atl_skills_strategies": "ATL įgūdžiai ir strategijos",
+    "atl_skills_title": "ATL įgūdžiai",
+    "atl_skills_info": "Mokymosi požiūrių (ATL) įgūdžiai yra pagrindiniai įgūdžiai, kurių mokiniams reikia sėkmei mokykloje ir gyvenime. Jie organizuoti į 5 kategorijas: Mąstymas, Komunikacija, Socialiniai, Savivalda ir Tyrimai.",
+    "atl_skills_math_only": "ATL įgūdžiai prieinami tik matematikos dalykui. Pasirinkite matematiką kaip savo dalyką, kad pasiektumėte ATL įgūdžius.",
+    "atl_skills_help": "Pasirinkite Mokymosi požiūrius (ATL), kurie bus ugdomi šiame modulyje. Šiuo metu rodomi tik matematikai patvirtinti įgūdžiai.",
+    "no_atl_skills_selected": "Dar nepasirinkta jokių ATL įgūdžių. Pasirinkite iš aukščiau pateiktų įgūdžių.",
+    "no_atl_skills_specified": "Nenurodyti ATL įgūdžiai",
+    "atl_strategies": "ATL strategijos",
+    "atl_strategies_info": "Aprašykite konkrečias strategijas, rutinas, įrankius ir metodus, kuriuos aiškiai mokysite ir naudosite pasirinktų ATL įgūdžių ugdymui. Tai yra praktiniai metodai ir klasės praktikos, kurios padeda mokiniams ugdyti ir praktikuoti pasirinktus įgūdžius visą modulį.",
+    "no_atl_strategies_specified": "Nenurodytos ATL strategijos",
+    "atl_category": {
+        "Communication": "Komunikacija",
+        "Self-management": "Savivalda",
+        "Thinking": "Mąstymas"
+    },
+    "atl_subcategory": {
+        "Communication through language": "Komunikacija per kalbą",
+        "Organization skills": "Organizacijos įgūdžiai",
+        "Critical thinking": "Kritinis mąstymas",
+        "Creative thinking": "Kūrybinis mąstymas"
+    },
+    "atl_skill": {
+        "understand-mathematical-notation": "Suprasti ir naudoti matematines natas",
+        "take-effective-notes": "Daryti veiksmingas užrašus pamokoje",
+        "create-assessment-plans": "Sukurti planus pasiruošti apibendrinamiesiems vertinimams (egzaminams ir pasirodymams)",
+        "bring-necessary-equipment": "Atsinešti būtiną įrangą ir priemones į pamoką",
+        "interpret-data": "Interpretuoti duomenis",
+        "draw-conclusions": "Daryti pagrįstas išvadas ir apibendrinimus",
+        "analyze-synthesize-concepts": "Analizuoti sudėtingas sąvokas ir sintezuoti jas naujam supratimui",
+        "propose-evaluate-solutions": "Pasiūlyti ir įvertinti sprendimų įvairovę",
+        "use-models-simulations": "Naudoti modelius ir simuliacijas sudėtingoms sistemoms tyrinėti",
+        "use-visible-thinking": "Naudoti matomo mąstymo strategijas ir metodikas"
+    }
+}
+

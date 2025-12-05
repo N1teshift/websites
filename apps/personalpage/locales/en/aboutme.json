@@ -1,0 +1,175 @@
+{
+  "education": [
+    {
+      "dates": "2022 – 2023",
+      "degree": "Pedagogy Certificate",
+      "institution": "Vytautas Magnus University"
+    },
+    {
+      "dates": "2017 – 2020",
+      "degree": "MSc Mathematics",
+      "institution": "Vilnius University"
+    },
+    {
+      "dates": "2013 – 2017",
+      "degree": "BSc Mathematics (Minor: Psychology)",
+      "institution": "Vilnius University"
+    }
+  ],
+  "educationTitle": "Education",
+  "email": "simonasbernotas@protonmail.com",
+  "experience": [
+    {
+      "company": "Karalienės Mortos Mokykla",
+      "dates": "2025 - Present",
+      "location": "Vilnius, Lithuania",
+      "responsibilities": [],
+      "title": "Mathematics Teacher"
+    },
+    {
+      "dates": "2024-2025",
+      "location": "Vilnius, Lithuania",
+      "responsibilities": [
+        "Architect a suite of tools for mathematics teachers projected to cut teacher prep time by ~99 %",
+        "Build natural-language interfaces that let non-technical educators generate problem sets in seconds",
+        "Employ AI assistants to accelerate coding, testing, and documentation cycles"
+      ],
+      "title": "Private Mathematics Teacher & AI Tools Engineer"
+    },
+    {
+      "company": "Vilnius J. Basanavičius gymnasium",
+      "dates": "2020 – 2024",
+      "location": "Vilnius, Lithuania",
+      "responsibilities": [
+        "Delivered engaging mathematics lessons to ~180 students annually",
+        "Authored a repository of LaTeX exams, problem sets and learning material"
+      ],
+      "title": "Mathematics Teacher"
+    },
+    {
+      "company": "Edrana Baltic",
+      "dates": "2019 – 2020",
+      "location": "Vilnius, Lithuania",
+      "responsibilities": [
+        "Executed black-box testing on proprietary accounting software"
+      ],
+      "title": "Software Tester"
+    },
+    {
+      "company": "Lithuanian Labour Market Institute",
+      "dates": "2017",
+      "location": "Vilnius, Lithuania",
+      "responsibilities": [
+        "Collected, cleaned, and visualised labour-market data to support annual reports"
+      ],
+      "title": "Data Analyst Intern"
+    }
+  ],
+  "experienceTitle": "Professional Experience",
+  "interests": [
+    "Community volunteering",
+    "Chess",
+    "Travel"
+  ],
+  "interestsTitle": "Interests",
+  "languages": [
+    {
+      "language": "Lithuanian",
+      "level": "Native"
+    },
+    {
+      "language": "English",
+      "level": "C1 (Fluent)"
+    },
+    {
+      "language": "French",
+      "level": "B2 (Advanced)"
+    }
+  ],
+  "languagesTitle": "Languages",
+  "linkedin": "linkedin.com/in/simonas-bernotas-743537361",
+  "linkedinAria": "Simonas Bernotas' LinkedIn Profile",
+  "linkedinDisplay": "LinkedIn Profile",
+  "location": "Vilnius, Lithuania (EU citizen)",
+  "name": "Simonas Bernotas",
+  "pageTitle": "About Me - Simonas Bernotas",
+  "phone": "+37062262856",
+  "portfolio": "simonasbernotas.vercel.app",
+  "projects": [
+    {
+      "description": "Full-stack web app for lesson scheduling and collaboration; modular mathematics object/exercise generator; LLM-driven NL interfaces; OCR-based exam-grading PoC; automated AI testing for performance and cost monitoring",
+      "title": "EdTech Platform & AI Workflows (solo project, 2025)"
+    },
+    {
+      "description": "Custom Redmine wrapper for Stebėtojų Gildija; served 150 volunteers with real-time compressed photo uploads and automated email reports to the Central Electoral Commission",
+      "title": "Election Monitoring Coordination Web-App (solo project, 2024)"
+    }
+  ],
+  "projectsTitle": "Key Projects",
+  "softSkills": [
+    "Analytical thinking",
+    "Collaborative problem-solving",
+    "Proactive curiosity"
+  ],
+  "softSkillsTitle": "Soft Skills",
+  "summaryContent": "Analytical educator-engineer with 4 years of secondary-level mathematics teaching and 2+ years of full-stack AI tooling experience. Conceived and shipped an AI-driven mathematics-content generator that automates learning materials creation and speeds up teacher prep time. Adept at turning complex classroom problems into scalable, user-centric software solutions.",
+  "summaryTitle": "Professional Summary",
+  "techSkills": {
+    "backend": {
+      "items": [
+        "Python",
+        "Node.js",
+        "Express",
+        "RESTful API design",
+        "OAuth 2.0 (Microsoft Entra ID/MSAL, Google OAuth)"
+      ],
+      "title": "Back-End & APIs"
+    },
+    "data": {
+      "items": [
+        "Data modelling",
+        "JSON schema enforcement",
+        "custom test-suite design",
+        "token-usage tracking"
+      ],
+      "title": "Data & Testing"
+    },
+    "enterprise": {
+      "items": [
+        "Microsoft Graph (Calendar & Teams)",
+        "Google Cloud (Calendar, Service Accounts)",
+        "Redmine API",
+        "Nodemailer (Gmail OAuth)"
+      ],
+      "title": "Enterprise Integrations"
+    },
+    "frontend": {
+      "items": [
+        "React",
+        "Next.js",
+        "TypeScript",
+        "Tailwind CSS",
+        "i18next"
+      ],
+      "title": "Front-End"
+    },
+    "fullstack": {
+      "items": [
+        "LangChain & LangGraph",
+        "OpenAI API",
+        "Firebase Admin SDK & Firestore",
+        "Vercel"
+      ],
+      "title": "Full-Stack & Cloud"
+    },
+    "tooling": {
+      "items": [
+        "Git/GitHub",
+        "ESLint",
+        "Basic CI/CD"
+      ],
+      "title": "Tooling & Workflow"
+    }
+  },
+  "techSkillsTitle": "Technical Skills"
+}

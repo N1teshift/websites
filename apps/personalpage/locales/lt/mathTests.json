@@ -1,0 +1,78 @@
+{
+
+    "category": "Kategorija",
+
+
+    "visible_columns": "Matomos stulpeliai",
+    "test_id": "Testo ID",
+    "prompt": "Užklausa",
+    "generated_example": "Sugeneruotas pavyzdys",
+    "expected_values": "Tikėtinos reikšmės",
+    "success_rate": "Sėkmės koeficientas",
+    "last_run": "Paskutinis vykdymas",
+
+
+
+    "passed": "Pavyko",
+    "failed": "Nepavyko",
+    "running": "Vykdomas",
+    "not_generated": "Nesugeneruotas",
+
+    "test_summary": "Testavimo rezultatai",
+    "passed_tests": "Pavykę testai",
+    "failed_tests": "Nepavykę testai",
+    "total_tests": "Viso testų",
+    "pass_rate": "Pavykimo koeficientas",
+    "total_time": "Viso laiko",
+    "total_tokens": "Viso tokenų",
+    "total_prompt_tokens": "Viso prompt tokenų",
+    "total_completion_tokens": "Viso completion tokenų",
+    "estimated_cost": "Apytikrinta kaina",
+    "history": "Istorija",
+    "show_object_type": "Rodyti objekto tipą",
+    "hide_object_type": "Slėpti objekto tipą",
+    "test_runner_title": "Testavimo įrankis",
+    "tests_with_errors": "Testai su klaidomis",
+    "average_time": "Vidutinis laikas",
+    "total_input_tokens": "Viso input tokenų",
+    "total_output_tokens": "Viso output tokenų",
+
+
+  "run_selected_tests": "Vykdyti pasirinktus testus",
+  "running_tests": "Vykdomi testai",
+
+
+  "reset_test_stats": "Atstatyti testavimo statistikas",
+  "reset_test_stats_confirmation": "Šis veiksmas atstatys jūsų testavimo statistikas ir istoriją. Ar tikrai norite tai padaryti?",
+  "resetting_test_stats": "Atstatoma testavimo statistika...",
+
+
+  "db_fetching": "DB fetching",
+  "database_fetching": "Database fetching",
+  "enabled": "Įjungtas",
+  "disabled": "Išjungtas",
+  "fresh_data_will_be_fetched_from_the_database_as_needed": "Nauja duomenų bus gaunama iš duomenų bazės kaip reikia",
+  "cannot_toggle_fetching_while_tests_are_running": "Negalima keisti duomenų gavimo, kol vykdomi testai",
+  "toggle_database_fetching_when_disabled_the_app_will_use_cached_data_only": "Keisti duomenų gavimo. Kai išjungtas, programa bus naudojama tik cache.",
+  "on": "Įjungtas",
+  "off": "Išjungtas",
+  "no_cache_available": "Nėra cache",
+
+
+  "total": "Viso",
+  "execution_time": "Vykdomo laikas",
+  "cost": "Kaina",
+  "token_usage": "Tokenų naudojimas",
+  "input": "Įvestis",
+  "output": "Išvestis",
+  "no_data": "Nėra duomenų",
+
+
+
+  "not_run": "Nevykdytas",
+  "results_saved_successfully": "Rezultatai sėkmingai išsaugoti!",
+  
+  "ai_system": "AI Sistema",
+  "system_1": "Sistema 1",
+  "system_2": "Sistema 2"
+}

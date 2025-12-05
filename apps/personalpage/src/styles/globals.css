@@ -1,0 +1,10 @@
+@import './modules/tokens.css';
+@import './modules/base.css';
+@import './modules/components.css';
+@import './modules/utilities.css';
+@import './modules/vendor.css';
+@import '../features/modules/calendar/styles/calendar.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
