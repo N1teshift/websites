@@ -51,53 +51,26 @@ function Test-Build {
     
     Push-Location $fullPath
     try {
-        # Run the command and capture output
-        $processInfo = New-Object System.Diagnostics.ProcessStartInfo
-        $processInfo.FileName = "pnpm"
-        $processInfo.Arguments = $Command
-        $processInfo.WorkingDirectory = $fullPath
-        $processInfo.UseShellExecute = $false
-        $processInfo.RedirectStandardOutput = $true
-        $processInfo.RedirectStandardError = $true
-        $processInfo.CreateNoWindow = $true
-        
-        $process = New-Object System.Diagnostics.Process
-        $process.StartInfo = $processInfo
-        
-        $outputBuilder = New-Object System.Text.StringBuilder
-        $errorBuilder = New-Object System.Text.StringBuilder
-        
-        $outputHandler = { 
-            if ($EventArgs.Data) { 
-                [void]$outputBuilder.AppendLine($EventArgs.Data)
-                Write-Log "  > $($EventArgs.Data)" "Gray"
-            }
-        }
-        $errorHandler = { 
-            if ($EventArgs.Data) { 
-                [void]$errorBuilder.AppendLine($EventArgs.Data)
-                Write-Log "  ! $($EventArgs.Data)" "DarkYellow"
-            }
+        # Check if pnpm is available
+        $pnpmCmd = Get-Command pnpm -ErrorAction SilentlyContinue
+        if (-not $pnpmCmd) {
+            throw "pnpm command not found. Please ensure pnpm is installed and in your PATH."
         }
         
-        $process.add_OutputDataReceived($outputHandler)
-        $process.add_ErrorDataReceived($errorHandler)
-        
-        $process.Start() | Out-Null
-        $process.BeginOutputReadLine()
-        $process.BeginErrorReadLine()
-        $process.WaitForExit()
-        
-        $output = $outputBuilder.ToString() + $errorBuilder.ToString()
-        $success = $process.ExitCode -eq 0
+        # Use PowerShell call operator & to invoke pnpm
+        # Split command into parts for proper argument handling
+        $cmdParts = $Command -split '\s+'
+        $output = & pnpm $cmdParts 2>&1 | Out-String
+        $exitCode = $LASTEXITCODE
+        $success = $exitCode -eq 0
         $duration = (Get-Date) - $buildStart
         
         if ($success) {
             Write-Log "[OK] $Name - SUCCESS ($($duration.ToString('mm\:ss')))" "Green"
         } else {
-            Write-Log "[FAIL] $Name - FAILED ($($duration.ToString('mm\:ss'))) - Exit Code: $($process.ExitCode)" "Red"
+            Write-Log "[FAIL] $Name - FAILED ($($duration.ToString('mm\:ss'))) - Exit Code: $exitCode" "Red"
             if ($output) {
-                $errorPreview = $output -split "`n" | Select-Object -First 10
+                $errorPreview = ($output -split "`n") | Where-Object { $_.Trim() -ne "" } | Select-Object -First 10
                 Write-Log "First 10 lines of output:" "Red"
                 foreach ($line in $errorPreview) {
                     Write-Log "  $line" "DarkRed"
@@ -110,7 +83,7 @@ function Test-Build {
             Success = $success
             Duration = $duration
             Output = $output
-            ExitCode = $process.ExitCode
+            ExitCode = $exitCode
         }
     } catch {
         $duration = (Get-Date) - $buildStart

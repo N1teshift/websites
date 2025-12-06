@@ -1,6 +1,6 @@
 import React from 'react';
 import Head from 'next/head';
-import { getStaticPropsWithTranslations } from '@websites/infrastructure/i18n';
+import { getStaticPropsWithTranslations } from '@websites/infrastructure/i18n/getStaticProps';
 import Layout from '../features/shared/components/Layout';
 import { MafaldaGarciaPage } from '../features/mafalda-garcia/MafaldaGarciaPage';
 

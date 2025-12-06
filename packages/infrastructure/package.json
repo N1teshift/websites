@@ -7,6 +7,10 @@
   "exports": {
     ".": "./src/index.ts",
     "./api": "./src/api/index.ts",
+    "./api/google": "./src/api/google.ts",
+    "./api/google/auth/googleAuth": "./src/clients/google/auth/googleAuth.ts",
+    "./api/microsoft": "./src/api/microsoft.ts",
+    "./api/microsoft/auth/microsoftAuth": "./src/clients/microsoft/auth/microsoftAuth.ts",
     "./auth": "./src/auth/index.ts",
     "./clients": "./src/clients/index.ts",
     "./clients/openai": "./src/clients/openai/index.ts",
@@ -14,18 +18,24 @@
     "./clients/microsoft": "./src/clients/microsoft/index.ts",
     "./clients/email": "./src/clients/email/index.ts",
     "./cache": "./src/cache/index.ts",
+    "./cache/analyticsCache.server": "./src/cache/analyticsCache.server.ts",
     "./firebase": "./src/firebase/index.ts",
+    "./firebase/admin": "./src/firebase/admin.ts",
     "./hooks": "./src/hooks/index.ts",
     "./monitoring": "./src/monitoring/index.ts",
+    "./monitoring/performance": "./src/monitoring/performance.ts",
     "./utils": "./src/utils/index.ts",
     "./i18n": "./src/i18n/index.ts",
     "./i18n/client": "./src/i18n/client.ts",
+    "./i18n/getStaticProps": "./src/i18n/getStaticProps.ts",
+    "./i18n/next-i18next.config": "./src/i18n/next-i18next.config.ts",
     "./logging": "./src/logging/index.ts"
   },
   "scripts": {
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
+    "axios": "^1.7.8",
     "i18next": "^24.0.2",
     "jsonwebtoken": "^9.0.2",
     "next-i18next": "^15.4.0",

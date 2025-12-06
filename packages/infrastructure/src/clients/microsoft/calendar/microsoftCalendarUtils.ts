@@ -44,21 +44,42 @@ async function httpRequest<T = unknown>(
 /**
  * Creates a new event in the user's Microsoft Calendar using the Microsoft Graph API.
  * 
- * @param accessToken - The access token for Microsoft Graph API
+ * @param accessToken - Optional access token for Microsoft Graph API. If not provided, will be fetched internally.
  * @param event - The event data to create
  * @returns The created event
  */
 export async function createMicrosoftEvent(
+  accessToken: string,
   event: MicrosoftEvent
+): Promise<MicrosoftEvent>;
+export async function createMicrosoftEvent(
+  event: MicrosoftEvent
+): Promise<MicrosoftEvent>;
+export async function createMicrosoftEvent(
+  accessTokenOrEvent: string | MicrosoftEvent,
+  event?: MicrosoftEvent
 ): Promise<MicrosoftEvent> {
-  logger.debug('Creating Microsoft calendar event', { subject: event.subject });
+  // Handle both signatures: (accessToken, event) or (event)
+  let accessToken: string;
+  let eventData: MicrosoftEvent;
+  
+  if (typeof accessTokenOrEvent === 'string') {
+    // First parameter is accessToken, second is event
+    accessToken = accessTokenOrEvent;
+    eventData = event!;
+  } else {
+    // Only one parameter, it's the event - get token internally
+    eventData = accessTokenOrEvent;
+    accessToken = await getAccessToken();
+  }
+  
+  logger.debug('Creating Microsoft calendar event', { subject: eventData.subject });
   
   try {
     const config = getMicrosoftConfig();
-    const accessToken = await getAccessToken();
     const endpoint = `${config.graphApiUrl}/users/${process.env.USER_PRINCIPAL_NAME}/events`;
     
-    const response = await httpRequest<MicrosoftEvent>(endpoint, 'POST', event, {
+    const response = await httpRequest<MicrosoftEvent>(endpoint, 'POST', eventData, {
       Authorization: `Bearer ${accessToken}`,
     });
     

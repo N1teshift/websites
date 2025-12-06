@@ -1,4 +1,3 @@
-import * as path from 'path';
 import { UserConfig } from 'next-i18next';
 
 /**
@@ -14,7 +13,7 @@ const nextI18NextConfig: UserConfig = {
         locales: ['en'],
         defaultLocale: 'en',
     },
-    localePath: path.resolve('./locales'),
+    localePath: './locales',
     defaultNS: 'common',
     fallbackNS: [],
     keySeparator: '.',

@@ -41,7 +41,8 @@ if (typeof global !== 'undefined') {
     
     const cleanupInterval = setInterval(() => {
       const now = Date.now();
-      for (const [key, entry] of logCache.entries()) {
+      // Use Array.from to avoid MapIterator iteration issues
+      for (const [key, entry] of Array.from(logCache.entries())) {
         if (now - entry.timestamp > DEDUP_WINDOW_MS * 2) {
           logCache.delete(key);
         }

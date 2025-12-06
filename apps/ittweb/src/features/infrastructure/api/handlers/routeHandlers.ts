@@ -9,9 +9,6 @@ import { getServerSession } from 'next-auth/next';
 import type { Session } from 'next-auth';
 import {
   createApiHandler as createGenericApiHandler,
-  createGetHandler as createGenericGetHandler,
-  createPostHandler as createGenericPostHandler,
-  createGetPostHandler as createGenericGetPostHandler,
   type ApiHandler,
   type ApiHandlerOptions,
 } from '@websites/infrastructure/api';

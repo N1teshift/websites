@@ -8,6 +8,7 @@ const withBundleAnalyzer = bundleAnalyzer({
 const baseConfig: NextConfig = {
     reactStrictMode: false,
     pageExtensions: ['page.tsx', 'page.ts', 'tsx', 'ts', 'jsx', 'js', 'mdx', 'md'],
+    transpilePackages: ['@websites/infrastructure', '@websites/ui'],
     i18n: {
         locales: ["en"],
         defaultLocale: "en",

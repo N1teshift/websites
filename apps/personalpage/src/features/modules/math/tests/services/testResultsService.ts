@@ -1,6 +1,6 @@
 import admin from "firebase-admin";
 import { TestResultData, TestStatDocument } from "@math/types/testsTypes";
-import { getFirestoreInstance } from "@websites/infrastructure/firebase";
+import { getFirestoreAdmin } from "@websites/infrastructure/firebase";
 // import { commitBatch, processInChunks, type BatchOperationResult } from "@/features/infrastructure/api/firebase"; // These utilities don't exist
 import {
   prepareFirestoreData,
@@ -96,10 +96,10 @@ export const saveTestResults = async (
     return { success: false, error: 'Invalid or empty results array' };
   }
 
-  // Get Firestore instance
+  // Get Firestore instance (using admin SDK for server-side)
   let firestore: admin.firestore.Firestore;
   try {
-    firestore = getFirestoreInstance("testresults");
+    firestore = getFirestoreAdmin();
     logger.info('Firestore instance obtained successfully');
   } catch (dbError) {
     const errorMessage = dbError instanceof Error ? dbError.message : String(dbError);
@@ -115,51 +115,74 @@ export const saveTestResults = async (
   const timestamp = admin.firestore.FieldValue.serverTimestamp() as admin.firestore.Timestamp;
   const runId = `run_${Date.now()}`;
 
-  // Process results in chunks using generic utility
-  const result = await processInChunks(
-    results,
-    400, // CHUNK_SIZE
-    async (chunk: TestResultData<Record<string, unknown>>[], chunkIndex: number): Promise<BatchOperationResult> => {
+  // Process results in chunks (Firestore batch limit is 500 operations)
+  const CHUNK_SIZE = 400;
+  const totalChunks = Math.ceil(results.length / CHUNK_SIZE);
+  const processingErrors: string[] = [];
+  let totalCommitted = 0;
+
+  try {
+    for (let chunkIndex = 0; chunkIndex < totalChunks; chunkIndex++) {
+      const startIdx = chunkIndex * CHUNK_SIZE;
+      const endIdx = Math.min(startIdx + CHUNK_SIZE, results.length);
+      const chunk = results.slice(startIdx, endIdx);
+
+      logger.info(`Processing chunk ${chunkIndex + 1} of ${totalChunks} (${chunk.length} results)`);
+
       const batch = firestore.batch();
-      const processingErrors: string[] = [];
+      const chunkErrors: string[] = [];
 
       // Process each result in the chunk
       for (const result of chunk) {
         const processResult = await processTestResult(batch, firestore, result, timestamp);
         if (!processResult.success) {
-          processingErrors.push(processResult.error!);
+          chunkErrors.push(processResult.error!);
         }
       }
 
       // Commit the batch
-      const commitResult = await commitBatch(batch, chunkIndex, Math.ceil(results.length / 400));
+      try {
+        await batch.commit();
+        totalCommitted += chunk.length;
 
-      if (!commitResult.success) {
-        return commitResult;
+        if (chunkErrors.length > 0) {
+          processingErrors.push(...chunkErrors);
+          logger.warn(`Chunk ${chunkIndex + 1} completed with ${chunkErrors.length} processing errors`, {
+            chunkIndex: chunkIndex + 1,
+            errorCount: chunkErrors.length,
+            errors: chunkErrors
+          });
+        } else {
+          logger.info(`Chunk ${chunkIndex + 1} committed successfully`);
+        }
+      } catch (commitError) {
+        const errorMsg = commitError instanceof Error ? commitError.message : String(commitError);
+        logger.error(`Failed to commit chunk ${chunkIndex + 1}`, commitError instanceof Error ? commitError : new Error(errorMsg));
+        return {
+          success: false,
+          error: `Failed to commit chunk ${chunkIndex + 1}: ${errorMsg}`
+        };
       }
-
-      // Log processing errors if any
-      if (processingErrors.length > 0) {
-        logger.warn(`Chunk ${chunkIndex + 1} completed with ${processingErrors.length} processing errors`, {
-          chunkIndex: chunkIndex + 1,
-          errorCount: processingErrors.length,
-          errors: processingErrors
-        });
-      }
-
-      return { success: true, committedCount: chunk.length };
     }
-  );
 
-  if (result.success) {
-    logger.info('Successfully saved all test results', { runId, totalResults: results.length });
+    if (processingErrors.length > 0) {
+      logger.warn(`Completed with ${processingErrors.length} processing errors`, {
+        totalResults: results.length,
+        committedCount: totalCommitted,
+        errorCount: processingErrors.length
+      });
+    }
+
+    logger.info('Successfully saved all test results', { runId, totalResults: results.length, committedCount: totalCommitted });
     return { success: true, runId };
-  } else {
-    logger.error('Failed to save test results', new Error(result.error || 'Unknown error'), {
-      error: result.error,
-      totalResults: results.length
+  } catch (error) {
+    const errorMsg = error instanceof Error ? error.message : String(error);
+    logger.error('Failed to save test results', error instanceof Error ? error : new Error(errorMsg), {
+      error: errorMsg,
+      totalResults: results.length,
+      committedCount: totalCommitted
     });
-    return { success: false, error: result.error };
+    return { success: false, error: errorMsg };
   }
 };
 
@@ -173,7 +196,7 @@ export const fetchTestStats = async (): Promise<{ success: boolean; tests?: Test
   let firestore: admin.firestore.Firestore;
 
   try {
-    firestore = getFirestoreInstance("testresults");
+    firestore = getFirestoreAdmin();
     logger.info('Firestore instance obtained successfully');
   } catch (initError) {
     const errorMessage = initError instanceof Error ? initError.message : String(initError);
