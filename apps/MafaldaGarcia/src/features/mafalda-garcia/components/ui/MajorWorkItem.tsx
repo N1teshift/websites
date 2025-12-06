@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-import { useFallbackTranslation } from '@/features/i18n';
+import { useFallbackTranslation } from '@websites/infrastructure/i18n';
 
 interface MajorWorkItemProps {
   title: string;

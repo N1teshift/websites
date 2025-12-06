@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { useFallbackTranslation } from "@/features/i18n";
+import { useFallbackTranslation } from "@websites/infrastructure/i18n";
 
 interface GoBackButtonProps {
     target?: string; // Optional target prop, default is "/"

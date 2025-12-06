@@ -5,7 +5,7 @@
 
 import { Timestamp } from 'firebase/firestore';
 import type { Entry, CreateEntry } from '@/types/entry';
-import { timestampToIso, type TimestampFactory, removeUndefined } from '@/features/infrastructure/utils';
+import { timestampToIso, type TimestampFactory, removeUndefined } from '@websites/infrastructure/utils';
 
 /**
  * Transform Firestore document data to Entry type

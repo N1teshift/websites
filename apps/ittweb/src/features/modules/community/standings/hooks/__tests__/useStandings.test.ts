@@ -3,7 +3,7 @@ import { useStandings } from '../useStandings';
 import type { StandingsFilters, StandingsResponse } from '../../types';
 
 // Mock logger
-jest.mock('@/features/infrastructure/logging', () => ({
+jest.mock('@websites/infrastructure/logging', () => ({
   logError: jest.fn(),
 }));
 

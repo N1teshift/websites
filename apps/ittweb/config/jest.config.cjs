@@ -1,14 +1,16 @@
-﻿/** @type {import('jest').Config} */
+/** @type {import('jest').Config} */
 const nextJest = require("next/jest");
+const baseConfig = require("@websites/test-utils/jest.config.base.js");
 
 const createJestConfig = nextJest({
   dir: "./",
 });
 
 const config = {
-  coverageProvider: "v8",
-  testEnvironment: "jest-environment-jsdom",
+  ...baseConfig,
+  // App-specific module name mappings
   moduleNameMapper: {
+    ...baseConfig.moduleNameMapper,
     "^@/(.*)$": "<rootDir>/src/$1",
     "^@/shared/(.*)$": "<rootDir>/src/features/shared/$1",
     "^@/features/(.*)$": "<rootDir>/src/features/$1",
@@ -17,20 +19,17 @@ const config = {
     "^@/config/(.*)$": "<rootDir>/src/config/$1",
     "^@/__tests__/(.*)$": "<rootDir>/__tests__/$1",
     "^(\\.\\.?/.*)\\.js$": "$1",
-    "\\.(css|less|scss|sass)$": "identity-obj-proxy",
   },
   haste: {
     throwOnModuleCollision: false,
   },
+  // App-specific setup file (extends base setup)
   setupFilesAfterEnv: ["<rootDir>/config/jest.setup.cjs"],
-  testMatch: ["**/__tests__/**/*.[jt]s?(x)", "**/?(*.)+(spec|test).[jt]s?(x)"],
   // Test categorization
   testNamePattern: process.env.TEST_CATEGORY || '.*',
+  // App-specific ignore patterns (extends base)
   testPathIgnorePatterns: [
-    "/node_modules/",
-    "/.next/",
-    "/build/",
-    "/out/",
+    ...baseConfig.testPathIgnorePatterns,
     "/external/",
     "/tmp/",
     "/__tests__/helpers/",
@@ -40,11 +39,9 @@ const config = {
     "health\\.test\\.ts$", // Firebase Admin mocking still needs work
     "wipe-test-data\\.test\\.ts$",
   ],
+  // App-specific coverage collection (extends base)
   collectCoverageFrom: [
-    "src/**/*.{js,jsx,ts,tsx}",
-    "!src/**/*.d.ts",
-    "!src/**/*.stories.{js,jsx,ts,tsx}",
-    "!src/**/__tests__/**",
+    ...baseConfig.collectCoverageFrom,
     "!src/pages/**",
   ],
   coverageThreshold: {
@@ -55,7 +52,6 @@ const config = {
       statements: 50,
     },
   },
-  testTimeout: 10000,
   transformIgnorePatterns: [
     "node_modules/(?!(jose|@panva/hkdf|oidc-token-hash|oauth4webapi|@panva/oauth4webapi)/)",
   ],

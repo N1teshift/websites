@@ -2,20 +2,21 @@
 
 This section contains reference materials and standards that may be useful both during development and in production.
 
+> **📦 Infrastructure Documentation Migration**: Many shared infrastructure patterns have been moved to `@websites/infrastructure` package. See [Infrastructure Documentation](../../../../packages/infrastructure/docs/README.md) for consolidated guides.
+
 ## 📋 Contents
 
 ### Error Handling
-- **[Error Handling Guide](./ERROR_HANDLING.md)** - Complete error handling guide and patterns
-- **[Error Handling Patterns](./error-handling/)** - API, component, and service patterns
+- **[Error Handling Guide](../../../../packages/infrastructure/docs/guides/error-handling.md)** - Complete error handling patterns and best practices
 
 ### Issues & Maintenance
 - **[Known Issues](./KNOWN_ISSUES.md)** - Technical debt and known issues
 
 ### Performance
-- **[Performance Guide](./PERFORMANCE.md)** - Performance optimization strategies
+- **[Performance Guide](../../../../packages/infrastructure/docs/guides/performance.md)** - Performance optimization strategies
 
 ### Security
-- **[Security Overview](./SECURITY.md)** - Security best practices
+- **[Security Guide](../../../../packages/infrastructure/docs/guides/security.md)** - Security best practices
 
 ### Documentation
 - **[Documentation Style](./DOCUMENTATION_STYLE.md)** - Documentation standards and conventions

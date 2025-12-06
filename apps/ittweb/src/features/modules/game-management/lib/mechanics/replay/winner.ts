@@ -1,5 +1,5 @@
 import type Player from 'w3gjs/dist/types/Player';
-import { createComponentLogger } from '@/features/infrastructure/logging';
+import { createComponentLogger } from '@websites/infrastructure/logging';
 import type { GamePlayerFlag } from '@/features/modules/game-management/games/types';
 import type { ParsedReplay, PlayerWithResult } from './types';
 

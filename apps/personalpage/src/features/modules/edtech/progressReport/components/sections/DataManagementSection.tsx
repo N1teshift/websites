@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useFallbackTranslation } from '@websites/infrastructure/i18n/client';
-import JSONFileUpload from '@websites/ui';
+import { JSONFileUpload } from '@websites/ui';
 import ExcelFileUpload from './ExcelFileUpload';
 import { ProgressReportData } from '../../types/ProgressReportTypes';
 
@@ -61,7 +61,7 @@ const DataManagementSection: React.FC<DataManagementSectionProps> = ({
             );
             if (!confirmed) return;
         }
-        
+
         try {
             onExportData();
             setUploadStatus('Export successful!');
@@ -107,10 +107,10 @@ const DataManagementSection: React.FC<DataManagementSectionProps> = ({
                     Process New Assessment Data
                 </h3>
                 <p className="text-sm text-gray-600 mb-4">
-                    Upload your <code className="bg-white px-1.5 py-0.5 rounded text-green-700">raw_data.xlsx</code> file to add new assessments 
+                    Upload your <code className="bg-white px-1.5 py-0.5 rounded text-green-700">raw_data.xlsx</code> file to add new assessments
                     from EXT, LNT, SD, ND, and KONS columns. The updated data will <strong>automatically sync</strong> to your dashboard!
                 </p>
-                <ExcelFileUpload 
+                <ExcelFileUpload
                     onSuccess={handleExcelSuccess}
                     buttonText="Upload & Process Excel"
                 />
@@ -172,11 +172,10 @@ const DataManagementSection: React.FC<DataManagementSectionProps> = ({
                 <button
                     onClick={handleExport}
                     disabled={!data}
-                    className={`inline-flex items-center justify-center px-4 py-3 text-sm font-medium rounded-md focus:outline-none focus:ring-2 transition-colors touch-manipulation min-h-[44px] disabled:opacity-50 disabled:cursor-not-allowed ${
-                        hasUnsavedChanges 
+                    className={`inline-flex items-center justify-center px-4 py-3 text-sm font-medium rounded-md focus:outline-none focus:ring-2 transition-colors touch-manipulation min-h-[44px] disabled:opacity-50 disabled:cursor-not-allowed ${hasUnsavedChanges
                             ? 'text-orange-700 bg-orange-100 border-2 border-orange-400 hover:bg-orange-200 focus:ring-orange-500 animate-pulse'
                             : 'text-blue-700 bg-blue-100 border border-blue-300 hover:bg-blue-200 focus:ring-blue-500'
-                    }`}
+                        }`}
                 >
                     <span className="mr-2">{hasUnsavedChanges ? '⚠️' : '📥'}</span>
                     {hasUnsavedChanges ? 'Export (Pending Edits!)' : t('download_data')}
@@ -227,7 +226,7 @@ const DataManagementSection: React.FC<DataManagementSectionProps> = ({
                         <strong className="text-gray-900">3. Export Updated Data:</strong> Download the updated JSON collection to backup and view new data
                     </div>
                     <div className="pt-2 border-t border-blue-200">
-                        <strong className="text-gray-900">Note:</strong> The dashboard shows data from the loaded JSON. 
+                        <strong className="text-gray-900">Note:</strong> The dashboard shows data from the loaded JSON.
                         After processing Excel, export and re-upload the JSON to see the updated assessments.
                     </div>
                 </div>

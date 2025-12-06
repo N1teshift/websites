@@ -13,7 +13,7 @@ jest.mock('fs/promises', () => ({
   readdir: jest.fn((...args: unknown[]) => mockReaddir(...args)),
 }));
 
-jest.mock('@/features/infrastructure/logging', () => ({
+jest.mock('@websites/infrastructure/logging', () => ({
   createComponentLogger: jest.fn(() => ({
     info: mockInfo,
     error: mockError,

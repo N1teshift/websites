@@ -25,10 +25,14 @@ Welcome to the ITT Web documentation. This documentation is organized into three
 ### 📚 Shared Reference (`shared/`)
 **Reference materials** - Style guides, error handling patterns, and documentation standards.
 
-- **[Error Handling](./shared/ERROR_HANDLING.md)** - Error handling guide and patterns
+> **📦 Infrastructure Documentation Migration**: Many shared infrastructure patterns have been moved to `@websites/infrastructure` package. See [Infrastructure Documentation](../../../packages/infrastructure/docs/README.md) for:
+> - Error handling, logging, authentication, i18n, caching, API patterns, security, monitoring, and performance guides
+> - Module-level API references
+
+- **[Error Handling](../../../packages/infrastructure/docs/guides/error-handling.md)** - Error handling patterns and best practices
 - **[Known Issues](./shared/KNOWN_ISSUES.md)** - Technical debt and known issues
-- **[Performance](./shared/PERFORMANCE.md)** - Performance optimization strategies
-- **[Security](./shared/SECURITY.md)** - Security best practices
+- **[Performance](../../../packages/infrastructure/docs/guides/performance.md)** - Performance optimization strategies
+- **[Security](../../../packages/infrastructure/docs/guides/security.md)** - Security best practices
 - **[Documentation Style](./shared/DOCUMENTATION_STYLE.md)** - Documentation standards
 - **[Documentation Lifecycle](./shared/documentation-lifecycle.md)** - Lifecycle management
 

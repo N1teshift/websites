@@ -89,7 +89,7 @@ const gamesSnapshot = await getCollectionSnapshot('games');
 
 ### Logging
 ```typescript
-import { createComponentLogger, logError } from '@/features/infrastructure/logging';
+import { createComponentLogger, logError } from '@websites/infrastructure/logging';
 
 const logger = createComponentLogger('my-component');
 logger.info('Message', { meta: 'data' });

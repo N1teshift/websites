@@ -16,7 +16,7 @@ jest.mock('@/features/infrastructure/lib/userDataService.server', () => ({
   getUserDataByDiscordIdServer: (...args: unknown[]) => mockGetUserDataByDiscordIdServer(...args),
 }));
 
-jest.mock('@/features/infrastructure/logging', () => ({
+jest.mock('@websites/infrastructure/logging', () => ({
   createComponentLogger: jest.fn(() => ({
     info: mockInfo,
     error: mockError,

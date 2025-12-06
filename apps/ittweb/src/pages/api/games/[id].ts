@@ -1,10 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../auth/[...nextauth]';
-import { createApiHandler, checkResourceOwnership, parseRequiredQueryString } from '@/features/infrastructure/api';
+import { createApiHandler, checkResourceOwnership, parseRequiredQueryString } from '@/lib/api-wrapper';
 import { getGameById, updateGame, deleteGame } from '@/features/modules/game-management/games/lib/gameService';
 import type { UpdateGame } from '@/features/modules/game-management/games/types';
-import { createComponentLogger } from '@/features/infrastructure/logging';
+import { createComponentLogger } from '@websites/infrastructure/logging';
 
 const logger = createComponentLogger('api/games/[id]');
 
@@ -32,7 +32,7 @@ const handlePut = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!session || !session.discordId) {
     throw new Error('Authentication required');
   }
-  
+
   const id = parseRequiredQueryString(req, 'id');
   const game = await getGameById(id);
   if (!game) {
@@ -60,7 +60,7 @@ const handleDelete = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!session || !session.discordId) {
     throw new Error('Authentication required');
   }
-  
+
   const id = parseRequiredQueryString(req, 'id');
   const game = await getGameById(id);
   if (!game) {

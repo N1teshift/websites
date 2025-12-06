@@ -1,7 +1,7 @@
 import { parseReplayFile } from '../replay';
 import type { W3MMDAction } from 'w3gjs/dist/types/parsers/ActionParser';
 
-jest.mock('@/features/infrastructure/logging', () => ({
+jest.mock('@websites/infrastructure/logging', () => ({
   createComponentLogger: () => ({
     info: jest.fn(),
     warn: jest.fn(),

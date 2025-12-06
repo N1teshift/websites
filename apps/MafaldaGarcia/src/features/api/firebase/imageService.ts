@@ -1,6 +1,6 @@
 import { createFirebaseStorageService, FirebaseStorageService } from './storageService';
 import { handleFirebaseError } from './errorHandler';
-import { ApiError } from '@/features/logging';
+import { ApiError } from '@websites/infrastructure/logging';
 
 /**
  * Interface for image metadata

@@ -5,10 +5,10 @@
  * These functions use Firebase Admin SDK and should only be used in API routes.
  */
 
-import { getFirestoreAdmin } from '@/features/infrastructure/api/firebase/admin';
-import { logError } from '@/features/infrastructure/logging';
-import { removeUndefined, createTimestampFactoryAsync } from '@/features/infrastructure/utils';
-import { invalidateAnalyticsCache } from '@/features/infrastructure/lib/cache/analyticsCache.server';
+import { getFirestoreAdmin } from '@websites/infrastructure/firebase';
+import { logError } from '@websites/infrastructure/logging';
+import { removeUndefined, createTimestampFactoryAsync } from '@websites/infrastructure/utils';
+import { invalidateAnalyticsCache } from '@websites/infrastructure/cache/analyticsCache.server';
 import type { UpdateGame } from '../types';
 import { updateEloScores } from '@/features/modules/game-management/lib/mechanics';
 

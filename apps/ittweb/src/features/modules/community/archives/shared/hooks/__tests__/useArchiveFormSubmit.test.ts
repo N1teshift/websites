@@ -3,7 +3,7 @@ import { useArchiveFormSubmit } from '../useArchiveFormSubmit';
 import type { ArchiveEntry } from '@/types/archive';
 import * as archiveValidation from '../../utils/archiveValidation';
 import * as useArchiveMedia from '../useArchiveMedia';
-import * as logging from '@/features/infrastructure/logging';
+import * as logging from '@websites/infrastructure/logging';
 
 // Mock dependencies
 jest.mock('../../utils/archiveValidation', () => ({
@@ -23,7 +23,7 @@ jest.mock('../useArchiveMedia', () => ({
   uploadSelectedMedia: jest.fn(async () => ({ images: undefined, replayUrl: undefined })),
 }));
 
-jest.mock('@/features/infrastructure/logging', () => ({
+jest.mock('@websites/infrastructure/logging', () => ({
   logError: jest.fn(),
 }));
 
@@ -314,7 +314,7 @@ describe('useArchiveFormSubmit', () => {
   describe('handles errors', () => {
     it('should handle submission errors', async () => {
       // Arrange
-      const { logError } = jest.requireMock('@/features/infrastructure/logging');
+      const { logError } = jest.requireMock('@websites/infrastructure/logging');
       const error = new Error('Submission failed');
       mockOnSubmit.mockRejectedValueOnce(error);
 

@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { useFallbackTranslation } from '@websites/infrastructure/i18n';
 import Image from 'next/image';
 import NProgress from 'nprogress';
-import { apiRequest } from '@websites/infrastructure/api';
+import { apiRequest } from '@/lib/api-client';
 import { useAuth } from '@websites/infrastructure/auth/providers';
 
 import { Button } from '@websites/ui';

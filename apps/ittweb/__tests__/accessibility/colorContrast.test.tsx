@@ -15,7 +15,7 @@ jest.mock('@/features/infrastructure/logging', () => {
 import {
   getContrastRatio,
   meetsWCAGContrast,
-} from '@/features/infrastructure/utils/accessibility/helpers';
+} from '@websites/infrastructure/utils';
 
 describe('Color Contrast', () => {
   beforeEach(() => {

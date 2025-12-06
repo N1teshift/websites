@@ -23,11 +23,11 @@ jest.mock('@/features/modules/game-management/games/lib/gameService', () => ({
   createCompletedGame: (...args: unknown[]) => mockCreateCompletedGame(...args),
 }));
 
-jest.mock('@/features/infrastructure/utils/userRoleUtils', () => ({
+jest.mock('@websites/infrastructure/utils/userRoleUtils', () => ({
   isAdmin: (...args: unknown[]) => mockIsAdmin(...args),
 }));
 
-jest.mock('@/features/infrastructure/logging', () => ({
+jest.mock('@websites/infrastructure/logging', () => ({
   createComponentLogger: jest.fn(() => ({
     info: mockInfo,
     error: mockError,

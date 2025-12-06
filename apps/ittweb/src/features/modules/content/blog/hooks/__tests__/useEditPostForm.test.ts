@@ -18,7 +18,7 @@ jest.mock('next-auth/react', () => ({
 }));
 
 // Mock logger
-jest.mock('@/features/infrastructure/logging', () => ({
+jest.mock('@websites/infrastructure/logging', () => ({
   createComponentLogger: jest.fn(() => ({
     info: jest.fn(),
     warn: jest.fn(),

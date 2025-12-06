@@ -22,13 +22,13 @@ jest.mock('firebase/firestore', () => {
   };
 });
 
-jest.mock('@/features/infrastructure/api/firebase', () => ({
+jest.mock('@websites/infrastructure/api/firebase', () => ({
   getFirestoreInstance: jest.fn(() => ({})),
 }));
 
 const mockIsServerSide = jest.fn(() => false);
 
-jest.mock('@/features/infrastructure/api/firebase/admin', () => ({
+jest.mock('@websites/infrastructure/firebase', () => ({
   getFirestoreAdmin: jest.fn(() => ({
     collection: jest.fn(() => ({
       doc: jest.fn(() => ({
@@ -44,7 +44,7 @@ jest.mock('@/features/infrastructure/api/firebase/admin', () => ({
   })),
 }));
 
-jest.mock('@/features/infrastructure/logging', () => ({
+jest.mock('@websites/infrastructure/logging', () => ({
   createComponentLogger: jest.fn(() => ({ info: jest.fn(), warn: jest.fn(), error: jest.fn() })),
   logError: jest.fn(),
 }));
@@ -60,8 +60,8 @@ jest.mock('../gameService.read', () => ({
 
 const { mockGetDoc, mockGetDocs } = jest.requireMock('firebase/firestore');
 const { collection, doc, addDoc, updateDoc, deleteDoc, query, orderBy, where, limit, Timestamp } = jest.requireMock('firebase/firestore');
-const { getFirestoreInstance } = jest.requireMock('@/features/infrastructure/api/firebase');
-const { getFirestoreAdmin, isServerSide } = jest.requireMock('@/features/infrastructure/api/firebase/admin');
+const { getFirestoreInstance } = jest.requireMock('@websites/infrastructure/api/firebase');
+const { getFirestoreAdmin, isServerSide } = jest.requireMock('@websites/infrastructure/firebase');
 const { updateEloScores } = jest.requireMock('../eloCalculator');
 
 import * as gameService from '../gameService';

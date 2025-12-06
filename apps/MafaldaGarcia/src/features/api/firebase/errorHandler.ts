@@ -4,7 +4,7 @@ import {
   createApiError, 
   isError, 
   createErrorLogger 
-} from '@/features/logging';
+} from '@websites/infrastructure/logging';
 
 /**
  * Type guard for Firebase-like errors

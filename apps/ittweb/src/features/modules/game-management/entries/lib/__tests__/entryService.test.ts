@@ -21,11 +21,11 @@ jest.mock('firebase/firestore', () => {
 
 const mockIsServerSide = jest.fn(() => false);
 
-jest.mock('@/features/infrastructure/api/firebase', () => ({
+jest.mock('@websites/infrastructure/api/firebase', () => ({
   getFirestoreInstance: jest.fn(() => ({})),
 }));
 
-jest.mock('@/features/infrastructure/api/firebase/admin', () => ({
+jest.mock('@websites/infrastructure/firebase', () => ({
   getFirestoreAdmin: jest.fn(() => ({ collection: jest.fn() })),
   isServerSide: mockIsServerSide,
   getAdminTimestamp: jest.fn(() => ({
@@ -34,13 +34,13 @@ jest.mock('@/features/infrastructure/api/firebase/admin', () => ({
   })),
 }));
 
-jest.mock('@/features/infrastructure/logging', () => ({
+jest.mock('@websites/infrastructure/logging', () => ({
   createComponentLogger: jest.fn(() => ({ info: jest.fn(), warn: jest.fn(), error: jest.fn() })),
   logError: jest.fn(),
 }));
 
 const { mockGetDoc } = jest.requireMock('firebase/firestore');
-const { isServerSide } = jest.requireMock('@/features/infrastructure/api/firebase/admin');
+const { isServerSide } = jest.requireMock('@websites/infrastructure/firebase');
 import { getEntryById } from '../entryService';
 
 describe('entryService', () => {

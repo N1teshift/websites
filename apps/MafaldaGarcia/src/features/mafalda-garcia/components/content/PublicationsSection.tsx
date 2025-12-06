@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { PublicationItem } from '../ui/PublicationItem';
-import { useFallbackTranslation } from '@/features/i18n';
+import { useFallbackTranslation } from '@websites/infrastructure/i18n';
 
 interface PublicationsSectionProps {
   images?: string[];

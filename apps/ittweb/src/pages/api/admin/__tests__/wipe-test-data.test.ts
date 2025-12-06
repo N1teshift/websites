@@ -16,7 +16,7 @@ const mockError = jest.fn();
 const mockWarn = jest.fn();
 const mockDebug = jest.fn();
 
-jest.mock('@/features/infrastructure/api/firebase/admin', () => ({
+jest.mock('@websites/infrastructure/firebase', () => ({
   getFirestoreAdmin: jest.fn(() => mockGetFirestoreAdmin()),
   getStorageAdmin: jest.fn(() => mockGetStorageAdmin()),
   getStorageBucketName: jest.fn(() => mockGetStorageBucketName()),
@@ -27,7 +27,7 @@ jest.mock('@/features/infrastructure/api/firebase/admin', () => ({
   })),
 }));
 
-jest.mock('@/features/infrastructure/logging', () => ({
+jest.mock('@websites/infrastructure/logging', () => ({
   createComponentLogger: jest.fn(() => ({
     info: mockInfo,
     error: mockError,
@@ -48,7 +48,7 @@ jest.mock('@/pages/api/auth/[...nextauth]', () => ({
 // userDataService.server is already mocked via the helper import
 
 const mockIsAdmin = jest.fn();
-jest.mock('@/features/infrastructure/utils/userRoleUtils', () => ({
+jest.mock('@websites/infrastructure/utils/userRoleUtils', () => ({
   isAdmin: (...args: unknown[]) => mockIsAdmin(...args),
 }));
 

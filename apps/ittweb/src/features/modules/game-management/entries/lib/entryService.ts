@@ -1,6 +1,6 @@
 import { Entry, CreateEntry, UpdateEntry } from '@/types/entry';
-import { createComponentLogger } from '@/features/infrastructure/logging';
-import { removeUndefined } from '@/features/infrastructure/utils';
+import { createComponentLogger } from '@websites/infrastructure/logging';
+import { removeUndefined } from '@websites/infrastructure/utils';
 import {
   transformEntryDoc,
   prepareEntryDataForFirestore,
@@ -69,10 +69,10 @@ export async function getLatestEntry(_contentType?: 'post' | 'memory'): Promise<
  */
 export async function updateEntry(id: string, updates: UpdateEntry): Promise<void> {
   logger.info('Updating entry', { id });
-  
+
   // Remove undefined values before updating
   const cleanedUpdates = removeUndefined(updates as unknown as Record<string, unknown>) as UpdateEntry;
-  
+
   return baseService.update(id, cleanedUpdates);
 }
 

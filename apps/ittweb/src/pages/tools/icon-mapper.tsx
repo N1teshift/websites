@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib/server';
+import { getStaticPropsWithTranslations } from '@websites/infrastructure/i18n';
 import { Section, ErrorBoundary } from '@/features/infrastructure/components';
 import { ITTIconCategory } from '@/features/modules/content/guides/utils/iconUtils';
 import { useIconMapperData } from '@/features/modules/tools-group/tools/hooks/useIconMapperData';

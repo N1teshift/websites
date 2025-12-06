@@ -1,6 +1,6 @@
 import type { GameWithPlayers } from '@/features/modules/game-management/games/types';
 import { syncGameAfterUpdate } from './gameOptimisticUpdates';
-import { createComponentLogger } from '@/features/infrastructure/logging';
+import { createComponentLogger } from '@websites/infrastructure/logging';
 
 const logger = createComponentLogger('gameEditUtils');
 

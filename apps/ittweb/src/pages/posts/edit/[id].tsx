@@ -115,7 +115,7 @@ export const getServerSideProps: GetServerSideProps<EditPostPageProps> = async (
 
         canEdit = userIsAdmin || userIsAuthor;
       } catch (error) {
-        const { logError } = await import('@/features/infrastructure/logging');
+        const { logError } = await import('@websites/infrastructure/logging');
         logError(error as Error, 'Failed to check permissions', {
           component: 'posts/edit/[id]',
           operation: 'getServerSideProps',
@@ -139,7 +139,7 @@ export const getServerSideProps: GetServerSideProps<EditPostPageProps> = async (
       },
     };
   } catch (error) {
-    const { logError } = await import('@/features/infrastructure/logging');
+    const { logError } = await import('@websites/infrastructure/logging');
     logError(error as Error, 'Failed to load post', {
       component: 'posts/edit/[id]',
       operation: 'getServerSideProps',

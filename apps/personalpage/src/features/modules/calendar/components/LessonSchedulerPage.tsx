@@ -10,7 +10,7 @@ import { getSuccessMessageKey } from "../utils/eventRegistrationUtils";
 import { RegistrationMethod, EventDetails } from "../types";
 
 import { CalendarEventClickInfo, CalendarSlotSelectInfo } from "../types";
-import ToastNotification from "@websites/ui";
+import { ToastNotification } from "@websites/ui";
 
 export default function LessonSchedulerPage() {
     // Calendar events data and operations
@@ -30,20 +30,20 @@ export default function LessonSchedulerPage() {
     const [registrationMethod, setRegistrationMethod] = useState<RegistrationMethod>(null);
     // Details of the event being created/edited
     const [eventDetails, setEventDetails] = useState<EventDetails | null>(null);
-    
+
     // Use refs to store the latest values to avoid infinite re-renders
     const eventDetailsRef = useRef<EventDetails | null>(null);
     const registrationMethodRef = useRef<RegistrationMethod>(null);
-    
+
     // Update refs when values change
     useEffect(() => {
         eventDetailsRef.current = eventDetails;
     }, [eventDetails]);
-    
+
     useEffect(() => {
         registrationMethodRef.current = registrationMethod;
     }, [registrationMethod]);
-    
+
     // Event success handler
     const { handleEventCreationSuccess, isProcessingSuccess } = useEventSuccessHandler({
         addTemporaryEvent,
@@ -55,7 +55,7 @@ export default function LessonSchedulerPage() {
         registrationMethod,
         setConfirmationErrorKey
     });
-    
+
     // Fetch events when component mounts or query changes
     useEventFetching({
         routerQuery: router.query,

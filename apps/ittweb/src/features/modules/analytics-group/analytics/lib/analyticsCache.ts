@@ -5,14 +5,14 @@
  * Uses Firestore-based caching for serverless environments.
  */
 
-import { 
-  getOrComputeAnalytics, 
-  invalidateAnalyticsCache as invalidateCache 
+import {
+  getOrComputeAnalytics,
+  invalidateAnalyticsCache as invalidateCache
 } from '@/features/infrastructure/lib/cache/analyticsCache.server';
-import { createRequestCache, type RequestCache } from '@/features/infrastructure/lib';
+import { createRequestCache, type RequestCache } from '@websites/infrastructure/cache';
 import { getGamesWithPlayers } from '@/features/modules/game-management/games/lib/gameService';
 import type { GameWithPlayers, GameFilters } from '@/features/modules/game-management/games/types';
-import { createComponentLogger } from '@/features/infrastructure/logging';
+import { createComponentLogger } from '@websites/infrastructure/logging';
 import { ANALYTICS_CACHE_CONFIGS } from './analyticsCacheConfig';
 
 const logger = createComponentLogger('analyticsCache');
@@ -35,7 +35,7 @@ export async function fetchGamesWithCache(
   requestCache: RequestCache
 ): Promise<GameWithPlayers[]> {
   const cacheKey = `games:${JSON.stringify(filters)}`;
-  
+
   return requestCache.getOrFetch(cacheKey, async () => {
     logger.debug('Fetching games with players', { filters });
     const result = await getGamesWithPlayers(filters);
@@ -53,8 +53,8 @@ export async function getCachedAnalytics<T>(
   computeFn: () => Promise<T>
 ): Promise<T> {
   return getOrComputeAnalytics(
-    analyticsType, 
-    filters as Record<string, unknown>, 
+    analyticsType,
+    filters as Record<string, unknown>,
     computeFn,
     ANALYTICS_CACHE_CONFIGS
   );

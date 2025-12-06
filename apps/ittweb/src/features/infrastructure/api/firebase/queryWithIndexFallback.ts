@@ -8,10 +8,9 @@
  * but may not be ready yet.
  */
 
-import { getFirestoreAdmin, isServerSide } from './admin';
-import { getFirestoreInstance } from './firebaseClient';
+import { getFirestoreAdmin, isServerSide, getFirestoreInstance } from '@websites/infrastructure/firebase';
 import { collection, getDocs } from 'firebase/firestore';
-import { createComponentLogger } from '@/features/infrastructure/logging';
+import { createComponentLogger } from '@websites/infrastructure/logging';
 
 /**
  * Options for query with index fallback
@@ -68,21 +67,21 @@ export async function queryWithIndexFallback<T>(
     return sort ? sort(result) : result;
   } catch (error: unknown) {
     const firestoreError = error as { code?: number | string; message?: string };
-    
+
     // Check if error is due to missing index
     // Admin SDK uses numeric code 9, Client SDK uses string 'failed-precondition'
-    const isIndexError = 
-      firestoreError?.code === 9 || 
+    const isIndexError =
+      firestoreError?.code === 9 ||
       firestoreError?.code === 'failed-precondition' ||
       firestoreError?.message?.includes('index') ||
       firestoreError?.message?.includes('index is currently building');
-    
+
     if (isIndexError) {
       logger.info('Index still building, falling back to in-memory filtering', { collectionName });
-      
+
       // Fallback: fetch all documents
       const allDocs: Array<{ data: () => Record<string, unknown>; id: string }> = [];
-      
+
       if (isServerSide()) {
         const adminDb = getFirestoreAdmin();
         const snapshot = await adminDb.collection(collectionName).get();
@@ -96,15 +95,15 @@ export async function queryWithIndexFallback<T>(
           allDocs.push({ data: () => docSnap.data(), id: docSnap.id });
         });
       }
-      
+
       // Apply fallback filter
       const filteredDocs = fallbackFilter(allDocs);
-      
+
       // Transform and sort
       const result = transform(filteredDocs);
       return sort ? sort(result) : result;
     }
-    
+
     // Re-throw if it's a different error
     throw error;
   }

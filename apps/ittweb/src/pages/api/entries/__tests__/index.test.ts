@@ -14,7 +14,7 @@ jest.mock('@/features/modules/game-management/entries/lib/entryService', () => (
   createEntry: (...args: unknown[]) => mockCreateEntry(...args),
 }));
 
-jest.mock('@/features/infrastructure/logging', () => ({
+jest.mock('@websites/infrastructure/logging', () => ({
   createComponentLogger: jest.fn(() => ({
     info: mockInfo,
     error: mockError,

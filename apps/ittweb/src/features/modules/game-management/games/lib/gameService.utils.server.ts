@@ -5,8 +5,8 @@
  * Client-safe utilities are in gameService.utils.ts
  */
 
-import { getFirestoreAdmin } from '@/features/infrastructure/api/firebase/admin';
-import { createComponentLogger, logError } from '@/features/infrastructure/logging';
+import { getFirestoreAdmin } from '@websites/infrastructure/firebase';
+import { createComponentLogger, logError } from '@websites/infrastructure/logging';
 import { queryWithIndexFallback } from '@/features/infrastructure/api/firebase/queryWithIndexFallback';
 
 const GAMES_COLLECTION = 'games';
@@ -23,17 +23,17 @@ export async function getNextGameId(): Promise<number> {
       collectionName: GAMES_COLLECTION,
       executeQuery: async () => {
         const docs: Array<{ data: () => Record<string, unknown>; id: string }> = [];
-        
+
         const adminDb = getFirestoreAdmin();
         const querySnapshot = await adminDb.collection(GAMES_COLLECTION)
           .orderBy('gameId', 'desc')
           .limit(1)
           .get();
-        
+
         querySnapshot.forEach((doc) => {
           docs.push({ data: () => doc.data(), id: doc.id });
         });
-        
+
         return docs;
       },
       fallbackFilter: (docs) => {

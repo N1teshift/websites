@@ -4,11 +4,11 @@ import UploadReplayModal from '../UploadReplayModal';
 import type { Game } from '@/features/modules/game-management/games/types';
 
 // Mock the modal accessibility hook
-jest.mock('@/features/infrastructure/hooks/useModalAccessibility', () => ({
+jest.mock('@websites/infrastructure/hooks/useModalAccessibility', () => ({
   useModalAccessibility: jest.fn(() => ({ current: null })),
 }));
 
-const mockUseModalAccessibility = require('@/features/infrastructure/hooks/useModalAccessibility').useModalAccessibility;
+const mockUseModalAccessibility = require('@websites/infrastructure/hooks/useModalAccessibility').useModalAccessibility;
 
 // Mock fetch
 const mockFetch = jest.fn();

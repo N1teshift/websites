@@ -1,4 +1,4 @@
-import { createComponentLogger } from '@/features/infrastructure/logging';
+import { createComponentLogger } from '@websites/infrastructure/logging';
 
 const logger = createComponentLogger('eloCalculator');
 
@@ -125,9 +125,9 @@ export async function updateEloScores(gameId: string): Promise<void> {
     }
 
     // Update game players with ELO changes
-    const { getFirestoreAdmin, isServerSide } = await import('@/features/infrastructure/api/firebase/admin');
+    const { getFirestoreAdmin, isServerSide } = await import('@websites/infrastructure/firebase');
     const { doc, updateDoc, getDocs, collection } = await import('firebase/firestore');
-    const { getFirestoreInstance } = await import('@/features/infrastructure/api/firebase');
+    const { getFirestoreInstance } = await import('@websites/infrastructure/firebase');
 
     if (isServerSide()) {
       const adminDb = getFirestoreAdmin();
@@ -283,9 +283,9 @@ export async function recalculateFromGame(gameId: string): Promise<void> {
 
     // Roll back player stats to ELOs before the target game
     // This is done by updating player stats directly
-    const { getFirestoreAdmin, isServerSide } = await import('@/features/infrastructure/api/firebase/admin');
+    const { getFirestoreAdmin, isServerSide } = await import('@websites/infrastructure/firebase');
     const { doc, updateDoc, getDocs, collection, query, where } = await import('firebase/firestore');
-    const { getFirestoreInstance } = await import('@/features/infrastructure/api/firebase');
+    const { getFirestoreInstance } = await import('@websites/infrastructure/firebase');
 
     if (isServerSide()) {
       const adminDb = getFirestoreAdmin();

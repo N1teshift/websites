@@ -12,7 +12,7 @@ jest.mock('@/features/modules/game-management/games/lib/gameService', () => ({
   joinGame: (...args: unknown[]) => mockJoinGame(...args),
 }));
 
-jest.mock('@/features/infrastructure/logging', () => ({
+jest.mock('@websites/infrastructure/logging', () => ({
   createComponentLogger: jest.fn(() => ({
     info: mockInfo,
     error: mockError,

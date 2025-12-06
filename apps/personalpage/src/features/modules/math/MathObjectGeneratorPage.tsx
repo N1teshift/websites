@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { Button, LoadingOverlay } from "@websites/ui";
-import MathItemsDisplay from "@websites/ui";
+import MathItemsDisplay from "./shared/components/MathItemsDisplay";
 
 import { MathObjectSettings, InterfaceType, DEFAULT_MATH_OBJECT_SETTINGS } from "@math/types/index";
 import MathObjectSettingsListContainer from "@math/mathObjectSettings/components/MathObjectSettingsListContainer";

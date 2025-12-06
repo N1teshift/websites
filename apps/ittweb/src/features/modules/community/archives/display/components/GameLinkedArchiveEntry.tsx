@@ -4,14 +4,14 @@ import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { Card } from '@/features/infrastructure/components';
 import { formatDuration } from '@/features/modules/shared/utils';
-import { timestampToIso } from '@/features/infrastructure/utils';
+import { timestampToIso } from '@websites/infrastructure/utils';
 import { formatDateTimeInTimezone } from '@/features/modules/game-management/scheduled-games/utils/timezoneUtils';
 import type { ArchiveEntry } from '@/types/archive';
 import type { GameWithPlayers } from '@/features/modules/game-management/games/types';
 import { GamePlayersSection } from './GamePlayersSection';
 import YouTubeEmbed from '../../media/components/YouTubeEmbed';
 import TwitchClipEmbed from '../../media/components/TwitchClipEmbed';
-import { createComponentLogger } from '@/features/infrastructure/logging';
+import { createComponentLogger } from '@websites/infrastructure/logging';
 
 /**
  * Extract version from map path

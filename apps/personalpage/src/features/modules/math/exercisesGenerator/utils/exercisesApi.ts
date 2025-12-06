@@ -1,5 +1,5 @@
 import { BookDocumentData, ExerciseDocumentData } from "../types";
-import { fetchData, saveData } from "@websites/infrastructure/api";
+import { fetchData, saveData } from "@/lib/api-client";
 
 export type UpdatedData = Partial<ExerciseDocumentData>;
 

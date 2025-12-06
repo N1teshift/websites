@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import type { ArchiveEntry as ArchiveEntryType } from '@/types/archive';
 import type { GameWithPlayers } from '@/features/modules/game-management/games/types';
 import { useGame } from '@/features/modules/game-management/games/hooks/useGame';
-import { createComponentLogger, logError } from '@/features/infrastructure/logging';
+import { createComponentLogger, logError } from '@websites/infrastructure/logging';
 import { GameLinkedArchiveEntry } from './GameLinkedArchiveEntry';
 import { NormalArchiveEntry } from './NormalArchiveEntry';
 

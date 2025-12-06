@@ -1,17 +1,17 @@
-import { 
-  collection, 
-  addDoc, 
-  updateDoc, 
-  doc, 
-  Timestamp 
+import {
+  collection,
+  addDoc,
+  updateDoc,
+  doc,
+  Timestamp
 } from 'firebase/firestore';
-import { 
-  ref, 
-  uploadBytes, 
+import {
+  ref,
+  uploadBytes,
   getDownloadURL
 } from 'firebase/storage';
-import { timestampToIso } from '@/features/infrastructure/utils';
-import { getFirestoreInstance, getStorageInstance } from '@/features/infrastructure/api/firebase';
+import { timestampToIso } from '@websites/infrastructure/utils';
+import { getFirestoreInstance, getStorageInstance } from '@websites/infrastructure/firebase';
 
 // Check if we're on the client side
 const isClient = typeof window !== 'undefined';
@@ -39,19 +39,19 @@ const compressImage = async (file: File): Promise<File> => {
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d')!;
     const img = new Image();
-    
+
     img.onload = () => {
       // Calculate new dimensions (max 1920px width)
       const maxWidth = 1920;
       const ratio = Math.min(maxWidth / img.width, 1);
       const newWidth = img.width * ratio;
       const newHeight = img.height * ratio;
-      
+
       canvas.width = newWidth;
       canvas.height = newHeight;
-      
+
       ctx.drawImage(img, 0, 0, newWidth, newHeight);
-      
+
       canvas.toBlob((blob) => {
         if (blob) {
           const compressedFile = new File([blob], file.name, {
@@ -64,7 +64,7 @@ const compressImage = async (file: File): Promise<File> => {
         }
       }, 'image/jpeg', 0.8);
     };
-    
+
     img.src = URL.createObjectURL(file);
   });
 };
@@ -76,21 +76,21 @@ export const uploadImage = async (file: File, entryId?: string): Promise<string>
   if (!isClient) {
     throw new Error('Upload is only available on the client side');
   }
-  
+
   if (file.size > MAX_IMAGE_SIZE) {
     throw new Error('File size too large. Maximum size is 5MB.');
   }
 
   const compressedFile = await compressImage(file);
   const timestamp = Date.now();
-  const fileName = entryId 
+  const fileName = entryId
     ? `archives/${entryId}/images/${timestamp}_${file.name}`
     : `archives/${timestamp}_${file.name}`;
   const storageRef = ref(storage, fileName);
-  
+
   await uploadBytes(storageRef, compressedFile);
   const downloadURL = await getDownloadURL(storageRef);
-  
+
   return downloadURL;
 };
 
@@ -136,12 +136,12 @@ export const extractYouTubeId = (url: string): string | null => {
   const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
   const match = url.match(regExp);
   const videoId = (match && match[2].length === 11) ? match[2] : null;
-  
+
   // Additional validation to ensure it's a valid YouTube video ID
   if (videoId && /^[a-zA-Z0-9_-]{11}$/.test(videoId)) {
     return videoId;
   }
-  
+
   return null;
 };
 
@@ -176,7 +176,7 @@ export const createArchiveEntry = async (entry: CreateArchiveEntry): Promise<str
   if (!isClient) {
     throw new Error('Creating entries is only available on the client side');
   }
-  
+
   const docRef = await addDoc(collection(db, ARCHIVE_COLLECTION), {
     ...entry,
     isDeleted: false,
@@ -184,7 +184,7 @@ export const createArchiveEntry = async (entry: CreateArchiveEntry): Promise<str
     createdAt: Timestamp.now(),
     updatedAt: Timestamp.now()
   });
-  
+
   return docRef.id;
 };
 
@@ -194,14 +194,14 @@ export const getArchiveEntries = async (): Promise<ArchiveEntry[]> => {
   if (!isClient) {
     throw new Error('Fetching entries is only available on the client side');
   }
-  
+
   try {
     const response = await fetch('/api/archives');
     if (!response.ok) {
       throw new Error(`Failed to fetch archives: ${response.statusText}`);
     }
     const data = await response.json();
-    
+
     // Handle both direct array response and { success: true, data: [...] } format
     if (Array.isArray(data)) {
       return data;
@@ -220,7 +220,7 @@ export const updateArchiveEntry = async (id: string, updates: Partial<CreateArch
   if (!isClient) {
     throw new Error('Updating entries is only available on the client side');
   }
-  
+
   const docRef = doc(db, ARCHIVE_COLLECTION, id);
   await updateDoc(docRef, {
     ...updates,
@@ -233,7 +233,7 @@ export const deleteArchiveEntry = async (id: string): Promise<void> => {
   if (!isClient) {
     throw new Error('Deleting entries is only available on the client side');
   }
-  
+
   const docRef = doc(db, ARCHIVE_COLLECTION, id);
   await updateDoc(docRef, {
     isDeleted: true,
@@ -245,8 +245,8 @@ export const deleteArchiveEntry = async (id: string): Promise<void> => {
 // Sort entries by creation date (when the record was added to the system)
 export const sortArchiveEntries = (entries: ArchiveEntry[], order: 'newest' | 'oldest' = 'newest'): ArchiveEntry[] => {
   return entries.sort((a, b) => {
-      const timeA = new Date(timestampToIso(a.createdAt)).getTime();
-      const timeB = new Date(timestampToIso(b.createdAt)).getTime();
+    const timeA = new Date(timestampToIso(a.createdAt)).getTime();
+    const timeB = new Date(timestampToIso(b.createdAt)).getTime();
     return order === 'newest' ? timeB - timeA : timeA - timeB;
   });
 };

@@ -6,9 +6,9 @@
  */
 
 import { Timestamp } from 'firebase/firestore';
-import { getFirestoreAdmin, getAdminTimestamp } from '@/features/infrastructure/api/firebase/admin';
-import { createComponentLogger, logError } from '@/features/infrastructure/logging';
-import { removeUndefined } from '@/features/infrastructure/utils';
+import { getFirestoreAdmin, getAdminTimestamp } from '@websites/infrastructure/firebase';
+import { createComponentLogger, logError } from '@websites/infrastructure/logging';
+import { removeUndefined } from '@websites/infrastructure/utils';
 import { invalidateAnalyticsCache } from '@/features/infrastructure/lib/cache/analyticsCache.server';
 import type {
   CreateGame,

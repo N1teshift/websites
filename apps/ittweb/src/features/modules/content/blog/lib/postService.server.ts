@@ -5,15 +5,15 @@
  * These functions use Firebase Admin SDK and should only be used in API routes.
  */
 
-import { getFirestoreAdmin } from '@/features/infrastructure/api/firebase/admin';
+import { getFirestoreAdmin } from '@websites/infrastructure/firebase';
 import { Post } from '@/types/post';
-import { createComponentLogger } from '@/features/infrastructure/logging';
+import { createComponentLogger } from '@websites/infrastructure/logging';
 import {
   transformPostDoc,
   sortPostsByDate,
 } from './postService.helpers';
 import { queryWithIndexFallback } from '@/features/infrastructure/api/firebase/queryWithIndexFallback';
-import { withServiceOperationNullable } from '@/features/infrastructure/utils';
+// import { withServiceOperationNullable } from '@websites/infrastructure/utils'; // Function doesn't exist
 
 const POSTS_COLLECTION = 'posts';
 const logger = createComponentLogger('postService');
@@ -25,7 +25,7 @@ export async function getAllPosts(includeUnpublished: boolean = false): Promise<
   logger.info('Fetching all posts', { includeUnpublished });
 
   const adminDb = getFirestoreAdmin();
-  
+
   return queryWithIndexFallback({
     collectionName: POSTS_COLLECTION,
     executeQuery: async () => {
@@ -34,7 +34,7 @@ export async function getAllPosts(includeUnpublished: boolean = false): Promise<
       if (!includeUnpublished) {
         adminQuery = adminQuery.where('published', '==', true) as ReturnType<ReturnType<typeof adminDb.collection>['where']>;
       }
-      
+
       adminQuery = adminQuery.orderBy('date', 'desc') as ReturnType<ReturnType<ReturnType<typeof adminDb.collection>['where']>['orderBy']>;
       const querySnapshot = await adminQuery.get();
 
@@ -61,12 +61,11 @@ export async function getAllPosts(includeUnpublished: boolean = false): Promise<
  * Get the latest published post (Server-Only)
  */
 export async function getLatestPost(): Promise<Post | null> {
-  return withServiceOperationNullable(
-    'getLatestPost',
-    'postService',
-    async () => {
-      const posts = await getAllPosts(false);
-      return posts.length > 0 ? posts[0] : null;
-    }
-  );
+  try {
+    const posts = await getAllPosts(false);
+    return posts.length > 0 ? posts[0] : null;
+  } catch (error) {
+    logger.error('Failed to get latest post', error as Error);
+    return null;
+  }
 }

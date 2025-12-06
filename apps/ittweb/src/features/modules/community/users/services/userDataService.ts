@@ -6,9 +6,9 @@ import {
   deleteDoc,
   serverTimestamp,
 } from 'firebase/firestore';
-import { getFirestoreInstance } from '@/features/infrastructure/api/firebase';
+import { getFirestoreInstance } from '@websites/infrastructure/firebase';
 import { UserData, CreateUserData } from '@/types/userData';
-import { createComponentLogger, logError } from '@/features/infrastructure/logging';
+import { createComponentLogger, logError } from '@websites/infrastructure/logging';
 
 const USER_DATA_COLLECTION = 'userData';
 const logger = createComponentLogger('userDataService');
@@ -35,10 +35,10 @@ export async function saveUserData(userData: CreateUserData): Promise<void> {
     const db = getFirestoreInstance();
     // Use discordId as the document ID for easier lookups
     const docRef = doc(db, USER_DATA_COLLECTION, userData.discordId);
-    
+
     // Check if document already exists
     const docSnap = await getDoc(docRef);
-    
+
     // Remove undefined values before saving (Firestore doesn't allow undefined)
     const cleanedUserData = removeUndefined(userData as unknown as Record<string, unknown>);
     const userDataWithTimestamps = {
@@ -50,9 +50,9 @@ export async function saveUserData(userData: CreateUserData): Promise<void> {
     if (docSnap.exists()) {
       // User exists, update the document
       await updateDoc(docRef, userDataWithTimestamps);
-      logger.info('User data updated', { 
+      logger.info('User data updated', {
         discordId: userData.discordId,
-        documentId: userData.discordId 
+        documentId: userData.discordId
       });
     } else {
       // User doesn't exist, create new document
@@ -60,9 +60,9 @@ export async function saveUserData(userData: CreateUserData): Promise<void> {
         ...userDataWithTimestamps,
         createdAt: serverTimestamp(),
       });
-      logger.info('User data created', { 
+      logger.info('User data created', {
         discordId: userData.discordId,
-        documentId: userData.discordId 
+        documentId: userData.discordId
       });
     }
   } catch (error) {
@@ -175,7 +175,7 @@ export async function deleteUserData(discordId: string): Promise<void> {
 
     const db = getFirestoreInstance();
     const docRef = doc(db, USER_DATA_COLLECTION, discordId);
-    
+
     // Check if document exists
     const docSnap = await getDoc(docRef);
     if (!docSnap.exists()) {
@@ -208,7 +208,7 @@ export async function updateDataCollectionNoticeAcceptance(
 
     const db = getFirestoreInstance();
     const docRef = doc(db, USER_DATA_COLLECTION, discordId);
-    
+
     await updateDoc(docRef, {
       dataCollectionNoticeAccepted: accepted,
       updatedAt: serverTimestamp(),

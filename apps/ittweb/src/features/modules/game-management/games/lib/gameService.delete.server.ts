@@ -5,8 +5,8 @@
  * These functions use Firebase Admin SDK and should only be used in API routes.
  */
 
-import { getFirestoreAdmin } from '@/features/infrastructure/api/firebase/admin';
-import { logError } from '@/features/infrastructure/logging';
+import { getFirestoreAdmin } from '@websites/infrastructure/firebase';
+import { logError } from '@websites/infrastructure/logging';
 import { invalidateAnalyticsCache } from '@/features/infrastructure/lib/cache/analyticsCache.server';
 
 const GAMES_COLLECTION = 'games';
@@ -30,7 +30,7 @@ export async function deleteGame(id: string): Promise<void> {
     // TODO: Rollback ELO changes
 
     // Invalidate analytics cache
-    invalidateAnalyticsCache().catch(() => {});
+    invalidateAnalyticsCache().catch(() => { });
   } catch (error) {
     const err = error as Error;
     logError(err, 'Failed to delete game', {

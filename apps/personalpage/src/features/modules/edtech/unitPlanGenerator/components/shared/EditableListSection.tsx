@@ -1,7 +1,7 @@
 import React from 'react';
 import { useFallbackTranslation } from '@websites/infrastructure/i18n/client';
 import { FiTrash2 } from 'react-icons/fi';
-import IconButton from '@websites/ui';
+import { IconButton } from '@websites/ui';
 
 interface EditableListSectionProps {
   title: string;
@@ -40,7 +40,7 @@ const EditableListSection: React.FC<EditableListSectionProps> = ({
           {addButtonText || t('add_item')}
         </button>
       </div>
-      
+
       <div className="space-y-2">
         {items.map((item, index) => (
           <div key={index} className="flex items-start space-x-2">

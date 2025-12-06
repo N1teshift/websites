@@ -3,7 +3,7 @@ import { useGame } from '../useGame';
 import type { GameWithPlayers } from '../../types';
 
 // Mock logger
-jest.mock('@/features/infrastructure/logging', () => ({
+jest.mock('@websites/infrastructure/logging', () => ({
   logError: jest.fn(),
 }));
 

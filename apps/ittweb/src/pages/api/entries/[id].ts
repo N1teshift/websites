@@ -1,11 +1,11 @@
 import type { NextApiRequest } from 'next';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../auth/[...nextauth]';
-import { createApiHandler, zodValidator } from '@/features/infrastructure/api';
+import { createApiHandler, zodValidator } from '@/lib/api-wrapper';
 import { UpdateEntrySchema } from '@/features/modules/game-management/entries/lib';
 import { getEntryById, updateEntry, deleteEntry } from '@/features/modules/game-management/entries/lib/entryService';
 import { UpdateEntry } from '@/types/entry';
-import { createComponentLogger } from '@/features/infrastructure/logging';
+import { createComponentLogger } from '@websites/infrastructure/logging';
 import type { Entry } from '@/types/entry';
 
 const logger = createComponentLogger('api/entries/[id]');
@@ -44,7 +44,7 @@ export default createApiHandler<Entry | { success: boolean }>(
       const updates: UpdateEntry = req.body;
       await updateEntry(id, updates);
       logger.info('Entry updated', { id });
-      
+
       return { success: true };
     }
 
@@ -57,7 +57,7 @@ export default createApiHandler<Entry | { success: boolean }>(
 
       await deleteEntry(id);
       logger.info('Entry deleted', { id });
-      
+
       return { success: true };
     }
 

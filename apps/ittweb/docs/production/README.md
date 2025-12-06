@@ -25,11 +25,10 @@ This section contains documentation that will remain when the ITT Web project is
 - **[User Roles](./product/user-roles.md)** - Access and permissions
 
 ### Security
-- **[Authentication & Authorization](./security/authentication-authorization.md)** - User auth and permissions
-- **[Input Validation](./security/input-validation.md)** - Data validation patterns
-- **[Web Security](./security/web-security.md)** - Web security best practices
-- **[Secrets Management](./security/secrets-management.md)** - Secret handling
-- **[Automated Scanning](./security/automated-scanning.md)** - Security scanning setup
+> **📦 Infrastructure Security Documentation**: See [@websites/infrastructure/docs/guides/security.md](../../../../packages/infrastructure/docs/guides/security.md) for consolidated security best practices.
+
+- **[Authentication & Authorization](../../../../packages/infrastructure/docs/guides/authentication.md)** - Authentication and authorization patterns
+- **[Security Guide](../../../../packages/infrastructure/docs/guides/security.md)** - Complete security best practices (includes input validation, web security, secrets management, automated scanning)
 
 ## 🎯 Purpose
 

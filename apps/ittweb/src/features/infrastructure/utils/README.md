@@ -1,77 +1,41 @@
-# Infrastructure Utils
+# Utils
 
-> Date: 2025-12-03
+**Status**: ✅ **MIGRATED** - Now uses `@websites/infrastructure/utils`
 
-Utility functions for infrastructure-level operations. This directory contains organized utility modules for common operations across the application.
-
-## Structure
-
-This directory is organized into subfolders by functionality:
-
-- **`time/`** - Timestamp and date/time utilities
-- **`server/`** - Server-side detection and utilities
-- **`object/`** - Object manipulation utilities
-- **`service/`** - Service operation wrappers and helpers
-- **`accessibility/`** - Accessibility helper functions
+All utility functions have been migrated to the shared package. This directory now only contains project-specific utilities.
 
 ## Usage
 
-All utilities are exported from the main `index.ts` file, so you can import them directly:
+Import utilities from the shared package:
 
 ```typescript
-import { timestampToIso, removeUndefined } from '@/features/infrastructure/utils';
+import { 
+  timestampToIso, 
+  removeUndefined,
+  cn,
+  getElementsWithAriaLabels,
+  // ... other utilities
+} from '@websites/infrastructure/utils';
 ```
 
-Or import from specific subfolders if you prefer:
+Or use the re-exported index:
 
 ```typescript
-import { timestampToIso } from '@/features/infrastructure/utils/time/timestampUtils';
+import { timestampToIso } from '@/features/infrastructure/utils';
 ```
 
-## Modules
+## Project-Specific Utilities
 
-### Time Utilities (`time/`)
+The following utilities remain in this directory as they are project-specific:
 
-Timestamp and date/time conversion utilities for Firestore.
+- `service/serviceOperationWrapper.ts` - Service operation wrapper for ittweb-specific error handling
 
-- `timestampToIso()` - Convert Firestore timestamps to ISO strings
-- `createTimestampFactory()` - Create timestamp factory for current environment
-- `createTimestampFactoryAsync()` - Async version that ensures admin factory is initialized
-- `createClientTimestampFactory()` - Create factory using Client SDK
-- `createAdminTimestampFactoryAsync()` - Create factory using Admin SDK (server-side only)
+## Available Utilities (from shared package)
 
-### Server Utilities (`server/`)
+- **Object utilities**: `removeUndefined`, `pick`, `omit`, etc.
+- **Time utilities**: `timestampToIso`, timestamp factories, etc.
+- **Accessibility helpers**: `getElementsWithAriaLabels`, `getFocusableElementsInOrder`, etc.
+- **ClassName utility**: `cn` function for Tailwind class merging
+- **Server utilities**: `isServerSide`, etc.
 
-Server-side detection utilities.
-
-- `isServerSide()` - Check if code is running on the server
-- `isClientSide()` - Check if code is running on the client
-
-### Object Utilities (`object/`)
-
-Object manipulation utilities.
-
-- `removeUndefined()` - Remove undefined values from objects (Firestore doesn't allow undefined)
-
-### Service Utilities (`service/`)
-
-Service operation wrappers for consistent error handling.
-
-- `withServiceOperation()` - Wrap async service operations with error handling
-- `withServiceOperationSync()` - Wrap synchronous service operations
-- `withServiceOperationNullable()` - Wrap operations that may return null
-
-### Accessibility Utilities (`accessibility/`)
-
-Accessibility helper functions for ARIA labels, keyboard navigation, and screen reader support.
-
-## Best Practices
-
-1. **Use the index exports**: Import from `@/features/infrastructure/utils` when possible for better maintainability
-2. **Prefer async timestamp factories**: Use `createTimestampFactoryAsync()` in server-side code
-3. **Use service operation wrappers**: Wrap service operations with `withServiceOperation()` for consistent error handling
-4. **Avoid direct imports**: Prefer importing from the main index unless you need a specific submodule
-
-## Testing
-
-Test files are located alongside their corresponding utility files in `__tests__/` subdirectories within each module folder.
+See `@websites/infrastructure/utils` for complete documentation.

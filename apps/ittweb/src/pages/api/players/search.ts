@@ -1,5 +1,5 @@
 import type { NextApiRequest } from 'next';
-import { createApiHandler, parseQueryString } from '@/features/infrastructure/api';
+import { createApiHandler, parseQueryString } from '@websites/infrastructure/api';
 import { searchPlayers } from '@/features/modules/community/players/lib/playerService';
 
 /**

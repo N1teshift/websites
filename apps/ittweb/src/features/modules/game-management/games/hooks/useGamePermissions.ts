@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
-import { Logger } from '@/features/infrastructure/logging';
+import { Logger } from '@websites/infrastructure/logging';
 import { isAdmin } from '@/features/modules/community/users';
 import type { GameWithPlayers } from '@/features/modules/game-management/games/types';
 import type { UserRole } from '@/types/userData';

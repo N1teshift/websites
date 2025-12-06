@@ -1,6 +1,6 @@
-import { createComponentLogger, logError } from '@/features/infrastructure/logging';
+import { createComponentLogger, logError } from '@websites/infrastructure/logging';
 import { getGamesWithPlayers } from '../../../game-management/games/lib/gameService';
-import { timestampToIso } from '@/features/infrastructure/utils';
+import { timestampToIso } from '@websites/infrastructure/utils';
 import type { 
   ActivityDataPoint, 
   EloHistoryDataPoint, 

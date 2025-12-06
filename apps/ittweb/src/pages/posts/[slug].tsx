@@ -1,7 +1,7 @@
 import { GetServerSideProps } from 'next';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../api/auth/[...nextauth]';
-import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib/server';
+import { getStaticPropsWithTranslations } from '@websites/infrastructure/i18n';
 import BlogPost from '@/features/modules/content/blog/components/BlogPost';
 import PostDeleteDialog from '@/features/modules/content/blog/components/PostDeleteDialog';
 import { MDXRemote } from 'next-mdx-remote';

@@ -9,7 +9,7 @@ import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import { appWithTranslation } from "next-i18next";
 import 'nprogress/nprogress.css';
-import ProgressBar from "../features/shared/components/ui/ProgressBar"; 
+import { ProgressBar } from "@websites/ui"; 
 
 // Add error suppression for HMR warnings in development
 if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {

@@ -40,7 +40,7 @@ jest.mock('firebase-admin/storage', () => ({
   })),
 }));
 
-jest.mock('@/features/infrastructure/api/firebase/admin', () => {
+jest.mock('@websites/infrastructure/firebase', () => {
   const mockStorageAdminFn = jest.fn();
   const mockStorageBucketNameFn = jest.fn();
   const mockFirestoreAdminFn = jest.fn();
@@ -59,7 +59,7 @@ jest.mock('@/features/infrastructure/api/firebase/admin', () => {
   };
 });
 
-jest.mock('@/features/infrastructure/logging', () => ({
+jest.mock('@websites/infrastructure/logging', () => ({
   createComponentLogger: jest.fn(() => ({
     info: mockInfo,
     error: mockError,
@@ -194,7 +194,7 @@ describe('POST /api/games/upload-replay', () => {
 
     // Setup Firebase Storage mock
     // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const adminModule = require('@/features/infrastructure/api/firebase/admin') as any;
+    const adminModule = require('@websites/infrastructure/firebase') as any;
     adminModule.__mockStorageBucketName.mockReturnValue('test-bucket');
     const mockStorage = {
       bucket: jest.fn(() => mockBucket),

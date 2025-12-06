@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import type { Game, GameWithPlayers } from '@/features/modules/game-management/games/types';
-import { createComponentLogger } from '@/features/infrastructure/logging';
+import { createComponentLogger } from '@websites/infrastructure/logging';
 
 const logger = createComponentLogger('useTimelineGames');
 

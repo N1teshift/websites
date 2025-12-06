@@ -5,8 +5,8 @@
  * These functions use Firebase Admin SDK and should only be used in API routes.
  */
 
-import { getFirestoreAdmin } from '@/features/infrastructure/api/firebase/admin';
-import { createComponentLogger, logError } from '@/features/infrastructure/logging';
+import { getFirestoreAdmin } from '@websites/infrastructure/firebase';
+import { createComponentLogger, logError } from '@websites/infrastructure/logging';
 import { queryWithIndexFallback } from '@/features/infrastructure/api/firebase/queryWithIndexFallback';
 import type { StandingsEntry, StandingsResponse, StandingsFilters } from '../types';
 import {
@@ -71,7 +71,7 @@ async function getStandingsOptimized(
   pageLimit: number
 ): Promise<StandingsResponse> {
   const fetchLimit = Math.max(pageLimit * 3, 100);
-  
+
   // Get total count for pagination
   let total: number | undefined;
   try {
@@ -90,7 +90,7 @@ async function getStandingsOptimized(
     collectionName: PLAYER_CATEGORY_STATS_COLLECTION,
     executeQuery: async () => {
       const docs: Array<{ data: () => Record<string, unknown>; id: string }> = [];
-      
+
       const adminDb = getFirestoreAdmin();
       const standingsQuery = adminDb
         .collection(PLAYER_CATEGORY_STATS_COLLECTION)
@@ -103,7 +103,7 @@ async function getStandingsOptimized(
       snapshot.forEach((doc) => {
         docs.push({ data: () => doc.data(), id: doc.id });
       });
-      
+
       return docs;
     },
     fallbackFilter: (docs) => {
@@ -137,10 +137,10 @@ async function getStandingsLegacy(
   pageLimit: number
 ): Promise<StandingsResponse> {
   const adminDb = getFirestoreAdmin();
-  
+
   // Get all player stats
   const snapshot = await adminDb.collection(PLAYER_STATS_COLLECTION).get();
-  
+
   const standings: StandingsEntry[] = [];
   snapshot.forEach((doc) => {
     const entry = createStandingsEntryFromLegacy(doc.data(), doc.id, category, minGames);
@@ -148,7 +148,7 @@ async function getStandingsLegacy(
       standings.push(entry);
     }
   });
-  
+
   return processStandingsEntries(standings, page, pageLimit, standings.length);
 }
 

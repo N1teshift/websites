@@ -2,8 +2,8 @@ import { useCallback } from 'react';
 import type { ArchiveEntry } from '@/types/archive';
 import type { Entry } from '@/types/entry';
 import { convertEntryToArchiveEntry } from '@/features/modules/community/archives/shared/utils/entryToArchiveEntry';
-import { timestampToIso } from '@/features/infrastructure/utils';
-import { createComponentLogger } from '@/features/infrastructure/logging';
+import { timestampToIso } from '@websites/infrastructure/utils';
+import { createComponentLogger } from '@websites/infrastructure/logging';
 
 const logger = createComponentLogger('useTimelineEntries');
 

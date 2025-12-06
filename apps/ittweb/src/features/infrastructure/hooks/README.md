@@ -1,64 +1,33 @@
-# Infrastructure Hooks
+# Hooks
 
-> Date: 2025-12-03
+**Status**: ✅ **MIGRATED** - Now uses `@websites/infrastructure/hooks`
 
-Reusable React hooks for common infrastructure functionality.
-
-## Structure
-
-This directory contains organized hooks grouped by functionality:
-
-- **`data-fetch/`** - Data fetching hooks and utilities
-- **`translation/`** - Internationalization hooks
-- **`accessibility/`** - Accessibility-focused hooks
-
-## Available Hooks
-
-### Data Fetching
-
-The `data-fetch` directory contains hooks for data fetching with support for both SWR and non-SWR modes.
-
-- `useDataFetch` - Generic data fetching hook factory
-- `createDataFetchHook` - Factory function for creating custom data fetching hooks
-- `createUrlDataFetchHook` - Convenience function for URL-based fetching
-- `createSwrFetcher` - SWR fetcher with standard API response format handling
-- `createApiFetcher` - Standard API fetcher function
-
-See [data-fetch/useDataFetch.md](./data-fetch/useDataFetch.md) for detailed documentation.
-
-### Translation
-
-The `translation` directory contains hooks for internationalization.
-
-- `useFallbackTranslation` - Translation hook with namespace fallback mechanism
-
-### Accessibility
-
-The `accessibility` directory contains hooks for improving accessibility.
-
-- `useModalAccessibility` - Hook for modal accessibility features (Escape key, focus management, focus trap)
+All hooks have been migrated to the shared package. This directory now only re-exports from the shared package.
 
 ## Usage
 
-All hooks are exported from the main `index.ts` file:
+Import hooks from the shared package:
 
 ```typescript
 import { 
-  createDataFetchHook, 
-  useFallbackTranslation, 
-  useModalAccessibility 
-} from '@/features/infrastructure/hooks';
+  useDataFetch,
+  createUrlDataFetchHook,
+  useFallbackTranslation,
+  useModalAccessibility
+} from '@websites/infrastructure/hooks';
 ```
 
-## Direct Imports
-
-For better tree-shaking, you can also import directly from subdirectories:
+Or use the re-exported index:
 
 ```typescript
-import { createDataFetchHook } from '@/features/infrastructure/hooks/data-fetch/useDataFetch';
-import { useFallbackTranslation } from '@/features/infrastructure/hooks/translation/useFallbackTranslation';
-import { useModalAccessibility } from '@/features/infrastructure/hooks/accessibility/useModalAccessibility';
+import { useDataFetch, useFallbackTranslation } from '@/features/infrastructure/hooks';
 ```
 
-However, the recommended approach is to use the main index exports for consistency.
+## Available Hooks (from shared package)
 
+- **`useDataFetch`** - Data fetching hook with SWR integration
+- **`createUrlDataFetchHook`** - Factory for creating URL-based data fetch hooks
+- **`useFallbackTranslation`** - Translation fallback handling
+- **`useModalAccessibility`** - Modal accessibility management
+
+See `@websites/infrastructure/hooks` for complete documentation.

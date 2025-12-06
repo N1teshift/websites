@@ -14,7 +14,7 @@ jest.mock('@/features/modules/content/blog/lib/postService', () => ({
   createPost: (...args: unknown[]) => mockCreatePost(...args),
 }));
 
-jest.mock('@/features/infrastructure/logging', () => ({
+jest.mock('@websites/infrastructure/logging', () => ({
   createComponentLogger: jest.fn(() => ({
     info: mockInfo,
     error: mockError,

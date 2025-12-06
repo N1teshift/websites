@@ -1,7 +1,7 @@
 import type { NextApiRequest } from 'next';
-import { createPostHandler } from '@/features/infrastructure/api';
-import { createComponentLogger } from '@/features/infrastructure/logging';
-import { getFirestoreAdmin, getStorageAdmin, getStorageBucketName } from '@/features/infrastructure/api/firebase/admin';
+import { createPostHandler } from '@websites/infrastructure/api';
+import { createComponentLogger } from '@websites/infrastructure/logging';
+import { getFirestoreAdmin, getStorageAdmin, getStorageBucketName } from '@websites/infrastructure/firebase';
 
 const logger = createComponentLogger('api/admin/wipe-all-entries');
 

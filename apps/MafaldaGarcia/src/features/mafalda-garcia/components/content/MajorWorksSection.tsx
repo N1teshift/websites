@@ -1,6 +1,6 @@
 import React from 'react';
 import { MajorWorkItem } from '../ui/MajorWorkItem';
-import { useFallbackTranslation } from '@/features/i18n';
+import { useFallbackTranslation } from '@websites/infrastructure/i18n';
 
 interface MajorWorksSectionProps {
   images: string[];

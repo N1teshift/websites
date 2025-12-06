@@ -4,7 +4,7 @@
  * Handles player comparison functionality
  */
 
-import { createComponentLogger, logError } from '@/features/infrastructure/logging';
+import { createComponentLogger, logError } from '@websites/infrastructure/logging';
 import type { PlayerStats, PlayerSearchFilters, PlayerComparison } from '../types';
 import { getGames, getGameById } from '../../../game-management/games/lib/gameService';
 import { getPlayerStats } from './playerService.read';

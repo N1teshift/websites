@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { generateSettings } from '@ai/core/objectGeneration';
 import { createComponentLogger } from '@websites/infrastructure/logging';
-import { createApiHandler } from '@websites/infrastructure/api/routeHandlers';
+import { createApiHandler } from '@/lib/api';
 
 const logger = createComponentLogger('GenerateSettingsAPI');
 
@@ -29,12 +29,12 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     logger.info('Generating settings for prompt', { prompt: prompt.substring(0, 100), system: aiSystem });
     const result = await generateSettings(prompt, aiSystem);
-    
-    logger.info('Settings generated successfully', { 
+
+    logger.info('Settings generated successfully', {
       objectCount: result.objects?.length || 0,
-      tokenUsage: result.usage 
+      tokenUsage: result.usage
     });
-    
+
     return res.status(200).json({
       success: true,
       data: result

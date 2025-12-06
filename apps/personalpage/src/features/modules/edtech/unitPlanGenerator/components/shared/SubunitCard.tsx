@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { SubunitData, UnitPlanData } from '../../types/UnitPlanTypes';
 import { useFallbackTranslation } from '@websites/infrastructure/i18n/client';
 import { FiTrash2, FiChevronDown, FiChevronUp } from 'react-icons/fi';
-import IconButton from '@websites/ui';
+import { IconButton } from '@websites/ui';
 import FormField from './FormField';
 
 interface SubunitCardProps {
@@ -108,7 +108,7 @@ const SubunitCard: React.FC<SubunitCardProps> = ({
         const topics = Array.isArray(subunit.topicsTerminology) ? subunit.topicsTerminology : [];
         const conceptual = Array.isArray(subunit.conceptualKnowledge) ? subunit.conceptualKnowledge : [];
         const procedural = Array.isArray(subunit.proceduralKnowledge) ? subunit.proceduralKnowledge : [];
-        
+
         if (priorSubject.some(item => item && item.trim() !== '')) filled++;
         if (priorSkills.some(item => item && item.trim() !== '')) filled++;
         if (topics.some(item => item && item.trim() !== '')) filled++;
@@ -149,8 +149,8 @@ const SubunitCard: React.FC<SubunitCardProps> = ({
                     <span className="inline-flex items-center justify-center w-8 h-8 bg-blue-600 text-white rounded-full text-sm font-bold">
                         {subunit.subunitNumber}
                     </span>
-                    {subunit.subunitName && subunit.subunitName.trim() !== '' 
-                        ? subunit.subunitName 
+                    {subunit.subunitName && subunit.subunitName.trim() !== ''
+                        ? subunit.subunitName
                         : `${t('subunit')} ${subunit.subunitNumber}`}
                 </h3>
                 <div className="flex items-center gap-2">
@@ -173,10 +173,9 @@ const SubunitCard: React.FC<SubunitCardProps> = ({
                 </div>
             </div>
 
-            <div 
-                className={`overflow-hidden transition-all duration-250 ease-in-out ${
-                    isExpanded ? 'max-h-[10000px] opacity-100' : 'max-h-0 opacity-0'
-                }`}
+            <div
+                className={`overflow-hidden transition-all duration-250 ease-in-out ${isExpanded ? 'max-h-[10000px] opacity-100' : 'max-h-0 opacity-0'
+                    }`}
             >
                 <div className="space-y-6">
                     <div className="mb-4">
@@ -209,7 +208,7 @@ const SubunitCard: React.FC<SubunitCardProps> = ({
                                         unitPlanContext={unitPlanContext}
                                         subunitContext={{ subunitIndex: subunitIndex || 0, subunitNumber: subunit.subunitNumber }}
                                     />
-                                    
+
                                     <FormField
                                         label={t('subunit_name')}
                                         value={subunit.subunitName || ''}
@@ -221,7 +220,7 @@ const SubunitCard: React.FC<SubunitCardProps> = ({
                                         unitPlanContext={unitPlanContext}
                                         subunitContext={{ subunitIndex: subunitIndex || 0, subunitNumber: subunit.subunitNumber }}
                                     />
-                                    
+
                                     <FormField
                                         label={t('subunit_content')}
                                         value={subunit.content}
@@ -239,7 +238,7 @@ const SubunitCard: React.FC<SubunitCardProps> = ({
                             </div>
                         )}
                     </div>
-                    
+
                     {/* Prior Knowledge and New Knowledge sections - Custom Mode Only */}
                     {displayMode === 'custom' && (
                         <div className="my-6">
@@ -266,81 +265,81 @@ const SubunitCard: React.FC<SubunitCardProps> = ({
                                             <span>🔵</span>
                                             {t('prior_knowledge')}
                                         </h4>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    {/* Subject-specific prior knowledge list */}
-                                    <div className="space-y-4">
-                                        <div className="flex items-center justify-between">
-                                            <h5 className="text-md font-medium text-text-primary">
-                                                {t('prior_knowledge_subject_specific')}
-                                            </h5>
-                                            <button
-                                                type="button"
-                                                onClick={() => addPriorKnowledgeItem('priorKnowledgeSubjectSpecific')}
-                                                className="px-3 py-1 bg-blue-500 text-white text-sm rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-brand"
-                                            >
-                                                {t('add_item')}
-                                            </button>
-                                        </div>
-                                        
-                                        <div className="space-y-2">
-                                            {(Array.isArray(subunit.priorKnowledgeSubjectSpecific) ? subunit.priorKnowledgeSubjectSpecific : []).map((item, index) => (
-                                                <div key={index} className="flex items-start space-x-2">
-                                                    <textarea
-                                                        value={item}
-                                                        onChange={(e) => updatePriorKnowledgeItem('priorKnowledgeSubjectSpecific', index, e.target.value)}
-                                                        placeholder={t('prior_knowledge_subject_specific_placeholder')}
-                                                        rows={3}
-                                                        className="flex-1 px-4 py-2.5 border-2 border-border-default rounded-xl bg-surface-card text-text-primary placeholder-text-muted transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-brand-light focus:border-brand hover:border-border-accent resize-y"
-                                                    />
-                                                    <IconButton
-                                                        icon={<FiTrash2 size={16} />}
-                                                        onClick={() => removePriorKnowledgeItem('priorKnowledgeSubjectSpecific', index)}
-                                                        color="red"
-                                                        size="medium"
-                                                        title={t('remove')}
-                                                    />
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                            {/* Subject-specific prior knowledge list */}
+                                            <div className="space-y-4">
+                                                <div className="flex items-center justify-between">
+                                                    <h5 className="text-md font-medium text-text-primary">
+                                                        {t('prior_knowledge_subject_specific')}
+                                                    </h5>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => addPriorKnowledgeItem('priorKnowledgeSubjectSpecific')}
+                                                        className="px-3 py-1 bg-blue-500 text-white text-sm rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-brand"
+                                                    >
+                                                        {t('add_item')}
+                                                    </button>
                                                 </div>
-                                            ))}
-                                        </div>
-                                    </div>
 
-                                    {/* Learning skills list */}
-                                    <div className="space-y-4">
-                                        <div className="flex items-center justify-between">
-                                            <h5 className="text-md font-medium text-text-primary">
-                                                {t('prior_knowledge_learning_skills')}
-                                            </h5>
-                                            <button
-                                                type="button"
-                                                onClick={() => addPriorKnowledgeItem('priorKnowledgeLearningSkills')}
-                                                className="px-3 py-1 bg-blue-500 text-white text-sm rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-brand"
-                                            >
-                                                {t('add_item')}
-                                            </button>
-                                        </div>
-                                        
-                                        <div className="space-y-2">
-                                            {(Array.isArray(subunit.priorKnowledgeLearningSkills) ? subunit.priorKnowledgeLearningSkills : []).map((item, index) => (
-                                                <div key={index} className="flex items-start space-x-2">
-                                                    <textarea
-                                                        value={item}
-                                                        onChange={(e) => updatePriorKnowledgeItem('priorKnowledgeLearningSkills', index, e.target.value)}
-                                                        placeholder={t('prior_knowledge_learning_skills_placeholder')}
-                                                        rows={3}
-                                                        className="flex-1 px-4 py-2.5 border-2 border-border-default rounded-xl bg-surface-card text-text-primary placeholder-text-muted transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-brand-light focus:border-brand hover:border-border-accent resize-y"
-                                                    />
-                                                    <IconButton
-                                                        icon={<FiTrash2 size={16} />}
-                                                        onClick={() => removePriorKnowledgeItem('priorKnowledgeLearningSkills', index)}
-                                                        color="red"
-                                                        size="medium"
-                                                        title={t('remove')}
-                                                    />
+                                                <div className="space-y-2">
+                                                    {(Array.isArray(subunit.priorKnowledgeSubjectSpecific) ? subunit.priorKnowledgeSubjectSpecific : []).map((item, index) => (
+                                                        <div key={index} className="flex items-start space-x-2">
+                                                            <textarea
+                                                                value={item}
+                                                                onChange={(e) => updatePriorKnowledgeItem('priorKnowledgeSubjectSpecific', index, e.target.value)}
+                                                                placeholder={t('prior_knowledge_subject_specific_placeholder')}
+                                                                rows={3}
+                                                                className="flex-1 px-4 py-2.5 border-2 border-border-default rounded-xl bg-surface-card text-text-primary placeholder-text-muted transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-brand-light focus:border-brand hover:border-border-accent resize-y"
+                                                            />
+                                                            <IconButton
+                                                                icon={<FiTrash2 size={16} />}
+                                                                onClick={() => removePriorKnowledgeItem('priorKnowledgeSubjectSpecific', index)}
+                                                                color="red"
+                                                                size="medium"
+                                                                title={t('remove')}
+                                                            />
+                                                        </div>
+                                                    ))}
                                                 </div>
-                                            ))}
+                                            </div>
+
+                                            {/* Learning skills list */}
+                                            <div className="space-y-4">
+                                                <div className="flex items-center justify-between">
+                                                    <h5 className="text-md font-medium text-text-primary">
+                                                        {t('prior_knowledge_learning_skills')}
+                                                    </h5>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => addPriorKnowledgeItem('priorKnowledgeLearningSkills')}
+                                                        className="px-3 py-1 bg-blue-500 text-white text-sm rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-brand"
+                                                    >
+                                                        {t('add_item')}
+                                                    </button>
+                                                </div>
+
+                                                <div className="space-y-2">
+                                                    {(Array.isArray(subunit.priorKnowledgeLearningSkills) ? subunit.priorKnowledgeLearningSkills : []).map((item, index) => (
+                                                        <div key={index} className="flex items-start space-x-2">
+                                                            <textarea
+                                                                value={item}
+                                                                onChange={(e) => updatePriorKnowledgeItem('priorKnowledgeLearningSkills', index, e.target.value)}
+                                                                placeholder={t('prior_knowledge_learning_skills_placeholder')}
+                                                                rows={3}
+                                                                className="flex-1 px-4 py-2.5 border-2 border-border-default rounded-xl bg-surface-card text-text-primary placeholder-text-muted transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-brand-light focus:border-brand hover:border-border-accent resize-y"
+                                                            />
+                                                            <IconButton
+                                                                icon={<FiTrash2 size={16} />}
+                                                                onClick={() => removePriorKnowledgeItem('priorKnowledgeLearningSkills', index)}
+                                                                color="red"
+                                                                size="medium"
+                                                                title={t('remove')}
+                                                            />
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
                                     </div>
 
                                     {/* New Knowledge Section */}
@@ -349,124 +348,124 @@ const SubunitCard: React.FC<SubunitCardProps> = ({
                                             <span>🟢</span>
                                             {t('new_knowledge')}
                                         </h4>
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                    {/* Topics/Terminology list */}
-                                    <div className="space-y-4">
-                                        <div className="flex items-center justify-between">
-                                            <h5 className="text-md font-medium text-text-primary">
-                                                {t('topics_terminology')}
-                                            </h5>
-                                            <button
-                                                type="button"
-                                                onClick={() => addNewKnowledgeItem('topicsTerminology')}
-                                                className="px-3 py-1 bg-blue-500 text-white text-sm rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-brand"
-                                            >
-                                                {t('add_item')}
-                                            </button>
-                                        </div>
-                                        
-                                        <div className="space-y-2">
-                                            {(Array.isArray(subunit.topicsTerminology) ? subunit.topicsTerminology : []).map((item, index) => (
-                                                <div key={index} className="flex items-start space-x-2">
-                                                    <textarea
-                                                        value={item}
-                                                        onChange={(e) => updateNewKnowledgeItem('topicsTerminology', index, e.target.value)}
-                                                        placeholder={t('topics_terminology_placeholder')}
-                                                        rows={3}
-                                                        className="flex-1 px-4 py-2.5 border-2 border-border-default rounded-xl bg-surface-card text-text-primary placeholder-text-muted transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-brand-light focus:border-brand hover:border-border-accent resize-y"
-                                                    />
-                                                    <IconButton
-                                                        icon={<FiTrash2 size={16} />}
-                                                        onClick={() => removeNewKnowledgeItem('topicsTerminology', index)}
-                                                        color="red"
-                                                        size="medium"
-                                                        title={t('remove')}
-                                                    />
+                                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                            {/* Topics/Terminology list */}
+                                            <div className="space-y-4">
+                                                <div className="flex items-center justify-between">
+                                                    <h5 className="text-md font-medium text-text-primary">
+                                                        {t('topics_terminology')}
+                                                    </h5>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => addNewKnowledgeItem('topicsTerminology')}
+                                                        className="px-3 py-1 bg-blue-500 text-white text-sm rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-brand"
+                                                    >
+                                                        {t('add_item')}
+                                                    </button>
                                                 </div>
-                                            ))}
-                                        </div>
-                                    </div>
 
-                                    {/* Conceptual knowledge list */}
-                                    <div className="space-y-4">
-                                        <div className="flex items-center justify-between">
-                                            <h5 className="text-md font-medium text-text-primary">
-                                                {t('conceptual_knowledge')}
-                                            </h5>
-                                            <button
-                                                type="button"
-                                                onClick={() => addNewKnowledgeItem('conceptualKnowledge')}
-                                                className="px-3 py-1 bg-blue-500 text-white text-sm rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-brand"
-                                            >
-                                                {t('add_item')}
-                                            </button>
-                                        </div>
-                                        
-                                        <div className="space-y-2">
-                                            {(Array.isArray(subunit.conceptualKnowledge) ? subunit.conceptualKnowledge : []).map((item, index) => (
-                                                <div key={index} className="flex items-start space-x-2">
-                                                    <textarea
-                                                        value={item}
-                                                        onChange={(e) => updateNewKnowledgeItem('conceptualKnowledge', index, e.target.value)}
-                                                        placeholder={t('conceptual_knowledge_placeholder')}
-                                                        rows={3}
-                                                        className="flex-1 px-4 py-2.5 border-2 border-border-default rounded-xl bg-surface-card text-text-primary placeholder-text-muted transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-brand-light focus:border-brand hover:border-border-accent resize-y"
-                                                    />
-                                                    <IconButton
-                                                        icon={<FiTrash2 size={16} />}
-                                                        onClick={() => removeNewKnowledgeItem('conceptualKnowledge', index)}
-                                                        color="red"
-                                                        size="medium"
-                                                        title={t('remove')}
-                                                    />
+                                                <div className="space-y-2">
+                                                    {(Array.isArray(subunit.topicsTerminology) ? subunit.topicsTerminology : []).map((item, index) => (
+                                                        <div key={index} className="flex items-start space-x-2">
+                                                            <textarea
+                                                                value={item}
+                                                                onChange={(e) => updateNewKnowledgeItem('topicsTerminology', index, e.target.value)}
+                                                                placeholder={t('topics_terminology_placeholder')}
+                                                                rows={3}
+                                                                className="flex-1 px-4 py-2.5 border-2 border-border-default rounded-xl bg-surface-card text-text-primary placeholder-text-muted transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-brand-light focus:border-brand hover:border-border-accent resize-y"
+                                                            />
+                                                            <IconButton
+                                                                icon={<FiTrash2 size={16} />}
+                                                                onClick={() => removeNewKnowledgeItem('topicsTerminology', index)}
+                                                                color="red"
+                                                                size="medium"
+                                                                title={t('remove')}
+                                                            />
+                                                        </div>
+                                                    ))}
                                                 </div>
-                                            ))}
-                                        </div>
-                                    </div>
+                                            </div>
 
-                                    {/* Procedural knowledge list */}
-                                    <div className="space-y-4">
-                                        <div className="flex items-center justify-between">
-                                            <h5 className="text-md font-medium text-text-primary">
-                                                {t('procedural_knowledge')}
-                                            </h5>
-                                            <button
-                                                type="button"
-                                                onClick={() => addNewKnowledgeItem('proceduralKnowledge')}
-                                                className="px-3 py-1 bg-blue-500 text-white text-sm rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-brand"
-                                            >
-                                                {t('add_item')}
-                                            </button>
-                                        </div>
-                                        
-                                        <div className="space-y-2">
-                                            {(Array.isArray(subunit.proceduralKnowledge) ? subunit.proceduralKnowledge : []).map((item, index) => (
-                                                <div key={index} className="flex items-start space-x-2">
-                                                    <textarea
-                                                        value={item}
-                                                        onChange={(e) => updateNewKnowledgeItem('proceduralKnowledge', index, e.target.value)}
-                                                        placeholder={t('procedural_knowledge_placeholder')}
-                                                        rows={3}
-                                                        className="flex-1 px-4 py-2.5 border-2 border-border-default rounded-xl bg-surface-card text-text-primary placeholder-text-muted transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-brand-light focus:border-brand hover:border-border-accent resize-y"
-                                                    />
-                                                    <IconButton
-                                                        icon={<FiTrash2 size={16} />}
-                                                        onClick={() => removeNewKnowledgeItem('proceduralKnowledge', index)}
-                                                        color="red"
-                                                        size="medium"
-                                                        title={t('remove')}
-                                                    />
+                                            {/* Conceptual knowledge list */}
+                                            <div className="space-y-4">
+                                                <div className="flex items-center justify-between">
+                                                    <h5 className="text-md font-medium text-text-primary">
+                                                        {t('conceptual_knowledge')}
+                                                    </h5>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => addNewKnowledgeItem('conceptualKnowledge')}
+                                                        className="px-3 py-1 bg-blue-500 text-white text-sm rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-brand"
+                                                    >
+                                                        {t('add_item')}
+                                                    </button>
                                                 </div>
-                                            ))}
+
+                                                <div className="space-y-2">
+                                                    {(Array.isArray(subunit.conceptualKnowledge) ? subunit.conceptualKnowledge : []).map((item, index) => (
+                                                        <div key={index} className="flex items-start space-x-2">
+                                                            <textarea
+                                                                value={item}
+                                                                onChange={(e) => updateNewKnowledgeItem('conceptualKnowledge', index, e.target.value)}
+                                                                placeholder={t('conceptual_knowledge_placeholder')}
+                                                                rows={3}
+                                                                className="flex-1 px-4 py-2.5 border-2 border-border-default rounded-xl bg-surface-card text-text-primary placeholder-text-muted transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-brand-light focus:border-brand hover:border-border-accent resize-y"
+                                                            />
+                                                            <IconButton
+                                                                icon={<FiTrash2 size={16} />}
+                                                                onClick={() => removeNewKnowledgeItem('conceptualKnowledge', index)}
+                                                                color="red"
+                                                                size="medium"
+                                                                title={t('remove')}
+                                                            />
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+
+                                            {/* Procedural knowledge list */}
+                                            <div className="space-y-4">
+                                                <div className="flex items-center justify-between">
+                                                    <h5 className="text-md font-medium text-text-primary">
+                                                        {t('procedural_knowledge')}
+                                                    </h5>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => addNewKnowledgeItem('proceduralKnowledge')}
+                                                        className="px-3 py-1 bg-blue-500 text-white text-sm rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-brand"
+                                                    >
+                                                        {t('add_item')}
+                                                    </button>
+                                                </div>
+
+                                                <div className="space-y-2">
+                                                    {(Array.isArray(subunit.proceduralKnowledge) ? subunit.proceduralKnowledge : []).map((item, index) => (
+                                                        <div key={index} className="flex items-start space-x-2">
+                                                            <textarea
+                                                                value={item}
+                                                                onChange={(e) => updateNewKnowledgeItem('proceduralKnowledge', index, e.target.value)}
+                                                                placeholder={t('procedural_knowledge_placeholder')}
+                                                                rows={3}
+                                                                className="flex-1 px-4 py-2.5 border-2 border-border-default rounded-xl bg-surface-card text-text-primary placeholder-text-muted transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-brand-light focus:border-brand hover:border-border-accent resize-y"
+                                                            />
+                                                            <IconButton
+                                                                icon={<FiTrash2 size={16} />}
+                                                                onClick={() => removeNewKnowledgeItem('proceduralKnowledge', index)}
+                                                                color="red"
+                                                                size="medium"
+                                                                title={t('remove')}
+                                                            />
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
                                     </div>
                                 </div>
                             )}
                         </div>
                     )}
-                    
+
                     {/* Success Criteria List */}
                     <div className="my-6">
                         <button
@@ -499,7 +498,7 @@ const SubunitCard: React.FC<SubunitCardProps> = ({
                                             {t('add_item')}
                                         </button>
                                     </div>
-                                    
+
                                     <div className="space-y-2">
                                         {(Array.isArray(subunit.successCriteria) ? subunit.successCriteria : []).map((item, index) => (
                                             <div key={index} className="flex items-start space-x-2">
@@ -524,7 +523,7 @@ const SubunitCard: React.FC<SubunitCardProps> = ({
                             </div>
                         )}
                     </div>
-                    
+
                     {/* Learning Activities Section */}
                     <div className="my-6">
                         <button
@@ -557,7 +556,7 @@ const SubunitCard: React.FC<SubunitCardProps> = ({
                                     unitPlanContext={unitPlanContext}
                                     subunitContext={{ subunitIndex: subunitIndex || 0, subunitNumber: subunit.subunitNumber }}
                                 />
-                                
+
                                 <FormField
                                     label={t('learning_experiences')}
                                     value={subunit.learningExperiences}
@@ -571,7 +570,7 @@ const SubunitCard: React.FC<SubunitCardProps> = ({
                                     unitPlanContext={unitPlanContext}
                                     subunitContext={{ subunitIndex: subunitIndex || 0, subunitNumber: subunit.subunitNumber }}
                                 />
-                                
+
                                 <FormField
                                     label={t('differentiation')}
                                     value={subunit.differentiation}
@@ -621,7 +620,7 @@ const SubunitCard: React.FC<SubunitCardProps> = ({
                                     unitPlanContext={unitPlanContext}
                                     subunitContext={{ subunitIndex: subunitIndex || 0, subunitNumber: subunit.subunitNumber }}
                                 />
-                                
+
                                 <FormField
                                     label={t('interim_assessment')}
                                     value={subunit.interimAssessment || ''}
@@ -635,7 +634,7 @@ const SubunitCard: React.FC<SubunitCardProps> = ({
                                     unitPlanContext={unitPlanContext}
                                     subunitContext={{ subunitIndex: subunitIndex || 0, subunitNumber: subunit.subunitNumber }}
                                 />
-                                
+
                                 <FormField
                                     label={t('formative_assessment')}
                                     value={subunit.formativeAssessment || ''}

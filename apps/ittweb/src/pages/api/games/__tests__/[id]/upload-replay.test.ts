@@ -22,14 +22,14 @@ jest.mock('@/features/modules/game-management/lib/mechanics', () => ({
   parseReplayFile: (...args: unknown[]) => mockParseReplayFile(...args),
 }));
 
-jest.mock('@/features/infrastructure/api/firebase/admin', () => ({
+jest.mock('@websites/infrastructure/firebase', () => ({
   getFirestoreAdmin: jest.fn(),
   getAdminTimestamp: jest.fn(),
   getStorageAdmin: jest.fn(),
   getStorageBucketName: jest.fn(),
 }));
 
-jest.mock('@/features/infrastructure/logging', () => ({
+jest.mock('@websites/infrastructure/logging', () => ({
   createComponentLogger: jest.fn(() => ({
     info: mockInfo,
     error: mockError,
@@ -183,7 +183,7 @@ describe('POST /api/games/[id]/upload-replay', () => {
 
     // Setup Firebase Storage mock
     // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const { getStorageAdmin, getStorageBucketName } = require('@/features/infrastructure/api/firebase/admin');
+    const { getStorageAdmin, getStorageBucketName } = require('@websites/infrastructure/firebase');
     getStorageBucketName.mockReturnValue('test-bucket');
     const mockStorage = {
       bucket: jest.fn((name?: string) => {
@@ -203,7 +203,7 @@ describe('POST /api/games/[id]/upload-replay', () => {
 
     // Setup Firestore mock
     // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const { getFirestoreAdmin, getAdminTimestamp } = require('@/features/infrastructure/api/firebase/admin');
+    const { getFirestoreAdmin, getAdminTimestamp } = require('@websites/infrastructure/firebase');
     getFirestoreAdmin.mockReturnValue(mockCollection);
     mockCollection.doc.mockReturnValue(mockDocRef);
     mockDocRef.update.mockResolvedValue(undefined);

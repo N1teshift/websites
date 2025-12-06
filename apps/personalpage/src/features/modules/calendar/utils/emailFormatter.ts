@@ -1,6 +1,6 @@
 import { readFileSync } from 'fs';
 import { join } from 'path';
-import { sendEmail } from '@websites/infrastructure/api/email';
+import { sendEmail } from '@websites/infrastructure';
 
 export interface CalendarEmailData {
   userName: string;
@@ -45,7 +45,7 @@ function formatEmailBody(template: string, data: CalendarEmailData): string {
 export async function sendCalendarEventEmail(data: CalendarEmailData): Promise<void> {
   const language = data.language || 'en';
   const translations = loadTranslation(language);
-  
+
   const emailTranslations = translations.email as Record<string, string> | undefined;
   if (!emailTranslations) {
     throw new Error('Email translations not found in calendar.json');
@@ -53,13 +53,13 @@ export async function sendCalendarEventEmail(data: CalendarEmailData): Promise<v
 
   const subject = emailTranslations.subject || 'Math lesson meeting details';
   const bodyTemplate = emailTranslations.body || '';
-  
+
   if (!bodyTemplate) {
     throw new Error('Email body template not found in calendar.json');
   }
 
   const emailBody = formatEmailBody(bodyTemplate, data);
-  
+
   // Convert plain text to HTML (preserve line breaks)
   const htmlBody = emailBody.replace(/\n/g, '<br>');
 

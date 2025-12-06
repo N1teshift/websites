@@ -6,7 +6,7 @@
  */
 
 import { Timestamp } from 'firebase/firestore';
-import { timestampToIso } from '@/features/infrastructure/utils';
+import { timestampToIso } from '@websites/infrastructure/utils';
 import type { 
   Game, 
   GamePlayer, 

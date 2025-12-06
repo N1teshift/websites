@@ -2,7 +2,7 @@ import { buildW3MMDLookup, mapMissionStatsToPlayers } from '../w3mmd';
 import type { W3MMDAction } from 'w3gjs/dist/types/parsers/ActionParser';
 import type Player from 'w3gjs/dist/types/Player';
 
-jest.mock('@/features/infrastructure/logging', () => ({
+jest.mock('@websites/infrastructure/logging', () => ({
   createComponentLogger: () => ({
     info: jest.fn(),
     warn: jest.fn(),

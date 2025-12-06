@@ -1,11 +1,7 @@
 import admin from "firebase-admin";
 import { TestResultData, TestStatDocument } from "@math/types/testsTypes";
-import { getFirestoreInstance } from "@websites/infrastructure/api/firebase";
-import { 
-  commitBatch, 
-  processInChunks,
-  type BatchOperationResult 
-} from "@websites/infrastructure/api/firebase";
+import { getFirestoreInstance } from "@websites/infrastructure/firebase";
+// import { commitBatch, processInChunks, type BatchOperationResult } from "@/features/infrastructure/api/firebase"; // These utilities don't exist
 import {
   prepareFirestoreData,
   calculateUpdatedStats,
@@ -52,18 +48,18 @@ const processTestResult = async (
       // Update existing test document
       const existingData = existingDoc.data() || {};
       const updatedStats = calculateUpdatedStats(existingData, result, timestamp);
-      
+
       batch.update(testDocRef, {
         ...testData,
         ...updatedStats
       });
     } else {
       // Create category document if it doesn't exist
-      batch.set(categoryDocRef, { 
-        name: result.test!.objectType, 
-        createdAt: timestamp 
+      batch.set(categoryDocRef, {
+        name: result.test!.objectType,
+        createdAt: timestamp
       }, { merge: true });
-      
+
       // Create new test document
       const initialStats = createInitialStats(result, timestamp);
       batch.set(testDocRef, {
@@ -75,9 +71,9 @@ const processTestResult = async (
     return { success: true };
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : String(error);
-    return { 
-      success: false, 
-      error: `Error processing test "${result.test?.name || 'unknown'}": ${errorMessage}` 
+    return {
+      success: false,
+      error: `Error processing test "${result.test?.name || 'unknown'}": ${errorMessage}`
     };
   }
 };
@@ -93,7 +89,7 @@ export const saveTestResults = async (
 ): Promise<{ success: boolean; error?: string; runId?: string }> => {
   const logger = createComponentLogger('TestResultsService', 'saveTestResults');
   logger.info(`Saving ${results.length} test results`);
-  
+
   // Validate input
   if (!results || !Array.isArray(results) || results.length === 0) {
     logger.error('Invalid or empty results array passed to saveTestResults', new Error('Invalid or empty results array'));
@@ -110,9 +106,9 @@ export const saveTestResults = async (
     logger.error('Failed to connect to Firestore', dbError instanceof Error ? dbError : new Error(errorMessage), {
       errorMessage
     });
-    return { 
-      success: false, 
-      error: `Database connection error: ${errorMessage}` 
+    return {
+      success: false,
+      error: `Database connection error: ${errorMessage}`
     };
   }
 
@@ -137,7 +133,7 @@ export const saveTestResults = async (
 
       // Commit the batch
       const commitResult = await commitBatch(batch, chunkIndex, Math.ceil(results.length / 400));
-      
+
       if (!commitResult.success) {
         return commitResult;
       }
@@ -175,68 +171,68 @@ export const saveTestResults = async (
 export const fetchTestStats = async (): Promise<{ success: boolean; tests?: TestStatDocument[]; error?: string }> => {
   const logger = createComponentLogger('TestResultsService', 'fetchTestStats');
   let firestore: admin.firestore.Firestore;
-  
+
   try {
     firestore = getFirestoreInstance("testresults");
     logger.info('Firestore instance obtained successfully');
   } catch (initError) {
     const errorMessage = initError instanceof Error ? initError.message : String(initError);
     logger.error('Failed to initialize Firestore', initError instanceof Error ? initError : new Error(errorMessage));
-    
+
     // Return proper error response instead of swallowing it
     if (errorMessage.includes('environment variable is not set')) {
-      return { 
-        success: false, 
-        error: `Firebase credentials not configured: ${errorMessage}` 
+      return {
+        success: false,
+        error: `Firebase credentials not configured: ${errorMessage}`
       };
     }
-    return { 
-      success: false, 
-      error: `Failed to initialize Firestore: ${errorMessage}` 
+    return {
+      success: false,
+      error: `Failed to initialize Firestore: ${errorMessage}`
     };
   }
-  
+
   try {
     // Get all categories
     const categoriesRef = firestore.collection('tests');
     logger.info('Fetching categories from Firestore...');
     const categoriesSnapshot = await categoriesRef.get();
-    
+
     if (categoriesSnapshot.empty) {
       logger.info('No categories found in database');
       return { success: true, tests: [] };
     }
-    
+
     logger.info(`Found ${categoriesSnapshot.size} categories`);
     let allTests: TestStatDocument[] = [];
     const fetchPromises: Promise<void>[] = [];
     const categoryErrors: string[] = [];
-    
+
     // For each category, fetch its tests
     categoriesSnapshot.forEach((categoryDoc: admin.firestore.QueryDocumentSnapshot) => {
       const categoryId = categoryDoc.id;
-      
+
       const fetchCategoryTests = async () => {
         try {
           const testsRef = categoriesRef.doc(categoryId).collection('tests');
           let testsSnapshot: admin.firestore.QuerySnapshot;
-          
+
           // Try to fetch with ordering, but fallback to simple query if ordering fails (e.g., missing index)
           try {
             testsSnapshot = await testsRef.orderBy('lastRun', 'desc').get();
           } catch (orderError) {
             // If orderBy fails (likely missing index), fallback to basic query
             const errorMsg = orderError instanceof Error ? orderError.message : String(orderError);
-            logger.warn(`Could not order tests by lastRun for category ${categoryId}, fetching without order`, { 
-              categoryId, 
-              error: errorMsg 
+            logger.warn(`Could not order tests by lastRun for category ${categoryId}, fetching without order`, {
+              categoryId,
+              error: errorMsg
             });
             testsSnapshot = await testsRef.get();
           }
-        
+
           const categoryTests = testsSnapshot.docs.map((testDoc: admin.firestore.QueryDocumentSnapshot) => {
             const data = testDoc.data() || {};
-            
+
             // Calculate pass rate
             const runCount = data.runCount || 0;
             const passCount = data.passCount || 0;
@@ -248,7 +244,7 @@ export const fetchTestStats = async (): Promise<{ success: boolean; tests?: Test
               name: data.name || testDoc.id,
               category: data.category || categoryId,
               prompt: data.prompt || '',
-              lastRun: data.lastRun as admin.firestore.Timestamp | undefined, 
+              lastRun: data.lastRun as admin.firestore.Timestamp | undefined,
               lastError: data.lastError || null,
               lastPassed: typeof data.lastPassed === 'boolean' ? data.lastPassed : undefined,
               runCount: runCount,
@@ -261,7 +257,7 @@ export const fetchTestStats = async (): Promise<{ success: boolean; tests?: Test
               createdAt: data.createdAt as admin.firestore.Timestamp | undefined,
             } as TestStatDocument;
           });
-        
+
           allTests = allTests.concat(categoryTests);
           logger.debug(`Fetched ${categoryTests.length} tests from category ${categoryId}`);
         } catch (categoryError) {
@@ -270,30 +266,30 @@ export const fetchTestStats = async (): Promise<{ success: boolean; tests?: Test
           logger.error(`Error fetching tests for category ${categoryId}`, categoryError instanceof Error ? categoryError : new Error(errorMsg));
         }
       };
-      
+
       fetchPromises.push(fetchCategoryTests());
     });
-    
+
     // Wait for all category queries to complete
     await Promise.all(fetchPromises);
-    
+
     // If we had category errors but got some data, log warning but continue
     if (categoryErrors.length > 0 && allTests.length > 0) {
-      logger.warn(`Some categories failed to fetch, but got ${allTests.length} tests total`, { 
+      logger.warn(`Some categories failed to fetch, but got ${allTests.length} tests total`, {
         errors: categoryErrors,
-        fetchedTests: allTests.length 
+        fetchedTests: allTests.length
       });
     } else if (categoryErrors.length > 0 && allTests.length === 0) {
       // If all categories failed, return error
-      logger.error('All categories failed to fetch', new Error(categoryErrors.join('; ')), { 
-        categoryErrors 
+      logger.error('All categories failed to fetch', new Error(categoryErrors.join('; ')), {
+        categoryErrors
       });
-      return { 
-        success: false, 
-        error: `Failed to fetch test stats from all categories: ${categoryErrors.join('; ')}` 
+      return {
+        success: false,
+        error: `Failed to fetch test stats from all categories: ${categoryErrors.join('; ')}`
       };
     }
-    
+
     // Sort all tests by last run date
     allTests.sort((a, b) => {
       const aTimeSec = a.lastRun?.seconds || 0;
@@ -305,7 +301,7 @@ export const fetchTestStats = async (): Promise<{ success: boolean; tests?: Test
       const bTimeNano = b.lastRun?.nanoseconds || 0;
       return bTimeNano - aTimeNano;
     });
-    
+
     logger.info(`Successfully fetched and sorted ${allTests.length} test stats`);
     return { success: true, tests: allTests };
 
@@ -313,9 +309,9 @@ export const fetchTestStats = async (): Promise<{ success: boolean; tests?: Test
     const errorMessage = error instanceof Error ? error.message : String(error);
     logger.error('Error fetching test stats', error instanceof Error ? error : new Error(errorMessage));
     // Return proper error response instead of swallowing it
-    return { 
-      success: false, 
-      error: `Failed to fetch test statistics: ${errorMessage}` 
+    return {
+      success: false,
+      error: `Failed to fetch test statistics: ${errorMessage}`
     };
   }
 };

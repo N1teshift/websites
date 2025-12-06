@@ -1,6 +1,6 @@
 import { FormEvent, useMemo, useState } from 'react';
 import { signIn, useSession } from 'next-auth/react';
-import { createComponentLogger } from '@/features/infrastructure/logging';
+import { createComponentLogger } from '@websites/infrastructure/logging';
 
 export type PostFormState = {
   title: string;

@@ -1,7 +1,7 @@
 import type { NextApiRequest } from 'next';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '../auth/[...nextauth]';
-import { createApiHandler, zodValidator } from '@/features/infrastructure/api';
+import { createApiHandler, zodValidator } from '@/lib/api-wrapper';
 import { UpdatePostSchema } from '@/features/modules/content/blog/lib';
 import {
   getPostById,
@@ -9,7 +9,7 @@ import {
   deletePost
 } from '@/features/modules/content/blog/lib/postService';
 import { CreatePost } from '@/types/post';
-import { createComponentLogger } from '@/features/infrastructure/logging';
+import { createComponentLogger } from '@websites/infrastructure/logging';
 import { getUserDataByDiscordIdServer } from '@/features/modules/community/users/services/userDataService.server';
 import { isAdmin } from '@/features/modules/community/users';
 import type { Post } from '@/types/post';

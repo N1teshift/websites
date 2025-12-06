@@ -1,6 +1,6 @@
 import EmwNavbar from './EmwNavbar';
 import dynamic from 'next/dynamic';
-const Timer = dynamic(() => import('@websites/ui'), { ssr: false });
+const Timer = dynamic(() => import('@websites/ui').then(mod => mod.Timer), { ssr: false });
 
 // Array of upcoming election events with ISO `date` and translation `labelKey`
 const UPCOMING_EVENTS = [

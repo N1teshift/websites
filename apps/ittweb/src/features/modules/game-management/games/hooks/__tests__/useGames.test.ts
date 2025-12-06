@@ -3,7 +3,7 @@ import { useGames } from '../useGames';
 import type { Game, GameFilters, GameListResponse } from '../../types';
 
 // Mock logger
-jest.mock('@/features/infrastructure/logging', () => ({
+jest.mock('@websites/infrastructure/logging', () => ({
   logError: jest.fn(),
 }));
 

@@ -5,9 +5,9 @@
  * These functions use Firebase Admin SDK and should only be used in API routes.
  */
 
-import { getFirestoreAdmin } from '@/features/infrastructure/api/firebase/admin';
-import { createComponentLogger, logError } from '@/features/infrastructure/logging';
-import { timestampToIso } from '@/features/infrastructure/utils';
+import { getFirestoreAdmin } from '@websites/infrastructure/firebase';
+import { createComponentLogger, logError } from '@websites/infrastructure/logging';
+import { timestampToIso } from '@websites/infrastructure/utils';
 import type { PlayerStats, PlayerProfile, PlayerSearchFilters } from '../types';
 import { getGames } from '../../../game-management/games/lib/gameService.read.server';
 import { calculateTotalGames, normalizePlayerName } from './playerService.utils';
@@ -95,7 +95,7 @@ export async function getAllPlayers(
         .where('name', '==', lastPlayerName)
         .limit(1)
         .get();
-      
+
       if (!lastDocSnapshot.empty) {
         adminQuery = adminQuery.startAfter(lastDocSnapshot.docs[0]);
       }

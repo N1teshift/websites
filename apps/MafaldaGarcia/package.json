@@ -16,7 +16,7 @@
         "react-dom": "^18.2.0",
         "firebase-admin": "^13.4.0",
         "nprogress": "^0.2.0",
-        "zod": "^3.24.2",
+        "zod": "^4.1.13",
         "@websites/infrastructure": "workspace:*",
         "@websites/ui": "workspace:*"
     },

@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
-import { logError } from '@/features/infrastructure/logging';
+import { logError } from '@websites/infrastructure/logging';
 
 const SESSION_DISMISS_KEY = 'dataCollectionNoticeDismissed';
 

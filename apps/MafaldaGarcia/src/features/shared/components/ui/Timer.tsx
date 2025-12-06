@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo } from "react";
-import { useFallbackTranslation } from "@/features/i18n";
+import { useFallbackTranslation } from "@websites/infrastructure/i18n";
 
 // Event type for upcoming events
 interface TimerEvent {

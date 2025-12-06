@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import type { Game, GameFilters, GameListResponse } from '../types';
-import { logError } from '@/features/infrastructure/logging';
+import { logError } from '@websites/infrastructure/logging';
 
 interface UseGamesResult {
   games: Game[];

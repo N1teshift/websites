@@ -30,6 +30,9 @@ export { default as Timer } from './components/Timer';
 export { default as ToastNotification } from './components/ToastNotification';
 export { default as Tooltip } from './components/Tooltip';
 
+// Table components
+export * from './components/table';
+
 // Export types
 export type { InterfaceType } from './components/BaseSlider';
 export type { Option } from './components/BaseToggleSwitch';

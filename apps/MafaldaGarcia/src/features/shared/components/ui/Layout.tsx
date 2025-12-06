@@ -1,8 +1,8 @@
-﻿import React from 'react';
+import React from 'react';
 import GoBackButton from "./GoBackButton";
 import { LanguageSwitcher } from "./LanguageSwitcher";
-import { TranslationNamespaceContext, useFallbackTranslation} from '@/features/i18n';
-import { createComponentLogger } from '@/features/logging';
+import { TranslationNamespaceContext, useFallbackTranslation} from '@websites/infrastructure/i18n';
+import { createComponentLogger } from '@websites/infrastructure/logging';
 import styles from './ComingSoonMessage.module.css';
 
 interface LayoutProps {

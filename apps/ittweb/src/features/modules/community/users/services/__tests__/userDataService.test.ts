@@ -21,11 +21,11 @@ jest.mock('firebase/firestore', () => {
   };
 });
 
-jest.mock('@/features/infrastructure/api/firebase', () => ({
+jest.mock('@websites/infrastructure/api/firebase', () => ({
   getFirestoreInstance: jest.fn(() => ({})),
 }));
 
-jest.mock('@/features/infrastructure/api/firebase/admin', () => ({
+jest.mock('@websites/infrastructure/firebase', () => ({
   getFirestoreAdmin: jest.fn(() => ({ collection: jest.fn() })),
   isServerSide: jest.fn(() => false),
   getAdminTimestamp: jest.fn(() => ({
@@ -34,7 +34,7 @@ jest.mock('@/features/infrastructure/api/firebase/admin', () => ({
   })),
 }));
 
-jest.mock('@/features/infrastructure/logging', () => ({
+jest.mock('@websites/infrastructure/logging', () => ({
   createComponentLogger: jest.fn(() => ({ info: jest.fn(), warn: jest.fn(), error: jest.fn() })),
   logError: jest.fn(),
 }));

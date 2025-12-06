@@ -22,7 +22,7 @@ jest.mock('@/features/infrastructure/lib/archiveService', () => ({
 }));
 
 // Mock logging
-jest.mock('@/features/infrastructure/logging', () => ({
+jest.mock('@websites/infrastructure/logging', () => ({
   createComponentLogger: jest.fn(() => ({
     info: jest.fn(),
     debug: jest.fn(),

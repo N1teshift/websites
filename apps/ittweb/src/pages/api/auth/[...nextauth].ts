@@ -1,6 +1,6 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
 import DiscordProvider from "next-auth/providers/discord";
-import { createComponentLogger, logError } from "@/features/infrastructure/logging";
+import { createComponentLogger, logError } from "@websites/infrastructure/logging";
 
 const nextAuthLogger = createComponentLogger('nextauth');
 

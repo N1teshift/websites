@@ -1,7 +1,7 @@
 import type { NextApiRequest } from 'next';
-import { createPostHandler, requireSession } from '@/features/infrastructure/api';
+import { createPostHandler, requireSession } from '@websites/infrastructure/api';
 import { deleteUserDataServer } from '@/features/modules/community/users/services/userDataService.server';
-import { createComponentLogger } from '@/features/infrastructure/logging';
+import { createComponentLogger } from '@websites/infrastructure/logging';
 
 const logger = createComponentLogger('api/user/delete');
 

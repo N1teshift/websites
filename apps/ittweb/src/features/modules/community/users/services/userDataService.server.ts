@@ -10,9 +10,9 @@
  * For client-side usage, use functions from userDataService.ts
  */
 
-import { getFirestoreAdmin, isServerSide } from '@/features/infrastructure/api/firebase/admin';
+import { getFirestoreAdmin, isServerSide } from '@websites/infrastructure/firebase';
 import { UserData, CreateUserData } from '@/types/userData';
-import { createComponentLogger, logError } from '@/features/infrastructure/logging';
+import { createComponentLogger, logError } from '@websites/infrastructure/logging';
 
 const USER_DATA_COLLECTION = 'userData';
 const logger = createComponentLogger('userDataService.server');
@@ -100,7 +100,7 @@ export async function saveUserDataServer(userData: CreateUserData): Promise<void
 
     // Remove undefined values before saving (Firestore doesn't allow undefined)
     const cleanedUserData = removeUndefined(userData as unknown as Record<string, unknown>);
-    const { createAdminTimestampFactoryAsync } = await import('@/features/infrastructure/utils');
+    const { createAdminTimestampFactoryAsync } = await import('@websites/infrastructure/utils');
     const timestampFactory = await createAdminTimestampFactoryAsync();
     const now = timestampFactory.now();
     const userDataWithTimestamps = {
@@ -156,7 +156,7 @@ export async function updateDataCollectionNoticeAcceptanceServer(
     const adminDb = getFirestoreAdmin();
     const docRef = adminDb.collection(USER_DATA_COLLECTION).doc(discordId);
 
-    const { createAdminTimestampFactoryAsync } = await import('@/features/infrastructure/utils');
+    const { createAdminTimestampFactoryAsync } = await import('@websites/infrastructure/utils');
     const timestampFactory = await createAdminTimestampFactoryAsync();
     await docRef.update({
       dataCollectionNoticeAccepted: accepted,

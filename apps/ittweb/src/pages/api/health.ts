@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { getFirestoreAdmin } from '@/features/infrastructure/api/firebase/admin';
+import { getFirestoreAdmin } from '@websites/infrastructure/firebase';
 
 /**
  * Health Check Endpoint

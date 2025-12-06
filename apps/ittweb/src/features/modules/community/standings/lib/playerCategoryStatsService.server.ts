@@ -5,9 +5,9 @@
  * These functions use Firebase Admin SDK and should only be used in API routes.
  */
 
-import { getFirestoreAdmin } from '@/features/infrastructure/api/firebase/admin';
-import { createComponentLogger, logError } from '@/features/infrastructure/logging';
-import { createTimestampFactoryAsync } from '@/features/infrastructure/utils';
+import { getFirestoreAdmin } from '@websites/infrastructure/firebase';
+import { createComponentLogger, logError } from '@websites/infrastructure/logging';
+import { createTimestampFactoryAsync } from '@websites/infrastructure/utils';
 import { normalizePlayerName } from '@/features/modules/community/players/lib/playerService.utils';
 import type { PlayerCategoryStats } from '../types';
 import type { GameCategory } from '../../../game-management/games/types';
@@ -54,7 +54,7 @@ export async function upsertPlayerCategoryStats(
 
     const timestampFactory = await createTimestampFactoryAsync();
     const now = timestampFactory.now();
-    
+
     const data: PlayerCategoryStats = {
       id: docId,
       playerId: normalizedPlayerId,

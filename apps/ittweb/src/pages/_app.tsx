@@ -13,9 +13,9 @@ import Head from "next/head";
 import { useEffect } from "react";
 import { SWRConfig } from "swr";
 import { Layout } from "@/features/infrastructure/components";
-import { Logger } from "@/features/infrastructure/logging";
-import { initializeErrorTracking, initializePerformanceMonitoring } from "@/features/infrastructure/monitoring";
-import { swrConfig } from "@/features/infrastructure/lib";
+import { Logger } from "@websites/infrastructure/logging";
+import { initializeErrorTracking, initializePerformanceMonitoring } from "@websites/infrastructure/monitoring";
+import { swrConfig } from "@websites/infrastructure/cache";
 
 // Initialize logging
 if (typeof window !== 'undefined') {

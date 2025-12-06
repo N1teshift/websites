@@ -7,7 +7,7 @@ import { ClassSelectionChart, ClassWinRateChart } from '@/features/modules/analy
 import { EmptyState } from '@/features/infrastructure/components';
 import type { ClassSelectionData, ClassWinRateData, ClassStats } from '@/features/modules/analytics-group/analytics/types';
 import { getClassSelectionData, getClassWinRateData, getClassStats } from '@/features/modules/analytics-group/analytics/lib/analyticsService';
-import { logError } from '@/features/infrastructure/logging';
+import { logError } from '@websites/infrastructure/logging';
 
 type ClassStatisticsPageProps = {
   classSelection: ClassSelectionData[];

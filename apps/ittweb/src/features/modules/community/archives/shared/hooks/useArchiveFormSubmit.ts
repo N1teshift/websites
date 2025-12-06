@@ -3,7 +3,7 @@ import { ArchiveEntry, CreateArchiveEntry, ArchiveEntryType } from '@/types/arch
 import { validateArchiveForm } from '../utils/archiveValidation';
 import { buildDateInfo, computeEffectiveSectionOrder, SectionKey } from '../utils/archiveFormUtils';
 import { uploadSelectedMedia } from './useArchiveMedia';
-import { logError } from '@/features/infrastructure/logging';
+import { logError } from '@websites/infrastructure/logging';
 
 interface UseArchiveFormSubmitProps {
   mode: 'create' | 'edit';

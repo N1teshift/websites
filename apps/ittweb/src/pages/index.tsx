@@ -1,6 +1,6 @@
 import { useSession, signIn } from 'next-auth/react';
 import { useState, useEffect } from 'react';
-import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib/server';
+import { getStaticPropsWithTranslations } from '@websites/infrastructure/i18n';
 import EntryFormModal from '@/features/modules/game-management/entries/components/EntryFormModal';
 import ScheduleGameForm from '@/features/modules/game-management/scheduled-games/components/ScheduleGameForm';
 import { isAdmin } from '@/features/modules/community/users';
@@ -10,7 +10,7 @@ import { Button, ErrorBoundary } from '@/features/infrastructure/components';
 import { HomeTimeline } from '@/features/modules/community/archives/shared/components';
 import type { HomeTimelineHandle } from '@/features/modules/community/archives/timeline/components/HomeTimeline';
 import { useRef } from 'react';
-import { logError } from '@/features/infrastructure/logging';
+import { logError } from '@websites/infrastructure/logging';
 
 const pageNamespaces = ["common"];
 

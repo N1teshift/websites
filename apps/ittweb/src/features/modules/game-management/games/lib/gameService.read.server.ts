@@ -5,8 +5,8 @@
  * These functions use Firebase Admin SDK and should only be used in API routes.
  */
 
-import { getFirestoreAdmin } from '@/features/infrastructure/api/firebase/admin';
-import { createComponentLogger, logError } from '@/features/infrastructure/logging';
+import { getFirestoreAdmin } from '@websites/infrastructure/firebase';
+import { createComponentLogger, logError } from '@websites/infrastructure/logging';
 import type {
   Game,
   GamePlayer,
@@ -175,7 +175,7 @@ export async function getGames(filters: GameFilters = {}): Promise<GameListRespo
     } = filters;
 
     const adminDb = getFirestoreAdmin();
-    const { createTimestampFactoryAsync } = await import('@/features/infrastructure/utils');
+    const { createTimestampFactoryAsync } = await import('@websites/infrastructure/utils');
     const timestampFactory = await createTimestampFactoryAsync();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let gamesQuery: any = adminDb.collection(GAMES_COLLECTION);

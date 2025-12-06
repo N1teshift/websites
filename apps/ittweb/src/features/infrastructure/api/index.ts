@@ -1,5 +1,20 @@
 export * from './handlers/routeHandlers';
 export * from './firebase';
-export * from './zod/zodValidation';
-export * from './schemas/schemas';
-export * from './parsing/queryParser';
+// Re-export parsing, zod, and schemas from centralized package
+export {
+  parseQueryString,
+  parseRequiredQueryString,
+  parseQueryInt,
+  parseRequiredQueryInt,
+  parseQueryBoolean,
+  parseQueryDate,
+  parseQueryEnum,
+  parseQueryArray,
+  parsePagination,
+  type PaginationParams,
+  zodValidator,
+  validateZodBody,
+  createCustomValidator,
+  formatZodErrors,
+  RevalidateSchema,
+} from '@websites/infrastructure/api';

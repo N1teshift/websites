@@ -11,8 +11,8 @@
  * - Cache invalidation when games are created/updated
  */
 
-import { getFirestoreAdmin, isServerSide } from '@/features/infrastructure/api/firebase/admin';
-import { createComponentLogger } from '@/features/infrastructure/logging';
+import { getFirestoreAdmin, isServerSide } from '@websites/infrastructure/firebase';
+import { createComponentLogger } from '@websites/infrastructure/logging';
 import type { CacheEntry, CacheConfig } from './analyticsCache';
 import { generateCacheKey } from './analyticsCache';
 
@@ -42,39 +42,39 @@ export async function getCachedAnalytics<T>(
   try {
     const cacheKey = generateCacheKey(analyticsType, filters);
     const config = configs?.[analyticsType] || DEFAULT_CACHE_CONFIG;
-    
+
     const db = getFirestoreAdmin();
     const doc = await db.collection(CACHE_COLLECTION).doc(cacheKey).get();
-    
+
     if (!doc.exists) {
       logger.debug('Cache miss - not found', { analyticsType, cacheKey });
       return null;
     }
-    
+
     const entry = doc.data() as CacheEntry<T>;
-    
+
     // Check version
     if (entry.version !== config.version) {
-      logger.debug('Cache miss - version mismatch', { 
-        analyticsType, 
-        cacheVersion: entry.version, 
-        currentVersion: config.version 
+      logger.debug('Cache miss - version mismatch', {
+        analyticsType,
+        cacheVersion: entry.version,
+        currentVersion: config.version
       });
       return null;
     }
-    
+
     // Check expiry
     const now = new Date();
     const expiresAt = new Date(entry.expiresAt);
-    
+
     if (now > expiresAt) {
-      logger.debug('Cache miss - expired', { 
-        analyticsType, 
-        expiresAt: entry.expiresAt 
+      logger.debug('Cache miss - expired', {
+        analyticsType,
+        expiresAt: entry.expiresAt
       });
       return null;
     }
-    
+
     logger.debug('Cache hit', { analyticsType, cacheKey });
     return entry.data;
   } catch (error) {
@@ -104,10 +104,10 @@ export async function setCachedAnalytics<T>(
   try {
     const cacheKey = generateCacheKey(analyticsType, filters);
     const config = configs?.[analyticsType] || DEFAULT_CACHE_CONFIG;
-    
+
     const now = new Date();
     const expiresAt = new Date(now.getTime() + config.ttlSeconds * 1000);
-    
+
     const entry: CacheEntry<T> = {
       data,
       computedAt: now.toISOString(),
@@ -115,10 +115,10 @@ export async function setCachedAnalytics<T>(
       filters,
       version: config.version || 1,
     };
-    
+
     const db = getFirestoreAdmin();
     await db.collection(CACHE_COLLECTION).doc(cacheKey).set(entry);
-    
+
     logger.debug('Cache set', { analyticsType, cacheKey, expiresAt: entry.expiresAt });
   } catch (error) {
     logger.warn('Cache write error', { analyticsType, error });
@@ -139,20 +139,20 @@ export async function invalidateAnalyticsCache(
   try {
     const db = getFirestoreAdmin();
     const collection = db.collection(CACHE_COLLECTION);
-    
+
     // If category specified, only invalidate caches for that category
     // Otherwise, invalidate all caches
     const query = collection.limit(500);
-    
+
     const snapshot = await query.get();
-    
+
     if (snapshot.empty) {
       return;
     }
-    
+
     const batch = db.batch();
     let invalidated = 0;
-    
+
     snapshot.docs.forEach((doc) => {
       const data = doc.data() as CacheEntry<unknown>;
       // If category is specified, only invalidate matching caches
@@ -161,7 +161,7 @@ export async function invalidateAnalyticsCache(
         invalidated++;
       }
     });
-    
+
     if (invalidated > 0) {
       await batch.commit();
       logger.info('Cache invalidated', { count: invalidated, category });
@@ -191,15 +191,15 @@ export async function getOrComputeAnalytics<T>(
   if (cached !== null) {
     return cached;
   }
-  
+
   // Compute fresh data
   const data = await computeFn();
-  
+
   // Store in cache (fire and forget)
   setCachedAnalytics(analyticsType, filters, data, configs).catch(() => {
     // Ignore cache write errors
   });
-  
+
   return data;
 }
 

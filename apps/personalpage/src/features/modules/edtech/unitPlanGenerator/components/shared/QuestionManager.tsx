@@ -3,7 +3,7 @@ import { isFeatureEnabled } from '@/config/features';
 import { useFallbackTranslation } from '@websites/infrastructure/i18n/client';
 import LabelWithInfo from './LabelWithInfo';
 import { FiTrash2 } from 'react-icons/fi';
-import IconButton from '@websites/ui';
+import { IconButton } from '@websites/ui';
 import FieldCompletionIndicator from '../ui/FieldCompletionIndicator';
 import { UnitPlanData } from '../../types/UnitPlanTypes';
 
@@ -37,8 +37,8 @@ const QuestionManager: React.FC<QuestionManagerProps> = ({
         <div className="space-y-4">
             <div className="flex items-center justify-between">
                 {info ? (
-                    <LabelWithInfo 
-                        label={title} 
+                    <LabelWithInfo
+                        label={title}
                         info={info}
                         className="block text-sm font-medium text-text-primary"
                     />
@@ -55,7 +55,7 @@ const QuestionManager: React.FC<QuestionManagerProps> = ({
                     {addButtonText || defaultAddButtonText}
                 </button>
             </div>
-            
+
             <div className="space-y-2">
                 {questions.map((question, index) => (
                     <div key={index} className="flex items-start space-x-2">
@@ -76,7 +76,7 @@ const QuestionManager: React.FC<QuestionManagerProps> = ({
                     </div>
                 ))}
             </div>
-            
+
             {/* Field completion indicator */}
             {fieldName && isFeatureEnabled('fieldCompletion') && (
                 <FieldCompletionIndicator

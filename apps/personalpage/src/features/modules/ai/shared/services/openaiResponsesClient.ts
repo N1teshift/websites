@@ -5,7 +5,7 @@
  * and token usage tracking.
  */
 import { ResponsesConfig, ResponsesResult } from "../../types";
-import { apiRequest } from "@/features/infrastructure/api";
+import { apiRequest } from "@/lib/api-client";
 import { updateTokenUsage } from "../utils/tokenUtils";
 import { openaiService } from "@websites/infrastructure/clients/openai/openaiService";
 
@@ -50,7 +50,7 @@ export async function getModelResponse(
     schema,
     messages
   } = config;
-  
+
   try {
     // Prepare request payload
     const payload: Record<string, unknown> = {
@@ -58,17 +58,17 @@ export async function getModelResponse(
       maxTokens,
       model
     };
-    
+
     // Include messages if provided, otherwise use userPrompt
     if (messages && messages.length > 0) {
       payload.messages = messages;
     } else {
       payload.userPrompt = userPrompt;
-      
+
       if (systemPrompt) {
         payload.systemPrompt = systemPrompt;
       }
-      
+
       // Prioritize schema if provided, otherwise use textFormat
       if (schema) {
         payload.schema = schema;
@@ -76,15 +76,15 @@ export async function getModelResponse(
         payload.textFormat = textFormat; // Fallback to textFormat if no schema
       }
     }
-    
+
     // Make API request
     const data = await apiRequest<ResponsesResult>('/api/openai/responses-proxy', 'POST', payload);
-    
+
     // Validate response
     if (data === undefined || data === null) {
       throw new Error('Empty response from API');
     }
-    
+
     // Track token usage with the utility function
     if (data.usage) {
       updateTokenUsage({
@@ -93,7 +93,7 @@ export async function getModelResponse(
         total_tokens: data.usage.total_tokens ?? 0
       });
     }
-    
+
     return data;
   } catch (error) {
     console.error(`Error calling OpenAI API:`, error);
@@ -119,7 +119,7 @@ export async function getModelResponseWithSchema(
   userPrompt: string,
   systemPrompt: string,
   // Use Record<string, unknown> instead of any for the schema type
-  schema: Record<string, unknown> 
+  schema: Record<string, unknown>
 ): Promise<ResponsesResult> {
   // Use the default settings directly from AI_SETTINGS
   const { model, temperature, maxTokens } = AI_SETTINGS;
@@ -163,12 +163,12 @@ export async function getModelResponseWithSchema(
 
       // Make API request
       const data = await apiRequest<ResponsesResult>('/api/openai/responses-proxy', 'POST', payload);
-      
+
       // Validate response
       if (data === undefined || data === null) {
         throw new Error('Empty response from API in getModelResponseWithSchema');
       }
-      
+
       // Track token usage with the utility function
       if (data.usage) {
         updateTokenUsage({
@@ -177,7 +177,7 @@ export async function getModelResponseWithSchema(
           total_tokens: data.usage.total_tokens ?? 0
         });
       }
-      
+
       return data;
     }
   } catch (error) {
@@ -188,7 +188,7 @@ export async function getModelResponseWithSchema(
       throw new Error(`Error calling OpenAI API with schema: ${String(error)}`);
     }
   }
-} 
+}
 
 
 

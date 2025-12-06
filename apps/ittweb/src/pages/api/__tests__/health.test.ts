@@ -27,7 +27,7 @@ describe('GET /api/health', () => {
     jest.clearAllMocks();
 
     // Override the global mock for this specific test
-    jest.doMock('@/features/infrastructure/api/firebase/admin', () => ({
+    jest.doMock('@websites/infrastructure/firebase', () => ({
       getFirestoreAdmin: mockGetFirestoreAdmin,
       isServerSide: jest.fn(() => false),
       getAdminTimestamp: jest.fn(() => ({

@@ -6,7 +6,7 @@ import {
   STARTING_ELO,
 } from '../elo';
 
-jest.mock('@/features/infrastructure/logging', () => ({
+jest.mock('@websites/infrastructure/logging', () => ({
   createComponentLogger: () => ({
     info: jest.fn(),
     warn: jest.fn(),
@@ -28,7 +28,7 @@ jest.mock('../../../players/lib/playerService', () => ({
 }));
 
 const mockIsServerSide = jest.fn(() => false);
-jest.mock('@/features/infrastructure/api/firebase/admin', () => ({
+jest.mock('@websites/infrastructure/firebase', () => ({
   getFirestoreAdmin: jest.fn(),
   isServerSide: mockIsServerSide,
 }));
@@ -44,7 +44,7 @@ jest.mock('firebase/firestore', () => ({
   collection: (...args: unknown[]) => mockCollection(...args),
 }));
 
-jest.mock('@/features/infrastructure/api/firebase', () => ({
+jest.mock('@websites/infrastructure/api/firebase', () => ({
   getFirestoreInstance: jest.fn(() => ({ instance: 'client' })),
 }));
 

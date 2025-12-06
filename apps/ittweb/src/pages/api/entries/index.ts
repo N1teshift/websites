@@ -1,10 +1,10 @@
 import type { NextApiRequest } from 'next';
-import { createGetPostHandler, parseQueryEnum, zodValidator } from '@/features/infrastructure/api';
+import { createGetPostHandler, parseQueryEnum, zodValidator } from '@websites/infrastructure/api';
 import { CreateEntrySchema } from '@/features/modules/game-management/entries/lib';
 import { getAllEntries } from '@/features/modules/game-management/entries/lib/entryService.server';
 import { createEntry } from '@/features/modules/game-management/entries/lib/entryService';
 import { CreateEntry } from '@/types/entry';
-import { createComponentLogger } from '@/features/infrastructure/logging';
+import { createComponentLogger } from '@websites/infrastructure/logging';
 import type { Entry } from '@/types/entry';
 
 const logger = createComponentLogger('api/entries');

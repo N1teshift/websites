@@ -7,7 +7,7 @@
 
 import useSWR from 'swr';
 import type { ClassStats } from '@/features/modules/analytics-group/analytics/types';
-import { swrKeys } from '@/features/infrastructure/lib';
+import { swrKeys } from '@websites/infrastructure/cache';
 
 /**
  * Custom fetcher for classes API that handles the response format (returns array)

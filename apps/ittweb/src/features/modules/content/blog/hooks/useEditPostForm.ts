@@ -1,7 +1,7 @@
 import { FormEvent, useMemo, useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { signIn, useSession } from 'next-auth/react';
-import { createComponentLogger } from '@/features/infrastructure/logging';
+import { createComponentLogger } from '@websites/infrastructure/logging';
 import type { PostFormState } from './useNewPostForm';
 
 const logger = createComponentLogger('useEditPostForm');

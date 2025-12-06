@@ -5,9 +5,9 @@
  * These functions use Firebase Admin SDK and should only be used in API routes.
  */
 
-import { getFirestoreAdmin } from '@/features/infrastructure/api/firebase/admin';
-import { createTimestampFactoryAsync, timestampToIso } from '@/features/infrastructure/utils';
-import { createComponentLogger, logError } from '@/features/infrastructure/logging';
+import { getFirestoreAdmin } from '@websites/infrastructure/firebase';
+import { createTimestampFactoryAsync, timestampToIso } from '@websites/infrastructure/utils';
+import { createComponentLogger, logError } from '@websites/infrastructure/logging';
 import { upsertPlayerCategoryStats } from '../../standings/lib/playerCategoryStatsService.server';
 import { normalizePlayerName } from './playerService.utils';
 import {

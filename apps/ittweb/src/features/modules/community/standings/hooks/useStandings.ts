@@ -1,5 +1,5 @@
 import type { StandingsResponse, StandingsFilters } from '../types';
-import { createDataFetchHook } from '@/features/infrastructure/hooks';
+import { createDataFetchHook } from '@websites/infrastructure/hooks';
 
 const useStandingsHook = createDataFetchHook<StandingsResponse, StandingsFilters>({
   fetchFn: async (filters) => {

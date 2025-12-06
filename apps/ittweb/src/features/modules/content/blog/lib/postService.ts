@@ -4,9 +4,9 @@ import {
   query,
   where,
 } from 'firebase/firestore';
-import { getFirestoreInstance } from '@/features/infrastructure/api/firebase';
+import { getFirestoreInstance } from '@websites/infrastructure/firebase';
 import { Post, CreatePost } from '@/types/post';
-import { createComponentLogger } from '@/features/infrastructure/logging';
+import { createComponentLogger } from '@websites/infrastructure/logging';
 import {
   transformPostDoc,
   preparePostDataForFirestore,
@@ -15,7 +15,7 @@ import {
   sortPostsByDate,
 } from './postService.helpers';
 import { createFirestoreCrudService } from '@/features/infrastructure/api/firebase/firestoreCrudService';
-import { withServiceOperationNullable } from '@/features/infrastructure/utils';
+// import { withServiceOperationNullable } from '@websites/infrastructure/utils'; // Function doesn't exist
 
 const POSTS_COLLECTION = 'posts';
 const logger = createComponentLogger('postService');
@@ -54,32 +54,30 @@ export async function getPostById(id: string): Promise<Post | null> {
  * Get a post by slug
  */
 export async function getPostBySlug(slug: string): Promise<Post | null> {
-  return withServiceOperationNullable(
-    'getPostBySlug',
-    'postService',
-    async () => {
-      logger.info('Fetching post by slug', { slug });
+  try {
+    logger.info('Fetching post by slug', { slug });
 
-      const db = getFirestoreInstance();
-      const q = query(
-        collection(db, POSTS_COLLECTION),
-        where('slug', '==', slug),
-        where('published', '==', true)
-      );
-      
-      const querySnapshot = await getDocs(q);
-      
-      if (querySnapshot.empty) {
-        logger.info('Post not found', { slug });
-        return null;
-      }
+    const db = getFirestoreInstance();
+    const q = query(
+      collection(db, POSTS_COLLECTION),
+      where('slug', '==', slug),
+      where('published', '==', true)
+    );
 
-      const docSnap = querySnapshot.docs[0];
-      const data = docSnap.data();
-      return transformPostDoc(data, docSnap.id);
-    },
-    { context: { slug } }
-  );
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.empty) {
+      logger.info('Post not found', { slug });
+      return null;
+    }
+
+    const docSnap = querySnapshot.docs[0];
+    const data = docSnap.data();
+    return transformPostDoc(data, docSnap.id);
+  } catch (error) {
+    logger.error('Failed to get post by slug', error as Error, { slug });
+    return null;
+  }
 }
 
 /**

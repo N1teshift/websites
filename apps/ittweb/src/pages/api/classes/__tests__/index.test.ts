@@ -12,7 +12,7 @@ jest.mock('@/features/modules/analytics-group/analytics/lib/analyticsService', (
   getClassStats: (...args: unknown[]) => mockGetClassStats(...args),
 }));
 
-jest.mock('@/features/infrastructure/logging', () => ({
+jest.mock('@websites/infrastructure/logging', () => ({
   createComponentLogger: jest.fn(() => ({
     info: mockInfo,
     error: mockError,

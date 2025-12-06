@@ -12,7 +12,7 @@ jest.mock('@/features/modules/community/players/lib/playerService', () => ({
   getPlayerStats: (...args: unknown[]) => mockGetPlayerStats(...args),
 }));
 
-jest.mock('@/features/infrastructure/logging', () => ({
+jest.mock('@websites/infrastructure/logging', () => ({
   createComponentLogger: jest.fn(() => ({
     info: mockInfo,
     error: mockError,

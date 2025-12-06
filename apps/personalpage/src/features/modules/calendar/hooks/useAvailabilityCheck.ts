@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { createComponentLogger } from '@websites/infrastructure/logging';
-import { apiRequest } from '@websites/infrastructure/api';
+import { apiRequest } from '@/lib/api-client';
 import { AvailabilityCheckResult } from '../types';
 
 /**
@@ -25,21 +25,21 @@ export function useAvailabilityCheck() {
     setIsChecking(true);
     try {
       logger.debug('Checking Google Calendar availability', { startDateTime, endDateTime, calendarId });
-      
+
       const result = await apiRequest<AvailabilityCheckResult>(
         `/api/calendar/check-availability-google?startDateTime=${encodeURIComponent(startDateTime)}&endDateTime=${encodeURIComponent(endDateTime)}&calendarId=${encodeURIComponent(calendarId)}`,
         'GET'
       );
-      
+
       setLastResult(result);
-      logger.info('Google Calendar availability checked', { 
+      logger.info('Google Calendar availability checked', {
         isAvailable: result.isAvailable,
         busyCount: result.busy.length
       });
-      
+
       return result;
     } catch (error) {
-      logger.error('Error checking Google Calendar availability', 
+      logger.error('Error checking Google Calendar availability',
         error instanceof Error ? error : new Error(String(error)));
       throw error;
     } finally {
@@ -58,21 +58,21 @@ export function useAvailabilityCheck() {
     setIsChecking(true);
     try {
       logger.debug('Checking Microsoft Calendar availability', { startDateTime, endDateTime, calendarId });
-      
+
       const result = await apiRequest<AvailabilityCheckResult>(
         `/api/calendar/check-availability-microsoft?startDateTime=${encodeURIComponent(startDateTime)}&endDateTime=${encodeURIComponent(endDateTime)}&calendarId=${encodeURIComponent(calendarId)}`,
         'GET'
       );
-      
+
       setLastResult(result);
-      logger.info('Microsoft Calendar availability checked', { 
+      logger.info('Microsoft Calendar availability checked', {
         isAvailable: result.isAvailable,
         busyCount: result.busy.length
       });
-      
+
       return result;
     } catch (error) {
-      logger.error('Error checking Microsoft Calendar availability', 
+      logger.error('Error checking Microsoft Calendar availability',
         error instanceof Error ? error : new Error(String(error)));
       throw error;
     } finally {

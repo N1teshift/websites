@@ -3,7 +3,7 @@ import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { EntryContentType } from '@/types/entry';
 import { uploadImage } from '@/features/modules/community/archives/services';
-import { createComponentLogger, logError } from '@/features/infrastructure/logging';
+import { createComponentLogger, logError } from '@websites/infrastructure/logging';
 import type { ArchiveEntry } from '@/types/archive';
 
 const logger = createComponentLogger('EntryEditModal');

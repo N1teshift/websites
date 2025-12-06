@@ -1,5 +1,5 @@
 import type { NextApiRequest } from 'next';
-import { createApiHandler } from '@/features/infrastructure/api';
+import { createApiHandler } from '@websites/infrastructure/api';
 import { getStandings } from '@/features/modules/community/standings/lib/standingsService.server';
 import type { StandingsFilters } from '@/features/modules/community/standings/types';
 

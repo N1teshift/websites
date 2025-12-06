@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { useFallbackTranslation } from '@/features/i18n';
+import { useFallbackTranslation } from '@websites/infrastructure/i18n';
 
 interface FloatingFooterProps {
   isAtBottom: boolean;

@@ -6,7 +6,7 @@ import { describe, it, expect, beforeEach } from '@jest/globals';
 import {
   getElementsWithAriaLabels,
   hasProperAriaLabel,
-} from '@/features/infrastructure/utils/accessibility/helpers';
+} from '@websites/infrastructure/utils';
 import { logError } from '@/features/infrastructure/logging';
 
 // Mock logger

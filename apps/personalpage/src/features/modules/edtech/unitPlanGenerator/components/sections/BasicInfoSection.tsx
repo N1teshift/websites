@@ -4,7 +4,7 @@ import { useFallbackTranslation } from '@websites/infrastructure/i18n/client';
 import FormField from '../shared/FormField';
 import LabelWithInfo from '../shared/LabelWithInfo';
 import { getTranslatedSubjectName } from '../../utils/subjectTranslationUtils';
-import Dropdown from '@websites/ui';
+import { Dropdown } from '@websites/ui';
 // InfoTooltip removed from this section per request
 
 interface BasicInfoSectionProps {
@@ -43,7 +43,7 @@ const BasicInfoSection: React.FC<BasicInfoSectionProps> = ({
                     required
                     info={t('school_name_info')}
                 />
-                
+
                 <FormField
                     label={t('unit_title')}
                     value={unitPlan.unitTitle}
@@ -52,10 +52,10 @@ const BasicInfoSection: React.FC<BasicInfoSectionProps> = ({
                     required
                     info={t('unit_title_info')}
                 />
-                
+
                 <div>
-                    <LabelWithInfo 
-                        label={t('academic_year')} 
+                    <LabelWithInfo
+                        label={t('academic_year')}
                         info={t('academic_year_info')}
                         required
                     />
@@ -75,10 +75,10 @@ const BasicInfoSection: React.FC<BasicInfoSectionProps> = ({
                         />
                     </div>
                 </div>
-                
+
                 <div>
-                    <LabelWithInfo 
-                        label={t('subject')} 
+                    <LabelWithInfo
+                        label={t('subject')}
                         info={t('subject_info')}
                         required
                     />
@@ -88,7 +88,7 @@ const BasicInfoSection: React.FC<BasicInfoSectionProps> = ({
                             value={unitPlan.subject || ''}
                             onChange={(newSubject) => {
                                 updateUnitPlan('subject', newSubject);
-                                
+
                                 // Clear command terms and ATL skills if switching away from mathematics
                                 if (newSubject !== 'mathematics') {
                                     if (unitPlan.commandTerms.length > 0) {
@@ -111,8 +111,8 @@ const BasicInfoSection: React.FC<BasicInfoSectionProps> = ({
                 </div>
 
                 <div>
-                    <LabelWithInfo 
-                        label="Unit Order" 
+                    <LabelWithInfo
+                        label="Unit Order"
                         info="Optional number to define the sequence of this unit in your year plan (e.g., 1 for first unit, 2 for second). Leave empty if order doesn't matter."
                     />
                     <input
@@ -129,8 +129,8 @@ const BasicInfoSection: React.FC<BasicInfoSectionProps> = ({
                 </div>
 
                 <div className="lg:col-span-2">
-                    <LabelWithInfo 
-                        label={t('contributing_teachers')} 
+                    <LabelWithInfo
+                        label={t('contributing_teachers')}
                         info={t('contributing_teachers_info')}
                     />
                     <div className="space-y-2">
@@ -187,8 +187,8 @@ const BasicInfoSection: React.FC<BasicInfoSectionProps> = ({
                 </div>
 
                 <div>
-                    <LabelWithInfo 
-                        label={t('number_of_lessons')} 
+                    <LabelWithInfo
+                        label={t('number_of_lessons')}
                         info={t('number_of_lessons_info')}
                     />
                     <div className="w-full px-4 py-2.5 border-2 border-border-default rounded-xl bg-surface-card text-text-primary">
@@ -197,8 +197,8 @@ const BasicInfoSection: React.FC<BasicInfoSectionProps> = ({
                 </div>
 
                 <div>
-                    <LabelWithInfo 
-                        label={t('myp_year')} 
+                    <LabelWithInfo
+                        label={t('myp_year')}
                         info={t('myp_year_info')}
                         required
                     />

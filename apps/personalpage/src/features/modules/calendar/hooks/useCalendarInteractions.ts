@@ -4,7 +4,7 @@ import { createTemporaryEvent, parseRegistrationInfoFromUrl } from "@calendar/ut
 import { RegistrationMethod, EventDetails, TemporaryEvent, CalendarEventClickInfo, CalendarSlotSelectInfo, AvailabilityCheckResult } from "@calendar/types";
 import { ParsedUrlQuery } from "querystring";
 import { createComponentLogger } from "@websites/infrastructure/logging";
-import { apiRequest } from "@websites/infrastructure/api";
+import { apiRequest } from '@/lib/api-client';
 
 const CONFIRMATION_TIMEOUT_MS = 30_000;
 const CONFIRMATION_POLL_INTERVAL_MS = 4_000;
@@ -28,7 +28,7 @@ export const useCalendarEventHandlers = ({
     handleEventCreationSuccess,
     addTemporaryEvent
 }: UseCalendarEventHandlersProps) => {
-    
+
     const handleSelectSlot = useCallback((slotInfo: CalendarSlotSelectInfo) => {
         setSelectedSlot(slotInfo);
         setSelectedEvent(null);
@@ -145,18 +145,18 @@ export const useEventSuccessHandler = ({
 
         poll();
     }, [clearEventsCache, fetchEvents, removeTemporaryEventById, setConfirmationErrorKey, setShowSuccessMessage, logger]);
-    
+
     const handleEventCreationSuccess = useCallback(() => {
         if (isProcessingSuccess.current) {
             logger.debug("Success handler already running, skipping");
             return;
         }
-        
+
         logger.debug("Event creation success handler called");
         isProcessingSuccess.current = true;
         setShowSuccessMessage(true);
         setConfirmationErrorKey(null);
-        
+
         // Clean up the URL to prevent re-triggering
         if (router.query.success === "true") {
             router.replace({
@@ -164,7 +164,7 @@ export const useEventSuccessHandler = ({
                 query: {}
             }, undefined, { shallow: true });
         }
-        
+
         // Only create temporary event for OAuth flows (guest events create their own)
         if (eventDetails && registrationMethod) {
             const tempEvent = createTemporaryEvent(eventDetails, registrationMethod);
@@ -174,7 +174,7 @@ export const useEventSuccessHandler = ({
             scheduleHideSuccessMessage();
         }
     }, [addTemporaryEvent, confirmEventPresence, eventDetails, registrationMethod, router, scheduleHideSuccessMessage, setConfirmationErrorKey, setShowSuccessMessage]);
-    
+
     useEffect(() => {
         return () => {
             clearConfirmationTimer();
@@ -183,7 +183,7 @@ export const useEventSuccessHandler = ({
             }
         };
     }, []);
-    
+
     return { handleEventCreationSuccess, isProcessingSuccess: isProcessingSuccess.current };
 };
 
@@ -208,16 +208,16 @@ export const useEventFetching = ({
 }: UseEventFetchingProps) => {
     const fetchEventsRef = useRef(fetchEvents);
     fetchEventsRef.current = fetchEvents;
-    
+
     useEffect(() => {
         const logger = createComponentLogger('CalendarInteractions');
-        
+
         // Don't fetch events if we're in the middle of a success flow
         if (routerQuery.success === "true" || isProcessingSuccess) {
             logger.debug("Skipping fetchEvents during success flow");
             return;
         }
-        
+
         // Only fetch on initial mount or when query changes (but not when clearing success)
         const hasQueryParams = Object.keys(routerQuery).length > 0;
         if (hasQueryParams && !routerQuery.success) {
@@ -241,17 +241,17 @@ export const useOAuthSuccessHandler = ({
     const handleEventCreationSuccessRef = useRef(handleEventCreationSuccess);
     const setRegistrationMethodRef = useRef(setRegistrationMethod);
     const setEventDetailsRef = useRef(setEventDetails);
-    
+
     handleEventCreationSuccessRef.current = handleEventCreationSuccess;
     setRegistrationMethodRef.current = setRegistrationMethod;
     setEventDetailsRef.current = setEventDetails;
-    
+
     useEffect(() => {
         const logger = createComponentLogger('CalendarInteractions');
-        
+
         if (routerQuery.success === "true") {
             logger.debug("Detected success=true, calling handleEventCreationSuccess");
-            
+
             // Parse registration info from URL for OAuth flows
             const registrationInfo = parseRegistrationInfoFromUrl(routerQuery);
             if (registrationInfo) {
@@ -266,7 +266,7 @@ export const useOAuthSuccessHandler = ({
                     startTime: registrationInfo.startTime
                 });
             }
-            
+
             // Add a small delay to ensure state updates are processed
             setTimeout(() => {
                 handleEventCreationSuccessRef.current();

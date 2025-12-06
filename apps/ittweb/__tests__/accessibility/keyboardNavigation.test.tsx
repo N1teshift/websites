@@ -7,7 +7,7 @@ import {
   getInteractiveElements,
   isKeyboardFocusable,
   getFocusableElementsInOrder,
-} from '@/features/infrastructure/utils/accessibility/helpers';
+} from '@websites/infrastructure/utils';
 import { logError } from '@/features/infrastructure/logging';
 
 // Mock logger

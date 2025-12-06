@@ -1,6 +1,6 @@
 import React from 'react';
 import { WorkItem } from '../ui/WorkItem';
-import { useFallbackTranslation } from '@/features/i18n';
+import { useFallbackTranslation } from '@websites/infrastructure/i18n';
 
 interface WorksSectionProps {
   images: string[];

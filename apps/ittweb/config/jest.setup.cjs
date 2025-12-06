@@ -1,4 +1,5 @@
-require("@testing-library/jest-dom");
+// Import base test setup
+require("@websites/test-utils/src/setup");
 
 jest.mock("next/router", () => ({
   useRouter() {
@@ -35,6 +36,26 @@ jest.mock("next-i18next", () => ({
   Trans: ({ children }) => children,
 }));
 
+// Mock @websites/infrastructure packages
+jest.mock("@websites/infrastructure/firebase", () => ({
+  __esModule: true,
+  getFirestoreAdmin: jest.fn(() => ({ collection: jest.fn(() => ({ doc: jest.fn(() => ({ get: jest.fn(), collection: jest.fn(() => ({ get: jest.fn() })) })) })) })),
+  getFirestoreClient: jest.fn(() => ({})),
+  isServerSide: jest.fn(() => false),
+  getAdminTimestamp: jest.fn(() => ({
+    now: jest.fn(() => ({ toDate: () => new Date("2020-01-01T00:00:00Z") })),
+    fromDate: jest.fn((date) => ({ toDate: () => date })),
+  })),
+}));
+
+jest.mock("@websites/infrastructure/logging", () => ({
+  __esModule: true,
+  createComponentLogger: jest.fn(() => ({ info: jest.fn(), warn: jest.fn(), error: jest.fn() })),
+  logError: jest.fn(),
+}));
+
+// Legacy mocks for @/features/infrastructure paths (via re-exports)
+// These are kept for backward compatibility with code that still uses the old paths
 jest.mock("@/features/infrastructure/api/firebase", () => ({
   __esModule: true,
   getFirestoreInstance: jest.fn(() => ({})),

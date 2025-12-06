@@ -1,7 +1,7 @@
 import type { NextApiRequest } from 'next';
-import { createPostHandler, requireSession, parseRequiredQueryString } from '@/features/infrastructure/api';
+import { createPostHandler, requireSession, parseRequiredQueryString } from '@/lib/api-wrapper';
 import { joinGame } from '@/features/modules/game-management/games/lib/gameService';
-import { createComponentLogger } from '@/features/infrastructure/logging';
+import { createComponentLogger } from '@websites/infrastructure/logging';
 
 const logger = createComponentLogger('api/games/[id]/join');
 
@@ -18,7 +18,7 @@ export default createPostHandler<{ success: boolean }>(
     }
 
     await joinGame(gameId, session.discordId, session.user.name);
-    
+
     logger.info('User joined game', { gameId, discordId: session.discordId });
     return { success: true }; // Wrapped as { success: true, data: { success: true } }
   },

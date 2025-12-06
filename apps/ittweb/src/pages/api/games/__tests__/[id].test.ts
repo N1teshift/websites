@@ -17,15 +17,15 @@ jest.mock('@/features/modules/game-management/games/lib/gameService', () => ({
   deleteGame: (...args: unknown[]) => mockDeleteGame(...args),
 }));
 
-jest.mock('@/features/infrastructure/api', () => {
-  const actual = jest.requireActual('@/features/infrastructure/api');
+jest.mock('@/lib/api', () => {
+  const actual = jest.requireActual('@/lib/api');
   return {
     ...actual,
     checkResourceOwnership: (...args: unknown[]) => mockCheckResourceOwnership(...args),
   };
 });
 
-jest.mock('@/features/infrastructure/logging', () => ({
+jest.mock('@websites/infrastructure/logging', () => ({
   createComponentLogger: jest.fn(() => ({
     info: mockInfo,
     error: mockError,

@@ -1,9 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { createMockRequest, createMockResponse } from '../../../../test-utils/mockNext';
-import type { ApiResponse } from '@/features/infrastructure/api';
+import type { ApiResponse } from '@websites/infrastructure/api';
 
 // Mock routeHandlers BEFORE importing handler to prevent NextAuth/jose import
-jest.mock('@/features/infrastructure/api', () => ({
+jest.mock('@websites/infrastructure/api', () => ({
   createApiHandler: <T,>(handler: (req: NextApiRequest, res: NextApiResponse<ApiResponse<T>>, context?: { session: unknown }) => Promise<T>, options?: { methods?: string[] }) => {
     return async (req: NextApiRequest, res: NextApiResponse<ApiResponse<T>>) => {
       // Check allowed methods from options
@@ -24,7 +24,7 @@ jest.mock('@/features/infrastructure/api', () => ({
     };
   },
   createGetHandler: <T,>(handler: (req: NextApiRequest, res: NextApiResponse<ApiResponse<T>>, context?: { session: unknown }) => Promise<T>, options?: { methods?: string[] }) => {
-    return jest.requireMock<typeof import('@/features/infrastructure/api')>('@/features/infrastructure/api').createApiHandler(handler, { ...options, methods: ['GET'] });
+    return jest.requireMock<typeof import('@websites/infrastructure/api')>('@websites/infrastructure/api').createApiHandler(handler, { ...options, methods: ['GET'] });
   },
 }));
 
@@ -32,7 +32,7 @@ jest.mock('@/features/modules/analytics-group/analytics/lib/analyticsService', (
   getWinRateData: jest.fn(),
 }));
 
-jest.mock('@/features/infrastructure/logging', () => ({
+jest.mock('@websites/infrastructure/logging', () => ({
   createComponentLogger: jest.fn(() => ({
     info: jest.fn(),
     error: jest.fn(),

@@ -34,12 +34,14 @@ This section contains internal development documentation that supports the devel
 - **[Test Specifications](./operations/test-specifications/)** - Detailed test specifications by category
 - **[Deployment](./operations/deployment.md)** - Deployment procedures
 - **[CI/CD](./operations/ci-cd.md)** - Continuous integration setup
-- **[Monitoring](./operations/monitoring.md)** - System monitoring and alerting
+- **[Monitoring](../../../../packages/infrastructure/docs/guides/monitoring.md)** - System monitoring and alerting
 - **[Build Optimization](./operations/build-optimization.md)** - Build and bundle optimization
 
 ### Performance
+> **📦 Infrastructure Performance Documentation**: See [@websites/infrastructure/docs/guides/performance.md](../../../../packages/infrastructure/docs/guides/performance.md) for consolidated performance optimization strategies.
+
 - **[Bundle Optimization](./performance/bundle-optimization.md)** - Reducing bundle size
-- **[Caching](./performance/caching.md)** - Caching strategies
+- **[Caching](../../../../packages/infrastructure/docs/guides/caching.md)** - Caching strategies
 - **[Query Optimization](./performance/query-optimization.md)** - Database query optimization
 - **[Monitoring](./performance/monitoring.md)** - Performance monitoring
 

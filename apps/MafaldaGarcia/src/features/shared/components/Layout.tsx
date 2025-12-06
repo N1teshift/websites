@@ -1,5 +1,5 @@
 import React from 'react';
-import { TranslationNamespaceContext } from '@i18n/TranslationNamespaceContext';
+import { TranslationNamespaceContext } from '@websites/infrastructure/i18n';
 
 interface LayoutProps {
   children: React.ReactNode;

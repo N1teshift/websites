@@ -6,7 +6,7 @@ import type { PlayerProfile, PlayerSearchFilters } from '../../types';
 global.fetch = jest.fn();
 
 // Mock logger
-jest.mock('@/features/infrastructure/logging', () => ({
+jest.mock('@websites/infrastructure/logging', () => ({
   logError: jest.fn(),
 }));
 

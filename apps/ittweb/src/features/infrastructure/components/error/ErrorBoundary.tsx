@@ -1,7 +1,7 @@
 import React, { Component, ErrorInfo, ReactNode } from 'react';
 import { Card } from '../containers';
 import { Button } from '../buttons';
-import { logError } from '@/features/infrastructure/logging';
+import { logError } from '@websites/infrastructure/logging';
 
 interface ErrorBoundaryProps {
   children: ReactNode;

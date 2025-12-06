@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import { useSession, signIn } from 'next-auth/react';
 import type { GameWithPlayers } from '@/features/modules/game-management/games/types';
-import { createComponentLogger } from '@/features/infrastructure/logging';
+import { createComponentLogger } from '@websites/infrastructure/logging';
 import {
   syncGameAfterUpdate,
   createOptimisticParticipant,

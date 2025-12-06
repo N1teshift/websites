@@ -1,7 +1,7 @@
 import type { NextApiRequest } from 'next';
-import { createPostHandler } from '@/features/infrastructure/api';
-import { createComponentLogger } from '@/features/infrastructure/logging';
-import type { PerformanceMetric } from '@/features/infrastructure/monitoring/performance';
+import { createPostHandler } from '@websites/infrastructure/api';
+import { createComponentLogger } from '@websites/infrastructure/logging';
+import type { PerformanceMetric } from '@websites/infrastructure/monitoring/performance';
 
 const logger = createComponentLogger('api/analytics/performance');
 

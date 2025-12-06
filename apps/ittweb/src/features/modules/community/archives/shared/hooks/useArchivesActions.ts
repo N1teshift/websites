@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { useSession, signIn } from 'next-auth/react';
 import { ArchiveEntry } from '@/types/archive';
 import { getArchiveEntries, deleteArchiveEntry } from '@/features/modules/community/archives/services';
-import { createComponentLogger, logError } from '@/features/infrastructure/logging';
+import { createComponentLogger, logError } from '@websites/infrastructure/logging';
 
 interface UseArchivesActionsProps {
   // State setters from useArchivesPage

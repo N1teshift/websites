@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { UnitPlanData, SubunitData } from '../../types/UnitPlanTypes';
 import { useFallbackTranslation } from '@websites/infrastructure/i18n/client';
 import { FiTrash2 } from 'react-icons/fi';
-import IconButton from '@websites/ui';
-import Dropdown from '@websites/ui';
+import { IconButton, Dropdown } from '@websites/ui';
 
 interface ResourcesSectionProps {
     unitPlan: UnitPlanData;
@@ -119,7 +118,7 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
                             Select a predefined resource to quickly add it to your list
                         </p>
                     </div>
-                    
+
                     <div className="space-y-2">
                         {(Array.isArray(unitPlan.printedResources) ? unitPlan.printedResources : []).map((item, index) => (
                             <div key={index} className="flex items-center space-x-2">
@@ -157,7 +156,7 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
                             {t('add_item')}
                         </button>
                     </div>
-                    
+
                     <div className="space-y-2">
                         {(Array.isArray(unitPlan.digitalResources) ? unitPlan.digitalResources : []).map((item, index) => (
                             <div key={index} className="flex items-center space-x-2">
@@ -195,7 +194,7 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
                             {t('add_item')}
                         </button>
                     </div>
-                    
+
                     <div className="space-y-2">
                         {(Array.isArray(unitPlan.guestsResources) ? unitPlan.guestsResources : []).map((item, index) => (
                             <div key={index} className="flex items-center space-x-2">

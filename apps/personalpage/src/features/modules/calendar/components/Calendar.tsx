@@ -10,7 +10,7 @@ import { useCalendarEvents, useSlotOverlapChecker } from "../hooks/useCalendarEv
 import { useCalendarTimeBounds } from "../hooks/useCalendarTimeBounds";
 import { useCalendarStyling } from "../hooks/useCalendarStyling";
 import CalendarToolbar from "./CalendarToolbar";
-import ToastNotification from "@websites/ui";
+import { ToastNotification } from "@websites/ui";
 
 const SLOT_DURATION_MINUTES = 30;
 const SLOT_DURATION_MS = SLOT_DURATION_MINUTES * 60 * 1000;
@@ -100,7 +100,7 @@ const LessonScheduler: React.FC<LessonSchedulerProps> = ({
     // Handle slot selection
     const handleSelectSlot = useCallback((slotInfo: SlotInfo) => {
         const { start, end } = slotInfo;
-        
+
         // Check if slot is 6 hours in the future
         if (start < sixHoursFromNow) {
             logger.info("Slot rejected because it is too soon", { start, sixHoursFromNow });

@@ -6,7 +6,7 @@ import ConceptSelector from '../shared/ConceptSelector';
 import QuestionSection from '../shared/QuestionSection';
 import GlobalContextInfo from '../shared/GlobalContextInfo';
 import LabelWithInfo from '../shared/LabelWithInfo';
-import Dropdown from '@websites/ui';
+import { Dropdown } from '@websites/ui';
 
 interface InquirySectionProps {
     unitPlan: UnitPlanData;
@@ -37,7 +37,7 @@ const InquirySection: React.FC<InquirySectionProps> = ({
                     {t('inquiry_establishing_purpose')}
                 </h2>
             </div>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <ConceptSelector
                     selectedConcepts={unitPlan.specifiedConcepts}
@@ -50,7 +50,7 @@ const InquirySection: React.FC<InquirySectionProps> = ({
                     subjects={subjects}
                     conceptMode={unitPlan.outputMapping}
                 />
-                
+
                 {unitPlan.outputMapping !== 'current' && (
                     <FormField
                         label={t('conceptual_understandings')}
@@ -65,10 +65,10 @@ const InquirySection: React.FC<InquirySectionProps> = ({
                         unitPlanContext={unitPlan}
                     />
                 )}
-                
+
                 <div>
-                    <LabelWithInfo 
-                        label={t('enhanced_global_context')} 
+                    <LabelWithInfo
+                        label={t('enhanced_global_context')}
                         info={t('enhanced_global_context_info')}
                         required
                     />
@@ -88,7 +88,7 @@ const InquirySection: React.FC<InquirySectionProps> = ({
                             ]}
                         />
                     </div>
-                    
+
                     <GlobalContextInfo globalContext={unitPlan.globalContext} />
                 </div>
             </div>

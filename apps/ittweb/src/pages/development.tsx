@@ -1,5 +1,5 @@
-import { getStaticPropsWithTranslations } from '@/features/infrastructure/lib/server';
-import { Logger } from '@/features/infrastructure/logging';
+import { getStaticPropsWithTranslations } from '@websites/infrastructure/i18n';
+import { Logger } from '@websites/infrastructure/logging';
 import { DiscordButton, GitHubButton, Section, ErrorBoundary } from '@/features/infrastructure/components';
 import type { GetStaticProps } from 'next';
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useFallbackTranslation } from '@/features/i18n';
+import { useFallbackTranslation } from '@websites/infrastructure/i18n';
 
 export const Navigation: React.FC = () => {
   const { t } = useFallbackTranslation();

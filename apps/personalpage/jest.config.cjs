@@ -1,5 +1,6 @@
 /** @type {import('jest').Config} */
 const nextJest = require('next/jest');
+const baseConfig = require('@websites/test-utils/jest.config.base.js');
 
 const createJestConfig = nextJest({
   // Provide the path to your Next.js app to load next.config.js and .env files in your test environment
@@ -8,11 +9,11 @@ const createJestConfig = nextJest({
 
 // Add any custom config to be passed to Jest
 const config = {
-  coverageProvider: 'v8',
-  testEnvironment: 'jest-environment-jsdom',
+  ...baseConfig,
   
-  // Module paths configuration (matching tsconfig.json)
+  // Module paths configuration (matching tsconfig.json) - extends base config
   moduleNameMapper: {
+    ...baseConfig.moduleNameMapper,
     '^@/(.*)$': '<rootDir>/src/$1',
     '^@lib/(.*)$': '<rootDir>/src/features/infrastructure/shared/lib/$1',
     '^@utils/(.*)$': '<rootDir>/src/features/infrastructure/shared/utils/$1',
@@ -25,32 +26,14 @@ const config = {
     '^@voice/(.*)$': '<rootDir>/src/features/modules/voice/$1',
     '^@projects/(.*)$': '<rootDir>/src/features/projects/$1',
     '^@progressReport/(.*)$': '<rootDir>/src/features/modules/edtech/progressReport/$1',
-    '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
   },
   
-  // Setup files
+  // Setup files - extends base setup
   setupFilesAfterEnv: ['<rootDir>/jest.setup.cjs'],
   
-  // Test match patterns
-  testMatch: [
-    '**/__tests__/**/*.[jt]s?(x)',
-    '**/?(*.)+(spec|test).[jt]s?(x)',
-  ],
-  
-  // Ignore patterns
-  testPathIgnorePatterns: [
-    '/node_modules/',
-    '/.next/',
-    '/build/',
-    '/out/',
-  ],
-  
-  // Coverage configuration
+  // Coverage configuration - extends base
   collectCoverageFrom: [
-    'src/**/*.{js,jsx,ts,tsx}',
-    '!src/**/*.d.ts',
-    '!src/**/*.stories.{js,jsx,ts,tsx}',
-    '!src/**/__tests__/**',
+    ...baseConfig.collectCoverageFrom,
     '!src/pages/**', // Exclude pages (they're often just wrappers)
   ],
   
@@ -63,9 +46,6 @@ const config = {
       statements: 50,
     },
   },
-  
-  // Global test timeout (adjust as needed)
-  testTimeout: 10000,
 };
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async

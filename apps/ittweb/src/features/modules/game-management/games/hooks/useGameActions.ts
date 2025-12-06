@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import { useSession, signIn } from 'next-auth/react';
-import { Logger } from '@/features/infrastructure/logging';
+import { Logger } from '@websites/infrastructure/logging';
 import type { GameWithPlayers } from '@/features/modules/game-management/games/types';
 
 interface UseGameActionsResult {

@@ -1,5 +1,5 @@
 import type { NextApiRequest } from 'next';
-import { createApiHandler } from '@/features/infrastructure/api';
+import { createApiHandler } from '@websites/infrastructure/api';
 import { getTopHealers } from '@/features/modules/analytics-group/analytics/lib/analyticsService';
 
 /**

@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useCallback, useState } from 'react';
 import { useSession } from 'next-auth/react';
-import { createComponentLogger, logError } from '@/features/infrastructure/logging';
+import { createComponentLogger, logError } from '@websites/infrastructure/logging';
 import { PageHero } from '@/features/infrastructure/components';
 import type { ArchiveEntry } from '@/types/archive';
 import type { GameFilters } from '@/features/modules/game-management/games/types';

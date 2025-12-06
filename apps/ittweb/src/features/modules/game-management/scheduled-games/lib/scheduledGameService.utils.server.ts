@@ -5,9 +5,9 @@
  * Client-safe utilities are in scheduledGameService.utils.ts
  */
 
-import { getFirestoreAdmin } from '@/features/infrastructure/api/firebase/admin';
+import { getFirestoreAdmin } from '@websites/infrastructure/firebase';
 import { ScheduledGame } from '@/types/scheduledGame';
-import { createComponentLogger } from '@/features/infrastructure/logging';
+import { createComponentLogger } from '@websites/infrastructure/logging';
 
 const GAMES_COLLECTION = 'games'; // Unified games collection (scheduled and completed)
 const logger = createComponentLogger('scheduledGameService');

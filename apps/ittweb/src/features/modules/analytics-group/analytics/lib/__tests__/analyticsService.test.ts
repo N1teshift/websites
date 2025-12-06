@@ -7,7 +7,7 @@ jest.mock('../../../../community/players/lib/playerService', () => ({
   getPlayerStats: jest.fn(),
 }));
 
-jest.mock('@/features/infrastructure/logging', () => ({
+jest.mock('@websites/infrastructure/logging', () => ({
   createComponentLogger: jest.fn(() => ({
     info: jest.fn(),
     error: jest.fn(),

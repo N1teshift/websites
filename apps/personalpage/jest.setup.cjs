@@ -1,5 +1,5 @@
-// Learn more: https://github.com/testing-library/jest-dom
-require('@testing-library/jest-dom');
+// Import base test setup
+require('@websites/test-utils/src/setup');
 
 // Mock Next.js router
 jest.mock('next/router', () => ({

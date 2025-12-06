@@ -27,7 +27,7 @@ jest.mock('@/features/infrastructure/utils/userRoleUtils', () => ({
   isAdmin: (...args: unknown[]) => mockIsAdmin(...args),
 }));
 
-jest.mock('@/features/infrastructure/logging', () => ({
+jest.mock('@websites/infrastructure/logging', () => ({
   createComponentLogger: jest.fn(() => ({
     info: mockInfo,
     error: mockError,

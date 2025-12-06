@@ -1,5 +1,5 @@
 import React from "react";
-import { useFallbackTranslation } from "@/features/i18n";
+import { useFallbackTranslation } from "@websites/infrastructure/i18n";
 
 interface NumberInputProps {
     label?: string;

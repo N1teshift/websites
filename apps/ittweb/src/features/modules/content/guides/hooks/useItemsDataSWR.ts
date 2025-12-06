@@ -10,7 +10,7 @@
 
 import useSWR from 'swr';
 import type { ItemData } from '@/types/items';
-import { createSwrFetcher } from '@/features/infrastructure/hooks';
+import { createSwrFetcher } from '@websites/infrastructure/hooks';
 
 type ItemsMeta = {
   total: number;

@@ -6,6 +6,18 @@
   "types": "./src/index.ts",
   "exports": {
     ".": "./src/index.ts",
+    "./api": "./src/api/index.ts",
+    "./auth": "./src/auth/index.ts",
+    "./clients": "./src/clients/index.ts",
+    "./clients/openai": "./src/clients/openai/index.ts",
+    "./clients/google": "./src/clients/google/index.ts",
+    "./clients/microsoft": "./src/clients/microsoft/index.ts",
+    "./clients/email": "./src/clients/email/index.ts",
+    "./cache": "./src/cache/index.ts",
+    "./firebase": "./src/firebase/index.ts",
+    "./hooks": "./src/hooks/index.ts",
+    "./monitoring": "./src/monitoring/index.ts",
+    "./utils": "./src/utils/index.ts",
     "./i18n": "./src/i18n/index.ts",
     "./i18n/client": "./src/i18n/client.ts",
     "./logging": "./src/logging/index.ts"
@@ -15,15 +27,20 @@
   },
   "dependencies": {
     "i18next": "^24.0.2",
+    "jsonwebtoken": "^9.0.2",
     "next-i18next": "^15.4.0",
-    "react-i18next": "^15.1.1"
+    "react-i18next": "^15.1.1",
+    "zod": "^4.1.13"
   },
   "peerDependencies": {
+    "firebase": "^12.0.0",
+    "firebase-admin": "^13.0.0",
+    "next": "^15.0.0",
     "react": "^18.3.1",
-    "react-dom": "^18.2.0",
-    "next": "^15.0.0"
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^20",
     "@types/react": "^18.3.21",
     "@types/react-dom": "^18",
@@ -32,4 +49,3 @@
     "typescript": "^5.7.2"
   }
 }
-

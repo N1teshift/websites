@@ -4,7 +4,7 @@ import { ITTIconCategory } from '@/features/modules/content/guides/utils/iconUti
 import type { IconFile, IconMapping, EntityStat, IconMappingEntry, MarkedForDeletion } from '@/features/modules/tools-group/tools/types/icon-mapper.types';
 import { ABILITIES } from '@/features/modules/content/guides/data/abilities';
 import { BASE_TROLL_CLASSES, DERIVED_CLASSES } from '@/features/modules/content/guides/data/units';
-import { createComponentLogger } from '@/features/infrastructure/logging';
+import { createComponentLogger } from '@websites/infrastructure/logging';
 import { useItemsDataSWR } from '@/features/modules/content/guides/hooks/useItemsDataSWR';
 
 const logger = createComponentLogger('useIconMapperData');

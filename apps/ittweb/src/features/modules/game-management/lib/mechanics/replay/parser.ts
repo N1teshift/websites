@@ -1,5 +1,5 @@
 import W3GReplay from 'w3gjs';
-import { createComponentLogger } from '@/features/infrastructure/logging';
+import { createComponentLogger } from '@websites/infrastructure/logging';
 import type { CreateGame } from '@/features/modules/game-management/games/types';
 import { buildW3MMDLookup, mapMissionStatsToPlayers } from '../w3mmd';
 import { extractITTMetadata } from './metadata';

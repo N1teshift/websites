@@ -16,11 +16,9 @@ import {
   deleteDoc,
   doc,
 } from 'firebase/firestore';
-import { getFirestoreInstance } from './firebaseClient';
-import { getFirestoreAdmin, isServerSide } from './admin';
-import { getDocument } from './firestoreHelpers';
-import { createComponentLogger, logError } from '@/features/infrastructure/logging';
-import { createTimestampFactoryAsync, type TimestampFactory } from '@/features/infrastructure/utils';
+import { getFirestoreInstance, getFirestoreAdmin, isServerSide, getDocument } from '@websites/infrastructure/firebase';
+import { createComponentLogger, logError } from '@websites/infrastructure/logging';
+import { createTimestampFactoryAsync, type TimestampFactory } from '@websites/infrastructure/utils';
 
 /**
  * Configuration for creating a Firestore CRUD service
@@ -167,16 +165,16 @@ export function createFirestoreCrudService<TEntity, TCreate, TUpdate>(
           snapshot.forEach((docSnap) => {
             docs.push({ data: () => docSnap.data(), id: docSnap.id });
           });
-          
+
           // Apply fallback filter if provided
           const filteredDocs = options?.fallbackFilter ? options.fallbackFilter(docs) : docs;
-          
+
           if (transformDocs) {
             entities = transformDocs(filteredDocs);
           } else {
             entities = filteredDocs.map((docSnap) => transformDoc(docSnap.data()!, docSnap.id));
           }
-          
+
           if (sortEntities) {
             entities = sortEntities(entities);
           }
@@ -187,16 +185,16 @@ export function createFirestoreCrudService<TEntity, TCreate, TUpdate>(
           snapshot.forEach((docSnap) => {
             docs.push({ data: () => docSnap.data(), id: docSnap.id });
           });
-          
+
           // Apply fallback filter if provided
           const filteredDocs = options?.fallbackFilter ? options.fallbackFilter(docs) : docs;
-          
+
           if (transformDocs) {
             entities = transformDocs(filteredDocs);
           } else {
             entities = filteredDocs.map((docSnap) => transformDoc(docSnap.data()!, docSnap.id));
           }
-          
+
           if (sortEntities) {
             entities = sortEntities(entities);
           }

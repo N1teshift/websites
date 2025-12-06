@@ -1,6 +1,6 @@
-import { getFirestoreAdmin, isServerSide } from '@/features/infrastructure/api/firebase/admin';
-import { createComponentLogger, logError } from '@/features/infrastructure/logging';
-import { timestampToIso } from '@/features/infrastructure/utils';
+import { getFirestoreAdmin, isServerSide } from '@websites/infrastructure/firebase';
+import { createComponentLogger, logError } from '@websites/infrastructure/logging';
+import { timestampToIso } from '@websites/infrastructure/utils';
 import { ArchiveEntry } from '@/types/archive';
 
 const logger = createComponentLogger('archiveService.server');
@@ -18,7 +18,7 @@ export async function getAllArchiveEntries(): Promise<ArchiveEntry[]> {
 
     if (isServerSide()) {
       const adminDb = getFirestoreAdmin();
-      
+
       try {
         // Try optimized query first
         const querySnapshot = await adminDb.collection(ARCHIVE_COLLECTION)
@@ -54,17 +54,17 @@ export async function getAllArchiveEntries(): Promise<ArchiveEntry[]> {
         const firestoreError = queryError as { code?: number; message?: string };
         if (firestoreError?.code === 9 || firestoreError?.message?.includes('index is currently building')) {
           logger.info('Index still building, falling back to in-memory filtering');
-          
+
           const querySnapshot = await adminDb.collection(ARCHIVE_COLLECTION).get();
 
           querySnapshot.forEach((docSnap) => {
             const data = docSnap.data();
-            
+
             // Filter deleted entries
             if (data.isDeleted) {
               return;
             }
-            
+
             entries.push({
               id: docSnap.id,
               title: data.title,
@@ -109,7 +109,7 @@ export async function getAllArchiveEntries(): Promise<ArchiveEntry[]> {
       component: 'archiveService.server',
       operation: 'getAllArchiveEntries',
     });
-    
+
     // Return empty array if there's an error
     return [];
   }

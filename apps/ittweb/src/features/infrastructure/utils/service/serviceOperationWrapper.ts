@@ -11,8 +11,8 @@
  * repetitive try-catch-logError-throw patterns.
  */
 
-import { logError } from '@/features/infrastructure/logging';
-import { createTimestampFactoryAsync, type TimestampFactory } from '../time/timestampUtils';
+import { logError } from '@websites/infrastructure/logging';
+import { createTimestampFactoryAsync, type TimestampFactory } from '@websites/infrastructure/utils';
 
 /**
  * Context information for service operations

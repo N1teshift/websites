@@ -5,10 +5,10 @@
  * These functions use Firebase Admin SDK and should only be used in API routes.
  */
 
-import { getFirestoreAdmin } from '@/features/infrastructure/api/firebase/admin';
+import { getFirestoreAdmin } from '@websites/infrastructure/firebase';
 import { ScheduledGame } from '@/types/scheduledGame';
-import { createComponentLogger, logError } from '@/features/infrastructure/logging';
-import { timestampToIso } from '@/features/infrastructure/utils';
+import { createComponentLogger, logError } from '@websites/infrastructure/logging';
+import { timestampToIso } from '@websites/infrastructure/utils';
 import { convertGameDataToScheduledGame, shouldIncludeGame } from './scheduledGameService.read.helpers';
 import { queryWithIndexFallback } from '@/features/infrastructure/api/firebase/queryWithIndexFallback';
 import { Timestamp } from 'firebase/firestore';
@@ -28,7 +28,7 @@ export async function getAllScheduledGames(includePast: boolean = false, include
       collectionName: GAMES_COLLECTION,
       executeQuery: async () => {
         const docs: Array<{ data: () => Record<string, unknown>; id: string }> = [];
-        
+
         const adminDb = getFirestoreAdmin();
         logger.debug('Querying unified games collection for scheduled games');
         const gamesQuerySnapshot = await adminDb.collection(GAMES_COLLECTION)
@@ -36,13 +36,13 @@ export async function getAllScheduledGames(includePast: boolean = false, include
           .where('isDeleted', '==', false)
           .orderBy('scheduledDateTime', 'asc')
           .get();
-        
+
         logger.debug('Found scheduled games in games collection', { count: gamesQuerySnapshot.size });
-        
+
         gamesQuerySnapshot.forEach((docSnap) => {
           docs.push({ data: () => docSnap.data(), id: docSnap.id });
         });
-        
+
         return docs;
       },
       fallbackFilter: (docs) => {
@@ -57,7 +57,7 @@ export async function getAllScheduledGames(includePast: boolean = false, include
         docs.forEach((doc) => {
           const data = doc.data();
           const scheduledDateTime = (data.scheduledDateTimeString as string) || timestampToIso(data.scheduledDateTime as Timestamp | undefined);
-          
+
           if (shouldIncludeGame(data, scheduledDateTime, includePast, includeArchived)) {
             games.push(convertGameDataToScheduledGame(doc.id, data));
           }
@@ -84,7 +84,7 @@ export async function getAllScheduledGames(includePast: boolean = false, include
       operation: 'getAllScheduledGames',
       includePast,
     });
-    
+
     const errorMessage = err.message.toLowerCase();
     if (
       errorMessage.includes('index') ||
@@ -97,7 +97,7 @@ export async function getAllScheduledGames(includePast: boolean = false, include
       });
       return [];
     }
-    
+
     throw err;
   }
 }
