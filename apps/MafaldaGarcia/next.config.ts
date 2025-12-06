@@ -51,6 +51,15 @@ const nextConfig: NextConfig = {
         ...(config.resolve.alias || {}),
         '@websites/infrastructure/i18n/getStaticProps': false,
         '@websites/infrastructure/i18n/next-i18next.config': false,
+        '@sentry/nextjs': false, // Optional dependency, loaded dynamically
+      };
+    }
+    
+    // Ignore optional Sentry dependency on server-side as well
+    if (isServer) {
+      config.resolve.alias = {
+        ...(config.resolve.alias || {}),
+        '@sentry/nextjs': false, // Optional dependency, loaded dynamically
       };
     }
     

@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { exchangeLoginCodeForTokens, getUserInfo } from '@websites/infrastructure/auth/oauth';
 import { getOrCreateUser } from '@websites/infrastructure/auth/userService';
-import { createSessionToken, setSessionCookie } from '@websites/infrastructure/auth/session';
+import { createSession, setSessionCookie } from '@websites/infrastructure/auth/session';
 import { createComponentLogger } from '@websites/infrastructure/logging';
 
 const logger = createComponentLogger('UserAuthCallback');
@@ -45,7 +45,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const user = await getOrCreateUser(googleUserInfo.googleId);
     
     // Create session token
-    const sessionToken = createSessionToken({
+    const sessionToken = createSession({
       userId: user.id,
       googleId: user.googleId
     });
