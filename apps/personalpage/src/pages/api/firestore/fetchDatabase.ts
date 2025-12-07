@@ -1,5 +1,5 @@
 import { createGetHandler } from '@websites/infrastructure/api';
-import { firestoreService } from '@websites/infrastructure/api/firebase';
+import { firestoreService } from '@/features/infrastructure/api/firebase';
 
 /**
  * API route handler for fetching data from Firestore.

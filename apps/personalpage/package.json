@@ -91,6 +91,7 @@
         "@types/jest": "^29.5.14",
         "@types/jsonwebtoken": "^9.0.10",
         "@types/node": "^20",
+        "@types/node-fetch": "^2.6.11",
         "@types/nodemailer": "^6.4.17",
         "@types/nprogress": "^0.2.3",
         "@types/react": "^18.3.21",
