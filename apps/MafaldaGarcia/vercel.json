@@ -4,7 +4,6 @@
   "outputDirectory": ".next",
   "devCommand": "pnpm dev",
   "framework": "nextjs",
-  "rootDirectory": "apps/MafaldaGarcia",
   "functions": {
     "src/pages/api/**/*.ts": {
       "maxDuration": 30
