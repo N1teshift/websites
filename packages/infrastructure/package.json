@@ -21,6 +21,7 @@
     "./cache/analyticsCache.server": "./src/cache/analyticsCache.server.ts",
     "./firebase": "./src/firebase/index.ts",
     "./firebase/admin": "./src/firebase/admin.ts",
+    "./firebase/storage": "./src/firebase/storage/index.ts",
     "./hooks": "./src/hooks/index.ts",
     "./monitoring": "./src/monitoring/index.ts",
     "./monitoring/performance": "./src/monitoring/performance.ts",

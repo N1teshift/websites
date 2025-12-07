@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { createFirebaseStorageService } from '../../../features/api/firebase/storageService';
+import { createFirebaseStorageService } from '@websites/infrastructure/firebase/storage';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'GET') {

@@ -31,6 +31,12 @@ const nextConfig: NextConfig = {
                 path: false,
             };
             
+            // Ignore optional Sentry dependency on client-side
+            config.resolve.alias = {
+                ...(config.resolve.alias || {}),
+                '@sentry/nextjs': false, // Optional dependency, loaded dynamically
+            };
+            
             // Replace node: protocol imports with regular imports (which will then be ignored via fallback)
             // This prevents webpack from trying to bundle Node.js built-in modules for the browser
             config.plugins = config.plugins || [];
@@ -43,6 +49,15 @@ const nextConfig: NextConfig = {
                 )
             );
         }
+        
+        // Ignore optional Sentry dependency on server-side as well
+        if (isServer) {
+            config.resolve.alias = {
+                ...(config.resolve.alias || {}),
+                '@sentry/nextjs': false, // Optional dependency, loaded dynamically
+            };
+        }
+        
         return config;
     },
 };

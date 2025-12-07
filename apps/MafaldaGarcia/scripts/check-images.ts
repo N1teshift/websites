@@ -5,7 +5,7 @@
  * Run with: npm run check-images
  */
 
-import { createImageService } from '../src/features/api/firebase';
+import { createImageService } from '@websites/infrastructure/firebase/storage';
 
 async function checkImages() {
   console.log('🔍 Checking Firebase Storage for available images...\n');

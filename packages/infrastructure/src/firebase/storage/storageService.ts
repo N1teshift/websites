@@ -1,50 +1,43 @@
 import { getStorageAdmin, getStorageBucketName, initializeFirebaseAdmin } from '../admin';
-import { getFirebaseStorageConfig, validateFirebaseStorageConfig } from './config';
+import { createComponentLogger } from '../../logging';
+
+const logger = createComponentLogger('firebase.storage');
 
 /**
  * Firebase Storage service for handling images
- * Uses the infrastructure package's Firebase Admin setup
  */
 export class FirebaseStorageService {
   private storage: ReturnType<typeof getStorageAdmin>;
-  private bucket: ReturnType<typeof getStorageAdmin>['bucket'] | null;
+  private bucket: any;
   private bucketName: string;
   private isConfigured: boolean;
 
   constructor() {
-    const config = getFirebaseStorageConfig();
-    const errors = validateFirebaseStorageConfig(config);
-
-    // Graceful degradation: if config is missing/invalid, do NOT throw.
-    // Mark service as not configured so callers can fall back to placeholders.
-    if (errors.length > 0) {
-      console.warn(
-        `Firebase Storage is not configured. Operating in placeholder-only mode. Missing: ${errors.join(', ')}`
-      );
-      this.isConfigured = false;
-      this.storage = ({} as unknown) as ReturnType<typeof getStorageAdmin>;
-      this.bucket = null;
-      this.bucketName = config.storageBucket || '';
-      return;
-    }
-
-    // Initialize Firebase Admin if not already initialized
     try {
+      // Initialize Firebase Admin if not already initialized
       initializeFirebaseAdmin();
+      
       this.storage = getStorageAdmin();
-      const bucketName = getStorageBucketName() || config.storageBucket!;
-      this.bucket = this.storage.bucket(bucketName);
-      this.bucketName = bucketName;
+      this.bucketName = getStorageBucketName() || '';
+      
+      if (!this.bucketName) {
+        logger.warn('Firebase Storage bucket not configured. Operating in placeholder-only mode.');
+        this.isConfigured = false;
+        this.storage = ({} as unknown) as ReturnType<typeof getStorageAdmin>;
+        this.bucket = null;
+        return;
+      }
+
+      this.bucket = this.storage.bucket(this.bucketName);
       this.isConfigured = true;
     } catch (error) {
-      console.warn(
-        `Firebase Storage initialization failed. Operating in placeholder-only mode.`,
-        error
-      );
+      logger.warn('Firebase Storage initialization failed. Operating in placeholder-only mode.', {
+        error: error instanceof Error ? error.message : String(error)
+      });
       this.isConfigured = false;
       this.storage = ({} as unknown) as ReturnType<typeof getStorageAdmin>;
       this.bucket = null;
-      this.bucketName = config.storageBucket || '';
+      this.bucketName = '';
     }
   }
 
@@ -61,7 +54,7 @@ export class FirebaseStorageService {
       const encodedPath = encodeURIComponent(imagePath);
       return `https://firebasestorage.googleapis.com/v0/b/${this.bucketName}/o/${encodedPath}?alt=media`;
     } catch (error) {
-      console.error(`Error getting signed URL for ${imagePath}:`, error);
+      logger.error(`Error getting signed URL for ${imagePath}`, error instanceof Error ? error : new Error(String(error)));
       throw new Error(`Failed to get image URL for ${imagePath}`);
     }
   }
@@ -82,7 +75,7 @@ export class FirebaseStorageService {
         try {
           urls[path] = await this.getImageUrl(path);
         } catch (error) {
-          console.error(`Error getting URL for ${path}:`, error);
+          logger.error(`Error getting URL for ${path}`, error instanceof Error ? error : new Error(String(error)));
           urls[path] = ''; // Fallback to empty string
         }
       })
@@ -108,7 +101,7 @@ export class FirebaseStorageService {
         .map((file: any) => file.name)
         .filter((name: string) => name.endsWith('.jpg') || name.endsWith('.jpeg') || name.endsWith('.png') || name.endsWith('.webp'));
     } catch (error) {
-      console.error(`Error listing images in ${directory}:`, error);
+      logger.error(`Error listing images in ${directory}`, error instanceof Error ? error : new Error(String(error)));
       return [];
     }
   }
@@ -118,8 +111,8 @@ export class FirebaseStorageService {
    */
   async uploadImage(filePath: string, destination: string): Promise<string> {
     try {
-      if (!this.bucket) {
-        throw new Error('Firebase Storage bucket not configured');
+      if (!this.isConfigured || !this.bucket) {
+        throw new Error('Firebase Storage not configured');
       }
       await this.bucket.upload(filePath, {
         destination,
@@ -130,7 +123,7 @@ export class FirebaseStorageService {
 
       return await this.getImageUrl(destination);
     } catch (error) {
-      console.error(`Error uploading image ${filePath}:`, error);
+      logger.error(`Error uploading image ${filePath}`, error instanceof Error ? error : new Error(String(error)));
       throw new Error(`Failed to upload image ${filePath}`);
     }
   }

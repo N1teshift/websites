@@ -1,15 +1,9 @@
 /**
  * Firebase Storage API Client Module
  *
- * Self-contained module for Firebase Storage API interactions.
- * Can be used across multiple projects in the monorepo.
+ * Self-contained module for Firebase Storage interactions.
+ * Provides image and storage services for managing Firebase Storage files.
  */
-
-// Configuration
-export * from './config';
-
-// Error handling
-export * from './errorHandler';
 
 // Storage service
 export * from './storageService';

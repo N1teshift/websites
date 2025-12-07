@@ -2,6 +2,8 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  // Prevent bundling of server-only packages that use top-level await
+  serverExternalPackages: ['i18next-fs-backend'],
   i18n: {
     locales: ['en', 'pt', 'lv', 'ru'],
     defaultLocale: 'en',
@@ -60,6 +62,13 @@ const nextConfig: NextConfig = {
       config.resolve.alias = {
         ...(config.resolve.alias || {}),
         '@sentry/nextjs': false, // Optional dependency, loaded dynamically
+      };
+      
+      // Enable top-level await support for server-side bundles
+      // This helps with packages like i18next-fs-backend that use top-level await
+      config.experiments = {
+        ...config.experiments,
+        topLevelAwait: true,
       };
     }
     

@@ -13,8 +13,8 @@ import {
   ScrollAnimations,
   ArtisticStyles,
   LoadingScreen
-} from './components';
-import { usePortfolioImages, useScrollPosition } from './hooks';
+} from './features/components';
+import { usePortfolioImages, useScrollPosition } from './features/hooks';
 
 interface MafaldaGarciaPageProps {
   title?: string;

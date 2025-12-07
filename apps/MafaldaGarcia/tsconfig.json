@@ -4,11 +4,6 @@
     "baseUrl": "./",
     "paths": {
       "@/*": [ "src/*" ],
-      "@components/*": [ "src/features/shared/components/*" ],
-      "@lib/*": [ "src/features/shared/lib/*" ],
-      "@utils/*": [ "src/features/shared/utils/*" ],
-      "@logging/*": [ "src/features/logging/*" ],
-      "@i18n/*": [ "src/features/i18n/*" ],
       "@styles/*": [ "src/styles/*" ],
       "@websites/ui": ["../../packages/ui/src"],
       "@websites/ui/*": ["../../packages/ui/src/*"],

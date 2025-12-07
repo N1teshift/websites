@@ -1,8 +1,8 @@
 import React from 'react';
 import Head from 'next/head';
 import { getStaticPropsWithTranslations } from '@websites/infrastructure/i18n/getStaticProps';
-import Layout from '../features/shared/components/Layout';
-import { MafaldaGarciaPage } from '../features/mafalda-garcia/MafaldaGarciaPage';
+import Layout from '../features/components/Layout';
+import { MafaldaGarciaPage } from '../MafaldaGarciaPage';
 
 const pageNamespaces = ["common"];
 export const getStaticProps = getStaticPropsWithTranslations(pageNamespaces);
