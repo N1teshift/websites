@@ -18,7 +18,7 @@ const nextConfig: NextConfig = {
             },
         ],
     },
-    webpack: (config, { isServer }) => {
+    webpack: (config, { isServer, webpack }) => {
         if (!isServer) {
             // Provide fallbacks for Node.js modules that might be imported on client side
             config.resolve.fallback = {
@@ -28,7 +28,20 @@ const nextConfig: NextConfig = {
                 tls: false,
                 child_process: false,
                 http2: false,
+                path: false,
             };
+            
+            // Replace node: protocol imports with regular imports (which will then be ignored via fallback)
+            // This prevents webpack from trying to bundle Node.js built-in modules for the browser
+            config.plugins = config.plugins || [];
+            config.plugins.push(
+                new webpack.NormalModuleReplacementPlugin(
+                    /^node:/,
+                    (resource: any) => {
+                        resource.request = resource.request.replace(/^node:/, '');
+                    }
+                )
+            );
         }
         return config;
     },
