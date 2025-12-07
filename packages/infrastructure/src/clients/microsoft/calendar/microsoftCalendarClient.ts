@@ -270,3 +270,10 @@ export class MicrosoftCalendarClient {
     }
   }
 }
+
+/**
+ * Factory function to create a Microsoft Calendar Client instance
+ */
+export function createMicrosoftCalendarClient(): MicrosoftCalendarClient {
+  return new MicrosoftCalendarClient();
+}

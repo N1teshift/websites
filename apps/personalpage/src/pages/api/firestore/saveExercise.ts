@@ -1,4 +1,4 @@
-import { createPostHandler } from '@websites/infrastructure/api/routeHandlers';
+import { createPostHandler } from '@websites/infrastructure/api';
 import { firestoreService } from '@websites/infrastructure/api/firebase';
 
 /**
