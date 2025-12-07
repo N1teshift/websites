@@ -6,7 +6,7 @@
  * Compares database records with generated tests to identify gaps.
  */
 
-import fetch from 'node-fetch';
+// Using built-in fetch (Node.js 18+)
 import { getAllTestsFlat } from '@math/tests/core/TestRegistry';
 
 // Define interfaces for API responses

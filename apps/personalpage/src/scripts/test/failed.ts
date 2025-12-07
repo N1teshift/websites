@@ -5,7 +5,7 @@
  * Can limit to a specific number of the most recently failed tests.
  */
 
-import fetch from 'node-fetch';
+// Using built-in fetch (Node.js 18+)
 import { runTests } from '@math/tests/core/TestRunner';
 import { getAllTestsFlat } from '@math/tests/core/TestRegistry';
 import { TestCase } from '@math/tests/cases/TestCase';

@@ -5,7 +5,7 @@
 import { TestSummary, TestResultData, TestStat } from '../../../features/modules/math/types/testsTypes';
 import { fetchTestStats } from '../../../features/modules/math/tests/utils/testResultsApi';
 import { colors } from './utils';
-import fetch from 'node-fetch';
+// Using built-in fetch (Node.js 18+)
 
 /**
  * Fetch test statistics from the database
