@@ -24,7 +24,7 @@ const nextConfig: NextConfig = {
   // Improve source map handling in development
   productionBrowserSourceMaps: false,
   transpilePackages: ['@websites/infrastructure', '@websites/ui'],
-  webpack: (config: any, { dev, isServer, webpack }: { dev: boolean; isServer: boolean; webpack: any }) => {
+    webpack: (config: any, { dev, isServer, webpack }: { dev: boolean; isServer: boolean; webpack: any }) => {
     // Replace node: protocol imports with regular imports
     config.plugins = config.plugins || [];
     config.plugins.push(
@@ -54,7 +54,15 @@ const nextConfig: NextConfig = {
         '@websites/infrastructure/i18n/getStaticProps': false,
         '@websites/infrastructure/i18n/next-i18next.config': false,
         '@sentry/nextjs': false, // Optional dependency, loaded dynamically
+        'i18next-fs-backend': false, // Server-only, should not be bundled for client
       };
+      
+      // Ignore i18next-fs-backend from client bundles using IgnorePlugin
+      config.plugins.push(
+        new webpack.IgnorePlugin({
+          resourceRegExp: /^i18next-fs-backend$/,
+        })
+      );
     }
     
     // Ignore optional Sentry dependency on server-side as well

@@ -9,6 +9,8 @@ const baseConfig: NextConfig = {
     reactStrictMode: false,
     pageExtensions: ['page.tsx', 'page.ts', 'tsx', 'ts', 'jsx', 'js', 'mdx', 'md'],
     transpilePackages: ['@websites/infrastructure', '@websites/ui'],
+    // Prevent bundling of server-only packages that use top-level await
+    serverExternalPackages: ['i18next-fs-backend'],
     i18n: {
         locales: ["en"],
         defaultLocale: "en",
@@ -39,11 +41,13 @@ const baseConfig: NextConfig = {
             return entries;
         };
 
-        // Ignore optional Sentry module to prevent webpack resolution errors
+        // Ignore optional Sentry module and server-only i18n modules to prevent webpack resolution errors
         // Sentry is optional and loaded dynamically at runtime
+        // i18next-fs-backend is server-only and uses top-level await
         config.resolve.alias = {
             ...config.resolve.alias,
             '@sentry/nextjs': false,
+            'i18next-fs-backend': false, // Server-only, should not be bundled for client
         };
 
         // Exclude firebase-admin and Node.js built-in modules from client bundles
