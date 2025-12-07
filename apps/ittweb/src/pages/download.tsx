@@ -1,4 +1,4 @@
-import { getStaticPropsWithTranslations } from '@websites/infrastructure/i18n';
+import { getStaticPropsWithTranslations } from '@websites/infrastructure/i18n/getStaticProps';
 import { Logger } from '@websites/infrastructure/logging';
 import { ErrorBoundary } from '@/features/infrastructure/components';
 import type { GetStaticProps } from 'next';

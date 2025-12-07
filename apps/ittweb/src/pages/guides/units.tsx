@@ -1,4 +1,4 @@
-import { getStaticPropsWithTranslations } from '@websites/infrastructure/i18n';
+import { getStaticPropsWithTranslations } from '@websites/infrastructure/i18n/getStaticProps';
 import { ErrorBoundary } from '@/features/infrastructure/components';
 import Link from 'next/link';
 import { useState, useMemo } from 'react';

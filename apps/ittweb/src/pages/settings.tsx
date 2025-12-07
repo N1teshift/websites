@@ -10,7 +10,7 @@ import { useRouter } from 'next/router';
 import { signOut } from 'next-auth/react';
 import { isAdmin } from '@/features/modules/community/users';
 import { logError } from '@websites/infrastructure/logging';
-import { getStaticPropsWithTranslations } from '@websites/infrastructure/i18n';
+import { getStaticPropsWithTranslations } from '@websites/infrastructure/i18n/getStaticProps';
 import { serializeUserData } from '@/features/modules/community/users/settings/utils/serializeUserData';
 import { UserProfile } from '@/features/modules/community/users/settings/components/UserProfile';
 import { AdminTools } from '@/features/modules/community/users/settings/components/AdminTools';

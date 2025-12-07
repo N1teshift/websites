@@ -1,5 +1,5 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
-import { getStaticPropsWithTranslations } from '@websites/infrastructure/i18n';
+import { getStaticPropsWithTranslations } from '@websites/infrastructure/i18n/getStaticProps';
 import { ErrorBoundary, Section } from '@/features/infrastructure/components';
 import { useRouter } from 'next/router';
 import Link from 'next/link';

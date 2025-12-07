@@ -1,6 +1,6 @@
 import { useSession, signIn } from 'next-auth/react';
 import { useState, useEffect } from 'react';
-import { getStaticPropsWithTranslations } from '@websites/infrastructure/i18n';
+import { getStaticPropsWithTranslations } from '@websites/infrastructure/i18n/getStaticProps';
 import EntryFormModal from '@/features/modules/game-management/entries/components/EntryFormModal';
 import ScheduleGameForm from '@/features/modules/game-management/scheduled-games/components/ScheduleGameForm';
 import { isAdmin } from '@/features/modules/community/users';

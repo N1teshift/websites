@@ -1,4 +1,5 @@
 import React from 'react';
+import { parseAndRenderMath } from './MathParser';
 
 export interface MathItemsDisplayProps {
   mathItems: unknown[];
@@ -19,11 +20,14 @@ const MathItemsDisplay: React.FC<MathItemsDisplayProps> = ({
 
   return (
     <div className="math-items-display">
-      {mathItems.map((item, index) => (
+      {mathItems.map((item, index) => {
+        const content = typeof item === 'string' ? item : JSON.stringify(item);
+        return (
         <div key={index} className="math-item">
-          {typeof item === 'string' ? item : JSON.stringify(item)}
+            {parseAndRenderMath(content)}
         </div>
-      ))}
+        );
+      })}
     </div>
   );
 };

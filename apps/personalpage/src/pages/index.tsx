@@ -1,6 +1,7 @@
 import React from 'react';
-import { getStaticPropsWithTranslations } from '@websites/infrastructure/i18n';
+import { getStaticPropsWithTranslations } from '@websites/infrastructure/i18n/getStaticProps';
 import { Layout, CenteredLinkGrid } from "@websites/ui";
+import LoginButton from '../components/LoginButton';
 
 const links = [
     {
@@ -44,12 +45,12 @@ const pageNamespaces = ["links", "common"];
 export const getStaticProps = getStaticPropsWithTranslations(pageNamespaces);
 
 export default function Projects() {
-
     return (
         <Layout
             titleKey={"projects"}
             pageTranslationNamespaces={pageNamespaces}
             mode="top"
+            LoginButton={LoginButton}
         >
             <CenteredLinkGrid links={links} />
         </Layout>

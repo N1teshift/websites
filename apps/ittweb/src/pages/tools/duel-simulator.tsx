@@ -1,5 +1,5 @@
 import React from 'react';
-import { getStaticPropsWithTranslations } from '@websites/infrastructure/i18n';
+import { getStaticPropsWithTranslations } from '@websites/infrastructure/i18n/getStaticProps';
 import { Logger } from '@websites/infrastructure/logging';
 import { ErrorBoundary } from '@/features/infrastructure/components';
 import TrollPanel from '@/features/modules/tools-group/tools/components/TrollPanel';

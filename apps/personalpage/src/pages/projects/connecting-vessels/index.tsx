@@ -1,4 +1,4 @@
-import { getStaticPropsWithTranslations } from '@websites/infrastructure/i18n';
+import { getStaticPropsWithTranslations } from '@websites/infrastructure/i18n/getStaticProps';
 import { Layout } from "@websites/ui";
 import { ConnectingVesselsPage } from '@/features/modules/connecting_vessels';
 import { isFeatureEnabled } from '@/config/features';

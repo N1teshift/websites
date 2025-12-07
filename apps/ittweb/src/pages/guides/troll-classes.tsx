@@ -1,4 +1,4 @@
-import { getStaticPropsWithTranslations } from '@websites/infrastructure/i18n';
+import { getStaticPropsWithTranslations } from '@websites/infrastructure/i18n/getStaticProps';
 import { ErrorBoundary, Section } from '@/features/infrastructure/components';
 import Link from 'next/link';
 import { BASE_TROLL_CLASSES } from '@/features/modules/content/guides/data/units/classes';

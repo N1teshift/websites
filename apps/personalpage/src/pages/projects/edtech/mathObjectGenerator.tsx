@@ -1,4 +1,4 @@
-import { getStaticPropsWithTranslations } from '@websites/infrastructure/i18n';
+import { getStaticPropsWithTranslations } from '@websites/infrastructure/i18n/getStaticProps';
 import { Layout } from "@websites/ui";
 import MathObjectGeneratorPage from '@/features/modules/math/MathObjectGeneratorPage';
 

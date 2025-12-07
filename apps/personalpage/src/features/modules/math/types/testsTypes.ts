@@ -1,6 +1,6 @@
 import { ObjectType } from "./mathTypes";
 import { TestCase } from '../tests/cases/TestCase';
-import * as admin from 'firebase-admin';
+import type * as admin from 'firebase-admin';
 import { MathInput } from "./mathObjectSettingsInterfaces";
 import { TokenUsage } from "@ai/types";
 

@@ -1,32 +1,40 @@
 import type { NextConfig } from "next";
 import bundleAnalyzer from "@next/bundle-analyzer";
+import { createBaseNextConfig } from "@websites/infrastructure/config";
 
 const withBundleAnalyzer = bundleAnalyzer({
     enabled: process.env.ANALYZE === "true",
 });
 
-const baseConfig: NextConfig = {
-    reactStrictMode: false,
+// Get base config and extend with app-specific settings
+const baseConfig = createBaseNextConfig();
+
+const appConfig: NextConfig = {
+    ...baseConfig,
+    // App-specific overrides
+    reactStrictMode: false, // ITT Web specific: disabled for compatibility
     pageExtensions: ['page.tsx', 'page.ts', 'tsx', 'ts', 'jsx', 'js', 'mdx', 'md'],
-    transpilePackages: ['@websites/infrastructure', '@websites/ui'],
-    // Prevent bundling of server-only packages that use top-level await
-    serverExternalPackages: ['i18next-fs-backend'],
+    // App-specific i18n locales
     i18n: {
         locales: ["en"],
         defaultLocale: "en",
     },
     // Ignore ESLint errors in test files - tests should not block production builds
-    // Test files are excluded via .eslintrc.json ignorePatterns and overrides
     eslint: {
-        ignoreDuringBuilds: false, // Keep ESLint running for production code
-        // Test files are excluded via .eslintrc.json ignorePatterns
+        ignoreDuringBuilds: false,
     },
     typescript: {
-        // TypeScript errors in test files shouldn't block builds either
-        ignoreBuildErrors: false, // Keep TS checking but we'll exclude test files via tsconfig
+        ignoreBuildErrors: false,
     },
-    webpack: (config, { isServer }) => {
-        // Exclude test files and __tests__ directories from page building
+    // Extend base webpack config with app-specific rules
+    webpack: (config, webpackContext) => {
+        // First apply base webpack config (handles all common webpack setup)
+        const baseWebpackConfig = baseConfig.webpack;
+        if (baseWebpackConfig) {
+            config = baseWebpackConfig(config, webpackContext);
+        }
+
+        // App-specific: Exclude test files and __tests__ directories from page building
         const originalEntry = config.entry;
         config.entry = async () => {
             const entries = await originalEntry();
@@ -39,74 +47,6 @@ const baseConfig: NextConfig = {
                 });
             }
             return entries;
-        };
-
-        // Ignore optional Sentry module and server-only i18n modules to prevent webpack resolution errors
-        // Sentry is optional and loaded dynamically at runtime
-        // i18next-fs-backend is server-only and uses top-level await
-        config.resolve.alias = {
-            ...config.resolve.alias,
-            '@sentry/nextjs': false,
-            'i18next-fs-backend': false, // Server-only, should not be bundled for client
-        };
-
-        // Exclude firebase-admin and Node.js built-in modules from client bundles
-        // These are server-only and will cause build errors if bundled for client
-        if (!isServer) {
-            config.resolve.fallback = {
-                ...config.resolve.fallback,
-                'net': false,
-                'http': false,
-                'https': false,
-                'fs': false,
-                'path': false,
-                'os': false,
-                'crypto': false,
-            };
-
-            // Exclude firebase-admin and i18next-fs-backend from client bundles
-            config.externals = config.externals || [];
-            if (Array.isArray(config.externals)) {
-                config.externals.push({
-                    'firebase-admin': 'commonjs firebase-admin',
-                    'firebase-admin/app': 'commonjs firebase-admin/app',
-                    'firebase-admin/firestore': 'commonjs firebase-admin/firestore',
-                    'firebase-admin/storage': 'commonjs firebase-admin/storage',
-                    'i18next-fs-backend': 'commonjs i18next-fs-backend',
-                    'next-i18next/serverSideTranslations': 'commonjs next-i18next/serverSideTranslations',
-                });
-            }
-        }
-
-        // Configure webpack to handle ES modules properly
-        // This fixes issues with packages like @reduxjs/toolkit that are ES modules
-        config.module = config.module || {};
-        config.module.rules = config.module.rules || [];
-        
-        // Add rule to handle ES modules in node_modules
-        // fullySpecified: false allows importing without file extensions for ES modules
-        // This is needed for packages like @reduxjs/toolkit that are ES modules
-        config.module.rules.push({
-            test: /\.m?js$/,
-            include: /node_modules/,
-            resolve: {
-                fullySpecified: false,
-            },
-        });
-
-        // Configure resolve to properly handle ES modules
-        config.resolve = config.resolve || {};
-        config.resolve.extensionAlias = {
-            ...config.resolve.extensionAlias,
-            '.js': ['.js', '.ts', '.tsx'],
-            '.mjs': ['.mjs'],
-        };
-        
-        // Ensure webpack handles ES modules correctly
-        // This prevents require() errors for ES module packages
-        config.experiments = {
-            ...config.experiments,
-            topLevelAwait: true,
         };
 
         return config;
@@ -155,7 +95,7 @@ const baseConfig: NextConfig = {
     }
 };
 
-const nextConfig = withBundleAnalyzer(baseConfig);
+const nextConfig = withBundleAnalyzer(appConfig);
 
 export default nextConfig;
 

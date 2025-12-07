@@ -15,8 +15,8 @@ const GoBackButton = ({ target = "/", absolute = true }: GoBackButtonProps) => {
 
     return (
         <div className={containerClass}>
-            <Link href={target} passHref legacyBehavior>
-                <Button variant="subliminal" as="a">
+            <Link href={target}>
+                <Button variant="subliminal">
                     {t("go_back")}
                 </Button>
             </Link>

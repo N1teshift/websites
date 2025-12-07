@@ -5,7 +5,7 @@ export { useFallbackTranslation } from './useFallbackTranslation';
 export { TranslationNamespaceContext, useTranslationNamespace } from './TranslationNamespaceContext';
 
 // Server-side utilities (import separately to avoid client-side bundling)
-// Note: These are exported here but should only be used in server-side code
-// (getStaticProps, API routes, etc.) to avoid webpack bundling issues
-export { getStaticPropsWithTranslations } from './getStaticProps';
-export { default as nextI18NextConfig } from './next-i18next.config';
+// Note: These are commented out to prevent webpack from bundling server-only code into client bundles
+// Import them directly in server-side files (getStaticProps, API routes, etc.)
+// export { getStaticPropsWithTranslations } from './getStaticProps';
+// export { default as nextI18NextConfig } from './next-i18next.config';

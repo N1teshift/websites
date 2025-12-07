@@ -34,6 +34,9 @@
     "test:validate:quick": "node scripts/test-validation.js --quick",
     "test:validate:ci": "node scripts/test-validation.js --ci",
     "analyze:replay": "node scripts/utils/analyze-replay.mjs",
+    "parse:replay": "node scripts/parse-replay.mjs",
+    "parse:replay:all": "node scripts/parse-replay.mjs --all",
+    "parse:replay:verbose": "node scripts/parse-replay.mjs --verbose",
     "replay-meta:build": "tsc -p scripts/replay-metadata-parser/tsconfig.json",
     "replay-meta:watch": "tsc -p scripts/replay-metadata-parser/tsconfig.json --watch",
     "replay-meta:decode": "node ./scripts/replay-metadata-parser/dist/cli.js decode"
@@ -41,7 +44,7 @@
   "dependencies": {
     "@tailwindcss/typography": "^0.5.16",
     "@types/formidable": "^3.4.6",
-    "autoprefixer": "^10.4.19",
+    "autoprefixer": "^10.4.21",
     "buffer": "^6.0.3",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
@@ -56,7 +59,7 @@
     "next-mdx-remote": "^5.0.0",
     "react": "^18.3.1",
     "react-datepicker": "^8.9.0",
-    "react-dom": "^18.2.0",
+    "react-dom": "^18.3.1",
     "react-i18next": "^15.1.1",
     "recharts": "^3.5.0",
     "rehype-autolink-headings": "^7.1.0",
