@@ -4,7 +4,7 @@ import {
   createComponentLogger,
   logAndThrow,
   logError,
-} from "@/features/infrastructure/logging";
+} from "@websites/infrastructure/logging";
 
 describe("infrastructure logger", () => {
   const originalEnv = process.env;

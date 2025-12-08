@@ -6,15 +6,15 @@ const mockGetDoc = jest.fn();
 const mockCollection = jest.fn();
 const mockGetDocs = jest.fn();
 
-jest.mock("@/features/infrastructure/utils/serverUtils", () => ({
+jest.mock("@websites/infrastructure/utils", () => ({
   isServerSide: (...args: unknown[]) => mockIsServerSide(...args),
 }));
 
-jest.mock("@/features/infrastructure/api/firebase/firebaseClient", () => ({
+jest.mock("@websites/infrastructure/firebase/client", () => ({
   getFirestoreInstance: (...args: unknown[]) => mockGetFirestoreInstance(...args),
 }));
 
-jest.mock("@/features/infrastructure/api/firebase/admin", () => ({
+jest.mock("@websites/infrastructure/firebase/admin", () => ({
   getFirestoreAdmin: (...args: unknown[]) => mockGetFirestoreAdmin(...args),
 }));
 
@@ -48,8 +48,7 @@ describe("firestoreHelpers", () => {
       const clientFn = jest.fn();
 
       // Act
-      const { withFirestore } =
-        await import("@/features/infrastructure/api/firebase/firestoreHelpers");
+      const { withFirestore } = await import("@websites/infrastructure/firebase/helpers");
       const result = await withFirestore(serverFn, clientFn);
 
       // Assert
@@ -67,8 +66,7 @@ describe("firestoreHelpers", () => {
       const clientFn = jest.fn(async () => "client-result");
 
       // Act
-      const { withFirestore } =
-        await import("@/features/infrastructure/api/firebase/firestoreHelpers");
+      const { withFirestore } = await import("@websites/infrastructure/firebase/helpers");
       const result = await withFirestore(serverFn, clientFn);
 
       // Assert
@@ -98,8 +96,7 @@ describe("firestoreHelpers", () => {
       mockGetFirestoreAdmin.mockReturnValue(mockAdminDb);
 
       // Act
-      const { getDocument } =
-        await import("@/features/infrastructure/api/firebase/firestoreHelpers");
+      const { getDocument } = await import("@websites/infrastructure/firebase/helpers");
       const result = await getDocument("test-collection", "doc-123");
 
       // Assert
@@ -126,8 +123,7 @@ describe("firestoreHelpers", () => {
       mockGetFirestoreAdmin.mockReturnValue(mockAdminDb);
 
       // Act
-      const { getDocument } =
-        await import("@/features/infrastructure/api/firebase/firestoreHelpers");
+      const { getDocument } = await import("@websites/infrastructure/firebase/helpers");
       const result = await getDocument("test-collection", "missing-doc");
 
       // Assert
@@ -149,8 +145,7 @@ describe("firestoreHelpers", () => {
       mockGetFirestoreInstance.mockReturnValue(mockClientDb);
 
       // Act
-      const { getDocument } =
-        await import("@/features/infrastructure/api/firebase/firestoreHelpers");
+      const { getDocument } = await import("@websites/infrastructure/firebase/helpers");
       const result = await getDocument("test-collection", "doc-123");
 
       // Assert
@@ -174,8 +169,7 @@ describe("firestoreHelpers", () => {
       mockGetFirestoreInstance.mockReturnValue(mockClientDb);
 
       // Act
-      const { getDocument } =
-        await import("@/features/infrastructure/api/firebase/firestoreHelpers");
+      const { getDocument } = await import("@websites/infrastructure/firebase/helpers");
       const result = await getDocument("test-collection", "missing-doc");
 
       // Assert
@@ -205,8 +199,7 @@ describe("firestoreHelpers", () => {
       mockGetFirestoreAdmin.mockReturnValue(mockAdminDb);
 
       // Act
-      const { getCollectionSnapshot } =
-        await import("@/features/infrastructure/api/firebase/firestoreHelpers");
+      const { getCollectionSnapshot } = await import("@websites/infrastructure/firebase/helpers");
       const result = await getCollectionSnapshot("test-collection");
 
       // Assert
@@ -232,8 +225,7 @@ describe("firestoreHelpers", () => {
       mockGetFirestoreAdmin.mockReturnValue(mockAdminDb);
 
       // Act
-      const { getCollectionSnapshot } =
-        await import("@/features/infrastructure/api/firebase/firestoreHelpers");
+      const { getCollectionSnapshot } = await import("@websites/infrastructure/firebase/helpers");
       const result = await getCollectionSnapshot("empty-collection");
 
       // Assert
@@ -257,8 +249,7 @@ describe("firestoreHelpers", () => {
       mockGetFirestoreInstance.mockReturnValue(mockClientDb);
 
       // Act
-      const { getCollectionSnapshot } =
-        await import("@/features/infrastructure/api/firebase/firestoreHelpers");
+      const { getCollectionSnapshot } = await import("@websites/infrastructure/firebase/helpers");
       const result = await getCollectionSnapshot("test-collection");
 
       // Assert
@@ -282,8 +273,7 @@ describe("firestoreHelpers", () => {
       mockGetFirestoreInstance.mockReturnValue(mockClientDb);
 
       // Act
-      const { getCollectionSnapshot } =
-        await import("@/features/infrastructure/api/firebase/firestoreHelpers");
+      const { getCollectionSnapshot } = await import("@websites/infrastructure/firebase/helpers");
       const result = await getCollectionSnapshot("empty-collection");
 
       // Assert

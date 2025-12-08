@@ -3,7 +3,7 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect, beforeEach } from "@jest/globals";
 import { getScreenReaderText } from "@websites/infrastructure/utils";
-import { logError } from "@/features/infrastructure/logging";
+import { logError } from "@websites/infrastructure/logging";
 
 // Mock logger
 jest.mock("@/features/infrastructure/logging");

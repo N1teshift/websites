@@ -1,7 +1,7 @@
 import {
   getFirebaseClientConfig,
   validateFirebaseClientConfig,
-} from "@/features/infrastructure/api/firebase/config";
+} from "@websites/infrastructure/firebase/config";
 
 const originalEnv = process.env;
 

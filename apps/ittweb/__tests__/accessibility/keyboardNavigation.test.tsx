@@ -8,7 +8,7 @@ import {
   isKeyboardFocusable,
   getFocusableElementsInOrder,
 } from "@websites/infrastructure/utils";
-import { logError } from "@/features/infrastructure/logging";
+import { logError } from "@websites/infrastructure/logging";
 
 // Mock logger
 jest.mock("@/features/infrastructure/logging");

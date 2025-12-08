@@ -32,7 +32,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/features/modules/ai/shared/schemas/mathObjects/coefficients.ts"
+    "src/features/modules/ai/shared/schemas/mathObjects/coefficients.ts",
+    "src/__tests__/jest-dom.d.ts"
   ],
   "exclude": ["node_modules", "langgraphjs", "scripts"]
 }

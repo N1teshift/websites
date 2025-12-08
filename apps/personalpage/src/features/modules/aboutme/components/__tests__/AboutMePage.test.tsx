@@ -23,8 +23,8 @@ jest.mock("react-icons/fa", () => ({
 const mockUseAboutMeData = useAboutMeData as jest.MockedFunction<typeof useAboutMeData>;
 
 describe("AboutMePage Component", () => {
-  // Mock translation function
-  const mockT = jest.fn((key: string) => `translated.${key}`);
+  // Mock translation function - cast to TFunction to satisfy type requirements
+  const mockT = jest.fn((key: string) => `translated.${key}`) as any;
 
   // Sample data for tests
   const mockTechSkills: { [key: string]: SkillCategory } = {
@@ -111,7 +111,7 @@ describe("AboutMePage Component", () => {
     });
 
     it("should render email link with correct href", () => {
-      mockT.mockImplementation((key) => {
+      mockT.mockImplementation((key: string) => {
         if (key === "email") return "test@example.com";
         return `translated.${key}`;
       });
@@ -122,7 +122,7 @@ describe("AboutMePage Component", () => {
     });
 
     it("should render LinkedIn link with correct attributes", () => {
-      mockT.mockImplementation((key) => {
+      mockT.mockImplementation((key: string) => {
         if (key === "linkedin") return "linkedin.com/in/user";
         if (key === "linkedinDisplay") return "LinkedIn Profile";
         if (key === "linkedinAria") return "View LinkedIn profile";

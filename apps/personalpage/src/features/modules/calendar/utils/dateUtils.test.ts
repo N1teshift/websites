@@ -90,8 +90,8 @@ describe("dateUtils", () => {
     it("should return Infinity when all events are before slot start", () => {
       const slotStart = new Date("2024-01-01T12:00:00Z");
       const events: CalendarEventInput[] = [
-        { start: "2024-01-01T10:00:00Z", end: "2024-01-01T11:00:00Z" },
-        { start: "2024-01-01T11:00:00Z", end: "2024-01-01T11:30:00Z" },
+        { title: "Event 1", start: "2024-01-01T10:00:00Z", end: "2024-01-01T11:00:00Z" },
+        { title: "Event 2", start: "2024-01-01T11:00:00Z", end: "2024-01-01T11:30:00Z" },
       ];
 
       const gap = getAvailableGap(slotStart, events);
@@ -102,7 +102,7 @@ describe("dateUtils", () => {
     it("should calculate gap correctly for single future event", () => {
       const slotStart = new Date("2024-01-01T10:00:00Z");
       const events: CalendarEventInput[] = [
-        { start: "2024-01-01T12:00:00Z", end: "2024-01-01T13:00:00Z" },
+        { title: "Future Event", start: "2024-01-01T12:00:00Z", end: "2024-01-01T13:00:00Z" },
       ];
 
       const gap = getAvailableGap(slotStart, events);
@@ -114,9 +114,9 @@ describe("dateUtils", () => {
     it("should return smallest gap when multiple future events exist", () => {
       const slotStart = new Date("2024-01-01T10:00:00Z");
       const events: CalendarEventInput[] = [
-        { start: "2024-01-01T15:00:00Z", end: "2024-01-01T16:00:00Z" }, // 5 hours
-        { start: "2024-01-01T11:30:00Z", end: "2024-01-01T12:00:00Z" }, // 1.5 hours (smallest)
-        { start: "2024-01-01T13:00:00Z", end: "2024-01-01T14:00:00Z" }, // 3 hours
+        { title: "Event 1", start: "2024-01-01T15:00:00Z", end: "2024-01-01T16:00:00Z" }, // 5 hours
+        { title: "Event 2", start: "2024-01-01T11:30:00Z", end: "2024-01-01T12:00:00Z" }, // 1.5 hours (smallest)
+        { title: "Event 3", start: "2024-01-01T13:00:00Z", end: "2024-01-01T14:00:00Z" }, // 3 hours
       ];
 
       const gap = getAvailableGap(slotStart, events);
@@ -128,8 +128,8 @@ describe("dateUtils", () => {
     it("should ignore events at exactly the slot start time", () => {
       const slotStart = new Date("2024-01-01T10:00:00Z");
       const events: CalendarEventInput[] = [
-        { start: "2024-01-01T10:00:00Z", end: "2024-01-01T11:00:00Z" }, // At slot start
-        { start: "2024-01-01T11:30:00Z", end: "2024-01-01T12:00:00Z" }, // Future event
+        { title: "Event at Start", start: "2024-01-01T10:00:00Z", end: "2024-01-01T11:00:00Z" }, // At slot start
+        { title: "Future Event", start: "2024-01-01T11:30:00Z", end: "2024-01-01T12:00:00Z" }, // Future event
       ];
 
       const gap = getAvailableGap(slotStart, events);
@@ -141,7 +141,7 @@ describe("dateUtils", () => {
     it("should handle fractional minutes correctly", () => {
       const slotStart = new Date("2024-01-01T10:00:00Z");
       const events: CalendarEventInput[] = [
-        { start: "2024-01-01T10:30:00Z", end: "2024-01-01T11:00:00Z" }, // 30 minutes
+        { title: "30 Min Event", start: "2024-01-01T10:30:00Z", end: "2024-01-01T11:00:00Z" }, // 30 minutes
       ];
 
       const gap = getAvailableGap(slotStart, events);

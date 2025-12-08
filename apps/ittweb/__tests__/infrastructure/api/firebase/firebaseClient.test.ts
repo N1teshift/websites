@@ -56,7 +56,7 @@ describe("firebase client", () => {
     global.window = originalWindow;
   });
 
-  const importModule = async () => import("@/features/infrastructure/api/firebase/firebaseClient");
+  const importModule = async () => import("@websites/infrastructure/firebase/client");
 
   it("initializes firebase app with config when not previously initialized", async () => {
     mockGetApps.mockReturnValue([]);
@@ -93,8 +93,7 @@ describe("firebase client", () => {
     process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID = "";
     mockGetApps.mockReturnValue([]);
 
-    const { initializeFirebaseApp } =
-      await import("@/features/infrastructure/api/firebase/firebaseClient");
+    const { initializeFirebaseApp } = await import("@websites/infrastructure/firebase/client");
 
     expect(() => initializeFirebaseApp()).toThrow(
       "Firebase configuration error: Firebase config missing"

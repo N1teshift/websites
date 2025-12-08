@@ -60,8 +60,8 @@ describe("ConnectingVesselsPage", () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    mockT = jest.fn((key: string) => translationMap[key] ?? `translated.${key}`);
-    mockUseFallbackTranslation.mockReturnValue({ t: mockT });
+    mockT = jest.fn((key: string) => translationMap[key] ?? `translated.${key}`) as any;
+    mockUseFallbackTranslation.mockReturnValue({ t: mockT } as any);
   });
 
   it("requests translations from the expected namespaces", () => {

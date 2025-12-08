@@ -37,7 +37,7 @@ describe("firebase admin", () => {
     process.env = originalEnv;
   });
 
-  const importModule = async () => import("@/features/infrastructure/api/firebase/admin");
+  const importModule = async () => import("@websites/infrastructure/firebase/admin");
 
   it("returns existing initialized app when available", async () => {
     const existingApp = { name: "existing" } as unknown as App;
