@@ -9,9 +9,9 @@ import { createComponentLogger, logError } from "../../logging";
 /**
  * Creates a standard NextAuth logger configuration
  */
-export function createNextAuthLogger(componentName: string = 'nextauth') {
+export function createNextAuthLogger(componentName: string = "nextauth") {
   const logger = createComponentLogger(componentName);
-  
+
   return {
     error(code: string, ...metadata: unknown[]) {
       const meta: Record<string, unknown> = {
@@ -20,7 +20,7 @@ export function createNextAuthLogger(componentName: string = 'nextauth') {
       if (metadata.length > 0) {
         meta.metadata = metadata;
       }
-      logger.error('NextAuth error', undefined, meta);
+      logger.error("NextAuth error", undefined, meta);
     },
   };
 }
@@ -28,13 +28,15 @@ export function createNextAuthLogger(componentName: string = 'nextauth') {
 /**
  * Creates standard NextAuth event handlers with logging
  */
-export function createNextAuthEvents(logger: ReturnType<typeof createComponentLogger>) {
+export function createNextAuthEvents(
+  logger: ReturnType<typeof createComponentLogger>,
+) {
   return {
     async signIn(message: unknown) {
-      logger.debug('User signed in', { message });
+      logger.debug("User signed in", { message });
     },
     async signOut(message: unknown) {
-      logger.debug('User signed out', { message });
+      logger.debug("User signed out", { message });
     },
   };
 }
@@ -48,14 +50,16 @@ export function createBaseNextAuthConfig(
     secret?: string;
     debug?: boolean;
     loggerComponentName?: string;
-  } = {}
+  } = {},
 ): Partial<NextAuthOptions> {
-  const logger = createComponentLogger(options.loggerComponentName || 'nextauth');
-  
+  const logger = createComponentLogger(
+    options.loggerComponentName || "nextauth",
+  );
+
   return {
     secret: options.secret || process.env.NEXTAUTH_SECRET,
     session: { strategy: "jwt" },
-    debug: options.debug ?? process.env.NODE_ENV === 'development',
+    debug: options.debug ?? process.env.NODE_ENV === "development",
     logger: createNextAuthLogger(options.loggerComponentName),
     events: createNextAuthEvents(logger),
   };
@@ -68,13 +72,20 @@ export function createBaseNextAuthConfig(
 export async function safeCallback<T>(
   callback: () => Promise<T>,
   fallback: T,
-  errorContext: { component: string; operation: string; [key: string]: unknown }
+  errorContext: {
+    component: string;
+    operation: string;
+    [key: string]: unknown;
+  },
 ): Promise<T> {
   try {
     return await callback();
   } catch (error) {
-    logError(error as Error, `Failed to execute ${errorContext.operation}`, errorContext);
+    logError(
+      error as Error,
+      `Failed to execute ${errorContext.operation}`,
+      errorContext,
+    );
     return fallback;
   }
 }
-

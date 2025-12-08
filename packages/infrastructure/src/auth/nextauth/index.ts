@@ -1,5 +1,4 @@
 /**
  * Shared NextAuth utilities and configuration helpers
  */
-export * from './config';
-
+export * from "./config";
