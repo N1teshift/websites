@@ -32,8 +32,8 @@
   },
   "dependencies": {
     "@azure/msal-node": "^2.16.2",
-    "@langchain/langgraph": "^0.2.63",
-    "@langchain/openai": "^0.5.5",
+    "@langchain/langgraph": "^0.4.9",
+    "@langchain/openai": "^0.6.16",
     "@microsoft/microsoft-graph-client": "^3.0.7",
     "@vercel/analytics": "^1.5.0",
     "@vercel/speed-insights": "^1.2.0",
@@ -54,7 +54,7 @@
     "@websites/infrastructure": "workspace:*",
     "@websites/ui": "workspace:*",
     "jszip": "^3.10.1",
-    "katex": "^0.16.22",
+    "katex": "^0.16.27",
     "langchain": "^0.3.21",
     "mathjs": "^14.0.0",
     "module-alias": "^2.2.3",
@@ -70,7 +70,7 @@
     "react-katex": "^3.1.0",
     "react-tooltip": "^5.28.0",
     "recharts": "^3.3.0",
-    "sharp": "^0.33.5",
+    "sharp": "^0.34.5",
     "sqlite": "^5.1.1",
     "sqlite3": "^5.1.7",
     "wc3maptranslator": "^4.0.4"
