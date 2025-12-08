@@ -5,7 +5,7 @@
  */
 
 // Contains the LangChain Runnables replacing the old custom chains
-import { z } from "zod";
+import { z } from "@websites/infrastructure/api/zod";
 import { ChatOpenAI } from "@langchain/openai";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { RunnableLambda, RunnableSequence } from "@langchain/core/runnables";
@@ -13,26 +13,28 @@ import { typeIdentifierPrompt } from "../../shared/prompts/typeIdentifier/prompt
 import { ObjectType } from "@math/types/mathTypes"; // Import ObjectType
 import { getObjectTypeSystemPrompt } from "../../shared/utils/promptUtils"; // Import system prompt utility
 import { validateObjectSettings } from "../../shared/validation/settingsValidator"; // Import validator
-import { createComponentLogger } from '@websites/infrastructure/logging';
+import { createComponentLogger } from "@websites/infrastructure/logging";
 
 /**
  * Zod schema for the output of the Type Identifier Runnable.
  * Ensures the LLM returns a valid `ObjectType`.
  */
 const TypeIdentifierOutputSchema = z.object({
-  objectType: z.enum([
-    "coefficient",
-    "coefficients",
-    "term",
-    "terms",
-    "expression",
-    "equation",
-    "inequality",
-    "function",
-    "point",
-    "set",
-    "interval",
-  ]).describe("The identified type of mathematical object"),
+  objectType: z
+    .enum([
+      "coefficient",
+      "coefficients",
+      "term",
+      "terms",
+      "expression",
+      "equation",
+      "inequality",
+      "function",
+      "point",
+      "set",
+      "interval",
+    ])
+    .describe("The identified type of mathematical object"),
 });
 
 /**
@@ -66,56 +68,62 @@ Example response format:
   // 2. Define the LLM
   const apiKey = process.env.OPENAI_API_KEY;
   if (!apiKey) {
-    throw new Error('OPENAI_API_KEY environment variable is required');
+    throw new Error("OPENAI_API_KEY environment variable is required");
   }
 
   const model = process.env.OPENAI_DEFAULT_MODEL || "gpt-5-nano";
-  const llmConfig: { model: string; apiKey: string; temperature?: number; modelKwargs?: Record<string, unknown> } = {
+  const llmConfig: {
+    model: string;
+    apiKey: string;
+    temperature?: number;
+    modelKwargs?: Record<string, unknown>;
+  } = {
     model,
     apiKey,
   };
-  
+
   // Only set temperature if model supports it (not gpt-5-nano)
-  if (!model.includes('gpt-5-nano')) {
+  if (!model.includes("gpt-5-nano")) {
     llmConfig.temperature = 0;
   }
-  
+
   // Use JSON mode
   llmConfig.modelKwargs = {
-    response_format: { type: "json_object" }
+    response_format: { type: "json_object" },
   };
-  
+
   const llm = new ChatOpenAI(llmConfig);
 
   // 3. Create a parser that validates the JSON output against our schema
   const parser = new RunnableLambda({
     func: async (output: { content: string }) => {
-      const logger = createComponentLogger('TypeIdentifierParser');
-      
+      const logger = createComponentLogger("TypeIdentifierParser");
+
       try {
         // Parse the JSON string
         const parsed = JSON.parse(output.content);
-        logger.info('Parsed JSON output', { parsed });
-        
+        logger.info("Parsed JSON output", { parsed });
+
         // Validate against Zod schema
         const validated = TypeIdentifierOutputSchema.parse(parsed);
-        logger.info('Validation successful', { validated });
-        
+        logger.info("Validation successful", { validated });
+
         return validated;
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : String(error);
-        logger.error(`Failed to parse or validate output: ${errorMessage}. Content: ${output.content.substring(0, 200)}`);
+        logger.error(
+          `Failed to parse or validate output: ${errorMessage}. Content: ${output.content.substring(0, 200)}`
+        );
         throw error;
       }
-    }
+    },
   });
 
   // 4. Create the runnable sequence
-  const chain = RunnableSequence.from<TypeIdentifierInput, z.infer<typeof TypeIdentifierOutputSchema>>([
-    prompt,
-    llm,
-    parser as any,
-  ]);
+  const chain = RunnableSequence.from<
+    TypeIdentifierInput,
+    z.infer<typeof TypeIdentifierOutputSchema>
+  >([prompt, llm, parser as any]);
 
   return chain;
 }
@@ -127,14 +135,18 @@ Example response format:
  * Legacy JSON schemas in `src/features/infrastructure/ai/schemas/mathObjects/coefficient.ts`
  * are maintained only for deprecated code and should be removed when the legacy chain is removed.
  */
-const CoefficientSettingsSchema = z.object({
-  numberSet: z.enum(["real", "rational", "irrational", "integer", "natural"]),
-  representationType: z.enum(["fraction", "mixed", "decimal", "root", "logarithm"]),
-  rules: z.array(z.enum(["odd", "even", "square", "cube", "prime", "nonzero", "positive", "negative", "unit"])),
-  range: z.array(z.number()).refine(data => data.length === 2, {
-    message: "Range must contain exactly two numbers [min, max]",
-  }),
-}).describe("Settings for a single coefficient object");
+const CoefficientSettingsSchema = z
+  .object({
+    numberSet: z.enum(["real", "rational", "irrational", "integer", "natural"]),
+    representationType: z.enum(["fraction", "mixed", "decimal", "root", "logarithm"]),
+    rules: z.array(
+      z.enum(["odd", "even", "square", "cube", "prime", "nonzero", "positive", "negative", "unit"])
+    ),
+    range: z.array(z.number()).refine((data) => data.length === 2, {
+      message: "Range must contain exactly two numbers [min, max]",
+    }),
+  })
+  .describe("Settings for a single coefficient object");
 
 /**
  * **Source of Truth:** This Zod schema is the canonical definition for `CoefficientsSettings`.
@@ -145,40 +157,67 @@ const CoefficientSettingsSchema = z.object({
  * NOTE: This schema only includes rules for the *collection* and the sub-prompts.
  * The actual individual coefficient settings are handled by subsequent calls.
  */
-const CoefficientsSettingsSchema = z.object({
-  collectionCount: z.number().describe("The number of coefficients expected in the collection (e.g., based on the parent term's requirements)."),
-  rules: z.array(z.enum(["increasing", "decreasing", "neq"])).describe("Rules that apply to the collection of coefficients"),
-  subObjectPromptParts: z.array(z.string()).describe("Specific parts of the original user prompt that describe the sub-objects (individual coefficients)."),
-}).describe("Settings for the coefficients collection");
+const CoefficientsSettingsSchema = z
+  .object({
+    collectionCount: z
+      .number()
+      .describe(
+        "The number of coefficients expected in the collection (e.g., based on the parent term's requirements)."
+      ),
+    rules: z
+      .array(z.enum(["increasing", "decreasing", "neq"]))
+      .describe("Rules that apply to the collection of coefficients"),
+    subObjectPromptParts: z
+      .array(z.string())
+      .describe(
+        "Specific parts of the original user prompt that describe the sub-objects (individual coefficients)."
+      ),
+  })
+  .describe("Settings for the coefficients collection");
 
 /**
  * **Source of Truth:** This Zod schema is the canonical definition for `TermSettings`.
  * Legacy JSON schemas in `src/features/infrastructure/ai/schemas/mathObjects/term.ts`
  * are maintained only for deprecated code and should be removed when the legacy chain is removed.
  */
-const TermSettingsSchema = z.object({
-  power: z.array(z.number()).refine(data => data.length === 2, {
-    message: "Power format [power, root], e.g., [3, 1] for x³, [1, 2] for √x. Must be an array of two numbers.",
-  }),
-  termIds: z.array(z.string()).describe("Array of string numbers representing the order and the position of the subterms in the polynomial."),
-  powerOrder: z.boolean().describe("Order of operations: true if power is applied before coefficient multiplication, false otherwise."),
-  variableName: z.string().describe("The variable symbol used in the term (e.g., x, y)"),
-  subObjectPromptParts: z.array(z.string()).describe("Specific parts of the user prompt that describe the coefficients collection and its individual coefficients."),
-}).describe("Settings for a polynomial term object");
+const TermSettingsSchema = z
+  .object({
+    power: z.array(z.number()).refine((data) => data.length === 2, {
+      message:
+        "Power format [power, root], e.g., [3, 1] for x³, [1, 2] for √x. Must be an array of two numbers.",
+    }),
+    termIds: z
+      .array(z.string())
+      .describe(
+        "Array of string numbers representing the order and the position of the subterms in the polynomial."
+      ),
+    powerOrder: z
+      .boolean()
+      .describe(
+        "Order of operations: true if power is applied before coefficient multiplication, false otherwise."
+      ),
+    variableName: z.string().describe("The variable symbol used in the term (e.g., x, y)"),
+    subObjectPromptParts: z
+      .array(z.string())
+      .describe(
+        "Specific parts of the user prompt that describe the coefficients collection and its individual coefficients."
+      ),
+  })
+  .describe("Settings for a polynomial term object");
 
 /**
  * Union type representing all possible validated settings structures
  * that can be output by the settings extractor runnable.
  */
-type SettingsSchemaType = 
+type SettingsSchemaType =
   | z.infer<typeof CoefficientSettingsSchema>
   | z.infer<typeof CoefficientsSettingsSchema>
   | z.infer<typeof TermSettingsSchema>
   | Record<string, unknown>; // For placeholder schemas
 
-/** 
- * @internal 
- * Mapping from `ObjectType` to its corresponding Zod schema used for structured LLM output 
+/**
+ * @internal
+ * Mapping from `ObjectType` to its corresponding Zod schema used for structured LLM output
  * and validation in the settings extractor.
  * System 2 (LangGraph) only supports: coefficient, coefficients, term
  * All other types are unsupported and will be rejected by validation before reaching here.
@@ -217,7 +256,7 @@ export function createSettingsExtractorRunnable(objectType: ObjectType) {
     // This should not happen if validation is working correctly, but fail fast if it does
     throw new Error(
       `No settings schema defined for object type: ${objectType}. ` +
-      `System 2 (LangGraph) only supports 'coefficient', 'coefficients', and 'term'.`
+        `System 2 (LangGraph) only supports 'coefficient', 'coefficients', and 'term'.`
     );
   }
 
@@ -234,60 +273,63 @@ You must respond with a valid JSON object. Ensure your response can be parsed as
   // 4. Define the LLM with JSON mode
   const apiKey = process.env.OPENAI_API_KEY;
   if (!apiKey) {
-    throw new Error('OPENAI_API_KEY environment variable is required');
+    throw new Error("OPENAI_API_KEY environment variable is required");
   }
 
   const model = process.env.OPENAI_DEFAULT_MODEL || "gpt-5-nano";
-  const llmConfig: { model: string; apiKey: string; temperature?: number; modelKwargs?: Record<string, unknown> } = {
+  const llmConfig: {
+    model: string;
+    apiKey: string;
+    temperature?: number;
+    modelKwargs?: Record<string, unknown>;
+  } = {
     model,
     apiKey,
   };
-  
+
   // Only set temperature if model supports it (not gpt-5-nano)
-  if (!model.includes('gpt-5-nano')) {
+  if (!model.includes("gpt-5-nano")) {
     llmConfig.temperature = 0;
   }
-  
+
   // Use JSON mode
   llmConfig.modelKwargs = {
-    response_format: { type: "json_object" }
+    response_format: { type: "json_object" },
   };
-  
+
   const llm = new ChatOpenAI(llmConfig);
 
   // 5. Create a parser that parses JSON and validates against schema
   const parser = new RunnableLambda({
     func: async (output: { content: string }) => {
-      const logger = createComponentLogger('SettingsExtractorParser', objectType);
-      
+      const logger = createComponentLogger("SettingsExtractorParser", objectType);
+
       try {
         // Parse the JSON string
         const parsed = JSON.parse(output.content);
         logger.info(`Parsed JSON output for ${objectType}`, { parsed });
-        
+
         // Validate against Zod schema
         const validated = schema.parse(parsed);
         logger.info(`Zod validation successful for ${objectType}`, { validated });
-        
+
         // Run additional validation
         const finalValidated = validateObjectSettings(validated, objectType);
         logger.info(`Final validation successful for ${objectType}`);
-        
+
         return finalValidated;
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : String(error);
-        logger.error(`Failed to parse or validate ${objectType} settings: ${errorMessage}. Content: ${output.content.substring(0, 200)}`);
+        logger.error(
+          `Failed to parse or validate ${objectType} settings: ${errorMessage}. Content: ${output.content.substring(0, 200)}`
+        );
         throw error;
       }
-    }
+    },
   });
 
   // 6. Create the final runnable sequence
-  const chain = RunnableSequence.from([
-    prompt,
-    llm,
-    parser as any,
-  ]);
+  const chain = RunnableSequence.from([prompt, llm, parser as any]);
 
   return chain as RunnableSequence<SettingsExtractorRunnableInput, SettingsSchemaType>;
 }
@@ -299,7 +341,4 @@ You must respond with a valid JSON object. Ensure your response can be parsed as
  */
 export function createSettingsExtractorRunnableFactory() {
   // Implementation will go here
-} 
-
-
-
+}

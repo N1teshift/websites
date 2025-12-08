@@ -2,6 +2,7 @@
   "name": "websites-monorepo",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "turbo run dev",
     "build": "turbo run build",
@@ -12,12 +13,19 @@
     "test": "turbo run test",
     "clean": "turbo run clean && pnpm --filter '{apps/*}' exec rm -rf .next node_modules && pnpm --filter '{packages/*}' exec rm -rf node_modules",
     "verify:builds": "powershell -ExecutionPolicy Bypass -File ./scripts/verify-builds.ps1",
+    "analyze:dependencies": "node scripts/analyze-dependencies.js",
+    "analyze:dependencies:ps1": "powershell -ExecutionPolicy Bypass -File ./scripts/analyze-dependencies.ps1",
     "changeset": "changeset",
     "changeset:version": "changeset version",
     "changeset:publish": "changeset publish",
     "prepare": "husky install || true"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.2.0",
+    "@eslint/js": "^9.18.0",
+    "eslint": "^9.0.0",
+    "eslint-config-next": "^15.5.7",
+    "globals": "^15.14.0",
     "husky": "^9.1.7",
     "lint-staged": "^15.2.11",
     "prettier": "^3.4.2",
@@ -35,4 +43,3 @@
     }
   }
 }
-

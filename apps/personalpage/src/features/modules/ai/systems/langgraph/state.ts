@@ -4,8 +4,8 @@
  * State is managed using Zod schemas for robust type safety and validation.
  */
 // Defines the state object passed between nodes in the LangGraph
-import { z } from 'zod';
-import { ObjectType, MathInput } from '@math/types/index'; // Import ObjectType directly
+import { z } from "@websites/infrastructure/api/zod";
+import { ObjectType, MathInput } from "@math/types/index"; // Import ObjectType directly
 
 /**
  * Generic type representing the settings extracted for any mathematical object.
@@ -43,8 +43,17 @@ export type ProcessingContext = {
 // If ObjectType is just a string union, this needs adjustment. Let's assume it can map to enum-like values.
 // We need the actual list of valid ObjectType strings.
 const ObjectTypeValues = [
-  "coefficient", "coefficients", "term", "terms", "expression",
-  "equation", "inequality", "function", "point", "set", "interval"
+  "coefficient",
+  "coefficients",
+  "term",
+  "terms",
+  "expression",
+  "equation",
+  "inequality",
+  "function",
+  "point",
+  "set",
+  "interval",
 ] as const; // Use the actual types
 const ObjectTypeEnum = z.enum(ObjectTypeValues);
 
@@ -63,20 +72,25 @@ const ObjectSettingsSchema = z.record(z.string(), z.unknown()).and(
  * This schema is used by LangGraph to manage and validate the state between nodes.
  */
 export const GraphStateSchema = z.object({
-  // --- Initial Input --- 
+  // --- Initial Input ---
   /** Optional initial messages, often used if continuing a conversation. Defaults to empty array. */
-  messages: z.array(z.object({
-    role: z.string(),
-    content: z.string()
-  })).optional().default([]),
+  messages: z
+    .array(
+      z.object({
+        role: z.string(),
+        content: z.string(),
+      })
+    )
+    .optional()
+    .default([]),
   /** The initial user prompt that starts the graph execution. */
   userPrompt: z.string(),
 
-  // --- Type Identification --- 
+  // --- Type Identification ---
   /** The top-level object type identified from the `userPrompt`. */
   identifiedType: ObjectTypeEnum.optional(),
 
-  // --- Processing State --- 
+  // --- Processing State ---
   /** The `ObjectType` of the object currently being processed (could be top-level or a sub-object). */
   currentObjectType: ObjectTypeEnum.optional(),
   /** The specific part of the user prompt relevant to the `currentObjectType`. */
@@ -84,35 +98,40 @@ export const GraphStateSchema = z.object({
   /** The settings extracted for the `currentObjectType` by the settings extractor node. */
   currentSettings: ObjectSettingsSchema.optional(),
 
-  // --- Context Stack --- 
-  /** 
+  // --- Context Stack ---
+  /**
    * Stack maintaining the context of parent objects when recursively processing nested structures.
    * Each element represents a parent waiting for its children.
    * Defaults to an empty array.
    */
-  contextStack: z.array(z.object({ // Zod schema for ProcessingContext
-      parentObjectType: ObjectTypeEnum,
-      parentBaseSettings: ObjectSettingsSchema,
-      pendingSubPrompts: z.array(z.string()),
-      expectedSubObjectType: ObjectTypeEnum.optional(),
-      collectedSubSettings: z.array(ObjectSettingsSchema),
-      subSettingsKey: z.string().optional(),
-      expectsSingleSubObject: z.boolean(), // NEW: Add Zod validation for the new flag
-  })).default([]), // Default to empty stack
+  contextStack: z
+    .array(
+      z.object({
+        // Zod schema for ProcessingContext
+        parentObjectType: ObjectTypeEnum,
+        parentBaseSettings: ObjectSettingsSchema,
+        pendingSubPrompts: z.array(z.string()),
+        expectedSubObjectType: ObjectTypeEnum.optional(),
+        collectedSubSettings: z.array(ObjectSettingsSchema),
+        subSettingsKey: z.string().optional(),
+        expectsSingleSubObject: z.boolean(), // NEW: Add Zod validation for the new flag
+      })
+    )
+    .default([]), // Default to empty stack
 
-  // --- Final Output --- 
-  /** 
+  // --- Final Output ---
+  /**
    * Array accumulating the fully processed `MathInput` objects.
    * Defaults to an empty array.
    */
   // Using z.custom to allow the more complex MathInput type
   accumulatedObjects: z.array(z.custom<MathInput>()).default([]),
 
-  // --- Metadata / Error Handling --- 
+  // --- Metadata / Error Handling ---
   /** Array accumulating validation errors encountered during processing. Defaults to empty array. */
   validationErrors: z.array(z.string()).default([]),
   /** Stores any critical error message that halts graph execution. */
-  error: z.string().optional()
+  error: z.string().optional(),
 });
 
 /**
@@ -133,7 +152,7 @@ type SingleReducer<V, U> = (currentValue: V | undefined, update: U | undefined) 
  * Kept for reference, not actively used where array reducers are specified.
  */
 function _defaultReducer<T>(): SingleReducer<T, T> {
-    return (a: T | undefined, b: T | undefined): T | undefined => b ?? a;
+  return (a: T | undefined, b: T | undefined): T | undefined => b ?? a;
 }
 
 /**
@@ -144,12 +163,12 @@ function _defaultReducer<T>(): SingleReducer<T, T> {
  * @returns {SingleReducer<T[], T | T[]>} A reducer function for appending to arrays.
  */
 function arrayReducer<T>(): SingleReducer<T[], T | T[]> {
-    return (a: T[] | undefined, b: T | T[] | undefined): T[] => {
-        const current = a ?? [];
-        if (b === undefined) return current;
-        const additions = Array.isArray(b) ? b : [b];
-        return [...current, ...additions];
-    };
+  return (a: T[] | undefined, b: T | T[] | undefined): T[] => {
+    const current = a ?? [];
+    if (b === undefined) return current;
+    const additions = Array.isArray(b) ? b : [b];
+    return [...current, ...additions];
+  };
 }
 
 /**
@@ -158,12 +177,15 @@ function arrayReducer<T>(): SingleReducer<T[], T | T[]> {
  * are associated with specific state keys (especially array types).
  */
 export type StateKeyReducers = {
-  [K in keyof GraphStateType]?: K extends 'validationErrors' 
+  [K in keyof GraphStateType]?: K extends "validationErrors"
     ? SingleReducer<string[], string | string[]>
-    : K extends 'accumulatedObjects' 
+    : K extends "accumulatedObjects"
       ? SingleReducer<MathInput[], MathInput | MathInput[]>
-      : K extends 'messages' 
-        ? SingleReducer<{role: string; content: string}[], {role: string; content: string} | {role: string; content: string}[]>
+      : K extends "messages"
+        ? SingleReducer<
+            { role: string; content: string }[],
+            { role: string; content: string } | { role: string; content: string }[]
+          >
         : SingleReducer<GraphStateType[K], GraphStateType[K]>;
 };
 
@@ -180,9 +202,6 @@ export const stateKeysUpdate: StateKeyReducers = {
   /** Appends newly completed MathInput objects to the existing array. */
   accumulatedObjects: arrayReducer<MathInput>(),
   /** Appends new messages to the existing message array. */
-  messages: arrayReducer<{ role: string; content: string; }>(),
+  messages: arrayReducer<{ role: string; content: string }>(),
   // contextStack uses default replacement behavior implicitly if not listed here
-}; 
-
-
-
+};

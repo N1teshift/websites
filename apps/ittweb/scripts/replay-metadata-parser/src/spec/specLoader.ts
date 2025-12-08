@@ -1,5 +1,5 @@
 import { readFile } from "node:fs/promises";
-import { z } from "zod";
+import { z } from "@websites/infrastructure/api/zod";
 import { ReplayMetaError, ReplayMetaErrorCode } from "../errors.js";
 import { MatchMetadataSpec } from "../types.js";
 import { DEFAULT_MATCH_METADATA_SPEC } from "./defaultSpec.js";
@@ -32,9 +32,7 @@ const normalizeSpec = (raw: RawSpec): MatchMetadataSpec => {
   };
 };
 
-export const loadMatchMetadataSpec = async (
-  specPath?: string
-): Promise<MatchMetadataSpec> => {
+export const loadMatchMetadataSpec = async (specPath?: string): Promise<MatchMetadataSpec> => {
   const resolvedPath = specPath ?? process.env.REPLAY_META_SPEC_PATH;
   if (!resolvedPath) {
     return DEFAULT_MATCH_METADATA_SPEC;
@@ -57,4 +55,3 @@ export const loadMatchMetadataSpec = async (
     );
   }
 };
-

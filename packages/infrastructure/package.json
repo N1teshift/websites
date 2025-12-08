@@ -7,6 +7,7 @@
   "exports": {
     ".": "./src/index.ts",
     "./api": "./src/api/index.ts",
+    "./api/zod": "./src/api/zod/index.ts",
     "./api/google": "./src/api/google.ts",
     "./api/google/auth/googleAuth": "./src/clients/google/auth/googleAuth.ts",
     "./api/microsoft": "./src/api/microsoft.ts",

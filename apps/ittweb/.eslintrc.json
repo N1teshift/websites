@@ -1,6 +1,0 @@
-{
-  "extends": ["@websites/eslint-config"],
-  "rules": {
-    // App-specific overrides can be added here
-  }
-}
