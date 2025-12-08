@@ -107,7 +107,6 @@ const ClassViewSection: React.FC<ClassViewSectionProps> = ({
   // Update columns when students array reference changes, preserving visibility
   React.useEffect(() => {
     updateColumns(initialColumns);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [students]);
 
   // Filter students

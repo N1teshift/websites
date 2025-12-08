@@ -63,7 +63,6 @@ const ConceptSelector: React.FC<ConceptSelectorProps> = ({
         onConceptsChange(combinedConcepts);
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [conceptMode]);
 
   return (

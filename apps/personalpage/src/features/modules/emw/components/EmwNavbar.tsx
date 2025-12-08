@@ -6,7 +6,7 @@ const EmwNavbar: React.FC = () => {
   const { t } = useFallbackTranslation();
 
   const navLinks = [
-    { href: "/projects/emw/home", key: "nav_home" },
+    { href: "/projects/emw", key: "nav_home" },
     { href: "/projects/emw/voting-precincts", key: "nav_voting_precincts" },
     { href: "/projects/emw/counting-precincts", key: "nav_counting_precincts" },
     { href: "/projects/emw/counties", key: "nav_counties" },

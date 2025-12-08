@@ -86,6 +86,8 @@ export const useTestStats = () => {
   const [error, setError] = useState<string | null>(null);
   /** State reflecting the global fetch enabled/disabled status, synchronized with LocalStorage. */
   const [isFetchingEnabled, setIsFetchingEnabled] = useState(getIsFetchingEnabled());
+  /** State for modal visibility and message. */
+  const [modalMessage, setModalMessage] = useState<string | null>(null);
 
   /** Ref storing the timestamp of the last successful statistics refresh. */
   const lastRefreshTimeRef = useRef<number>(
@@ -105,7 +107,7 @@ export const useTestStats = () => {
   /**
    * Toggles the global database fetching enabled/disabled state.
    * Updates LocalStorage and the internal `isFetchingEnabled` state.
-   * Shows an alert with the new state.
+   * Shows a modal with the new state.
    * @private
    */
   const toggleFetchingEnabled = useCallback(() => {
@@ -113,7 +115,7 @@ export const useTestStats = () => {
     const newValue = !isFetchingEnabled;
     setIsFetchingEnabled(newValue);
     localStorage.setItem(LOCAL_STORAGE_KEY_FETCH_TOGGLE, String(newValue));
-    alert(`Database fetching is now ${newValue ? "enabled" : "disabled"}`);
+    setModalMessage(`Database fetching is now ${newValue ? "enabled" : "disabled"}`);
   }, [isFetchingEnabled]);
 
   /**
@@ -268,7 +270,6 @@ export const useTestStats = () => {
         hasInitializedRef.current = true;
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFetchingEnabled]); // Only depend on isFetchingEnabled to prevent loops
 
   /**
@@ -334,5 +335,7 @@ export const useTestStats = () => {
     refreshStats,
     isFetchingEnabled,
     toggleFetchingEnabled,
+    modalMessage,
+    closeModal: () => setModalMessage(null),
   };
 };

@@ -11,7 +11,7 @@ import {
   buildInterfaceMapForInput,
 } from "@math/mathObjectSettings/utils/mathObjectUtils";
 
-import { VoicePromptButton, PromptButton } from "@/features/modules/voice";
+import { PromptButton } from "@/features/modules/voice";
 import { GeneratedMathObjects } from "@ai/types";
 
 export default function MathObjectGeneratorPage() {
@@ -97,16 +97,9 @@ export default function MathObjectGeneratorPage() {
 
       <MathItemsDisplay mathItems={mathItems} fallbackMessage="" />
 
-      {/* Voice and Text Prompt Buttons */}
+      {/* AI Prompt Button */}
       <div className="w-full flex flex-row gap-2 mt-4">
-        <VoicePromptButton
-          onResult={handlePromptResult}
-          onProcessingStateChange={(isProcessing) => {
-            setIsGenerating(isProcessing);
-            setLoadingMessage(isProcessing ? "Processing voice input..." : "");
-          }}
-        />
-        <PromptButton onResult={handlePromptResult} label="ai_prompt" />
+        <PromptButton onResult={handlePromptResult} label="ai_prompt" disabled={true} />
       </div>
 
       {/* Display last prompt used */}

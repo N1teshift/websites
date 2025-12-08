@@ -11,7 +11,7 @@ import TestResultsSummary, { TestControls, AISystem } from "@math/tests/ui/index
 import SystemFlowDiagram from "@math/tests/ui/SystemFlowDiagram";
 import { GenericTable, ColumnDefinition, FilterDefinition, StatusIndicator } from "@websites/ui";
 import { PropertyTags, MathDisplay } from "@math/shared/components";
-import { SuccessMessage, ToastNotification } from "@websites/ui";
+import { SuccessMessage, ToastNotification, Modal } from "@websites/ui";
 import { useSession } from "next-auth/react";
 
 /**
@@ -75,6 +75,8 @@ export default function MathObjectsGeneratorTestsPage() {
     isFetchingEnabled,
     toggleFetchingEnabled,
     error: testStatsError,
+    modalMessage,
+    closeModal,
   } = useTestStats();
 
   // Core test execution state (needed by other hooks)
@@ -305,6 +307,9 @@ export default function MathObjectsGeneratorTestsPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
+      {/* Modal for DP fetching toggle confirmation */}
+      <Modal isOpen={!!modalMessage} onClose={closeModal} message={modalMessage || ""} />
+
       {/* Success Message */}
       <SuccessMessage visible={showSuccessMessage} messageKey="results_saved_successfully" />
 

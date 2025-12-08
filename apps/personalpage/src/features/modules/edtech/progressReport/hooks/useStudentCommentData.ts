@@ -156,6 +156,5 @@ export function useGeneratedComments(
         if (lastNameCompare !== 0) return lastNameCompare;
         return a.student.first_name.localeCompare(b.student.first_name);
       });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [studentCommentData, activeTemplate, regenerateKey]);
 }

@@ -11,7 +11,7 @@ export const getStaticProps: GetStaticProps<ExtendedPageProps> = async (context)
     props: {
       ...baseProps.props,
       translationNamespaces: pageNamespaces,
-      layoutGoBackTarget: "/projects/emw/index",
+      layoutGoBackTarget: "/",
       layoutTitleKey: "nav_counting_precincts",
       layoutMode: "top",
     },

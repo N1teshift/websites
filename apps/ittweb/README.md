@@ -108,8 +108,8 @@ The project uses i18next for internationalization. Currently supports English, b
 
 ### Adding a New Language
 
-1. Create a new directory in `public/locales/` (e.g., `public/locales/es/`)
-2. Copy translation files from `public/locales/en/`
+1. Create a new directory in `locales/` (e.g., `locales/es/`)
+2. Copy translation files from `locales/en/`
 3. Translate the content
 4. Update `next.config.ts` to include the new locale
 

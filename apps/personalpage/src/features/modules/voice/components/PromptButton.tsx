@@ -8,9 +8,15 @@ interface PromptButtonProps {
   label?: string; // Optional label key for the button, used for translation. Defaults to 'ai_prompt'.
   initialPrompt?: string; // Optional initial text to prefill the prompt input in the modal.
   onResult?: (data: PromptData) => void; // Callback function invoked when the modal submits a result.
+  disabled?: boolean; // Optional flag to disable the button.
 }
 
-const PromptButton: React.FC<PromptButtonProps> = ({ label, initialPrompt = "", onResult }) => {
+const PromptButton: React.FC<PromptButtonProps> = ({
+  label,
+  initialPrompt = "",
+  onResult,
+  disabled = false,
+}) => {
   const { t } = useFallbackTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const handleOpen = () => setIsOpen(true);
@@ -20,7 +26,7 @@ const PromptButton: React.FC<PromptButtonProps> = ({ label, initialPrompt = "", 
 
   return (
     <>
-      <Button onClick={handleOpen} variant="primary">
+      <Button onClick={handleOpen} variant="primary" disabled={disabled}>
         {buttonLabel}
       </Button>
       {isOpen && (
