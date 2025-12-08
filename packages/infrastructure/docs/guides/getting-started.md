@@ -68,9 +68,6 @@ NEXT_PUBLIC_BASE_URL=http://localhost:3000
 # Enable debug logs in production
 ENABLE_DEBUG_LOGS=false
 
-# Sentry DSN (for error tracking)
-SENTRY_DSN=your-sentry-dsn
-
 # OpenAI API Key (if using AI features)
 OPENAI_API_KEY=your-openai-api-key
 

@@ -1,5 +1,10 @@
 import type { NextConfig } from "next";
 import { createBaseNextConfig } from "@websites/infrastructure/config";
+import bundleAnalyzer from "@next/bundle-analyzer";
+
+const withBundleAnalyzer = bundleAnalyzer({
+    enabled: process.env.ANALYZE === "true",
+});
 
 // Get base config and extend with app-specific settings
 const baseConfig = createBaseNextConfig();
@@ -15,7 +20,6 @@ const appConfig: NextConfig = {
     images: {
         // Avoid optimizer 500s in dev and allow external placeholders
         unoptimized: true,
-        domains: ['via.placeholder.com', 'firebasestorage.googleapis.com'],
         remotePatterns: [
             {
                 protocol: 'https',
@@ -30,6 +34,7 @@ const appConfig: NextConfig = {
         // First apply base webpack config
         const baseWebpackConfig = baseConfig.webpack;
         if (baseWebpackConfig) {
+            // Pass full context to base config
             config = baseWebpackConfig(config, webpackContext);
         }
 
@@ -49,4 +54,4 @@ const appConfig: NextConfig = {
     },
 };
 
-export default appConfig;
+export default withBundleAnalyzer(appConfig);

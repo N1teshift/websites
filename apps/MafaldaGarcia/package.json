@@ -16,9 +16,10 @@
         "react-dom": "^18.2.0",
         "firebase-admin": "^13.4.0",
         "nprogress": "^0.2.0",
-        "zod": "^4.1.13",
         "@websites/infrastructure": "workspace:*",
-        "@websites/ui": "workspace:*"
+        "@websites/ui": "workspace:*",
+        "@vercel/analytics": "^1.5.0",
+        "@vercel/speed-insights": "^1.2.0"
     },
     "devDependencies": {
         "@types/node": "^20",

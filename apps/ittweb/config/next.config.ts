@@ -11,26 +11,17 @@ const baseConfig = createBaseNextConfig();
 
 const appConfig: NextConfig = {
     ...baseConfig,
-    // App-specific overrides
-    reactStrictMode: false, // ITT Web specific: disabled for compatibility
-    pageExtensions: ['page.tsx', 'page.ts', 'tsx', 'ts', 'jsx', 'js', 'mdx', 'md'],
     // App-specific i18n locales
     i18n: {
         locales: ["en"],
         defaultLocale: "en",
-    },
-    // Ignore ESLint errors in test files - tests should not block production builds
-    eslint: {
-        ignoreDuringBuilds: false,
-    },
-    typescript: {
-        ignoreBuildErrors: false,
     },
     // Extend base webpack config with app-specific rules
     webpack: (config, webpackContext) => {
         // First apply base webpack config (handles all common webpack setup)
         const baseWebpackConfig = baseConfig.webpack;
         if (baseWebpackConfig) {
+            // Pass full context to base config
             config = baseWebpackConfig(config, webpackContext);
         }
 
@@ -55,12 +46,6 @@ const appConfig: NextConfig = {
         remotePatterns: [
             {
                 protocol: 'https',
-                hostname: 'picsum.photos',
-                port: '',
-                pathname: '/**',
-            },
-            {
-                protocol: 'https',
                 hostname: 'firebasestorage.googleapis.com',
                 port: '',
                 pathname: '/**',
@@ -83,10 +68,13 @@ const appConfig: NextConfig = {
                             "font-src 'self' data: https://fonts.gstatic.com",
                             // Frame sources - include Vercel Live for feedback widget
                             "frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com https://clips.twitch.tv https://player.twitch.tv https://vercel.live",
-                            "img-src 'self' data: https: blob:",
+                            // Images: Allow Firebase Storage + any HTTPS (for user-uploaded content from various sources)
+                            "img-src 'self' data: https://firebasestorage.googleapis.com https: blob:",
+                            // Media: Allow any HTTPS (for user-uploaded videos/audio from various sources)
                             "media-src 'self' https:",
-                            // Connect sources - explicitly exclude tracking domains (googleads.g.doubleclick.net)
-                            "connect-src 'self' https: wss:",
+                            // Connect sources: Restrict to Firebase services only (more secure than allowing all HTTPS)
+                            // Firebase Firestore, Storage, Auth, and related Google APIs
+                            "connect-src 'self' https://*.firebaseio.com https://*.firestore.googleapis.com https://firebasestorage.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://*.googleapis.com wss://*.firebaseio.com",
                         ].join('; ')
                     }
                 ]
@@ -95,8 +83,4 @@ const appConfig: NextConfig = {
     }
 };
 
-const nextConfig = withBundleAnalyzer(appConfig);
-
-export default nextConfig;
-
-
+export default withBundleAnalyzer(appConfig);

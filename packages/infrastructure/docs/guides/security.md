@@ -27,7 +27,7 @@ Regular security maintenance should include:
 - Audit user permissions and roles
 - Monitor for suspicious activity (unusual API patterns, failed auth attempts)
 - Keep dependencies updated (automated via security scanning workflow)
-- Review security logs and error tracking (Sentry, Firebase logs)
+- Review security logs and error tracking (Firebase logs, console logs)
 
 ## Authentication & Authorization
 

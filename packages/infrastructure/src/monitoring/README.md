@@ -16,20 +16,15 @@ import { captureError, captureMessage, setUserContext } from '@websites/infrastr
 
 ### Error Tracking
 
-#### `initializeErrorTracking(options?: ErrorTrackingOptions): void`
+#### `initializeErrorTracking(): void`
 
-Initializes error tracking (e.g., Sentry).
-
-**Parameters:**
-- `options` (ErrorTrackingOptions, optional) - Configuration options
+Initializes error tracking (console logging).
 
 **Example:**
 ```typescript
 import { initializeErrorTracking } from '@websites/infrastructure/monitoring';
 
-initializeErrorTracking({
-  dsn: process.env.SENTRY_DSN
-});
+initializeErrorTracking();
 ```
 
 #### `captureError(error: Error, context?: ErrorContext): void`
@@ -182,7 +177,6 @@ reportMetric('data_processing_time', processingTime, 'ms');
 ## Environment Variables
 
 Optional:
-- `SENTRY_DSN` - Sentry DSN for error tracking
 - `ENABLE_PERFORMANCE_MONITORING` - Enable performance monitoring
 
 ## Best Practices

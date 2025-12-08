@@ -16,7 +16,6 @@ import React, { useEffect } from 'react';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { SessionProvider } from 'next-auth/react';
-import type { Session } from 'next-auth';
 import { SWRConfig } from 'swr';
 import { ProgressBar } from '@websites/ui';
 import { swrConfig } from '@websites/infrastructure/cache';
@@ -25,53 +24,54 @@ import { Logger } from '@websites/infrastructure/logging';
 import { setupConsoleFiltering } from './consoleFiltering';
 
 /**
- * Extended pageProps interface to include translation namespaces and session
+ * Extended pageProps interface for pages that use infrastructure features.
+ * 
+ * Pages can optionally include `translationNamespaces` in their getStaticProps/getServerSideProps
+ * to pass translation context to the Layout component.
+ * 
+ * @example
+ * ```typescript
+ * export const getStaticProps: GetStaticProps = async ({ locale }) => {
+ *   return {
+ *     props: {
+ *       ...(await getStaticPropsWithTranslations(['common', 'home'])({ locale })),
+ *       translationNamespaces: ['common', 'home'], // Pass to Layout
+ *     },
+ *   };
+ * };
+ * ```
  */
 export interface ExtendedPageProps {
-    session?: Session;
+    /**
+     * Array of translation namespaces used by this page.
+     * Used to pass to Layout component for translation context.
+     * Should match the namespaces passed to getStaticPropsWithTranslations.
+     */
     translationNamespaces?: string[];
 }
 
-/**
- * Props for AppWrapper component
- */
-export interface AppWrapperProps extends AppProps {
-    /**
-     * Optional custom layout component to wrap pages
-     * If provided, pages will be wrapped with this layout
-     */
+/** Props for AppWrapper component */
+export interface AppWrapperProps {
+    /** Component and pageProps from Next.js AppProps */
+    Component: AppProps['Component'];
+    pageProps: AppProps['pageProps'];
+    router?: AppProps['router'];
+    
+    /** Optional custom layout component to wrap pages If provided, pages will be wrapped with this layout */
     Layout?: React.ComponentType<{ 
         children: React.ReactNode; 
         pageTranslationNamespaces?: string[];
         [key: string]: any;
     }>;
     
-    /**
-     * Optional app name for logging
-     */
+    /** Optional app name for logging */
     appName?: string;
     
-    /**
-     * Optional viewport meta tag content
-     */
+    /** Optional viewport meta tag content */
     viewport?: string;
 }
 
-/**
- * Standardized AppWrapper component that provides all common functionality
- * for Next.js apps in the monorepo.
- * 
- * @example
- * ```tsx
- * function App({ Component, pageProps }: AppProps) {
- *     return (
- *         <AppWrapper Component={Component} pageProps={pageProps} />
- *     );
- * }
- * 
- * export default appWithTranslation(App);
- * ```
- */
+/** Standardized AppWrapper component that provides all common functionality for Next.js apps in the monorepo. */
 export function AppWrapper({ 
     Component, 
     pageProps, 
@@ -79,9 +79,11 @@ export function AppWrapper({
     appName = 'Application',
     viewport = 'width=device-width, initial-scale=1.0, viewport-fit=cover'
 }: AppWrapperProps) {
-    const extendedProps = pageProps as ExtendedPageProps;
-    const translationNamespaces = extendedProps?.translationNamespaces || ['common'];
-    const session = extendedProps?.session;
+    // Extract translationNamespaces only if Layout is provided
+    // This is only needed for apps that use a Layout component (like ITT Web)
+    const translationNamespaces = Layout 
+        ? ((pageProps as Partial<ExtendedPageProps>)?.translationNamespaces || ['common'])
+        : ['common']; // Default value, not used if no Layout
 
     // Initialize logging
     useEffect(() => {
@@ -123,7 +125,7 @@ export function AppWrapper({
                 <meta name="viewport" content={viewport} />
             </Head>
             <SWRConfig value={swrConfig}>
-                <SessionProvider session={session}>
+                <SessionProvider>
                     <ProgressBar />
                     {content}
                 </SessionProvider>

@@ -1,5 +1,4 @@
 import type { NextConfig } from "next";
-import webpack from "webpack";
 
 /**
  * Base Next.js configuration that all apps should extend.
@@ -15,6 +14,29 @@ import webpack from "webpack";
  * - App-specific image domains/patterns
  * - App-specific headers/CSP
  */
+
+// Server-only packages that should not be bundled for client
+// These are used in multiple webpack configurations, so defined once here
+const SERVER_ONLY_PACKAGES = [
+    'i18next-fs-backend',
+    'firebase-admin',
+    'googleapis',
+] as const;
+
+// Node.js built-in modules that don't exist in browser
+const NODE_BUILTIN_MODULES = [
+    'fs',
+    'net',
+    'tls',
+    'child_process',
+    'http2',
+    'path',
+    'http',
+    'https',
+    'os',
+    'crypto',
+] as const;
+
 export const createBaseNextConfig = (): NextConfig => {
     return {
         reactStrictMode: true,
@@ -22,66 +44,70 @@ export const createBaseNextConfig = (): NextConfig => {
         transpilePackages: ['@websites/infrastructure', '@websites/ui'],
         
         // Prevent bundling of server-only packages that use top-level await
-        serverExternalPackages: ['i18next-fs-backend', 'firebase-admin', 'googleapis'],
+        // next-i18next needs to be external to prevent bundling issues with serverSideTranslations
+        serverExternalPackages: [...SERVER_ONLY_PACKAGES, 'next-i18next'],
         
-        webpack: (config, { isServer, webpack: webpackInstance }) => {
+        webpack: (config, webpackContext) => {
+            // Extract needed properties from Next.js webpack context
+            const { isServer, webpack: webpackInstance } = webpackContext;
+            
             // Replace node: protocol imports with regular imports
+            // Some packages use 'node:fs' instead of 'fs' - webpack needs regular format
             config.plugins = config.plugins || [];
             config.plugins.push(
                 new webpackInstance.NormalModuleReplacementPlugin(
                     /^node:/,
-                    (resource: any) => {
+                    (resource: { request: string }) => {
                         resource.request = resource.request.replace(/^node:/, '');
                     }
                 )
             );
 
-            // Ignore optional Sentry module and server-only i18n modules
-            config.resolve.alias = {
-                ...config.resolve.alias,
-                '@sentry/nextjs': false, // Optional dependency, loaded dynamically
-                'i18next-fs-backend': false, // Server-only, should not be bundled for client
-                'next-i18next/serverSideTranslations': false, // Server-only, should not be bundled for client
-                'firebase-admin': false, // Server-only, should not be bundled for client
-                'googleapis': false, // Server-only, should not be bundled for client
-                'google-logging-utils': false, // Server-only, should not be bundled for client
-            };
-
             if (!isServer) {
+                // Client-side only: ignore server-only modules
+                // Create alias map: package name -> false (don't bundle)
+                const serverOnlyAliases = Object.fromEntries(
+                    SERVER_ONLY_PACKAGES.map(pkg => [pkg, false])
+                ) as Record<string, false>;
+                
+                config.resolve.alias = {
+                    ...config.resolve.alias,
+                    ...serverOnlyAliases,
+                    'next-i18next/serverSideTranslations': false, // Server-only, should not be bundled for client
+                };
+                
                 // Provide fallbacks for Node.js modules that might be imported on client side
+                // If code tries to import these in browser, webpack will ignore them
+                const nodeFallbacks = Object.fromEntries(
+                    NODE_BUILTIN_MODULES.map(module => [module, false])
+                ) as Record<string, false>;
+                
                 config.resolve.fallback = {
                     ...config.resolve.fallback,
-                    fs: false,
-                    net: false,
-                    tls: false,
-                    child_process: false,
-                    http2: false,
-                    path: false,
-                    http: false,
-                    https: false,
-                    os: false,
-                    crypto: false,
+                    ...nodeFallbacks,
                 };
 
-                // Ignore server-only packages from client bundles
+                // Ignore server-only packages from client bundles using IgnorePlugin
                 config.plugins.push(
                     new webpackInstance.IgnorePlugin({
-                        resourceRegExp: /^(i18next-fs-backend|firebase-admin|googleapis|google-logging-utils)$/,
+                        resourceRegExp: new RegExp(`^(${SERVER_ONLY_PACKAGES.join('|')})$`),
                     })
                 );
 
                 // Exclude server-only modules from client bundles using externals
+                // Note: next-i18next/serverSideTranslations should NOT be externalized
+                // as it needs to be available on the server side for getStaticProps
                 config.externals = config.externals || [];
                 if (Array.isArray(config.externals)) {
+                    const serverExternals = Object.fromEntries(
+                        SERVER_ONLY_PACKAGES.map(pkg => [pkg, `commonjs ${pkg}`])
+                    );
+                    
                     config.externals.push({
-                        'i18next-fs-backend': 'commonjs i18next-fs-backend',
-                        'next-i18next/serverSideTranslations': 'commonjs next-i18next/serverSideTranslations',
-                        'firebase-admin': 'commonjs firebase-admin',
+                        ...serverExternals,
                         'firebase-admin/app': 'commonjs firebase-admin/app',
                         'firebase-admin/firestore': 'commonjs firebase-admin/firestore',
                         'firebase-admin/storage': 'commonjs firebase-admin/storage',
-                        'googleapis': 'commonjs googleapis',
-                        'google-logging-utils': 'commonjs google-logging-utils',
                     });
                 }
             }

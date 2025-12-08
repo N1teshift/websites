@@ -5,31 +5,17 @@
 ## Overview
 
 The infrastructure package includes comprehensive monitoring infrastructure for:
-- **Error Tracking**: Captures and reports errors to Sentry (optional)
+- **Error Tracking**: Captures and reports errors to console
 - **Performance Monitoring**: Tracks Core Web Vitals and custom metrics
 - **Health Checks**: Endpoint for uptime monitoring services
 
 ## Error Tracking
 
-Error tracking is **optional** and uses Sentry if configured. The system gracefully falls back to console logging if Sentry is not available.
+Error tracking logs errors to the console with context information.
 
 ### Setup
 
-#### Enable Sentry (Optional)
-
-1. **Install Sentry**:
-   ```bash
-   npm install @sentry/nextjs
-   ```
-
-2. **Set Environment Variable**:
-   ```bash
-   SENTRY_DSN=your-sentry-dsn-here
-   ```
-
-3. **Initialize Sentry** in your Next.js app (see [Sentry Next.js docs](https://docs.sentry.io/platforms/javascript/guides/nextjs/))
-
-4. **Error tracking is automatically initialized** via the monitoring module
+Error tracking is **automatically initialized** when the monitoring module is used. No additional setup required.
 
 ### Usage
 
@@ -182,13 +168,6 @@ If Firebase Performance Monitoring is enabled, metrics are automatically sent to
 
 ## Monitoring Dashboards
 
-### Sentry Dashboard
-
-If Sentry is configured:
-1. Go to [Sentry Dashboard](https://sentry.io)
-2. View errors, performance, and releases
-3. Set up alerts for critical errors
-
 ### Firebase Console
 
 1. Go to [Firebase Console](https://console.firebase.google.com)
@@ -206,18 +185,10 @@ If Sentry is configured:
 
 ### Setting Up Alerts
 
-- **Sentry**: Configure in Sentry project settings
 - **Firebase**: Use Firebase Alerts (if available)
 - **Uptime Monitoring**: Configure in monitoring service (UptimeRobot, Pingdom, etc.)
 
 ## Troubleshooting
-
-### Errors Not Appearing in Sentry
-
-1. Check `SENTRY_DSN` is set
-2. Verify Sentry is initialized in Next.js app
-3. Check browser console for Sentry errors
-4. Verify network requests to Sentry are not blocked
 
 ### Performance Metrics Not Showing
 

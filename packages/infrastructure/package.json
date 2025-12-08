@@ -30,7 +30,9 @@
     "./i18n/client": "./src/i18n/client.ts",
     "./i18n/getStaticProps": "./src/i18n/getStaticProps.ts",
     "./i18n/next-i18next.config": "./src/i18n/next-i18next.config.ts",
-    "./logging": "./src/logging/index.ts"
+    "./logging": "./src/logging/index.ts",
+    "./app": "./src/app/index.ts",
+    "./config": "./src/config/index.ts"
   },
   "scripts": {
     "type-check": "tsc --noEmit"
