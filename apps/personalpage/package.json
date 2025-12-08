@@ -7,6 +7,8 @@
         "build": "next build",
         "start": "next start",
         "lint": "next lint",
+        "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,md}\"",
+        "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,css,md}\"",
         "fix-imports": "node scripts/addJsExtensions.js",
         "validate:translations": "node scripts/validateTranslations.js",
         "check:missing": "node scripts/checkMissingTranslations.js",
@@ -34,6 +36,8 @@
         "@microsoft/microsoft-graph-client": "^3.0.7",
         "@vercel/analytics": "^1.5.0",
         "@vercel/speed-insights": "^1.2.0",
+        "@websites/config-tailwind": "workspace:*",
+        "@websites/eslint-config": "workspace:*",
         "autoprefixer": "^10.4.19",
         "axios": "^1.7.8",
         "chalk": "^5.3.0",
@@ -77,6 +81,7 @@
         "zod": "^4.1.13"
     },
     "devDependencies": {
+        "@websites/prettier-config": "workspace:*",
         "@websites/test-utils": "workspace:*",
         "@next/bundle-analyzer": "^16.0.3",
         "@testing-library/jest-dom": "^6.9.1",

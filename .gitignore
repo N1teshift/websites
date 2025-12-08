@@ -37,6 +37,9 @@ pnpm-debug.log*
 *.tsbuildinfo
 tsconfig.tsbuildinfo
 
+# Turborepo
+.turbo
+
 # OS
 Thumbs.db
 

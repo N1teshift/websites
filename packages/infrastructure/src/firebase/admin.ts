@@ -34,14 +34,32 @@ export function initializeFirebaseAdmin(): App {
   const serviceAccountKey = 
     process.env.FIREBASE_SERVICE_ACCOUNT_KEY ||
     process.env.FIREBASE_SERVICE_ACCOUNT_KEY_MAIN ||
+    process.env.FIREBASE_SERVICE_ACCOUNT_KEY_TESTRESULTS ||
     process.env.GOOGLE_SERVICE_ACCOUNT_KEY;
-  const projectId = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || process.env.FIREBASE_PROJECT_ID;
+  
+  // Try to get project ID from env vars first, then extract from service account JSON
+  let projectId = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || process.env.FIREBASE_PROJECT_ID;
+  
+  // If we have a service account key but no project ID, try to extract it from the JSON
+  if (serviceAccountKey && !projectId) {
+    try {
+      const credentials = JSON.parse(serviceAccountKey);
+      if (credentials.project_id) {
+        projectId = credentials.project_id;
+        logger.debug('Extracted project_id from service account JSON', { projectId });
+      }
+    } catch {
+      // If parsing fails, we'll handle it below
+    }
+  }
+  
   if (!storageBucketName) {
     storageBucketName =
       process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET ||
       process.env.FIREBASE_STORAGE_BUCKET ||
       process.env.FIREBASE_DATABASE_URL ||
       process.env.FIREBASE_DATABASE_URL_MAIN ||
+      process.env.FIREBASE_DATABASE_URL_TESTRESULTS ||
       (projectId ? `${projectId}.appspot.com` : undefined);
   }
 
@@ -55,7 +73,9 @@ export function initializeFirebaseAdmin(): App {
         credential: cert(credentials),
         projectId,
         storageBucket: storageBucketName,
-        databaseURL: process.env.FIREBASE_DATABASE_URL || process.env.FIREBASE_DATABASE_URL_MAIN,
+        databaseURL: process.env.FIREBASE_DATABASE_URL || 
+                     process.env.FIREBASE_DATABASE_URL_MAIN || 
+                     process.env.FIREBASE_DATABASE_URL_TESTRESULTS,
       });
       return adminApp;
     } catch (error) {

@@ -1,9 +1,7 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
 import DiscordProvider from "next-auth/providers/discord";
 import { createBaseNextAuthConfig, safeCallback } from "@websites/infrastructure/auth";
-import { createComponentLogger, logError } from "@websites/infrastructure/logging";
-
-const logger = createComponentLogger('nextauth');
+import { logError } from "@websites/infrastructure/logging";
 
 export const authOptions: NextAuthOptions = {
   ...createBaseNextAuthConfig({

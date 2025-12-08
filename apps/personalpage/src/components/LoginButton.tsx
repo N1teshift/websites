@@ -13,7 +13,7 @@ const LoginButton = ({ absolute = false }: { absolute?: boolean }) => {
     const { data: session, status } = useSession();
     const isAuthenticated = !!session;
     const isLoading = status === 'loading';
-    const login = () => signIn();
+    const login = () => signIn('google');
     const logout = () => signOut();
     const router = useRouter();
     const { t } = useFallbackTranslation(['common']);

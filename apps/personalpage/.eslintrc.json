@@ -1,13 +1,7 @@
 {
-  "extends": [
-    "next/core-web-vitals",
-    "next/typescript"
-  ],
+  "extends": ["@websites/eslint-config"],
   "rules": {
-    "@typescript-eslint/no-unused-vars": "off",
-    "no-console": "off",
-    "@typescript-eslint/no-explicit-any": "off",
-    "react-hooks/exhaustive-deps": "off"
+    // App-specific overrides can be added here
   }
 }
 

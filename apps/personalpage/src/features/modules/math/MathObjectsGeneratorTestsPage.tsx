@@ -7,8 +7,7 @@ import SystemFlowDiagram from '@math/tests/ui/SystemFlowDiagram';
 import { GenericTable, ColumnDefinition, FilterDefinition, StatusIndicator } from '@websites/ui';
 import { PropertyTags, MathDisplay } from '@math/shared/components';
 import { SuccessMessage, ToastNotification } from '@websites/ui';
-import { useAuth } from '@websites/infrastructure/auth/providers';
-import { useFallbackTranslation } from '@websites/infrastructure/i18n';
+import { useSession } from 'next-auth/react';
 
 /**
  * MathObjectsGeneratorTests page component.
@@ -42,11 +41,27 @@ export default function MathObjectsGeneratorTestsPage() {
     /** @state {string | null} errorMessage - Stores any general error messages for the page. */
     const [errorMessage] = useState<string | null>(null);
     
-    // Authentication
-    /** @hook useAuth - Provides current user information for access control. */
-    const { user, isAuthenticated, login } = useAuth();
-    /** @hook useFallbackTranslation - Provides translation function for user-facing messages. */
-    const { t } = useFallbackTranslation();
+    // Authentication - using NextAuth
+    /** @hook useSession - Provides current session information for access control. */
+    const { data: session } = useSession();
+    const isAuthenticated = !!session;
+    
+    // Fetch user data when needed (for user.id check)
+    const [user, setUser] = useState<{ id: string } | null>(null);
+    useEffect(() => {
+        if (session?.userId && !user) {
+            fetch('/api/auth/user/status')
+                .then(res => res.json())
+                .then(data => {
+                    if (data.authenticated && data.user) {
+                        setUser(data.user);
+                    }
+                })
+                .catch(() => {
+                    // Silently fail - user data not critical for this page
+                });
+        }
+    }, [session, user]);
     
     // Test stats (needed by filtering and save logic)
     /** @hook useTestStats - Provides test statistics, refresh function, and fetching control. */

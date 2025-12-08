@@ -25,7 +25,11 @@
       "@websites/infrastructure": ["../infrastructure/src"],
       "@websites/infrastructure/*": ["../infrastructure/src/*"],
       "@websites/test-utils": ["../test-utils/src"],
-      "@websites/test-utils/*": ["../test-utils/src/*"]
+      "@websites/test-utils/*": ["../test-utils/src/*"],
+      "@websites/eslint-config": ["../eslint-config"],
+      "@websites/eslint-config/*": ["../eslint-config/*"],
+      "@websites/config-tailwind": ["../config-tailwind/src"],
+      "@websites/config-tailwind/*": ["../config-tailwind/src/*"]
     }
   },
   "exclude": ["node_modules"]

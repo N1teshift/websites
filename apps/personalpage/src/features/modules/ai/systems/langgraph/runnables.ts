@@ -9,7 +9,6 @@ import { z } from "zod";
 import { ChatOpenAI } from "@langchain/openai";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { RunnableLambda, RunnableSequence } from "@langchain/core/runnables";
-import { JsonOutputParser } from "@langchain/core/output_parsers";
 import { typeIdentifierPrompt } from "../../shared/prompts/typeIdentifier/prompt"; // Import the prompt content
 import { ObjectType } from "@math/types/mathTypes"; // Import ObjectType
 import { getObjectTypeSystemPrompt } from "../../shared/utils/promptUtils"; // Import system prompt utility

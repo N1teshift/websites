@@ -1,18 +1,35 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
 import { Button } from '@websites/ui';
-import { useAuth } from '@websites/infrastructure/auth/providers';
 import { useFallbackTranslation } from '@websites/infrastructure/i18n/client';
 import { createComponentLogger } from '@websites/infrastructure/logging';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import nextI18NextConfig from '@websites/infrastructure/i18n/next-i18next.config';
 import type { GetServerSideProps } from 'next';
 import type { ExtendedPageProps } from '@websites/infrastructure/app';
 
 const logger = createComponentLogger('SettingsPage');
 
-export const getServerSideProps: GetServerSideProps<ExtendedPageProps> = async () => {
+const pageNamespaces = ['common', 'settings'];
+
+interface UserData {
+    id: string;
+    nickname?: string;
+    preferences?: {
+        language?: string;
+        theme?: string;
+    };
+}
+
+export const getServerSideProps: GetServerSideProps<ExtendedPageProps> = async (context) => {
+    const defaultLocale = nextI18NextConfig.i18n?.defaultLocale || 'en';
+    const resolvedLocale = context.locale || defaultLocale;
+    
     return {
         props: {
-            translationNamespaces: ['common', 'settings'],
+            ...(await serverSideTranslations(resolvedLocale, pageNamespaces, nextI18NextConfig)),
+            translationNamespaces: pageNamespaces,
             layoutTitleKey: "settings",
             layoutMode: "top",
             layoutGoBackTarget: "/",
@@ -24,15 +41,47 @@ export const getServerSideProps: GetServerSideProps<ExtendedPageProps> = async (
  * Settings page - only accessible when logged in
  */
 export default function SettingsPage() {
-    const { isAuthenticated, isLoading, user, refreshAuth } = useAuth();
+    const { data: session, status, update: updateSession } = useSession();
     const router = useRouter();
     const { t } = useFallbackTranslation(['common', 'settings']);
     
+    const [user, setUser] = useState<UserData | null>(null);
     const [nickname, setNickname] = useState('');
     const [language, setLanguage] = useState('en');
     const [theme, setTheme] = useState('light');
     const [isSaving, setIsSaving] = useState(false);
     const [saveMessage, setSaveMessage] = useState<string | null>(null);
+    
+    const isLoading = status === 'loading';
+    const isAuthenticated = !!session;
+
+    // Fetch user data when session is available
+    useEffect(() => {
+        if (session?.userId && !user) {
+            const fetchUserData = async () => {
+                try {
+                    const response = await fetch('/api/auth/user/status');
+                    const data = await response.json();
+                    
+                    if (data.authenticated && data.user) {
+                        setUser(data.user);
+                        setNickname(data.user.nickname || '');
+                        setLanguage(data.user.preferences?.language || router.locale || 'en');
+                        if (typeof window !== 'undefined') {
+                            const currentTheme = document.body.getAttribute('data-theme') || data.user.preferences?.theme || 'light';
+                            setTheme(currentTheme);
+                        } else {
+                            setTheme(data.user.preferences?.theme || 'light');
+                        }
+                    }
+                } catch (error) {
+                    logger.error('Failed to fetch user data', error instanceof Error ? error : new Error(String(error)));
+                }
+            };
+            
+            fetchUserData();
+        }
+    }, [session, user, router.locale]);
 
     useEffect(() => {
         if (!isLoading && !isAuthenticated) {
@@ -40,28 +89,6 @@ export default function SettingsPage() {
             router.push('/');
         }
     }, [isAuthenticated, isLoading, router]);
-
-    useEffect(() => {
-        if (user) {
-            setNickname(user.nickname || '');
-            setLanguage(user.preferences?.language || router.locale || 'en');
-            if (typeof window !== 'undefined') {
-                const currentTheme = document.body.getAttribute('data-theme') || user.preferences?.theme || 'light';
-                setTheme(currentTheme);
-            } else {
-                setTheme(user.preferences?.theme || 'light');
-            }
-        } else if (!isLoading) {
-            // Set defaults from current state if user not loaded yet
-            if (router.locale) {
-                setLanguage(router.locale);
-            }
-            if (typeof window !== 'undefined') {
-                const currentTheme = document.body.getAttribute('data-theme') || 'light';
-                setTheme(currentTheme);
-            }
-        }
-    }, [user, router.locale, isLoading]);
 
     const hasChanges = () => {
         if (!user) return false;
@@ -101,7 +128,14 @@ export default function SettingsPage() {
                     document.body.setAttribute('data-theme', theme);
                 }
                 
-                await refreshAuth();
+                // Refresh session and user data
+                await updateSession();
+                // Refetch user data to get updated preferences
+                const statusResponse = await fetch('/api/auth/user/status');
+                const statusData = await statusResponse.json();
+                if (statusData.authenticated && statusData.user) {
+                    setUser(statusData.user);
+                }
                 setTimeout(() => setSaveMessage(null), 3000);
             } else {
                 setSaveMessage(data.message || t('save_failed', 'Failed to save settings'));

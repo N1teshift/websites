@@ -97,7 +97,7 @@ const ResourcesSection: React.FC<ResourcesSectionProps> = ({
                                     onChange={(value) => setSelectedPredefinedResource(value)}
                                     options={[
                                         { label: '-- Select a resource --', value: '' },
-                                        ...PREDEFINED_PRINTED_RESOURCES.map((resource, index) => ({
+                                        ...PREDEFINED_PRINTED_RESOURCES.map((resource) => ({
                                             label: resource.length > 80 ? resource.substring(0, 80) + '...' : resource,
                                             value: resource
                                         }))

@@ -110,7 +110,9 @@ export const CONSOLE_FILTER_PATTERNS = [
     
     // HMR warnings
     /\[HMR\] Invalid message/i,
+    /\[HMR\].*isrManifest/i,
     /appIsrManifest/i,
+    /isrManifest/i,
     
     // Vercel analytics debug logs
     /\[Vercel/i,

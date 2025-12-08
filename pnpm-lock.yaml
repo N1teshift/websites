@@ -11,6 +11,9 @@ importers:
 
   .:
     devDependencies:
+      turbo:
+        specifier: ^2.3.3
+        version: 2.6.3
       typescript:
         specifier: ^5.7.2
         version: 5.9.3
@@ -57,6 +60,12 @@ importers:
       '@types/react-dom':
         specifier: ^18
         version: 18.3.7(@types/react@18.3.27)
+      '@websites/config-tailwind':
+        specifier: workspace:*
+        version: link:../../packages/config-tailwind
+      '@websites/eslint-config':
+        specifier: workspace:*
+        version: link:../../packages/eslint-config
       autoprefixer:
         specifier: ^10.4.19
         version: 10.4.22(postcss@8.5.6)
@@ -196,6 +205,12 @@ importers:
       '@types/react-dom':
         specifier: ^18
         version: 18.3.7(@types/react@18.3.27)
+      '@websites/config-tailwind':
+        specifier: workspace:*
+        version: link:../../packages/config-tailwind
+      '@websites/eslint-config':
+        specifier: workspace:*
+        version: link:../../packages/eslint-config
       '@websites/test-utils':
         specifier: workspace:*
         version: link:../../packages/test-utils
@@ -256,6 +271,12 @@ importers:
       '@vercel/speed-insights':
         specifier: ^1.2.0
         version: 1.3.1(next@15.5.7(@babel/core@7.28.5)(@opentelemetry/api@1.9.0)(@playwright/test@1.57.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
+      '@websites/config-tailwind':
+        specifier: workspace:*
+        version: link:../../packages/config-tailwind
+      '@websites/eslint-config':
+        specifier: workspace:*
+        version: link:../../packages/eslint-config
       '@websites/infrastructure':
         specifier: workspace:*
         version: link:../../packages/infrastructure
@@ -537,6 +558,12 @@ importers:
       '@types/react-dom':
         specifier: ^18
         version: 18.3.7(@types/react@18.3.27)
+      '@websites/config-tailwind':
+        specifier: workspace:*
+        version: link:../../packages/config-tailwind
+      '@websites/eslint-config':
+        specifier: workspace:*
+        version: link:../../packages/eslint-config
       autoprefixer:
         specifier: ^10.4.19
         version: 10.4.22(postcss@8.4.31)
@@ -557,6 +584,27 @@ importers:
         version: 5.9.3
 
   packages/config: {}
+
+  packages/config-tailwind:
+    dependencies:
+      autoprefixer:
+        specifier: ^10.4.19
+        version: 10.4.22(postcss@8.5.6)
+      postcss:
+        specifier: ^8
+        version: 8.5.6
+      tailwindcss:
+        specifier: ^3.4.1
+        version: 3.4.18(tsx@4.21.0)(yaml@2.8.2)
+
+  packages/eslint-config:
+    dependencies:
+      eslint:
+        specifier: ^9.0.0
+        version: 9.39.1(jiti@1.21.7)
+      eslint-config-next:
+        specifier: ^15.5.7
+        version: 15.5.7(eslint@9.39.1(jiti@1.21.7))(typescript@5.9.3)
 
   packages/infrastructure:
     dependencies:
@@ -7683,6 +7731,40 @@ packages:
   tunnel@0.0.6:
     resolution: {integrity: sha512-1h/Lnq9yajKY2PEbBadPXj3VxsDDu844OnaAo52UVmIzIvwwtBPIuNvkjuzBlTWpfJyUbG3ez0KSBibQkj4ojg==}
     engines: {node: '>=0.6.11 <=0.7.0 || >=0.7.3'}
+
+  turbo-darwin-64@2.6.3:
+    resolution: {integrity: sha512-BlJJDc1CQ7SK5Y5qnl7AzpkvKSnpkfPmnA+HeU/sgny3oHZckPV2776ebO2M33CYDSor7+8HQwaodY++IINhYg==}
+    cpu: [x64]
+    os: [darwin]
+
+  turbo-darwin-arm64@2.6.3:
+    resolution: {integrity: sha512-MwVt7rBKiOK7zdYerenfCRTypefw4kZCue35IJga9CH1+S50+KTiCkT6LBqo0hHeoH2iKuI0ldTF2a0aB72z3w==}
+    cpu: [arm64]
+    os: [darwin]
+
+  turbo-linux-64@2.6.3:
+    resolution: {integrity: sha512-cqpcw+dXxbnPtNnzeeSyWprjmuFVpHJqKcs7Jym5oXlu/ZcovEASUIUZVN3OGEM6Y/OTyyw0z09tOHNt5yBAVg==}
+    cpu: [x64]
+    os: [linux]
+
+  turbo-linux-arm64@2.6.3:
+    resolution: {integrity: sha512-MterpZQmjXyr4uM7zOgFSFL3oRdNKeflY7nsjxJb2TklsYqiu3Z9pQ4zRVFFH8n0mLGna7MbQMZuKoWqqHb45w==}
+    cpu: [arm64]
+    os: [linux]
+
+  turbo-windows-64@2.6.3:
+    resolution: {integrity: sha512-biDU70v9dLwnBdLf+daoDlNJVvqOOP8YEjqNipBHzgclbQlXbsi6Gqqelp5er81Qo3BiRgmTNx79oaZQTPb07Q==}
+    cpu: [x64]
+    os: [win32]
+
+  turbo-windows-arm64@2.6.3:
+    resolution: {integrity: sha512-dDHVKpSeukah3VsI/xMEKeTnV9V9cjlpFSUs4bmsUiLu3Yv2ENlgVEZv65wxbeE0bh0jjpmElDT+P1KaCxArQQ==}
+    cpu: [arm64]
+    os: [win32]
+
+  turbo@2.6.3:
+    resolution: {integrity: sha512-bf6YKUv11l5Xfcmg76PyWoy/e2vbkkxFNBGJSnfdSXQC33ZiUfutYh6IXidc5MhsnrFkWfdNNLyaRk+kHMLlwA==}
+    hasBin: true
 
   type-check@0.4.0:
     resolution: {integrity: sha512-XleUoc9uwGXqjWwXaUTZAmzMcFZ5858QA2vvx1Ur5xIcixXIP+8LnFDgRplU30us6teqdlskFfu+ae4K79Ooew==}
@@ -17120,6 +17202,33 @@ snapshots:
       safe-buffer: 5.2.1
 
   tunnel@0.0.6: {}
+
+  turbo-darwin-64@2.6.3:
+    optional: true
+
+  turbo-darwin-arm64@2.6.3:
+    optional: true
+
+  turbo-linux-64@2.6.3:
+    optional: true
+
+  turbo-linux-arm64@2.6.3:
+    optional: true
+
+  turbo-windows-64@2.6.3:
+    optional: true
+
+  turbo-windows-arm64@2.6.3:
+    optional: true
+
+  turbo@2.6.3:
+    optionalDependencies:
+      turbo-darwin-64: 2.6.3
+      turbo-darwin-arm64: 2.6.3
+      turbo-linux-64: 2.6.3
+      turbo-linux-arm64: 2.6.3
+      turbo-windows-64: 2.6.3
+      turbo-windows-arm64: 2.6.3
 
   type-check@0.4.0:
     dependencies:

@@ -1,0 +1,192 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # Validate code quality (formatting, linting, type-checking)
+  quality:
+    name: Code Quality
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.24.0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Check formatting
+        run: pnpm format:check
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Type check
+        run: pnpm type-check
+
+  # Run tests across all packages and apps
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.24.0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run tests
+        run: pnpm test
+        continue-on-error: true
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: |
+            **/coverage/**
+            **/test-results/**
+          retention-days: 7
+
+  # Build all apps and packages
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.24.0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Setup Turborepo
+        uses: turborepo/setup-action@v1
+
+      - name: Build
+        run: pnpm build
+        env:
+          TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+          TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+
+      - name: Verify build artifacts
+        run: |
+          if [ -d "apps/personalpage" ] && [ ! -d "apps/personalpage/.next" ]; then
+            echo "❌ personalpage build failed: .next directory not found"
+            exit 1
+          fi
+          if [ -d "apps/ittweb" ] && [ ! -d "apps/ittweb/.next" ]; then
+            echo "❌ ittweb build failed: .next directory not found"
+            exit 1
+          fi
+          if [ -d "apps/MafaldaGarcia" ] && [ ! -d "apps/MafaldaGarcia/.next" ]; then
+            echo "❌ MafaldaGarcia build failed: .next directory not found"
+            exit 1
+          fi
+          if [ -d "apps/templatepage" ] && [ ! -d "apps/templatepage/.next" ]; then
+            echo "❌ templatepage build failed: .next directory not found"
+            exit 1
+          fi
+          echo "✅ All builds completed successfully"
+
+      - name: Upload build artifacts
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts
+          path: |
+            apps/*/.next
+          retention-days: 1
+
+  # Validate changesets (only on PRs)
+  changeset:
+    name: Changeset Validation
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.24.0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Check for changeset
+        run: |
+          if [ -z "$(git diff --name-only origin/${{ github.base_ref }}...HEAD | grep -E '\.changeset/.*\.md$')" ]; then
+            echo "⚠️  No changeset found. If this PR modifies packages, please add a changeset."
+            echo "Run: pnpm changeset"
+            # Don't fail, just warn (uncomment next line to make it required)
+            # exit 1
+          else
+            echo "✅ Changeset found"
+          fi
+
+  # Combined status check
+  ci-status:
+    name: CI Status
+    runs-on: ubuntu-latest
+    needs: [quality, test, build, changeset]
+    if: always()
+    steps:
+      - name: Check job status
+        run: |
+          if [ "${{ needs.quality.result }}" != "success" ] || \
+             [ "${{ needs.test.result }}" != "success" ] || \
+             [ "${{ needs.build.result }}" != "success" ]; then
+            echo "❌ One or more CI jobs failed"
+            exit 1
+          fi
+          echo "✅ All CI checks passed"

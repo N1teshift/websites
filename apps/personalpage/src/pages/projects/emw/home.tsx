@@ -18,7 +18,7 @@ export const getStaticProps: GetStaticProps<ExtendedPageProps> = async (context)
             layoutTitleKey: "election_monitoring_wizard",
             layoutMode: "top",
             layoutIsUnderConstruction: isDisabled,
-            layoutConstructionMessageKey: isDisabled ? "emw_disabled_message" : undefined,
+            ...(isDisabled && { layoutConstructionMessageKey: "emw_disabled_message" }),
         },
     };
 };

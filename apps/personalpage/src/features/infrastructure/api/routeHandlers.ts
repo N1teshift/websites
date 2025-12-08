@@ -7,9 +7,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import {
   createApiHandler as createGenericApiHandler,
-  createGetHandler as createGenericGetHandler,
-  createPostHandler as createGenericPostHandler,
-  createGetPostHandler as createGenericGetPostHandler,
   type ApiHandler,
   type ApiHandlerOptions,
 } from '@websites/infrastructure/api';
@@ -21,7 +18,7 @@ import { getSession } from '@websites/infrastructure/auth';
  */
 function getPersonalpageAuthConfig() {
   return {
-    getSession: async (req: NextApiRequest, res: NextApiResponse) => {
+    getSession: async (req: NextApiRequest, _res: NextApiResponse) => {
       const sessionData = getSession(req);
       if (!sessionData) {
         return null;

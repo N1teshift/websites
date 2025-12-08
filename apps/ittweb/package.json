@@ -2,7 +2,7 @@
   "name": "@websites/ittweb",
   "version": "0.1.0",
   "private": true,
-  "scripts": {
+    "scripts": {
     "extract:data": "python ./src/features/infrastructure/extraction/scripts/current/manage_extraction.py pipeline",
     "dev": "node scripts/utils/filter-dev-logs.js next dev",
     "dev:verbose": "next dev",
@@ -14,6 +14,8 @@
     "build:check": "pnpm run type-check && pnpm run build",
     "start": "next start",
     "lint": "next lint",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,css,md}\"",
     "lint:test": "eslint --config config/eslint.test.config.js \"**/__tests__/**/*.{ts,tsx}\" \"**/*.{test,spec}.{ts,tsx}\"",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -71,6 +73,7 @@
     "@websites/ui": "workspace:*"
   },
   "devDependencies": {
+    "@websites/prettier-config": "workspace:*",
     "@websites/test-utils": "workspace:*",
     "@next/bundle-analyzer": "^16.0.5",
     "@playwright/test": "^1.57.0",
@@ -83,6 +86,8 @@
     "@types/node": "^20",
     "@types/react": "^18.3.21",
     "@types/react-dom": "^18",
+    "@websites/config-tailwind": "workspace:*",
+    "@websites/eslint-config": "workspace:*",
     "eslint": "^9",
     "eslint-config-next": "15.5.7",
     "i18next-scanner": "^4.6.0",

@@ -7,17 +7,15 @@ import { createComponentLogger, logError } from "@websites/infrastructure/loggin
 
 const logger = createComponentLogger('nextauth');
 
-export const authOptions: NextAuthOptions = {
-  ...createBaseNextAuthConfig({
-    secret: process.env.NEXTAUTH_SECRET,
-    debug: process.env.NODE_ENV === 'development',
-    loggerComponentName: 'nextauth',
-  }),
-  
-  providers: [
+// Build providers array conditionally based on available credentials
+const providers = [];
+
+// Add Google provider if credentials are available
+if (process.env.GOOGLE_CLIENT_ID_LOGIN && process.env.GOOGLE_CLIENT_SECRET_LOGIN) {
+  providers.push(
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID || "",
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
+      clientId: process.env.GOOGLE_CLIENT_ID_LOGIN,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET_LOGIN,
       authorization: {
         params: {
           prompt: "consent",
@@ -25,18 +23,49 @@ export const authOptions: NextAuthOptions = {
           response_type: "code",
         },
       },
-    }),
+    })
+  );
+} else {
+  logger.warn('Google OAuth credentials not configured. Google login will not be available.', {
+    hasClientId: !!process.env.GOOGLE_CLIENT_ID_LOGIN,
+    hasClientSecret: !!process.env.GOOGLE_CLIENT_SECRET_LOGIN,
+  });
+}
+
+// Add Azure AD provider if credentials are available
+if (process.env.AZURE_CLIENT_ID && process.env.AZURE_CLIENT_SECRET && process.env.AZURE_TENANT_ID) {
+  providers.push(
     AzureADProvider({
-      clientId: process.env.AZURE_CLIENT_ID || "",
-      clientSecret: process.env.AZURE_CLIENT_SECRET || "",
+      clientId: process.env.AZURE_CLIENT_ID,
+      clientSecret: process.env.AZURE_CLIENT_SECRET,
       tenantId: process.env.AZURE_TENANT_ID,
       authorization: {
         params: {
           scope: "openid profile email",
         },
       },
-    }),
-  ],
+    })
+  );
+} else {
+  logger.warn('Azure AD OAuth credentials not configured. Azure AD login will not be available.', {
+    hasClientId: !!process.env.AZURE_CLIENT_ID,
+    hasClientSecret: !!process.env.AZURE_CLIENT_SECRET,
+    hasTenantId: !!process.env.AZURE_TENANT_ID,
+  });
+}
+
+if (providers.length === 0) {
+  logger.error('No OAuth providers configured. Authentication will not work. Please set up at least one provider.');
+}
+
+export const authOptions: NextAuthOptions = {
+  ...createBaseNextAuthConfig({
+    secret: process.env.NEXTAUTH_SECRET,
+    debug: process.env.NODE_ENV === 'development',
+    loggerComponentName: 'nextauth',
+  }),
+  
+  providers,
   
   callbacks: {
     async jwt({ token, account, profile }) {
@@ -53,12 +82,12 @@ export const authOptions: NextAuthOptions = {
               providerId = profile.sub || account.providerAccountId;
               email = profile.email;
               name = profile.name;
-              picture = profile.picture;
+              picture = (profile as { picture?: string }).picture;
             } else if (account.provider === 'azure-ad') {
               providerId = profile.sub || account.providerAccountId;
               email = profile.email;
               name = profile.name;
-              picture = profile.picture;
+              picture = (profile as { picture?: string }).picture;
             }
 
             if (providerId) {

@@ -124,7 +124,6 @@ export async function bookMicrosoftCalendar(options: BookingOptions): Promise<un
     });
 
     const microsoftClient = new MicrosoftCalendarClient();
-    const calendarId = options.calendarId || 'default';
 
     const eventData = {
       subject: options.summary,

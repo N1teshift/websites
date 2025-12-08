@@ -8,7 +8,9 @@
       "@/features/*": ["./src/features/*"],
       "@/types/*": ["./src/types/*"],
       "@/utils/*": ["./src/utils/*"],
-      "@/config/*": ["./src/config/*"]
+      "@/config/*": ["./src/config/*"],
+      "@websites/config-tailwind": ["../../packages/config-tailwind/src"],
+      "@websites/config-tailwind/*": ["../../packages/config-tailwind/src/*"]
     }
   },
   "include": [

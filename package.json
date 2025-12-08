@@ -3,17 +3,28 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "pnpm --filter '{apps/*}' dev",
-    "build": "pnpm --filter '{apps/*}' build",
-    "lint": "pnpm -r --filter './apps/*' lint",
-    "type-check": "pnpm --filter '{apps/*}' type-check",
-    "test": "pnpm --filter '{apps/*}' test",
-    "clean": "pnpm --filter '{apps/*}' exec rm -rf .next node_modules && pnpm --filter '{packages/*}' exec rm -rf node_modules",
-    "verify:builds": "powershell -ExecutionPolicy Bypass -File ./scripts/verify-builds.ps1"
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "format": "turbo run format",
+    "format:check": "turbo run format:check",
+    "type-check": "turbo run type-check",
+    "test": "turbo run test",
+    "clean": "turbo run clean && pnpm --filter '{apps/*}' exec rm -rf .next node_modules && pnpm --filter '{packages/*}' exec rm -rf node_modules",
+    "verify:builds": "powershell -ExecutionPolicy Bypass -File ./scripts/verify-builds.ps1",
+    "changeset": "changeset",
+    "changeset:version": "changeset version",
+    "changeset:publish": "changeset publish",
+    "prepare": "husky install || true"
   },
   "devDependencies": {
-    "typescript": "^5.7.2"
+    "husky": "^9.1.7",
+    "lint-staged": "^15.2.11",
+    "prettier": "^3.4.2",
+    "typescript": "^5.7.2",
+    "turbo": "^2.3.3"
   },
+  "packageManager": "pnpm@10.24.0",
   "engines": {
     "node": ">=18.0.0",
     "pnpm": ">=8.0.0"

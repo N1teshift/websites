@@ -1,9 +1,9 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
 import { useFallbackTranslation } from '@websites/infrastructure/i18n';
 import Image from 'next/image';
 import NProgress from 'nprogress';
 import { apiRequest } from '@/lib/api-client';
-import { useAuth } from '@websites/infrastructure/auth/providers';
 
 import { Button } from '@websites/ui';
 import { EventDetails, RegistrationMethod, CalendarEventInput } from '../types';
@@ -26,7 +26,26 @@ const EventCreationForm: React.FC<EventCreationFormProps> = ({
     setEventDetails
 }) => {
     const { t, i18n } = useFallbackTranslation();
-    const { isAuthenticated, user } = useAuth();
+    const { data: session } = useSession();
+    const isAuthenticated = !!session;
+    
+    // Fetch user data when needed (for googleId check)
+    const [user, setUser] = useState<{ googleId?: string } | null>(null);
+    useEffect(() => {
+        if (session?.userId && !user) {
+            fetch('/api/auth/user/status')
+                .then(res => res.json())
+                .then(data => {
+                    if (data.authenticated && data.user) {
+                        setUser(data.user);
+                    }
+                })
+                .catch(() => {
+                    // Silently fail - user data not critical
+                });
+        }
+    }, [session, user]);
+    
     const canAutoRegisterWithGoogle = isAuthenticated && Boolean(user?.googleId);
     const userLanguage = i18n.language;
 

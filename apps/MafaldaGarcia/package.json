@@ -7,6 +7,8 @@
         "build": "next build",
         "start": "next start",
         "lint": "next lint",
+        "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,md}\"",
+        "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,css,md}\"",
         "type-check": "tsc --noEmit",
         "check-images": "node scripts/check-images.js"
     },
@@ -26,6 +28,9 @@
         "@types/react": "^18.3.21",
         "@types/react-dom": "^18",
         "@types/nprogress": "^0.2.3",
+        "@websites/config-tailwind": "workspace:*",
+        "@websites/eslint-config": "workspace:*",
+        "@websites/prettier-config": "workspace:*",
         "autoprefixer": "^10.4.19",
         "eslint": "^9",
         "eslint-config-next": "15.5.7",

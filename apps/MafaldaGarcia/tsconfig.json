@@ -8,7 +8,9 @@
       "@websites/ui": ["../../packages/ui/src"],
       "@websites/ui/*": ["../../packages/ui/src/*"],
       "@websites/infrastructure": ["../../packages/infrastructure/src"],
-      "@websites/infrastructure/*": ["../../packages/infrastructure/src/*"]
+      "@websites/infrastructure/*": ["../../packages/infrastructure/src/*"],
+      "@websites/config-tailwind": ["../../packages/config-tailwind/src"],
+      "@websites/config-tailwind/*": ["../../packages/config-tailwind/src/*"]
     },
     "plugins": [
       {

@@ -13,8 +13,6 @@ import { MathObjectGenerator } from "../systems/legacy/MathObjectGenerator";
 // Import token utility functions
 import { getGlobalTokenUsage, resetGlobalTokenUsage } from "../shared/utils/tokenUtils";
 import { createComponentLogger } from '@websites/infrastructure/logging';
-import { canProcessObjectType, getObjectTypeCapability } from "../shared/utils/systemCapabilities";
-import { ObjectType } from "@math/types/mathTypes";
 // --- System Type Definitions ---
 /**
  * Available AI generation systems.

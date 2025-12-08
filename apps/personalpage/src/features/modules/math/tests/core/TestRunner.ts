@@ -15,7 +15,7 @@ import { createComponentLogger } from '@websites/infrastructure/logging';
 import { hasCache, getCache, setCache, makeCacheKey } from '@websites/infrastructure/cache';
 import { normalizeTokenUsage } from "@ai/shared/utils/tokenUtils";
 import { generate } from "../../shared/Orchestrator";
-import { canProcessObjectType, getObjectTypeCapability } from "@ai/shared/utils/systemCapabilities";
+import { getObjectTypeCapability } from "@ai/shared/utils/systemCapabilities";
 import { AISystem } from "@ai/core/objectGeneration";
 
 // Define an interface to match the required shape for validateObjectPresence

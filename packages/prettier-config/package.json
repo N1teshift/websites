@@ -1,0 +1,13 @@
+{
+  "name": "@websites/prettier-config",
+  "version": "1.0.0",
+  "private": true,
+  "main": ".prettierrc.json",
+  "files": [
+    ".prettierrc.json",
+    "README.md"
+  ],
+  "peerDependencies": {
+    "prettier": "^3.0.0"
+  }
+}

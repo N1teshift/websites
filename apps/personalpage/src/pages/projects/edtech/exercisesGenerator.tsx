@@ -17,7 +17,7 @@ export const getStaticProps: GetStaticProps<ExtendedPageProps> = async (context)
             layoutGoBackTarget: "/",
             layoutTitleKey: "exercises_generator",
             layoutIsUnderConstruction: isDisabled,
-            layoutConstructionMessageKey: isDisabled ? "exercises_generator_disabled" : undefined,
+            ...(isDisabled && { layoutConstructionMessageKey: "exercises_generator_disabled" }),
         },
     };
 };

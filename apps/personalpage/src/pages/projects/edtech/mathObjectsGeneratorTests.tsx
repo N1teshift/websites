@@ -1,15 +1,17 @@
-import { getStaticPropsWithTranslations } from '@websites/infrastructure/i18n/getStaticProps';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { MathObjectsGeneratorTestsPage } from '../../../features/modules/math';
-import type { GetStaticProps } from 'next';
+import type { GetServerSideProps } from 'next';
 import type { ExtendedPageProps } from '@websites/infrastructure/app';
+import nextI18NextConfig from '@websites/infrastructure/i18n/next-i18next.config';
 
 const pageNamespaces = ["mathTests", "math", "links", "common"];
-export const getStaticProps: GetStaticProps<ExtendedPageProps> = async (context) => {
-    const baseProps = await getStaticPropsWithTranslations(pageNamespaces)(context);
+export const getServerSideProps: GetServerSideProps<ExtendedPageProps> = async (context) => {
+    const defaultLocale = nextI18NextConfig.i18n?.defaultLocale || 'en';
+    const resolvedLocale = context.locale || defaultLocale;
+    
     return {
-        ...baseProps,
         props: {
-            ...baseProps.props,
+            ...(await serverSideTranslations(resolvedLocale, pageNamespaces, nextI18NextConfig)),
             translationNamespaces: pageNamespaces,
             layoutGoBackTarget: "/",
             layoutTitleKey: "math_object_generation_testing_environment",

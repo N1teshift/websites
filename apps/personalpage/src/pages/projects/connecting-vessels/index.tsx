@@ -18,7 +18,7 @@ export const getStaticProps: GetStaticProps<ExtendedPageProps> = async (context)
             layoutTitleKey: "connecting_vessels",
             layoutMode: "top",
             layoutIsUnderConstruction: isDisabled,
-            layoutConstructionMessageKey: isDisabled ? "coming_soon_message" : undefined,
+            ...(isDisabled && { layoutConstructionMessageKey: "coming_soon_message" }),
         },
     };
 };

@@ -16,9 +16,6 @@ export * from './expression';
 import { COEFFICIENT_SYSTEM_PROMPT } from './coefficient';
 import { COEFFICIENTS_SYSTEM_PROMPT } from './coefficients';
 import { TERM_SYSTEM_PROMPT } from './term';
-import { TERMS_SYSTEM_PROMPT } from './terms';
-import { EXPRESSION_SYSTEM_PROMPT } from './expression';
-import { EQUATION_SYSTEM_PROMPT } from './equation';
 import { ObjectType } from '@math/types/mathTypes';
 
 /**

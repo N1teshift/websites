@@ -3,7 +3,6 @@ import { UnitPlanData, Subject, SubunitData } from '../../types/UnitPlanTypes';
 import { useFallbackTranslation } from '@websites/infrastructure/i18n/client';
 import FormField from '../shared/FormField';
 import LabelWithInfo from '../shared/LabelWithInfo';
-import { getTranslatedSubjectName } from '../../utils/subjectTranslationUtils';
 import { Dropdown } from '@websites/ui';
 // InfoTooltip removed from this section per request
 
