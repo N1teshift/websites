@@ -27,8 +27,8 @@ export const PerformancesSection: React.FC = () => {
           </p>
           <p>
             My performances have been featured at events such as the XXII INTERNATIONAL STREET
-            THEATRE FESTIVAL "ŠERMUKŠNIS" in Klaipeda, Lithuania, and various contemporary art
-            exhibitions showcasing women artists and experimental performance practices.
+            THEATRE FESTIVAL &quot;ŠERMUKŠNIS&quot; in Klaipeda, Lithuania, and various contemporary
+            art exhibitions showcasing women artists and experimental performance practices.
           </p>
         </div>
       </div>

@@ -18,7 +18,7 @@ type HomeProps = {
   translationNamespaces?: string[];
 };
 
-export default function Home({}: HomeProps) {
+export default function Home(_props: HomeProps) {
   const { data: session, status } = useSession();
   const [showEntryForm, setShowEntryForm] = useState(false);
   const [showScheduleForm, setShowScheduleForm] = useState(false);

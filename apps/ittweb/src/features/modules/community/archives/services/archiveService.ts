@@ -191,23 +191,19 @@ export const getArchiveEntries = async (): Promise<ArchiveEntry[]> => {
     throw new Error("Fetching entries is only available on the client side");
   }
 
-  try {
-    const response = await fetch("/api/archives");
-    if (!response.ok) {
-      throw new Error(`Failed to fetch archives: ${response.statusText}`);
-    }
-    const data = await response.json();
+  const response = await fetch("/api/archives");
+  if (!response.ok) {
+    throw new Error(`Failed to fetch archives: ${response.statusText}`);
+  }
+  const data = await response.json();
 
-    // Handle both direct array response and { success: true, data: [...] } format
-    if (Array.isArray(data)) {
-      return data;
-    } else if (data.success && Array.isArray(data.data)) {
-      return data.data;
-    } else {
-      throw new Error("Invalid response format from archives API");
-    }
-  } catch (error) {
-    throw error;
+  // Handle both direct array response and { success: true, data: [...] } format
+  if (Array.isArray(data)) {
+    return data;
+  } else if (data.success && Array.isArray(data.data)) {
+    return data.data;
+  } else {
+    throw new Error("Invalid response format from archives API");
   }
 };
 

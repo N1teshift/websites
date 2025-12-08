@@ -181,9 +181,10 @@ function decodeMaybeString(value: number): string {
   buffer.writeUInt32BE(safeValue);
   const ascii = buffer
     .toString("utf8")
+    // eslint-disable-next-line no-control-regex
     .replace(/\u0000/g, "")
     .trim();
-  if (ascii && /^[\x20-\x7E]+$/.test(ascii)) {
+  if (ascii && /^[\u0020-\u007E]+$/.test(ascii)) {
     return ascii;
   }
   return value.toString();

@@ -8,23 +8,18 @@ export async function syncGameAfterUpdate(
   setLocalGames: React.Dispatch<React.SetStateAction<GameWithPlayers[]>>,
   markGameRecentlyUpdated: (gameId: string) => void
 ): Promise<void> {
-  try {
-    const gameResponse = await fetch(`/api/games/${gameId}?t=${Date.now()}`, {
-      cache: "no-store",
-    });
+  const gameResponse = await fetch(`/api/games/${gameId}?t=${Date.now()}`, {
+    cache: "no-store",
+  });
 
-    if (gameResponse.ok) {
-      const gameData = await gameResponse.json();
-      if (gameData.success && gameData.data) {
-        markGameRecentlyUpdated(gameId);
-        setLocalGames((prevGames) =>
-          prevGames.map((game) => (game.id === gameId ? (gameData.data as GameWithPlayers) : game))
-        );
-      }
+  if (gameResponse.ok) {
+    const gameData = await gameResponse.json();
+    if (gameData.success && gameData.data) {
+      markGameRecentlyUpdated(gameId);
+      setLocalGames((prevGames) =>
+        prevGames.map((game) => (game.id === gameId ? (gameData.data as GameWithPlayers) : game))
+      );
     }
-  } catch (error) {
-    // Error is logged by the caller
-    throw error;
   }
 }
 

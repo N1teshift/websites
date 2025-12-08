@@ -716,11 +716,12 @@ function generateObjectFactory(input: MathInput): MathObjects {
         GeneratorClass as GeneratorConstructor<Inequality, InequalitySettings>,
         settings as InequalitySettings
       ).generate();
-    default:
+    default: {
       const exhaustiveCheck: never = input;
       throw new Error(
         `Unhandled object type in generateObjectFactory: ${typeof exhaustiveCheck === "object" && exhaustiveCheck !== null && "objectType" in exhaustiveCheck ? String((exhaustiveCheck as { objectType: unknown }).objectType) : "unknown"}`
       );
+    }
   }
 }
 
@@ -767,7 +768,7 @@ function extractSpecificSettings(input: MathInput): MathObjectSettingsType {
       return input.setSettings;
     case "inequality":
       return input.inequalitySettings;
-    default:
+    default: {
       // This should be unreachable if MathInput is exhaustive and input is valid
       const exhaustiveCheck: never = input;
       // Construct error message safely
@@ -778,5 +779,6 @@ function extractSpecificSettings(input: MathInput): MathObjectSettingsType {
           ? String((exhaustiveCheck as { objectType: unknown }).objectType)
           : "unknown";
       throw new Error(`Unhandled object type in extractSpecificSettings: ${objectTypeName}`);
+    }
   }
 }

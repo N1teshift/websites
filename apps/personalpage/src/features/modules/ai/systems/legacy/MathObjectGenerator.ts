@@ -609,7 +609,7 @@ export class MathObjectGenerator {
       ) {
         skipSubObjectLoop = true;
         this.logger.debug(
-          `Default coefficients appear to be pre-filled for key \'${subObjectsSettingsKey}\'. Skipping explicit sub-object extraction loop.`
+          `Default coefficients appear to be pre-filled for key '${subObjectsSettingsKey}'. Skipping explicit sub-object extraction loop.`
         );
       }
 
@@ -665,21 +665,21 @@ export class MathObjectGenerator {
         // Now indexableSettings should be accessible here, but check for null just in case
         if (isArrayProperty) {
           this.logger.debug(
-            `Collected sub-object settings array for \'${subObjectsSettingsKey}\': ${JSON.stringify(indexableSettings?.[subObjectsSettingsKey], null, 2)}`
+            `Collected sub-object settings array for '${subObjectsSettingsKey}': ${JSON.stringify(indexableSettings?.[subObjectsSettingsKey], null, 2)}`
           );
         } else {
           this.logger.debug(
-            `Assigned sub-object settings for \'${subObjectsSettingsKey}\': ${JSON.stringify(indexableSettings?.[subObjectsSettingsKey], null, 2)}`
+            `Assigned sub-object settings for '${subObjectsSettingsKey}': ${JSON.stringify(indexableSettings?.[subObjectsSettingsKey], null, 2)}`
           );
         }
       } else if (skipSubObjectLoop) {
         this.logger.debug(
-          `Skipping sub-object extraction loop for \'${subObjectsSettingsKey}\' as default settings were applied or detected.`
+          `Skipping sub-object extraction loop for '${subObjectsSettingsKey}' as default settings were applied or detected.`
         );
       } else {
         // Use parentSettingsObject directly here, as indexableSettings is out of scope
         this.logger.debug(
-          `No valid subObjectPromptParts found or default handling applied for \'${subObjectsSettingsKey}\'. Property may be empty or pre-filled. Current value: ${JSON.stringify((parentSettingsObject as Record<string, unknown>)?.[subObjectsSettingsKey])}`
+          `No valid subObjectPromptParts found or default handling applied for '${subObjectsSettingsKey}'. Property may be empty or pre-filled. Current value: ${JSON.stringify((parentSettingsObject as Record<string, unknown>)?.[subObjectsSettingsKey])}`
         );
         // Ensure array exists if it should be an array and wasn't pre-filled
         if (typeof parentSettingsObject === "object" && parentSettingsObject !== null) {
@@ -688,7 +688,7 @@ export class MathObjectGenerator {
           if (isArrayProperty && !(subObjectsSettingsKey in settingsObj)) {
             settingsObj[subObjectsSettingsKey] = [];
             this.logger.debug(
-              `Initialized empty array for \'${subObjectsSettingsKey}\' as fallback.`
+              `Initialized empty array for '${subObjectsSettingsKey}' as fallback.`
             );
           }
         }
@@ -700,7 +700,7 @@ export class MathObjectGenerator {
       if (
         typeof parentSettingsObject === "object" &&
         parentSettingsObject !== null &&
-        parentSettingsObject.hasOwnProperty("subObjectPromptParts")
+        Object.prototype.hasOwnProperty.call(parentSettingsObject, "subObjectPromptParts")
       ) {
         // Use Record<string, unknown> for the cast
         delete (parentSettingsObject as Record<string, unknown>).subObjectPromptParts;
@@ -725,7 +725,7 @@ export class MathObjectGenerator {
       if (
         typeof currentSettingsObject === "object" &&
         currentSettingsObject !== null &&
-        currentSettingsObject.hasOwnProperty("subObjectPromptParts")
+        Object.prototype.hasOwnProperty.call(currentSettingsObject, "subObjectPromptParts")
       ) {
         // Use Record<string, unknown> for the cast
         delete (currentSettingsObject as Record<string, unknown>).subObjectPromptParts;

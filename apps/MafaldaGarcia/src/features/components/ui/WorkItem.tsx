@@ -1,6 +1,4 @@
 import React from "react";
-import Image from "next/image";
-import { useFallbackTranslation } from "@websites/infrastructure/i18n";
 
 interface WorkItemProps {
   title: string;
@@ -14,13 +12,11 @@ interface WorkItemProps {
 export const WorkItem: React.FC<WorkItemProps> = ({
   title,
   description,
-  image,
+  image: _image,
   credits,
-  isReversed = false,
+  isReversed: _isReversed = false,
   quotes = [],
 }) => {
-  const { t } = useFallbackTranslation();
-
   const renderYouTubeEmbed = () => {
     if (!credits) return null;
 
@@ -53,39 +49,13 @@ export const WorkItem: React.FC<WorkItemProps> = ({
         <p>{description}</p>
         {quotes.map((quote, index) => (
           <p key={index} className="italic">
-            "{quote}"
+            &quot;{quote}&quot;
           </p>
         ))}
         {credits && !credits.includes("youtu.be") && !credits.includes("youtube.com") && (
           <p className="text-sm text-warm-gray italic mt-4">{credits}</p>
         )}
         {renderYouTubeEmbed()}
-      </div>
-    </div>
-  );
-
-  const imageContent = image && (
-    <div className="flex-1">
-      <div className="relative overflow-hidden rounded-lg hover-lift">
-        <div className="aspect-[4/3] relative">
-          <Image
-            src={image}
-            alt={title}
-            fill
-            className="object-cover"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            onError={(e) => {
-              // Fallback to placeholder on error
-              const target = e.target as HTMLImageElement;
-              target.style.display = "none";
-              const parent = target.parentElement;
-              if (parent) {
-                parent.innerHTML =
-                  '<div class="w-full h-full bg-gray-200 flex items-center justify-center"><span class="text-gray-500">Work Image</span></div>';
-              }
-            }}
-          />
-        </div>
       </div>
     </div>
   );

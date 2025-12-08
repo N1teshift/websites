@@ -201,7 +201,7 @@ const ProgressReportPage: React.FC = React.memo(() => {
           </div>
         );
 
-      case "objectives":
+      case "objectives": {
         if (!data) {
           return (
             <div className="text-center py-12">
@@ -247,6 +247,7 @@ const ProgressReportPage: React.FC = React.memo(() => {
         }
 
         return <ObjectivesTabContainer students={data.students} onDataChange={handleDataChange} />;
+      }
 
       case "comments-generator":
         return data ? (

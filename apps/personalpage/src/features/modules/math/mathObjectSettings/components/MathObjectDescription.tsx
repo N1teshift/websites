@@ -72,11 +72,12 @@ const MathObjectDescription: React.FC<MathObjectDescriptionProps> = ({
     case "term":
       description = generateTermDescription(settings as TermSettings, startIndex);
       break;
-    case "terms":
+    case "terms": {
       const termsDescResult = generateTermsDescription(settings as TermsSettings, startIndex, true);
       description = termsDescResult.termDescription;
       break;
-    case "expression":
+    }
+    case "expression": {
       const expressionDescResult = generateExpressionDescription(
         settings as ExpressionSettings,
         startIndex,
@@ -84,7 +85,8 @@ const MathObjectDescription: React.FC<MathObjectDescriptionProps> = ({
       );
       description = expressionDescResult.expressionDescription;
       break;
-    case "equation":
+    }
+    case "equation": {
       const equationDescResult = generateEquationDescription(
         settings as EquationSettings,
         interfaceType,
@@ -92,7 +94,8 @@ const MathObjectDescription: React.FC<MathObjectDescriptionProps> = ({
       );
       description = equationDescResult.equationDescription;
       break;
-    case "inequality":
+    }
+    case "inequality": {
       const inequalityDescResult = generateInequalityDescription(
         settings as InequalitySettings,
         interfaceType,
@@ -100,13 +103,15 @@ const MathObjectDescription: React.FC<MathObjectDescriptionProps> = ({
       );
       description = inequalityDescResult.equationDescription;
       break;
-    case "function":
+    }
+    case "function": {
       const functionDescResult = generateFunctionDescription(
         settings as FunctionSettings,
         startIndex
       );
       description = functionDescResult.expressionDescription;
       break;
+    }
     case "point":
       description = generatePointDescription(settings as PointSettings);
       break;

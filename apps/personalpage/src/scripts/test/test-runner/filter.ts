@@ -133,7 +133,7 @@ export const filterTests = (
     // Strategy 3: Try various name transformations
     const nameVariations = [
       // Basic transformation - remove spaces and brackets
-      test.name.replace(/\s/g, "").replace(/[\[\]\(\)]/g, ""),
+      test.name.replace(/\s/g, "").replace(/[[\]()]/g, ""),
 
       // Prefix with object type if not already there
       `${test.objectType} ${test.name}`,
@@ -154,7 +154,7 @@ export const filterTests = (
 
       // Try to find a match in the target set
       for (const dbName of Array.from(targetSet)) {
-        const dbNameNormalized = dbName.replace(/\s/g, "").replace(/[\[\]\(\)]/g, "");
+        const dbNameNormalized = dbName.replace(/\s/g, "").replace(/[[\]()]/g, "");
 
         if (options.debugMatching) {
           console.log(
@@ -241,11 +241,11 @@ export const filterTests = (
         }
         const codeNormalized = codeName
           .replace(/\s/g, "")
-          .replace(/[\[\]\(\)]/g, "")
+          .replace(/[[\]()]/g, "")
           .toLowerCase();
         const dbNormalized = dbName
           .replace(/\s/g, "")
-          .replace(/[\[\]\(\)]/g, "")
+          .replace(/[[\]()]/g, "")
           .toLowerCase();
         if (codeNormalized === dbNormalized) {
           console.log(`  Potential match: identical when normalized`);

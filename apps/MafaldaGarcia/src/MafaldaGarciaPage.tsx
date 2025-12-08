@@ -21,7 +21,7 @@ interface MafaldaGarciaPageProps {
   sections?: Array<{ heading?: string; paragraphs: string[]; backgroundColor?: string }>;
 }
 
-export const MafaldaGarciaPage: React.FC<MafaldaGarciaPageProps> = ({}) => {
+export const MafaldaGarciaPage: React.FC<MafaldaGarciaPageProps> = () => {
   const { images, loading, error } = usePortfolioImages({
     numImageSlots: 16,
     placeholderImage: "education.jpg",

@@ -94,11 +94,12 @@ export class Coefficient extends MathObject<CoefficientSettings> {
             "Cannot take square root of a negative number for irrational representation."
           );
         return numerator * Math.sqrt(denominator);
-      default:
+      default: {
         // This attempts to provide a type-safe way to handle exhaustiveness
         // At runtime, it will throw if a new NumberSet was added without updating this switch.
         const exhaustiveCheck: never = this.settings.numberSet;
         throw new Error(`Unknown number set: ${exhaustiveCheck}`);
+      }
     }
   }
 }

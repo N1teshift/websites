@@ -60,7 +60,7 @@ export const MajorWorkItem: React.FC<MajorWorkItemProps> = ({
       <div className="space-y-8">
         {/* Title and Basic Info */}
         <div className="space-y-4">
-          <h3 className="font-playfair text-4xl lg:text-5xl text-gray-900">"{title}"</h3>
+          <h3 className="font-playfair text-4xl lg:text-5xl text-gray-900">&quot;{title}&quot;</h3>
           <div className="flex flex-wrap gap-6 text-lg text-gray-700">
             <div>
               <span className="font-medium">{t("ui.yearOfCreation")}</span> {year}

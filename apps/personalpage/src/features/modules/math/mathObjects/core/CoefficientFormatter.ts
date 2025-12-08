@@ -241,11 +241,12 @@ function formatLogarithm(value: number[], numberSetUsed: NumberSet): string {
     case "irrational":
       // Delegate to the extracted function for clarity
       return formatIrrationalLogarithm(value, base);
-    case "real":
+    case "real": {
       // Real: randomly choose a set's formatting (mirrors generateCoefficient)
       const subSets = ["rational", "irrational", "integer", "natural"];
       const chosenSet = subSets[Math.floor(Math.random() * subSets.length)];
       return formatLogarithm(value, chosenSet as NumberSet); // Recursive call with chosen set
+    }
     default:
       throw new Error(`Unsupported number set: ${numberSetUsed}`);
   }

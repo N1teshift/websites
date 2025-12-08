@@ -1,9 +1,5 @@
 import { useState, useEffect } from "react";
 
-interface ImageUrls {
-  [key: string]: string;
-}
-
 interface UsePortfolioImagesOptions {
   numImageSlots?: number;
   placeholderImage?: string;

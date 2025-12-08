@@ -9,6 +9,7 @@
     "lint": "next lint",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,md}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,css,md}\"",
+    "type-check": "tsc --noEmit",
     "fix:imports": "node scripts/addJsExtensions.js",
     "validate:translations": "node scripts/validateTranslations.js",
     "check:missing": "node scripts/checkMissingTranslations.js",

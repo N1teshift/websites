@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "description": "Bundle size budgets for all apps in the monorepo. Sizes are in bytes.",
+  "ittweb": {
+    "main.js": 500000,
+    "framework.js": 200000,
+    "pages/_app.js": 300000,
+    "pages/_document.js": 50000,
+    "_total": 5000000
+  },
+  "personalpage": {
+    "main.js": 800000,
+    "framework.js": 200000,
+    "pages/_app.js": 400000,
+    "pages/_document.js": 50000,
+    "_total": 8000000
+  },
+  "MafaldaGarcia": {
+    "main.js": 300000,
+    "framework.js": 200000,
+    "pages/_app.js": 200000,
+    "pages/_document.js": 50000,
+    "_total": 3000000
+  },
+  "templatepage": {
+    "main.js": 200000,
+    "framework.js": 200000,
+    "pages/_app.js": 150000,
+    "pages/_document.js": 50000,
+    "_total": 2000000
+  }
+}

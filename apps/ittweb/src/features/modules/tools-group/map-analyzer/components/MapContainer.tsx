@@ -265,7 +265,9 @@ export default function MapContainer({
           if (e.currentTarget.setPointerCapture) {
             e.currentTarget.setPointerCapture(e.pointerId);
           }
-        } catch {}
+        } catch {
+          // Ignore pointer capture errors (setPointerCapture may not be available)
+        }
         e.preventDefault();
       }}
       onPointerMove={(e) => {
@@ -293,7 +295,9 @@ export default function MapContainer({
           if (e.currentTarget.releasePointerCapture) {
             e.currentTarget.releasePointerCapture(e.pointerId);
           }
-        } catch {}
+        } catch {
+          // Ignore pointer release errors
+        }
         // briefly pause hover after drag end to avoid post-drag flicker
         dragPausedRef.current = true;
         if (dragPauseTimerRef.current) {

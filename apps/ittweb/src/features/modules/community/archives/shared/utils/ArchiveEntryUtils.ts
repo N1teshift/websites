@@ -5,7 +5,7 @@ import type { ArchiveEntry } from "@/types/archive";
  */
 export function formatArchiveDate(dateInfo: ArchiveEntry["dateInfo"]): string {
   switch (dateInfo.type) {
-    case "single":
+    case "single": {
       if (!dateInfo.singleDate) return "Unknown";
       // Handle partial dates: YYYY, YYYY-MM, or YYYY-MM-DD
       const dateStr = dateInfo.singleDate.trim();
@@ -39,13 +39,15 @@ export function formatArchiveDate(dateInfo: ArchiveEntry["dateInfo"]): string {
           return dateStr;
         }
       }
-    case "interval":
+    }
+    case "interval": {
       // Backward compatibility: handle existing interval dates
       const start = dateInfo.startDate
         ? new Date(dateInfo.startDate).toLocaleDateString()
         : "Unknown";
       const end = dateInfo.endDate ? new Date(dateInfo.endDate).toLocaleDateString() : "Unknown";
       return `${start} - ${end}`;
+    }
     case "undated":
       return dateInfo.approximateText || "Undated";
     default:

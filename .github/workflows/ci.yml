@@ -1,5 +1,16 @@
 name: CI
 
+# ============================================================================
+# CENTRAL CI CONFIGURATION
+# ============================================================================
+# Toggle checks on/off by changing the values below (true/false)
+# Change 'true' to 'false' to disable a check
+# ============================================================================
+# These variables control which checks run
+# Access them in job conditions using: ${{ vars.ENABLE_QUALITY_CHECK == 'true' }}
+# But for simplicity, we'll use direct boolean values in conditions below
+# ============================================================================
+
 on:
   push:
     branches: [main, master]
@@ -12,9 +23,11 @@ concurrency:
 
 jobs:
   # Validate code quality (formatting, linting, type-checking)
+  # To disable: change 'true' below to 'false'
   quality:
     name: Code Quality
     runs-on: ubuntu-latest
+    if: true  # Change to 'false' to disable quality checks
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -43,9 +56,11 @@ jobs:
         run: pnpm type-check
 
   # Run tests across all packages and apps
+  # To disable: change 'true' below to 'false'
   test:
     name: Test
     runs-on: ubuntu-latest
+    if: true  # Change to 'false' to disable test checks
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -92,9 +107,11 @@ jobs:
           retention-days: 7
 
   # Build all apps and packages
+  # To disable: change 'true' below to 'false'
   build:
     name: Build
     runs-on: ubuntu-latest
+    if: true  # Change to 'false' to disable build checks
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -149,11 +166,12 @@ jobs:
           retention-days: 1
 
   # Analyze bundle sizes
+  # To disable: change 'true' below to 'false'
   bundle-size:
     name: Bundle Size Analysis
     runs-on: ubuntu-latest
     needs: build
-    if: github.event_name == 'pull_request'
+    if: true && github.event_name == 'pull_request'  # Change 'true' to 'false' to disable bundle size checks
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -172,33 +190,72 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Analyze bundle sizes
+      - name: Check bundle sizes
+        id: bundle-size
         run: |
           echo "## Bundle Size Analysis" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "| App | Status |" >> $GITHUB_STEP_SUMMARY
-          echo "|-----|--------|" >> $GITHUB_STEP_SUMMARY
           
-          for app in apps/*/; do
-            app_name=$(basename "$app")
-            if [ -f "$app/package.json" ] && grep -q "@next/bundle-analyzer" "$app/package.json"; then
-              echo "| $app_name | ✅ Analyzer available |" >> $GITHUB_STEP_SUMMARY
-            else
-              echo "| $app_name | ⚠️ No analyzer configured |" >> $GITHUB_STEP_SUMMARY
-            fi
-          done
+          # Run bundle size check and capture output
+          pnpm check:bundle-size --json > bundle-sizes.json 2>&1 || true
+          
+          if [ -f bundle-sizes.json ] && [ -s bundle-sizes.json ]; then
+            echo "### Current Bundle Sizes" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "| App | Chunk | Size | Budget | Status |" >> $GITHUB_STEP_SUMMARY
+            echo "|-----|-------|------|--------|--------|" >> $GITHUB_STEP_SUMMARY
+            
+            # Parse and display results
+            node -e "
+              try {
+                const fs = require('fs');
+                const data = JSON.parse(fs.readFileSync('bundle-sizes.json', 'utf-8'));
+                for (const [app, appData] of Object.entries(data.apps || {})) {
+                  for (const [chunk, chunkData] of Object.entries(appData.sizes || {})) {
+                    if (chunk === '_total') continue;
+                    const budget = appData.budgetChecks?.[chunk];
+                    const size = chunkData.formatted;
+                    const status = budget?.exceeds ? '❌ EXCEEDED' : '✅ OK';
+                    const budgetSize = budget ? budget.budgetFormatted : 'N/A';
+                    console.log(\`| \${app} | \${chunk} | \${size} | \${budgetSize} | \${status} |\`);
+                  }
+                }
+                if (data.exceeded && data.exceeded.length > 0) {
+                  console.log('');
+                  console.log('⚠️ **Warning:** Some bundles exceed their budgets!');
+                }
+              } catch (e) {
+                console.log('Could not parse bundle sizes');
+              }
+            " >> $GITHUB_STEP_SUMMARY || echo "⚠️ Could not parse bundle size results" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "⚠️ Bundle size analysis not available. Build artifacts may be missing." >> $GITHUB_STEP_SUMMARY
+          fi
           
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "**Note:** To analyze bundle sizes locally, run:" >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`bash" >> $GITHUB_STEP_SUMMARY
-          echo "pnpm --filter <app-name> analyze" >> $GITHUB_STEP_SUMMARY
+          echo "pnpm check:bundle-size" >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
 
+      - name: Check bundle size budgets
+        run: |
+          if [ -f bundle-sizes.json ]; then
+            EXCEEDED=$(node -e "try { const d=require('./bundle-sizes.json'); console.log(d.exceeded?.length || 0); } catch(e) { console.log('0'); }" 2>/dev/null || echo "0")
+            if [ "$EXCEEDED" -gt 0 ]; then
+              echo "⚠️ Some bundles exceed budgets (non-blocking)"
+              echo "Review the bundle size analysis above for details."
+            else
+              echo "✅ All bundles are within budget"
+            fi
+          fi
+
   # Validate changesets (only on PRs)
+  # To disable: change 'true' below to 'false'
   changeset:
     name: Changeset Validation
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
+    if: true && github.event_name == 'pull_request'  # Change 'true' to 'false' to disable changeset checks
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -239,10 +296,29 @@ jobs:
     steps:
       - name: Check job status
         run: |
-          if [ "${{ needs.quality.result }}" != "success" ] || \
-             [ "${{ needs.test.result }}" != "success" ] || \
-             [ "${{ needs.build.result }}" != "success" ]; then
+          failed=false
+          
+          # Check quality (skip if job was skipped)
+          if [ "${{ needs.quality.result }}" != "success" ] && [ "${{ needs.quality.result }}" != "skipped" ]; then
+            echo "❌ Quality check failed"
+            failed=true
+          fi
+          
+          # Check test (skip if job was skipped)
+          if [ "${{ needs.test.result }}" != "success" ] && [ "${{ needs.test.result }}" != "skipped" ]; then
+            echo "❌ Test check failed"
+            failed=true
+          fi
+          
+          # Check build (skip if job was skipped)
+          if [ "${{ needs.build.result }}" != "success" ] && [ "${{ needs.build.result }}" != "skipped" ]; then
+            echo "❌ Build check failed"
+            failed=true
+          fi
+          
+          if [ "$failed" = true ]; then
             echo "❌ One or more CI jobs failed"
             exit 1
           fi
+          
           echo "✅ All required CI checks passed"

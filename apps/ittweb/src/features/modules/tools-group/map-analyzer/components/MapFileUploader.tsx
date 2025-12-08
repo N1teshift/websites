@@ -14,14 +14,18 @@ export default function MapFileUploader({
     try {
       const raw = localStorage.getItem("itt_saved_maps");
       if (raw) setSaved(JSON.parse(raw));
-    } catch {}
+    } catch {
+      // Ignore localStorage errors
+    }
   }, []);
 
   const persistList = (list: Array<{ id: string; name: string }>) => {
     setSaved(list);
     try {
       localStorage.setItem("itt_saved_maps", JSON.stringify(list));
-    } catch {}
+    } catch {
+      // Ignore localStorage errors
+    }
   };
 
   const openDialog = () => {
@@ -41,7 +45,9 @@ export default function MapFileUploader({
         const id = `${file.name.replace(/\.[^/.]+$/, "")}_${Date.now().toString(36)}`;
         try {
           localStorage.setItem(`itt_map_data_${id}`, JSON.stringify(parsed));
-        } catch {}
+        } catch {
+          // Ignore localStorage errors
+        }
         persistList([{ id, name: file.name }, ...saved.filter((s) => s.id !== id)].slice(0, 50));
         onJsonLoaded?.(parsed);
       } else if (lower.endsWith(".w3e")) {
@@ -57,7 +63,9 @@ export default function MapFileUploader({
         const id = `${file.name.replace(/\.[^/.]+$/, "")}_${Date.now().toString(36)}`;
         try {
           localStorage.setItem(`itt_map_data_${id}`, JSON.stringify(parsed));
-        } catch {}
+        } catch {
+          // Ignore localStorage errors
+        }
         persistList([{ id, name: file.name }, ...saved.filter((s) => s.id !== id)].slice(0, 50));
         onJsonLoaded?.(parsed);
       } else {
@@ -116,7 +124,9 @@ export default function MapFileUploader({
                       try {
                         const raw = localStorage.getItem(`itt_map_data_${s.id}`);
                         if (raw) onJsonLoaded?.(JSON.parse(raw));
-                      } catch {}
+                      } catch {
+                        // Ignore localStorage errors
+                      }
                     }}
                   >
                     Load
@@ -126,7 +136,9 @@ export default function MapFileUploader({
                     onClick={() => {
                       try {
                         localStorage.removeItem(`itt_map_data_${s.id}`);
-                      } catch {}
+                      } catch {
+                        // Ignore localStorage errors
+                      }
                       persistList(saved.filter((x) => x.id !== s.id));
                     }}
                   >

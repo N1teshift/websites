@@ -241,7 +241,7 @@ export function isRuleCompatibleWithRange(rule: CoefficientRule, range: [number,
         if (!isValid) reason = "no prime numbers found within the applicable range interval";
       }
       break;
-    case "odd":
+    case "odd": {
       // Check if at least one odd integer exists within the effective integer range [ceil(min), floor(max)].
       const intMinOdd = Math.ceil(min);
       const intMaxOdd = Math.floor(max);
@@ -261,7 +261,8 @@ export function isRuleCompatibleWithRange(rule: CoefficientRule, range: [number,
         if (!isValid) reason = "no odd integers exist in the effective integer range";
       }
       break;
-    case "even":
+    }
+    case "even": {
       // Check if at least one even integer exists within the effective integer range [ceil(min), floor(max)].
       const intMinEven = Math.ceil(min);
       const intMaxEven = Math.floor(max);
@@ -281,6 +282,7 @@ export function isRuleCompatibleWithRange(rule: CoefficientRule, range: [number,
         if (!isValid) reason = "no even integers exist in the effective integer range";
       }
       break;
+    }
     case "square":
       // Range must contain at least one perfect square
       isValid = hasSquareInRange(min, max);

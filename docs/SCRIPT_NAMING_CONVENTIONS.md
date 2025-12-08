@@ -107,11 +107,110 @@ The root `package.json` provides these scripts that work across all apps:
 - `test` - Test all apps
 - `clean` - Clean all build artifacts
 
+## Validation
+
+To ensure scripts follow conventions, you can validate them:
+
+```bash
+# Check if an app has all standard scripts
+node scripts/validate-scripts.js <app-name>
+```
+
 ## Documentation
 
 When adding app-specific scripts:
 
-1. Document them in the app's README
-2. Use clear, descriptive names
-3. Follow the naming patterns above
-4. Group related scripts with colons
+1. **Document them in the app's README** - List all custom scripts with descriptions
+2. **Use clear, descriptive names** - Script names should be self-explanatory
+3. **Follow the naming patterns above** - Use colons for namespacing, kebab-case for multi-word names
+4. **Group related scripts with colons** - `test:unit`, `test:integration`, `test:e2e`
+5. **Keep scripts organized** - Group related scripts together in package.json
+
+## Script Organization in package.json
+
+Organize scripts in this order:
+
+1. Standard scripts (dev, build, start, lint, format, type-check, test)
+2. Test variants (test:watch, test:coverage, test:unit, etc.)
+3. Analysis scripts (analyze, analyze:server, analyze:browser)
+4. Validation scripts (validate:_, check:_)
+5. Migration/utility scripts (migrate:_, fix:_)
+6. App-specific scripts
+
+Example:
+
+```json
+{
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,css,md}\"",
+    "type-check": "tsc --noEmit",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "analyze": "cross-env ANALYZE=true next build",
+    "validate:translations": "node scripts/validateTranslations.js"
+  }
+}
+```
+
+## Root-Level Scripts
+
+The root `package.json` provides these scripts that work across all apps:
+
+- `dev` - Run dev for all apps
+- `build` - Build all apps
+- `lint` - Lint all apps
+- `format` - Format all apps
+- `format:check` - Check formatting for all apps
+- `type-check` - Type check all apps
+- `test` - Test all apps
+- `clean` - Clean all build artifacts
+
+## Common Patterns by Category
+
+### Development
+
+- `dev` - Standard development server
+- `dev:verbose` - Development with verbose logging
+- `dev:debug` - Development with debugging enabled
+
+### Building
+
+- `build` - Production build
+- `build:check` - Type check and build
+- `build:test` - Build for testing
+- `build:analyze` - Build with bundle analysis
+
+### Testing
+
+- `test` - Run all tests
+- `test:watch` - Watch mode
+- `test:coverage` - With coverage
+- `test:unit` - Unit tests only
+- `test:integration` - Integration tests
+- `test:e2e` - End-to-end tests
+- `test:api` - API tests
+
+### Analysis
+
+- `analyze` - Full bundle analysis
+- `analyze:server` - Server bundle only
+- `analyze:browser` - Browser bundle only
+- `analyze:coverage` - Coverage analysis
+
+### Validation
+
+- `validate:env` - Environment variables
+- `validate:translations` - Translation files
+- `validate:types` - Type checking
+- `check:*` - Various check scripts
+
+### Migration/Conversion
+
+- `migrate:*` - Data migration scripts
+- `convert:*` - Format conversion scripts
