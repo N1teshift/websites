@@ -79,7 +79,6 @@ export function PlayersPage({ pageNamespaces: _pageNamespaces }: PlayersPageProp
 
   useEffect(() => {
     fetchPlayers(true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleLoadMore = () => {

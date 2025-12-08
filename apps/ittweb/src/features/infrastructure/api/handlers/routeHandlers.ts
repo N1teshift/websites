@@ -42,7 +42,6 @@ export const createApiHandler = <T = unknown>(
   const needsAuth = options.requireAuth || options.requireAdmin;
   const finalOptions = needsAuth ? { ...options, authConfig: getIttwebAuthConfig() } : options;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return createGenericApiHandler(handler, finalOptions as any);
 };
 

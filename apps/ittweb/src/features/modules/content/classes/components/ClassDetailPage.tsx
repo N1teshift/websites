@@ -44,7 +44,7 @@ export function ClassDetailPage({ pageNamespaces: _pageNamespaces }: ClassDetail
     if (className) {
       fetchClassDetail();
     }
-  }, [className, category]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [className, category]);
 
   if (loading) {
     return (

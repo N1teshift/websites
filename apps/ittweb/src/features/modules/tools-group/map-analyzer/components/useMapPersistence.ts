@@ -25,7 +25,6 @@ export function useMapPersistence(): [
     } catch {
       // ignore parsing errors
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Persist map whenever it changes

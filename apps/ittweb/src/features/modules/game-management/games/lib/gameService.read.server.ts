@@ -162,7 +162,6 @@ export async function getGames(filters: GameFilters = {}): Promise<GameListRespo
     const adminDb = getFirestoreAdmin();
     const { createTimestampFactoryAsync } = await import("@websites/infrastructure/utils");
     const timestampFactory = await createTimestampFactoryAsync();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let gamesQuery: any = adminDb.collection(GAMES_COLLECTION);
 
     // Apply filters
@@ -254,7 +253,6 @@ export async function getGames(filters: GameFilters = {}): Promise<GameListRespo
       if (error?.code === 9 || error?.message?.includes("index")) {
         // Index missing/building - using fallback query (this is expected during development)
         // Fallback: query without orderBy (will sort in memory)
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         let fallbackQuery: any = adminDb
           .collection(GAMES_COLLECTION)
           .where("isDeleted", "==", false);
@@ -315,13 +313,11 @@ export async function getGames(filters: GameFilters = {}): Promise<GameListRespo
         const dateA =
           typeof a.createdAt === "string"
             ? new Date(a.createdAt).getTime()
-            : // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              (a.createdAt as any)?.toMillis?.() || 0;
+            : (a.createdAt as any)?.toMillis?.() || 0;
         const dateB =
           typeof b.createdAt === "string"
             ? new Date(b.createdAt).getTime()
-            : // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              (b.createdAt as any)?.toMillis?.() || 0;
+            : (b.createdAt as any)?.toMillis?.() || 0;
         return dateB - dateA;
       });
       // Limit after sorting

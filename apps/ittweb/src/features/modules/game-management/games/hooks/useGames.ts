@@ -70,7 +70,6 @@ export function useGames(filters: GameFilters = {}): UseGamesResult {
 
   useEffect(() => {
     fetchGames();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     filters.gameState,
     filters.startDate,

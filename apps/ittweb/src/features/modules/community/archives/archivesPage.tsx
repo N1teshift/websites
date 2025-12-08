@@ -130,7 +130,6 @@ const ArchivesPage: React.FC<ArchivesPageProps> = ({ pageNamespaces: _pageNamesp
   // Load entries on mount (only once)
   useEffect(() => {
     loadEntries();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Only run once on mount - loadEntries is stable from hook
 
   // Log page visit
