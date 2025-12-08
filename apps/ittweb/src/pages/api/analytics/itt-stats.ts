@@ -1,10 +1,10 @@
-import type { NextApiRequest } from 'next';
-import { createApiHandler } from '@websites/infrastructure/api';
-import { getAggregateITTStats } from '@/features/modules/analytics-group/analytics/lib/analyticsService';
+import type { NextApiRequest } from "next";
+import { createApiHandler } from "@websites/infrastructure/api";
+import { getAggregateITTStats } from "@/features/modules/analytics-group/analytics/lib/analyticsService";
 
 /**
  * GET /api/analytics/itt-stats - Get aggregate ITT statistics
- * 
+ *
  * Query params:
  * - category: Game category filter (e.g., '2v2', '3v3')
  * - startDate: Start date filter (ISO string)
@@ -19,7 +19,7 @@ export default createApiHandler(
     return await getAggregateITTStats(category, startDate, endDate);
   },
   {
-    methods: ['GET'],
+    methods: ["GET"],
     requireAuth: false,
     logRequests: true,
     // Cache for 5 minutes - ITT stats don't change as frequently
@@ -30,4 +30,3 @@ export default createApiHandler(
     },
   }
 );
-

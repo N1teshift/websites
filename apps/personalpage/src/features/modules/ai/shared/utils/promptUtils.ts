@@ -13,18 +13,15 @@ import { OBJECT_SYSTEM_PROMPTS } from "../prompts/systemPrompts/index";
  * @throws {Error} If no system prompt is defined in the mapping for the provided `objectType`.
  */
 export function getObjectTypeSystemPrompt(objectType: ObjectType): string {
-    const prompt = OBJECT_SYSTEM_PROMPTS[objectType];
-    
-    if (!prompt) {
-      // This should not happen if validation is working correctly, but fail fast if it does
-      throw new Error(
-        `No system prompt defined for object type: ${objectType}. ` +
+  const prompt = OBJECT_SYSTEM_PROMPTS[objectType];
+
+  if (!prompt) {
+    // This should not happen if validation is working correctly, but fail fast if it does
+    throw new Error(
+      `No system prompt defined for object type: ${objectType}. ` +
         `Only 'coefficient', 'coefficients', and 'term' are supported.`
-      );
-    }
-    
-    return prompt;
+    );
   }
 
-
-
+  return prompt;
+}

@@ -104,4 +104,3 @@ This document outlines all integration tests needed across different systems.
   - **What**: Verify frontmatter is parsed correctly
   - **Expected**: Frontmatter extracted and available
   - **Edge cases**: Missing frontmatter, invalid frontmatter, YAML errors
-

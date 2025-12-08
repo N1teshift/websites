@@ -45,23 +45,23 @@ export interface CreateMyEntity {
 Create service in `lib/[module]Service.ts`:
 
 ```typescript
-import { getFirestoreAdmin, getAdminTimestamp } from '@/features/infrastructure/api/firebase/admin';
-import { logError } from '@/features/infrastructure/logging';
-import type { CreateMyEntity, MyEntity } from '../types';
+import { getFirestoreAdmin, getAdminTimestamp } from "@/features/infrastructure/api/firebase/admin";
+import { logError } from "@/features/infrastructure/logging";
+import type { CreateMyEntity, MyEntity } from "../types";
 
 export async function createMyEntity(data: CreateMyEntity): Promise<string> {
   try {
     const db = getFirestoreAdmin();
-    const docRef = await db.collection('myEntities').add({
+    const docRef = await db.collection("myEntities").add({
       ...data,
       createdAt: getAdminTimestamp(),
       updatedAt: getAdminTimestamp(),
     });
     return docRef.id;
   } catch (error) {
-    logError(error as Error, 'Failed to create entity', {
-      component: 'myEntityService',
-      operation: 'create',
+    logError(error as Error, "Failed to create entity", {
+      component: "myEntityService",
+      operation: "create",
     });
     throw error;
   }
@@ -102,7 +102,7 @@ export function MyEntityList() {
   };
 
   if (loading) return <div>Loading...</div>;
-  
+
   return (
     <div>
       {entities.map(entity => (
@@ -119,9 +119,9 @@ Create custom hooks in `hooks/`:
 
 ```typescript
 // hooks/useMyEntities.ts
-import { useState, useEffect } from 'react';
-import { getMyEntities } from '../lib/myEntityService';
-import type { MyEntity } from '../types';
+import { useState, useEffect } from "react";
+import { getMyEntities } from "../lib/myEntityService";
+import type { MyEntity } from "../types";
 
 export function useMyEntities() {
   const [entities, setEntities] = useState<MyEntity[]>([]);
@@ -154,10 +154,10 @@ Create `index.ts` files:
 
 ```typescript
 // index.ts
-export * from './components';
-export * from './hooks';
-export * from './lib';
-export * from './types';
+export * from "./components";
+export * from "./hooks";
+export * from "./lib";
+export * from "./types";
 ```
 
 ## Step 6: Create Module README
@@ -170,4 +170,3 @@ Create `README.md` following the template in [Documentation Plan](../archive/met
 - [Code Conventions](./code-conventions.md)
 - [Firestore Schemas](../database/schemas.md)
 - [Architecture Overview](./architecture.md)
-

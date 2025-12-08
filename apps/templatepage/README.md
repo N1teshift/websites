@@ -44,11 +44,13 @@ templatepage/
 ## Getting Started
 
 1. **Install dependencies:**
+
    ```bash
    npm install
    ```
 
 2. **Run the development server:**
+
    ```bash
    npm run dev
    ```
@@ -60,12 +62,12 @@ templatepage/
 ### Logging
 
 ```typescript
-import { createComponentLogger } from '@logging/logger';
+import { createComponentLogger } from "@logging/logger";
 
-const logger = createComponentLogger('MyComponent', 'myMethod');
+const logger = createComponentLogger("MyComponent", "myMethod");
 
-logger.info('Component rendered');
-logger.error('Something went wrong', error);
+logger.info("Component rendered");
+logger.error("Something went wrong", error);
 ```
 
 ### Internationalization
@@ -76,7 +78,7 @@ import Layout from '@components/Layout';
 
 export default function MyPage() {
   const { t } = useTranslation('common');
-  
+
   return (
     <Layout translationNs={['common', 'myPage']}>
       <h1>{t('welcome')}</h1>

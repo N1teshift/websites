@@ -9,13 +9,13 @@
  * Explanation of the `power` property, typically used in `TermSettings`,
  * `TermsSettings`, and `ExpressionSettings`. Describes the [power, root] format.
  */
-export const POWER =`
+export const POWER = `
 Power (Array of two numbers representing additional formatting options for raising the term to a power or root from the base term):
    - The first number is a number to which the base term will be raised
    - The second number is a number to which the base term will be rooted
    - Must be an array with exactly 2 numbers
    - [1, 1] means no additional formatting
-`
+`;
 
 /**
  * Explanation of the `powerOrder` property, relevant when both coefficient multiplication
@@ -25,7 +25,7 @@ export const POWER_ORDER = `
 Power Order (Boolean that determines which additional formatting option to apply first):
    - If true, the power formatting will be applied second.
    - If false, the power formatting will be applied first.
-`
+`;
 
 /**
  * Explanation of the `combinationType` property, used in `TermsSettings` and
@@ -48,7 +48,4 @@ Combination Type (determines how a single or multiple terms would be combined to
         * possible to use when only two terms are given
     - "power": constructs a term where first term is considered as a base and second term is considered as an indicator
         * possible to use when only two terms are given
-`
-
-
-
+`;

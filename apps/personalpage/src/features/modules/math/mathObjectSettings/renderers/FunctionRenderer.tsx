@@ -18,50 +18,45 @@ import { FunctionSettings, ExpressionSettings, MathObjectContainerProps } from "
  *   using the `ExpressionRenderer` component.
  */
 const FunctionRenderer: React.FC<MathObjectContainerProps<FunctionSettings>> = ({
-    containerId,
-    settings,
-    updateSettings,
-    startIndex = 1,
-    showDescription = false,
-    objectType = null,
+  containerId,
+  settings,
+  updateSettings,
+  startIndex = 1,
+  showDescription = false,
+  objectType = null,
 }) => {
-    const renderChildren = () => {
-        const currentStartIndex = startIndex;
-        const exprSettings = settings.expression;
-        const commonProps = {
-            containerId: `${containerId}-expression`,
-            settings: exprSettings as ExpressionSettings,
-            updateSettings: (newExprSettings: ExpressionSettings) =>
-                updateSettings({
-                    ...settings,
-                    expression: newExprSettings,
-                }),
-            startIndex: currentStartIndex,
-            showDescription: true,
-            objectType: objectType, // Pass root "function" type
-        };
-
-        return (
-                <ExpressionRenderer {...commonProps} />
-        );
+  const renderChildren = () => {
+    const currentStartIndex = startIndex;
+    const exprSettings = settings.expression;
+    const commonProps = {
+      containerId: `${containerId}-expression`,
+      settings: exprSettings as ExpressionSettings,
+      updateSettings: (newExprSettings: ExpressionSettings) =>
+        updateSettings({
+          ...settings,
+          expression: newExprSettings,
+        }),
+      startIndex: currentStartIndex,
+      showDescription: true,
+      objectType: objectType, // Pass root "function" type
     };
 
-    return (
-        <BaseMathObjectRenderer
-            containerId={containerId}
-            settings={settings}
-            updateSettings={updateSettings}
-            startIndex={startIndex}
-            showDescription={showDescription}
-            objectType={objectType}
-            settingsContainer={FunctionSettingsContainer}
-            supportsInterfaceToggle={false} // No simple/complex toggle for now
-            childrenRenderer={() => renderChildren()}
-        />
-    );
+    return <ExpressionRenderer {...commonProps} />;
+  };
+
+  return (
+    <BaseMathObjectRenderer
+      containerId={containerId}
+      settings={settings}
+      updateSettings={updateSettings}
+      startIndex={startIndex}
+      showDescription={showDescription}
+      objectType={objectType}
+      settingsContainer={FunctionSettingsContainer}
+      supportsInterfaceToggle={false} // No simple/complex toggle for now
+      childrenRenderer={() => renderChildren()}
+    />
+  );
 };
 
 export default FunctionRenderer;
-
-
-

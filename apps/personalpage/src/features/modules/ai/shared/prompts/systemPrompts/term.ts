@@ -4,7 +4,7 @@
  * This prompt guides the LLM to identify properties like power, power order, term IDs (related to polynomial structure),
  * and variable name. It also instructs the LLM to extract prompt parts describing the term's coefficients.
  */
-import {POWER, POWER_ORDER} from "./commonConstants"
+import { POWER, POWER_ORDER } from "./commonConstants";
 
 /** @internal Explanation of the `termIds` property for terms. */
 const TERM_IDS = `
@@ -13,7 +13,7 @@ Term IDs (Array of strings that are integer numbers):
    - The lenght of "termIds" can be considered as the number of terms in the polynomial
    - The biggest termId can be considered as the order of the base term
    - When in the request user specified the lenght of the term, it means that this must be the lenght of the termIds array
-`
+`;
 
 /** @internal Default values for term properties. */
 const DEFAULT_VALUES = `
@@ -23,7 +23,7 @@ If specific properties are not provided in the request, always use these default
 - termIds: ["2"]
 - powerOrder: true
 - variableName: "x"
-`
+`;
 
 /** @internal Aggregates term property explanations and defaults. */
 const PROPERTIES = `
@@ -50,7 +50,7 @@ A "term" object type object in the system is what in mathematics we would consid
 A "term" in the system is constructed by first building a base term - polynomial, and then applying additional optional formatting.
 Base term is constructed by using the termIds and variableName properties.
 Additional formatting is applied to the base term using the power and powerOrder properties.
-`
+`;
 
 /**
  * @internal Instructions for extracting prompt parts related to the term's coefficients.
@@ -73,7 +73,4 @@ export const TERM_SYSTEM_PROMPT = `
   ${PROPERTIES}
   
   ${SUB_OBJECT_PROMPT_PARTS}
-`
-
-
-
+`;

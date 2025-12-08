@@ -5,10 +5,12 @@ This directory contains comprehensive test plans organized by feature/module. Ea
 ## File Organization
 
 ### Core Infrastructure
+
 - **infrastructure-tests.md** - Firebase configuration, authentication, logging, API route handlers
 - **utilities-tests.md** - Utility functions (object utils, timestamps, roles, timezones, etc.)
 
 ### Feature Modules
+
 - **games-tests.md** - Games service, API routes, components, hooks, ELO calculator, replay parser
 - **players-tests.md** - Player service, API routes, components, hooks, player system logic
 - **blog-tests.md** - Blog service, API routes, components, hooks, post loading/serialization
@@ -19,14 +21,17 @@ This directory contains comprehensive test plans organized by feature/module. Ea
 - **guides-tests.md** - Guides data loading, utilities, components, hooks
 
 ### Tools & Utilities
+
 - **map-analyzer-tests.md** - Map parsing, data extraction, visualization
 - **tools-tests.md** - Icon mapper, duel simulator
 
 ### Integration & E2E
+
 - **integration-tests.md** - Firebase, Next.js, NextAuth, MDX integration
 - **e2e-tests.md** - End-to-end scenario tests for critical user flows
 
 ### Quality & Performance
+
 - **performance-tests.md** - Database query performance, component rendering, API response times
 - **edge-cases-tests.md** - Invalid input handling, network errors, database errors, boundary conditions
 - ~~**security-tests.md**~~ - ✅ Complete (All security tests implemented in `__tests__/security/`)
@@ -48,6 +53,7 @@ Each test item follows this format:
 ## Usage
 
 These test plans can be used to:
+
 1. Assign test development tasks to developers
 2. Track test coverage and completion
 3. Guide test implementation
@@ -76,4 +82,3 @@ These test plans can be used to:
 - Use descriptive test names
 - Test behavior, not implementation
 - Maintain test data fixtures for consistency
-

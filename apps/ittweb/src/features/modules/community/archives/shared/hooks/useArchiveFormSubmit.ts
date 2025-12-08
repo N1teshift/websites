@@ -1,12 +1,12 @@
-import { useState } from 'react';
-import { ArchiveEntry, CreateArchiveEntry, ArchiveEntryType } from '@/types/archive';
-import { validateArchiveForm } from '../utils/archiveValidation';
-import { buildDateInfo, computeEffectiveSectionOrder, SectionKey } from '../utils/archiveFormUtils';
-import { uploadSelectedMedia } from './useArchiveMedia';
-import { logError } from '@websites/infrastructure/logging';
+import { useState } from "react";
+import { ArchiveEntry, CreateArchiveEntry, ArchiveEntryType } from "@/types/archive";
+import { validateArchiveForm } from "../utils/archiveValidation";
+import { buildDateInfo, computeEffectiveSectionOrder, SectionKey } from "../utils/archiveFormUtils";
+import { uploadSelectedMedia } from "./useArchiveMedia";
+import { logError } from "@websites/infrastructure/logging";
 
 interface UseArchiveFormSubmitProps {
-  mode: 'create' | 'edit';
+  mode: "create" | "edit";
   initialEntry?: ArchiveEntry;
   formData: {
     title: string;
@@ -45,23 +45,24 @@ export function useArchiveFormSubmit({
   onSuccess,
 }: UseArchiveFormSubmitProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setError('');
+    setError("");
 
     try {
       // Validate and cast dateType
-      const dateType: 'single' | 'undated' = (formData.dateType === 'single' || formData.dateType === 'undated') 
-        ? formData.dateType 
-        : 'single';
-      
+      const dateType: "single" | "undated" =
+        formData.dateType === "single" || formData.dateType === "undated"
+          ? formData.dateType
+          : "single";
+
       const validationError = validateArchiveForm({
         title: formData.title,
         content: formData.content,
-        author: mode === 'create' ? (defaultAuthor || '') : formData.author || '',
+        author: mode === "create" ? defaultAuthor || "" : formData.author || "",
         dateType: dateType,
         singleDate: formData.singleDate,
         approximateText: formData.approximateText,
@@ -72,21 +73,21 @@ export function useArchiveFormSubmit({
       }
 
       // Uploads - use entryId for edit mode to store files in archives/{entryId}/ structure
-      const entryId = mode === 'edit' ? initialEntry?.id : undefined;
+      const entryId = mode === "edit" ? initialEntry?.id : undefined;
       const { images, replayUrl } = await uploadSelectedMedia(
         imageFile,
         imageFiles,
         currentImages,
         mode,
         replayFile,
-        entryId,
+        entryId
       );
 
       // DateInfo
       const dateInfo = buildDateInfo({
         dateType,
         singleDate: formData.singleDate,
-        approximateText: formData.approximateText
+        approximateText: formData.approximateText,
       });
 
       // Effective order
@@ -98,22 +99,30 @@ export function useArchiveFormSubmit({
       const hasText = Boolean(formData.content && formData.content.trim().length > 0);
       // Cast sectionOrder to proper type
       const typedSectionOrder = sectionOrder as SectionKey[];
-      const effectiveSectionOrder = computeEffectiveSectionOrder(typedSectionOrder, { hasImages, hasVideo, hasTwitch, hasReplay, hasGame, hasText });
+      const effectiveSectionOrder = computeEffectiveSectionOrder(typedSectionOrder, {
+        hasImages,
+        hasVideo,
+        hasTwitch,
+        hasReplay,
+        hasGame,
+        hasText,
+      });
 
-      if (mode === 'create') {
+      if (mode === "create") {
         const payload: CreateArchiveEntry = {
           title: formData.title.trim(),
           content: formData.content.trim(),
-          creatorName: (defaultAuthor || formData.author || '').trim(), 
+          creatorName: (defaultAuthor || formData.author || "").trim(),
           dateInfo,
-          ...(formData.entryType && (formData.entryType === 'story' || formData.entryType === 'changelog') 
-            ? { entryType: formData.entryType as ArchiveEntryType } 
+          ...(formData.entryType &&
+          (formData.entryType === "story" || formData.entryType === "changelog")
+            ? { entryType: formData.entryType as ArchiveEntryType }
             : {}),
           ...(images && images.length > 0 ? { images } : {}),
           ...(formData.mediaUrl ? { videoUrl: formData.mediaUrl.trim() } : {}),
           ...(formData.twitchClipUrl ? { twitchClipUrl: formData.twitchClipUrl.trim() } : {}),
           ...(replayUrl ? { replayUrl } : {}),
-          sectionOrder: effectiveSectionOrder
+          sectionOrder: effectiveSectionOrder,
         };
         await onSubmit(payload);
         onSuccess();
@@ -127,17 +136,20 @@ export function useArchiveFormSubmit({
         creatorName: formData.author.trim(),
         dateInfo,
         ...(images && images.length > 0 ? { images } : {}),
-        ...(formData.mediaUrl ? { videoUrl: formData.mediaUrl.trim() } : { videoUrl: '' }),
-        ...(formData.twitchClipUrl ? { twitchClipUrl: formData.twitchClipUrl.trim() } : { twitchClipUrl: '' }),
+        ...(formData.mediaUrl ? { videoUrl: formData.mediaUrl.trim() } : { videoUrl: "" }),
+        ...(formData.twitchClipUrl
+          ? { twitchClipUrl: formData.twitchClipUrl.trim() }
+          : { twitchClipUrl: "" }),
         ...(replayUrl ? { replayUrl } : {}),
-        sectionOrder: effectiveSectionOrder
+        sectionOrder: effectiveSectionOrder,
       };
-      
+
       // Only include entryType if it has a value (to avoid undefined)
       if (formData.entryType) {
-        const entryType: ArchiveEntryType | undefined = (formData.entryType === 'story' || formData.entryType === 'changelog')
-          ? formData.entryType as ArchiveEntryType
-          : undefined;
+        const entryType: ArchiveEntryType | undefined =
+          formData.entryType === "story" || formData.entryType === "changelog"
+            ? (formData.entryType as ArchiveEntryType)
+            : undefined;
         updates.entryType = entryType;
       } else {
         // Set to undefined to clear existing value if any
@@ -146,13 +158,13 @@ export function useArchiveFormSubmit({
       await onSubmit(updates);
       onSuccess();
     } catch (err) {
-      const error = err instanceof Error ? err : new Error('Unknown error');
-      logError(error, 'Failed to submit archive entry', {
-        component: 'useArchiveFormSubmit',
-        operation: 'handleSubmit',
+      const error = err instanceof Error ? err : new Error("Unknown error");
+      logError(error, "Failed to submit archive entry", {
+        component: "useArchiveFormSubmit",
+        operation: "handleSubmit",
         mode,
       });
-      setError(error.message || 'Failed to submit archive entry');
+      setError(error.message || "Failed to submit archive entry");
     } finally {
       setIsSubmitting(false);
     }
@@ -165,6 +177,3 @@ export function useArchiveFormSubmit({
     setError,
   };
 }
-
-
-

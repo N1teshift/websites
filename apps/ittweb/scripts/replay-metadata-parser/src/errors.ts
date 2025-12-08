@@ -11,11 +11,7 @@ export class ReplayMetaError extends Error {
   readonly code: ReplayMetaErrorCode;
   readonly details?: Record<string, unknown>;
 
-  constructor(
-    message: string,
-    code: ReplayMetaErrorCode,
-    details?: Record<string, unknown>
-  ) {
+  constructor(message: string, code: ReplayMetaErrorCode, details?: Record<string, unknown>) {
     super(message);
     this.name = "ReplayMetaError";
     this.code = code;
@@ -28,5 +24,3 @@ export const assert = (condition: unknown, error: ReplayMetaError): void => {
     throw error;
   }
 };
-
-

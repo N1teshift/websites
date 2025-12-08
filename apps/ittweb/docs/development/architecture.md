@@ -211,24 +211,26 @@ The `games` collection uses a **unified design** that stores both scheduled and 
 
 - **`gameState` field**: Distinguishes between `'scheduled'` and `'completed'` games
 - **Single `gameId` system**: Both scheduled and completed games share the same numeric `gameId` identifier
-- **Conditional fields**: 
+- **Conditional fields**:
   - Scheduled games: `scheduledDateTime`, `timezone`, `teamSize`, `gameType`, `participants`, `status`
   - Completed games: `datetime`, `duration`, `gamename`, `map`, `category`, `players`, `replayUrl`
 - **Common fields**: Both types share `creatorName`, `createdByDiscordId`, `createdAt`, `updatedAt`, `isDeleted`
 
 **Benefits**:
+
 - Single source of truth for all game data
 - Easier querying across game types
 - Simplified linking between scheduled and completed games
 - Consistent data structure and validation
 
 **Querying**: Use `gameState` filter to query specific game types:
+
 ```typescript
 // Get scheduled games
-const scheduled = await getGames({ gameState: 'scheduled' });
+const scheduled = await getGames({ gameState: "scheduled" });
 
 // Get completed games
-const completed = await getGames({ gameState: 'completed' });
+const completed = await getGames({ gameState: "completed" });
 ```
 
 ### Design Principles
@@ -333,4 +335,3 @@ Error handling follows a three-layer pattern: Service Layer (catch and log), API
 - [Module Documentation](../src/features/modules/README.md)
 - [API Reference](./api/README.md)
 - [Firestore Schemas](./database/schemas.md)
-

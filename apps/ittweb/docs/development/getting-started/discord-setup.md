@@ -31,6 +31,7 @@ DISCORD_CLIENT_SECRET=your-discord-client-secret
 ## Get Discord Server ID (Optional)
 
 If using guild-specific features:
+
 1. Enable Developer Mode in Discord
 2. Right-click server → Copy Server ID
 3. Use in application if needed
@@ -55,6 +56,7 @@ If using guild-specific features:
 ## Production Environment
 
 For production, update the redirect URI in Discord Developer Portal:
+
 - Production: `https://your-domain.com/api/auth/callback/discord`
 - Update `NEXTAUTH_URL` in production environment variables
 
@@ -62,4 +64,3 @@ For production, update the redirect URI in Discord Developer Portal:
 
 - [Environment Setup](./setup.md)
 - [Authentication & Authorization](../../production/security/authentication-authorization.md)
-

@@ -29,7 +29,7 @@ function synchronizeCollection<T>(
 ): T[] {
   // Create a new array to avoid mutation
   const result = [...currentItems];
-  
+
   // Add items if needed
   while (result.length < targetCount) {
     if (getNewItem) {
@@ -43,12 +43,12 @@ function synchronizeCollection<T>(
       result.push({ ...defaultItem });
     }
   }
-  
+
   // Remove items if needed
   while (result.length > targetCount) {
     result.pop();
   }
-  
+
   return result;
 }
 
@@ -86,11 +86,11 @@ function useCollectionCountSync<T, S extends Record<string, unknown>>(
   // Ensure type safety
   const items = settings[itemsProperty] as unknown as T[];
   const count = settings[countProperty] as unknown as number;
-  
+
   // Effect to sync array when count changes
   useEffect(() => {
     const currentItems = items;
-    
+
     if (currentItems.length !== count) {
       const updatedItems = synchronizeCollection(
         currentItems,
@@ -99,27 +99,37 @@ function useCollectionCountSync<T, S extends Record<string, unknown>>(
         undefined,
         interfaceType
       );
-      
+
       // Only update if there was a change
       if (JSON.stringify(updatedItems) !== JSON.stringify(currentItems)) {
         const updates: Partial<S> = {
-          [itemsProperty]: updatedItems
+          [itemsProperty]: updatedItems,
         } as unknown as Partial<S>;
-        
+
         // Apply any additional updates from the callback
         if (onCountChange) {
           const additionalUpdates = onCountChange(count, updatedItems);
           Object.assign(updates, additionalUpdates);
         }
-        
+
         updateSettings({
           ...settings,
-          ...updates
+          ...updates,
         });
       }
     }
-  }, [settings, itemsProperty, countProperty, defaultItem, interfaceType, onCountChange, updateSettings, count, items]);
-  
+  }, [
+    settings,
+    itemsProperty,
+    countProperty,
+    defaultItem,
+    interfaceType,
+    onCountChange,
+    updateSettings,
+    count,
+    items,
+  ]);
+
   /**
    * Handle count change with optional additional logic
    */
@@ -131,28 +141,25 @@ function useCollectionCountSync<T, S extends Record<string, unknown>>(
       undefined,
       interfaceType
     );
-    
+
     const updates: Partial<S> = {
       [countProperty]: newCount,
-      [itemsProperty]: updatedItems
+      [itemsProperty]: updatedItems,
     } as unknown as Partial<S>;
-    
+
     // Apply any additional updates from the callback
     if (onCountChange) {
       const additionalUpdates = onCountChange(newCount, updatedItems);
       Object.assign(updates, additionalUpdates);
     }
-    
+
     updateSettings({
       ...settings,
-      ...updates
+      ...updates,
     });
   };
-  
+
   return { handleCountChange };
-} 
+}
 
 export default useCollectionCountSync;
-
-
-

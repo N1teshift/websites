@@ -5,6 +5,7 @@
 ## Quick Start
 
 Firestore requires **composite indexes** for queries that combine:
+
 - Multiple `where` clauses on different fields
 - A `where` clause with `orderBy` on a different field
 - Multiple `orderBy` clauses
@@ -20,10 +21,12 @@ Firestore requires **composite indexes** for queries that combine:
 Each index supports **one specific query pattern**. The index fields must **exactly match** your query's field order and sort direction.
 
 **Example:**
+
 - Query: `WHERE isDeleted=false AND gameState='scheduled' ORDER BY scheduledDateTime ASC`
 - Needs index: `[isDeleted, gameState, scheduledDateTime]` (all Ascending)
 
 **Key Rules:**
+
 1. **Field order matters** - Must match query exactly
 2. **Sort direction matters** - Asc/Desc must match
 3. **One index = one pattern** - Can't reuse one index for different patterns
@@ -46,6 +49,7 @@ Each index supports **one specific query pattern**. The index fields must **exac
 ### Method 2: Error Link (Automatic)
 
 When a query fails due to missing index, Firestore provides a link in the error message:
+
 1. Run your application and trigger the query
 2. Check error message for a link like: `https://console.firebase.google.com/.../indexes?create_composite=...`
 3. Click the link - it pre-populates the index form
@@ -58,24 +62,28 @@ When a query fails due to missing index, Firestore provides a link in the error 
 ### Games Collection (`games`)
 
 #### Index 1: Scheduled Games
+
 **Fields**: `isDeleted` (Asc), `gameState` (Asc), `scheduledDateTime` (Asc)  
 **Query**: `WHERE isDeleted=false AND gameState='scheduled' ORDER BY scheduledDateTime ASC`  
 **Priority**: Required  
 **Location**: `src/features/modules/games/lib/gameService.read.ts` (line 148)
 
 #### Index 3: Completed Games
+
 **Fields**: `isDeleted` (Asc), `gameState` (Asc), `datetime` (Desc)  
 **Query**: `WHERE isDeleted=false AND gameState='completed' ORDER BY datetime DESC`  
 **Priority**: Required  
 **Location**: `src/features/modules/games/lib/gameService.read.ts` (line 166)
 
 #### Index 4: Completed Games by Category
+
 **Fields**: `isDeleted` (Asc), `gameState` (Asc), `category` (Asc), `datetime` (Desc)  
 **Query**: `WHERE isDeleted=false AND gameState='completed' AND category='1v1' ORDER BY datetime DESC`  
 **Priority**: Required  
 **Location**: `src/features/modules/games/lib/gameService.read.ts` (line 159)
 
 #### Index 5: Game ID Ordering
+
 **Fields**: `gameId` (Desc)  
 **Query**: `ORDER BY gameId DESC LIMIT 1`  
 **Priority**: Recommended  
@@ -84,12 +92,14 @@ When a query fails due to missing index, Firestore provides a link in the error 
 **Note**: Firestore automatically creates single-field indexes. If query works, index exists.
 
 #### Index 6: Scheduled Games - Game ID
+
 **Fields**: `gameState` (Asc), `gameId` (Desc)  
 **Query**: `WHERE gameState='scheduled' ORDER BY gameId DESC LIMIT 1`  
 **Priority**: Required  
 **Location**: `src/features/modules/scheduled-games/lib/scheduledGameService.ts` (lines 68, 85)
 
 #### Index 8: All Games (No gameState filter)
+
 **Fields**: `isDeleted` (Asc), `createdAt` (Desc)  
 **Query**: `WHERE isDeleted=false ORDER BY createdAt DESC`  
 **Priority**: Optional  
@@ -100,6 +110,7 @@ When a query fails due to missing index, Firestore provides a link in the error 
 ### Posts Collection (`posts`)
 
 #### Index 9: Published Posts
+
 **Fields**: `published` (Asc), `date` (Desc)  
 **Query**: `WHERE published=true ORDER BY date DESC`  
 **Priority**: Required  
@@ -112,12 +123,14 @@ When a query fails due to missing index, Firestore provides a link in the error 
 > **Note**: This denormalized collection optimizes standings queries. Created 2025-01-15.
 
 #### Index 10: Standings by Category
+
 **Fields**: `category` (Asc), `games` (Asc), `score` (Desc)  
 **Query**: `WHERE category='1v1' AND games>=10 ORDER BY score DESC`  
 **Priority**: Required  
 **Location**: `src/features/modules/standings/lib/standingsService.ts` (lines 85-90, 142-147)
 
 #### Index 11: Standings - Alternative Sorting (Optional)
+
 **Fields**: `category` (Asc), `games` (Desc), `score` (Desc)  
 **Query**: `WHERE category='default' ORDER BY games DESC, score DESC`  
 **Priority**: Optional  
@@ -128,12 +141,14 @@ When a query fails due to missing index, Firestore provides a link in the error 
 ### Entries Collection (`entries`)
 
 #### Index 12: Entries by Date
+
 **Fields**: `isDeleted` (Asc), `date` (Desc)  
 **Query**: `WHERE isDeleted=false ORDER BY date DESC`  
 **Priority**: Optional  
 **Location**: `src/features/modules/entries/lib/entryService.ts` (lines 119-121, 155-156)
 
 #### Index 13: Entries by Content Type
+
 **Fields**: `isDeleted` (Asc), `contentType` (Asc), `date` (Desc)  
 **Query**: `WHERE isDeleted=false AND contentType='post' ORDER BY date DESC`  
 **Priority**: Optional  
@@ -143,19 +158,19 @@ When a query fails due to missing index, Firestore provides a link in the error 
 
 ## Quick Reference Table
 
-| Index | Collection | Fields | Priority | Status |
-|-------|-----------|--------|----------|--------|
-| 1 | `games` | `isDeleted` (Asc), `gameState` (Asc), `scheduledDateTime` (Asc) | Required | ✅ Created |
-| 3 | `games` | `isDeleted` (Asc), `gameState` (Asc), `datetime` (Desc) | Required | ✅ Created |
-| 4 | `games` | `isDeleted` (Asc), `gameState` (Asc), `category` (Asc), `datetime` (Desc) | Required | ✅ Created |
-| 5 | `games` | `gameId` (Desc) | Recommended | ⚠️ Auto-created |
-| 6 | `games` | `gameState` (Asc), `gameId` (Desc) | Required | ❌ Missing |
-| 8 | `games` | `isDeleted` (Asc), `createdAt` (Desc) | Optional | ❌ Missing |
-| 9 | `posts` | `published` (Asc), `date` (Desc) | Required | ✅ Created |
-| 10 | `playerCategoryStats` | `category` (Asc), `games` (Asc), `score` (Desc) | Required | ✅ Created |
-| 11 | `playerCategoryStats` | `category` (Asc), `games` (Desc), `score` (Desc) | Optional | ❌ Missing |
-| 12 | `entries` | `isDeleted` (Asc), `date` (Desc) | Optional | ✅ Created |
-| 13 | `entries` | `isDeleted` (Asc), `contentType` (Asc), `date` (Desc) | Optional | ✅ Created |
+| Index | Collection            | Fields                                                                    | Priority    | Status          |
+| ----- | --------------------- | ------------------------------------------------------------------------- | ----------- | --------------- |
+| 1     | `games`               | `isDeleted` (Asc), `gameState` (Asc), `scheduledDateTime` (Asc)           | Required    | ✅ Created      |
+| 3     | `games`               | `isDeleted` (Asc), `gameState` (Asc), `datetime` (Desc)                   | Required    | ✅ Created      |
+| 4     | `games`               | `isDeleted` (Asc), `gameState` (Asc), `category` (Asc), `datetime` (Desc) | Required    | ✅ Created      |
+| 5     | `games`               | `gameId` (Desc)                                                           | Recommended | ⚠️ Auto-created |
+| 6     | `games`               | `gameState` (Asc), `gameId` (Desc)                                        | Required    | ❌ Missing      |
+| 8     | `games`               | `isDeleted` (Asc), `createdAt` (Desc)                                     | Optional    | ❌ Missing      |
+| 9     | `posts`               | `published` (Asc), `date` (Desc)                                          | Required    | ✅ Created      |
+| 10    | `playerCategoryStats` | `category` (Asc), `games` (Asc), `score` (Desc)                           | Required    | ✅ Created      |
+| 11    | `playerCategoryStats` | `category` (Asc), `games` (Desc), `score` (Desc)                          | Optional    | ❌ Missing      |
+| 12    | `entries`             | `isDeleted` (Asc), `date` (Desc)                                          | Optional    | ✅ Created      |
+| 13    | `entries`             | `isDeleted` (Asc), `contentType` (Asc), `date` (Desc)                     | Optional    | ✅ Created      |
 
 **Note**: Index 2 and 7 use the same indexes as 1 and 3 respectively (range filters on `orderBy` field don't need separate indexes).
 
@@ -166,6 +181,7 @@ When a query fails due to missing index, Firestore provides a link in the error 
 **Last Updated**: 2025-01-15
 
 ### Summary
+
 - ✅ **Created**: 7 required indexes
 - ❌ **Missing**: 1 required index (Index 6)
 - ⚠️ **Auto-created**: 1 index (Index 5 - single-field)
@@ -174,9 +190,11 @@ When a query fails due to missing index, Firestore provides a link in the error 
 ### Priority Actions
 
 **High Priority:**
+
 - **Index 6** (`games` - `gameState` + `gameId`) - Required for `getNextScheduledGameId()`. Query will fail without this index.
 
 **Low Priority:**
+
 - **Index 8** (`games` - `isDeleted` + `createdAt`) - Only needed when querying without `gameState` filter
 - **Index 11** (`playerCategoryStats` - alternative sorting) - Only needed for alternative standings views
 - **Index 12/13** (`entries`) - Optional, improves performance but has fallback logic
@@ -202,6 +220,7 @@ Some queries have fallback logic that works without indexes but is inefficient:
 - **Large collections** (> 10,000 docs): 15-60 minutes
 
 **Status indicators in Firebase Console:**
+
 - 🟡 **Building** - Index is being created, wait for completion
 - ✅ **Enabled** - Index is ready to use
 - ❌ **Error** - Check error message and recreate
@@ -237,11 +256,13 @@ Some queries have fallback logic that works without indexes but is inefficient:
 **⚠️ CRITICAL**: When creating indexes, field order must match exactly.
 
 **Firestore Index Rules:**
+
 1. **Equality filters** (`==`) come first
 2. **Range filters** (`>=`, `<=`, `>`, `<`) come after equality
 3. **OrderBy fields** come last
 
 **Example for Index 10:**
+
 - ✅ Correct: `category` (equality) → `games` (range) → `score` (orderBy)
 - ❌ Wrong: `games` → `category` → `score`
 - ❌ Wrong: `score` → `category` → `games`
@@ -253,4 +274,3 @@ Some queries have fallback logic that works without indexes but is inefficient:
 - [Database Schemas](./schemas.md) - Firestore collection schemas
 - [Firestore Index Documentation](https://firebase.google.com/docs/firestore/query-data/indexing)
 - [Composite Index Guide](https://firebase.google.com/docs/firestore/query-data/index-overview#composite_indexes)
-

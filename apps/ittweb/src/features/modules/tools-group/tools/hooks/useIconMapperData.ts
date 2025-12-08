@@ -1,13 +1,19 @@
-import { useState, useEffect, useMemo } from 'react';
-import { ICON_MAP } from '@/features/modules/content/guides/utils/iconMap';
-import { ITTIconCategory } from '@/features/modules/content/guides/utils/iconUtils';
-import type { IconFile, IconMapping, EntityStat, IconMappingEntry, MarkedForDeletion } from '@/features/modules/tools-group/tools/types/icon-mapper.types';
-import { ABILITIES } from '@/features/modules/content/guides/data/abilities';
-import { BASE_TROLL_CLASSES, DERIVED_CLASSES } from '@/features/modules/content/guides/data/units';
-import { createComponentLogger } from '@websites/infrastructure/logging';
-import { useItemsDataSWR } from '@/features/modules/content/guides/hooks/useItemsDataSWR';
+import { useState, useEffect, useMemo } from "react";
+import { ICON_MAP } from "@/features/modules/content/guides/utils/iconMap";
+import { ITTIconCategory } from "@/features/modules/content/guides/utils/iconUtils";
+import type {
+  IconFile,
+  IconMapping,
+  EntityStat,
+  IconMappingEntry,
+  MarkedForDeletion,
+} from "@/features/modules/tools-group/tools/types/icon-mapper.types";
+import { ABILITIES } from "@/features/modules/content/guides/data/abilities";
+import { BASE_TROLL_CLASSES, DERIVED_CLASSES } from "@/features/modules/content/guides/data/units";
+import { createComponentLogger } from "@websites/infrastructure/logging";
+import { useItemsDataSWR } from "@/features/modules/content/guides/hooks/useItemsDataSWR";
 
-const logger = createComponentLogger('useIconMapperData');
+const logger = createComponentLogger("useIconMapperData");
 
 export function useIconMapperData() {
   const [mappings, setMappings] = useState<IconMapping>({
@@ -40,13 +46,20 @@ export function useIconMapperData() {
           logger.info(`Loaded ${iconsArray.length} icons from API`);
           setIcons(Array.isArray(iconsArray) ? iconsArray : []);
         } else {
-          logger.error('API response not OK', undefined, { status: response.status, statusText: response.statusText });
+          logger.error("API response not OK", undefined, {
+            status: response.status,
+            statusText: response.statusText,
+          });
           setIcons([]); // Set empty array on error
         }
       } catch (error) {
-        logger.error('Failed to load icons', error instanceof Error ? error : new Error(String(error)), {
-          operation: 'loadIcons',
-        });
+        logger.error(
+          "Failed to load icons",
+          error instanceof Error ? error : new Error(String(error)),
+          {
+            operation: "loadIcons",
+          }
+        );
         setIcons([]); // Set empty array on error
       } finally {
         setIsLoading(false);
@@ -56,7 +69,7 @@ export function useIconMapperData() {
   }, []);
 
   const updateMapping = (category: ITTIconCategory, filename: string, gameName: string) => {
-    setMappings(prev => ({
+    setMappings((prev) => ({
       ...prev,
       [category]: {
         ...prev[category],
@@ -66,7 +79,7 @@ export function useIconMapperData() {
   };
 
   const removeMapping = (category: ITTIconCategory, gameName: string) => {
-    setMappings(prev => {
+    setMappings((prev) => {
       const newCategory = { ...prev[category] };
       delete newCategory[gameName];
       return {
@@ -78,13 +91,13 @@ export function useIconMapperData() {
 
   const getExistingMapping = (category: ITTIconCategory, filename: string): string | undefined => {
     const categoryMappings = mappings[category] ?? {};
-    return Object.keys(categoryMappings).find(key => categoryMappings[key] === filename);
+    return Object.keys(categoryMappings).find((key) => categoryMappings[key] === filename);
   };
 
   const getAllMappingsForIcon = (filename: string): IconMappingEntry[] => {
     const allMappings: IconMappingEntry[] = [];
-    const categories: ITTIconCategory[] = ['abilities', 'items', 'buildings', 'trolls'];
-    
+    const categories: ITTIconCategory[] = ["abilities", "items", "buildings", "trolls"];
+
     for (const category of categories) {
       const categoryMappings = mappings[category] ?? {};
       for (const [gameName, mappedFilename] of Object.entries(categoryMappings)) {
@@ -93,12 +106,12 @@ export function useIconMapperData() {
         }
       }
     }
-    
+
     return allMappings;
   };
 
   const toggleMarkForDeletion = (iconPath: string) => {
-    setMarkedForDeletion(prev => {
+    setMarkedForDeletion((prev) => {
       const newSet = new Set(prev);
       if (newSet.has(iconPath)) {
         newSet.delete(iconPath);
@@ -122,7 +135,7 @@ export function useIconMapperData() {
       const abilitiesTotal = ABILITIES?.length || 0;
       const abilitiesMapped = Object.keys(mappings.abilities || {}).length;
       stats.push({
-        category: 'abilities',
+        category: "abilities",
         total: abilitiesTotal,
         mapped: abilitiesMapped,
         unmapped: abilitiesTotal - abilitiesMapped,
@@ -133,7 +146,7 @@ export function useIconMapperData() {
       const unitsTotal = (BASE_TROLL_CLASSES?.length || 0) + (DERIVED_CLASSES?.length || 0);
       const unitsMapped = Object.keys(mappings.trolls || {}).length;
       stats.push({
-        category: 'units',
+        category: "units",
         total: unitsTotal,
         mapped: unitsMapped,
         unmapped: unitsTotal - unitsMapped,
@@ -144,7 +157,7 @@ export function useIconMapperData() {
       const itemsTotal = itemDataset?.length || 0;
       const itemsMapped = Object.keys(mappings.items || {}).length;
       stats.push({
-        category: 'items',
+        category: "items",
         total: itemsTotal,
         mapped: itemsMapped,
         unmapped: itemsTotal - itemsMapped,
@@ -152,17 +165,20 @@ export function useIconMapperData() {
       });
 
       // Buildings
-      const buildingsTotal = itemDataset?.filter(item => item.category === 'buildings').length || 0;
+      const buildingsTotal =
+        itemDataset?.filter((item) => item.category === "buildings").length || 0;
       const buildingsMapped = Object.keys(mappings.buildings || {}).length;
       stats.push({
-        category: 'buildings',
+        category: "buildings",
         total: buildingsTotal,
         mapped: buildingsMapped,
         unmapped: buildingsTotal - buildingsMapped,
         percentage: buildingsTotal > 0 ? Math.round((buildingsMapped / buildingsTotal) * 100) : 0,
       });
     } catch (error) {
-      logger.warn('Error calculating entity stats', { error: error instanceof Error ? error.message : String(error) });
+      logger.warn("Error calculating entity stats", {
+        error: error instanceof Error ? error.message : String(error),
+      });
     }
 
     return stats;
@@ -175,9 +191,8 @@ export function useIconMapperData() {
       ...(DERIVED_CLASSES?.map((cls) => cls.name) || []),
     ];
     const itemNames = itemDataset?.map((item) => item.name) || [];
-    const buildingNames = itemDataset
-      ?.filter((item) => item.category === 'buildings')
-      .map((item) => item.name) || [];
+    const buildingNames =
+      itemDataset?.filter((item) => item.category === "buildings").map((item) => item.name) || [];
 
     return {
       abilities: abilityNames,
@@ -204,5 +219,3 @@ export function useIconMapperData() {
     isMarkedForDeletion,
   };
 }
-
-

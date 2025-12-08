@@ -30,6 +30,7 @@ src/features/modules/calendar/hooks/
 ```
 
 **Benefits:**
+
 - ✅ Keeps main directory clean
 - ✅ Easy to find all tests in one place
 - ✅ Clear separation of source vs tests
@@ -74,6 +75,7 @@ src/features/modules/small-feature/utils/
 ### Your Current Structure:
 
 **Already using co-location** (works fine):
+
 ```
 calendar/utils/
 ├── eventTransformer.ts
@@ -86,6 +88,7 @@ calendar/utils/
 ### Recommended for Larger Directories:
 
 **Use `__tests__` folders** for:
+
 - `calendar/hooks/` (9 files - would become 18 with tests)
 - `calendar/components/` (8 files - would become 16 with tests)
 - Any directory with >5 source files
@@ -132,6 +135,7 @@ hooks/
 ├── useEventRegistration.test.ts       ← Test file
 └── index.ts
 ```
+
 **Result: 18 files in one directory** 😵
 
 ### Option B: Using `__tests__` (Clean)
@@ -157,6 +161,7 @@ hooks/
     ├── useCalendarTimeBounds.test.ts
     └── useEventRegistration.test.ts
 ```
+
 **Result: 9 files + 1 folder = much cleaner!** ✨
 
 ---
@@ -164,11 +169,13 @@ hooks/
 ## Decision Guidelines
 
 ### Use `__tests__` Folder When:
+
 - ✅ Directory has >5 source files
 - ✅ You want to keep the main directory clean
 - ✅ Tests will double the file count
 
 ### Use Co-location When:
+
 - ✅ Directory has ≤5 source files
 - ✅ Clutter isn't a concern
 - ✅ Files are very closely related
@@ -186,6 +193,7 @@ Given your concerns about clutter, **I recommend using `__tests__` folders** for
    - `edtech/progressReport/components/__tests__/`
 
 This gives you the best of both worlds:
+
 - Clean main directories
 - Tests still close to source code
 - Easy to find all tests
@@ -211,6 +219,7 @@ Jest will automatically find it! No config changes needed.
 ## Summary
 
 **My recommendation based on your concern:**
+
 - ✅ Use `__tests__` folders for directories with >5 files
 - ✅ Keep co-location for small directories (≤5 files)
 - ✅ Both patterns work with Jest automatically

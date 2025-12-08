@@ -7,6 +7,7 @@
 ## Overview
 
 This plan outlines the integration of:
+
 1. **Scheduled Games** with **Game Statistics** system
 2. **Warcraft 3 Replay Parser** for automatic game data extraction
 3. **Replay Upload** functionality (reusing Archives infrastructure – see `src/features/shared/lib/archiveService.ts::uploadReplay`)
@@ -18,6 +19,7 @@ This plan outlines the integration of:
 ### 1.1 Database Schema Updates
 
 #### Unified Games Collection (Current Implementation)
+
 The system uses a unified `games` collection with `gameState` field:
 
 ```typescript
@@ -39,6 +41,7 @@ interface Game {
 ### 1.2 Integration Points
 
 #### A. Scheduled Game Detail Page
+
 - Add "Record Result" button when game status is `scheduled` or `completed`
 - Button opens replay upload form OR manual entry form
 - After game is recorded, update scheduled game:
@@ -47,12 +50,15 @@ interface Game {
   - Set `completedAt` timestamp
 
 #### B. Game Creation Flow
+
 When creating a game (via replay or manual):
+
 1. Check if `scheduledGameId` is provided
 2. If yes, update the scheduled game record
 3. Link the game back to scheduled game
 
 #### C. Scheduled Games List
+
 - Show status badges: `Scheduled`, `Completed`, `Cancelled`
 - For completed games, show link to game result
 - Show "Record Result" button for past scheduled games without results
@@ -60,6 +66,7 @@ When creating a game (via replay or manual):
 ### 1.3 API Updates
 
 #### New Endpoint: `POST /api/scheduled-games/[id]/record-result`
+
 ```typescript
 // Body: Either replay file OR manual game data
 {
@@ -70,6 +77,7 @@ When creating a game (via replay or manual):
 ```
 
 #### Update: `PUT /api/scheduled-games/[id]`
+
 - Allow updating status to `completed` or `cancelled`
 - Allow linking `gameId` when result is recorded
 
@@ -80,10 +88,12 @@ When creating a game (via replay or manual):
 ### 2.1 Technology Choice
 
 **Recommended:** Use existing Node.js libraries:
+
 - `@w3g/replay` or `w3gjs` - JavaScript replay parsers
 - Alternative: `w3g` (Python) with Node.js subprocess (if needed)
 
 **Research needed:**
+
 - Check which parser supports W3MMD data (Island Troll Tribes uses W3MMD)
 - Verify compatibility with current Warcraft 3 versions
 
@@ -100,27 +110,29 @@ src/features/modules/games/
 ### 2.3 Data Extraction
 
 #### Basic Game Data
+
 ```typescript
 interface ParsedGameData {
-  gameId: number;              // From replay header
-  datetime: Date;              // Game start time
-  duration: number;            // Game duration in seconds
-  gamename: string;           // Game name
-  map: string;                 // Map name
-  creatorName: string;         // Creator name (standardized field)
+  gameId: number; // From replay header
+  datetime: Date; // Game start time
+  duration: number; // Game duration in seconds
+  gamename: string; // Game name
+  map: string; // Map name
+  creatorName: string; // Creator name (standardized field)
   createdByDiscordId?: string; // Creator Discord ID (standardized field)
 }
 ```
 
 #### Player Data (from W3MMD)
+
 ```typescript
 interface ParsedPlayerData {
-  name: string;                // Player name
-  pid: number;                 // Player ID (0-11)
-  flag: 'winner' | 'loser' | 'drawer';
-  category?: string;           // Game category (from W3MMD vars)
-  class?: string;              // Troll class (from W3MMD vars)
-  randomClass?: boolean;        // Whether class was random
+  name: string; // Player name
+  pid: number; // Player ID (0-11)
+  flag: "winner" | "loser" | "drawer";
+  category?: string; // Game category (from W3MMD vars)
+  class?: string; // Troll class (from W3MMD vars)
+  randomClass?: boolean; // Whether class was random
   kills?: number;
   deaths?: number;
   assists?: number;
@@ -131,6 +143,7 @@ interface ParsedPlayerData {
 ```
 
 #### W3MMD Variables to Extract
+
 - `class` - Troll class name
 - `random` - Random class flag
 - `kills` - Kill count
@@ -180,6 +193,7 @@ export async function parseReplayFile(
 ### 3.1 Reuse Archives Upload Infrastructure
 
 The Archives feature already has:
+
 - ✅ File upload to Firebase Storage (`uploadReplay` in `archiveService.ts`)
 - ✅ File input handling (`MediaSelector` component)
 - ✅ File validation
@@ -187,6 +201,7 @@ The Archives feature already has:
 ### 3.2 New Upload Endpoints
 
 #### Option A: Separate Game Replay Upload
+
 ```
 POST /api/games/upload-replay
 Content-Type: multipart/form-data
@@ -195,12 +210,13 @@ Response: { gameId: string, parsedData: ParseReplayResult }
 ```
 
 #### Option B: Integrated with Game Creation
+
 ```
 POST /api/games
-Body: { 
+Body: {
   type: 'replay' | 'manual',
   replayFile?: File,
-  gameData?: CreateGame 
+  gameData?: CreateGame
 }
 ```
 
@@ -232,22 +248,26 @@ Body: {
 ### 3.4 UI Components
 
 #### A. Replay Upload Form Component
+
 ```typescript
 // src/features/modules/games/components/ReplayUploadForm.tsx
 interface ReplayUploadFormProps {
-  scheduledGameId?: string;    // Optional: Link to scheduled game
+  scheduledGameId?: string; // Optional: Link to scheduled game
   onSuccess: (gameId: string) => void;
   onCancel: () => void;
 }
 ```
 
 #### B. Update Scheduled Game Component
+
 Add "Record Result" section:
+
 - Upload replay button
 - Manual entry button
 - Show linked game result if exists
 
 #### C. Game Creation Form Enhancement
+
 - Add "Upload Replay" option alongside manual entry
 - Show parsed data preview before submission
 - Allow editing parsed data if needed
@@ -257,9 +277,11 @@ Add "Record Result" section:
 ## 4. Implementation Phases
 
 ### Phase 1: Replay Parser Foundation (3-5 days)
+
 **Priority:** P0
 
 #### Tasks:
+
 1. Research and choose replay parser library
 2. Install and test parser library
 3. Create `replayParser.ts` service
@@ -269,6 +291,7 @@ Add "Record Result" section:
 7. Write unit tests for parser
 
 #### Deliverables:
+
 - Working replay parser service
 - Can extract game and player data from .w3g files
 - Validation working
@@ -276,9 +299,11 @@ Add "Record Result" section:
 ---
 
 ### Phase 2: Upload Integration (2-3 days)
+
 **Priority:** P0
 
 #### Tasks:
+
 1. Create `POST /api/games` endpoint that accepts replay files
 2. Integrate parser with upload endpoint
 3. Handle file upload to Firebase Storage
@@ -287,6 +312,7 @@ Add "Record Result" section:
 6. Return appropriate responses
 
 #### Deliverables:
+
 - API endpoint accepts replay files
 - Files uploaded to storage
 - Games created from parsed data
@@ -294,9 +320,11 @@ Add "Record Result" section:
 ---
 
 ### Phase 3: UI Components (3-4 days)
+
 **Priority:** P0
 
 #### Tasks:
+
 1. Create `ReplayUploadForm` component
 2. Add replay upload to game creation flow
 3. Add "Record Result" to scheduled games
@@ -305,6 +333,7 @@ Add "Record Result" section:
 6. Error states and loading states
 
 #### Deliverables:
+
 - Users can upload replays via UI
 - Parsed data shown before submission
 - Scheduled games can link to results
@@ -312,9 +341,11 @@ Add "Record Result" section:
 ---
 
 ### Phase 4: Scheduled Games Integration (2-3 days)
+
 **Priority:** P1
 
 #### Tasks:
+
 1. Update `scheduledGames` schema
 2. Update `games` schema
 3. Add linking logic in game creation
@@ -323,6 +354,7 @@ Add "Record Result" section:
 6. Add "Record Result" button
 
 #### Deliverables:
+
 - Scheduled games link to game results
 - Status updates automatically
 - UI shows completion status
@@ -330,9 +362,11 @@ Add "Record Result" section:
 ---
 
 ### Phase 5: Polish & Error Handling (2-3 days)
+
 **Priority:** P1
 
 #### Tasks:
+
 1. Comprehensive error handling
 2. Invalid replay file handling
 3. Missing W3MMD data handling
@@ -342,6 +376,7 @@ Add "Record Result" section:
 7. Progress indicators for large files
 
 #### Deliverables:
+
 - Robust error handling
 - Good user experience
 - Clear error messages
@@ -351,11 +386,13 @@ Add "Record Result" section:
 ## 5. Technical Considerations
 
 ### 5.1 File Size Limits
+
 - Warcraft 3 replays are typically 100KB - 2MB
 - Set Firebase Storage upload limit appropriately
 - Consider chunked uploads for very large files
 
 ### 5.2 Parser Performance
+
 - Replay parsing can be CPU-intensive
 - Consider:
   - Background job processing (Firebase Functions)
@@ -363,18 +400,21 @@ Add "Record Result" section:
   - Progress updates for long-running parses
 
 ### 5.3 Data Validation
+
 - Not all replays will have W3MMD data
 - Handle missing data gracefully
 - Allow manual correction of parsed data
 - Flag games that need manual review
 
 ### 5.4 Security
+
 - Validate file type (must be .w3g)
 - Scan for malicious files
 - Rate limit uploads per user
 - Authenticate uploads (require login)
 
 ### 5.5 Error Scenarios
+
 - Invalid replay file format
 - Missing W3MMD data
 - Corrupted replay file
@@ -387,17 +427,19 @@ Add "Record Result" section:
 ## 6. Dependencies
 
 ### New NPM Packages Needed
+
 ```json
 {
-  "w3gjs": "^1.0.0",  // Or similar replay parser
+  "w3gjs": "^1.0.0", // Or similar replay parser
   // OR
-  "w3g": "^1.0.0"     // Alternative parser
+  "w3g": "^1.0.0" // Alternative parser
 }
 ```
 
 **Note:** Need to research which parser works best for W3MMD data
 
 ### Firebase Storage
+
 - Already configured (used by Archives)
 - Need to create `replays/` folder structure
 - Set appropriate security rules
@@ -407,18 +449,21 @@ Add "Record Result" section:
 ## 7. Testing Strategy
 
 ### Unit Tests
+
 - Parser functions
 - Data extraction logic
 - Validation logic
 - W3MMD parsing
 
 ### Integration Tests
+
 - End-to-end upload flow
 - Game creation from replay
 - Scheduled game linking
 - Error scenarios
 
 ### Manual Testing
+
 - Upload various replay files
 - Test with missing W3MMD data
 - Test with different game types
@@ -429,11 +474,13 @@ Add "Record Result" section:
 ## 8. Migration Path
 
 ### For Existing Scheduled Games
+
 1. Add migration script to add new fields
 2. Set default values for existing games
 3. Allow manual linking of past games
 
 ### For Future Games
+
 1. New scheduled games automatically support result recording
 2. Games created from replays can link back to scheduled games
 3. Both systems work seamlessly together
@@ -486,7 +533,3 @@ Add "Record Result" section:
 ---
 
 **Document Status:** ✅ Complete - Ready for Implementation
-
-
-
-

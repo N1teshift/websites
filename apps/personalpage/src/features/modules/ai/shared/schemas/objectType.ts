@@ -8,31 +8,28 @@
  * @deprecated This JSON schema is related to the legacy `TypeIdentifierChain`.
  */
 export const typeIdentifierSchema = {
-    "$schema": "http://json-schema.org/draft-07/schema#",
-    "title": "TypeIdentification",
-    "type": "object",
-    "properties": {
-        "objectType": {
-            "type": "string",
-            "enum": [
-                "coefficient",
-                "coefficients",
-                "term",
-                "terms",
-                "expression",
-                "equation",
-                "inequality",
-                "function",
-                "point",
-                "set",
-                "interval"
-            ],
-            "description": "The identified type of mathematical object"
-        }
+  $schema: "http://json-schema.org/draft-07/schema#",
+  title: "TypeIdentification",
+  type: "object",
+  properties: {
+    objectType: {
+      type: "string",
+      enum: [
+        "coefficient",
+        "coefficients",
+        "term",
+        "terms",
+        "expression",
+        "equation",
+        "inequality",
+        "function",
+        "point",
+        "set",
+        "interval",
+      ],
+      description: "The identified type of mathematical object",
     },
-    "required": ["objectType"],
-    "additionalProperties": false
-} as const; 
-
-
-
+  },
+  required: ["objectType"],
+  additionalProperties: false,
+} as const;

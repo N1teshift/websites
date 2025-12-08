@@ -9,6 +9,7 @@ Common issues and solutions.
 **Symptoms**: Console errors about Firebase, "Firebase: No Firebase App '[DEFAULT]' has been created"
 
 **Solutions**:
+
 1. Check all `NEXT_PUBLIC_FIREBASE_*` environment variables are set
 2. Verify `.env.local` file exists in project root
 3. Restart dev server after changing environment variables
@@ -16,9 +17,10 @@ Common issues and solutions.
 5. Verify no typos in variable names
 
 **Debug**:
+
 ```typescript
 // Check config is loaded
-import { getFirebaseClientConfig } from '@/features/infrastructure/api/firebase/config';
+import { getFirebaseClientConfig } from "@/features/infrastructure/api/firebase/config";
 console.log(getFirebaseClientConfig());
 ```
 
@@ -27,6 +29,7 @@ console.log(getFirebaseClientConfig());
 **Symptoms**: Login redirects fail, "OAuth error", session not persisting
 
 **Solutions**:
+
 1. Verify `NEXTAUTH_SECRET` is set and valid
 2. Check `NEXTAUTH_URL` matches your dev URL exactly
 3. Verify Discord redirect URI matches: `http://localhost:3000/api/auth/callback/discord`
@@ -35,6 +38,7 @@ console.log(getFirebaseClientConfig());
 6. Check Discord application has correct scopes enabled
 
 **Debug**:
+
 - Check browser console for NextAuth errors
 - Check server console for authentication logs
 - Verify Discord OAuth settings in Discord Developer Portal
@@ -44,6 +48,7 @@ console.log(getFirebaseClientConfig());
 **Symptoms**: "Missing or insufficient permissions" errors
 
 **Solutions**:
+
 1. Check Firestore security rules allow the operation
 2. Verify user is authenticated (for write operations)
 3. Check Firebase Admin is initialized (for server-side operations)
@@ -51,6 +56,7 @@ console.log(getFirebaseClientConfig());
 5. Verify service account has correct permissions
 
 **Common Rule Issues**:
+
 ```javascript
 // Allow public read, authenticated write
 allow read: if true;
@@ -65,6 +71,7 @@ allow write: if false;  // Only server can write
 **Symptoms**: "Failed to initialize Firebase Admin", authentication errors
 
 **Solutions**:
+
 1. Verify JSON is valid and properly escaped in `.env.local`
 2. Check service account has correct permissions
 3. Verify project ID matches in key and env vars
@@ -72,6 +79,7 @@ allow write: if false;  // Only server can write
 5. For production, consider using Application Default Credentials
 
 **Format Check**:
+
 ```bash
 # Service account key should be a single-line JSON string
 FIREBASE_SERVICE_ACCOUNT_KEY='{"type":"service_account",...}'
@@ -84,6 +92,7 @@ FIREBASE_SERVICE_ACCOUNT_KEY='{"type":"service_account",...}'
 **Symptoms**: Type errors, compilation failures
 
 **Solutions**:
+
 1. Run `npm run type-check` to see all errors
 2. Check types match Firestore schema exactly
 3. Verify imports are correct
@@ -91,6 +100,7 @@ FIREBASE_SERVICE_ACCOUNT_KEY='{"type":"service_account",...}'
 5. Restart TypeScript server in IDE
 
 **Common Issues**:
+
 - Missing type imports
 - Incorrect Firestore field names (check schema docs)
 - Type mismatches between client/server code
@@ -100,6 +110,7 @@ FIREBASE_SERVICE_ACCOUNT_KEY='{"type":"service_account",...}'
 **Symptoms**: `npm run build` fails
 
 **Solutions**:
+
 1. Fix all TypeScript errors first
 2. Check for missing environment variables
 3. Verify all imports are correct
@@ -111,6 +122,7 @@ FIREBASE_SERVICE_ACCOUNT_KEY='{"type":"service_account",...}'
 **Symptoms**: "Cannot find module" errors
 
 **Solutions**:
+
 1. Check import paths are correct (use `@/` alias)
 2. Verify file exists at path
 3. Check `tsconfig.json` paths configuration
@@ -124,6 +136,7 @@ FIREBASE_SERVICE_ACCOUNT_KEY='{"type":"service_account",...}'
 **Symptoms**: API routes return 500, server errors
 
 **Solutions**:
+
 1. Check server console for error messages
 2. Verify Firebase is properly configured
 3. Check all required fields are provided in request
@@ -132,10 +145,11 @@ FIREBASE_SERVICE_ACCOUNT_KEY='{"type":"service_account",...}'
 6. Review error logs with `logError()` context
 
 **Debug**:
+
 ```typescript
 // Add logging in API route
-const logger = createComponentLogger('api/my-route');
-logger.error('Error details', error, { context });
+const logger = createComponentLogger("api/my-route");
+logger.error("Error details", error, { context });
 ```
 
 ### Pages Show Loading Forever
@@ -143,6 +157,7 @@ logger.error('Error details', error, { context });
 **Symptoms**: Components stuck in loading state
 
 **Solutions**:
+
 1. Check browser console for errors
 2. Verify API endpoints are working (test with curl/Postman)
 3. Check Firestore connection
@@ -150,10 +165,11 @@ logger.error('Error details', error, { context });
 5. Check network tab for failed requests
 
 **Debug**:
+
 ```typescript
 // Add error handling in hooks
 const { data, error, loading } = useMyData();
-if (error) console.error('Hook error:', error);
+if (error) console.error("Hook error:", error);
 ```
 
 ### ELO Not Updating
@@ -161,6 +177,7 @@ if (error) console.error('Hook error:', error);
 **Symptoms**: ELO scores don't change after games
 
 **Solutions**:
+
 1. Check browser console for errors
 2. Verify Firestore rules allow writes to `playerStats`
 3. Check that players array has at least 2 players
@@ -168,6 +185,7 @@ if (error) console.error('Hook error:', error);
 5. Check `updateEloScores()` is executed after game creation
 
 **Debug**:
+
 - Check game creation logs
 - Verify ELO calculator is imported and used
 - Check playerStats collection in Firestore
@@ -177,6 +195,7 @@ if (error) console.error('Hook error:', error);
 **Symptoms**: Lists are empty, data doesn't show
 
 **Solutions**:
+
 1. Verify data exists in Firestore (check Firebase Console)
 2. Check Firestore rules allow reads
 3. Verify queries are correct (filters, pagination)
@@ -184,9 +203,12 @@ if (error) console.error('Hook error:', error);
 5. Verify API routes return data correctly
 
 **Debug**:
+
 ```typescript
 // Test API directly
-fetch('/api/games').then(r => r.json()).then(console.log);
+fetch("/api/games")
+  .then((r) => r.json())
+  .then(console.log);
 ```
 
 ## Performance Issues
@@ -196,6 +218,7 @@ fetch('/api/games').then(r => r.json()).then(console.log);
 **Symptoms**: Pages take long to load
 
 **Solutions**:
+
 1. Check network tab for slow requests
 2. Optimize Firestore queries (add indexes)
 3. Implement pagination for large lists
@@ -207,6 +230,7 @@ fetch('/api/games').then(r => r.json()).then(console.log);
 **Symptoms**: API routes are slow
 
 **Solutions**:
+
 1. Optimize Firestore queries (use indexes, limit results)
 2. Check for N+1 query problems
 3. Implement caching where appropriate
@@ -218,6 +242,7 @@ fetch('/api/games').then(r => r.json()).then(console.log);
 **Symptoms**: Browser/Node.js memory errors
 
 **Solutions**:
+
 1. Check for memory leaks in components (unsubscribe from listeners)
 2. Limit data fetched at once (pagination)
 3. Use React.memo for expensive components
@@ -231,6 +256,7 @@ fetch('/api/games').then(r => r.json()).then(console.log);
 **Symptoms**: Jest tests fail
 
 **Solutions**:
+
 1. Check test setup files are correct
 2. Verify mocks are properly configured
 3. Check Firebase mocks in `__mocks__/`
@@ -242,6 +268,7 @@ fetch('/api/games').then(r => r.json()).then(console.log);
 **Symptoms**: Mocks not working, Firebase errors in tests
 
 **Solutions**:
+
 1. Verify mocks are in `__mocks__/` directory
 2. Check mock file names match module names
 3. Ensure mocks are imported before modules
@@ -254,6 +281,7 @@ fetch('/api/games').then(r => r.json()).then(console.log);
 **Symptoms**: Data validation errors, type mismatches
 
 **Solutions**:
+
 1. Check data matches Firestore schema exactly
 2. Verify field names use standardized names (see schema docs)
 3. Check timestamp formats (Firestore Timestamp vs string)
@@ -265,6 +293,7 @@ fetch('/api/games').then(r => r.json()).then(console.log);
 **Symptoms**: Duplicate entries, data conflicts
 
 **Solutions**:
+
 1. Check for duplicate prevention logic
 2. Verify unique constraints in Firestore
 3. Check for race conditions in creation logic
@@ -275,6 +304,7 @@ fetch('/api/games').then(r => r.json()).then(console.log);
 **Symptoms**: Expected data not found
 
 **Solutions**:
+
 1. Check soft-delete flags (`isDeleted: true`)
 2. Verify queries include all necessary filters
 3. Check Firestore indexes are created
@@ -318,9 +348,9 @@ rm -rf node_modules && npm install
 All errors should be logged with context:
 
 ```typescript
-logError(error, 'Operation failed', {
-  component: 'myComponent',
-  operation: 'create',
+logError(error, "Operation failed", {
+  component: "myComponent",
+  operation: "create",
   userId: user.id,
   // ... other context
 });
@@ -333,18 +363,20 @@ Check logs for these details when debugging.
 ### Third-Party Script Errors (Suppressed in Development)
 
 **Symptoms**: Console shows errors/warnings from third-party scripts:
+
 - `Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at https://googleads.g.doubleclick.net/pagead/id`
 - `Cookie "__Secure-YEC" has been rejected because it is in a cross-site context`
 
-**Explanation**: 
+**Explanation**:
 These errors are **harmless** and don't affect functionality. They occur because:
+
 - YouTube embeds try to load Google Ads tracking scripts
 - Browser security policies block cross-site tracking cookies
 - Third-party tracking scripts are blocked by CSP or browser settings
 
 **Solutions** (Already Implemented):
 
-1. **Privacy-Enhanced YouTube Embeds**: 
+1. **Privacy-Enhanced YouTube Embeds**:
    - YouTube embeds use `youtube-nocookie.com` domain (privacy-enhanced mode)
    - Tracking parameters are disabled (`enablejsapi=0`, `rel=0`, etc.)
    - This reduces tracking attempts and associated errors
@@ -368,6 +400,7 @@ These errors are **harmless** and don't affect functionality. They occur because
 **Note**: These errors are expected behavior when blocking third-party tracking. The suppression is for developer experience only - functionality is not affected.
 
 **To See All Errors**:
+
 - Production builds show all errors (filtering is development-only)
 - Check browser DevTools Network tab for blocked requests
 - Review CSP violations in browser console if needed
@@ -378,5 +411,3 @@ These errors are **harmless** and don't affect functionality. They occur because
 - [Development Guide](../development/development-guide.md)
 - [Testing Guide](./operations/testing-guide.md)
 - [Firestore Schemas](./database/schemas.md)
-
-

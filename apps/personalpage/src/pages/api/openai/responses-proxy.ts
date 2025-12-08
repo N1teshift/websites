@@ -1,15 +1,15 @@
-import { createPostHandler } from '@websites/infrastructure/api';
-import { openaiService } from '@websites/infrastructure/clients/openai/openaiService';
+import { createPostHandler } from "@websites/infrastructure/api";
+import { openaiService } from "@websites/infrastructure/clients/openai/openaiService";
 
 /**
  * Refactored OpenAI responses proxy using centralized API pattern
- * 
+ *
  * This demonstrates how to use the new route handlers and service layers
  * to separate HTTP handling from business logic.
  */
 export default createPostHandler(
   async (req, _res) => {
-    const { 
+    const {
       prompt,
       userPrompt,
       temperature,
@@ -18,12 +18,12 @@ export default createPostHandler(
       systemPrompt,
       textFormat,
       schema,
-      messages
+      messages,
     } = req.body;
-    
+
     // Use prompt if provided, otherwise fall back to userPrompt for backward compatibility
     const finalPrompt = prompt || userPrompt;
-    
+
     // Business logic is now handled by the service layer
     const response = await openaiService.processResponse(finalPrompt, undefined, {
       temperature,
@@ -32,16 +32,13 @@ export default createPostHandler(
       systemPrompt,
       textFormat,
       schema,
-      messages
+      messages,
     });
-    
+
     return response;
   },
   {
     validateBody: openaiService.validateRequest,
-    logRequests: true
+    logRequests: true,
   }
 );
-
-
-

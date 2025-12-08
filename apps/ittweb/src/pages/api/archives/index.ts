@@ -1,10 +1,10 @@
-import type { NextApiRequest } from 'next';
-import { createGetPostHandler } from '@websites/infrastructure/api';
-import { getAllArchiveEntries } from '@/features/modules/community/archives/services/archiveService.server';
-import { createComponentLogger } from '@websites/infrastructure/logging';
-import type { ArchiveEntry } from '@/types/archive';
+import type { NextApiRequest } from "next";
+import { createGetPostHandler } from "@websites/infrastructure/api";
+import { getAllArchiveEntries } from "@/features/modules/community/archives/services/archiveService.server";
+import { createComponentLogger } from "@websites/infrastructure/logging";
+import type { ArchiveEntry } from "@/types/archive";
 
-const logger = createComponentLogger('api/archives');
+const logger = createComponentLogger("api/archives");
 
 /**
  * GET /api/archives - Get all archive entries (public)
@@ -12,14 +12,14 @@ const logger = createComponentLogger('api/archives');
  */
 export default createGetPostHandler<ArchiveEntry[]>(
   async (req: NextApiRequest) => {
-    if (req.method === 'GET') {
+    if (req.method === "GET") {
       // Get all archive entries (public)
       const entries = await getAllArchiveEntries();
-      logger.info('Archive entries fetched', { count: entries.length });
+      logger.info("Archive entries fetched", { count: entries.length });
       return entries;
     }
 
-    throw new Error('Method not allowed');
+    throw new Error("Method not allowed");
   },
   {
     requireAuth: false, // GET is public
@@ -32,5 +32,3 @@ export default createGetPostHandler<ArchiveEntry[]>(
     },
   }
 );
-
-

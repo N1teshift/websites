@@ -1,9 +1,9 @@
-import React from 'react';
-import Image from 'next/image';
-import { timestampToIso } from '@websites/infrastructure/utils';
-import type { ArchiveEntry } from '@/types/archive';
-import YouTubeEmbed from '../../media/components/YouTubeEmbed';
-import TwitchClipEmbed from '../../media/components/TwitchClipEmbed';
+import React from "react";
+import Image from "next/image";
+import { timestampToIso } from "@websites/infrastructure/utils";
+import type { ArchiveEntry } from "@/types/archive";
+import YouTubeEmbed from "../../media/components/YouTubeEmbed";
+import TwitchClipEmbed from "../../media/components/TwitchClipEmbed";
 
 interface NormalArchiveEntryProps {
   entry: ArchiveEntry;
@@ -34,10 +34,14 @@ export function NormalArchiveEntry({
   //   - If it's not a post (entryType !== 'story'), it's a Memory
   // If entry has media (images/video), it's likely a Memory
   // Otherwise, it's a generic Entry
-  const entryTypeLabel = entry.entryType === 'story' ? 'Post' : 
-    entry.id.startsWith('entry-') ? 'Memory' : // Entries from entries collection that aren't posts are memories
-    (entry.images && entry.images.length > 0) || entry.videoUrl || entry.twitchClipUrl ? 'Memory' :
-    'Entry';
+  const entryTypeLabel =
+    entry.entryType === "story"
+      ? "Post"
+      : entry.id.startsWith("entry-")
+        ? "Memory" // Entries from entries collection that aren't posts are memories
+        : (entry.images && entry.images.length > 0) || entry.videoUrl || entry.twitchClipUrl
+          ? "Memory"
+          : "Entry";
 
   const imageUrls: string[] = entry.images && entry.images.length > 0 ? entry.images : [];
   const video: string | undefined = entry.videoUrl;
@@ -55,9 +59,7 @@ export function NormalArchiveEntry({
       <div className="flex justify-between items-start mb-3">
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-1">
-            <h3 className="text-xl font-bold text-amber-300">
-              {entry.title}
-            </h3>
+            <h3 className="text-xl font-bold text-amber-300">{entry.title}</h3>
           </div>
         </div>
         <span className="px-3 py-1 text-xs bg-amber-500/30 border border-amber-400/50 rounded text-amber-300 font-medium">
@@ -74,7 +76,7 @@ export function NormalArchiveEntry({
                 <div
                   key={url + i}
                   className="relative w-full rounded-lg border border-amber-500/30 overflow-hidden cursor-pointer hover:border-amber-500/50 transition-colors"
-                  onClick={() => onImageClick ? onImageClick(url, entry.title) : undefined}
+                  onClick={() => (onImageClick ? onImageClick(url, entry.title) : undefined)}
                 >
                   <Image
                     src={url}
@@ -83,7 +85,7 @@ export function NormalArchiveEntry({
                     height={300}
                     className="w-full h-auto max-h-32 object-cover"
                     sizes="(max-width: 768px) 50vw, 200px"
-                    unoptimized={url.includes('firebasestorage.googleapis.com')}
+                    unoptimized={url.includes("firebasestorage.googleapis.com")}
                   />
                 </div>
               ))}
@@ -113,7 +115,7 @@ export function NormalArchiveEntry({
                   onClick={handleTextExpandClick}
                   className="ml-2 text-amber-400 hover:text-amber-300 underline font-medium transition-colors"
                 >
-                  {isExpanded ? 'Show Less' : 'Show More'}
+                  {isExpanded ? "Show Less" : "Show More"}
                 </button>
               )}
             </p>
@@ -123,9 +125,10 @@ export function NormalArchiveEntry({
 
       {/* Archive metadata */}
       <div className="mt-4 pt-4 border-t-2 border-amber-500/30">
-        <div className="flex items-center justify-between text-xs"> 
+        <div className="flex items-center justify-between text-xs">
           <span className="text-gray-400">
-            Added by <span className="text-amber-400/80">{entry.creatorName}</span> on {new Date(timestampToIso(entry.createdAt)).toLocaleDateString()}
+            Added by <span className="text-amber-400/80">{entry.creatorName}</span> on{" "}
+            {new Date(timestampToIso(entry.createdAt)).toLocaleDateString()}
           </span>
           {(onEdit || (canDelete && onDelete)) && (
             <div className="flex items-center gap-3">
@@ -160,6 +163,3 @@ export function NormalArchiveEntry({
     </div>
   );
 }
-
-
-

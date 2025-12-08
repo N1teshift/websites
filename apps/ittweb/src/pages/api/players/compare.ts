@@ -1,7 +1,7 @@
-import type { NextApiRequest } from 'next';
-import { createApiHandler } from '@websites/infrastructure/api';
-import { comparePlayers } from '@/features/modules/community/players/lib/playerService';
-import type { PlayerSearchFilters } from '@/features/modules/community/players/types';
+import type { NextApiRequest } from "next";
+import { createApiHandler } from "@websites/infrastructure/api";
+import { comparePlayers } from "@/features/modules/community/players/lib/playerService";
+import type { PlayerSearchFilters } from "@/features/modules/community/players/types";
 
 /**
  * GET /api/players/compare?names=... - Compare players
@@ -10,12 +10,15 @@ export default createApiHandler(
   async (req: NextApiRequest) => {
     const namesParam = req.query.names as string;
     if (!namesParam) {
-      throw new Error('Player names are required (comma-separated)');
+      throw new Error("Player names are required (comma-separated)");
     }
 
-    const names = namesParam.split(',').map(n => n.trim()).filter(n => n.length > 0);
+    const names = namesParam
+      .split(",")
+      .map((n) => n.trim())
+      .filter((n) => n.length > 0);
     if (names.length < 2) {
-      throw new Error('At least 2 player names are required');
+      throw new Error("At least 2 player names are required");
     }
 
     const filters: PlayerSearchFilters = {
@@ -27,7 +30,7 @@ export default createApiHandler(
     return await comparePlayers(names, filters);
   },
   {
-    methods: ['GET'],
+    methods: ["GET"],
     requireAuth: false,
     logRequests: true,
     // Cache for 1 minute - comparison data is expensive to compute
@@ -38,10 +41,3 @@ export default createApiHandler(
     },
   }
 );
-
-
-
-
-
-
-

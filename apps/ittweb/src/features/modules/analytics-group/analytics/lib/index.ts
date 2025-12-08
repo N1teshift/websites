@@ -1,6 +1,3 @@
-export * from './analyticsCache';
-export * from './analyticsCacheConfig';
-export * from './analyticsService';
-
-
-
+export * from "./analyticsCache";
+export * from "./analyticsCacheConfig";
+export * from "./analyticsService";

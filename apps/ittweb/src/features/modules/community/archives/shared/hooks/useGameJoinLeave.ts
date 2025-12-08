@@ -1,13 +1,13 @@
-import { useState, useCallback } from 'react';
-import { useSession, signIn } from 'next-auth/react';
-import type { GameWithPlayers } from '@/features/modules/game-management/games/types';
-import { createComponentLogger } from '@websites/infrastructure/logging';
+import { useState, useCallback } from "react";
+import { useSession, signIn } from "next-auth/react";
+import type { GameWithPlayers } from "@/features/modules/game-management/games/types";
+import { createComponentLogger } from "@websites/infrastructure/logging";
 import {
   syncGameAfterUpdate,
   createOptimisticParticipant,
-} from '@/features/modules/community/archives/shared/utils/gameOptimisticUpdates';
+} from "@/features/modules/community/archives/shared/utils/gameOptimisticUpdates";
 
-const logger = createComponentLogger('useGameJoinLeave');
+const logger = createComponentLogger("useGameJoinLeave");
 
 interface UseGameJoinLeaveProps {
   localGames: GameWithPlayers[];
@@ -44,24 +44,24 @@ export function useGameJoinLeave({
   const handleGameJoin = useCallback(
     async (gameId: string) => {
       if (!isAuthenticated) {
-        signIn('discord');
+        signIn("discord");
         return;
       }
 
       if (!session?.discordId || !session?.user?.name) {
-        setError('Discord ID or name is missing');
+        setError("Discord ID or name is missing");
         return;
       }
 
       // Prevent concurrent operations on the same game
       if (isLeaving === gameId) {
-        logger.warn('Cannot join game while leaving operation is in progress', { gameId });
+        logger.warn("Cannot join game while leaving operation is in progress", { gameId });
         return;
       }
 
       // Prevent duplicate join operations
       if (isJoining === gameId) {
-        logger.warn('Join operation already in progress', { gameId });
+        logger.warn("Join operation already in progress", { gameId });
         return;
       }
 
@@ -70,7 +70,7 @@ export function useGameJoinLeave({
 
       const gameToUpdate = localGames.find((g) => g.id === gameId);
       if (!gameToUpdate) {
-        setDeleteError('Game not found');
+        setDeleteError("Game not found");
         setIsJoining(false);
         return;
       }
@@ -82,11 +82,11 @@ export function useGameJoinLeave({
 
       // If already a participant locally, just sync with server to ensure consistency
       if (isAlreadyParticipant) {
-        logger.debug('User already a participant locally, syncing with server', { gameId });
+        logger.debug("User already a participant locally, syncing with server", { gameId });
         try {
           await syncGameAfterUpdate(gameId, setLocalGames, markGameRecentlyUpdated);
         } catch (fetchError) {
-          logger.warn('Error syncing game when already participant', { gameId, error: fetchError });
+          logger.warn("Error syncing game when already participant", { gameId, error: fetchError });
         } finally {
           setIsJoining(false);
         }
@@ -108,23 +108,23 @@ export function useGameJoinLeave({
 
       try {
         const response = await fetch(`/api/games/${gameId}/join`, {
-          method: 'POST',
+          method: "POST",
         });
 
         if (!response.ok) {
           const errorData = await response.json().catch(() => ({}));
-          const errorMessage = errorData.error || 'Failed to join game';
+          const errorMessage = errorData.error || "Failed to join game";
 
           // Handle "already a participant" error gracefully - just sync with server
-          if (errorMessage.includes('already a participant')) {
-            logger.info('User already a participant on server, syncing state', { gameId });
+          if (errorMessage.includes("already a participant")) {
+            logger.info("User already a participant on server, syncing state", { gameId });
             try {
               await syncGameAfterUpdate(gameId, setLocalGames, markGameRecentlyUpdated);
               // Don't show error - desired state is achieved
               setIsJoining(false);
               return;
             } catch (fetchError) {
-              logger.warn('Error syncing game after already participant error', {
+              logger.warn("Error syncing game after already participant error", {
                 gameId,
                 error: fetchError,
               });
@@ -139,7 +139,7 @@ export function useGameJoinLeave({
         try {
           await syncGameAfterUpdate(gameId, setLocalGames, markGameRecentlyUpdated);
         } catch (fetchError) {
-          logger.warn('Error syncing game after join', { gameId, error: fetchError });
+          logger.warn("Error syncing game after join", { gameId, error: fetchError });
         }
       } catch (err) {
         // Revert optimistic update
@@ -148,8 +148,8 @@ export function useGameJoinLeave({
             game.id === gameId ? { ...game, participants: gameToUpdate.participants || [] } : game
           )
         );
-        const error = err instanceof Error ? err : new Error('Unknown error');
-        logger.error('Failed to join game', error);
+        const error = err instanceof Error ? err : new Error("Unknown error");
+        logger.error("Failed to join game", error);
         setDeleteError(error.message);
       } finally {
         setIsJoining(false);
@@ -171,24 +171,24 @@ export function useGameJoinLeave({
   const handleGameLeave = useCallback(
     async (gameId: string) => {
       if (!isAuthenticated) {
-        signIn('discord');
+        signIn("discord");
         return;
       }
 
       if (!session?.discordId) {
-        setError('Discord ID is missing');
+        setError("Discord ID is missing");
         return;
       }
 
       // Prevent concurrent operations on the same game
       if (isJoining === gameId) {
-        logger.warn('Cannot leave game while join operation is in progress', { gameId });
+        logger.warn("Cannot leave game while join operation is in progress", { gameId });
         return;
       }
 
       // Prevent duplicate leave operations
       if (isLeaving === gameId) {
-        logger.warn('Leave operation already in progress', { gameId });
+        logger.warn("Leave operation already in progress", { gameId });
         return;
       }
 
@@ -197,7 +197,7 @@ export function useGameJoinLeave({
 
       const gameToUpdate = localGames.find((g) => g.id === gameId);
       if (!gameToUpdate) {
-        setDeleteError('Game not found');
+        setDeleteError("Game not found");
         setIsLeaving(false);
         return;
       }
@@ -209,11 +209,11 @@ export function useGameJoinLeave({
 
       // If not a participant locally, just sync with server to ensure consistency
       if (!isParticipant) {
-        logger.debug('User not a participant locally, syncing with server', { gameId });
+        logger.debug("User not a participant locally, syncing with server", { gameId });
         try {
           await syncGameAfterUpdate(gameId, setLocalGames, markGameRecentlyUpdated);
         } catch (fetchError) {
-          logger.warn('Error syncing game when not participant', { gameId, error: fetchError });
+          logger.warn("Error syncing game when not participant", { gameId, error: fetchError });
         } finally {
           setIsLeaving(false);
         }
@@ -233,23 +233,23 @@ export function useGameJoinLeave({
 
       try {
         const response = await fetch(`/api/games/${gameId}/leave`, {
-          method: 'POST',
+          method: "POST",
         });
 
         if (!response.ok) {
           const errorData = await response.json().catch(() => ({}));
-          const errorMessage = errorData.error || 'Failed to leave game';
+          const errorMessage = errorData.error || "Failed to leave game";
 
           // Handle "not a participant" error gracefully - just sync with server
-          if (errorMessage.includes('not a participant') || errorMessage.includes('not found')) {
-            logger.info('User not a participant on server, syncing state', { gameId });
+          if (errorMessage.includes("not a participant") || errorMessage.includes("not found")) {
+            logger.info("User not a participant on server, syncing state", { gameId });
             try {
               await syncGameAfterUpdate(gameId, setLocalGames, markGameRecentlyUpdated);
               // Don't show error - desired state is achieved
               setIsLeaving(false);
               return;
             } catch (fetchError) {
-              logger.warn('Error syncing game after not participant error', {
+              logger.warn("Error syncing game after not participant error", {
                 gameId,
                 error: fetchError,
               });
@@ -264,7 +264,7 @@ export function useGameJoinLeave({
         try {
           await syncGameAfterUpdate(gameId, setLocalGames, markGameRecentlyUpdated);
         } catch (fetchError) {
-          logger.warn('Error syncing game after leave', { gameId, error: fetchError });
+          logger.warn("Error syncing game after leave", { gameId, error: fetchError });
         }
       } catch (err) {
         // Revert optimistic update
@@ -273,8 +273,8 @@ export function useGameJoinLeave({
             game.id === gameId ? { ...game, participants: gameToUpdate.participants || [] } : game
           )
         );
-        const error = err instanceof Error ? err : new Error('Unknown error');
-        logger.error('Failed to leave game', error);
+        const error = err instanceof Error ? err : new Error("Unknown error");
+        logger.error("Failed to leave game", error);
         setDeleteError(error.message);
       } finally {
         setIsLeaving(false);
@@ -301,6 +301,3 @@ export function useGameJoinLeave({
     setDeleteError,
   };
 }
-
-
-

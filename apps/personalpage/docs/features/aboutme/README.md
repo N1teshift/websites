@@ -46,6 +46,3 @@ npm run test:windows -- aboutme/components
 
 - [Testing Plan](./TESTING_PLAN.md) - Complete testing strategy
 - [Testing Summary](./TESTING_SUMMARY.md) - Progress and results
-
-
-

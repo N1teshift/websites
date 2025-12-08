@@ -3,6 +3,7 @@
 Test specifications for feature modules: Games, Players, Blog, Archives, Scheduled Games, Standings, Analytics, Guides, Map Analyzer, and Tools.
 
 ### ELO Calculator
+
 - [x] `src/features/modules/games/lib/eloCalculator.ts`
   - Test `calculateEloChange` with win result
   - Test `calculateEloChange` with loss result
@@ -28,6 +29,7 @@ Test specifications for feature modules: Games, Players, Blog, Archives, Schedul
   - Test STARTING_ELO constant
 
 ### Replay Parser
+
 - [x] `src/features/modules/games/lib/replayParser.ts`
   - Test parses W3G replay file
   - Test extracts player information
@@ -37,6 +39,7 @@ Test specifications for feature modules: Games, Players, Blog, Archives, Schedul
   - Test handles corrupted replay file
 
 ### W3MMD Utils
+
 - [x] `src/features/modules/games/lib/w3mmdUtils.ts`
   - Test parses W3MMD data
   - Test extracts statistics
@@ -47,12 +50,14 @@ Test specifications for feature modules: Games, Players, Blog, Archives, Schedul
 ## Player System Tests
 
 ### Player Name Normalization
+
 - [ ] Test case-insensitive normalization
 - [ ] Test trims whitespace
 - [ ] Test handles special characters
 - [ ] Test handles unicode characters
 
 ### Player Statistics
+
 - [ ] Test win rate calculation
 - [ ] Test loss rate calculation
 - [ ] Test total games count
@@ -66,6 +71,7 @@ Test specifications for feature modules: Games, Players, Blog, Archives, Schedul
 ## Blog System Tests
 
 ### Post Loading & Serialization
+
 - [ ] `src/features/modules/blog/lib/posts.ts`
   - Test `listPostSlugs` returns all slugs
   - Test `loadPostBySlug` loads post by slug
@@ -78,6 +84,7 @@ Test specifications for feature modules: Games, Players, Blog, Archives, Schedul
   - Test MDX serialization with frontmatter
 
 ### Post Validation
+
 - [ ] Test slug uniqueness
 - [ ] Test required fields
 - [ ] Test date format validation
@@ -88,6 +95,7 @@ Test specifications for feature modules: Games, Players, Blog, Archives, Schedul
 ## Archive System Tests
 
 ### Archive Data Structure
+
 - [ ] Test archive creation with all fields
 - [ ] Test archive creation with minimal fields
 - [ ] Test archive date info structure
@@ -95,6 +103,7 @@ Test specifications for feature modules: Games, Players, Blog, Archives, Schedul
 - [ ] Test archive media embeds
 
 ### Archive Media Handling
+
 - [ ] Test image URL extraction
 - [ ] Test video URL parsing
 - [ ] Test Twitch clip URL parsing
@@ -106,6 +115,7 @@ Test specifications for feature modules: Games, Players, Blog, Archives, Schedul
 ## Scheduled Games Tests
 
 ### Scheduled Game Service
+
 - [ ] `src/features/modules/scheduled-games/lib/scheduledGameService.ts`
   - Test `deriveGameStatus` returns scheduled/ongoing/awaiting_replay based on start and duration
   - Test `deriveGameStatus` respects stored archived/awaiting_replay/cancelled statuses
@@ -129,6 +139,7 @@ Test specifications for feature modules: Games, Players, Blog, Archives, Schedul
   - Test `leaveScheduledGame` handles leaving non-existent or already-left users
 
 ### Scheduled Games API Routes
+
 - [ ] `src/pages/api/scheduled-games/index.ts`
   - Test GET returns upcoming games by default and honors includePast/includeArchived flags
   - Test POST requires authentication and validates required fields
@@ -170,6 +181,7 @@ Test specifications for feature modules: Games, Players, Blog, Archives, Schedul
   - Test method not allowed for non-POST verbs
 
 ### Scheduled Games Components
+
 - [ ] `src/features/modules/scheduled-games/components/ScheduleGameForm.tsx`
   - Test form renders available team sizes, types, and timezones
   - Test validation for required date/time/timezone/teamSize fields
@@ -206,6 +218,7 @@ Test specifications for feature modules: Games, Players, Blog, Archives, Schedul
   - Test successful submit archives game immediately and closes modal
 
 ### Scheduled Games Pages
+
 - [ ] `src/pages/scheduled-games/index.tsx`
   - Test initial fetch calls includePast=true to populate list
   - Test Create Game modal toggles visibility and passes callbacks
@@ -222,12 +235,14 @@ Test specifications for feature modules: Games, Players, Blog, Archives, Schedul
 ## Standings System Tests
 
 ### Leaderboard Calculation
+
 - [ ] `src/features/modules/standings/lib/standingsService.ts` ranks players by score (ELO) descending
 - [ ] `standingsService.getStandings` applies tie-breakers by win rate, then wins when scores are equal
 - [ ] `standingsService.getStandings` calculates win rate percentage to two decimals
 - [ ] `standingsService.getStandings` assigns sequential ranks after sorting
 
 ### Filters & Category Handling
+
 - [ ] `standingsService.getStandings` enforces the default minimum games threshold (10)
 - [ ] `standingsService.getStandings` respects custom `minGames` filter values
 - [ ] `standingsService.getStandings` excludes players missing stats for the requested category
@@ -235,23 +250,27 @@ Test specifications for feature modules: Games, Players, Blog, Archives, Schedul
 - [ ] Category-based leaderboards return distinct results per category
 
 ### Pagination & Response Metadata
+
 - [ ] `standingsService.getStandings` paginates correctly for the first page
 - [ ] `standingsService.getStandings` paginates correctly for middle/end pages
 - [ ] `standingsService.getStandings` returns accurate `total` counts irrespective of pagination
 - [ ] `standingsService.getStandings` sets `hasMore` true/false based on remaining records
 
 ### Environment-Specific Behavior
+
 - [ ] Server-side execution uses Firebase Admin (`getFirestoreAdmin`) when `isServerSide` is true
 - [ ] Client-side execution uses Firebase client (`getFirestoreInstance`) when `isServerSide` is false
 - [ ] Standings fetch logs errors and rethrows for calling code to handle
 
 ### Standings API Route
+
 - [ ] `pages/api/standings/index.ts` accepts default filters when no query params provided
 - [ ] `pages/api/standings/index.ts` forwards category/minGames/page/limit query params to the service
 - [ ] `pages/api/standings/index.ts` returns 200 with payload shape `{ standings, total, page, hasMore }`
 - [ ] `pages/api/standings/index.ts` returns appropriate error status when the service throws
 
 ### Hooks & Components
+
 - [ ] `src/features/modules/standings/hooks/useStandings.ts` sets loading state during fetch
 - [ ] `useStandings` handles successful responses and stores standings data
 - [ ] `useStandings` surfaces fetch errors and resets loading state
@@ -264,6 +283,7 @@ Test specifications for feature modules: Games, Players, Blog, Archives, Schedul
 ## Analytics System Tests
 
 ### Analytics Aggregation
+
 - [ ] Test activity aggregation by day
 - [ ] Test ELO history aggregation
 - [ ] Test win rate calculation per category
@@ -272,6 +292,7 @@ Test specifications for feature modules: Games, Players, Blog, Archives, Schedul
 - [ ] Test player activity tracking
 
 ### Analytics Filtering
+
 - [ ] Test date range filtering
 - [ ] Test category filtering
 - [ ] Test player filtering
@@ -282,6 +303,7 @@ Test specifications for feature modules: Games, Players, Blog, Archives, Schedul
 ## Guides System Tests
 
 ### Guide Data Loading
+
 - [ ] `src/features/modules/guides/data/abilities/index.ts`
   - Test `ABILITIES` aggregates all category arrays
   - Test `getAbilitiesByCategory` filters by category
@@ -322,6 +344,7 @@ Test specifications for feature modules: Games, Players, Blog, Archives, Schedul
   - Test icon lookups can round-trip known keys from each category
 
 ### Guide Utilities
+
 - [ ] `src/features/modules/guides/utils/iconMap.ts`
   - Test `resolveExplicitIcon` returns category-specific matches
   - Test `resolveExplicitIcon` searches across categories when not found in requested category
@@ -333,8 +356,8 @@ Test specifications for feature modules: Games, Players, Blog, Archives, Schedul
   - Test default path is used when icon mapping is missing
 
 - [ ] `src/features/modules/guides/utils/itemIdMapper.ts`
-  - Test `itemConstantToId` strips ITEM_ prefix and converts to kebab-case
-  - Test `itemIdToConstant` prefixes ITEM_ and uppercases
+  - Test `itemConstantToId` strips ITEM\_ prefix and converts to kebab-case
+  - Test `itemIdToConstant` prefixes ITEM\_ and uppercases
   - Test `mapCraftingStation` maps known stations and capitalizes unknown values
   - Test `normalizeIngredientName` applies `INGREDIENT_NAME_MAP` overrides
 
@@ -343,12 +366,14 @@ Test specifications for feature modules: Games, Players, Blog, Archives, Schedul
 ## Map Analyzer Tests
 
 ### Map Parsing
+
 - [ ] Test map file parsing
 - [ ] Test map data extraction
 - [ ] Test map validation
 - [ ] Test error handling
 
 ### Map Utilities
+
 - [ ] Test map data transformation
 - [ ] Test map visualization data
 
@@ -357,12 +382,14 @@ Test specifications for feature modules: Games, Players, Blog, Archives, Schedul
 ## Tools Tests
 
 ### Icon Mapper
+
 - [ ] Test icon mapping creation
 - [ ] Test icon mapping updates
 - [ ] Test icon mapping export
 - [ ] Test icon deletion marking
 
 ### Duel Simulator
+
 - [ ] Test simulation logic
 - [ ] Test result calculation
 - [ ] Test input validation
@@ -375,4 +402,3 @@ Test specifications for feature modules: Games, Players, Blog, Archives, Schedul
 - [Hook Tests](./hook-tests.md)
 - [Integration & E2E Tests](./integration-e2e-tests.md)
 - [Testing Guide](../testing-guide.md)
-

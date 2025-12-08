@@ -7,10 +7,12 @@ Scheduled game management endpoints.
 List scheduled games.
 
 **Query Parameters**:
+
 - `includePast` (boolean, optional) - Include past games
 - `includeArchived` (boolean, optional) - Include archived games
 
 **Response**:
+
 ```typescript
 {
   success: true;
@@ -23,6 +25,7 @@ List scheduled games.
 Get scheduled game by ID.
 
 **Response**:
+
 ```typescript
 {
   success: true;
@@ -37,6 +40,7 @@ Create scheduled game. **Requires authentication.**
 **Authentication**: Session cookie required (Discord OAuth)
 
 **Request Body**:
+
 ```typescript
 {
   scheduledDateTime: string; // ISO 8601 string in UTC
@@ -59,6 +63,7 @@ Create scheduled game. **Requires authentication.**
 ```
 
 Example request:
+
 ```json
 {
   "scheduledDateTime": "2025-01-20T18:00:00Z",
@@ -75,6 +80,7 @@ Example request:
 ```
 
 **Response**:
+
 ```typescript
 {
   success: true;
@@ -84,6 +90,7 @@ Example request:
 ```
 
 Example response:
+
 ```json
 {
   "success": true,
@@ -92,6 +99,7 @@ Example response:
 ```
 
 **Error Responses**:
+
 ```json
 // 401 Unauthorized
 {
@@ -111,11 +119,13 @@ Example response:
 Update scheduled game. **Requires authentication.**
 
 **Request Body**:
+
 ```typescript
-Partial<ScheduledGame>
+Partial<ScheduledGame>;
 ```
 
 **Response**:
+
 ```typescript
 {
   success: true;
@@ -128,6 +138,7 @@ Partial<ScheduledGame>
 Delete scheduled game. **Requires authentication.**
 
 **Response**:
+
 ```typescript
 {
   success: true;
@@ -139,6 +150,7 @@ Delete scheduled game. **Requires authentication.**
 Join scheduled game. **Requires authentication.**
 
 **Response**:
+
 ```typescript
 {
   success: true;
@@ -151,6 +163,7 @@ Join scheduled game. **Requires authentication.**
 Leave scheduled game. **Requires authentication.**
 
 **Response**:
+
 ```typescript
 {
   success: true;
@@ -163,14 +176,14 @@ Leave scheduled game. **Requires authentication.**
 **Note**: Replay upload functionality for scheduled games has been moved to the Games API.
 
 To upload a replay for a scheduled game, use:
+
 - **`POST /api/games/[id]/upload-replay`** - Upload replay and convert scheduled game to completed
 
 See [Games API - Upload Replay for Scheduled Game](./games.md#post-apigamesidupload-replay) for complete documentation.
 
 This endpoint:
+
 - Uploads replay file for an existing scheduled game
 - Converts the scheduled game to a completed game
 - Updates ELO scores automatically
 - Requires authentication
-
-

@@ -56,12 +56,14 @@ module/
 ### Large Module Refactoring
 
 **Archives Module** (54+ components): Consider splitting into sub-modules:
+
 - `archives/forms/` - Form-related components (ArchiveForm, ArchiveEditForm, ArchiveDeleteDialog)
 - `archives/display/` - Display components (ArchiveEntry, ArchiveMediaSections, etc.)
 - `archives/media/` - Media components (TwitchClipEmbed, YouTubeEmbed)
 - `archives/timeline/` - Timeline-specific components (HomeTimeline, ArchivesContent)
 
 **Guides Data Files**: Large data files (5000+ lines) should be split:
+
 - `unknown.ts` (148KB, 5047 lines)
 - `allUnits.ts` (147KB, 5173 lines)
 - `building.ts` (83KB, 1727 lines)
@@ -73,6 +75,3 @@ Consider lazy loading or code splitting for large data files.
 - [API Reference](../../../docs/api/README.md)
 - [Infrastructure](../infrastructure/README.md)
 - [Shared Features](../shared/README.md)
-
-
-

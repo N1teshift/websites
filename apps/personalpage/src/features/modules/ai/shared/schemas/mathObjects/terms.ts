@@ -7,35 +7,32 @@
  *       and is used for structured output parsing in the LangGraph implementation.
  */
 export const termsSettingsSchema = {
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "TermsSettings",
-  "type": "object",
-  "description": "Settings for multiple mathematical terms",
-  "properties": {
-    "collectionCount": {
-      "type": "number",
-      "minimum": 1,
-      "description": "Number of terms in the collection"
+  $schema: "http://json-schema.org/draft-07/schema#",
+  title: "TermsSettings",
+  type: "object",
+  description: "Settings for multiple mathematical terms",
+  properties: {
+    collectionCount: {
+      type: "number",
+      minimum: 1,
+      description: "Number of terms in the collection",
     },
-    "rules": {
-      "type": "array",
-      "items": {
-        "type": "string",
-        "enum": ["increasing", "decreasing", "neq"]
+    rules: {
+      type: "array",
+      items: {
+        type: "string",
+        enum: ["increasing", "decreasing", "neq"],
       },
-      "description": "Rules for the terms (e.g., increasing, decreasing, not equal)"
+      description: "Rules for the terms (e.g., increasing, decreasing, not equal)",
     },
-    "range": {
-      "type": "array",
-      "items": { "type": "number" },
-      "minItems": 2,
-      "maxItems": 2,
-      "description": "The numerical range [min, max] for the terms"
-    }
+    range: {
+      type: "array",
+      items: { type: "number" },
+      minItems: 2,
+      maxItems: 2,
+      description: "The numerical range [min, max] for the terms",
+    },
   },
-  "required": ["collectionCount", "rules", "range"],
-  "additionalProperties": false
+  required: ["collectionCount", "rules", "range"],
+  additionalProperties: false,
 } as const;
-
-
-

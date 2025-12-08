@@ -1,6 +1,7 @@
 # Chart Scale Upgrade
 
 ## Overview
+
 **Date**: November 10, 2025  
 **Status**: ✅ Complete
 
@@ -11,6 +12,7 @@ Upgraded the Class Performance Distribution chart to use appropriate scales for 
 ## Problem Statement
 
 Previously, all chart data was normalized to a 1-10 scale, which:
+
 - ❌ Lost information about actual score ranges
 - ❌ Made it hard to understand raw score distributions
 - ❌ Didn't reflect the actual assessment scales used by teachers
@@ -32,38 +34,38 @@ utils/
 
 #### Diagnostic Tests
 
-| Score Type | Scale | Interval | Label |
-|------------|-------|----------|-------|
-| Paper 1 (Reading & Use) | 0-50 | 5 | Score (0-50) |
-| Paper 1 % | 0-100 | 10 | Percentage (0-100) |
-| Paper 2 (Listening) | 0-50 | 5 | Score (0-50) |
-| Paper 2 % | 0-100 | 10 | Percentage (0-100) |
-| Paper 3 (Writing) | 0-50 | 5 | Score (0-50) |
-| Paper 3 % | 0-100 | 10 | Percentage (0-100) |
-| Total Score | 0-150 | 10 | Total Score (0-150) |
-| Total % | 0-100 | 10 | Percentage (0-100) |
+| Score Type              | Scale | Interval | Label               |
+| ----------------------- | ----- | -------- | ------------------- |
+| Paper 1 (Reading & Use) | 0-50  | 5        | Score (0-50)        |
+| Paper 1 %               | 0-100 | 10       | Percentage (0-100)  |
+| Paper 2 (Listening)     | 0-50  | 5        | Score (0-50)        |
+| Paper 2 %               | 0-100 | 10       | Percentage (0-100)  |
+| Paper 3 (Writing)       | 0-50  | 5        | Score (0-50)        |
+| Paper 3 %               | 0-100 | 10       | Percentage (0-100)  |
+| Total Score             | 0-150 | 10       | Total Score (0-150) |
+| Total %                 | 0-100 | 10       | Percentage (0-100)  |
 
 #### Unit Tests (Summative)
 
-| Score Type | Scale | Interval | Label |
-|------------|-------|----------|-------|
-| Listening | 0-10 | 1 | Score (0-10) |
-| Reading | 0-10 | 1 | Score (0-10) |
-| Vocabulary 1 | 0-10 | 1 | Score (0-10) |
-| Vocabulary 2 | 0-10 | 1 | Score (0-10) |
-| Grammar 1 | 0-10 | 1 | Score (0-10) |
-| Grammar 2 | 0-10 | 1 | Score (0-10) |
-| Grammar 3 | 0-10 | 1 | Score (0-10) |
-| Total Score | 0-50 | 5 | Total Score (0-50) |
-| Total % | 0-100 | 10 | Percentage (0-100) |
+| Score Type   | Scale | Interval | Label              |
+| ------------ | ----- | -------- | ------------------ |
+| Listening    | 0-10  | 1        | Score (0-10)       |
+| Reading      | 0-10  | 1        | Score (0-10)       |
+| Vocabulary 1 | 0-10  | 1        | Score (0-10)       |
+| Vocabulary 2 | 0-10  | 1        | Score (0-10)       |
+| Grammar 1    | 0-10  | 1        | Score (0-10)       |
+| Grammar 2    | 0-10  | 1        | Score (0-10)       |
+| Grammar 3    | 0-10  | 1        | Score (0-10)       |
+| Total Score  | 0-50  | 5        | Total Score (0-50) |
+| Total %      | 0-100 | 10       | Percentage (0-100) |
 
 #### Regular Math Assessments (unchanged)
 
-| Score Type | Scale | Interval | Label |
-|------------|-------|----------|-------|
-| Percentage | 1-10 | 1 | Score (1-10) |
-| MYP | 0-8 | 1 | MYP Score (0-8) |
-| Cambridge | 0-1 | 0.5 | Cambridge (0, 0.5, 1) |
+| Score Type | Scale | Interval | Label                 |
+| ---------- | ----- | -------- | --------------------- |
+| Percentage | 1-10  | 1        | Score (1-10)          |
+| MYP        | 0-8   | 1        | MYP Score (0-8)       |
+| Cambridge  | 0-1   | 0.5      | Cambridge (0, 0.5, 1) |
 
 ---
 
@@ -72,24 +74,30 @@ utils/
 ### Key Functions
 
 #### `getScaleConfig(scoreType)`
+
 Returns the scale configuration for a given score type:
+
 ```typescript
 {
-    min: number;       // Minimum score
-    max: number;       // Maximum score
-    interval: number;  // Grouping interval
-    label: string;     // X-axis label
+  min: number; // Minimum score
+  max: number; // Maximum score
+  interval: number; // Grouping interval
+  label: string; // X-axis label
 }
 ```
 
 #### `generateChartBars(config)`
+
 Generates chart bars based on scale configuration:
+
 - Creates bars for each interval
 - Formats range labels (e.g., "0-4", "5-9", "10-14")
 - Assigns colors based on score position
 
 #### `assignScoreToBar(score, bars, config)`
+
 Assigns a student's score to the appropriate bar:
+
 - Finds correct interval for the score
 - Handles edge cases (max values)
 - Increments bar count
@@ -97,6 +105,7 @@ Assigns a student's score to the appropriate bar:
 ### Color Scheme
 
 Colors are assigned based on percentage of maximum:
+
 - **0-20%**: Red (#EF4444)
 - **20-40%**: Orange (#F97316)
 - **40-60%**: Yellow (#EAB308)
@@ -108,6 +117,7 @@ Colors are assigned based on percentage of maximum:
 ## Files Modified
 
 ### Created
+
 1. **`utils/chartScaleConfig.ts`** (111 lines)
    - Scale definitions
    - Bar generation logic
@@ -115,6 +125,7 @@ Colors are assigned based on percentage of maximum:
    - Color calculation
 
 ### Modified
+
 1. **`hooks/useChartData.ts`**
    - Replaced hardcoded 1-10 scale logic
    - Now uses `getScaleConfig()` for English tests
@@ -129,16 +140,19 @@ Colors are assigned based on percentage of maximum:
 ## Benefits
 
 ### User Experience
+
 ✅ **Accurate Representation**: Charts show actual score ranges
 ✅ **Clear Labels**: X-axis clearly indicates scale (e.g., "Score (0-50)")
 ✅ **Better Understanding**: Teachers can see real score distributions
 
 ### Maintainability
+
 ✅ **Centralized Configuration**: All scales defined in one place
 ✅ **Easy to Adjust**: Change scale in one location
 ✅ **Type-Safe**: TypeScript ensures correct usage
 
 ### Extensibility
+
 ✅ **New Score Types**: Just add to scale config
 ✅ **Dynamic Scales**: Can easily add logic to determine scales from data
 ✅ **Reusable**: Scale logic can be used in other components
@@ -150,12 +164,14 @@ Colors are assigned based on percentage of maximum:
 ### Current Data Maximums (from master_student_data_J_v5.json):
 
 **Diagnostic Test (d1):**
+
 - Paper 1: max 33 (scale: 0-50) ✓
 - Paper 2: max 17 (scale: 0-50) ✓
 - Paper 3: max 18 (scale: 0-50) ✓
 - Total: max 64 (scale: 0-150) ✓
 
 **Unit Test (t1):**
+
 - Listening: max 8 (scale: 0-10) ✓
 - Reading: max 9 (scale: 0-10) ✓
 - Vocabulary 1: max 5 (scale: 0-10) ✓
@@ -163,6 +179,7 @@ Colors are assigned based on percentage of maximum:
 - Total: max 33 (scale: 0-50) ✓
 
 **Note**: Configured scales are higher than current data maximums to accommodate:
+
 - Future tests with higher scores
 - Different test versions with different maximums
 - Full theoretical range of the assessments
@@ -186,6 +203,7 @@ Colors are assigned based on percentage of maximum:
 ## Future Improvements
 
 ### Potential Enhancements:
+
 1. **Dynamic Scales**: Automatically determine max from data if scale not predefined
 2. **Custom Scales**: Allow teachers to define custom scales per assessment
 3. **Scale Presets**: Create presets for common assessment types (Cambridge, IB, etc.)
@@ -195,6 +213,7 @@ Colors are assigned based on percentage of maximum:
 ---
 
 ## Related Documentation
+
 - [Chart Component Refactoring](../refactoring/chart-component.md)
 - [Chart Scaling Fix](../fixes/ENGLISH_TEST_CHART_SCALING_FIX.md)
 - [English Test Integration](../data/teacher-j-integration-complete.md)
@@ -204,4 +223,3 @@ Colors are assigned based on percentage of maximum:
 **Implemented by**: AI Assistant  
 **Date**: November 10, 2025  
 **Status**: ✅ Complete and Verified
-

@@ -7,10 +7,12 @@ Blog post management endpoints.
 List blog posts.
 
 **Query Parameters**:
+
 - `published` (boolean, optional) - Filter by published status
 - `limit` (number, optional) - Results limit
 
 **Response**:
+
 ```typescript
 {
   success: true;
@@ -23,6 +25,7 @@ List blog posts.
 Get blog post by ID.
 
 **Response**:
+
 ```typescript
 {
   success: true;
@@ -35,6 +38,7 @@ Get blog post by ID.
 Create blog post. **Requires authentication.**
 
 **Request Body**:
+
 ```typescript
 {
   title: string;
@@ -45,6 +49,7 @@ Create blog post. **Requires authentication.**
 ```
 
 **Response**:
+
 ```typescript
 {
   success: true;
@@ -57,11 +62,13 @@ Create blog post. **Requires authentication.**
 Update blog post. **Requires authentication.**
 
 **Request Body**:
+
 ```typescript
-Partial<Post>
+Partial<Post>;
 ```
 
 **Response**:
+
 ```typescript
 {
   success: true;
@@ -74,11 +81,9 @@ Partial<Post>
 Delete blog post. **Requires authentication.**
 
 **Response**:
+
 ```typescript
 {
   success: true;
 }
 ```
-
-
-

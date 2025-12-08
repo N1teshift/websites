@@ -28,6 +28,7 @@ Use the **Create Game** button inside the Scheduled Games page (the legacy `/tes
 ## 👀 Step 4: View Your Game
 
 After creating a game, click:
+
 - **"→ View All Games"** to see it in the list
 - Or go directly to: **http://localhost:3000/games**
 
@@ -55,30 +56,33 @@ You should see players ranked by ELO!
 
 ## 📝 All Available Pages
 
-| Page | URL |
-|------|-----|
+| Page                              | URL                                   |
+| --------------------------------- | ------------------------------------- |
 | **Create Game (Scheduled Games)** | http://localhost:3000/scheduled-games |
-| **Games List** | http://localhost:3000/games |
-| **Game Detail** | http://localhost:3000/games/[id] |
-| **Players Index** | http://localhost:3000/players |
-| **Player Profile** | http://localhost:3000/players/[name] |
-| **Player Comparison** | http://localhost:3000/players/compare |
-| **Leaderboard** | http://localhost:3000/standings |
-| **Meta Analytics** | http://localhost:3000/meta |
+| **Games List**                    | http://localhost:3000/games           |
+| **Game Detail**                   | http://localhost:3000/games/[id]      |
+| **Players Index**                 | http://localhost:3000/players         |
+| **Player Profile**                | http://localhost:3000/players/[name]  |
+| **Player Comparison**             | http://localhost:3000/players/compare |
+| **Leaderboard**                   | http://localhost:3000/standings       |
+| **Meta Analytics**                | http://localhost:3000/meta            |
 
 ## 🧪 Test Scenarios
 
 ### Scenario 1: Simple 1v1
+
 - Create a game with 2 players
 - Winner should gain ELO (~15-25 points)
 - Loser should lose ELO (~15-25 points)
 
 ### Scenario 2: Multiple Games
+
 - Create 5 games with the same players
 - Check that stats accumulate
 - Check that ELO changes over time
 
 ### Scenario 3: Team Game
+
 - Create a 2v2 game
 - Team ELO is averaged
 - Winners gain ELO, losers lose ELO
@@ -86,16 +90,19 @@ You should see players ranked by ELO!
 ## 🐛 Troubleshooting
 
 **Problem:** "Failed to fetch" or API errors
+
 - **Fix:** Check that Firebase is configured
 - Check browser console for errors
 - Check server console for errors
 
 **Problem:** Games not showing up
+
 - **Fix:** Refresh the page
 - Check Firestore console
 - Verify game was created (check API response)
 
 **Problem:** ELO not updating
+
 - **Fix:** Check that players array has at least 2 players
 - Verify winner/loser flags are correct
 - Check server logs for ELO calculation errors
@@ -103,6 +110,7 @@ You should see players ranked by ELO!
 ## ✅ Verification Steps
 
 To verify the system is working correctly, ensure you can:
+
 - Create a game via the test form
 - See the game appear in the games list
 - View game details successfully
@@ -115,7 +123,3 @@ To verify the system is working correctly, ensure you can:
 ---
 
 **That's it!** You're ready to test! 🎉
-
-
-
-

@@ -5,6 +5,7 @@ This document outlines the complete procedure for adding a new page to the proje
 ## Overview
 
 When adding a new page, you need to:
+
 1. Add a feature flag to control visibility
 2. Create translation files for all languages
 3. Add the page to the projects navigation
@@ -31,6 +32,7 @@ export const FEATURE_FLAGS = {
 Create JSON files for each language in the `locales/` directory:
 
 **File Structure:**
+
 ```
 locales/
 ├── en/
@@ -42,6 +44,7 @@ locales/
 ```
 
 **Required Translation Keys:**
+
 ```json
 {
   "your_feature_title": "Your Feature Title",
@@ -59,9 +62,9 @@ Update `src/pages/projects/index.tsx` to include your new page:
 
 ```typescript
 const links = [
-    { href: "/projects/edtech", titleKey: "education_technologies", highlighted: true },
-    { href: "/projects/emw", titleKey: "election_monitoring" },
-    { href: "/projects/yourfeature", titleKey: "your_feature_title" } // Add this line
+  { href: "/projects/edtech", titleKey: "education_technologies", highlighted: true },
+  { href: "/projects/emw", titleKey: "election_monitoring" },
+  { href: "/projects/yourfeature", titleKey: "your_feature_title" }, // Add this line
 ];
 ```
 
@@ -94,9 +97,9 @@ export default function YourFeaturePage() {
     }
 
     return (
-        <Layout 
-            goBackTarget="/projects" 
-            titleKey="your_feature_title" 
+        <Layout
+            goBackTarget="/projects"
+            titleKey="your_feature_title"
             pageTranslationNamespaces={pageNamespaces}
         >
             {/* Your page content here */}
@@ -152,9 +155,9 @@ export default function YourFeaturePage() {
     }
 
     return (
-        <Layout 
-            goBackTarget="/projects" 
-            titleKey="your_feature_title" 
+        <Layout
+            goBackTarget="/projects"
+            titleKey="your_feature_title"
             pageTranslationNamespaces={pageNamespaces}
         >
             {/* Your content here */}
@@ -166,6 +169,7 @@ export default function YourFeaturePage() {
 ### Translation Template
 
 **English (`locales/en/yourfeature.json`):**
+
 ```json
 {
   "your_feature_title": "Your Feature Title",
@@ -177,6 +181,7 @@ export default function YourFeaturePage() {
 ```
 
 **Lithuanian (`locales/lt/yourfeature.json`):**
+
 ```json
 {
   "your_feature_title": "Jūsų funkcijos pavadinimas",
@@ -188,6 +193,7 @@ export default function YourFeaturePage() {
 ```
 
 **Russian (`locales/ru/yourfeature.json`):**
+
 ```json
 {
   "your_feature_title": "Название вашей функции",
@@ -212,6 +218,7 @@ export default function YourFeaturePage() {
 ## Environment Variables
 
 You can override feature flags using environment variables:
+
 ```bash
 NEXT_PUBLIC_FEATURE_YOURNEWFEATURE=true
 ```
@@ -229,12 +236,14 @@ NEXT_PUBLIC_FEATURE_YOURNEWFEATURE=true
 Here's a complete example of adding a new "Task Manager" feature:
 
 ### 1. Feature Flag
+
 ```typescript
 // src/config/features.ts
 taskManager: false, // Task Manager - Personal task management system
 ```
 
 ### 2. Translation Files
+
 ```json
 // locales/en/taskmanager.json
 {
@@ -247,15 +256,17 @@ taskManager: false, // Task Manager - Personal task management system
 ```
 
 ### 3. Navigation Update
+
 ```typescript
 // src/pages/projects/index.tsx
 const links = [
-    // ... existing links ...
-    { href: "/projects/taskmanager", titleKey: "task_manager_title" }
+  // ... existing links ...
+  { href: "/projects/taskmanager", titleKey: "task_manager_title" },
 ];
 ```
 
 ### 4. Page Component
+
 ```typescript
 // src/pages/projects/taskmanager/index.tsx
 import { getStaticPropsWithTranslations } from '@lib/getStaticProps';
@@ -279,9 +290,9 @@ export default function TaskManagerPage() {
     }
 
     return (
-        <Layout 
-            goBackTarget="/projects" 
-            titleKey="task_manager_title" 
+        <Layout
+            goBackTarget="/projects"
+            titleKey="task_manager_title"
             pageTranslationNamespaces={pageNamespaces}
         >
             <div className="p-4">

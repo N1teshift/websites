@@ -1,25 +1,25 @@
 /// <reference types="@testing-library/jest-dom" />
-import React from 'react';
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { describe, it, expect, beforeEach } from '@jest/globals';
+import React from "react";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { describe, it, expect, beforeEach } from "@jest/globals";
 import {
   getInteractiveElements,
   isKeyboardFocusable,
   getFocusableElementsInOrder,
-} from '@websites/infrastructure/utils';
-import { logError } from '@/features/infrastructure/logging';
+} from "@websites/infrastructure/utils";
+import { logError } from "@/features/infrastructure/logging";
 
 // Mock logger
-jest.mock('@/features/infrastructure/logging');
+jest.mock("@/features/infrastructure/logging");
 
-describe('Keyboard Navigation', () => {
+describe("Keyboard Navigation", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  describe('Basic keyboard accessibility', () => {
-    it('should make all interactive elements keyboard accessible', () => {
+  describe("Basic keyboard accessibility", () => {
+    it("should make all interactive elements keyboard accessible", () => {
       // Arrange
       const TestComponent = () => (
         <div>
@@ -42,7 +42,7 @@ describe('Keyboard Navigation', () => {
       });
     });
 
-    it('should handle complex interactions with keyboard', () => {
+    it("should handle complex interactions with keyboard", () => {
       // Arrange
       const handleClick = jest.fn();
       const TestComponent = () => (
@@ -56,15 +56,15 @@ describe('Keyboard Navigation', () => {
 
       // Act
       render(<TestComponent />);
-      const button = screen.getByText('Action Button');
-      const customButton = screen.getByText('Custom Button');
+      const button = screen.getByText("Action Button");
+      const customButton = screen.getByText("Custom Button");
 
       // Assert
       expect(isKeyboardFocusable(button)).toBe(true);
       expect(isKeyboardFocusable(customButton)).toBe(true);
     });
 
-    it('should maintain logical tab order', async () => {
+    it("should maintain logical tab order", async () => {
       // Arrange
       const user = userEvent.setup();
       const TestComponent = () => (
@@ -82,13 +82,13 @@ describe('Keyboard Navigation', () => {
 
       // Assert
       expect(focusableElements.length).toBe(4);
-      
+
       // Verify tab order
-      const firstButton = screen.getByText('First');
+      const firstButton = screen.getByText("First");
       expect(focusableElements[0]).toBe(firstButton);
     });
 
-    it('should handle tabindex ordering correctly', () => {
+    it("should handle tabindex ordering correctly", () => {
       // Arrange
       const TestComponent = () => (
         <div>
@@ -105,16 +105,18 @@ describe('Keyboard Navigation', () => {
       // Assert
       // Elements should be sorted by tabindex value (1, 2, 3)
       expect(focusableElements.length).toBe(3);
-      const tabIndices = focusableElements.map(el => parseInt(el.getAttribute('tabindex') || '0', 10));
+      const tabIndices = focusableElements.map((el) =>
+        parseInt(el.getAttribute("tabindex") || "0", 10)
+      );
       expect(tabIndices).toEqual([1, 2, 3]);
-      expect(focusableElements[0].textContent).toBe('First');
-      expect(focusableElements[1].textContent).toBe('Second');
-      expect(focusableElements[2].textContent).toBe('Third');
+      expect(focusableElements[0].textContent).toBe("First");
+      expect(focusableElements[1].textContent).toBe("Second");
+      expect(focusableElements[2].textContent).toBe("Third");
     });
   });
 
-  describe('Focus management edge cases', () => {
-    it('should handle focus traps in modals', async () => {
+  describe("Focus management edge cases", () => {
+    it("should handle focus traps in modals", async () => {
       // Arrange
       const user = userEvent.setup();
       const TestComponent = () => {
@@ -135,14 +137,14 @@ describe('Keyboard Navigation', () => {
 
       // Act
       render(<TestComponent />);
-      const openButton = screen.getByText('Open Modal');
+      const openButton = screen.getByText("Open Modal");
       await user.click(openButton);
 
       // Assert
-      const modal = screen.getByRole('dialog');
+      const modal = screen.getByRole("dialog");
       expect(modal).toBeInTheDocument();
-      
-      const modalButtons = screen.getAllByRole('button');
+
+      const modalButtons = screen.getAllByRole("button");
       modalButtons.forEach((button) => {
         if (button.closest('[role="dialog"]')) {
           expect(isKeyboardFocusable(button)).toBe(true);
@@ -150,16 +152,14 @@ describe('Keyboard Navigation', () => {
       });
     });
 
-    it('should handle dynamic content focus management', async () => {
+    it("should handle dynamic content focus management", async () => {
       // Arrange
       const user = userEvent.setup();
       const TestComponent = () => {
         const [items, setItems] = React.useState<string[]>([]);
         return (
           <div>
-            <button onClick={() => setItems(['Item 1', 'Item 2'])}>
-              Add Items
-            </button>
+            <button onClick={() => setItems(["Item 1", "Item 2"])}>Add Items</button>
             {items.map((item) => (
               <button key={item}>{item}</button>
             ))}
@@ -169,14 +169,14 @@ describe('Keyboard Navigation', () => {
 
       // Act
       const { container } = render(<TestComponent />);
-      const addButton = screen.getByText('Add Items');
+      const addButton = screen.getByText("Add Items");
       await user.click(addButton);
 
       // Assert
       const interactiveElements = getInteractiveElements(container);
       expect(interactiveElements.length).toBeGreaterThan(1);
-      
-      const newButtons = screen.getAllByRole('button');
+
+      const newButtons = screen.getAllByRole("button");
       newButtons.forEach((button) => {
         expect(isKeyboardFocusable(button)).toBe(true);
       });
@@ -198,58 +198,54 @@ describe('Keyboard Navigation', () => {
 
       // Assert
       expect(focusableElements.length).toBe(2);
-      expect(focusableElements.every((el) => el.getAttribute('tabindex') !== '-1')).toBe(true);
+      expect(focusableElements.every((el) => el.getAttribute("tabindex") !== "-1")).toBe(true);
     });
   });
 
-  describe('Keyboard event handling', () => {
-    it('should handle Enter key on buttons', async () => {
+  describe("Keyboard event handling", () => {
+    it("should handle Enter key on buttons", async () => {
       // Arrange
       const user = userEvent.setup();
       const handleClick = jest.fn();
-      const TestComponent = () => (
-        <button onClick={handleClick}>Click Me</button>
-      );
+      const TestComponent = () => <button onClick={handleClick}>Click Me</button>;
 
       // Act
       render(<TestComponent />);
-      const button = screen.getByText('Click Me');
+      const button = screen.getByText("Click Me");
       button.focus();
-      await user.keyboard('{Enter}');
+      await user.keyboard("{Enter}");
 
       // Assert
       expect(handleClick).toHaveBeenCalledTimes(1);
     });
 
-    it('should handle Space key on buttons', async () => {
+    it("should handle Space key on buttons", async () => {
       // Arrange
       const user = userEvent.setup();
       const handleClick = jest.fn();
-      const TestComponent = () => (
-        <button onClick={handleClick}>Click Me</button>
-      );
+      const TestComponent = () => <button onClick={handleClick}>Click Me</button>;
 
       // Act
       render(<TestComponent />);
-      const button = screen.getByText('Click Me');
+      const button = screen.getByText("Click Me");
       button.focus();
-      await user.keyboard(' ');
+      await user.keyboard(" ");
 
       // Assert
       expect(handleClick).toHaveBeenCalledTimes(1);
     });
 
-    it('should handle Escape key to close modals', async () => {
+    it("should handle Escape key to close modals", async () => {
       // Arrange
       const user = userEvent.setup();
       const TestComponent = () => {
         const [isOpen, setIsOpen] = React.useState(true);
         React.useEffect(() => {
           const handleEscape = (e: KeyboardEvent) => {
-            if (e.key === 'Escape') setIsOpen(false);
+            if (e.key === "Escape") setIsOpen(false);
           };
-          window.addEventListener('keydown', handleEscape);
-          return () => window.removeEventListener('keydown', handleEscape);
+          window.addEventListener("keydown", handleEscape);
+          return () => window.removeEventListener("keydown", handleEscape);
         }, []);
         return (
           <div>
@@ -264,12 +260,11 @@ describe('Keyboard Navigation', () => {
 
       // Act
       render(<TestComponent />);
-      expect(screen.getByRole('dialog')).toBeInTheDocument();
-      await user.keyboard('{Escape}');
+      expect(screen.getByRole("dialog")).toBeInTheDocument();
+      await user.keyboard("{Escape}");
 
       // Assert
-      expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+      expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
     });
   });
 });
-

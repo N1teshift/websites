@@ -38,25 +38,27 @@ npm run test:validate:ci
 Our validation tools catch these common issues:
 
 #### 1. **Tests That Only Check Existence**
+
 ```javascript
 // ❌ BAD: Only checks that something exists
-it('should work', () => {
+it("should work", () => {
   const result = myFunction();
   expect(result).toBeDefined();
 });
 
 // ✅ GOOD: Checks specific behavior
-it('should return user data', () => {
+it("should return user data", () => {
   const result = myFunction();
   expect(result).toEqual({
     id: 1,
-    name: 'John',
-    email: 'john@example.com'
+    name: "John",
+    email: "john@example.com",
   });
 });
 ```
 
 #### 2. **Mock Verification Without Behavior Validation**
+
 ```javascript
 // ❌ BAD: Creates mock but doesn't verify behavior
 it('should call API', () => {
@@ -76,15 +78,26 @@ it('should call API with correct parameters', () => {
 ```
 
 #### 3. **Meaningless Test Names**
+
 ```javascript
 // ❌ BAD: Not descriptive
-it('test', () => { /* ... */ });
-it('works', () => { /* ... */ });
-it('handles case', () => { /* ... */ });
+it("test", () => {
+  /* ... */
+});
+it("works", () => {
+  /* ... */
+});
+it("handles case", () => {
+  /* ... */
+});
 
 // ✅ GOOD: Clear intent
-it('should return user profile when authenticated', () => { /* ... */ });
-it('should throw error for invalid email format', () => { /* ... */ });
+it("should return user profile when authenticated", () => {
+  /* ... */
+});
+it("should throw error for invalid email format", () => {
+  /* ... */
+});
 ```
 
 ## Code Coverage Analysis
@@ -107,16 +120,17 @@ npm run analyze:coverage -- --file=src/features/myFeature.ts
 
 ### Coverage Thresholds
 
-| Metric | Threshold | Description |
-|--------|-----------|-------------|
-| Statements | 80% | Executable statements covered |
-| Branches | 75% | Conditional branches tested |
-| Functions | 80% | Functions called during tests |
-| Lines | 80% | Lines of code executed |
+| Metric     | Threshold | Description                   |
+| ---------- | --------- | ----------------------------- |
+| Statements | 80%       | Executable statements covered |
+| Branches   | 75%       | Conditional branches tested   |
+| Functions  | 80%       | Functions called during tests |
+| Lines      | 80%       | Lines of code executed        |
 
 ### Understanding Coverage Reports
 
 The coverage analyzer provides:
+
 - **Files with low coverage** - Prioritize these for additional tests
 - **Uncovered lines/branches** - Specific areas needing tests
 - **Coverage trends** - Track improvements over time
@@ -174,87 +188,104 @@ npm run lint:test
 ### Linting Rules
 
 #### `no-only-tests`
+
 Prevents `.only` in test files which can hide other failing tests.
 
 ```javascript
 // ❌ BAD
-describe.only('My tests', () => {
-  it.only('should work', () => { /* ... */ });
+describe.only("My tests", () => {
+  it.only("should work", () => {
+    /* ... */
+  });
 });
 
 // ✅ GOOD
-describe('My tests', () => {
-  it('should work', () => { /* ... */ });
+describe("My tests", () => {
+  it("should work", () => {
+    /* ... */
+  });
 });
 ```
 
 #### `no-empty-test`
+
 Ensures test functions have meaningful assertions.
 
 ```javascript
 // ❌ BAD
-it('should validate input', () => {
+it("should validate input", () => {
   // No assertions!
 });
 
 // ✅ GOOD
-it('should validate input', () => {
-  const result = validateInput('test');
+it("should validate input", () => {
+  const result = validateInput("test");
   expect(result.isValid).toBe(true);
 });
 ```
 
 #### `no-mock-without-assert`
+
 Ensures mock functions are verified with assertions.
 
 ```javascript
 // ❌ BAD
-it('should call service', () => {
+it("should call service", () => {
   const mockService = jest.fn();
   myFunction(mockService);
   // Mock created but not verified
 });
 
 // ✅ GOOD
-it('should call service', () => {
+it("should call service", () => {
   const mockService = jest.fn();
   myFunction(mockService);
-  expect(mockService).toHaveBeenCalledWith('expected-arg');
+  expect(mockService).toHaveBeenCalledWith("expected-arg");
 });
 ```
 
 #### `meaningful-assertions`
+
 Ensures assertions are specific and meaningful.
 
 ```javascript
 // ❌ BAD
-it('should return something', () => {
+it("should return something", () => {
   const result = myFunction();
   expect(result).toBeDefined(); // Too vague
 });
 
 // ✅ GOOD
-it('should return user object', () => {
+it("should return user object", () => {
   const result = myFunction();
   expect(result).toEqual({
     id: 123,
-    name: 'John Doe',
-    role: 'admin'
+    name: "John Doe",
+    role: "admin",
   });
 });
 ```
 
 #### `test-naming-convention`
+
 Ensures test names are descriptive.
 
 ```javascript
 // ❌ BAD
-it('test', () => { /* ... */ });
-it('works', () => { /* ... */ });
+it("test", () => {
+  /* ... */
+});
+it("works", () => {
+  /* ... */
+});
 
 // ✅ GOOD
-it('should create user account', () => { /* ... */ });
-it('should validate email format', () => { /* ... */ });
+it("should create user account", () => {
+  /* ... */
+});
+it("should validate email format", () => {
+  /* ... */
+});
 ```
 
 ## Test Categorization
@@ -264,6 +295,7 @@ it('should validate email format', () => { /* ... */ });
 We categorize tests by their scope and purpose:
 
 #### Unit Tests (`test:unit`)
+
 - Test individual functions/classes in isolation
 - Fast execution, no external dependencies
 - Focus on business logic
@@ -273,6 +305,7 @@ npm run test:unit
 ```
 
 #### Integration Tests (`test:integration`)
+
 - Test component interactions
 - May include external dependencies (mocks)
 - Verify data flow between components
@@ -282,6 +315,7 @@ npm run test:integration
 ```
 
 #### API Tests (`test:api`)
+
 - Test API routes and handlers
 - Include middleware validation
 - Verify request/response formats
@@ -291,6 +325,7 @@ npm run test:api
 ```
 
 #### Component Tests (`test:components`)
+
 - Test React components
 - Include rendering and user interactions
 - Verify UI behavior
@@ -303,15 +338,15 @@ npm run test:components
 
 ```javascript
 // Unit test - pure logic
-describe('calculateTotal (unit)', () => {
-  it('should sum array of numbers', () => {
+describe("calculateTotal (unit)", () => {
+  it("should sum array of numbers", () => {
     expect(calculateTotal([1, 2, 3])).toBe(6);
   });
 });
 
 // Integration test - component interaction
-describe('ShoppingCart (integration)', () => {
-  it('should update total when items change', () => {
+describe("ShoppingCart (integration)", () => {
+  it("should update total when items change", () => {
     // Tests multiple components working together
   });
 });
@@ -343,7 +378,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: "18"
       - run: npm ci
       - run: npm run test:validate:ci
 ```
@@ -351,6 +386,7 @@ jobs:
 ### Validation Results
 
 The CI validation provides:
+
 - **Test results** - Pass/fail status
 - **Coverage reports** - Uploaded as artifacts
 - **Mutation scores** - Quality metrics
@@ -361,6 +397,7 @@ The CI validation provides:
 ### Writing Quality Tests
 
 1. **Test Behavior, Not Implementation**
+
    ```javascript
    // ❌ Testing implementation
    it('should call fetch with correct URL', () => {
@@ -375,43 +412,50 @@ The CI validation provides:
    ```
 
 2. **Use Descriptive Names**
+
    ```javascript
    // ❌ Vague
-   it('should handle error', () => { /* ... */ });
+   it("should handle error", () => {
+     /* ... */
+   });
 
    // ✅ Specific
-   it('should return 404 for non-existent user', () => { /* ... */ });
+   it("should return 404 for non-existent user", () => {
+     /* ... */
+   });
    ```
 
 3. **Test Edge Cases**
+
    ```javascript
-   it('should handle empty input', () => {
-     expect(processInput('')).toBe(null);
+   it("should handle empty input", () => {
+     expect(processInput("")).toBe(null);
    });
 
-   it('should handle null input', () => {
-     expect(processInput(null)).toThrow('Invalid input');
+   it("should handle null input", () => {
+     expect(processInput(null)).toThrow("Invalid input");
    });
    ```
 
 4. **Avoid Test Interdependencies**
+
    ```javascript
    // ❌ Tests depend on each other
    let userId;
-   it('should create user', () => {
+   it("should create user", () => {
      userId = createUser();
    });
-   it('should get user', () => {
+   it("should get user", () => {
      const user = getUser(userId); // Depends on previous test
    });
 
    // ✅ Independent tests
-   it('should create user', () => {
+   it("should create user", () => {
      const userId = createUser();
      expect(userId).toBeDefined();
    });
-   it('should get user', () => {
-     const userId = 'known-id';
+   it("should get user", () => {
+     const userId = "known-id";
      const user = getUser(userId);
      expect(user).toBeDefined();
    });
@@ -429,17 +473,17 @@ The CI validation provides:
 function buildUser(overrides = {}) {
   return {
     id: 1,
-    name: 'John Doe',
-    email: 'john@example.com',
-    ...overrides
+    name: "John Doe",
+    email: "john@example.com",
+    ...overrides,
   };
 }
 
 // Usage
-it('should update user email', () => {
-  const user = buildUser({ email: 'old@example.com' });
-  const updated = updateUser(user, { email: 'new@example.com' });
-  expect(updated.email).toBe('new@example.com');
+it("should update user email", () => {
+  const user = buildUser({ email: "old@example.com" });
+  const updated = updateUser(user, { email: "new@example.com" });
+  expect(updated.email).toBe("new@example.com");
 });
 ```
 
@@ -448,16 +492,19 @@ it('should update user email', () => {
 ### Common Issues
 
 #### Tests Pass But Coverage Is Low
+
 - Tests might not be executing the right code paths
 - Check if mocks are preventing real code execution
 - Review conditional logic that might be skipped
 
 #### Mutation Testing Shows Survived Mutants
+
 - Tests are too implementation-specific
 - Add more behavioral assertions
 - Consider edge cases not covered
 
 #### Linting Shows Quality Issues
+
 - Review test naming conventions
 - Ensure all mocks are verified
 - Add more specific assertions

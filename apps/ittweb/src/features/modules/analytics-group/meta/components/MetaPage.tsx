@@ -1,11 +1,11 @@
-import React from 'react';
-import { PageHero } from '@/features/infrastructure/components';
-import { Card } from '@/features/infrastructure/components';
-import { useMetaFilters } from './useMetaFilters';
-import { useMetaData } from './useMetaData';
-import { MetaFilters } from './MetaFilters';
-import { MetaCharts } from './MetaCharts';
-import { ITTStatsOverview } from './ITTStatsOverview';
+import React from "react";
+import { PageHero } from "@/features/infrastructure/components";
+import { Card } from "@/features/infrastructure/components";
+import { useMetaFilters } from "./useMetaFilters";
+import { useMetaData } from "./useMetaData";
+import { MetaFilters } from "./MetaFilters";
+import { MetaCharts } from "./MetaCharts";
+import { ITTStatsOverview } from "./ITTStatsOverview";
 
 interface MetaPageProps {
   pageNamespaces: string[];
@@ -67,7 +67,7 @@ export function MetaPage({ pageNamespaces: _pageNamespaces }: MetaPageProps) {
   return (
     <div className="min-h-[calc(100vh-8rem)]">
       <PageHero title="Meta Statistics" description="View game meta statistics and trends" />
-      
+
       <div className="container mx-auto px-4 py-8 space-y-6">
         <MetaFilters
           category={category}
@@ -91,11 +91,11 @@ export function MetaPage({ pageNamespaces: _pageNamespaces }: MetaPageProps) {
         {metaData ? (
           <>
             {/* Check if we have any data to show */}
-            {metaData.activity.length === 0 && 
-             metaData.gameLength.length === 0 && 
-             metaData.playerActivity.length === 0 && 
-             metaData.classSelection.length === 0 && 
-             metaData.classWinRates.length === 0 ? (
+            {metaData.activity.length === 0 &&
+            metaData.gameLength.length === 0 &&
+            metaData.playerActivity.length === 0 &&
+            metaData.classSelection.length === 0 &&
+            metaData.classWinRates.length === 0 ? (
               <Card variant="medieval" className="p-8">
                 <div className="text-center">
                   <p className="text-gray-400 text-lg mb-2">No game data available</p>
@@ -107,9 +107,20 @@ export function MetaPage({ pageNamespaces: _pageNamespaces }: MetaPageProps) {
                   <div className="text-left text-xs text-gray-600 bg-gray-900/50 p-4 rounded border border-gray-700">
                     <p className="font-semibold mb-2">Troubleshooting:</p>
                     <ul className="list-disc list-inside space-y-1">
-                      <li>Check that your game has <code className="bg-gray-800 px-1 rounded">gameState: &quot;completed&quot;</code></li>
-                      <li>Verify the game has a <code className="bg-gray-800 px-1 rounded">datetime</code> field</li>
-                      <li>Ensure the game&apos;s date is within the selected date range (default: last 365 days)</li>
+                      <li>
+                        Check that your game has{" "}
+                        <code className="bg-gray-800 px-1 rounded">
+                          gameState: &quot;completed&quot;
+                        </code>
+                      </li>
+                      <li>
+                        Verify the game has a{" "}
+                        <code className="bg-gray-800 px-1 rounded">datetime</code> field
+                      </li>
+                      <li>
+                        Ensure the game&apos;s date is within the selected date range (default: last
+                        365 days)
+                      </li>
                       <li>Check browser console for any errors</li>
                       <li>Try adjusting the date filters to include your game&apos;s date</li>
                     </ul>
@@ -131,4 +142,3 @@ export function MetaPage({ pageNamespaces: _pageNamespaces }: MetaPageProps) {
     </div>
   );
 }
-

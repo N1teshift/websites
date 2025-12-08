@@ -2,7 +2,7 @@
 
 /**
  * Data Export Tool - Export student data to various formats
- * 
+ *
  * Formalizes:
  * - exportStudentDataV4.ts
  * - exportStudentData.ts
@@ -13,10 +13,10 @@
  * - Filter by class, student, date range
  * - Include/exclude specific fields
  * - Multiple output formats
- * 
+ *
  * Usage:
  *   npx tsx scripts/tools/exportData.ts [options]
- * 
+ *
  * Options:
  *   --input=<file>        Input JSON file (default: current data)
  *   --output=<file>       Output file (required)
@@ -28,199 +28,198 @@
  *   --help, -h            Show this help
  */
 
-import * as fs from 'fs/promises';
-import { resolve } from 'path';
-import { Logger } from '../../src/features/infrastructure/logging';
+import * as fs from "fs/promises";
+import { resolve } from "path";
+import { Logger } from "../../src/features/infrastructure/logging";
 
 interface ExportOptions {
-    inputFile: string;
-    outputFile: string;
-    format: 'json' | 'csv';
-    filterClass?: string;
-    includeFields?: string[];
-    excludeFields?: string[];
-    prettyPrint: boolean;
+  inputFile: string;
+  outputFile: string;
+  format: "json" | "csv";
+  filterClass?: string;
+  includeFields?: string[];
+  excludeFields?: string[];
+  prettyPrint: boolean;
 }
 
 interface StudentData {
-    id: string;
-    first_name: string;
-    last_name: string;
-    class_name: string;
-    assessments?: any[];
-    [key: string]: any;
+  id: string;
+  first_name: string;
+  last_name: string;
+  class_name: string;
+  assessments?: any[];
+  [key: string]: any;
 }
 
 interface MasterData {
-    metadata: any;
-    students: StudentData[];
+  metadata: any;
+  students: StudentData[];
 }
 
 class DataExporter {
-    private options: ExportOptions;
-    private data!: MasterData;
+  private options: ExportOptions;
+  private data!: MasterData;
 
-    constructor(options: ExportOptions) {
-        this.options = options;
+  constructor(options: ExportOptions) {
+    this.options = options;
+  }
+
+  async export(): Promise<void> {
+    console.log("=".repeat(80));
+    console.log(`📤 Data Export Tool - ${this.options.format.toUpperCase()} format`);
+    console.log("=".repeat(80));
+    console.log(`Input file:  ${this.options.inputFile}`);
+    console.log(`Output file: ${this.options.outputFile}\n`);
+
+    try {
+      // Step 1: Load data
+      await this.loadData();
+
+      // Step 2: Filter
+      this.filterData();
+
+      // Step 3: Export
+      if (this.options.format === "json") {
+        await this.exportJSON();
+      } else if (this.options.format === "csv") {
+        await this.exportCSV();
+      }
+
+      console.log("\n=".repeat(80));
+      console.log("✅ Export complete!\n");
+    } catch (error) {
+      console.error("\n❌ Export failed:", error);
+      process.exit(1);
+    }
+  }
+
+  private async loadData(): Promise<void> {
+    console.log("📖 Loading data...\n");
+
+    const content = await fs.readFile(this.options.inputFile, "utf-8");
+    this.data = JSON.parse(content);
+
+    Logger.info(`✓ Loaded ${this.data.students.length} students`);
+    Logger.info(`✓ Schema: ${this.data.metadata?.schema_version || "unknown"}\n`);
+  }
+
+  private filterData(): void {
+    let students = this.data.students;
+
+    // Filter by class
+    if (this.options.filterClass) {
+      students = students.filter((s) => s.class_name === this.options.filterClass);
+      Logger.info(`Filtered to class: ${this.options.filterClass} (${students.length} students)`);
     }
 
-    async export(): Promise<void> {
-        console.log('='.repeat(80));
-        console.log(`📤 Data Export Tool - ${this.options.format.toUpperCase()} format`);
-        console.log('='.repeat(80));
-        console.log(`Input file:  ${this.options.inputFile}`);
-        console.log(`Output file: ${this.options.outputFile}\n`);
+    // Filter fields
+    if (this.options.includeFields || this.options.excludeFields) {
+      students = students.map((student) => {
+        const filtered: any = {};
 
-        try {
-            // Step 1: Load data
-            await this.loadData();
-
-            // Step 2: Filter
-            this.filterData();
-
-            // Step 3: Export
-            if (this.options.format === 'json') {
-                await this.exportJSON();
-            } else if (this.options.format === 'csv') {
-                await this.exportCSV();
+        if (this.options.includeFields) {
+          // Only include specified fields
+          for (const field of this.options.includeFields) {
+            if (field in student) {
+              filtered[field] = student[field];
             }
-
-            console.log('\n='.repeat(80));
-            console.log('✅ Export complete!\n');
-
-        } catch (error) {
-            console.error('\n❌ Export failed:', error);
-            process.exit(1);
-        }
-    }
-
-    private async loadData(): Promise<void> {
-        console.log('📖 Loading data...\n');
-
-        const content = await fs.readFile(this.options.inputFile, 'utf-8');
-        this.data = JSON.parse(content);
-
-        Logger.info(`✓ Loaded ${this.data.students.length} students`);
-        Logger.info(`✓ Schema: ${this.data.metadata?.schema_version || 'unknown'}\n`);
-    }
-
-    private filterData(): void {
-        let students = this.data.students;
-
-        // Filter by class
-        if (this.options.filterClass) {
-            students = students.filter(s => s.class_name === this.options.filterClass);
-            Logger.info(`Filtered to class: ${this.options.filterClass} (${students.length} students)`);
+          }
+        } else {
+          // Include all except excluded
+          for (const [key, value] of Object.entries(student)) {
+            if (!this.options.excludeFields?.includes(key)) {
+              filtered[key] = value;
+            }
+          }
         }
 
-        // Filter fields
-        if (this.options.includeFields || this.options.excludeFields) {
-            students = students.map(student => {
-                const filtered: any = {};
+        return filtered;
+      });
 
-                if (this.options.includeFields) {
-                    // Only include specified fields
-                    for (const field of this.options.includeFields) {
-                        if (field in student) {
-                            filtered[field] = student[field];
-                        }
-                    }
-                } else {
-                    // Include all except excluded
-                    for (const [key, value] of Object.entries(student)) {
-                        if (!this.options.excludeFields?.includes(key)) {
-                            filtered[key] = value;
-                        }
-                    }
-                }
-
-                return filtered;
-            });
-
-            Logger.info(`Fields filtered`);
-        }
-
-        this.data.students = students;
-        console.log();
+      Logger.info(`Fields filtered`);
     }
 
-    private async exportJSON(): Promise<void> {
-        console.log('📦 Exporting to JSON...\n');
+    this.data.students = students;
+    console.log();
+  }
 
-        // Update export metadata
-        this.data.metadata = {
-            ...this.data.metadata,
-            exported_at: new Date().toISOString(),
-            export_version: this.data.metadata?.schema_version || 'unknown',
-            total_students: this.data.students.length
-        };
+  private async exportJSON(): Promise<void> {
+    console.log("📦 Exporting to JSON...\n");
 
-        const json = this.options.prettyPrint
-            ? JSON.stringify(this.data, null, 2)
-            : JSON.stringify(this.data);
+    // Update export metadata
+    this.data.metadata = {
+      ...this.data.metadata,
+      exported_at: new Date().toISOString(),
+      export_version: this.data.metadata?.schema_version || "unknown",
+      total_students: this.data.students.length,
+    };
 
-        await fs.writeFile(this.options.outputFile, json, 'utf-8');
+    const json = this.options.prettyPrint
+      ? JSON.stringify(this.data, null, 2)
+      : JSON.stringify(this.data);
 
-        const sizeMB = (json.length / 1024 / 1024).toFixed(2);
-        Logger.info(`✓ JSON exported: ${sizeMB} MB`);
-        Logger.info(`✓ Students: ${this.data.students.length}`);
+    await fs.writeFile(this.options.outputFile, json, "utf-8");
+
+    const sizeMB = (json.length / 1024 / 1024).toFixed(2);
+    Logger.info(`✓ JSON exported: ${sizeMB} MB`);
+    Logger.info(`✓ Students: ${this.data.students.length}`);
+  }
+
+  private async exportCSV(): Promise<void> {
+    console.log("📊 Exporting to CSV...\n");
+
+    const rows: string[][] = [];
+
+    // Determine columns from first student
+    if (this.data.students.length === 0) {
+      throw new Error("No students to export");
     }
 
-    private async exportCSV(): Promise<void> {
-        console.log('📊 Exporting to CSV...\n');
+    const sampleStudent = this.data.students[0];
+    const columns = Object.keys(sampleStudent).filter((key) => {
+      // Exclude complex nested objects for CSV
+      const value = sampleStudent[key];
+      return typeof value !== "object" || value === null;
+    });
 
-        const rows: string[][] = [];
+    // Header row
+    rows.push(columns);
 
-        // Determine columns from first student
-        if (this.data.students.length === 0) {
-            throw new Error('No students to export');
+    // Data rows
+    for (const student of this.data.students) {
+      const row = columns.map((col) => {
+        const value = student[col];
+
+        if (value === null || value === undefined) {
+          return "";
         }
 
-        const sampleStudent = this.data.students[0];
-        const columns = Object.keys(sampleStudent).filter(key => {
-            // Exclude complex nested objects for CSV
-            const value = sampleStudent[key];
-            return typeof value !== 'object' || value === null;
-        });
-
-        // Header row
-        rows.push(columns);
-
-        // Data rows
-        for (const student of this.data.students) {
-            const row = columns.map(col => {
-                const value = student[col];
-                
-                if (value === null || value === undefined) {
-                    return '';
-                }
-                
-                // Escape CSV special characters
-                const str = String(value);
-                if (str.includes(',') || str.includes('"') || str.includes('\n')) {
-                    return `"${str.replace(/"/g, '""')}"`;
-                }
-                
-                return str;
-            });
-
-            rows.push(row);
+        // Escape CSV special characters
+        const str = String(value);
+        if (str.includes(",") || str.includes('"') || str.includes("\n")) {
+          return `"${str.replace(/"/g, '""')}"`;
         }
 
-        // Join into CSV
-        const csv = rows.map(row => row.join(',')).join('\n');
-        await fs.writeFile(this.options.outputFile, csv, 'utf-8');
+        return str;
+      });
 
-        Logger.info(`✓ CSV exported: ${rows.length - 1} rows, ${columns.length} columns`);
+      rows.push(row);
     }
+
+    // Join into CSV
+    const csv = rows.map((row) => row.join(",")).join("\n");
+    await fs.writeFile(this.options.outputFile, csv, "utf-8");
+
+    Logger.info(`✓ CSV exported: ${rows.length - 1} rows, ${columns.length} columns`);
+  }
 }
 
 // CLI Entry Point
 function parseArgs(): ExportOptions | null {
-    const args = process.argv.slice(2);
+  const args = process.argv.slice(2);
 
-    if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
-        console.log(`
+  if (args.length === 0 || args.includes("--help") || args.includes("-h")) {
+    console.log(`
 Data Export Tool
 
 Usage:
@@ -246,61 +245,60 @@ Examples:
   # Export with specific fields only
   npx tsx scripts/tools/exportData.ts --input=data.json --output=minimal.json --fields=id,first_name,last_name,class_name
         `);
-        return null;
+    return null;
+  }
+
+  const options: Partial<ExportOptions> = {
+    format: "json",
+    prettyPrint: true,
+  };
+
+  // Find most recent data file if no input specified
+  const defaultInput = `data_${new Date().toISOString().split("T")[0]}.json`;
+
+  for (const arg of args) {
+    if (arg.startsWith("--input=")) {
+      options.inputFile = resolve(arg.split("=")[1]);
+    } else if (arg.startsWith("--output=")) {
+      options.outputFile = resolve(arg.split("=")[1]);
+    } else if (arg.startsWith("--format=")) {
+      options.format = arg.split("=")[1] as "json" | "csv";
+    } else if (arg.startsWith("--class=")) {
+      options.filterClass = arg.split("=")[1];
+    } else if (arg.startsWith("--fields=")) {
+      options.includeFields = arg.split("=")[1].split(",");
+    } else if (arg.startsWith("--exclude=")) {
+      options.excludeFields = arg.split("=")[1].split(",");
+    } else if (arg === "--no-pretty") {
+      options.prettyPrint = false;
     }
+  }
 
-    const options: Partial<ExportOptions> = {
-        format: 'json',
-        prettyPrint: true
-    };
+  if (!options.inputFile) {
+    options.inputFile = resolve(defaultInput);
+  }
 
-    // Find most recent data file if no input specified
-    const defaultInput = `data_${new Date().toISOString().split('T')[0]}.json`;
+  if (!options.outputFile) {
+    console.error("❌ Error: --output is required\n");
+    console.log("Use --help for usage information");
+    process.exit(1);
+  }
 
-    for (const arg of args) {
-        if (arg.startsWith('--input=')) {
-            options.inputFile = resolve(arg.split('=')[1]);
-        } else if (arg.startsWith('--output=')) {
-            options.outputFile = resolve(arg.split('=')[1]);
-        } else if (arg.startsWith('--format=')) {
-            options.format = arg.split('=')[1] as 'json' | 'csv';
-        } else if (arg.startsWith('--class=')) {
-            options.filterClass = arg.split('=')[1];
-        } else if (arg.startsWith('--fields=')) {
-            options.includeFields = arg.split('=')[1].split(',');
-        } else if (arg.startsWith('--exclude=')) {
-            options.excludeFields = arg.split('=')[1].split(',');
-        } else if (arg === '--no-pretty') {
-            options.prettyPrint = false;
-        }
-    }
-
-    if (!options.inputFile) {
-        options.inputFile = resolve(defaultInput);
-    }
-
-    if (!options.outputFile) {
-        console.error('❌ Error: --output is required\n');
-        console.log('Use --help for usage information');
-        process.exit(1);
-    }
-
-    return options as ExportOptions;
+  return options as ExportOptions;
 }
 
 // Main execution
 async function main() {
-    try {
-        const options = parseArgs();
-        if (!options) return;
+  try {
+    const options = parseArgs();
+    if (!options) return;
 
-        const exporter = new DataExporter(options);
-        await exporter.export();
-    } catch (error) {
-        console.error('❌ Fatal error:', error);
-        process.exit(1);
-    }
+    const exporter = new DataExporter(options);
+    await exporter.export();
+  } catch (error) {
+    console.error("❌ Fatal error:", error);
+    process.exit(1);
+  }
 }
 
 main();
-

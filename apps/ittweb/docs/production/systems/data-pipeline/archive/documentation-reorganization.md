@@ -12,7 +12,9 @@ All scripts-related documentation was (at the time) reorganized and consolidated
 ### 1. Consolidated Documentation
 
 #### Icon Mapping Documentation
+
 **Before:** 6 separate files
+
 - `ICON_MAPPING_ANALYSIS.md`
 - `ICON_MAPPING_SCRIPTS_GUIDE.md`
 - `ICON_MAPPING_ISSUES_REPORT.md`
@@ -21,23 +23,29 @@ All scripts-related documentation was (at the time) reorganized and consolidated
 - `ICON_EXTRACTION_LIST.md` (kept as-is)
 
 **After:** 2 files
+
 - ✅ `ICON_MAPPING.md` - Comprehensive consolidated guide
 - ✅ `ICON_EXTRACTION_LIST.md` - Generated list (kept separate)
 
 #### Refactoring Documentation
+
 **Before:** 2 separate files
+
 - `scripts/REFACTORING_COMPARISON.md`
 - `scripts/REFACTORING_PROPOSAL.md`
 
 **After:** 1 file
+
 - ✅ `REFACTORING.md` - Consolidated proposal and comparison
 
 ### 2. Moved Files to `docs/scripts/` (now `docs/systems/scripts/`)
 
 **From root:**
+
 - `ICON_EXTRACTION_LIST.md` → `docs/scripts/ICON_EXTRACTION_LIST.md` (now `docs/systems/scripts/icon-extraction-list.md`)
 
 **From scripts folder:**
+
 - `scripts/EXTRACT_W3X_README.md` → `docs/scripts/EXTRACT_W3X.md` (now `docs/systems/scripts/extract-w3x.md`)
 - `scripts/FIELD_REFERENCES_README.md` → `docs/scripts/FIELD_REFERENCES.md` (now `docs/systems/scripts/field-references.md`)
 - `scripts/SCRIPT_ANALYSIS.md` → `docs/scripts/SCRIPT_ANALYSIS.md` (now `docs/systems/scripts/archive/script-analysis.md`)
@@ -90,6 +98,7 @@ docs/scripts/            (now docs/systems/scripts/)
 ## Files That Reference Old Documentation
 
 Some script files may still reference old documentation paths in comments:
+
 - `scripts/data/migrate-iconpaths.mjs`
 - `scripts/icons/manage-icon-mapping.mjs`
 - `scripts/icons/manage-icon-mapping-refactored.mjs`
@@ -110,6 +119,3 @@ These are just comments and don't affect functionality. They can be updated in a
 1. ✅ Documentation reorganized
 2. ⏭️ Update script file comments if needed (optional)
 3. ⏭️ Consider adding to main docs README.md
-
-
-

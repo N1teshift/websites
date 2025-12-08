@@ -1,10 +1,17 @@
 import { useEffect, useMemo } from "react";
 import {
-  CoefficientRule, coeficientRuleOptions, NumberSet, RepresentationType, CoefficientSettings
+  CoefficientRule,
+  coeficientRuleOptions,
+  NumberSet,
+  RepresentationType,
+  CoefficientSettings,
 } from "../../types/index";
-import { getAllowedRepresentationTypes, getDefaultRepresentationType } from "../../shared/mathematicalConstraints";
+import {
+  getAllowedRepresentationTypes,
+  getDefaultRepresentationType,
+} from "../../shared/mathematicalConstraints";
 
-import { areRulesPairwiseCompatible } from '@/features/modules/math/shared/coefficientConceptualValidator';
+import { areRulesPairwiseCompatible } from "@/features/modules/math/shared/coefficientConceptualValidator";
 import { isPrime } from "../../shared/numberUtils";
 
 /**
@@ -39,7 +46,7 @@ export function useRepresentationType(
     // Simple mode - use predefined representation type based on number set
     if (interfaceType === "simple") {
       const defaultRepType = getDefaultRepresentationType(settings.numberSet);
-      
+
       if (settings.representationType !== defaultRepType) {
         updateSettings({
           ...settings,
@@ -48,7 +55,7 @@ export function useRepresentationType(
       }
       return;
     }
-    
+
     // Complex mode - ensure representation type is compatible with number set
     const allowedTypes = getAllowedRepresentationTypes(settings.numberSet);
     if (!allowedTypes.includes(settings.representationType)) {
@@ -71,11 +78,11 @@ export function useRepresentationType(
       { value: "fraction", label: "Fraction" },
       { value: "mixed", label: "Mixed" },
       { value: "root", label: "Root" },
-      { value: "logarithm", label: "Logarithm" }
+      { value: "logarithm", label: "Logarithm" },
     ];
 
     const allowedTypes = getAllowedRepresentationTypes(settings.numberSet);
-    return baseOptions.filter(opt => allowedTypes.includes(opt.value));
+    return baseOptions.filter((opt) => allowedTypes.includes(opt.value));
   }, [interfaceType, settings.numberSet]);
 
   return { representationTypeOptions };
@@ -103,31 +110,31 @@ export function useDisabledRules(
 ) {
   return useMemo(() => {
     if (interfaceType === "simple") return [];
-    
+
     const disabled: CoefficientRule[] = [];
     const { numberSet } = settings;
-    
+
     // For real, rational and irrational number sets, only allow sign-related rules
     if (["real", "rational", "irrational"].includes(numberSet)) {
-      return coeficientRuleOptions.filter(rule => 
-        !["positive", "negative", "nonzero"].includes(rule)
+      return coeficientRuleOptions.filter(
+        (rule) => !["positive", "negative", "nonzero"].includes(rule)
       );
     }
-    
+
     // For integer numbers, disable prime (only valid for natural numbers)
     if (numberSet === "integer") {
       disabled.push("prime");
     }
-    
+
     // For natural numbers, sign-related rules are redundant
     if (numberSet === "natural") {
       disabled.push("positive", "negative", "nonzero");
     }
-    
+
     // If we have a range, check range-specific constraints
     if (settings.range && settings.range.length === 2) {
       const [min, max] = settings.range;
-      
+
       // If range is all positive or all negative, disable sign/zero rules as appropriate
       if (min > 0) {
         // All positive range
@@ -141,14 +148,14 @@ export function useDisabledRules(
         // Range is just zero
         disabled.push("positive", "negative", "nonzero", "odd", "even", "prime", "square", "cube");
       }
-      
+
       // Check for special rules that need at least one valid value in the range
       if (numberSet === "natural" || numberSet === "integer") {
         // Unit rule requires 1 or -1 in the range
         if (!(min <= 1 && max >= 1) && !(min <= -1 && max >= -1)) {
           disabled.push("unit");
         }
-        
+
         // Prime rule requires at least one prime in the range
         if (numberSet === "natural" && (min > 2 || max < 2)) {
           let hasPrime = false;
@@ -165,7 +172,7 @@ export function useDisabledRules(
         }
       }
     }
-    
+
     return Array.from(new Set(disabled)); // Remove duplicates
   }, [interfaceType, settings]);
 }
@@ -184,7 +191,7 @@ export function useRulesCleanup(
   disabledOptions: CoefficientRule[]
 ) {
   useEffect(() => {
-    const updatedRules = settings.rules.filter(rule => !disabledOptions.includes(rule));
+    const updatedRules = settings.rules.filter((rule) => !disabledOptions.includes(rule));
     if (updatedRules.length !== settings.rules.length) {
       updateSettings({ ...settings, rules: updatedRules });
     }
@@ -204,28 +211,28 @@ export function useRulesCleanup(
  */
 export function handleRuleSelectionChange(
   settings: CoefficientSettings,
-  option: string,
+  option: string
 ): CoefficientRule[] {
   const currentRules = new Set(settings.rules);
   const optionAsRule = option as CoefficientRule;
-  
+
   // If removing a rule, simply remove it
   if (currentRules.has(optionAsRule)) {
     currentRules.delete(optionAsRule);
     return Array.from(currentRules) as CoefficientRule[];
   }
-  
+
   // If adding a rule, check compatibility with all existing rules
   const newRules: CoefficientRule[] = [];
   const existingRules = Array.from(currentRules);
-  
+
   // Check each existing rule for compatibility with the new rule
   for (const existingRule of existingRules) {
     if (areRulesPairwiseCompatible(existingRule, optionAsRule)) {
       newRules.push(existingRule);
     }
   }
-  
+
   // Add the new rule
   newRules.push(optionAsRule);
   return newRules;
@@ -249,16 +256,16 @@ export function useCoefficientRules(
 ) {
   // Get disabled rules
   const disabledOptions = useDisabledRules(settings, interfaceType);
-  
+
   // Clean up incompatible rules
   useRulesCleanup(settings, updateSettings, disabledOptions);
-  
+
   // Handle rule changes
   const handleRulesChange = (option: string) => {
     const newRules = handleRuleSelectionChange(settings, option);
     updateSettings({ ...settings, rules: newRules });
   };
-  
+
   return { disabledOptions, handleRulesChange };
 }
 
@@ -270,12 +277,12 @@ export function useCoefficientRules(
  * @param {CoefficientSettings} settings - The current coefficient settings.
  * @param {(newSettings: CoefficientSettings) => void} updateSettings - Callback to update the settings.
  * @param {"simple" | "complex"} interfaceType - The current interface mode.
- * @returns {{ 
- *    representationTypeOptions: RepresentationTypeOption[]; 
- *    disabledOptions: CoefficientRule[]; 
- *    handleRulesChange: (option: string) => void; 
- *    handleNumberSetChange: (value: string) => void; 
- *    handleRangeChange: (newRange: number[]) => void; 
+ * @returns {{
+ *    representationTypeOptions: RepresentationTypeOption[];
+ *    disabledOptions: CoefficientRule[];
+ *    handleRulesChange: (option: string) => void;
+ *    handleNumberSetChange: (value: string) => void;
+ *    handleRangeChange: (newRange: number[]) => void;
  * }}
  * An object containing available representation type options, disabled rule options,
  * and handler functions for rules, number set, and range.
@@ -286,38 +293,35 @@ export function useCoefficientSettings(
   interfaceType: "simple" | "complex"
 ) {
   const { representationTypeOptions } = useRepresentationType(
-    settings, 
-    updateSettings, 
+    settings,
+    updateSettings,
     interfaceType
   );
-  
+
   const { disabledOptions, handleRulesChange } = useCoefficientRules(
-    settings, 
-    updateSettings, 
+    settings,
+    updateSettings,
     interfaceType
   );
-  
+
   const handleNumberSetChange = (value: string) => {
     updateSettings({ ...settings, numberSet: value as NumberSet });
   };
-  
+
   const handleRangeChange = (newRange: number[]) => {
     // Ensure we extract a tuple [number, number] from the input array
     const rangeTuple: [number, number] = [
       newRange.length > 0 ? newRange[0] : 0, // Default min
-      newRange.length > 1 ? newRange[1] : 10 // Default max
+      newRange.length > 1 ? newRange[1] : 10, // Default max
     ];
     updateSettings({ ...settings, range: rangeTuple });
   };
-  
+
   return {
     representationTypeOptions,
     disabledOptions,
     handleRulesChange,
     handleNumberSetChange,
-    handleRangeChange
+    handleRangeChange,
   };
-} 
-
-
-
+}

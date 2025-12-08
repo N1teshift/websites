@@ -12,13 +12,13 @@ Your features folder structure is **already quite good** and follows many best p
 
 Some modules are incomplete or inconsistent in their structure:
 
-| Module | Has Components | Has Hooks | Has Lib | Has Types | Has Utils | Issue |
-|--------|---------------|-----------|---------|-----------|-----------|-------|
-| `modules/players` | ❌ | ✅ | ❌ | ❌ | ❌ | Only has hooks - seems incomplete |
-| `modules/tools` | ❌ | ✅ | ❌ | ✅ | ✅ | Missing components and lib |
-| `game-management/entries` | ✅ | ❌ | ✅ | ❌ | ❌ | Missing hooks and types |
-| `game-management/scheduled-games` | ✅ | ❌ | ✅ | ❌ | ✅ | Missing hooks and types |
-| `content/blog` | ✅ | ❌ | ✅ | ✅ | ❌ | Missing hooks |
+| Module                            | Has Components | Has Hooks | Has Lib | Has Types | Has Utils | Issue                             |
+| --------------------------------- | -------------- | --------- | ------- | --------- | --------- | --------------------------------- |
+| `modules/players`                 | ❌             | ✅        | ❌      | ❌        | ❌        | Only has hooks - seems incomplete |
+| `modules/tools`                   | ❌             | ✅        | ❌      | ✅        | ✅        | Missing components and lib        |
+| `game-management/entries`         | ✅             | ❌        | ✅      | ❌        | ❌        | Missing hooks and types           |
+| `game-management/scheduled-games` | ✅             | ❌        | ✅      | ❌        | ✅        | Missing hooks and types           |
+| `content/blog`                    | ✅             | ❌        | ✅      | ✅        | ❌        | Missing hooks                     |
 
 **Recommendation**: Ensure each module has at minimum: `components/`, `types/`, and either `lib/` or `hooks/` depending on needs.
 
@@ -27,10 +27,12 @@ Some modules are incomplete or inconsistent in their structure:
 ### 2. **Confusing Naming: `tools` vs `tools-group`**
 
 You have both:
+
 - `modules/tools/` - Contains only hooks, types, utils (no components)
 - `modules/tools-group/` - Contains `map-analyzer/` and `tools/` submodules
 
 **Issues**:
+
 - Naming collision creates confusion
 - Unclear which is the "real" tools module
 - `tools-group/tools` is nested awkwardly
@@ -38,6 +40,7 @@ You have both:
 **Recommendations** (choose one):
 
 **Option A: Merge and Flatten**
+
 ```
 modules/tools/
 ├── core/              # Current tools module content
@@ -56,6 +59,7 @@ modules/tools/
 ```
 
 **Option B: Rename for Clarity**
+
 ```
 modules/tools-shared/   # Rename current tools/
 ├── hooks/
@@ -72,10 +76,12 @@ modules/tools/          # Rename tools-group/
 ### 3. **Confusing Naming: `community/players` vs `modules/players`**
 
 You have:
+
 - `modules/community/players/` - Full module with components, hooks, lib, types
 - `modules/players/` - Only has hooks
 
 **Issues**:
+
 - Duplicate naming creates confusion
 - Unclear relationship between the two
 - `modules/players` seems redundant
@@ -87,6 +93,7 @@ Move `modules/players/hooks/` into `modules/community/players/hooks/` and delete
 
 **Option B: Clarify Purpose**
 If they serve different purposes, rename for clarity:
+
 - `modules/community/players/` → `modules/community/player-profiles/`
 - `modules/players/` → `modules/player-stats/` (or whatever it actually does)
 
@@ -95,6 +102,7 @@ If they serve different purposes, rename for clarity:
 ### 4. **Group Naming Inconsistency**
 
 You have `-group` suffix for some but not others:
+
 - ✅ `analytics-group/` (contains `analytics/` and `meta/`)
 - ✅ `tools-group/` (contains `map-analyzer/` and `tools/`)
 - ❌ `community/` (contains `archives/`, `players/`, `standings/`) - **Missing `-group` suffix**
@@ -102,6 +110,7 @@ You have `-group` suffix for some but not others:
 - ❌ `game-management/` (contains `entries/`, `games/`, `scheduled-games/`) - **Missing `-group` suffix**
 
 **Recommendation**: Be consistent. Either:
+
 - **Option A**: Add `-group` suffix to all multi-module containers
   - `community-group/`, `content-group/`, `game-management-group/`
 - **Option B**: Remove `-group` suffix from all (simpler, recommended)
@@ -113,17 +122,17 @@ You have `-group` suffix for some but not others:
 
 Test directories are inconsistent:
 
-| Module | Has `__tests__/` |
-|--------|------------------|
-| `infrastructure/api` | ✅ |
-| `infrastructure/game` | ✅ |
-| `infrastructure/hooks` | ✅ |
-| `infrastructure/lib` | ✅ |
-| `infrastructure/utils` | ✅ |
-| `infrastructure/auth` | ❌ |
-| `infrastructure/components` | ❌ |
-| `infrastructure/logging` | ❌ |
-| `infrastructure/monitoring` | ❌ |
+| Module                      | Has `__tests__/` |
+| --------------------------- | ---------------- |
+| `infrastructure/api`        | ✅               |
+| `infrastructure/game`       | ✅               |
+| `infrastructure/hooks`      | ✅               |
+| `infrastructure/lib`        | ✅               |
+| `infrastructure/utils`      | ✅               |
+| `infrastructure/auth`       | ❌               |
+| `infrastructure/components` | ❌               |
+| `infrastructure/logging`    | ❌               |
+| `infrastructure/monitoring` | ❌               |
 
 **Recommendation**: Add `__tests__/` directories to all infrastructure modules, even if empty initially.
 
@@ -147,6 +156,7 @@ infrastructure/
 ```
 
 **Issues**:
+
 - `auth` and `game` are features, not infrastructure
 - `lib` and `utils` are redundant
 - Mixing infrastructure with features
@@ -168,6 +178,7 @@ infrastructure/
 ```
 
 Then move:
+
 - `auth/` → `modules/auth/`
 - `game/` → `modules/game-parsing/` or `infrastructure/parsers/game/`
 
@@ -281,15 +292,18 @@ features/
 If you want to implement these changes, I recommend this phased approach:
 
 ### Phase 1: Non-Breaking Additions
+
 - Add missing `__tests__/` directories
-- Add missing `types/` directories  
+- Add missing `types/` directories
 - Add README.md files to major modules
 
 ### Phase 2: Simple Renames
+
 - Remove `-group` suffixes
 - Merge `modules/players/` into `modules/community/players/`
 
 ### Phase 3: Structural Changes
+
 - Reorganize infrastructure
 - Move `auth` and `game` modules
 - Consolidate `lib/` and `utils/`
@@ -309,6 +323,7 @@ If you want to implement these changes, I recommend this phased approach:
 ## Summary
 
 Your current structure is **solid** but has some **inconsistencies** that could cause confusion:
+
 - ✅ Good use of feature-based architecture
 - ✅ Consistent use of barrel exports
 - ✅ Clear separation of infrastructure and modules

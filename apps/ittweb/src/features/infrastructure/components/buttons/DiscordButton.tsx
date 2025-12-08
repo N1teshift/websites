@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 type DiscordButtonProps = {
   href?: string;
@@ -7,12 +7,13 @@ type DiscordButtonProps = {
 };
 
 // Get Discord invite URL from environment variable, with fallback
-const DEFAULT_DISCORD_URL = process.env.NEXT_PUBLIC_DISCORD_INVITE_URL || 'https://discord.com/invite/Rh9JdKs';
+const DEFAULT_DISCORD_URL =
+  process.env.NEXT_PUBLIC_DISCORD_INVITE_URL || "https://discord.com/invite/Rh9JdKs";
 
 export default function DiscordButton({
   href = DEFAULT_DISCORD_URL,
-  children = 'Join Discord',
-  className = ''
+  children = "Join Discord",
+  className = "",
 }: DiscordButtonProps) {
   return (
     <a
@@ -28,6 +29,3 @@ export default function DiscordButton({
     </a>
   );
 }
-
-
-

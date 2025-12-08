@@ -6,7 +6,7 @@ Pattern for handling forms with validation and error states.
 
 ```typescript
 // hooks/useMyForm.ts
-import { useState, useMemo } from 'react';
+import { useState, useMemo } from "react";
 
 interface FormState {
   name: string;
@@ -19,31 +19,29 @@ export function useMyForm(initialState: FormState) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const canSubmit = useMemo(() => {
-    return formState.name.trim() !== '' && 
-           formState.email.trim() !== '' && 
-           !isSubmitting;
+    return formState.name.trim() !== "" && formState.email.trim() !== "" && !isSubmitting;
   }, [formState, isSubmitting]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormState(prev => ({ ...prev, [name]: value }));
+    setFormState((prev) => ({ ...prev, [name]: value }));
     // Clear error when user types
     if (errors[name as keyof FormState]) {
-      setErrors(prev => ({ ...prev, [name]: undefined }));
+      setErrors((prev) => ({ ...prev, [name]: undefined }));
     }
   };
 
   const validate = (): boolean => {
     const newErrors: Partial<Record<keyof FormState, string>> = {};
-    
+
     if (!formState.name.trim()) {
-      newErrors.name = 'Name is required';
+      newErrors.name = "Name is required";
     }
-    
+
     if (!formState.email.trim()) {
-      newErrors.email = 'Email is required';
+      newErrors.email = "Email is required";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formState.email)) {
-      newErrors.email = 'Invalid email format';
+      newErrors.email = "Invalid email format";
     }
 
     setErrors(newErrors);
@@ -52,7 +50,7 @@ export function useMyForm(initialState: FormState) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validate()) {
       return;
     }
@@ -62,7 +60,7 @@ export function useMyForm(initialState: FormState) {
       // Submit logic
       await submitForm(formState);
     } catch (error) {
-      setErrors({ submit: 'Failed to submit form' });
+      setErrors({ submit: "Failed to submit form" });
     } finally {
       setIsSubmitting(false);
     }
@@ -83,4 +81,3 @@ export function useMyForm(initialState: FormState) {
 
 - [Code Patterns Index](../code-patterns.md)
 - [Input Validation](../../security/input-validation.md)
-

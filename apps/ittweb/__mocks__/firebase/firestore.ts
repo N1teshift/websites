@@ -12,7 +12,7 @@ export const mockWhere = jest.fn();
 export const mockLimit = jest.fn();
 
 export const Timestamp = {
-  now: jest.fn(() => ({ toDate: () => new Date('2020-01-01T00:00:00Z') })),
+  now: jest.fn(() => ({ toDate: () => new Date("2020-01-01T00:00:00Z") })),
   fromDate: jest.fn((date: Date) => ({ toDate: () => date })),
 };
 
@@ -28,4 +28,4 @@ export const query = (...args: unknown[]) => mockQuery(...args);
 export const orderBy = (...args: unknown[]) => mockOrderBy(...args);
 export const where = (...args: unknown[]) => mockWhere(...args);
 export const limit = (...args: unknown[]) => mockLimit(...args);
-export const serverTimestamp = jest.fn(() => new Date('2020-01-01T00:00:00Z'));
+export const serverTimestamp = jest.fn(() => new Date("2020-01-01T00:00:00Z"));

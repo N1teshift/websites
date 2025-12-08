@@ -7,6 +7,7 @@
 ## Exports
 
 ### Components
+
 - `GuideCard` - Display guide card
 - `ClassIcon` - Class icon component
 - `ClassHeader` - Class header with icon
@@ -16,16 +17,19 @@
 - `StatsCard` - Statistics display card
 
 ### Data
+
 - `abilities/` - Ability definitions by class
 - `items/` - Item definitions (weapons, armor, potions, etc.)
 - `units/` - Unit and class definitions
 - `iconMap` - Icon mapping data
 
 ### Utils
+
 - `iconUtils` - Icon utility functions
 - `itemIdMapper` - Item ID mapping utilities
 
 ### Hooks
+
 - `useItemsData` - Fetch items data (in `hooks/useItemsData.ts`)
 
 ## Usage
@@ -47,16 +51,16 @@ The guides module contains large data files (100KB+) that can impact initial pag
 
 ```typescript
 // Instead of direct import (loads immediately)
-import { ALL_UNITS } from '@/features/modules/content/guides/data/units/allUnits';
+import { ALL_UNITS } from "@/features/modules/content/guides/data/units/allUnits";
 
 // Use lazy loading (loads only when needed)
-import { getAllUnits } from '@/features/modules/content/guides/data';
+import { getAllUnits } from "@/features/modules/content/guides/data";
 
 const MyComponent = () => {
   const [units, setUnits] = useState(null);
 
   useEffect(() => {
-    getAllUnits().then(module => {
+    getAllUnits().then((module) => {
       setUnits(module.ALL_UNITS);
     });
   }, []);
@@ -81,5 +85,3 @@ const MyComponent = () => {
 ## Related Documentation
 
 - [Data Pipeline](../../../../scripts/README.md) - How guide data is generated
-
-

@@ -5,13 +5,13 @@
  * and instructs the LLM to extract the prompt parts describing each constituent `term`.
  * Note: This prompt is currently identical to the `TERMS_SYSTEM_PROMPT`.
  */
-import {POWER, POWER_ORDER, COMBINATION_TYPE} from "./commonConstants"
+import { POWER, POWER_ORDER, COMBINATION_TYPE } from "./commonConstants";
 
 /** @internal Introductory instruction for the LLM. */
 const INTRODUCTION = `
 You are a mathematical query analyzer.
 Your ONLY job is to identify the expression settings from a given user's request.
-`
+`;
 
 const PROPERTIES = `
 COEFFICIENTS PROPERTIES:
@@ -34,7 +34,4 @@ ${INTRODUCTION}
 ${PROPERTIES}
   
 ${SUB_OBJECT_PROMPT_PARTS}
-`
-
-
-
+`;

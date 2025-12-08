@@ -3,6 +3,7 @@
 Derived from the Analytics System Tests section in `docs/operations/comprehensive-test-plan.md`. These scenarios validate the meta analytics experience (e.g., `/meta` dashboard) and any supporting aggregation utilities.
 
 ## Test Environment & Data Setup
+
 - Use a seeded dataset with at least 20 games over 7+ days, covering multiple categories (e.g., Offense, Support, Utility) and classes.
 - Include at least three players with varied participation: a high-volume player, a casual player, and a new player with one game.
 - Ensure ELO updates are enabled so historical snapshots can be generated per game result.
@@ -11,6 +12,7 @@ Derived from the Analytics System Tests section in `docs/operations/comprehensiv
 ## Test Cases
 
 ### Analytics Aggregation
+
 1. **Activity aggregation by day**
    - **Setup:** Filter disabled; use full dataset.
    - **Steps:** Load the analytics dashboard and select the activity chart for daily view.
@@ -60,6 +62,7 @@ Derived from the Analytics System Tests section in `docs/operations/comprehensiv
      - Sorting/pagination (if present) maintain correct ordering.
 
 ### Analytics Filtering
+
 7. **Date range filtering**
    - **Setup:** Choose a range covering only a subset of the seeded games.
    - **Steps:** Apply the date range filter on the analytics dashboard.

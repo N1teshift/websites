@@ -7,6 +7,7 @@
 ## Exports
 
 ### Components
+
 - `BlogPost` - Display blog post content
 - `NewPostForm` - Create new blog post form
 - `EditPostForm` - Edit existing blog post form
@@ -14,34 +15,37 @@
 - `PostDeleteDialog` - Delete confirmation dialog
 
 ### Hooks
+
 - `useNewPostForm` - New post form state management
 - `useEditPostForm` - Edit post form state management
 
 ### Services
+
 - `postService` - Blog post CRUD operations
 - `posts` - Post data utilities (MDX parsing, etc.)
 
 ### Types
+
 - `Post` - Blog post structure (see `src/types/post.ts`)
 
 ## Usage
 
 ```typescript
-import { useNewPostForm } from '@/features/modules/content/blog/hooks/useNewPostForm';
-import { createPost, getPostById } from '@/features/modules/content/blog/lib/postService';
+import { useNewPostForm } from "@/features/modules/content/blog/hooks/useNewPostForm";
+import { createPost, getPostById } from "@/features/modules/content/blog/lib/postService";
 
 // Use new post form hook
 const { formState, handleSubmit, handleChange } = useNewPostForm();
 
 // Create post
 const post = await createPost({
-  title: 'New Post',
-  content: '# Markdown content',
-  published: true
+  title: "New Post",
+  content: "# Markdown content",
+  published: true,
 });
 
 // Get post
-const post = await getPostById('post-id');
+const post = await getPostById("post-id");
 ```
 
 ## API Routes
@@ -55,5 +59,3 @@ const post = await getPostById('post-id');
 ## Related Documentation
 
 - [Post Type Definition](../../../../src/types/post.ts)
-
-

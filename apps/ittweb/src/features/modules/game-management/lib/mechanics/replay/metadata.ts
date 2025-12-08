@@ -1,4 +1,4 @@
-import type { ITTMetadata, ITTPlayerStats } from './types';
+import type { ITTMetadata, ITTPlayerStats } from "./types";
 
 /**
  * Extract ITT-specific metadata from W3MMD custom messages
@@ -10,13 +10,13 @@ export function extractITTMetadata(w3mmdActions: unknown[]): ITTMetadata | undef
   for (const action of w3mmdActions) {
     const actionObj = action as { cache?: { key?: string } };
     const key = actionObj.cache?.key;
-    
-    if (!key || typeof key !== 'string') continue;
-    
+
+    if (!key || typeof key !== "string") continue;
+
     // ITT custom messages format: "custom itt_<identifier> <data>"
-    if (key.startsWith('custom itt_')) {
-      const content = key.slice('custom '.length);
-      const firstSpace = content.indexOf(' ');
+    if (key.startsWith("custom itt_")) {
+      const content = key.slice("custom ".length);
+      const firstSpace = content.indexOf(" ");
       if (firstSpace !== -1) {
         const identifier = content.substring(0, firstSpace);
         const data = content.substring(firstSpace + 1);
@@ -26,7 +26,7 @@ export function extractITTMetadata(w3mmdActions: unknown[]): ITTMetadata | undef
   }
 
   // Check if we have ITT metadata
-  const chunksCountStr = customData.get('itt_chunks');
+  const chunksCountStr = customData.get("itt_chunks");
   if (!chunksCountStr) {
     return undefined;
   }
@@ -46,16 +46,18 @@ export function extractITTMetadata(w3mmdActions: unknown[]): ITTMetadata | undef
   }
 
   // Unescape backslashes (WurstMMD escapes spaces)
-  const payload = chunks.join('').replace(/\\(.)/g, '$1');
+  const payload = chunks.join("").replace(/\\(.)/g, "$1");
 
   // Get schema version for parsing
-  const schemaVersion = customData.get('itt_schema') ? parseInt(customData.get('itt_schema')!, 10) : undefined;
+  const schemaVersion = customData.get("itt_schema")
+    ? parseInt(customData.get("itt_schema")!, 10)
+    : undefined;
 
   // Parse the payload to extract player stats
   const players = parseITTPayload(payload, schemaVersion);
 
   return {
-    version: customData.get('itt_version'),
+    version: customData.get("itt_version"),
     schema: schemaVersion,
     payload,
     players,
@@ -68,18 +70,18 @@ export function extractITTMetadata(w3mmdActions: unknown[]): ITTMetadata | undef
  */
 function parseITTPayload(payload: string, schemaVersion?: number): ITTPlayerStats[] {
   const players: ITTPlayerStats[] = [];
-  const lines = payload.split('\n');
+  const lines = payload.split("\n");
 
   for (const line of lines) {
-    if (!line.startsWith('player:')) continue;
+    if (!line.startsWith("player:")) continue;
 
-    const parts = line.slice('player:'.length).split('|');
-    
+    const parts = line.slice("player:".length).split("|");
+
     // Schema v3 format: slot|name|race|class|team|result|dmg|selfHeal|allyHeal|gold|meat|elk|hawk|snake|wolf|bear|panther
     if (parts.length >= 17 && schemaVersion && schemaVersion >= 3) {
       players.push({
         slotIndex: parseInt(parts[0], 10) || 0,
-        name: parts[1] || '',
+        name: parts[1] || "",
         trollClass: parts[3] || undefined,
         damageTroll: parseInt(parts[6], 10) || 0,
         selfHealing: parseInt(parts[7], 10) || 0,
@@ -98,7 +100,7 @@ function parseITTPayload(payload: string, schemaVersion?: number): ITTPlayerStat
     else if (parts.length >= 16) {
       players.push({
         slotIndex: parseInt(parts[0], 10) || 0,
-        name: parts[1] || '',
+        name: parts[1] || "",
         damageTroll: parseInt(parts[5], 10) || 0,
         selfHealing: parseInt(parts[6], 10) || 0,
         allyHealing: parseInt(parts[7], 10) || 0,
@@ -116,4 +118,3 @@ function parseITTPayload(payload: string, schemaVersion?: number): ITTPlayerStat
 
   return players;
 }
-

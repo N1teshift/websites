@@ -10,6 +10,7 @@ Successfully reorganized documentation from type-based (`refactoring/`, `fixes/`
 ## What Changed
 
 ### Before
+
 ```
 docs/
 ├── refactoring/
@@ -23,6 +24,7 @@ docs/
 ```
 
 ### After
+
 ```
 docs/
 └── features/
@@ -43,6 +45,7 @@ docs/
 ## Files Moved
 
 ### Progress Report (15 files)
+
 - `refactoring/CHART_COMPONENT_REFACTOR.md` → `features/progress-report/refactoring/chart-component.md`
 - `refactoring/REFACTORING_HISTORY.md` → `features/progress-report/refactoring/history.md`
 - `refactoring/REFACTOR_INDEX.md` → `features/progress-report/refactoring/index.md`
@@ -64,6 +67,7 @@ docs/
 - `features/GUIDE_SECTION_UPDATE.md` → `features/progress-report/features/guide-section-update.md`
 
 ### Comments Generator (3 files)
+
 - `refactoring/COMMENTS_GENERATOR_REFACTOR.md` → `features/comments-generator/refactoring/refactor.md`
 - `features/COMMENTS_GENERATOR_TEMPLATE_FILTERING.md` → `features/comments-generator/fixes/template-filtering.md`
 - `features/ENGLISH_COMMENT_TEMPLATES.md` → `features/comments-generator/features/english-templates.md`
@@ -71,6 +75,7 @@ docs/
 ## Naming Convention
 
 **New Standard:**
+
 - Lowercase with hyphens: `chart-component.md` (not `CHART_COMPONENT_REFACTOR.md`)
 - Descriptive but concise: `name-alias.md` (not `NAME_ALIAS_FIX.md`)
 - Category folders: `refactoring/`, `fixes/`, `migrations/`, `features/`
@@ -100,6 +105,7 @@ docs/
 ## Next Steps
 
 When adding new documentation:
+
 1. **Feature-specific**: Place in `features/[feature-name]/[category]/`
 2. **Cross-cutting**: Place in `architecture/`, `guides/`, or `data/`
 3. Use lowercase-hyphenated filenames
@@ -110,4 +116,3 @@ When adding new documentation:
 **Reorganization Complete!** 🎉
 
 Now you can instantly tell which feature any documentation belongs to just by looking at its path!
-

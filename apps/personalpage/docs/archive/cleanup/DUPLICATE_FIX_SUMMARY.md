@@ -18,11 +18,13 @@ The system used **exact string matching**, so when it encountered the typo, it c
 ### 1. Immediate Fix: Merged Duplicate Data
 
 Created `scripts/mergeDuplicateStudent.ts` to:
+
 - Merge assessments from the incorrect record into the correct one
 - Delete the duplicate file
 - Successfully merged 40 assessments
 
 **Usage:**
+
 ```bash
 npx tsx scripts/mergeDuplicateStudent.ts "CorrectLastName" "IncorrectLastName" "FirstName"
 ```
@@ -32,11 +34,13 @@ npx tsx scripts/mergeDuplicateStudent.ts "CorrectLastName" "IncorrectLastName" "
 Implemented fuzzy matching using **Levenshtein distance algorithm**:
 
 **New file:** `src/features/modules/edtech/progressReport/student-data/utils/fuzzyNameMatcher.ts`
+
 - Calculates similarity score between names (0 to 1)
 - Uses 90% similarity threshold (0.9)
 - Logs warning when fuzzy match is used
 
 **Updated:** `src/features/modules/edtech/progressReport/student-data/processors/dataProcessorV4.ts`
+
 - Enhanced `findStudent()` method
 - First tries exact match
 - Falls back to fuzzy matching if no exact match
@@ -56,6 +60,7 @@ Excel: "Julija Krunglevičiūtė" (typo)
 ```
 
 **Console Output:**
+
 ```
 ⚠️ Fuzzy name match detected (possible typo in Excel)
   excelName: "Julija Krunglevičiūtė"
@@ -69,14 +74,17 @@ Excel: "Julija Krunglevičiūtė" (typo)
 ## 🔬 Technical Details
 
 ### Levenshtein Distance
+
 Measures minimum number of single-character edits (insertions, deletions, substitutions) needed to change one string into another.
 
 **Example:**
+
 - "Krunglevičiūtė" → "Krungelevičiūtė"
 - Distance: 1 (insert 'e' after 'g')
 - Similarity: 1 - (1 / 15) = 0.93 ✅ Above 0.9 threshold
 
 ### Match Criteria
+
 - **Exact match:** Always preferred
 - **Fuzzy match:** If similarity ≥ 90%
 - **First name exact + last name 85%:** Also accepted
@@ -87,11 +95,13 @@ Measures minimum number of single-character edits (insertions, deletions, substi
 ## 📊 Results
 
 ### Before Fix:
+
 - 76 students (1 duplicate)
 - Julija's data split across 2 records
 - Risk of future duplicates
 
 ### After Fix:
+
 - 75 students ✅
 - All Julija's data merged ✅
 - Future typos handled automatically ✅
@@ -102,10 +112,12 @@ Measures minimum number of single-character edits (insertions, deletions, substi
 ## 🚀 Next Steps for User
 
 ### Immediate:
+
 1. ✅ Upload `progress_report_data_FIXED.json` to dashboard
 2. ✅ Verify Julija now has all her data (EXT + other columns)
 
 ### Future:
+
 1. Fix the typo in your Excel file (Grei_C and Grei_P sheets)
 2. Watch for fuzzy match warnings in console logs
 3. Correct any typos in Excel when warnings appear
@@ -128,4 +140,3 @@ Measures minimum number of single-character edits (insertions, deletions, substi
 **Date:** November 8, 2025  
 **Affected Student:** Julija Krungelevičiūtė  
 **Assessments Recovered:** 40
-

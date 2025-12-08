@@ -5,6 +5,7 @@ This guide explains how to extract game data (items, abilities, units, buildings
 ## Why Extract from .w3x?
 
 Extracting from the compiled map file has several advantages:
+
 - ✅ **Structured data**: Object data is stored in standardized formats (SLK/text files)
 - ✅ **Complete information**: All final values are already compiled
 - ✅ **Easier parsing**: No need to parse Wurst source code syntax
@@ -20,7 +21,7 @@ You need to extract the object data files from the `.w3x` archive first. The `.w
 2. Open `Island.Troll.Tribes.v3.28.w3x` in MPQ Editor
 3. Extract these files:
    - `war3map.w3t` → Items
-   - `war3map.w3a` → Abilities  
+   - `war3map.w3a` → Abilities
    - `war3map.w3u` → Units
    - `war3map.w3b` → Buildings/Destructables
 4. Place them in: `external/Work/` directory in the project root
@@ -28,6 +29,7 @@ You need to extract the object data files from the `.w3x` archive first. The `.w
 ### Option 2: Use Command Line Tools
 
 If you have `mpq-tools` or similar installed:
+
 ```bash
 # Extract all files
 mpq-extract Island.Troll.Tribes.v3.28.w3x external/Work/
@@ -48,6 +50,7 @@ node scripts/data/extract/extract-from-w3x.mjs
 ```
 
 This will:
+
 1. Parse each object data file using `wc3maptranslator`
 2. Extract names, descriptions, tooltips, icons, and other properties
 3. Save the data to JSON files in `tmp/work-data/raw/`
@@ -63,6 +66,7 @@ This will:
 ## Next Steps
 
 After extraction, you can:
+
 1. Review the extracted data
 2. Use it to update your TypeScript data files
 3. Compare with Wurst source extraction to ensure accuracy
@@ -75,4 +79,3 @@ After extraction, you can:
 - **war3map.w3b**: Destructable/Building data
 
 These files use a binary format that `wc3maptranslator` can parse into JSON.
-

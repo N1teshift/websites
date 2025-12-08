@@ -2,7 +2,7 @@
  * Header component for map persistence info and clear button
  */
 
-import React from 'react';
+import React from "react";
 
 interface MapPersistenceHeaderProps {
   onClear: () => void;
@@ -22,5 +22,3 @@ export function MapPersistenceHeader({ onClear }: MapPersistenceHeaderProps) {
     </div>
   );
 }
-
-

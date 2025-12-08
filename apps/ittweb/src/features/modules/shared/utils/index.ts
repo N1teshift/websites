@@ -23,9 +23,6 @@ export function formatDuration(seconds: number): string {
  * Format ELO change with sign
  */
 export function formatEloChange(change: number): string {
-  const sign = change >= 0 ? '+' : '';
+  const sign = change >= 0 ? "+" : "";
   return `${sign}${change.toFixed(2)}`;
 }
-
-
-

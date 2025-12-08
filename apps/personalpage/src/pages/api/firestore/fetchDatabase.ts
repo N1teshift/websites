@@ -1,9 +1,9 @@
-import { createGetHandler } from '@websites/infrastructure/api';
-import { firestoreService } from '@/features/infrastructure/api/firebase';
+import { createGetHandler } from "@websites/infrastructure/api";
+import { firestoreService } from "@/features/infrastructure/api/firebase";
 
 /**
  * API route handler for fetching data from Firestore.
- * 
+ *
  * Uses the centralized service layer pattern for clean separation of concerns.
  */
 export default createGetHandler(
@@ -15,9 +15,9 @@ export default createGetHandler(
     }
 
     const result = await firestoreService.fetchDatabase(
-      dbName, 
-      type as string, 
-      bookId as string, 
+      dbName,
+      type as string,
+      bookId as string,
       sectionId as string
     );
 
@@ -28,9 +28,6 @@ export default createGetHandler(
     return result.data;
   },
   {
-    logRequests: true
+    logRequests: true,
   }
 );
-
-
-

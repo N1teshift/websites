@@ -1,6 +1,6 @@
 # Scripts Refactoring Guide
 
-This document covers the refactoring proposal and comparison for the scripts directory, analyzing code duplication and proposing a modular approach with shared utilities. _Legacy references to `scripts/icons/*` reflect an earlier layout; the current code lives in `scripts/data/`.*
+This document covers the refactoring proposal and comparison for the scripts directory, analyzing code duplication and proposing a modular approach with shared utilities. \_Legacy references to `scripts/icons/*` reflect an earlier layout; the current code lives in `scripts/data/`.\*
 
 ## Table of Contents
 
@@ -15,6 +15,7 @@ This document covers the refactoring proposal and comparison for the scripts dir
 ### 1. Significant Code Duplication
 
 **Duplicated Functions (found in 10+ scripts each):**
+
 - `getAllIconFiles()` - 12+ variations
 - `readItemsFromTS()` - 10+ identical copies
 - `readAbilitiesFromTS()` - 10+ identical copies
@@ -25,6 +26,7 @@ This document covers the refactoring proposal and comparison for the scripts dir
 - Path constants - duplicated in every script
 
 **Estimated Duplication:**
+
 - ~2000+ lines of duplicated code
 - Same logic repeated with slight variations
 - Bug fixes need to be applied in multiple places
@@ -53,6 +55,7 @@ scripts/
 ### Option A: Shared Utility Modules (Recommended)
 
 **Structure:**
+
 ```
 scripts/
 ├── lib/                          # Shared utilities
@@ -69,6 +72,7 @@ scripts/
 ```
 
 **Benefits:**
+
 - ✅ Single source of truth for common functions
 - ✅ Easy to test utilities independently
 - ✅ Scripts become thin CLI wrappers (~50-150 lines)
@@ -76,12 +80,13 @@ scripts/
 - ✅ Easy to add new scripts using shared utilities
 
 **Example Refactored Script:**
+
 ```javascript
 // scripts/icons/manage-icon-mapping.mjs (refactored)
-import { getAllIconFiles, findIconFile } from '../lib/icon-utils.mjs';
-import { readItemsFromTS, readAbilitiesFromTS } from '../lib/data-readers.mjs';
-import { parseIconMap, updateIconMap } from '../lib/iconmap-utils.mjs';
-import { PATHS } from '../lib/constants.mjs';
+import { getAllIconFiles, findIconFile } from "../lib/icon-utils.mjs";
+import { readItemsFromTS, readAbilitiesFromTS } from "../lib/data-readers.mjs";
+import { parseIconMap, updateIconMap } from "../lib/iconmap-utils.mjs";
+import { PATHS } from "../lib/constants.mjs";
 
 // Parse CLI args
 const args = process.argv.slice(2);
@@ -97,12 +102,14 @@ const abilities = readAbilitiesFromTS(PATHS.ABILITIES_DIR);
 ### Option B: Keep Monolithic (Current)
 
 **Pros:**
+
 - ✅ Scripts are self-contained
 - ✅ No import dependencies
 - ✅ Easy to copy/run standalone
 - ✅ No risk of breaking other scripts
 
 **Cons:**
+
 - ❌ Massive code duplication
 - ❌ Hard to maintain
 - ❌ Inconsistent implementations
@@ -113,12 +120,14 @@ const abilities = readAbilitiesFromTS(PATHS.ABILITIES_DIR);
 ### Current State: Monolithic Scripts
 
 **Example: `manage-icon-mapping.mjs` (Current)**
+
 - **Lines of Code:** ~482 lines
 - **Structure:** All code in one file
 - **Duplication:** Contains functions duplicated in 10+ other scripts
 - **Maintenance:** Bug fixes need to be applied to multiple files
 
 **Code Structure:**
+
 ```javascript
 // 482 lines total
 - Path constants (30 lines)
@@ -138,12 +147,14 @@ const abilities = readAbilitiesFromTS(PATHS.ABILITIES_DIR);
 ### Proposed State: Modular with Shared Utilities
 
 **Example: `manage-icon-mapping-refactored.mjs`**
+
 - **Lines of Code:** ~150 lines (69% reduction!)
 - **Structure:** Thin CLI wrapper using shared utilities
 - **Duplication:** Zero - all common code in shared modules
 - **Maintenance:** Bug fixes in one place benefit all scripts
 
 **Code Structure:**
+
 ```javascript
 // 150 lines total
 import { getAllIconFiles, findIconFile, ... } from '../lib/icon-utils.mjs';
@@ -158,12 +169,14 @@ import { PATHS } from '../lib/constants.mjs';
 ### Shared Utilities Created
 
 #### `lib/constants.mjs` (~50 lines)
+
 - All path constants
 - Category lists
 - File lists
 - **Used by:** All scripts
 
 #### `lib/icon-utils.mjs` (~200 lines)
+
 - `getAllIconFiles()` - Single implementation
 - `extractIconFilename()` - Single implementation
 - `findIconFile()` - Single implementation
@@ -173,6 +186,7 @@ import { PATHS } from '../lib/constants.mjs';
 - **Used by:** 10+ icon-related scripts
 
 #### `lib/data-readers.mjs` (~150 lines)
+
 - `readItemsFromTS()` - Single implementation
 - `readAbilitiesFromTS()` - Single implementation
 - `readUnitsFromTS()` - Single implementation
@@ -180,6 +194,7 @@ import { PATHS } from '../lib/constants.mjs';
 - **Used by:** 10+ scripts that read TypeScript data
 
 #### `lib/iconmap-utils.mjs` (~150 lines)
+
 - `parseIconMap()` - Single implementation
 - `generateIconMap()` - Single implementation
 - `updateIconMap()` - Single implementation
@@ -189,6 +204,7 @@ import { PATHS } from '../lib/constants.mjs';
 ## Line Count Comparison
 
 ### Before Refactoring
+
 ```
 manage-icon-mapping.mjs:        482 lines
 maintain-iconmap.mjs:           232 lines
@@ -201,6 +217,7 @@ Duplicated code:                ~2000+ lines (67%)
 ```
 
 ### After Refactoring
+
 ```
 lib/constants.mjs:               50 lines (shared)
 lib/icon-utils.mjs:             200 lines (shared)
@@ -219,6 +236,7 @@ Duplicated code:                   0 lines (0%)
 ```
 
 **Net Result:**
+
 - **67% reduction in duplicated code**
 - **62% reduction in total lines**
 - **Single source of truth** for all common functions
@@ -226,18 +244,21 @@ Duplicated code:                   0 lines (0%)
 ## Benefits Analysis
 
 ### ✅ Code Quality
+
 - **Consistency:** Same function behaves the same everywhere
 - **Testability:** Test utilities once, use everywhere
 - **Maintainability:** Fix bugs in one place
 - **Readability:** Scripts focus on their unique logic
 
 ### ✅ Developer Experience
+
 - **Faster development:** Reuse utilities instead of copying
 - **Less errors:** No copy-paste mistakes
 - **Easier debugging:** Single implementation to debug
 - **Better documentation:** Utilities can have comprehensive docs
 
 ### ✅ Long-term Maintenance
+
 - **Feature additions:** Add once, use everywhere
 - **Performance improvements:** Optimize once, benefit all
 - **Refactoring:** Change implementation without touching scripts
@@ -246,17 +267,20 @@ Duplicated code:                   0 lines (0%)
 ## Trade-offs
 
 ### ⚠️ Dependencies
+
 - Scripts now depend on utility modules
 - **Mitigation:** Utilities are stable, well-tested
 - **Benefit:** Dependencies are explicit and documented
 
 ### ⚠️ Initial Refactoring Effort
+
 - Need to extract utilities (done ✅)
 - Need to refactor scripts (can be done incrementally)
 - **Mitigation:** Can refactor one script at a time
 - **Benefit:** Long-term maintenance is much easier
 
 ### ⚠️ Script Independence
+
 - Scripts can't be easily copied standalone
 - **Mitigation:** Utilities are part of the repo
 - **Benefit:** Scripts are simpler and more maintainable
@@ -281,29 +305,34 @@ scripts/
 ```
 
 ### Phase 1: Create Utility Modules ✅
+
 1. ✅ Extract common functions to `lib/icon-utils.mjs`
 2. ✅ Extract data readers to `lib/data-readers.mjs`
 3. ✅ Extract iconMap operations to `lib/iconmap-utils.mjs`
 4. ✅ Extract constants to `lib/constants.mjs`
 
 ### Phase 2: Refactor Consolidated Scripts ⏭️
+
 1. Refactor `manage-icon-mapping.mjs` to use utilities
 2. Refactor `maintain-iconmap.mjs` to use utilities
 3. Refactor `cleanup-icons.mjs` to use utilities
 4. Refactor `migrate-iconpaths.mjs` to use utilities
 
 ### Phase 3: Test & Validate ⏭️
+
 1. Test all refactored scripts
 2. Compare output with original scripts
 3. Update documentation
 
 ### Phase 4: Optional - Refactor Legacy Scripts ⏭️
+
 1. Gradually refactor remaining scripts
 2. Or keep them as-is for backward compatibility
 
 ## Code Reduction Estimate
 
 **Before Refactoring:**
+
 - `manage-icon-mapping.mjs`: ~482 lines
 - `maintain-iconmap.mjs`: ~232 lines
 - `cleanup-icons.mjs`: ~450 lines
@@ -311,6 +340,7 @@ scripts/
 - **Total: ~1564 lines**
 
 **After Refactoring:**
+
 - `lib/icon-utils.mjs`: ~200 lines (shared)
 - `lib/data-readers.mjs`: ~150 lines (shared)
 - `lib/iconmap-utils.mjs`: ~150 lines (shared)
@@ -322,6 +352,7 @@ scripts/
 - **Total: ~1130 lines** (28% reduction)
 
 **Additional Benefits:**
+
 - Shared utilities can be used by new scripts
 - Easier to add features (update once, use everywhere)
 - Better testability (test utilities independently)
@@ -330,9 +361,9 @@ scripts/
 
 ```javascript
 // scripts/lib/icon-utils.mjs
-import fs from 'fs';
-import path from 'path';
-import { PATHS } from './constants.mjs';
+import fs from "fs";
+import path from "path";
+import { PATHS } from "./constants.mjs";
 
 /**
  * Get all icon files with metadata
@@ -341,27 +372,27 @@ import { PATHS } from './constants.mjs';
 export function getAllIconFiles(iconsDir = PATHS.ICONS_DIR) {
   const icons = new Map();
   const allFilenames = [];
-  const categories = ['abilities', 'items', 'buildings', 'trolls', 'units', 'base', 'unclassified'];
-  
+  const categories = ["abilities", "items", "buildings", "trolls", "units", "base", "unclassified"];
+
   for (const category of categories) {
     const categoryDir = path.join(iconsDir, category);
     if (fs.existsSync(categoryDir)) {
       scanDirectory(categoryDir, category, icons, allFilenames);
     }
   }
-  
+
   return { icons, allFilenames };
 }
 
 function scanDirectory(dir, category, icons, allFilenames) {
   const entries = fs.readdirSync(dir, { withFileTypes: true });
-  
+
   for (const entry of entries) {
     const fullPath = path.join(dir, entry.name);
-    
+
     if (entry.isDirectory()) {
       scanDirectory(fullPath, category, icons, allFilenames);
-    } else if (entry.isFile() && entry.name.toLowerCase().endsWith('.png')) {
+    } else if (entry.isFile() && entry.name.toLowerCase().endsWith(".png")) {
       const lowerKey = entry.name.toLowerCase();
       if (!icons.has(lowerKey)) {
         icons.set(lowerKey, { category, filename: entry.name, fullPath });
@@ -402,28 +433,29 @@ function scanDirectory(dir, category, icons, allFilenames) {
 **✅ Refactor to use shared utilities**
 
 **Why:**
+
 1. **Massive reduction in duplication** (67% → 0%)
 2. **Easier maintenance** (fix once vs fix 10+ times)
 3. **Better code quality** (consistent, testable)
 4. **Faster development** (reuse vs rewrite)
 
 **How:**
-1. ✅ Utilities already created (lib/*.mjs)
+
+1. ✅ Utilities already created (lib/\*.mjs)
 2. ✅ Example refactored script created
 3. ⏭️ Refactor consolidated scripts incrementally
 4. ⏭️ Keep legacy scripts for backward compatibility
 5. ⏭️ Gradually migrate as needed
 
 **Trade-offs:**
+
 - ⚠️ Scripts have import dependencies (but still simple)
 - ⚠️ Need to maintain utility modules (but less code overall)
 - ⚠️ Initial refactoring effort (but long-term benefit)
 
 **Best Approach:**
+
 - Start with utility modules ✅
 - Refactor consolidated scripts first ⏭️
 - Keep legacy scripts for backward compatibility
 - Gradually migrate as needed
-
-
-

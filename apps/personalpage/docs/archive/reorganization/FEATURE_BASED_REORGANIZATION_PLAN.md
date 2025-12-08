@@ -3,6 +3,7 @@
 ## Current Problem
 
 From filenames alone, you can't tell which feature documentation belongs to:
+
 - `CHART_COMPONENT_REFACTOR.md` → Which feature? (Progress Report)
 - `NAME_ALIAS_FIX.md` → Which feature? (Progress Report)
 - `COMMENTS_GENERATOR_REFACTOR.md` → Which feature? (Comments Generator)
@@ -75,6 +76,7 @@ docs/
 ### Step 1: Identify Feature Ownership
 
 **Progress Report:**
+
 - `refactoring/CHART_COMPONENT_REFACTOR.md` → `features/progress-report/refactoring/chart-component.md`
 - `refactoring/REFACTORING_HISTORY.md` → `features/progress-report/refactoring/history.md`
 - `fixes/NAME_ALIAS_FIX.md` → `features/progress-report/fixes/name-alias.md`
@@ -87,11 +89,13 @@ docs/
 - `features/progress-report/*` → Already there, just reorganize subfolders
 
 **Comments Generator:**
+
 - `refactoring/COMMENTS_GENERATOR_REFACTOR.md` → `features/comments-generator/refactoring/refactor.md`
 - `features/COMMENTS_GENERATOR_TEMPLATE_FILTERING.md` → `features/comments-generator/fixes/template-filtering.md`
 - `features/ENGLISH_COMMENT_TEMPLATES.md` → `features/comments-generator/features/english-templates.md`
 
 **Cross-Cutting (Keep in Root):**
+
 - `architecture/` - System-wide patterns
 - `guides/` - General development guides
 - `data/` - Shared data structures
@@ -100,6 +104,7 @@ docs/
 ### Step 2: File Naming Convention
 
 **New Standard:**
+
 - Use lowercase with hyphens: `chart-component.md` (not `CHART_COMPONENT_REFACTOR.md`)
 - Keep descriptive but shorter: `name-alias.md` (not `NAME_ALIAS_FIX.md`)
 - Category folders: `refactoring/`, `fixes/`, `migrations/`, `features/`
@@ -113,6 +118,7 @@ docs/
 ## Example: Before vs After
 
 ### Before
+
 ```
 docs/
 ├── refactoring/
@@ -126,6 +132,7 @@ docs/
 ```
 
 ### After
+
 ```
 docs/
 └── features/
@@ -164,4 +171,3 @@ docs/
 - **References to update:** ~90 in README + cross-references
 - **Time:** ~30-45 minutes
 - **Benefit:** Much clearer organization, easier to find feature-specific docs
-

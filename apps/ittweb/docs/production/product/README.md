@@ -8,4 +8,3 @@ This folder collects everything you need to understand **what** was built and **
 - `user-roles.md` – who has access to what (helpful for onboarding or demos).
 
 _Tip: keep these files presentation-ready. When you ship something significant, update `summary.md` + `status.md` first so the rest of the docs stay in sync._
-

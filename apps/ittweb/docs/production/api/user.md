@@ -7,6 +7,7 @@ User account operations.
 Get data collection notice status.
 
 **Response**:
+
 ```typescript
 {
   accepted: boolean;
@@ -19,6 +20,7 @@ Get data collection notice status.
 Accept data collection notice. **Requires authentication.**
 
 **Response**:
+
 ```typescript
 {
   success: true;
@@ -30,11 +32,9 @@ Accept data collection notice. **Requires authentication.**
 Delete user account. **Requires authentication.**
 
 **Response**:
+
 ```typescript
 {
   success: true;
 }
 ```
-
-
-

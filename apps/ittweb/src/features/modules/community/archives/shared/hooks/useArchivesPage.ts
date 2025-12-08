@@ -1,6 +1,6 @@
-import { useState, useCallback, useMemo } from 'react';
-import { ArchiveEntry } from '@/types/archive';
-import { sortArchiveEntries } from '@/features/modules/community/archives/services';
+import { useState, useCallback, useMemo } from "react";
+import { ArchiveEntry } from "@/types/archive";
+import { sortArchiveEntries } from "@/features/modules/community/archives/services";
 
 interface ArchivesPageState {
   entries: ArchiveEntry[];
@@ -12,7 +12,7 @@ interface ArchivesPageState {
   editingEntry: ArchiveEntry | null;
   showImageModal: boolean;
   modalImage: { url: string; title: string } | null;
-  sortOrder: 'newest' | 'oldest';
+  sortOrder: "newest" | "oldest";
 }
 
 interface UseArchivesPageReturn {
@@ -32,7 +32,7 @@ interface UseArchivesPageReturn {
   setEditingEntry: (entry: ArchiveEntry | null) => void;
   setShowImageModal: (show: boolean) => void;
   setModalImage: (image: { url: string; title: string } | null) => void;
-  setSortOrder: (order: 'newest' | 'oldest') => void;
+  setSortOrder: (order: "newest" | "oldest") => void;
 
   // Utility functions
   resetError: () => void;
@@ -49,49 +49,52 @@ export function useArchivesPage(): UseArchivesPageReturn {
   const [editingEntry, setEditingEntry] = useState<ArchiveEntry | null>(null);
   const [showImageModal, setShowImageModal] = useState(false);
   const [modalImage, setModalImage] = useState<{ url: string; title: string } | null>(null);
-  const [sortOrder, setSortOrder] = useState<'newest' | 'oldest'>('newest');
+  const [sortOrder, setSortOrder] = useState<"newest" | "oldest">("newest");
 
   // Computed sorted entries
-  const entries = useMemo(() =>
-    sortArchiveEntries(unsortedEntries, sortOrder),
+  const entries = useMemo(
+    () => sortArchiveEntries(unsortedEntries, sortOrder),
     [unsortedEntries, sortOrder]
   );
 
   // Computed values
-  const datedEntries = useMemo(() =>
-    entries.filter((entry: ArchiveEntry) => entry.dateInfo.type !== 'undated'),
+  const datedEntries = useMemo(
+    () => entries.filter((entry: ArchiveEntry) => entry.dateInfo.type !== "undated"),
     [entries]
   );
 
-  const undatedEntries = useMemo(() =>
-    entries.filter((entry: ArchiveEntry) => entry.dateInfo.type === 'undated'),
+  const undatedEntries = useMemo(
+    () => entries.filter((entry: ArchiveEntry) => entry.dateInfo.type === "undated"),
     [entries]
   );
 
   // Memoized state object to prevent unnecessary re-renders
-  const state = useMemo(() => ({
-    entries,
-    unsortedEntries,
-    loading,
-    error,
-    showForm,
-    showEditForm,
-    editingEntry,
-    showImageModal,
-    modalImage,
-    sortOrder,
-  }), [
-    entries,
-    unsortedEntries,
-    loading,
-    error,
-    showForm,
-    showEditForm,
-    editingEntry,
-    showImageModal,
-    modalImage,
-    sortOrder,
-  ]);
+  const state = useMemo(
+    () => ({
+      entries,
+      unsortedEntries,
+      loading,
+      error,
+      showForm,
+      showEditForm,
+      editingEntry,
+      showImageModal,
+      modalImage,
+      sortOrder,
+    }),
+    [
+      entries,
+      unsortedEntries,
+      loading,
+      error,
+      showForm,
+      showEditForm,
+      editingEntry,
+      showImageModal,
+      modalImage,
+      sortOrder,
+    ]
+  );
 
   // Utility functions
   const resetError = useCallback(() => {
@@ -130,5 +133,3 @@ export function useArchivesPage(): UseArchivesPageReturn {
     resetFormStates,
   };
 }
-
-

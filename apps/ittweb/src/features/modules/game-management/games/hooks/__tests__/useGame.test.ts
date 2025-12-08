@@ -1,34 +1,34 @@
-import { act, renderHook, waitFor } from '@testing-library/react';
-import { useGame } from '../useGame';
-import type { GameWithPlayers } from '../../types';
+import { act, renderHook, waitFor } from "@testing-library/react";
+import { useGame } from "../useGame";
+import type { GameWithPlayers } from "../../types";
 
 // Mock logger
-jest.mock('@websites/infrastructure/logging', () => ({
+jest.mock("@websites/infrastructure/logging", () => ({
   logError: jest.fn(),
 }));
 
-describe('useGame', () => {
+describe("useGame", () => {
   const mockGame: GameWithPlayers = {
-    id: '1',
+    id: "1",
     gameId: 1,
-    gameState: 'completed',
-    creatorName: 'Test Creator',
-    createdAt: '2024-01-01T00:00:00Z',
-    updatedAt: '2024-01-01T00:00:00Z',
-    datetime: '2024-01-01T00:00:00Z',
+    gameState: "completed",
+    creatorName: "Test Creator",
+    createdAt: "2024-01-01T00:00:00Z",
+    updatedAt: "2024-01-01T00:00:00Z",
+    datetime: "2024-01-01T00:00:00Z",
     duration: 3600,
-    gamename: 'Test Game',
-    map: 'Test Map',
-    ownername: 'Test Owner',
-    category: '1v1',
+    gamename: "Test Game",
+    map: "Test Map",
+    ownername: "Test Owner",
+    category: "1v1",
     players: [
       {
-        id: 'player1',
-        gameId: '1',
-        name: 'Player 1',
+        id: "player1",
+        gameId: "1",
+        name: "Player 1",
         pid: 0,
-        flag: 'winner',
-        createdAt: '2024-01-01T00:00:00Z',
+        flag: "winner",
+        createdAt: "2024-01-01T00:00:00Z",
       },
     ],
   };
@@ -42,10 +42,10 @@ describe('useGame', () => {
     jest.restoreAllMocks();
   });
 
-  describe('fetches game by ID', () => {
-    it('should fetch game by ID', async () => {
+  describe("fetches game by ID", () => {
+    it("should fetch game by ID", async () => {
       // Arrange
-      const gameId = '1';
+      const gameId = "1";
       const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
       mockFetch.mockResolvedValueOnce({
         ok: true,
@@ -60,19 +60,22 @@ describe('useGame', () => {
 
       // Assert
       await waitFor(() => expect(result.current.loading).toBe(false));
-      expect(mockFetch).toHaveBeenCalledWith(expect.stringMatching(/^\/api\/games\/1\?t=\d+$/), expect.any(Object));
+      expect(mockFetch).toHaveBeenCalledWith(
+        expect.stringMatching(/^\/api\/games\/1\?t=\d+$/),
+        expect.any(Object)
+      );
       expect(result.current.game).toEqual(mockGame);
       expect(result.current.error).toBeNull();
     });
 
-    it('should handle invalid ID', async () => {
+    it("should handle invalid ID", async () => {
       // Arrange
-      const gameId = 'invalid-id';
+      const gameId = "invalid-id";
       const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
       mockFetch.mockResolvedValueOnce({
         ok: false,
         status: 404,
-        statusText: 'Not Found',
+        statusText: "Not Found",
       } as Response);
 
       // Act
@@ -84,14 +87,14 @@ describe('useGame', () => {
       expect(result.current.game).toBeNull();
     });
 
-    it('should handle missing game', async () => {
+    it("should handle missing game", async () => {
       // Arrange
-      const gameId = '999';
+      const gameId = "999";
       const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
       mockFetch.mockResolvedValueOnce({
         ok: false,
         status: 404,
-        statusText: 'Not Found',
+        statusText: "Not Found",
       } as Response);
 
       // Act
@@ -103,10 +106,10 @@ describe('useGame', () => {
       expect(result.current.game).toBeNull();
     });
 
-    it('should handle network errors', async () => {
+    it("should handle network errors", async () => {
       // Arrange
-      const gameId = '1';
-      const networkError = new Error('Network error');
+      const gameId = "1";
+      const networkError = new Error("Network error");
       const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
       mockFetch.mockRejectedValueOnce(networkError);
 
@@ -116,14 +119,14 @@ describe('useGame', () => {
       // Assert
       await waitFor(() => expect(result.current.loading).toBe(false));
       expect(result.current.error).toBeInstanceOf(Error);
-      expect(result.current.error?.message).toBe('Network error');
+      expect(result.current.error?.message).toBe("Network error");
     });
   });
 
-  describe('handles loading state', () => {
-    it('should set loading to true during fetch', async () => {
+  describe("handles loading state", () => {
+    it("should set loading to true during fetch", async () => {
       // Arrange
-      const gameId = '1';
+      const gameId = "1";
       const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
       let resolveFetch: (value: Response) => void;
       const fetchPromise = new Promise<Response>((resolve) => {
@@ -149,9 +152,9 @@ describe('useGame', () => {
       await waitFor(() => expect(result.current.loading).toBe(false));
     });
 
-    it('should set loading to false after fetch completes', async () => {
+    it("should set loading to false after fetch completes", async () => {
       // Arrange
-      const gameId = '1';
+      const gameId = "1";
       const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
       mockFetch.mockResolvedValueOnce({
         ok: true,
@@ -169,7 +172,7 @@ describe('useGame', () => {
       expect(result.current.loading).toBe(false);
     });
 
-    it('should handle ID changes', async () => {
+    it("should handle ID changes", async () => {
       // Arrange
       const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
       mockFetch.mockResolvedValue({
@@ -181,25 +184,28 @@ describe('useGame', () => {
       } as Response);
 
       // Act
-      const { result, rerender } = renderHook(
-        ({ id }) => useGame(id),
-        {
-          initialProps: { id: '1' },
-        }
-      );
+      const { result, rerender } = renderHook(({ id }) => useGame(id), {
+        initialProps: { id: "1" },
+      });
 
       await waitFor(() => expect(result.current.loading).toBe(false));
-      expect(mockFetch).toHaveBeenCalledWith(expect.stringMatching(/^\/api\/games\/1\?t=\d+$/), expect.any(Object));
+      expect(mockFetch).toHaveBeenCalledWith(
+        expect.stringMatching(/^\/api\/games\/1\?t=\d+$/),
+        expect.any(Object)
+      );
 
       // Change ID
-      rerender({ id: '2' });
+      rerender({ id: "2" });
 
       // Assert
       await waitFor(() => expect(result.current.loading).toBe(false));
-      expect(mockFetch).toHaveBeenCalledWith(expect.stringMatching(/^\/api\/games\/2\?t=\d+$/), expect.any(Object));
+      expect(mockFetch).toHaveBeenCalledWith(
+        expect.stringMatching(/^\/api\/games\/2\?t=\d+$/),
+        expect.any(Object)
+      );
     });
 
-    it('should handle rapid ID switches', async () => {
+    it("should handle rapid ID switches", async () => {
       // Arrange
       const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
       mockFetch.mockResolvedValue({
@@ -211,19 +217,16 @@ describe('useGame', () => {
       } as Response);
 
       // Act
-      const { result, rerender } = renderHook(
-        ({ id }) => useGame(id),
-        {
-          initialProps: { id: '1' },
-        }
-      );
+      const { result, rerender } = renderHook(({ id }) => useGame(id), {
+        initialProps: { id: "1" },
+      });
 
       await waitFor(() => expect(result.current.loading).toBe(false));
 
       // Rapid ID changes
-      rerender({ id: '2' });
-      rerender({ id: '3' });
-      rerender({ id: '4' });
+      rerender({ id: "2" });
+      rerender({ id: "3" });
+      rerender({ id: "4" });
 
       // Assert
       await waitFor(() => expect(result.current.loading).toBe(false));
@@ -231,15 +234,15 @@ describe('useGame', () => {
     });
   });
 
-  describe('handles error state', () => {
-    it('should handle 404 errors', async () => {
+  describe("handles error state", () => {
+    it("should handle 404 errors", async () => {
       // Arrange
-      const gameId = '999';
+      const gameId = "999";
       const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
       mockFetch.mockResolvedValueOnce({
         ok: false,
         status: 404,
-        statusText: 'Not Found',
+        statusText: "Not Found",
       } as Response);
 
       // Act
@@ -248,13 +251,13 @@ describe('useGame', () => {
       // Assert
       await waitFor(() => expect(result.current.loading).toBe(false));
       expect(result.current.error).toBeInstanceOf(Error);
-      expect(result.current.error?.message).toContain('Failed to fetch game');
+      expect(result.current.error?.message).toContain("Failed to fetch game");
     });
 
-    it('should handle network errors', async () => {
+    it("should handle network errors", async () => {
       // Arrange
-      const gameId = '1';
-      const networkError = new Error('Network request failed');
+      const gameId = "1";
+      const networkError = new Error("Network request failed");
       const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
       mockFetch.mockRejectedValueOnce(networkError);
 
@@ -264,18 +267,18 @@ describe('useGame', () => {
       // Assert
       await waitFor(() => expect(result.current.loading).toBe(false));
       expect(result.current.error).toBeInstanceOf(Error);
-      expect(result.current.error?.message).toBe('Network request failed');
+      expect(result.current.error?.message).toBe("Network request failed");
     });
 
-    it('should handle malformed data', async () => {
+    it("should handle malformed data", async () => {
       // Arrange
-      const gameId = '1';
+      const gameId = "1";
       const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
       mockFetch.mockResolvedValueOnce({
         ok: true,
         json: async () => ({
           success: false,
-          error: 'Invalid game data',
+          error: "Invalid game data",
         }),
       } as Response);
 
@@ -285,19 +288,19 @@ describe('useGame', () => {
       // Assert
       await waitFor(() => expect(result.current.loading).toBe(false));
       expect(result.current.error).toBeInstanceOf(Error);
-      expect(result.current.error?.message).toBe('Invalid game data');
+      expect(result.current.error?.message).toBe("Invalid game data");
     });
   });
 
-  describe('handles non-existent game', () => {
-    it('should handle deleted game', async () => {
+  describe("handles non-existent game", () => {
+    it("should handle deleted game", async () => {
       // Arrange
-      const gameId = 'deleted-game';
+      const gameId = "deleted-game";
       const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
       mockFetch.mockResolvedValueOnce({
         ok: false,
         status: 404,
-        statusText: 'Not Found',
+        statusText: "Not Found",
       } as Response);
 
       // Act
@@ -309,9 +312,9 @@ describe('useGame', () => {
       expect(result.current.game).toBeNull();
     });
 
-    it('should handle invalid ID format', async () => {
+    it("should handle invalid ID format", async () => {
       // Arrange
-      const gameId = '';
+      const gameId = "";
       const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
 
       // Act
@@ -325,10 +328,10 @@ describe('useGame', () => {
     });
   });
 
-  describe('refetch function', () => {
-    it('should allow manual refetch', async () => {
+  describe("refetch function", () => {
+    it("should allow manual refetch", async () => {
       // Arrange
-      const gameId = '1';
+      const gameId = "1";
       const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
       mockFetch.mockResolvedValue({
         ok: true,
@@ -355,5 +358,3 @@ describe('useGame', () => {
     });
   });
 });
-
-

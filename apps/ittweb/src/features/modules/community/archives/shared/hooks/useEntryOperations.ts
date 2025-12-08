@@ -1,11 +1,11 @@
-import { useState, useCallback } from 'react';
-import { signIn } from 'next-auth/react';
-import type { ArchiveEntry } from '@/types/archive';
-import { convertEntryToArchiveEntry } from '@/features/modules/community/archives/shared/utils/entryToArchiveEntry';
-import { timestampToIso } from '@websites/infrastructure/utils';
-import { createComponentLogger } from '@websites/infrastructure/logging';
+import { useState, useCallback } from "react";
+import { signIn } from "next-auth/react";
+import type { ArchiveEntry } from "@/types/archive";
+import { convertEntryToArchiveEntry } from "@/features/modules/community/archives/shared/utils/entryToArchiveEntry";
+import { timestampToIso } from "@websites/infrastructure/utils";
+import { createComponentLogger } from "@websites/infrastructure/logging";
 
-const logger = createComponentLogger('useEntryOperations');
+const logger = createComponentLogger("useEntryOperations");
 
 interface UseEntryOperationsProps {
   entries: ArchiveEntry[];
@@ -35,8 +35,8 @@ interface UseEntryOperationsReturn {
  * Extract entry ID from ArchiveEntry ID (entries have prefix "entry-")
  */
 function extractEntryId(archiveEntryId: string): string | null {
-  if (archiveEntryId.startsWith('entry-')) {
-    return archiveEntryId.replace('entry-', '');
+  if (archiveEntryId.startsWith("entry-")) {
+    return archiveEntryId.replace("entry-", "");
   }
   return null;
 }
@@ -60,13 +60,13 @@ export function useEntryOperations({
   const handleEdit = useCallback(
     (entry: ArchiveEntry) => {
       if (!isAuthenticated) {
-        signIn('discord');
+        signIn("discord");
         return;
       }
-      if (entry.id.startsWith('entry-')) {
+      if (entry.id.startsWith("entry-")) {
         setEditingEntry(entry);
       } else {
-        setError('Only posts and memories can be edited from the timeline');
+        setError("Only posts and memories can be edited from the timeline");
       }
     },
     [isAuthenticated, setError]
@@ -75,20 +75,20 @@ export function useEntryOperations({
   const handleRequestDelete = useCallback(
     (entry: ArchiveEntry) => {
       if (!isAuthenticated) {
-        signIn('discord');
+        signIn("discord");
         return;
       }
 
       const canDelete =
         canManageEntries || (!!currentDiscordId && entry.createdByDiscordId === currentDiscordId);
       if (!canDelete) {
-        setError('You do not have permission to delete this entry');
+        setError("You do not have permission to delete this entry");
         return;
       }
 
       const entryId = extractEntryId(entry.id);
       if (!entryId) {
-        setError('Only posts and memories can be deleted from the timeline');
+        setError("Only posts and memories can be deleted from the timeline");
         return;
       }
 
@@ -109,7 +109,7 @@ export function useEntryOperations({
 
       try {
         const entryResponse = await fetch(`/api/entries/${entryId}?t=${Date.now()}`, {
-          cache: 'no-store',
+          cache: "no-store",
         });
 
         if (entryResponse.ok) {
@@ -130,7 +130,7 @@ export function useEntryOperations({
           }
         }
       } catch (error) {
-        logger.warn('Failed to fetch updated entry after edit', { entryId, error });
+        logger.warn("Failed to fetch updated entry after edit", { entryId, error });
         await loadAllEntries();
       }
 
@@ -160,17 +160,17 @@ export function useEntryOperations({
 
     try {
       const response = await fetch(`/api/entries/${entryId}`, {
-        method: 'DELETE',
+        method: "DELETE",
       });
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.error || 'Failed to delete entry');
+        throw new Error(errorData.error || "Failed to delete entry");
       }
     } catch (err) {
       await loadAllEntries();
-      const error = err instanceof Error ? err : new Error('Unknown error');
-      logger.error('Failed to delete entry', error);
+      const error = err instanceof Error ? err : new Error("Unknown error");
+      logger.error("Failed to delete entry", error);
     } finally {
       setIsDeleting(false);
     }
@@ -194,6 +194,3 @@ export function useEntryOperations({
     handleEntryDeleteCancel,
   };
 }
-
-
-

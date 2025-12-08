@@ -7,12 +7,10 @@ Admin-only operations.
 Wipe test data. **Requires admin authentication.**
 
 **Response**:
+
 ```typescript
 {
   success: true;
   deleted: number; // Number of documents deleted
 }
 ```
-
-
-

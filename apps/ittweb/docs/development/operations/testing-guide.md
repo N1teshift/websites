@@ -21,6 +21,7 @@ The server will start on **http://localhost:3000**
 Once the server is running, you can access:
 
 #### **Main Pages:**
+
 - **Games List:** http://localhost:3000/games
 - **Game Detail:** http://localhost:3000/games/[id] (replace [id] with actual game ID)
 - **Players Index:** http://localhost:3000/players (search + browse profiles)
@@ -29,6 +30,7 @@ Once the server is running, you can access:
 - **Leaderboard:** http://localhost:3000/standings
 
 #### **API Endpoints:**
+
 - **Create Game:** `POST http://localhost:3000/api/games`
 - **List Games:** `GET http://localhost:3000/api/games`
 - **Get Game:** `GET http://localhost:3000/api/games/[id]`
@@ -100,6 +102,7 @@ curl -X POST http://localhost:3000/api/games \
 ### Step 5: Create More Games
 
 Create several more games with different players to see:
+
 - ELO changes over time
 - Leaderboard rankings
 - Player statistics accumulation
@@ -107,6 +110,7 @@ Create several more games with different players to see:
 ## 📝 Test Game Examples
 
 ### Example 1: 1v1 Game
+
 ```json
 {
   "gameState": "completed",
@@ -125,6 +129,7 @@ Create several more games with different players to see:
 ```
 
 ### Example 2: 2v2 Game
+
 ```json
 {
   "gameState": "completed",
@@ -149,6 +154,7 @@ Create several more games with different players to see:
 ## 🔍 Testing Verification
 
 When testing, verify the following functionality:
+
 - Can create a game via API (with proper authentication)
 - Games appear in the games list page
 - Game detail page shows correct information
@@ -162,20 +168,24 @@ When testing, verify the following functionality:
 ## 🐛 Troubleshooting
 
 ### Issue: "Game not found" or empty list
+
 - **Solution:** Make sure you've created at least one game first
 - Check Firestore console to verify games were created
 
 ### Issue: ELO not updating
+
 - **Solution:** Check browser console for errors
 - Verify Firestore rules allow writes
 - Check that players array has at least 2 players
 
 ### Issue: API returns 500 error
+
 - **Solution:** Check server console for error messages
 - Verify Firebase is properly configured
 - Check that all required fields are provided
 
 ### Issue: Pages show loading forever
+
 - **Solution:** Check browser console for errors
 - Verify API endpoints are working (test with curl)
 - Check Firestore connection
@@ -190,6 +200,7 @@ When testing, verify the following functionality:
 ## 🎯 Next Steps After Testing
 
 Once basic functionality is confirmed:
+
 1. Test with more complex scenarios (team games, draws)
 2. Test filtering and search features
 3. Test analytics endpoints
@@ -199,7 +210,3 @@ Once basic functionality is confirmed:
 ---
 
 **Happy Testing!** 🎮
-
-
-
-

@@ -8,19 +8,20 @@ Cursor-based pagination for large datasets.
 // Service
 export async function getItems(cursor?: string, limit = 20) {
   const db = getFirestoreAdmin();
-  let query: FirebaseFirestore.Query = db.collection('items')
-    .orderBy('createdAt', 'desc')
+  let query: FirebaseFirestore.Query = db
+    .collection("items")
+    .orderBy("createdAt", "desc")
     .limit(limit + 1); // Fetch one extra to check if there's more
 
   if (cursor) {
-    const cursorDoc = await db.collection('items').doc(cursor).get();
+    const cursorDoc = await db.collection("items").doc(cursor).get();
     query = query.startAfter(cursorDoc);
   }
 
   const snapshot = await query.get();
-  const items = snapshot.docs.slice(0, limit).map(doc => ({
+  const items = snapshot.docs.slice(0, limit).map((doc) => ({
     id: doc.id,
-    ...doc.data()
+    ...doc.data(),
   }));
 
   const hasMore = snapshot.docs.length > limit;
@@ -38,15 +39,15 @@ export function useItems() {
 
   const fetchItems = async (nextCursor?: string) => {
     setLoading(true);
-    const response = await fetch(`/api/items?cursor=${nextCursor || ''}`);
+    const response = await fetch(`/api/items?cursor=${nextCursor || ""}`);
     const data = await response.json();
-    
+
     if (nextCursor) {
-      setItems(prev => [...prev, ...data.items]);
+      setItems((prev) => [...prev, ...data.items]);
     } else {
       setItems(data.items);
     }
-    
+
     setCursor(data.nextCursor);
     setHasMore(data.hasMore);
     setLoading(false);
@@ -70,4 +71,3 @@ export function useItems() {
 
 - [Code Patterns Index](../code-patterns.md)
 - [Performance Guide](../../PERFORMANCE.md)
-

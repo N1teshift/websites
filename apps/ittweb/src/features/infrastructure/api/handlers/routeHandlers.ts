@@ -4,17 +4,17 @@
  * from @websites/infrastructure/api
  */
 
-import { NextApiRequest, NextApiResponse } from 'next';
-import { getServerSession } from 'next-auth/next';
-import type { Session } from 'next-auth';
+import { NextApiRequest, NextApiResponse } from "next";
+import { getServerSession } from "next-auth/next";
+import type { Session } from "next-auth";
 import {
   createApiHandler as createGenericApiHandler,
   type ApiHandler,
   type ApiHandlerOptions,
-} from '@websites/infrastructure/api';
-import { authOptions } from '@/pages/api/auth/[...nextauth]';
-import { getUserDataByDiscordIdServer } from '@/features/modules/community/users/services/userDataService.server';
-import { isAdmin } from '@/features/modules/community/users';
+} from "@websites/infrastructure/api";
+import { authOptions } from "@/pages/api/auth/[...nextauth]";
+import { getUserDataByDiscordIdServer } from "@/features/modules/community/users/services/userDataService.server";
+import { isAdmin } from "@/features/modules/community/users";
 
 /**
  * Create ittweb-specific auth config
@@ -25,7 +25,7 @@ function getIttwebAuthConfig() {
       return await getServerSession(req, res, authOptions);
     },
     checkAdmin: async (session: Session): Promise<boolean> => {
-      const userData = await getUserDataByDiscordIdServer(session.discordId || '');
+      const userData = await getUserDataByDiscordIdServer(session.discordId || "");
       return isAdmin(userData?.role);
     },
   };
@@ -40,9 +40,7 @@ export const createApiHandler = <T = unknown>(
 ) => {
   // Automatically add authConfig if auth is required
   const needsAuth = options.requireAuth || options.requireAdmin;
-  const finalOptions = needsAuth
-    ? { ...options, authConfig: getIttwebAuthConfig() }
-    : options;
+  const finalOptions = needsAuth ? { ...options, authConfig: getIttwebAuthConfig() } : options;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return createGenericApiHandler(handler, finalOptions as any);
@@ -53,9 +51,9 @@ export const createApiHandler = <T = unknown>(
  */
 export const createGetHandler = <T = unknown>(
   handler: ApiHandler<T>,
-  options?: Omit<ApiHandlerOptions, 'methods'>
+  options?: Omit<ApiHandlerOptions, "methods">
 ) => {
-  return createApiHandler(handler, { ...options, methods: ['GET'] });
+  return createApiHandler(handler, { ...options, methods: ["GET"] });
 };
 
 /**
@@ -63,9 +61,9 @@ export const createGetHandler = <T = unknown>(
  */
 export const createPostHandler = <T = unknown>(
   handler: ApiHandler<T>,
-  options?: Omit<ApiHandlerOptions, 'methods'>
+  options?: Omit<ApiHandlerOptions, "methods">
 ) => {
-  return createApiHandler(handler, { ...options, methods: ['POST'] });
+  return createApiHandler(handler, { ...options, methods: ["POST"] });
 };
 
 /**
@@ -73,9 +71,9 @@ export const createPostHandler = <T = unknown>(
  */
 export const createGetPostHandler = <T = unknown>(
   handler: ApiHandler<T>,
-  options?: Omit<ApiHandlerOptions, 'methods'>
+  options?: Omit<ApiHandlerOptions, "methods">
 ) => {
-  return createApiHandler(handler, { ...options, methods: ['GET', 'POST'] });
+  return createApiHandler(handler, { ...options, methods: ["GET", "POST"] });
 };
 
 /**
@@ -88,7 +86,7 @@ export const createGetPostHandler = <T = unknown>(
 export async function checkResourceOwnership(
   resource: { [key: string]: unknown } | null | undefined,
   session: Session | null,
-  ownerField: string = 'createdByDiscordId'
+  ownerField: string = "createdByDiscordId"
 ): Promise<boolean> {
   if (!session?.discordId) {
     return false;
@@ -118,4 +116,4 @@ export {
   type HttpMethod,
   type CacheControlOptions,
   type ResourceOwnershipChecker,
-} from '@websites/infrastructure/api';
+} from "@websites/infrastructure/api";

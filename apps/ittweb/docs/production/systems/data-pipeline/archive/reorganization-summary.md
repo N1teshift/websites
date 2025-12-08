@@ -5,6 +5,7 @@ _Legacy references below mention `scripts/icons/*`; the active tooling now lives
 ## ✅ Completed Tasks
 
 ### 1. Folder Structure Created
+
 - ✅ `icons/` - Icon management scripts (17 scripts)
 - ✅ `data/` - Data extraction and processing (6 scripts)
 - ✅ `cleanup/` - Data cleanup scripts (3 scripts)
@@ -12,10 +13,12 @@ _Legacy references below mention `scripts/icons/*`; the active tooling now lives
 - ✅ `migration/` - Migration scripts (2 scripts)
 
 ### 2. Scripts Moved (17 scripts)
+
 - ✅ All scripts moved to appropriate folders
 - ✅ Path references updated to work from subdirectories
 
 ### 3. Redundant Scripts Deleted (9 scripts)
+
 - ✅ `analyze-icon-mapping.mjs` (replaced by comprehensive version)
 - ✅ `map-all-icons.mjs` (replaced by fixed version)
 - ✅ `map-icons.mjs` (replaced by map-icons-to-files)
@@ -29,19 +32,24 @@ _Legacy references below mention `scripts/icons/*`; the active tooling now lives
 ### 4. Consolidated Scripts Created (4 scripts)
 
 #### ✅ `icons/maintain-iconmap.mjs`
+
 **Consolidates:**
+
 - `fix-iconmap-duplicates.mjs`
 - `fix-iconmap-escaping.mjs`
 - `regenerate-iconmap.mjs`
 
 **Features:**
+
 - Fix duplicate ICON_MAP entries
 - Fix escaping issues
 - Regenerate clean iconMap.ts
 - Command-line flags for selective operations
 
 #### ✅ `icons/manage-icon-mapping.mjs`
+
 **Consolidates:**
+
 - `extract-and-organize-icons.mjs`
 - `find-missing-icons-with-fuzzy-match.mjs`
 - `map-available-icons-and-generate-extraction-list.mjs`
@@ -49,6 +57,7 @@ _Legacy references below mention `scripts/icons/*`; the active tooling now lives
 - `map-all-icons-fixed.mjs`
 
 **Features:**
+
 - Map available icons to entities
 - Find missing icons with fuzzy matching
 - Generate extraction lists
@@ -56,13 +65,16 @@ _Legacy references below mention `scripts/icons/*`; the active tooling now lives
 - Command-line flags for selective operations
 
 #### ✅ `icons/cleanup-icons.mjs`
+
 **Consolidates:**
+
 - `cleanup-icon-duplicates.cjs`
 - `normalize-icon-filenames.cjs`
 - `delete-icons-from-list.cjs`
 - `delete-marked-icons.cjs`
 
 **Features:**
+
 - Remove duplicate icon files
 - Normalize icon filenames
 - Delete icons from text lists
@@ -71,11 +83,14 @@ _Legacy references below mention `scripts/icons/*`; the active tooling now lives
 - Command-line flags for selective operations
 
 #### ✅ `data/migrate-iconpaths.mjs`
+
 **Consolidates:**
+
 - `migrate-iconpaths-to-iconmap.mjs`
 - `fix-icon-mapping-issues.mjs`
 
 **Features:**
+
 - Migrate iconPath/iconSrc to ICON_MAP
 - Fix case sensitivity issues
 - Handle path-based references
@@ -84,6 +99,7 @@ _Legacy references below mention `scripts/icons/*`; the active tooling now lives
 - Command-line flags for selective operations
 
 ### 5. Documentation Created
+
 - ✅ `scripts/README.md` - Comprehensive documentation
 - ✅ `scripts/SCRIPT_ANALYSIS.md` - Detailed analysis (existing)
 - ✅ `scripts/REORGANIZATION_SUMMARY.md` - This file
@@ -91,18 +107,21 @@ _Legacy references below mention `scripts/icons/*`; the active tooling now lives
 ## 📊 Statistics
 
 ### Before Reorganization
+
 - **Total Scripts:** 39
 - **Structure:** Flat (all in root)
 - **Redundant Scripts:** 9
 - **Consolidation Opportunities:** 14 scripts → 4
 
 ### After Reorganization
+
 - **Total Scripts:** 30 (9 deleted)
 - **Structure:** 5 organized folders
 - **Consolidated Scripts:** 4 new unified scripts
 - **Reduction:** 23% fewer scripts
 
 ### Script Distribution
+
 - **icons/:** 17 scripts (including 4 consolidated)
 - **data/:** 6 scripts (including 1 consolidated)
 - **cleanup/:** 3 scripts
@@ -134,6 +153,7 @@ _Legacy references below mention `scripts/icons/*`; the active tooling now lives
 ## 📝 Usage Examples
 
 ### Icon Map Maintenance
+
 ```bash
 # Fix all issues
 node scripts/icons/maintain-iconmap.mjs
@@ -143,6 +163,7 @@ node scripts/icons/maintain-iconmap.mjs --fix-duplicates
 ```
 
 ### Icon Mapping Management
+
 ```bash
 # Full workflow
 node scripts/icons/manage-icon-mapping.mjs
@@ -152,6 +173,7 @@ node scripts/icons/manage-icon-mapping.mjs --find-missing --fuzzy
 ```
 
 ### Icon Cleanup
+
 ```bash
 # Dry run (safe)
 node scripts/icons/cleanup-icons.mjs --remove-duplicates --normalize
@@ -161,6 +183,7 @@ node scripts/icons/cleanup-icons.mjs --remove-duplicates --normalize --execute
 ```
 
 ### Icon Path Migration
+
 ```bash
 # Full migration with report
 node scripts/data/migrate-iconpaths.mjs
@@ -172,6 +195,7 @@ node scripts/data/migrate-iconpaths.mjs --auto-map
 ## 🔄 Migration Path
 
 ### Old Workflow
+
 ```bash
 node scripts/fix-iconmap-duplicates.mjs
 node scripts/fix-iconmap-escaping.mjs
@@ -179,6 +203,7 @@ node scripts/regenerate-iconmap.mjs
 ```
 
 ### New Workflow
+
 ```bash
 node scripts/icons/maintain-iconmap.mjs
 ```
@@ -205,6 +230,7 @@ node scripts/icons/maintain-iconmap.mjs
 ## ✨ Summary
 
 The scripts folder has been successfully reorganized with:
+
 - ✅ Clear folder structure
 - ✅ Redundant scripts removed
 - ✅ Consolidated scripts created
@@ -212,4 +238,3 @@ The scripts folder has been successfully reorganized with:
 - ✅ Comprehensive documentation
 
 The codebase is now more maintainable, easier to navigate, and provides better tooling for icon and data management tasks.
-

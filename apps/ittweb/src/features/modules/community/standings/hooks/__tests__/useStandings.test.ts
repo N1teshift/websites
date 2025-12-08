@@ -1,18 +1,18 @@
-import { act, renderHook, waitFor } from '@testing-library/react';
-import { useStandings } from '../useStandings';
-import type { StandingsFilters, StandingsResponse } from '../../types';
+import { act, renderHook, waitFor } from "@testing-library/react";
+import { useStandings } from "../useStandings";
+import type { StandingsFilters, StandingsResponse } from "../../types";
 
 // Mock logger
-jest.mock('@websites/infrastructure/logging', () => ({
+jest.mock("@websites/infrastructure/logging", () => ({
   logError: jest.fn(),
 }));
 
-describe('useStandings', () => {
+describe("useStandings", () => {
   const mockStandingsResponse: StandingsResponse = {
     standings: [
       {
         rank: 1,
-        name: 'Player 1',
+        name: "Player 1",
         score: 1500,
         wins: 10,
         losses: 5,
@@ -21,7 +21,7 @@ describe('useStandings', () => {
       },
       {
         rank: 2,
-        name: 'Player 2',
+        name: "Player 2",
         score: 1400,
         wins: 8,
         losses: 7,
@@ -43,8 +43,8 @@ describe('useStandings', () => {
     jest.restoreAllMocks();
   });
 
-  describe('fetches standings on mount', () => {
-    it('should fetch standings when hook mounts', async () => {
+  describe("fetches standings on mount", () => {
+    it("should fetch standings when hook mounts", async () => {
       // Arrange
       const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
       mockFetch.mockResolvedValueOnce({
@@ -60,7 +60,7 @@ describe('useStandings', () => {
 
       // Assert
       await waitFor(() => expect(result.current.loading).toBe(false));
-      expect(mockFetch).toHaveBeenCalledWith('/api/standings?');
+      expect(mockFetch).toHaveBeenCalledWith("/api/standings?");
       expect(result.current.standings).toEqual(mockStandingsResponse.standings);
       expect(result.current.total).toBe(2);
       expect(result.current.page).toBe(1);
@@ -68,7 +68,7 @@ describe('useStandings', () => {
       expect(result.current.error).toBeNull();
     });
 
-    it('should handle empty results', async () => {
+    it("should handle empty results", async () => {
       // Arrange
       const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
       mockFetch.mockResolvedValueOnce({
@@ -89,9 +89,9 @@ describe('useStandings', () => {
       expect(result.current.hasMore).toBe(false);
     });
 
-    it('should handle network errors', async () => {
+    it("should handle network errors", async () => {
       // Arrange
-      const networkError = new Error('Network error');
+      const networkError = new Error("Network error");
       const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
       mockFetch.mockRejectedValueOnce(networkError);
 
@@ -101,14 +101,14 @@ describe('useStandings', () => {
       // Assert
       await waitFor(() => expect(result.current.loading).toBe(false));
       expect(result.current.error).toBeInstanceOf(Error);
-      expect(result.current.error?.message).toBe('Network error');
+      expect(result.current.error?.message).toBe("Network error");
     });
   });
 
-  describe('applies filters', () => {
-    it('should apply category filter', async () => {
+  describe("applies filters", () => {
+    it("should apply category filter", async () => {
       // Arrange
-      const filters: StandingsFilters = { category: '1v1' };
+      const filters: StandingsFilters = { category: "1v1" };
       const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
       mockFetch.mockResolvedValueOnce({
         ok: true,
@@ -123,10 +123,10 @@ describe('useStandings', () => {
 
       // Assert
       await waitFor(() => expect(result.current.loading).toBe(false));
-      expect(mockFetch).toHaveBeenCalledWith('/api/standings?category=1v1');
+      expect(mockFetch).toHaveBeenCalledWith("/api/standings?category=1v1");
     });
 
-    it('should apply minGames filter', async () => {
+    it("should apply minGames filter", async () => {
       // Arrange
       const filters: StandingsFilters = { minGames: 10 };
       const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
@@ -143,10 +143,10 @@ describe('useStandings', () => {
 
       // Assert
       await waitFor(() => expect(result.current.loading).toBe(false));
-      expect(mockFetch).toHaveBeenCalledWith('/api/standings?minGames=10');
+      expect(mockFetch).toHaveBeenCalledWith("/api/standings?minGames=10");
     });
 
-    it('should apply pagination filters', async () => {
+    it("should apply pagination filters", async () => {
       // Arrange
       const filters: StandingsFilters = { page: 2, limit: 20 };
       const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
@@ -163,15 +163,15 @@ describe('useStandings', () => {
 
       // Assert
       await waitFor(() => expect(result.current.loading).toBe(false));
-      expect(mockFetch).toHaveBeenCalledWith('/api/standings?page=2&limit=20');
+      expect(mockFetch).toHaveBeenCalledWith("/api/standings?page=2&limit=20");
       expect(result.current.page).toBe(2);
       expect(result.current.hasMore).toBe(true);
     });
 
-    it('should apply multiple filters', async () => {
+    it("should apply multiple filters", async () => {
       // Arrange
       const filters: StandingsFilters = {
-        category: '1v1',
+        category: "1v1",
         minGames: 10,
         page: 1,
         limit: 20,
@@ -191,13 +191,13 @@ describe('useStandings', () => {
       // Assert
       await waitFor(() => expect(result.current.loading).toBe(false));
       const callUrl = mockFetch.mock.calls[0][0] as string;
-      expect(callUrl).toContain('category=1v1');
-      expect(callUrl).toContain('minGames=10');
-      expect(callUrl).toContain('page=1');
-      expect(callUrl).toContain('limit=20');
+      expect(callUrl).toContain("category=1v1");
+      expect(callUrl).toContain("minGames=10");
+      expect(callUrl).toContain("page=1");
+      expect(callUrl).toContain("limit=20");
     });
 
-    it('should refetch when filters change', async () => {
+    it("should refetch when filters change", async () => {
       // Arrange
       const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
       mockFetch.mockResolvedValue({
@@ -209,28 +209,25 @@ describe('useStandings', () => {
       } as Response);
 
       // Act
-      const { result, rerender } = renderHook(
-        ({ filters }) => useStandings(filters),
-        {
-          initialProps: { filters: { category: '1v1' } },
-        }
-      );
+      const { result, rerender } = renderHook(({ filters }) => useStandings(filters), {
+        initialProps: { filters: { category: "1v1" } },
+      });
 
       await waitFor(() => expect(result.current.loading).toBe(false));
       expect(mockFetch).toHaveBeenCalledTimes(1);
 
       // Change filter
-      rerender({ filters: { category: '2v2' } });
+      rerender({ filters: { category: "2v2" } });
 
       // Assert
       await waitFor(() => expect(result.current.loading).toBe(false));
       expect(mockFetch).toHaveBeenCalledTimes(2);
-      expect(mockFetch).toHaveBeenLastCalledWith('/api/standings?category=2v2');
+      expect(mockFetch).toHaveBeenLastCalledWith("/api/standings?category=2v2");
     });
   });
 
-  describe('handles loading state', () => {
-    it('should set loading to true during fetch', async () => {
+  describe("handles loading state", () => {
+    it("should set loading to true during fetch", async () => {
       // Arrange
       const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
       let resolveFetch: (value: Response) => void;
@@ -257,7 +254,7 @@ describe('useStandings', () => {
       await waitFor(() => expect(result.current.loading).toBe(false));
     });
 
-    it('should set loading to false after fetch completes', async () => {
+    it("should set loading to false after fetch completes", async () => {
       // Arrange
       const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
       mockFetch.mockResolvedValueOnce({
@@ -277,14 +274,14 @@ describe('useStandings', () => {
     });
   });
 
-  describe('handles error state', () => {
-    it('should handle HTTP error responses', async () => {
+  describe("handles error state", () => {
+    it("should handle HTTP error responses", async () => {
       // Arrange
       const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
       mockFetch.mockResolvedValueOnce({
         ok: false,
         status: 500,
-        statusText: 'Internal Server Error',
+        statusText: "Internal Server Error",
       } as Response);
 
       // Act
@@ -293,17 +290,17 @@ describe('useStandings', () => {
       // Assert
       await waitFor(() => expect(result.current.loading).toBe(false));
       expect(result.current.error).toBeInstanceOf(Error);
-      expect(result.current.error?.message).toContain('Failed to fetch standings');
+      expect(result.current.error?.message).toContain("Failed to fetch standings");
     });
 
-    it('should handle API error responses', async () => {
+    it("should handle API error responses", async () => {
       // Arrange
       const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
       mockFetch.mockResolvedValueOnce({
         ok: true,
         json: async () => ({
           success: false,
-          error: 'Invalid filters provided',
+          error: "Invalid filters provided",
         }),
       } as Response);
 
@@ -313,12 +310,12 @@ describe('useStandings', () => {
       // Assert
       await waitFor(() => expect(result.current.loading).toBe(false));
       expect(result.current.error).toBeInstanceOf(Error);
-      expect(result.current.error?.message).toBe('Invalid filters provided');
+      expect(result.current.error?.message).toBe("Invalid filters provided");
     });
   });
 
-  describe('refetch function', () => {
-    it('should allow manual refetch', async () => {
+  describe("refetch function", () => {
+    it("should allow manual refetch", async () => {
       // Arrange
       const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
       mockFetch.mockResolvedValue({
@@ -346,5 +343,3 @@ describe('useStandings', () => {
     });
   });
 });
-
-

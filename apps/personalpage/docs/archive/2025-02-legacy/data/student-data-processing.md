@@ -13,7 +13,7 @@ src/features/modules/edtech/progressReport/student-data/
 ├── config/
 │   └── columnMapping.ts          # Assessment column definitions
 ├── data/
-│   ├── _metadata.json            # Collection metadata  
+│   ├── _metadata.json            # Collection metadata
 │   └── *.json                    # 80 individual student files
 ├── processors/
 │   └── dataProcessor.ts          # Assessment processing with duplicate detection
@@ -49,6 +49,7 @@ npx tsx scripts/exportStudentData.ts master_student_data.json
 ```
 
 **Results:**
+
 - ✅ 75 students processed
 - ✅ 587 assessments added
 - ✅ 5 new students created
@@ -67,14 +68,14 @@ npx tsx scripts/exportStudentData.ts master_student_data.json
 
 ### From `_S` Sheets (Vyd_S, Grei_S, Gim_S, Vei_S)
 
-| Type | Columns | Description |
-|------|---------|-------------|
-| **Classwork** | EXT1-5 | Exercise completion ("26B", "39A") |
-| **Participation** | LNT1-5 | Board solving points |
-| **Summative** | SD1-3 | **Combined assessment with 3 sub-scores:**<br>• **P**: Percentage points<br>• **MYP**: MYP criteria (0-8)<br>• **C**: Cambridge (0-1) |
-| **Homework** | ND, ND K | Completion + comment |
-| **Consultations** | KONS1-5 | Attendance tracking |
-| **Social Hours** | SOC | Minutes collected |
+| Type              | Columns  | Description                                                                                                                           |
+| ----------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| **Classwork**     | EXT1-5   | Exercise completion ("26B", "39A")                                                                                                    |
+| **Participation** | LNT1-5   | Board solving points                                                                                                                  |
+| **Summative**     | SD1-3    | **Combined assessment with 3 sub-scores:**<br>• **P**: Percentage points<br>• **MYP**: MYP criteria (0-8)<br>• **C**: Cambridge (0-1) |
+| **Homework**      | ND, ND K | Completion + comment                                                                                                                  |
+| **Consultations** | KONS1-5  | Attendance tracking                                                                                                                   |
+| **Social Hours**  | SOC      | Minutes collected                                                                                                                     |
 
 ### SD Assessment Structure
 
@@ -97,6 +98,7 @@ npx tsx scripts/exportStudentData.ts master_student_data.json
 ## 🔄 Processing Logic
 
 ### 1. Duplicate Detection
+
 - Unique key: `date + column`
 - If found: **Update** existing assessment
 - If new: **Add** to assessments array
@@ -123,11 +125,13 @@ Dashboard (upload JSON to view)
 ### 3. Sheet Processing
 
 **Excel Structure:**
+
 - **Row 1**: Dates for each column
 - **Row 2**: Column names (headers)
 - **Row 3+**: Student data
 
 **Sheets Processed:**
+
 - `Vyd_S` → 8 Vydūnas (19 students)
 - `Grei_S` → 8 A. J. Greimas (19 students)
 - `Gim_S` → 8 M. A. Gimbutienė (18 students)
@@ -138,12 +142,14 @@ Dashboard (upload JSON to view)
 Since the dashboard runs serverless (Vercel), traditional file backups aren't feasible. Instead:
 
 ### Current Strategy
+
 1. **Export before processing**: Download current data as backup
 2. **Individual files as source of truth**: `src/features/modules/edtech/progressReport/student-data/data/*.json`
 3. **Version control**: Commit to git before major updates
 4. **Master file exports**: Timestamped backups
 
 ### Workflow
+
 ```
 1. Export current data → master_student_data_backup.json
 2. Process new Excel → Updates individual files
@@ -157,18 +163,21 @@ Since the dashboard runs serverless (Vercel), traditional file backups aren't fe
 ### Data Management Section Features
 
 **Excel Processing:**
+
 - Upload Excel file
 - Real-time processing status
 - Detailed results (students processed, assessments added)
 - Error/warning display
 
 **JSON Management:**
+
 - Upload existing collection
 - Export current data
 - Clear data
 - View statistics
 
 **User Experience:**
+
 - Progress indicators
 - Success/error messages
 - Auto-dismiss notifications
@@ -179,6 +188,7 @@ Since the dashboard runs serverless (Vercel), traditional file backups aren't fe
 ### POST `/api/process-student-data`
 
 **Request:**
+
 ```typescript
 FormData {
   file: File // Excel file (.xlsx or .xls)
@@ -186,6 +196,7 @@ FormData {
 ```
 
 **Response:**
+
 ```typescript
 {
   success: boolean;
@@ -198,6 +209,7 @@ FormData {
 ```
 
 **Example Success:**
+
 ```json
 {
   "success": true,
@@ -215,11 +227,11 @@ Edit `src/features/modules/edtech/progressReport/student-data/config/columnMappi
 
 ```typescript
 export const SUMMATIVE_SHEET_COLUMNS: ColumnMapping = {
-    "NEW_COLUMN": {
-        type: "classwork", // or homework, participation, etc.
-        task_name: "New Assessment",
-        description: "Description"
-    }
+  NEW_COLUMN: {
+    type: "classwork", // or homework, participation, etc.
+    task_name: "New Assessment",
+    description: "Description",
+  },
 };
 ```
 
@@ -227,26 +239,32 @@ export const SUMMATIVE_SHEET_COLUMNS: ColumnMapping = {
 
 ```typescript
 export const CLASS_SHEET_MAPPING = {
-    "NewSheet_S": "New Class Name"
+  NewSheet_S: "New Class Name",
 };
 ```
 
 ## 🔍 Troubleshooting
 
 ### Problem: Excel processing fails
+
 **Solutions:**
+
 - Check sheet names (must be Vyd_S, Grei_S, Gim_S, Vei_S)
 - Verify Row 1 has dates, Row 2 has column names
 - Ensure Vardas and Pavardė columns exist
 - Check file format (.xlsx or .xls)
 
 ### Problem: Dashboard doesn't show new assessments
+
 **Solution:**
+
 - Process Excel → Export JSON → Re-upload JSON to dashboard
 - Dashboard only shows loaded JSON data, not live files
 
 ### Problem: Duplicate assessments
+
 **Solution:**
+
 - System prevents duplicates by date+column
 - Re-processing same file updates existing assessments
 - Safe to run multiple times
@@ -254,6 +272,7 @@ export const CLASS_SHEET_MAPPING = {
 ## 📈 Performance
 
 **Current Stats:**
+
 - 80 student files
 - ~8 assessments per student average
 - Processing time: ~2-3 seconds for full dataset
@@ -274,6 +293,7 @@ export const CLASS_SHEET_MAPPING = {
 **Date:** October 24, 2025
 
 **Results:**
+
 ```
 ✅ 75 students processed
 ✅ 587 new assessments added
@@ -286,6 +306,7 @@ export const CLASS_SHEET_MAPPING = {
 ```
 
 **Sample Output:**
+
 ```json
 {
   "column": "SD1",
@@ -300,6 +321,7 @@ export const CLASS_SHEET_MAPPING = {
 ## 📞 Support
 
 For issues or questions:
+
 - Check `/src/features/modules/edtech/progressReport/student-data/README.md`
 - Review logs in browser console
 - Check individual student JSON files
@@ -318,4 +340,3 @@ For issues or questions:
 **Last Updated:** October 24, 2025  
 **Version:** 1.0.0  
 **Status:** ✅ Production Ready
-

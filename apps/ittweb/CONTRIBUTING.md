@@ -16,16 +16,19 @@ This is a quick reference guide. For complete details, see the [full Contributin
 ## Development Standards
 
 ### Code Style
+
 - **TypeScript**: Strict mode enabled
 - **File Size**: Keep files under 200 lines when possible
 - **Error Handling**: Always use `loggerUtils` from `@/features/infrastructure/logging`
 
 ### Git Workflow
+
 - **Branch naming**: `feature/`, `fix/`, `docs/`, `refactor/`
 - **Commits**: Use conventional commits format (`feat:`, `fix:`, `docs:`, etc.)
 - **Pull Requests**: Include description, test checklist, and link to related issues
 
 ### Testing
+
 - Write tests for new features
 - Aim for >80% coverage on new code
 - Run `npm run test` before submitting PR
@@ -33,6 +36,7 @@ This is a quick reference guide. For complete details, see the [full Contributin
 ## Full Documentation
 
 For complete details on:
+
 - Code style and organization
 - Git workflow and commit messages
 - Testing requirements and examples
@@ -51,4 +55,3 @@ See the **[Full Contributing Guide](docs/CONTRIBUTING.md)**
 ---
 
 Thank you for contributing! 🚀
-

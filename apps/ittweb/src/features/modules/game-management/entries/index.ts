@@ -1,4 +1,3 @@
 // Entries module exports
-export * from './components';
-export * from './lib';
-
+export * from "./components";
+export * from "./lib";

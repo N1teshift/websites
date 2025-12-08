@@ -18,7 +18,7 @@ This document outlines all tests needed for the standings module including servi
 
 - [ ] Test calculates win rate percentage to two decimals
   - **What**: Verify win rate calculation and formatting
-  - **Expected**: Win rate calculated as (wins / total games) * 100, rounded to 2 decimals
+  - **Expected**: Win rate calculated as (wins / total games) \* 100, rounded to 2 decimals
   - **Edge cases**: Zero games, all wins, all losses, division by zero
 
 - [ ] Test assigns sequential ranks after sorting
@@ -149,4 +149,3 @@ This document outlines all tests needed for the standings module including servi
   - **What**: Verify category selector functionality
   - **Expected**: Categories rendered, selection triggers filter update
   - **Edge cases**: No categories, many categories, invalid selection
-

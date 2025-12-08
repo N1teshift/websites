@@ -6,4 +6,3 @@ Use this folder when you need to run, seed, or verify the app locally.
 - `testing-guide.md` – detailed scenarios (API calls, manual validations, troubleshooting).
 
 Every document here assumes the data pipeline in `scripts/data/` has been run recently (`node scripts/data/main.mjs`). Both guides link back to `../../scripts/README.md` so you're never more than one click away from the regeneration instructions.
-

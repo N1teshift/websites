@@ -2,7 +2,12 @@ import React from "react";
 import BaseMathObjectSettingsContainer from "./BaseMathObjectSettingsContainer";
 import { Dropdown, BooleanToggle, NumberInput } from "@websites/ui";
 import {
-    IntervalType, intervalTypeOptions, CapitalLetters, capitalLettersOptions, IntervalSettings, MathObjectContainerProps
+  IntervalType,
+  intervalTypeOptions,
+  CapitalLetters,
+  capitalLettersOptions,
+  IntervalSettings,
+  MathObjectContainerProps,
 } from "@math/types/index";
 
 /**
@@ -21,82 +26,79 @@ import {
  *   - `NumberInput` to set the `minimumLength` of the interval.
  */
 const IntervalSettingsContainer: React.FC<MathObjectContainerProps<IntervalSettings>> = ({
-    containerId,
-    settings,
-    updateSettings,
-    startIndex = 1,
-    showDescription = false,
-    //objectType = null,
+  containerId,
+  settings,
+  updateSettings,
+  startIndex = 1,
+  showDescription = false,
+  //objectType = null,
 }) => {
-    const handleNameChange = (newName: string) => {
-        updateSettings({ ...settings, name: newName as CapitalLetters });
-    };
+  const handleNameChange = (newName: string) => {
+    updateSettings({ ...settings, name: newName as CapitalLetters });
+  };
 
-    const handleShowNameChange = (newShowName: boolean) => {
-        updateSettings({ ...settings, showName: newShowName });
-    };
+  const handleShowNameChange = (newShowName: boolean) => {
+    updateSettings({ ...settings, showName: newShowName });
+  };
 
-    const handleIntervalTypeChange = (newIntervalType: string) => {
-        updateSettings({ ...settings, intervalType: newIntervalType as IntervalType });
-    };
+  const handleIntervalTypeChange = (newIntervalType: string) => {
+    updateSettings({ ...settings, intervalType: newIntervalType as IntervalType });
+  };
 
-    const handleMinimumLengthChange = (newMinimumLength: number) => {
-        updateSettings({ ...settings, minimumLength: newMinimumLength });
-    };
+  const handleMinimumLengthChange = (newMinimumLength: number) => {
+    updateSettings({ ...settings, minimumLength: newMinimumLength });
+  };
 
-    return (
-        <BaseMathObjectSettingsContainer
-            containerId={containerId}
-            settings={settings}
-            updateSettings={updateSettings}
-            startIndex={startIndex}
-            showDescription={showDescription}
-            objectType="interval"
-        >
-            {(props) => (
-                <>
-                        <Dropdown
-                            label={"interval_name"}
-                            options={capitalLettersOptions.map(letter => ({
-                                label: letter,
-                                value: letter,
-                            }))}
-                            value={props.settings.name}
-                        onChange={handleNameChange}
-                        labelPosition="above"
-                        />
-                        <BooleanToggle
-                            value={settings.showName}
-                            setValue={handleShowNameChange}
-                            uniqueId="intervalShowNameToggle"
-                            label={"name_galininkas"}
-                            trueLabel={"show"}
-                            falseLabel={"hide"}
-                            layout="horizontal"
-                            labelPosition="above"
-                        />
-                        <Dropdown
-                            label={"interval_type"}
-                            options={intervalTypeOptions.map(option => ({
-                                label: option,
-                                value: option,
-                            }))}
-                            value={props.settings.intervalType}
-                            onChange={handleIntervalTypeChange}
-                        />
-                        <NumberInput
-                            label={"minimum_length"}
-                            value={props.settings.minimumLength}
-                            onChange={handleMinimumLengthChange}
-                            min={1}
-                        />
-                </>
-            )}
-        </BaseMathObjectSettingsContainer>
-    );
+  return (
+    <BaseMathObjectSettingsContainer
+      containerId={containerId}
+      settings={settings}
+      updateSettings={updateSettings}
+      startIndex={startIndex}
+      showDescription={showDescription}
+      objectType="interval"
+    >
+      {(props) => (
+        <>
+          <Dropdown
+            label={"interval_name"}
+            options={capitalLettersOptions.map((letter) => ({
+              label: letter,
+              value: letter,
+            }))}
+            value={props.settings.name}
+            onChange={handleNameChange}
+            labelPosition="above"
+          />
+          <BooleanToggle
+            value={settings.showName}
+            setValue={handleShowNameChange}
+            uniqueId="intervalShowNameToggle"
+            label={"name_galininkas"}
+            trueLabel={"show"}
+            falseLabel={"hide"}
+            layout="horizontal"
+            labelPosition="above"
+          />
+          <Dropdown
+            label={"interval_type"}
+            options={intervalTypeOptions.map((option) => ({
+              label: option,
+              value: option,
+            }))}
+            value={props.settings.intervalType}
+            onChange={handleIntervalTypeChange}
+          />
+          <NumberInput
+            label={"minimum_length"}
+            value={props.settings.minimumLength}
+            onChange={handleMinimumLengthChange}
+            min={1}
+          />
+        </>
+      )}
+    </BaseMathObjectSettingsContainer>
+  );
 };
 
 export default IntervalSettingsContainer;
-
-
-

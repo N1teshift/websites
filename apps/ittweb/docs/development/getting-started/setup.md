@@ -64,6 +64,7 @@ ANALYZE=false  # Set to 'true' to analyze bundle size
 ## Firebase Setup
 
 See [Firebase Setup Guide](./firebase-setup.md) for complete Firebase configuration:
+
 - Creating Firebase project
 - Getting client config and admin credentials
 - Configuring Firestore and Storage rules
@@ -72,6 +73,7 @@ See [Firebase Setup Guide](./firebase-setup.md) for complete Firebase configurat
 ## Discord OAuth Setup
 
 See [Discord OAuth Setup Guide](./discord-setup.md) for complete Discord authentication setup:
+
 - Creating Discord application
 - Configuring OAuth2
 - Setting up redirect URIs
@@ -124,12 +126,14 @@ npm run dev
 ## Common Setup Issues
 
 See individual setup guides for troubleshooting:
+
 - [Firebase Setup](./firebase-setup.md#common-issues)
 - [Discord Setup](./discord-setup.md#common-issues)
 
 ## CI/CD Environment Variables
 
 See [CI/CD Setup Guide](./cicd-setup.md) for complete CI/CD configuration:
+
 - GitHub Actions setup
 - Production environment variables
 - Vercel configuration
@@ -139,5 +143,3 @@ See [CI/CD Setup Guide](./cicd-setup.md) for complete CI/CD configuration:
 - [Development Guide](./development-guide.md)
 - [Infrastructure README](../src/features/infrastructure/README.md)
 - [Firebase Admin Setup](../src/features/infrastructure/api/firebase/admin.ts)
-
-

@@ -40,6 +40,7 @@ The archive has been organized into category folders for easier navigation:
 ## What's Archived
 
 These summaries consolidate information from:
+
 - Analysis documents (cleanup plans, comparisons, categorizations)
 - Meta-documentation (documentation about documentation)
 - Bug analyses and resolved issues
@@ -54,6 +55,7 @@ These summaries consolidate information from:
 ## Using the Archive
 
 When you need to:
+
 - **Understand past decisions**: Check `history/` folder
 - **Reference historical patterns**: Look in `analysis/OPTIMIZATION_HISTORY.md` or `history/DEVELOPMENT_HISTORY.md`
 - **Review resolved issues**: See `issues/RESOLVED_ISSUES.md`
@@ -63,6 +65,7 @@ When you need to:
 ## Current Documentation
 
 For current, up-to-date documentation, see:
+
 - Main documentation: `docs/README.md`
 - API documentation: `docs/api/`
 - Database documentation: `docs/database/`
@@ -71,6 +74,7 @@ For current, up-to-date documentation, see:
 ## Archive Maintenance
 
 When a document becomes obsolete or outdated:
+
 1. Extract key information to relevant category summary in appropriate folder
 2. Move or delete the original file
 3. Update this README if structure changes

@@ -1,26 +1,23 @@
-import { getStaticPropsWithTranslations } from '@websites/infrastructure/i18n/getStaticProps';
-import { MyTasksPage } from '../../../features/modules/emw';
-import type { GetStaticProps } from 'next';
-import type { ExtendedPageProps } from '@websites/infrastructure/app';
+import { getStaticPropsWithTranslations } from "@websites/infrastructure/i18n/getStaticProps";
+import { MyTasksPage } from "../../../features/modules/emw";
+import type { GetStaticProps } from "next";
+import type { ExtendedPageProps } from "@websites/infrastructure/app";
 
 const pageNamespaces = ["emw", "links", "common"];
 export const getStaticProps: GetStaticProps<ExtendedPageProps> = async (context) => {
-    const baseProps = await getStaticPropsWithTranslations(pageNamespaces)(context);
-    return {
-        ...baseProps,
-        props: {
-            ...baseProps.props,
-            translationNamespaces: pageNamespaces,
-            layoutGoBackTarget: "/projects/emw/index",
-            layoutTitleKey: "nav_my_tasks",
-            layoutMode: "top",
-        },
-    };
+  const baseProps = await getStaticPropsWithTranslations(pageNamespaces)(context);
+  return {
+    ...baseProps,
+    props: {
+      ...baseProps.props,
+      translationNamespaces: pageNamespaces,
+      layoutGoBackTarget: "/projects/emw/index",
+      layoutTitleKey: "nav_my_tasks",
+      layoutMode: "top",
+    },
+  };
 };
 
 export default function MyTasks() {
-    return <MyTasksPage />;
-} 
-
-
-
+  return <MyTasksPage />;
+}

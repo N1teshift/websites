@@ -1,24 +1,24 @@
-import { useState, FormEvent } from 'react';
+import { useState, FormEvent } from "react";
 import type {
   TeamSize,
   GameType,
   CreateScheduledGame,
   GameParticipant,
   ParticipantResult,
-} from '@/features/modules/game-management/games/types';
+} from "@/features/modules/game-management/games/types";
 import {
   getUserTimezone,
   convertLocalToUTC,
   getCommonTimezones,
   getTimezoneAbbreviation,
-} from '../utils/timezoneUtils';
+} from "../utils/timezoneUtils";
 
-const GAME_MODES = ['Standard', 'Tournament', 'Sandbox'];
-const PARTICIPANT_RESULTS: ParticipantResult[] = ['winner', 'loser', 'draw'];
+const GAME_MODES = ["Standard", "Tournament", "Sandbox"];
+const PARTICIPANT_RESULTS: ParticipantResult[] = ["winner", "loser", "draw"];
 
 const INITIAL_PARTICIPANTS: ParticipantInput[] = [
-  { name: '', discordId: '', result: 'winner' },
-  { name: '', discordId: '', result: 'loser' },
+  { name: "", discordId: "", result: "winner" },
+  { name: "", discordId: "", result: "loser" },
 ];
 
 const buildDefaultParticipants = (): ParticipantInput[] =>
@@ -40,15 +40,17 @@ export default function CreateGameInlineForm({ onClose }: CreateGameInlineFormPr
   const [selectedDate, setSelectedDate] = useState(now.toISOString().slice(0, 10));
   const [selectedTime, setSelectedTime] = useState(now.toISOString().slice(11, 16));
   const [selectedTimezone, setSelectedTimezone] = useState(userTimezone);
-  const [teamSize, setTeamSize] = useState<TeamSize>('1v1');
-  const [customTeamSize, setCustomTeamSize] = useState('');
-  const [gameType, setGameType] = useState<GameType>('normal');
-  const [gameVersion, setGameVersion] = useState('v3.28');
+  const [teamSize, setTeamSize] = useState<TeamSize>("1v1");
+  const [customTeamSize, setCustomTeamSize] = useState("");
+  const [gameType, setGameType] = useState<GameType>("normal");
+  const [gameVersion, setGameVersion] = useState("v3.28");
   const [gameLength, setGameLength] = useState(1800);
   const [selectedModes, setSelectedModes] = useState<string[]>([]);
-  const [participants, setParticipants] = useState<ParticipantInput[]>(() => buildDefaultParticipants());
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  const [participants, setParticipants] = useState<ParticipantInput[]>(() =>
+    buildDefaultParticipants()
+  );
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
   const commonTimezones = getCommonTimezones();
@@ -59,14 +61,14 @@ export default function CreateGameInlineForm({ onClose }: CreateGameInlineFormPr
       const next = [...prev];
       next[index] = {
         ...next[index],
-        [field]: field === 'result' ? (value as ParticipantResult) : value,
+        [field]: field === "result" ? (value as ParticipantResult) : value,
       };
       return next;
     });
   };
 
   const addParticipant = () => {
-    setParticipants((prev) => [...prev, { name: '', discordId: '', result: 'loser' }]);
+    setParticipants((prev) => [...prev, { name: "", discordId: "", result: "loser" }]);
   };
 
   const removeParticipant = (index: number) => {
@@ -81,11 +83,11 @@ export default function CreateGameInlineForm({ onClose }: CreateGameInlineFormPr
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    setError('');
-    setSuccess('');
+    setError("");
+    setSuccess("");
 
     if (!selectedDate || !selectedTime) {
-      setError('Please select both date and time');
+      setError("Please select both date and time");
       return;
     }
 
@@ -99,7 +101,7 @@ export default function CreateGameInlineForm({ onClose }: CreateGameInlineFormPr
           return null;
         }
         const nowIso = new Date().toISOString();
-        const fallbackId = `manual-${name.toLowerCase().replace(/[^a-z0-9]+/g, '-') || 'player'}-${participantSeed + index}`;
+        const fallbackId = `manual-${name.toLowerCase().replace(/[^a-z0-9]+/g, "-") || "player"}-${participantSeed + index}`;
         return {
           discordId: participant.discordId.trim() || fallbackId,
           name,
@@ -110,15 +112,15 @@ export default function CreateGameInlineForm({ onClose }: CreateGameInlineFormPr
       .filter((participant): participant is GameParticipant => participant !== null);
 
     if (preparedParticipants.length < 2) {
-      setError('Please add at least two participants with names.');
+      setError("Please add at least two participants with names.");
       return;
     }
 
-    const hasWinner = preparedParticipants.some((participant) => participant.result === 'winner');
-    const hasLoser = preparedParticipants.some((participant) => participant.result === 'loser');
+    const hasWinner = preparedParticipants.some((participant) => participant.result === "winner");
+    const hasLoser = preparedParticipants.some((participant) => participant.result === "loser");
 
     if (!hasWinner || !hasLoser) {
-      setError('Select at least one winner and one loser.');
+      setError("Select at least one winner and one loser.");
       return;
     }
 
@@ -126,7 +128,7 @@ export default function CreateGameInlineForm({ onClose }: CreateGameInlineFormPr
       scheduledDateTime: utcDateTime,
       timezone: selectedTimezone,
       teamSize,
-      customTeamSize: teamSize === 'custom' ? customTeamSize : undefined,
+      customTeamSize: teamSize === "custom" ? customTeamSize : undefined,
       gameType,
       gameVersion,
       gameLength,
@@ -136,23 +138,23 @@ export default function CreateGameInlineForm({ onClose }: CreateGameInlineFormPr
 
     setSubmitting(true);
     try {
-      const response = await fetch('/api/games', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch("/api/games", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...payload,
-          gameState: 'scheduled',
+          gameState: "scheduled",
         }),
       });
       const data = await response.json();
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to create game');
+        throw new Error(data.error || "Failed to create game");
       }
-      setSuccess('Game entry created and archived! Available for testing immediately.');
+      setSuccess("Game entry created and archived! Available for testing immediately.");
       setParticipants(buildDefaultParticipants());
       setTimeout(() => onClose(), 1200);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Unknown error');
+      setError(err instanceof Error ? err.message : "Unknown error");
     } finally {
       setSubmitting(false);
     }
@@ -163,10 +165,13 @@ export default function CreateGameInlineForm({ onClose }: CreateGameInlineFormPr
       <div className="bg-gray-900 border border-amber-500/30 rounded-lg p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto animate-scale-in">
         <div className="flex items-start justify-between mb-6">
           <div>
-            <h2 className="text-2xl font-medieval-brand text-amber-400">Create Game (Manual Entry)</h2>
+            <h2 className="text-2xl font-medieval-brand text-amber-400">
+              Create Game (Manual Entry)
+            </h2>
             <p className="text-sm text-gray-400 mt-1">
-              Manually create a game record by entering game details. This is useful for testing or when a replay file is not available. 
-              The game will be immediately recorded and available in the games list.
+              Manually create a game record by entering game details. This is useful for testing or
+              when a replay file is not available. The game will be immediately recorded and
+              available in the games list.
             </p>
           </div>
           <button
@@ -221,7 +226,7 @@ export default function CreateGameInlineForm({ onClose }: CreateGameInlineFormPr
           <div>
             <label className="block text-amber-500 mb-2">Team Size *</label>
             <div className="grid grid-cols-4 gap-2">
-              {(['1v1', '2v2', '3v3', '4v4', '5v5', '6v6', 'custom'] as TeamSize[]).map((size) => (
+              {(["1v1", "2v2", "3v3", "4v4", "5v5", "6v6", "custom"] as TeamSize[]).map((size) => (
                 <label key={size} className="flex items-center cursor-pointer">
                   <input
                     type="radio"
@@ -231,11 +236,11 @@ export default function CreateGameInlineForm({ onClose }: CreateGameInlineFormPr
                     onChange={(e) => setTeamSize(e.target.value as TeamSize)}
                     className="mr-2"
                   />
-                  <span className="text-white">{size === 'custom' ? 'Custom' : size}</span>
+                  <span className="text-white">{size === "custom" ? "Custom" : size}</span>
                 </label>
               ))}
             </div>
-            {teamSize === 'custom' && (
+            {teamSize === "custom" && (
               <input
                 type="text"
                 value={customTeamSize}
@@ -255,7 +260,7 @@ export default function CreateGameInlineForm({ onClose }: CreateGameInlineFormPr
                   type="radio"
                   name="gameType"
                   value="normal"
-                  checked={gameType === 'normal'}
+                  checked={gameType === "normal"}
                   onChange={(e) => setGameType(e.target.value as GameType)}
                   className="mr-2"
                 />
@@ -266,7 +271,7 @@ export default function CreateGameInlineForm({ onClose }: CreateGameInlineFormPr
                   type="radio"
                   name="gameType"
                   value="elo"
-                  checked={gameType === 'elo'}
+                  checked={gameType === "elo"}
                   onChange={(e) => setGameType(e.target.value as GameType)}
                   className="mr-2"
                 />
@@ -300,8 +305,8 @@ export default function CreateGameInlineForm({ onClose }: CreateGameInlineFormPr
               />
               <div className="text-gray-300 text-sm flex items-center">
                 {gameLength >= 60
-                  ? `${Math.floor(gameLength / 60)} minute${Math.floor(gameLength / 60) !== 1 ? 's' : ''}`
-                  : `${gameLength} second${gameLength !== 1 ? 's' : ''}`}
+                  ? `${Math.floor(gameLength / 60)} minute${Math.floor(gameLength / 60) !== 1 ? "s" : ""}`
+                  : `${gameLength} second${gameLength !== 1 ? "s" : ""}`}
               </div>
             </div>
           </div>
@@ -335,7 +340,8 @@ export default function CreateGameInlineForm({ onClose }: CreateGameInlineFormPr
               </button>
             </div>
             <p className="text-sm text-gray-400 mt-1">
-              List every participant and flag the winners and losers so the replay uploader knows who succeeded.
+              List every participant and flag the winners and losers so the replay uploader knows
+              who succeeded.
             </p>
             <div className="mt-4 space-y-3">
               {participants.map((participant, index) => (
@@ -344,11 +350,13 @@ export default function CreateGameInlineForm({ onClose }: CreateGameInlineFormPr
                   className="rounded border border-gray-700 bg-gray-900/40 p-3 grid gap-3 md:grid-cols-[1fr,1fr,140px,auto]"
                 >
                   <div>
-                    <label className="block text-xs uppercase tracking-wide text-gray-400 mb-1">Display Name *</label>
+                    <label className="block text-xs uppercase tracking-wide text-gray-400 mb-1">
+                      Display Name *
+                    </label>
                     <input
                       type="text"
                       value={participant.name}
-                      onChange={(e) => handleParticipantChange(index, 'name', e.target.value)}
+                      onChange={(e) => handleParticipantChange(index, "name", e.target.value)}
                       placeholder="Player name"
                       className="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2 text-white focus:border-amber-500 focus:outline-none"
                     />
@@ -360,22 +368,24 @@ export default function CreateGameInlineForm({ onClose }: CreateGameInlineFormPr
                     <input
                       type="text"
                       value={participant.discordId}
-                      onChange={(e) => handleParticipantChange(index, 'discordId', e.target.value)}
+                      onChange={(e) => handleParticipantChange(index, "discordId", e.target.value)}
                       placeholder="123456789012345678"
                       className="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2 text-white focus:border-amber-500 focus:outline-none"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs uppercase tracking-wide text-gray-400 mb-1">Result</label>
+                    <label className="block text-xs uppercase tracking-wide text-gray-400 mb-1">
+                      Result
+                    </label>
                     <select
                       value={participant.result}
-                      onChange={(e) => handleParticipantChange(index, 'result', e.target.value)}
+                      onChange={(e) => handleParticipantChange(index, "result", e.target.value)}
                       className="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2 text-white focus:border-amber-500 focus:outline-none"
                     >
                       {PARTICIPANT_RESULTS.map((result) => (
                         <option key={result} value={result}>
-                          {result === 'draw'
-                            ? 'Draw'
+                          {result === "draw"
+                            ? "Draw"
                             : result.charAt(0).toUpperCase() + result.slice(1)}
                         </option>
                       ))}
@@ -387,7 +397,11 @@ export default function CreateGameInlineForm({ onClose }: CreateGameInlineFormPr
                       onClick={() => removeParticipant(index)}
                       disabled={participants.length <= 2}
                       className="w-full px-3 py-2 rounded border border-red-500/40 text-red-300 text-sm hover:bg-red-500/10 transition disabled:opacity-40"
-                      title={participants.length <= 2 ? 'Keep at least two participants' : 'Remove participant'}
+                      title={
+                        participants.length <= 2
+                          ? "Keep at least two participants"
+                          : "Remove participant"
+                      }
                     >
                       Remove
                     </button>
@@ -415,7 +429,7 @@ export default function CreateGameInlineForm({ onClose }: CreateGameInlineFormPr
               disabled={submitting}
               className="flex-1 px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white rounded-lg font-medium transition-colors disabled:opacity-50"
             >
-              {submitting ? 'Creating...' : 'Create Game'}
+              {submitting ? "Creating..." : "Create Game"}
             </button>
             <button
               type="button"
@@ -431,4 +445,3 @@ export default function CreateGameInlineForm({ onClose }: CreateGameInlineFormPr
     </div>
   );
 }
-

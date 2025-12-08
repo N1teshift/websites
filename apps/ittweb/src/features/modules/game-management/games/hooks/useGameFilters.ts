@@ -1,8 +1,8 @@
-import { useState, useEffect, useCallback } from 'react';
-import { useRouter } from 'next/router';
-import type { GameFilters } from '../types';
+import { useState, useEffect, useCallback } from "react";
+import { useRouter } from "next/router";
+import type { GameFilters } from "../types";
 
-const STORAGE_KEY = 'gameFilters';
+const STORAGE_KEY = "gameFilters";
 
 interface UseGameFiltersResult {
   filters: GameFilters;
@@ -26,8 +26,9 @@ export function useGameFilters(initialFilters: GameFilters = {}): UseGameFilters
 
     // First, try to read from URL query params
     const queryFilters: GameFilters = {};
-    
-    if (router.query.gameState) queryFilters.gameState = router.query.gameState as 'scheduled' | 'completed';
+
+    if (router.query.gameState)
+      queryFilters.gameState = router.query.gameState as "scheduled" | "completed";
     if (router.query.startDate) queryFilters.startDate = router.query.startDate as string;
     if (router.query.endDate) queryFilters.endDate = router.query.endDate as string;
     if (router.query.category) queryFilters.category = router.query.category as string;
@@ -64,48 +65,51 @@ export function useGameFilters(initialFilters: GameFilters = {}): UseGameFilters
   }, [router.isReady, router.query]);
 
   // Update URL when filters change
-  const updateURL = useCallback((newFilters: GameFilters) => {
-    if (!router.isReady) return;
+  const updateURL = useCallback(
+    (newFilters: GameFilters) => {
+      if (!router.isReady) return;
 
-    const query = { ...router.query };
-    
-    // Remove all filter params first
-    delete query.gameState;
-    delete query.startDate;
-    delete query.endDate;
-    delete query.category;
-    delete query.player;
-    delete query.ally;
-    delete query.enemy;
-    delete query.teamFormat;
-    delete query.gameId;
-    delete query.page;
-    delete query.limit;
-    delete query.cursor;
+      const query = { ...router.query };
 
-    // Add active filter params
-    if (newFilters.gameState) query.gameState = newFilters.gameState;
-    if (newFilters.startDate) query.startDate = newFilters.startDate;
-    if (newFilters.endDate) query.endDate = newFilters.endDate;
-    if (newFilters.category) query.category = newFilters.category;
-    if (newFilters.player) query.player = newFilters.player;
-    if (newFilters.ally) query.ally = newFilters.ally;
-    if (newFilters.enemy) query.enemy = newFilters.enemy;
-    if (newFilters.teamFormat) query.teamFormat = newFilters.teamFormat;
-    if (newFilters.gameId !== undefined) query.gameId = newFilters.gameId.toString();
-    if (newFilters.page !== undefined) query.page = newFilters.page.toString();
-    if (newFilters.limit !== undefined) query.limit = newFilters.limit.toString();
-    if (newFilters.cursor) query.cursor = newFilters.cursor;
+      // Remove all filter params first
+      delete query.gameState;
+      delete query.startDate;
+      delete query.endDate;
+      delete query.category;
+      delete query.player;
+      delete query.ally;
+      delete query.enemy;
+      delete query.teamFormat;
+      delete query.gameId;
+      delete query.page;
+      delete query.limit;
+      delete query.cursor;
 
-    router.push(
-      {
-        pathname: router.pathname,
-        query,
-      },
-      undefined,
-      { shallow: true }
-    );
-  }, [router]);
+      // Add active filter params
+      if (newFilters.gameState) query.gameState = newFilters.gameState;
+      if (newFilters.startDate) query.startDate = newFilters.startDate;
+      if (newFilters.endDate) query.endDate = newFilters.endDate;
+      if (newFilters.category) query.category = newFilters.category;
+      if (newFilters.player) query.player = newFilters.player;
+      if (newFilters.ally) query.ally = newFilters.ally;
+      if (newFilters.enemy) query.enemy = newFilters.enemy;
+      if (newFilters.teamFormat) query.teamFormat = newFilters.teamFormat;
+      if (newFilters.gameId !== undefined) query.gameId = newFilters.gameId.toString();
+      if (newFilters.page !== undefined) query.page = newFilters.page.toString();
+      if (newFilters.limit !== undefined) query.limit = newFilters.limit.toString();
+      if (newFilters.cursor) query.cursor = newFilters.cursor;
+
+      router.push(
+        {
+          pathname: router.pathname,
+          query,
+        },
+        undefined,
+        { shallow: true }
+      );
+    },
+    [router]
+  );
 
   // Save to localStorage
   const saveToStorage = useCallback((newFilters: GameFilters) => {
@@ -116,19 +120,22 @@ export function useGameFilters(initialFilters: GameFilters = {}): UseGameFilters
     }
   }, []);
 
-  const setFilters = useCallback((newFilters: GameFilters) => {
-    setFiltersState(newFilters);
-    updateURL(newFilters);
-    saveToStorage(newFilters);
-  }, [updateURL, saveToStorage]);
+  const setFilters = useCallback(
+    (newFilters: GameFilters) => {
+      setFiltersState(newFilters);
+      updateURL(newFilters);
+      saveToStorage(newFilters);
+    },
+    [updateURL, saveToStorage]
+  );
 
-  const updateFilter = useCallback(<K extends keyof GameFilters>(
-    key: K,
-    value: GameFilters[K]
-  ) => {
-    const newFilters = { ...filters, [key]: value };
-    setFilters(newFilters);
-  }, [filters, setFilters]);
+  const updateFilter = useCallback(
+    <K extends keyof GameFilters>(key: K, value: GameFilters[K]) => {
+      const newFilters = { ...filters, [key]: value };
+      setFilters(newFilters);
+    },
+    [filters, setFilters]
+  );
 
   const resetFilters = useCallback(() => {
     const emptyFilters: GameFilters = {};
@@ -152,7 +159,7 @@ export function useGameFilters(initialFilters: GameFilters = {}): UseGameFilters
     filters.enemy,
     filters.teamFormat,
     filters.gameId,
-  ].filter(value => value !== undefined && value !== null && value !== '').length;
+  ].filter((value) => value !== undefined && value !== null && value !== "").length;
 
   const hasActiveFilters = activeFilterCount > 0;
 
@@ -165,5 +172,3 @@ export function useGameFilters(initialFilters: GameFilters = {}): UseGameFilters
     activeFilterCount,
   };
 }
-
-

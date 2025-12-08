@@ -9,18 +9,22 @@ Added a teacher identification system to distinguish between different teachers'
 ## 📊 What Was Changed
 
 ### 1. **Type System Extended**
+
 **File**: `src/features/modules/edtech/types/ProgressReportTypes.ts`
 
 Added to `ProgressReportData.metadata`:
+
 ```typescript
 teacher_type?: 'main' | 'A' | string;
 teacher_name?: string;
 ```
 
 ### 2. **Import Script Updated**
+
 **File**: `scripts/importAssessmentData.ts`
 
 Teacher A's data now includes:
+
 ```typescript
 metadata: {
     teacher_type: 'A',
@@ -29,14 +33,17 @@ metadata: {
 ```
 
 ### 3. **Grade Generator Restricted**
+
 **File**: `src/features/modules/edtech/ProgressReportPage.tsx`
 
 Grade Generator now:
+
 - ✅ Shows normally for `teacher_type: 'main'`
 - ✅ Shows informative message for other teacher types
 - ✅ Defaults to 'main' if teacher_type is not specified (backwards compatible)
 
 ### 4. **Utility Script Created**
+
 **File**: `scripts/addTeacherTypeToMainData.ts`
 
 Script to add teacher_type to your existing main data.
@@ -46,11 +53,13 @@ Script to add teacher_type to your existing main data.
 ## 🎯 Teacher Types
 
 ### `'main'` - Your Math Data
+
 - Full access to all features
 - Grade Generator available (SD1, SD2, SD3 calculations)
 - All dashboard sections work normally
 
 ### `'A'` - English Teacher Data
+
 - Class View shows English test columns
 - Student View displays student profiles
 - Grade Generator shows informative message
@@ -63,18 +72,22 @@ Script to add teacher_type to your existing main data.
 You need to add the teacher_type to your existing `master_student_data_v4_46.json` file:
 
 ### **Option 1: Use the Script (Recommended)**
+
 ```bash
 npx tsx scripts/addTeacherTypeToMainData.ts master_student_data_v4_46.json
 ```
 
 This will:
+
 - Read your existing file
 - Add `teacher_type: 'main'`
 - Add `teacher_name: 'Main Teacher (Math)'`
 - Save it back (overwrites the original)
 
 ### **Option 2: Manual Edit**
+
 Open `master_student_data_v4_46.json` and add to metadata:
+
 ```json
 {
   "metadata": {
@@ -93,12 +106,16 @@ Open `master_student_data_v4_46.json` and add to metadata:
 ## ✅ Updated Files
 
 ### Teacher A Data
+
 **File**: `master_student_data_A_v4_46.json`
+
 - ✅ Already regenerated with `teacher_type: 'A'`
 - ✅ Ready to use
 
 ### Main Data
+
 **File**: `master_student_data_v4_46.json`
+
 - ⚠️ **You need to run the script** (see above)
 - After updating, it will have `teacher_type: 'main'`
 
@@ -107,23 +124,25 @@ Open `master_student_data_v4_46.json` and add to metadata:
 ## 🎨 Grade Generator Behavior
 
 ### When Loading Main Data:
+
 ```
 📊 Grade Generator
 [Full functionality - SD1, SD2, SD3 calculations]
 ```
 
 ### When Loading Teacher A Data:
+
 ```
 📊 Grade Generator Not Available
 
-The Grade Generator is currently only available for 
+The Grade Generator is currently only available for
 the main teacher's data (Math assessments).
 
 Current Data: Teacher A (English)
 
-This feature is specifically designed for SD1, SD2, SD3 
-test calculations used in the main Math curriculum. 
-For English assessment data, please use the Class View 
+This feature is specifically designed for SD1, SD2, SD3
+test calculations used in the main Math curriculum.
+For English assessment data, please use the Class View
 to see all test scores and percentages.
 ```
 
@@ -132,6 +151,7 @@ to see all test scores and percentages.
 ## 🔍 Backwards Compatibility
 
 If `teacher_type` is missing from metadata:
+
 - System defaults to `'main'`
 - All features work normally
 - No breaking changes for existing data
@@ -141,6 +161,7 @@ If `teacher_type` is missing from metadata:
 ## 🚀 Next Steps
 
 1. **Update your main data file**:
+
    ```bash
    npx tsx scripts/addTeacherTypeToMainData.ts master_student_data_v4_46.json
    ```
@@ -163,4 +184,3 @@ If `teacher_type` is missing from metadata:
 - ✅ Backwards compatible with old data files
 
 **Ready to use!**
-

@@ -2,8 +2,8 @@
  * Meta Page Filters Component
  */
 
-import React from 'react';
-import { Card } from '@/features/infrastructure/components';
+import React from "react";
+import { Card } from "@/features/infrastructure/components";
 
 interface MetaFiltersProps {
   category: string;
@@ -52,7 +52,7 @@ export function MetaFilters({
             <option value="ffa">FFA</option>
           </select>
         </div>
-        
+
         <div>
           <label htmlFor="teamFormat" className="block text-sm font-medium text-amber-400 mb-2">
             Team Format
@@ -99,7 +99,7 @@ export function MetaFilters({
           />
         </div>
       </div>
-      
+
       <div className="mt-4">
         <button
           onClick={onReset}
@@ -111,5 +111,3 @@ export function MetaFilters({
     </Card>
   );
 }
-
-

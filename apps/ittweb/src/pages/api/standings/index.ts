@@ -1,7 +1,7 @@
-import type { NextApiRequest } from 'next';
-import { createApiHandler } from '@websites/infrastructure/api';
-import { getStandings } from '@/features/modules/community/standings/lib/standingsService.server';
-import type { StandingsFilters } from '@/features/modules/community/standings/types';
+import type { NextApiRequest } from "next";
+import { createApiHandler } from "@websites/infrastructure/api";
+import { getStandings } from "@/features/modules/community/standings/lib/standingsService.server";
+import type { StandingsFilters } from "@/features/modules/community/standings/types";
 
 /**
  * GET /api/standings - Get leaderboard
@@ -18,7 +18,7 @@ export default createApiHandler(
     return await getStandings(filters);
   },
   {
-    methods: ['GET'],
+    methods: ["GET"],
     requireAuth: false,
     logRequests: true,
     // Cache for 5 minutes - standings update as games are played
@@ -29,10 +29,3 @@ export default createApiHandler(
     },
   }
 );
-
-
-
-
-
-
-

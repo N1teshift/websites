@@ -6,10 +6,7 @@
  */
 
 // Route handlers with personalpage auth config
-export * from './routeHandlers';
+export * from "./routeHandlers";
 
 // Core API utilities (client-safe) - app-specific axios wrapper
-export { apiRequest, fetchData, saveData } from './apiRequest';
-
-
-
+export { apiRequest, fetchData, saveData } from "./apiRequest";

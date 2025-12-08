@@ -1,9 +1,9 @@
-import { createPostHandler } from '@websites/infrastructure/api';
-import { firestoreService } from '@/features/infrastructure/api/firebase';
+import { createPostHandler } from "@websites/infrastructure/api";
+import { firestoreService } from "@/features/infrastructure/api/firebase";
 
 /**
  * API route handler for updating an exercise document in Firestore.
- * 
+ *
  * Uses the centralized service layer pattern for clean separation of concerns.
  */
 export default createPostHandler(
@@ -26,9 +26,6 @@ export default createPostHandler(
   },
   {
     validateBody: firestoreService.validateExerciseSaveRequest,
-    logRequests: true
+    logRequests: true,
   }
 );
-
-
-

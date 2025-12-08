@@ -23,12 +23,12 @@ All exports are available through the main `index.ts` file for convenient import
 All utilities are exported from the main API module:
 
 ```typescript
-import { 
+import {
   createApiHandler,
   parseQueryString,
   zodValidator,
-  CreatePostSchema
-} from '@/features/infrastructure/api';
+  CreatePostSchema,
+} from "@/features/infrastructure/api";
 ```
 
 ## Route Handlers
@@ -36,15 +36,15 @@ import {
 Create standardized API route handlers with built-in error handling, authentication, and caching.
 
 ```typescript
-import { createApiHandler, requireSession } from '@/features/infrastructure/api';
+import { createApiHandler, requireSession } from "@/features/infrastructure/api";
 
 export default createApiHandler(
   async (req, res, context) => {
     // Handler logic
-    return { data: 'result' };
+    return { data: "result" };
   },
   {
-    methods: ['GET', 'POST'],
+    methods: ["GET", "POST"],
     requireAuth: false,
     logRequests: true,
     cacheControl: {
@@ -71,8 +71,8 @@ See `handlers/routeHandlers.ts` for all available options.
 Use Zod schemas for type-safe request validation:
 
 ```typescript
-import { zodValidator, CreatePostSchema } from '@/features/infrastructure/api';
-import { createPostHandler } from '@/features/infrastructure/api';
+import { zodValidator, CreatePostSchema } from "@/features/infrastructure/api";
+import { createPostHandler } from "@/features/infrastructure/api";
 
 export default createPostHandler(
   async (req, res, context) => {
@@ -87,6 +87,7 @@ export default createPostHandler(
 ```
 
 Available schemas in `schemas/schemas.ts`:
+
 - `CreatePostSchema`
 - `CreateEntrySchema`
 - `UpdatePostSchema`
@@ -100,18 +101,19 @@ Available schemas in `schemas/schemas.ts`:
 Parse and validate query parameters from API requests:
 
 ```typescript
-import { parseQueryString, parseQueryInt, parseQueryEnum } from '@/features/infrastructure/api';
+import { parseQueryString, parseQueryInt, parseQueryEnum } from "@/features/infrastructure/api";
 
 export default createApiHandler(async (req) => {
-  const searchTerm = parseQueryString(req, 'q');
-  const page = parseQueryInt(req, 'page', 1);
-  const status = parseQueryEnum(req, 'status', ['active', 'inactive'] as const);
-  
+  const searchTerm = parseQueryString(req, "q");
+  const page = parseQueryInt(req, "page", 1);
+  const status = parseQueryEnum(req, "status", ["active", "inactive"] as const);
+
   // Use parsed values...
 });
 ```
 
 Available parsers:
+
 - `parseQueryString()` - Parse string query parameters
 - `parseQueryInt()` - Parse integer query parameters
 - `parseQueryBoolean()` - Parse boolean query parameters
@@ -145,23 +147,23 @@ api/
 ### Complete API Route Example
 
 ```typescript
-import type { NextApiRequest } from 'next';
-import { 
+import type { NextApiRequest } from "next";
+import {
   createGetPostHandler,
   parseQueryBoolean,
   zodValidator,
-  CreatePostSchema 
-} from '@/features/infrastructure/api';
+  CreatePostSchema,
+} from "@/features/infrastructure/api";
 
 export default createGetPostHandler(
   async (req: NextApiRequest, res, context) => {
-    if (req.method === 'GET') {
-      const includeUnpublished = parseQueryBoolean(req, 'includeUnpublished', false);
+    if (req.method === "GET") {
+      const includeUnpublished = parseQueryBoolean(req, "includeUnpublished", false);
       // ... fetch posts
       return posts;
     }
-    
-    if (req.method === 'POST') {
+
+    if (req.method === "POST") {
       const session = requireSession(context);
       const postData = req.body; // Already validated
       // ... create post
@@ -183,5 +185,5 @@ export default createGetPostHandler(
 ## Testing
 
 Test files are located in:
-- Individual API route tests in their respective route directories
 
+- Individual API route tests in their respective route directories

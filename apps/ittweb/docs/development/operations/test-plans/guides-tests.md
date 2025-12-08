@@ -189,14 +189,14 @@ This document outlines all tests needed for the guides module including data loa
 
 ### `src/features/modules/guides/utils/itemIdMapper.ts`
 
-- [ ] Test `itemConstantToId` strips ITEM_ prefix and converts to kebab-case
+- [ ] Test `itemConstantToId` strips ITEM\_ prefix and converts to kebab-case
   - **What**: Verify constant to ID conversion
-  - **Expected**: ITEM_ prefix removed, converted to kebab-case
+  - **Expected**: ITEM\_ prefix removed, converted to kebab-case
   - **Edge cases**: Missing prefix, already kebab-case, special characters
 
-- [ ] Test `itemIdToConstant` prefixes ITEM_ and uppercases
+- [ ] Test `itemIdToConstant` prefixes ITEM\_ and uppercases
   - **What**: Verify ID to constant conversion
-  - **Expected**: ITEM_ prefix added, converted to uppercase
+  - **Expected**: ITEM\_ prefix added, converted to uppercase
   - **Edge cases**: Already prefixed, already uppercase, invalid format
 
 - [ ] Test `mapCraftingStation` maps known stations and capitalizes unknown values
@@ -292,4 +292,3 @@ This document outlines all tests needed for the guides module including data loa
   - **What**: Verify text rendering works
   - **Expected**: Text rendered with correct styling
   - **Edge cases**: Long text, special characters, unicode
-

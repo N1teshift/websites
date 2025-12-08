@@ -1,11 +1,11 @@
-import React from 'react';
-import Link from 'next/link';
-import { Timestamp } from 'firebase/firestore';
-import { Card } from '@/features/infrastructure/components';
-import { EmptyState } from '@/features/infrastructure/components';
-import { usePlayerStats } from '../hooks/usePlayerStats';
-import { PlayerITTStatsCard } from './PlayerITTStatsCard';
-import type { PlayerSearchFilters } from '../types';
+import React from "react";
+import Link from "next/link";
+import { Timestamp } from "firebase/firestore";
+import { Card } from "@/features/infrastructure/components";
+import { EmptyState } from "@/features/infrastructure/components";
+import { usePlayerStats } from "../hooks/usePlayerStats";
+import { PlayerITTStatsCard } from "./PlayerITTStatsCard";
+import type { PlayerSearchFilters } from "../types";
 
 interface PlayerProfileProps {
   name: string;
@@ -27,9 +27,7 @@ export function PlayerProfile({ name, filters }: PlayerProfileProps) {
   if (error || !player) {
     return (
       <Card variant="medieval" className="p-8">
-        <p className="text-red-400">
-          {error ? `Error: ${error.message}` : 'Player not found'}
-        </p>
+        <p className="text-red-400">{error ? `Error: ${error.message}` : "Player not found"}</p>
       </Card>
     );
   }
@@ -37,12 +35,15 @@ export function PlayerProfile({ name, filters }: PlayerProfileProps) {
   const categories = Object.keys(player.categories);
 
   // Format last played date
-  const lastPlayedDate = player.lastPlayed ? (() => {
-    const date = typeof player.lastPlayed === 'string' 
-      ? new Date(player.lastPlayed)
-      : (player.lastPlayed as Timestamp)?.toDate?.() || new Date(String(player.lastPlayed));
-    return date.toLocaleDateString();
-  })() : null;
+  const lastPlayedDate = player.lastPlayed
+    ? (() => {
+        const date =
+          typeof player.lastPlayed === "string"
+            ? new Date(player.lastPlayed)
+            : (player.lastPlayed as Timestamp)?.toDate?.() || new Date(String(player.lastPlayed));
+        return date.toLocaleDateString();
+      })()
+    : null;
 
   return (
     <div className="space-y-6">
@@ -57,16 +58,13 @@ export function PlayerProfile({ name, filters }: PlayerProfileProps) {
           <div className="space-y-4">
             {categories.map((category) => {
               const stats = player.categories[category];
-              const winRate = stats.games > 0
-                ? ((stats.wins / stats.games) * 100).toFixed(1)
-                : '0.0';
+              const winRate =
+                stats.games > 0 ? ((stats.wins / stats.games) * 100).toFixed(1) : "0.0";
 
               return (
                 <div key={category} className="border-b border-amber-500/20 pb-4 last:border-0">
                   <div className="flex justify-between items-center mb-2">
-                    <h3 className="text-lg font-semibold text-amber-300 uppercase">
-                      {category}
-                    </h3>
+                    <h3 className="text-lg font-semibold text-amber-300 uppercase">{category}</h3>
                     {stats.rank && (
                       <span className="text-sm text-gray-400">Rank: #{stats.rank}</span>
                     )}
@@ -116,15 +114,14 @@ export function PlayerProfile({ name, filters }: PlayerProfileProps) {
             ))}
           </div>
         </Card>
-      ) : player.totalGames === 0 && (
-        <EmptyState
-          title="No Games Played"
-          message={`${player.name} hasn't played any games yet.`}
-        />
+      ) : (
+        player.totalGames === 0 && (
+          <EmptyState
+            title="No Games Played"
+            message={`${player.name} hasn't played any games yet.`}
+          />
+        )
       )}
     </div>
   );
 }
-
-
-

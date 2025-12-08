@@ -5,10 +5,12 @@
 ## Exports
 
 ### Components
+
 - `EntryFormModal` - Modal component for creating new game entries
 - `EntryEditModal` - Modal component for editing existing game entries
 
 ### Services
+
 - `entryService` - Entry CRUD operations
   - `createEntry()` - Create new game entry
   - `getEntryById()` - Get single entry by ID
@@ -54,29 +56,29 @@ import {
   createEntry,
   getEntryById,
   updateEntry,
-  deleteEntry
-} from '@/features/modules/entries/lib/entryService';
+  deleteEntry,
+} from "@/features/modules/entries/lib/entryService";
 
 // Create new entry
 const newEntry = await createEntry({
-  gameId: 'game-123',
+  gameId: "game-123",
   players: [
-    { name: 'Player1', result: 'win', team: 1 },
-    { name: 'Player2', result: 'loss', team: 2 }
+    { name: "Player1", result: "win", team: 1 },
+    { name: "Player2", result: "loss", team: 2 },
   ],
-  category: 'ranked'
+  category: "ranked",
 });
 
 // Get entry by ID
-const entry = await getEntryById('entry-id-123');
+const entry = await getEntryById("entry-id-123");
 
 // Update entry
-const updatedEntry = await updateEntry('entry-id-123', {
-  category: 'casual'
+const updatedEntry = await updateEntry("entry-id-123", {
+  category: "casual",
 });
 
 // Delete entry
-await deleteEntry('entry-id-123');
+await deleteEntry("entry-id-123");
 ```
 
 ## API Routes
@@ -98,5 +100,3 @@ await deleteEntry('entry-id-123');
 
 - [Archives Module](./archives/README.md) - Entry conversion and archive management
 - [Firestore Collections Schema](../../../../docs/schemas/firestore-collections.md#entries-collection)
-
-

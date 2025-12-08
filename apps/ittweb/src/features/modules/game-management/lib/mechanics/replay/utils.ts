@@ -1,5 +1,5 @@
-import type Player from 'w3gjs/dist/types/Player';
-import type { GameCategory } from '@/features/modules/game-management/games/types';
+import type Player from "w3gjs/dist/types/Player";
+import type { GameCategory } from "@/features/modules/game-management/games/types";
 
 export function getDurationSeconds(durationMs?: number): number {
   if (!durationMs || Number.isNaN(durationMs)) {
@@ -19,8 +19,7 @@ export function deriveCategory(players: Player[]): GameCategory | undefined {
     return `${counts[0]}v${counts[1]}` as GameCategory;
   }
   if (counts.length === 1) {
-    return counts[0] === 1 ? '1v1' : `${counts[0]}p` as GameCategory;
+    return counts[0] === 1 ? "1v1" : (`${counts[0]}p` as GameCategory);
   }
-  return 'ffa';
+  return "ffa";
 }
-

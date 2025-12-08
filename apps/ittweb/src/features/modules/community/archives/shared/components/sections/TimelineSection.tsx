@@ -1,7 +1,7 @@
-import React from 'react';
-import type { ArchiveEntry as ArchiveEntryType } from '@/types/archive';
-import type { GameWithPlayers } from '@/features/modules/game-management/games/types';
-import { ArchiveEntry } from '@/features/modules/community/archives/display/components';
+import React from "react";
+import type { ArchiveEntry as ArchiveEntryType } from "@/types/archive";
+import type { GameWithPlayers } from "@/features/modules/game-management/games/types";
+import { ArchiveEntry } from "@/features/modules/community/archives/display/components";
 
 interface TimelineSectionProps {
   title: string;
@@ -21,13 +21,13 @@ interface TimelineSectionProps {
   gamesMap?: Map<string, GameWithPlayers>;
 }
 
-export default function TimelineSection({ 
-  title, 
-  entries, 
-  titleClassName, 
-  onEdit, 
-  onDelete, 
-  canDeleteEntry, 
+export default function TimelineSection({
+  title,
+  entries,
+  titleClassName,
+  onEdit,
+  onDelete,
+  canDeleteEntry,
   onImageClick,
   onGameEdit,
   onGameDelete,
@@ -43,7 +43,7 @@ export default function TimelineSection({
   return (
     <div className="mb-12">
       {title && (
-        <h2 className={`font-medieval-brand text-3xl mb-8 ${titleClassName ?? 'text-amber-400'}`}>
+        <h2 className={`font-medieval-brand text-3xl mb-8 ${titleClassName ?? "text-amber-400"}`}>
           {title}
         </h2>
       )}
@@ -63,12 +63,12 @@ export default function TimelineSection({
             isJoining={isJoining}
             isLeaving={isLeaving}
             userIsAdmin={userIsAdmin}
-            game={entry.linkedGameDocumentId ? gamesMap?.get(entry.linkedGameDocumentId) : undefined}
+            game={
+              entry.linkedGameDocumentId ? gamesMap?.get(entry.linkedGameDocumentId) : undefined
+            }
           />
         ))}
       </div>
     </div>
   );
 }
-
-

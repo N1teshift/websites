@@ -22,10 +22,7 @@ describe("payload parser", () => {
       throw new Error("parsePayload should have thrown");
     } catch (error) {
       expect(error).toBeInstanceOf(ReplayMetaError);
-      expect((error as ReplayMetaError).code).toBe(
-        ReplayMetaErrorCode.CHECKSUM_MISMATCH
-      );
+      expect((error as ReplayMetaError).code).toBe(ReplayMetaErrorCode.CHECKSUM_MISMATCH);
     }
   });
 });
-

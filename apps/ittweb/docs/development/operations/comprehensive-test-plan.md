@@ -23,6 +23,7 @@ Test specifications are organized by category for easier navigation and maintena
 ## Test Organization
 
 ### File Structure
+
 ```
 src/
 ├── __tests__/
@@ -46,6 +47,7 @@ src/
 ```
 
 ### Test Naming Conventions
+
 - Unit tests: `[module].test.ts` or `[module].spec.ts`
 - Component tests: `[ComponentName].test.tsx`
 - Integration tests: `[feature].integration.test.ts`

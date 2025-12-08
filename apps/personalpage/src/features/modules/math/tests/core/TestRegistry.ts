@@ -1,40 +1,61 @@
 /**
  * Test Registry
- * 
+ *
  * Implements a registry pattern for managing test generators and factories.
  * Provides centralized access to tests with lazy loading.
  */
 
-import { TestCase } from '../cases/TestCase';
-import { ObjectType } from '../../types/mathTypes';
-import { 
-  CoefficientTestGenerator, CoefficientsTestGenerator, TermTestGenerator,
-  TermsTestGenerator, ExpressionTestGenerator, EquationTestGenerator,
-  InequalityTestGenerator, SetTestGenerator, IntervalTestGenerator, PointTestGenerator
-} from '../generators/index';
-import { 
-  CoefficientTestCase, CoefficientsTestCase,  TermTestCase,
-  TermsTestCase, ExpressionTestCase, EquationTestCase,
-  InequalityTestCase, SetTestCase, IntervalTestCase, PointTestCase
-} from '../cases/index';
+import { TestCase } from "../cases/TestCase";
+import { ObjectType } from "../../types/mathTypes";
+import {
+  CoefficientTestGenerator,
+  CoefficientsTestGenerator,
+  TermTestGenerator,
+  TermsTestGenerator,
+  ExpressionTestGenerator,
+  EquationTestGenerator,
+  InequalityTestGenerator,
+  SetTestGenerator,
+  IntervalTestGenerator,
+  PointTestGenerator,
+} from "../generators/index";
+import {
+  CoefficientTestCase,
+  CoefficientsTestCase,
+  TermTestCase,
+  TermsTestCase,
+  ExpressionTestCase,
+  EquationTestCase,
+  InequalityTestCase,
+  SetTestCase,
+  IntervalTestCase,
+  PointTestCase,
+} from "../cases/index";
 // Import settings types from the correct location
-import { 
-  CoefficientSettings, CoefficientsSettings, TermSettings,
-  TermsSettings, ExpressionSettings, EquationSettings, InequalitySettings,
-  SetSettings, IntervalSettings, PointSettings
-} from '../../types/mathObjectSettingsInterfaces';
+import {
+  CoefficientSettings,
+  CoefficientsSettings,
+  TermSettings,
+  TermsSettings,
+  ExpressionSettings,
+  EquationSettings,
+  InequalitySettings,
+  SetSettings,
+  IntervalSettings,
+  PointSettings,
+} from "../../types/mathObjectSettingsInterfaces";
 
 // Define the types of math objects that should be temporarily disabled for testing.
 // This allows us to keep the imports and avoid ESLint errors while preventing
 // these tests from being registered and appearing in the test runner UI.
 const DISABLED_TYPES: string[] = [
-  'terms',
-  'expression',
-  'equation',
-  'inequality',
-  'set',
-  'interval',
-  'point'
+  "terms",
+  "expression",
+  "equation",
+  "inequality",
+  "set",
+  "interval",
+  "point",
 ];
 
 /**
@@ -50,7 +71,7 @@ export class TestRegistry {
    * @static
    */
   private static generators = new Map<string, () => TestCase<Record<string, unknown>>[]>();
-  
+
   /**
    * Stores mappings from object type names (strings) to factory functions.
    * Each factory function takes settings (as `unknown`) and returns a single
@@ -58,7 +79,10 @@ export class TestRegistry {
    * @private
    * @static
    */
-  private static factories = new Map<string, (settings: unknown) => TestCase<Record<string, unknown>> | null>();
+  private static factories = new Map<
+    string,
+    (settings: unknown) => TestCase<Record<string, unknown>> | null
+  >();
 
   /**
    * Caches the results of test generators to avoid redundant generation.
@@ -89,7 +113,10 @@ export class TestRegistry {
    * @param factory A function that takes a settings object (`unknown`) and returns a `TestCase` instance or `null`.
    * @static
    */
-  static registerFactory(type: string, factory: (settings: unknown) => TestCase<Record<string, unknown>> | null): void {
+  static registerFactory(
+    type: string,
+    factory: (settings: unknown) => TestCase<Record<string, unknown>> | null
+  ): void {
     this.factories.set(type, factory);
   }
 
@@ -109,22 +136,22 @@ export class TestRegistry {
         console.warn(`No test generator found for type: ${type}`);
         return {};
       }
-      
+
       // Check cache first
       if (!this.cache.has(type)) {
         this.cache.set(type, generator());
       }
-      
+
       return { [type]: this.cache.get(type) || [] };
     }
-    
+
     // Get all tests
     const result: Record<string, TestCase<Record<string, unknown>>[]> = {};
     this.generators.forEach((_, typeName) => {
       const typedTests = this.getTests(typeName);
       Object.assign(result, typedTests);
     });
-    
+
     return result;
   }
 
@@ -135,7 +162,10 @@ export class TestRegistry {
    * @returns A new `TestCase` instance if a factory is found for the type, otherwise `null`.
    * @static
    */
-  static createTestCase(type: ObjectType, settings: unknown = {}): TestCase<Record<string, unknown>> | null {
+  static createTestCase(
+    type: ObjectType,
+    settings: unknown = {}
+  ): TestCase<Record<string, unknown>> | null {
     const factory = this.factories.get(type);
     if (!factory) {
       console.warn(`No test case factory found for type: ${type}`);
@@ -165,57 +195,75 @@ export class TestRegistry {
 }
 
 // Register test generators
-TestRegistry.register('coefficient', () => new CoefficientTestGenerator().generateAllTests());
-TestRegistry.register('coefficients', () => new CoefficientsTestGenerator().generateAllTests());
-TestRegistry.register('term', () => new TermTestGenerator().generateAllTests());
+TestRegistry.register("coefficient", () => new CoefficientTestGenerator().generateAllTests());
+TestRegistry.register("coefficients", () => new CoefficientsTestGenerator().generateAllTests());
+TestRegistry.register("term", () => new TermTestGenerator().generateAllTests());
 // Conditionally register tests based on the DISABLED_TYPES list
-if (!DISABLED_TYPES.includes('terms')) {
-  TestRegistry.register('terms', () => new TermsTestGenerator().generateAllTests());
+if (!DISABLED_TYPES.includes("terms")) {
+  TestRegistry.register("terms", () => new TermsTestGenerator().generateAllTests());
 }
-if (!DISABLED_TYPES.includes('expression')) {
-  TestRegistry.register('expression', () => new ExpressionTestGenerator().generateAllTests());
+if (!DISABLED_TYPES.includes("expression")) {
+  TestRegistry.register("expression", () => new ExpressionTestGenerator().generateAllTests());
 }
-if (!DISABLED_TYPES.includes('equation')) {
-  TestRegistry.register('equation', () => new EquationTestGenerator().generateAllTests());
+if (!DISABLED_TYPES.includes("equation")) {
+  TestRegistry.register("equation", () => new EquationTestGenerator().generateAllTests());
 }
-if (!DISABLED_TYPES.includes('inequality')) {
-  TestRegistry.register('inequality', () => new InequalityTestGenerator().generateAllTests());
+if (!DISABLED_TYPES.includes("inequality")) {
+  TestRegistry.register("inequality", () => new InequalityTestGenerator().generateAllTests());
 }
-if (!DISABLED_TYPES.includes('set')) {
-  TestRegistry.register('set', () => new SetTestGenerator().generateAllTests());
+if (!DISABLED_TYPES.includes("set")) {
+  TestRegistry.register("set", () => new SetTestGenerator().generateAllTests());
 }
-if (!DISABLED_TYPES.includes('interval')) {
-  TestRegistry.register('interval', () => new IntervalTestGenerator().generateAllTests());
+if (!DISABLED_TYPES.includes("interval")) {
+  TestRegistry.register("interval", () => new IntervalTestGenerator().generateAllTests());
 }
-if (!DISABLED_TYPES.includes('point')) {
-  TestRegistry.register('point', () => new PointTestGenerator().generateAllTests());
+if (!DISABLED_TYPES.includes("point")) {
+  TestRegistry.register("point", () => new PointTestGenerator().generateAllTests());
 }
 
 // Register test factories
-TestRegistry.registerFactory('coefficient', (settings) => new CoefficientTestCase(settings as CoefficientSettings));
-TestRegistry.registerFactory('coefficients', (settings) => new CoefficientsTestCase(settings as CoefficientsSettings));
-TestRegistry.registerFactory('term', (settings) => new TermTestCase(settings as TermSettings));
+TestRegistry.registerFactory(
+  "coefficient",
+  (settings) => new CoefficientTestCase(settings as CoefficientSettings)
+);
+TestRegistry.registerFactory(
+  "coefficients",
+  (settings) => new CoefficientsTestCase(settings as CoefficientsSettings)
+);
+TestRegistry.registerFactory("term", (settings) => new TermTestCase(settings as TermSettings));
 // Conditionally register factories based on the DISABLED_TYPES list
-if (!DISABLED_TYPES.includes('terms')) {
-  TestRegistry.registerFactory('terms', (settings) => new TermsTestCase(settings as TermsSettings));
+if (!DISABLED_TYPES.includes("terms")) {
+  TestRegistry.registerFactory("terms", (settings) => new TermsTestCase(settings as TermsSettings));
 }
-if (!DISABLED_TYPES.includes('expression')) {
-  TestRegistry.registerFactory('expression', (settings) => new ExpressionTestCase(settings as ExpressionSettings));
+if (!DISABLED_TYPES.includes("expression")) {
+  TestRegistry.registerFactory(
+    "expression",
+    (settings) => new ExpressionTestCase(settings as ExpressionSettings)
+  );
 }
-if (!DISABLED_TYPES.includes('equation')) {
-  TestRegistry.registerFactory('equation', (settings) => new EquationTestCase(settings as EquationSettings));
+if (!DISABLED_TYPES.includes("equation")) {
+  TestRegistry.registerFactory(
+    "equation",
+    (settings) => new EquationTestCase(settings as EquationSettings)
+  );
 }
-if (!DISABLED_TYPES.includes('inequality')) {
-  TestRegistry.registerFactory('inequality', (settings) => new InequalityTestCase(settings as InequalitySettings));
+if (!DISABLED_TYPES.includes("inequality")) {
+  TestRegistry.registerFactory(
+    "inequality",
+    (settings) => new InequalityTestCase(settings as InequalitySettings)
+  );
 }
-if (!DISABLED_TYPES.includes('set')) {
-  TestRegistry.registerFactory('set', (settings) => new SetTestCase(settings as SetSettings));
+if (!DISABLED_TYPES.includes("set")) {
+  TestRegistry.registerFactory("set", (settings) => new SetTestCase(settings as SetSettings));
 }
-if (!DISABLED_TYPES.includes('interval')) {
-  TestRegistry.registerFactory('interval', (settings) => new IntervalTestCase(settings as IntervalSettings));
+if (!DISABLED_TYPES.includes("interval")) {
+  TestRegistry.registerFactory(
+    "interval",
+    (settings) => new IntervalTestCase(settings as IntervalSettings)
+  );
 }
-if (!DISABLED_TYPES.includes('point')) {
-  TestRegistry.registerFactory('point', (settings) => new PointTestCase(settings as PointSettings));
+if (!DISABLED_TYPES.includes("point")) {
+  TestRegistry.registerFactory("point", (settings) => new PointTestCase(settings as PointSettings));
 }
 
 /**
@@ -232,7 +280,10 @@ export function getAllTestsFlat(): TestCase<Record<string, unknown>>[] {
  * @param settings Optional settings object (`unknown`) to configure the test case. Defaults to an empty object.
  * @returns A new `TestCase` instance if a factory is found for the type, otherwise `null`.
  */
-export function createTestCase(type: ObjectType, settings: unknown = {}): TestCase<Record<string, unknown>> | null {
+export function createTestCase(
+  type: ObjectType,
+  settings: unknown = {}
+): TestCase<Record<string, unknown>> | null {
   return TestRegistry.createTestCase(type, settings);
 }
 
@@ -263,7 +314,5 @@ export function getTestsForType(type: string): TestCase<Record<string, unknown>>
  * const coefficientTests = allTests['coefficient'];
  * const termTests = allTests['term'];
  */
-export const allTests: Record<string, TestCase<Record<string, unknown>>[]> = TestRegistry.getTests(); 
-
-
-
+export const allTests: Record<string, TestCase<Record<string, unknown>>[]> =
+  TestRegistry.getTests();

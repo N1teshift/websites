@@ -712,7 +712,7 @@ These entities don't have iconPath in their data and need icons identified:
 - Steel Axe Damage Bonus
 - Battle Axe Damage Bonus
 - Attack Damage Bonus +10
-... and 179 more
+  ... and 179 more
 
 ### Units (54)
 
@@ -736,5 +736,4 @@ These entities don't have iconPath in their data and need icons identified:
 - Merchant Ship
 - Merchant Ship
 - Merchant Ship
-... and 34 more
-
+  ... and 34 more

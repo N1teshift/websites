@@ -35,4 +35,3 @@ This document outlines all migration and compatibility tests needed to ensure sm
   - **What**: Verify feature detection works correctly
   - **Expected**: Features detected and fallbacks used when needed
   - **Edge cases**: Missing features, false positives, feature degradation
-

@@ -4,7 +4,7 @@
  *              creating descriptive test names, and generating basic test IDs (potentially superseded by IdBuilders).
  */
 
-import { getAbbreviation } from './abbreviationUtils';
+import { getAbbreviation } from "./abbreviationUtils";
 
 /**
  * Capitalizes the first letter of a given string.
@@ -37,46 +37,48 @@ export function capitalize(str: string): string {
  * // => "Integer [Positive] (Decimal), Range 1-10 (positive)"
  */
 export function formatTestName(
-  numberSet: string, 
-  rules: string[] = [], 
-  representation?: string, 
+  numberSet: string,
+  rules: string[] = [],
+  representation?: string,
   range?: [number, number]
 ): string {
   if (!numberSet) return "Invalid Test Configuration";
 
   let name = capitalize(numberSet);
-  
+
   // Add rules in brackets if present
   if (rules && rules.length > 0) {
     // Sort rules alphabetically for consistency before joining
     const sortedRules = [...rules].sort();
-    const ruleNames = sortedRules.map(rule => capitalize(rule)).join(', ');
+    const ruleNames = sortedRules.map((rule) => capitalize(rule)).join(", ");
     name += ` [${ruleNames}]`;
   }
-  
+
   // Add representation in parentheses if present
   if (representation) {
     name += ` (${capitalize(representation)})`;
   }
-  
+
   // Add range description if present
   if (range) {
     let rangeDescription = "";
     if (range[0] === range[1]) {
       rangeDescription = `${range[0]}`; // For single value ranges
-    } else if (range[0] >= 0) { // Simplified positive check
+    } else if (range[0] >= 0) {
+      // Simplified positive check
       // Check if it strictly matches POS_RANGE might be useful here
       rangeDescription = `${range[0]}-${range[1]} (positive)`;
-    } else if (range[1] <= 0) { // Simplified negative check
+    } else if (range[1] <= 0) {
+      // Simplified negative check
       // Check if it strictly matches NEG_RANGE might be useful here
       rangeDescription = `${range[0]}-${range[1]} (negative)`;
     } else {
       rangeDescription = `${range[0]}-${range[1]}`;
     }
-    
+
     name += `, Range ${rangeDescription}`;
   }
-  
+
   return name;
 }
 
@@ -111,30 +113,27 @@ export function createTestId(
   range?: [number, number]
 ): string {
   // Use context for potentially ambiguous abbreviations
-  let id = `${prefix}_${getAbbreviation(numberSet, 'numberSet')}`;
-  
+  let id = `${prefix}_${getAbbreviation(numberSet, "numberSet")}`;
+
   // Add rules to ID
   if (rules && rules.length > 0) {
     // Sort rules alphabetically for consistency
     const sortedRules = [...rules].sort();
-    const ruleAbbr = sortedRules.map(rule => getAbbreviation(rule, 'rule')).join('_');
+    const ruleAbbr = sortedRules.map((rule) => getAbbreviation(rule, "rule")).join("_");
     id += `_${ruleAbbr}`;
   }
-  
+
   // Add representation to ID
   if (representation) {
     // Use context for representation type
-    id += `_${getAbbreviation(representation, 'reprType')}`;
+    id += `_${getAbbreviation(representation, "reprType")}`;
   }
-  
+
   // Add range to ID
   if (range) {
     // Consider using getRangeType and its abbreviation for consistency
     id += `_range_${range[0]}_${range[1]}`;
   }
-  
+
   return id;
-} 
-
-
-
+}

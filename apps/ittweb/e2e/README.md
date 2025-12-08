@@ -22,6 +22,7 @@ e2e/
 ### Prerequisites
 
 1. Install dependencies:
+
    ```bash
    npm install
    ```
@@ -75,18 +76,18 @@ Tests are configured in `playwright.config.ts`:
 ### Test Structure
 
 ```typescript
-import { test, expect } from '@playwright/test';
+import { test, expect } from "@playwright/test";
 
-test.describe('Feature Name', () => {
-  test('should perform specific user action', async ({ page }) => {
+test.describe("Feature Name", () => {
+  test("should perform specific user action", async ({ page }) => {
     // Arrange
-    await page.goto('/');
+    await page.goto("/");
 
     // Act
-    await page.click('button');
+    await page.click("button");
 
     // Assert
-    await expect(page.locator('.result')).toBeVisible();
+    await expect(page.locator(".result")).toBeVisible();
   });
 });
 ```
@@ -104,35 +105,39 @@ test.describe('Feature Name', () => {
 
 ```typescript
 // Good - semantic and accessible
-await page.getByRole('button', { name: 'Submit' }).click();
-await page.getByLabelText('Email').fill('user@example.com');
+await page.getByRole("button", { name: "Submit" }).click();
+await page.getByLabelText("Email").fill("user@example.com");
 
 // Good - test-specific attributes
 await page.locator('[data-testid="user-menu"]').click();
 
 // Avoid - brittle CSS selectors
-await page.locator('.btn-primary').click();
+await page.locator(".btn-primary").click();
 ```
 
 ## Current Test Coverage
 
 ### Homepage Tests (`homepage.spec.ts`)
+
 - ✅ Page loads successfully
 - ✅ Navigation to Games, Players, Standings pages
 - ✅ Basic page structure and content
 
 ### Games Tests (`games.spec.ts`)
+
 - ✅ Games page loads
 - ✅ Games list or empty state display
 - ✅ Filter functionality (when available)
 - ✅ Game detail navigation
 
 ### Authentication Tests (`auth.spec.ts`)
+
 - ✅ Graceful handling of unauthenticated access
 - ✅ Login prompts for protected actions
 - ✅ Responsive design across viewports (mobile, tablet, desktop)
 
 ### Console Error Tests (`console-errors.spec.ts`)
+
 - ✅ Automated checking for console errors across all public pages
 - ✅ Detection of unhandled JavaScript exceptions
 - ✅ Monitoring of failed network requests

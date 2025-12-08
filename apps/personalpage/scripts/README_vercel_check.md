@@ -45,4 +45,3 @@ After pushing to git, the agent can:
 3. Check latest deployment
 4. Report: ✅ Build successful or ❌ Build failed with error details
 ```
-

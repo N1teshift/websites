@@ -1,11 +1,11 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiRequest, NextApiResponse } from "next";
 // Import server-side mocks FIRST before handler
-import '../../../../../__tests__/helpers/mockUserDataService.server';
+import "../../../../../__tests__/helpers/mockUserDataService.server";
 import {
   mockDeleteUserDataServer,
   setIsServerSide,
-} from '../../../../../__tests__/helpers/mockUserDataService.server';
-import handler from '../delete';
+} from "../../../../../__tests__/helpers/mockUserDataService.server";
+import handler from "../delete";
 
 // Mock dependencies
 const mockInfo = jest.fn();
@@ -13,7 +13,7 @@ const mockError = jest.fn();
 const mockWarn = jest.fn();
 const mockDebug = jest.fn();
 
-jest.mock('@websites/infrastructure/logging', () => ({
+jest.mock("@websites/infrastructure/logging", () => ({
   createComponentLogger: jest.fn(() => ({
     info: mockInfo,
     error: mockError,
@@ -23,21 +23,22 @@ jest.mock('@websites/infrastructure/logging', () => ({
 }));
 
 const mockGetServerSession = jest.fn();
-jest.mock('next-auth/next', () => ({
+jest.mock("next-auth/next", () => ({
   getServerSession: (...args: unknown[]) => mockGetServerSession(...args),
 }));
 
-jest.mock('@/pages/api/auth/[...nextauth]', () => ({
+jest.mock("@/pages/api/auth/[...nextauth]", () => ({
   authOptions: {},
 }));
 
-describe('POST /api/user/delete', () => {
-  const createRequest = (): NextApiRequest => ({
-    method: 'POST',
-    query: {},
-    body: null,
-    url: '/api/user/delete',
-  } as NextApiRequest);
+describe("POST /api/user/delete", () => {
+  const createRequest = (): NextApiRequest =>
+    ({
+      method: "POST",
+      query: {},
+      body: null,
+      url: "/api/user/delete",
+    }) as NextApiRequest;
 
   const createResponse = (): NextApiResponse => {
     const res = {} as NextApiResponse;
@@ -48,9 +49,9 @@ describe('POST /api/user/delete', () => {
   };
 
   const mockSession = {
-    user: { name: 'Test User' },
-    discordId: 'discord123',
-    expires: '2024-12-31',
+    user: { name: "Test User" },
+    discordId: "discord123",
+    expires: "2024-12-31",
   };
 
   beforeEach(() => {
@@ -60,7 +61,7 @@ describe('POST /api/user/delete', () => {
     mockDeleteUserDataServer.mockResolvedValue(undefined);
   });
 
-  it('deletes user account successfully', async () => {
+  it("deletes user account successfully", async () => {
     // Arrange
     const req = createRequest();
     const res = createResponse();
@@ -69,18 +70,18 @@ describe('POST /api/user/delete', () => {
     await handler(req, res);
 
     // Assert
-    expect(mockDeleteUserDataServer).toHaveBeenCalledWith('discord123');
+    expect(mockDeleteUserDataServer).toHaveBeenCalledWith("discord123");
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.json).toHaveBeenCalledWith({
       success: true,
       data: {
         success: true,
-        message: 'Account deleted successfully',
+        message: "Account deleted successfully",
       },
     });
   });
 
-  it('requires authentication', async () => {
+  it("requires authentication", async () => {
     // Arrange
     mockGetServerSession.mockResolvedValue(null);
     const req = createRequest();
@@ -94,16 +95,16 @@ describe('POST /api/user/delete', () => {
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         success: false,
-        error: 'Authentication required',
+        error: "Authentication required",
       })
     );
     expect(mockDeleteUserDataServer).not.toHaveBeenCalled();
   });
 
-  it('handles missing discordId in session', async () => {
+  it("handles missing discordId in session", async () => {
     // Arrange
     mockGetServerSession.mockResolvedValue({
-      user: { name: 'Test User' },
+      user: { name: "Test User" },
       // No discordId
     });
     const req = createRequest();
@@ -114,13 +115,13 @@ describe('POST /api/user/delete', () => {
 
     // Assert
     // The handler uses session.discordId || '', so it will call with empty string
-    expect(mockDeleteUserDataServer).toHaveBeenCalledWith('');
+    expect(mockDeleteUserDataServer).toHaveBeenCalledWith("");
     expect(res.status).toHaveBeenCalledWith(200);
   });
 
-  it('handles error from deleteUserData', async () => {
+  it("handles error from deleteUserData", async () => {
     // Arrange
-    const error = new Error('Database error');
+    const error = new Error("Database error");
     mockDeleteUserDataServer.mockRejectedValue(error);
     const req = createRequest();
     const res = createResponse();
@@ -133,18 +134,18 @@ describe('POST /api/user/delete', () => {
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         success: false,
-        error: expect.stringContaining('Database error'),
+        error: expect.stringContaining("Database error"),
       })
     );
   });
 
-  it('rejects GET method', async () => {
+  it("rejects GET method", async () => {
     // Arrange
     const req = {
-      method: 'GET',
+      method: "GET",
       query: {},
       body: null,
-      url: '/api/user/delete',
+      url: "/api/user/delete",
     } as NextApiRequest;
     const res = createResponse();
 
@@ -156,18 +157,18 @@ describe('POST /api/user/delete', () => {
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         success: false,
-        error: 'Method GET not allowed. Allowed methods: POST',
+        error: "Method GET not allowed. Allowed methods: POST",
       })
     );
   });
 
-  it('rejects PUT method', async () => {
+  it("rejects PUT method", async () => {
     // Arrange
     const req = {
-      method: 'PUT',
+      method: "PUT",
       query: {},
       body: null,
-      url: '/api/user/delete',
+      url: "/api/user/delete",
     } as NextApiRequest;
     const res = createResponse();
 
@@ -179,18 +180,18 @@ describe('POST /api/user/delete', () => {
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         success: false,
-        error: 'Method PUT not allowed. Allowed methods: POST',
+        error: "Method PUT not allowed. Allowed methods: POST",
       })
     );
   });
 
-  it('rejects DELETE method', async () => {
+  it("rejects DELETE method", async () => {
     // Arrange
     const req = {
-      method: 'DELETE',
+      method: "DELETE",
       query: {},
       body: null,
-      url: '/api/user/delete',
+      url: "/api/user/delete",
     } as NextApiRequest;
     const res = createResponse();
 
@@ -202,10 +203,8 @@ describe('POST /api/user/delete', () => {
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         success: false,
-        error: 'Method DELETE not allowed. Allowed methods: POST',
+        error: "Method DELETE not allowed. Allowed methods: POST",
       })
     );
   });
 });
-
-

@@ -1,6 +1,15 @@
-import React, { useState, FormEvent } from 'react';
-import { TeamSize, GameType, CreateScheduledGame } from '@/features/modules/game-management/games/types';
-import { getUserTimezone, convertLocalToUTC, getCommonTimezones, getTimezoneAbbreviation } from '../utils/timezoneUtils';
+import React, { useState, FormEvent } from "react";
+import {
+  TeamSize,
+  GameType,
+  CreateScheduledGame,
+} from "@/features/modules/game-management/games/types";
+import {
+  getUserTimezone,
+  convertLocalToUTC,
+  getCommonTimezones,
+  getTimezoneAbbreviation,
+} from "../utils/timezoneUtils";
 
 interface ScheduleGameFormProps {
   onSubmit: (gameData: CreateScheduledGame, addCreatorToParticipants: boolean) => Promise<void>;
@@ -11,39 +20,44 @@ interface ScheduleGameFormProps {
 
 // Placeholder for game modes - will be updated when user provides the list
 const GAME_MODES: string[] = [
-  'Standard',
-  'Custom Mode 1',
-  'Custom Mode 2',
+  "Standard",
+  "Custom Mode 1",
+  "Custom Mode 2",
   // Add more modes when provided
 ];
 
-export default function ScheduleGameForm({ onSubmit, onCancel, isSubmitting = false, userIsAdmin = false }: ScheduleGameFormProps) {
+export default function ScheduleGameForm({
+  onSubmit,
+  onCancel,
+  isSubmitting = false,
+  userIsAdmin = false,
+}: ScheduleGameFormProps) {
   const userTimezone = getUserTimezone();
-  
+
   // Initialize with current date and time
   const now = new Date();
-  const currentDate = now.toISOString().split('T')[0]; // YYYY-MM-DD format
-  const currentTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`; // HH:MM format
-  
+  const currentDate = now.toISOString().split("T")[0]; // YYYY-MM-DD format
+  const currentTime = `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`; // HH:MM format
+
   const [selectedDate, setSelectedDate] = useState(currentDate);
   const [selectedTime, setSelectedTime] = useState(currentTime);
   const [selectedTimezone, setSelectedTimezone] = useState(userTimezone);
-  const [teamSize, setTeamSize] = useState<TeamSize>('1v1');
-  const [customTeamSize, setCustomTeamSize] = useState('');
-  const [gameType, setGameType] = useState<GameType>('normal');
-  const [gameVersion, setGameVersion] = useState<string>('v3.28');
+  const [teamSize, setTeamSize] = useState<TeamSize>("1v1");
+  const [customTeamSize, setCustomTeamSize] = useState("");
+  const [gameType, setGameType] = useState<GameType>("normal");
+  const [gameVersion, setGameVersion] = useState<string>("v3.28");
   const [gameLength, setGameLength] = useState<number>(1800); // Default 30 minutes (1800 seconds)
   const [selectedModes, setSelectedModes] = useState<string[]>([]);
   const [addCreatorToParticipants, setAddCreatorToParticipants] = useState(true); // Default checked
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    setError('');
+    setError("");
 
     // Validation
     if (!selectedDate || !selectedTime) {
-      setError('Please select both date and time');
+      setError("Please select both date and time");
       return;
     }
 
@@ -52,7 +66,7 @@ export default function ScheduleGameForm({ onSubmit, onCancel, isSubmitting = fa
       const localDateTime = `${selectedDate}T${selectedTime}`;
       const selectedDateTime = new Date(localDateTime);
       if (selectedDateTime < new Date()) {
-        setError('Scheduled date and time must be in the future');
+        setError("Scheduled date and time must be in the future");
         return;
       }
     }
@@ -64,7 +78,7 @@ export default function ScheduleGameForm({ onSubmit, onCancel, isSubmitting = fa
       scheduledDateTime: utcDateTime,
       timezone: selectedTimezone,
       teamSize,
-      customTeamSize: teamSize === 'custom' ? customTeamSize : undefined,
+      customTeamSize: teamSize === "custom" ? customTeamSize : undefined,
       gameType,
       gameVersion,
       gameLength,
@@ -74,16 +88,14 @@ export default function ScheduleGameForm({ onSubmit, onCancel, isSubmitting = fa
     try {
       await onSubmit(gameData, addCreatorToParticipants);
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to schedule game';
+      const errorMessage = err instanceof Error ? err.message : "Failed to schedule game";
       setError(errorMessage);
     }
   };
 
   const handleModeToggle = (mode: string) => {
-    setSelectedModes(prev =>
-      prev.includes(mode)
-        ? prev.filter(m => m !== mode)
-        : [...prev, mode]
+    setSelectedModes((prev) =>
+      prev.includes(mode) ? prev.filter((m) => m !== mode) : [...prev, mode]
     );
   };
 
@@ -105,7 +117,7 @@ export default function ScheduleGameForm({ onSubmit, onCancel, isSubmitting = fa
                   type="date"
                   value={selectedDate}
                   onChange={(e) => setSelectedDate(e.target.value)}
-                  min={userIsAdmin ? undefined : new Date().toISOString().split('T')[0]}
+                  min={userIsAdmin ? undefined : new Date().toISOString().split("T")[0]}
                   required
                   className="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2 text-white focus:border-amber-500 focus:outline-none"
                 />
@@ -130,7 +142,7 @@ export default function ScheduleGameForm({ onSubmit, onCancel, isSubmitting = fa
                   required
                   className="w-full bg-gray-800 border border-gray-600 rounded px-3 py-2 text-white focus:border-amber-500 focus:outline-none"
                 >
-                  {commonTimezones.map(tz => (
+                  {commonTimezones.map((tz) => (
                     <option key={tz.value} value={tz.value}>
                       {tz.label} ({getTimezoneAbbreviation(tz.value)})
                     </option>
@@ -138,16 +150,14 @@ export default function ScheduleGameForm({ onSubmit, onCancel, isSubmitting = fa
                 </select>
               </div>
             </div>
-            <p className="text-sm text-gray-400">
-              Selected timezone: {tzAbbreviation}
-            </p>
+            <p className="text-sm text-gray-400">Selected timezone: {tzAbbreviation}</p>
           </div>
 
           {/* Team Size */}
           <div>
             <label className="block text-amber-500 mb-2">Team Size *</label>
             <div className="grid grid-cols-4 gap-2">
-              {(['1v1', '2v2', '3v3', '4v4', '5v5', '6v6', 'custom'] as TeamSize[]).map(size => (
+              {(["1v1", "2v2", "3v3", "4v4", "5v5", "6v6", "custom"] as TeamSize[]).map((size) => (
                 <label key={size} className="flex items-center cursor-pointer">
                   <input
                     type="radio"
@@ -157,11 +167,11 @@ export default function ScheduleGameForm({ onSubmit, onCancel, isSubmitting = fa
                     onChange={(e) => setTeamSize(e.target.value as TeamSize)}
                     className="mr-2"
                   />
-                  <span className="text-white">{size === 'custom' ? 'Custom' : size}</span>
+                  <span className="text-white">{size === "custom" ? "Custom" : size}</span>
                 </label>
               ))}
             </div>
-            {teamSize === 'custom' && (
+            {teamSize === "custom" && (
               <input
                 type="text"
                 value={customTeamSize}
@@ -184,7 +194,7 @@ export default function ScheduleGameForm({ onSubmit, onCancel, isSubmitting = fa
                     type="radio"
                     name="gameType"
                     value="normal"
-                    checked={gameType === 'normal'}
+                    checked={gameType === "normal"}
                     onChange={(e) => setGameType(e.target.value as GameType)}
                     className="mr-2"
                   />
@@ -195,7 +205,7 @@ export default function ScheduleGameForm({ onSubmit, onCancel, isSubmitting = fa
                     type="radio"
                     name="gameType"
                     value="elo"
-                    checked={gameType === 'elo'}
+                    checked={gameType === "elo"}
                     onChange={(e) => setGameType(e.target.value as GameType)}
                     className="mr-2"
                   />
@@ -233,10 +243,9 @@ export default function ScheduleGameForm({ onSubmit, onCancel, isSubmitting = fa
                 />
                 <div className="text-gray-300 text-sm">
                   <span>
-                    {gameLength >= 60 
-                      ? `${Math.floor(gameLength / 60)} minute${Math.floor(gameLength / 60) !== 1 ? 's' : ''}`
-                      : `${gameLength} second${gameLength !== 1 ? 's' : ''}`
-                    }
+                    {gameLength >= 60
+                      ? `${Math.floor(gameLength / 60)} minute${Math.floor(gameLength / 60) !== 1 ? "s" : ""}`
+                      : `${gameLength} second${gameLength !== 1 ? "s" : ""}`}
                   </span>
                 </div>
               </div>
@@ -247,7 +256,7 @@ export default function ScheduleGameForm({ onSubmit, onCancel, isSubmitting = fa
           <div>
             <label className="block text-amber-500 mb-2">Game Modes (Optional)</label>
             <div className="space-y-2">
-              {GAME_MODES.map(mode => (
+              {GAME_MODES.map((mode) => (
                 <label key={mode} className="flex items-center cursor-pointer">
                   <input
                     type="checkbox"
@@ -260,9 +269,7 @@ export default function ScheduleGameForm({ onSubmit, onCancel, isSubmitting = fa
               ))}
             </div>
             {selectedModes.length > 0 && (
-              <p className="text-sm text-gray-400 mt-2">
-                Selected: {selectedModes.join(', ')}
-              </p>
+              <p className="text-sm text-gray-400 mt-2">Selected: {selectedModes.join(", ")}</p>
             )}
           </div>
 
@@ -300,7 +307,7 @@ export default function ScheduleGameForm({ onSubmit, onCancel, isSubmitting = fa
               disabled={isSubmitting}
               className="px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white rounded disabled:opacity-50"
             >
-              {isSubmitting ? 'Scheduling...' : 'Schedule Game'}
+              {isSubmitting ? "Scheduling..." : "Schedule Game"}
             </button>
           </div>
         </form>
@@ -308,5 +315,3 @@ export default function ScheduleGameForm({ onSubmit, onCancel, isSubmitting = fa
     </div>
   );
 }
-
-

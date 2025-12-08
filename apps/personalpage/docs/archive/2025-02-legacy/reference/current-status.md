@@ -48,6 +48,7 @@ This document describes the **current state** of the database schema (v5.2) as o
 ### 1. Root-Level Mappings (NEW in 5.1-5.2)
 
 **PD (Papildomas Darbas) Mappings:**
+
 ```json
 {
   "pd_mappings": {
@@ -58,13 +59,14 @@ This document describes the **current state** of the database schema (v5.2) as o
       "strand": "Number",
       "unit": 1,
       "subsection": "1.1"
-    },
+    }
     // ... 54 total PD mappings (PD1-PD54)
   }
 }
 ```
 
 **KD (Cambridge Unit Tests) Mappings:**
+
 ```json
 {
   "kd_mappings": {
@@ -74,7 +76,7 @@ This document describes the **current state** of the database schema (v5.2) as o
       "title": "Cambridge Unit 1",
       "objectives_covered": ["9Ni.01", "9Ni.04", "9Ni.14"],
       "strand": "Number"
-    },
+    }
     // ... 15 total KD mappings (KD1-KD15)
   }
 }
@@ -152,17 +154,17 @@ Each student contains:
 
 ### 3. Assessment Types
 
-| Type | Description | Example Columns |
-|------|-------------|-----------------|
-| `homework` | Regular homework | ND1, ND2, ND6 |
-| `homework_graded` | Graded homework (0-10) | ND3 |
-| `homework_reflection` | Reflection homework (0/1) | ND5 |
-| `classwork` | Classwork activities | EXT1, EXT2 |
-| `test` | Tests | SD1-SD11 |
-| `summative` | Summative assessments | KD1-KD15 |
-| `diagnostic` | Diagnostic assessments | - |
-| `participation` | Participation/attendance | - |
-| `board_solving` | Board work | - |
+| Type                  | Description               | Example Columns |
+| --------------------- | ------------------------- | --------------- |
+| `homework`            | Regular homework          | ND1, ND2, ND6   |
+| `homework_graded`     | Graded homework (0-10)    | ND3             |
+| `homework_reflection` | Reflection homework (0/1) | ND5             |
+| `classwork`           | Classwork activities      | EXT1, EXT2      |
+| `test`                | Tests                     | SD1-SD11        |
+| `summative`           | Summative assessments     | KD1-KD15        |
+| `diagnostic`          | Diagnostic assessments    | -               |
+| `participation`       | Participation/attendance  | -               |
+| `board_solving`       | Board work                | -               |
 
 ### 4. Evaluation Details
 
@@ -183,6 +185,7 @@ For summative assessments:
 ### 5. Dynamic Column Detection
 
 **Features:**
+
 - Automatic detection of ND columns (ND1, ND2, ... ND54+)
 - Context-aware assessment types from Excel Row 21/22
 - Complex ND structure support (NDX, NDX K, NDX T)
@@ -206,24 +209,28 @@ For summative assessments:
 ## 🔄 Version History
 
 ### V5.2 (November 2025) - Current
+
 - ✅ Added `pd_mappings` at root level
 - ✅ Added `kd_mappings` at root level
 - ✅ Cambridge objectives tracking per student
 - ✅ Support for Cambridge Missions system
 
 ### V5.0-5.1 (November 2025)
+
 - ✅ Dynamic column detection
 - ✅ Context-aware assessments
 - ✅ Max points tracking
 - ✅ Complex ND structure support
 
 ### V4.x (October-November 2025)
+
 - ✅ Switched from `summative_details` to `evaluation_details`
 - ✅ Changed `participation` to `board_solving`
 - ✅ SD columns as `test` type (not `summative`)
 - ✅ Added `assessment_id` and `assessment_title`
 
 ### V3.x (September-October 2025)
+
 - Initial structured schema
 - Basic assessment tracking
 
@@ -232,6 +239,7 @@ For summative assessments:
 ## 🚀 Active Features
 
 ### Cambridge Learning Objectives Missions
+
 - ✅ 54 PD assessments mapped to Cambridge objectives
 - ✅ 15 KD unit tests mapped
 - ✅ Student progress tracking per objective
@@ -239,6 +247,7 @@ For summative assessments:
 - ✅ Automatic score updates from assessments
 
 ### Progress Report Dashboard
+
 - ✅ Class view with all assessments
 - ✅ Student view with detailed analytics
 - ✅ Charts and visualizations
@@ -247,6 +256,7 @@ For summative assessments:
 - ✅ Comments generation with AI
 
 ### Data Import/Export
+
 - ✅ Excel import with dynamic column detection
 - ✅ JSON export with full metadata
 - ✅ Validation and error checking
@@ -257,18 +267,22 @@ For summative assessments:
 ## 📁 File Locations
 
 ### Database
+
 - **Main:** `data_2025-11-09.json` (v5.2)
 - **Backup:** `archive/data_2025-11-08_with_cambridge.json` (v5.1)
 
 ### Configuration
+
 - **PD/KD Mappings:** `src/features/modules/edtech/progressReport/student-data/config/pdKdMappings.ts`
 - **Name Aliases:** `src/features/modules/edtech/progressReport/student-data/config/nameAliases.ts`
 
 ### Processing
+
 - **Data Processor:** `src/features/modules/edtech/progressReport/student-data/processors/dataProcessor.ts`
 - **Student Manager:** `src/features/modules/edtech/progressReport/student-data/utils/studentDataManager.ts`
 
 ### API Endpoints
+
 - **Upload:** `/api/process-student-data`
 - **Export:** `/api/export-student-data`
 - **Validation:** `/api/validate-database`
@@ -278,11 +292,13 @@ For summative assessments:
 ## 🔧 Validation & Maintenance
 
 ### Validation Script
+
 ```bash
 npx tsx scripts/utilities/validateAndFixDatabase.ts
 ```
 
 **Checks:**
+
 - Schema version consistency
 - Required fields presence
 - Data type validation
@@ -290,11 +306,13 @@ npx tsx scripts/utilities/validateAndFixDatabase.ts
 - Mapping completeness
 
 ### Export Script
+
 ```bash
 npx tsx scripts/utilities/exportStudentData.ts output.json
 ```
 
 ### Import Script
+
 ```bash
 npx tsx scripts/importDataJ.ts input.xlsx
 ```
@@ -310,7 +328,6 @@ npx tsx scripts/importDataJ.ts input.xlsx
 
 - **Reference:**
   - [PD/KD Mappings Reference](pd-kd-mappings.md)
-  
 - **Data:**
   - [JSON Structure Analysis](../data/json-structure-analysis.md)
   - [Student Data Processing](../data/student-data-processing.md)
@@ -332,6 +349,7 @@ npx tsx scripts/importDataJ.ts input.xlsx
 ## ⚠️ Important Notes
 
 ### For Developers
+
 1. **Always use the latest schema version** (5.2)
 2. **Validate after any data modifications**
 3. **Create backups before major changes**
@@ -339,12 +357,14 @@ npx tsx scripts/importDataJ.ts input.xlsx
 5. **Use studentDataManager for all data operations**
 
 ### For Data Import
+
 1. **Excel structure must match expected format**
 2. **Row 21/22 define assessment contexts**
 3. **Name aliases prevent duplicate student creation**
 4. **Validation runs automatically on import**
 
 ### For Features Development
+
 1. **Cambridge Missions requires v5.2**
 2. **Progress Report works with v4.x+**
 3. **Older features may need v3 compatibility layer**
@@ -356,6 +376,7 @@ npx tsx scripts/importDataJ.ts input.xlsx
 **Status:** ✅ Stable
 
 V5.2 is considered **stable for production**. Future changes will be:
+
 - Backwards compatible when possible
 - Clearly documented
 - Accompanied by migration scripts
@@ -368,5 +389,3 @@ V5.2 is considered **stable for production**. Future changes will be:
 **Last Validated:** November 10, 2025  
 **Validation Status:** ✅ All checks passed  
 **Production Ready:** Yes
-
-

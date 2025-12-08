@@ -1,5 +1,5 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-import handler from '../[name]';
+import type { NextApiRequest, NextApiResponse } from "next";
+import handler from "../[name]";
 
 // Mock dependencies
 const mockGetPlayerStats = jest.fn();
@@ -8,11 +8,11 @@ const mockError = jest.fn();
 const mockWarn = jest.fn();
 const mockDebug = jest.fn();
 
-jest.mock('@/features/modules/community/players/lib/playerService', () => ({
+jest.mock("@/features/modules/community/players/lib/playerService", () => ({
   getPlayerStats: (...args: unknown[]) => mockGetPlayerStats(...args),
 }));
 
-jest.mock('@websites/infrastructure/logging', () => ({
+jest.mock("@websites/infrastructure/logging", () => ({
   createComponentLogger: jest.fn(() => ({
     info: mockInfo,
     error: mockError,
@@ -22,21 +22,22 @@ jest.mock('@websites/infrastructure/logging', () => ({
 }));
 
 const mockGetServerSession = jest.fn();
-jest.mock('next-auth/next', () => ({
+jest.mock("next-auth/next", () => ({
   getServerSession: (...args: unknown[]) => mockGetServerSession(...args),
 }));
 
-jest.mock('@/pages/api/auth/[...nextauth]', () => ({
+jest.mock("@/pages/api/auth/[...nextauth]", () => ({
   authOptions: {},
 }));
 
-describe('GET /api/players/[name]', () => {
-  const createRequest = (name: string, query: Record<string, string> = {}): NextApiRequest => ({
-    method: 'GET',
-    query: { name, ...query },
-    body: null,
-    url: `/api/players/${name}`,
-  } as NextApiRequest);
+describe("GET /api/players/[name]", () => {
+  const createRequest = (name: string, query: Record<string, string> = {}): NextApiRequest =>
+    ({
+      method: "GET",
+      query: { name, ...query },
+      body: null,
+      url: `/api/players/${name}`,
+    }) as NextApiRequest;
 
   const createResponse = (): NextApiResponse => {
     const res = {} as NextApiResponse;
@@ -47,7 +48,7 @@ describe('GET /api/players/[name]', () => {
   };
 
   const mockPlayerStats = {
-    name: 'TestPlayer',
+    name: "TestPlayer",
     elo: 1500,
     wins: 10,
     losses: 5,
@@ -61,16 +62,16 @@ describe('GET /api/players/[name]', () => {
     mockGetPlayerStats.mockResolvedValue(mockPlayerStats);
   });
 
-  it('returns player statistics by name', async () => {
+  it("returns player statistics by name", async () => {
     // Arrange
-    const req = createRequest('TestPlayer');
+    const req = createRequest("TestPlayer");
     const res = createResponse();
 
     // Act
     await handler(req, res);
 
     // Assert
-    expect(mockGetPlayerStats).toHaveBeenCalledWith('TestPlayer', expect.objectContaining({}));
+    expect(mockGetPlayerStats).toHaveBeenCalledWith("TestPlayer", expect.objectContaining({}));
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.json).toHaveBeenCalledWith({
       success: true,
@@ -78,9 +79,9 @@ describe('GET /api/players/[name]', () => {
     });
   });
 
-  it('handles player name normalization', async () => {
+  it("handles player name normalization", async () => {
     // Arrange
-    const req = createRequest('  TestPlayer  '); // With spaces
+    const req = createRequest("  TestPlayer  "); // With spaces
     const res = createResponse();
 
     // Act
@@ -88,14 +89,14 @@ describe('GET /api/players/[name]', () => {
 
     // Assert
     // The service should handle normalization, but we verify the call
-    expect(mockGetPlayerStats).toHaveBeenCalledWith('  TestPlayer  ', expect.objectContaining({}));
+    expect(mockGetPlayerStats).toHaveBeenCalledWith("  TestPlayer  ", expect.objectContaining({}));
     expect(res.status).toHaveBeenCalledWith(200);
   });
 
-  it('returns 500 when player not found', async () => {
+  it("returns 500 when player not found", async () => {
     // Arrange
     mockGetPlayerStats.mockResolvedValue(null);
-    const req = createRequest('NonExistentPlayer');
+    const req = createRequest("NonExistentPlayer");
     const res = createResponse();
 
     // Act
@@ -106,18 +107,18 @@ describe('GET /api/players/[name]', () => {
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         success: false,
-        error: 'Player not found',
+        error: "Player not found",
       })
     );
   });
 
-  it('handles error when name is missing', async () => {
+  it("handles error when name is missing", async () => {
     // Arrange
     const req = {
-      method: 'GET',
+      method: "GET",
       query: {}, // No name
       body: null,
-      url: '/api/players/',
+      url: "/api/players/",
     } as NextApiRequest;
     const res = createResponse();
 
@@ -129,32 +130,35 @@ describe('GET /api/players/[name]', () => {
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         success: false,
-        error: 'Player name is required',
+        error: "Player name is required",
       })
     );
     expect(mockGetPlayerStats).not.toHaveBeenCalled();
   });
 
-  it('applies category filter', async () => {
+  it("applies category filter", async () => {
     // Arrange
-    const req = createRequest('TestPlayer', { category: '4v4' });
+    const req = createRequest("TestPlayer", { category: "4v4" });
     const res = createResponse();
 
     // Act
     await handler(req, res);
 
     // Assert
-    expect(mockGetPlayerStats).toHaveBeenCalledWith('TestPlayer', expect.objectContaining({
-      category: '4v4',
-    }));
+    expect(mockGetPlayerStats).toHaveBeenCalledWith(
+      "TestPlayer",
+      expect.objectContaining({
+        category: "4v4",
+      })
+    );
     expect(res.status).toHaveBeenCalledWith(200);
   });
 
-  it('applies date range filters', async () => {
+  it("applies date range filters", async () => {
     // Arrange
-    const req = createRequest('TestPlayer', {
-      startDate: '2024-01-01',
-      endDate: '2024-12-31',
+    const req = createRequest("TestPlayer", {
+      startDate: "2024-01-01",
+      endDate: "2024-12-31",
     });
     const res = createResponse();
 
@@ -162,50 +166,56 @@ describe('GET /api/players/[name]', () => {
     await handler(req, res);
 
     // Assert
-    expect(mockGetPlayerStats).toHaveBeenCalledWith('TestPlayer', expect.objectContaining({
-      startDate: '2024-01-01',
-      endDate: '2024-12-31',
-    }));
+    expect(mockGetPlayerStats).toHaveBeenCalledWith(
+      "TestPlayer",
+      expect.objectContaining({
+        startDate: "2024-01-01",
+        endDate: "2024-12-31",
+      })
+    );
     expect(res.status).toHaveBeenCalledWith(200);
   });
 
-  it('applies includeGames filter when true', async () => {
+  it("applies includeGames filter when true", async () => {
     // Arrange
-    const req = createRequest('TestPlayer', { includeGames: 'true' });
+    const req = createRequest("TestPlayer", { includeGames: "true" });
     const res = createResponse();
 
     // Act
     await handler(req, res);
 
     // Assert
-    expect(mockGetPlayerStats).toHaveBeenCalledWith('TestPlayer', {
+    expect(mockGetPlayerStats).toHaveBeenCalledWith("TestPlayer", {
       includeGames: true,
     });
     expect(res.status).toHaveBeenCalledWith(200);
   });
 
-  it('does not include games when includeGames is false or missing', async () => {
+  it("does not include games when includeGames is false or missing", async () => {
     // Arrange
-    const req = createRequest('TestPlayer', { includeGames: 'false' });
+    const req = createRequest("TestPlayer", { includeGames: "false" });
     const res = createResponse();
 
     // Act
     await handler(req, res);
 
     // Assert
-    expect(mockGetPlayerStats).toHaveBeenCalledWith('TestPlayer', expect.objectContaining({
-      includeGames: false,
-    }));
+    expect(mockGetPlayerStats).toHaveBeenCalledWith(
+      "TestPlayer",
+      expect.objectContaining({
+        includeGames: false,
+      })
+    );
     expect(res.status).toHaveBeenCalledWith(200);
   });
 
-  it('applies all filters together', async () => {
+  it("applies all filters together", async () => {
     // Arrange
-    const req = createRequest('TestPlayer', {
-      category: '4v4',
-      startDate: '2024-01-01',
-      endDate: '2024-12-31',
-      includeGames: 'true',
+    const req = createRequest("TestPlayer", {
+      category: "4v4",
+      startDate: "2024-01-01",
+      endDate: "2024-12-31",
+      includeGames: "true",
     });
     const res = createResponse();
 
@@ -213,20 +223,20 @@ describe('GET /api/players/[name]', () => {
     await handler(req, res);
 
     // Assert
-    expect(mockGetPlayerStats).toHaveBeenCalledWith('TestPlayer', {
-      category: '4v4',
-      startDate: '2024-01-01',
-      endDate: '2024-12-31',
+    expect(mockGetPlayerStats).toHaveBeenCalledWith("TestPlayer", {
+      category: "4v4",
+      startDate: "2024-01-01",
+      endDate: "2024-12-31",
       includeGames: true,
     });
     expect(res.status).toHaveBeenCalledWith(200);
   });
 
-  it('handles error from getPlayerStats', async () => {
+  it("handles error from getPlayerStats", async () => {
     // Arrange
-    const error = new Error('Database error');
+    const error = new Error("Database error");
     mockGetPlayerStats.mockRejectedValue(error);
-    const req = createRequest('TestPlayer');
+    const req = createRequest("TestPlayer");
     const res = createResponse();
 
     // Act
@@ -237,15 +247,15 @@ describe('GET /api/players/[name]', () => {
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         success: false,
-        error: expect.stringContaining('Database error'),
+        error: expect.stringContaining("Database error"),
       })
     );
   });
 
-  it('does not require authentication', async () => {
+  it("does not require authentication", async () => {
     // Arrange
     mockGetServerSession.mockResolvedValue(null);
-    const req = createRequest('TestPlayer');
+    const req = createRequest("TestPlayer");
     const res = createResponse();
 
     // Act
@@ -259,13 +269,13 @@ describe('GET /api/players/[name]', () => {
     });
   });
 
-  it('rejects POST method', async () => {
+  it("rejects POST method", async () => {
     // Arrange
     const req = {
-      method: 'POST',
-      query: { name: 'TestPlayer' },
+      method: "POST",
+      query: { name: "TestPlayer" },
       body: null,
-      url: '/api/players/TestPlayer',
+      url: "/api/players/TestPlayer",
     } as NextApiRequest;
     const res = createResponse();
 
@@ -277,18 +287,18 @@ describe('GET /api/players/[name]', () => {
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         success: false,
-        error: expect.stringContaining('Method POST not allowed'),
+        error: expect.stringContaining("Method POST not allowed"),
       })
     );
   });
 
-  it('rejects PUT method', async () => {
+  it("rejects PUT method", async () => {
     // Arrange
     const req = {
-      method: 'PUT',
-      query: { name: 'TestPlayer' },
+      method: "PUT",
+      query: { name: "TestPlayer" },
       body: null,
-      url: '/api/players/TestPlayer',
+      url: "/api/players/TestPlayer",
     } as NextApiRequest;
     const res = createResponse();
 
@@ -300,18 +310,18 @@ describe('GET /api/players/[name]', () => {
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         success: false,
-        error: expect.stringContaining('Method PUT not allowed'),
+        error: expect.stringContaining("Method PUT not allowed"),
       })
     );
   });
 
-  it('rejects DELETE method', async () => {
+  it("rejects DELETE method", async () => {
     // Arrange
     const req = {
-      method: 'DELETE',
-      query: { name: 'TestPlayer' },
+      method: "DELETE",
+      query: { name: "TestPlayer" },
       body: null,
-      url: '/api/players/TestPlayer',
+      url: "/api/players/TestPlayer",
     } as NextApiRequest;
     const res = createResponse();
 
@@ -323,9 +333,8 @@ describe('GET /api/players/[name]', () => {
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         success: false,
-        error: expect.stringContaining('Method DELETE not allowed'),
+        error: expect.stringContaining("Method DELETE not allowed"),
       })
     );
   });
 });
-

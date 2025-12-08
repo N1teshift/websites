@@ -1,4 +1,4 @@
-import ClassIcon from './ClassIcon';
+import ClassIcon from "./ClassIcon";
 
 /**
  * Props for the ClassHeader component
@@ -29,6 +29,3 @@ export default function ClassHeader({ slug, name, summary, iconSrc }: Props) {
     </div>
   );
 }
-
-
-

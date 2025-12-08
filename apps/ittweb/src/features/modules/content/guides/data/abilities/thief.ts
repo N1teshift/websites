@@ -1,6 +1,3 @@
-import type { AbilityData } from './types';
+import type { AbilityData } from "./types";
 
-export const THIEF_ABILITIES: AbilityData[] = [
-
-];
-
+export const THIEF_ABILITIES: AbilityData[] = [];

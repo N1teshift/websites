@@ -1,9 +1,9 @@
 /**
  * Analytics Cache Service (Server-Only)
- * 
+ *
  * Stores pre-computed analytics results in Firestore for fast retrieval.
  * Works in serverless environments like Vercel.
- * 
+ *
  * Cache Strategy:
  * - Analytics are computed once and stored in Firestore
  * - Cached results are returned if still valid (based on TTL)
@@ -11,13 +11,13 @@
  * - Cache invalidation when games are created/updated
  */
 
-import { getFirestoreAdmin, isServerSide } from '@websites/infrastructure/firebase';
-import { createComponentLogger } from '@websites/infrastructure/logging';
-import type { CacheEntry, CacheConfig } from './analyticsCache';
-import { generateCacheKey } from './analyticsCache';
+import { getFirestoreAdmin, isServerSide } from "@websites/infrastructure/firebase";
+import { createComponentLogger } from "@websites/infrastructure/logging";
+import type { CacheEntry, CacheConfig } from "./analyticsCache";
+import { generateCacheKey } from "./analyticsCache";
 
-const logger = createComponentLogger('analyticsCache');
-const CACHE_COLLECTION = 'analyticsCache';
+const logger = createComponentLogger("analyticsCache");
+const CACHE_COLLECTION = "analyticsCache";
 
 /** Default cache configuration */
 const DEFAULT_CACHE_CONFIG: CacheConfig = { ttlSeconds: 300, version: 1 };
@@ -25,7 +25,7 @@ const DEFAULT_CACHE_CONFIG: CacheConfig = { ttlSeconds: 300, version: 1 };
 /**
  * Get cached analytics result
  * Returns null if cache miss or expired
- * 
+ *
  * @param analyticsType - Type of analytics (e.g., 'meta', 'activity')
  * @param filters - Filter parameters for the analytics query
  * @param configs - Optional cache configurations map. If not provided, uses default config.
@@ -47,7 +47,7 @@ export async function getCachedAnalytics<T>(
     const doc = await db.collection(CACHE_COLLECTION).doc(cacheKey).get();
 
     if (!doc.exists) {
-      logger.debug('Cache miss - not found', { analyticsType, cacheKey });
+      logger.debug("Cache miss - not found", { analyticsType, cacheKey });
       return null;
     }
 
@@ -55,10 +55,10 @@ export async function getCachedAnalytics<T>(
 
     // Check version
     if (entry.version !== config.version) {
-      logger.debug('Cache miss - version mismatch', {
+      logger.debug("Cache miss - version mismatch", {
         analyticsType,
         cacheVersion: entry.version,
-        currentVersion: config.version
+        currentVersion: config.version,
       });
       return null;
     }
@@ -68,24 +68,24 @@ export async function getCachedAnalytics<T>(
     const expiresAt = new Date(entry.expiresAt);
 
     if (now > expiresAt) {
-      logger.debug('Cache miss - expired', {
+      logger.debug("Cache miss - expired", {
         analyticsType,
-        expiresAt: entry.expiresAt
+        expiresAt: entry.expiresAt,
       });
       return null;
     }
 
-    logger.debug('Cache hit', { analyticsType, cacheKey });
+    logger.debug("Cache hit", { analyticsType, cacheKey });
     return entry.data;
   } catch (error) {
-    logger.warn('Cache read error', { analyticsType, error });
+    logger.warn("Cache read error", { analyticsType, error });
     return null;
   }
 }
 
 /**
  * Store analytics result in cache
- * 
+ *
  * @param analyticsType - Type of analytics (e.g., 'meta', 'activity')
  * @param filters - Filter parameters for the analytics query
  * @param data - The analytics data to cache
@@ -119,9 +119,9 @@ export async function setCachedAnalytics<T>(
     const db = getFirestoreAdmin();
     await db.collection(CACHE_COLLECTION).doc(cacheKey).set(entry);
 
-    logger.debug('Cache set', { analyticsType, cacheKey, expiresAt: entry.expiresAt });
+    logger.debug("Cache set", { analyticsType, cacheKey, expiresAt: entry.expiresAt });
   } catch (error) {
-    logger.warn('Cache write error', { analyticsType, error });
+    logger.warn("Cache write error", { analyticsType, error });
   }
 }
 
@@ -129,9 +129,7 @@ export async function setCachedAnalytics<T>(
  * Invalidate all analytics caches
  * Call this when games are created/updated/deleted
  */
-export async function invalidateAnalyticsCache(
-  category?: string
-): Promise<void> {
+export async function invalidateAnalyticsCache(category?: string): Promise<void> {
   if (!isServerSide()) {
     return;
   }
@@ -164,17 +162,17 @@ export async function invalidateAnalyticsCache(
 
     if (invalidated > 0) {
       await batch.commit();
-      logger.info('Cache invalidated', { count: invalidated, category });
+      logger.info("Cache invalidated", { count: invalidated, category });
     }
   } catch (error) {
-    logger.warn('Cache invalidation error', { error });
+    logger.warn("Cache invalidation error", { error });
   }
 }
 
 /**
  * Get or compute analytics with caching
  * This is the main function to use for cached analytics
- * 
+ *
  * @param analyticsType - Type of analytics (e.g., 'meta', 'activity')
  * @param filters - Filter parameters for the analytics query
  * @param computeFn - Function to compute fresh analytics data if cache miss
@@ -202,4 +200,3 @@ export async function getOrComputeAnalytics<T>(
 
   return data;
 }
-

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 export default function SimulationPanel() {
   return (
@@ -12,6 +12,3 @@ export default function SimulationPanel() {
     </div>
   );
 }
-
-
-

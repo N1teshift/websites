@@ -3,15 +3,15 @@ export const MOVESPEED_BASE_OFFSET = 2;
 export const MOVESPEED_SUBCLASS_EXTRA = 5;
 export const MOVESPEED_SUPER_EXTRA = 6;
 
-export type ClassTier = 'base' | 'sub' | 'super';
+export type ClassTier = "base" | "sub" | "super";
 
 export function getMoveSpeedOffset(tier: ClassTier): number {
   switch (tier) {
-    case 'base':
+    case "base":
       return MOVESPEED_BASE_OFFSET;
-    case 'sub':
+    case "sub":
       return MOVESPEED_BASE_OFFSET + MOVESPEED_SUBCLASS_EXTRA;
-    case 'super':
+    case "super":
       return MOVESPEED_BASE_OFFSET + MOVESPEED_SUPER_EXTRA;
   }
 }
@@ -36,6 +36,3 @@ export function getArmorDamageReductionPercent(armor: number): number {
   const fraction = numerator / denominator;
   return fraction * 100;
 }
-
-
-

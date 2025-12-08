@@ -8,16 +8,17 @@ Firestore requires composite indexes for complex queries. Create indexes in Fire
 
 ```typescript
 // This query needs a composite index
-db.collection('games')
-  .where('category', '==', 'ranked')
-  .where('createdAt', '>', startDate)
-  .orderBy('createdAt', 'desc')
+db.collection("games")
+  .where("category", "==", "ranked")
+  .where("createdAt", ">", startDate)
+  .orderBy("createdAt", "desc")
   .limit(20);
 
 // Index: category (Ascending), createdAt (Descending)
 ```
 
 **When to create indexes:**
+
 - Multiple `where` clauses
 - `where` + `orderBy` on different fields
 - Multiple `orderBy` clauses
@@ -40,25 +41,20 @@ Use cursor-based pagination for large datasets:
 
 ```typescript
 // First page
-let query = db.collection('games')
-  .orderBy('createdAt', 'desc')
-  .limit(20);
+let query = db.collection("games").orderBy("createdAt", "desc").limit(20);
 
 const snapshot = await query.get();
 const lastDoc = snapshot.docs[snapshot.docs.length - 1];
 
 // Next page
-query = db.collection('games')
-  .orderBy('createdAt', 'desc')
-  .startAfter(lastDoc)
-  .limit(20);
+query = db.collection("games").orderBy("createdAt", "desc").startAfter(lastDoc).limit(20);
 ```
 
 ## Select Only Needed Fields
 
 ```typescript
 // Good - only fetch needed fields
-const doc = await db.collection('games').doc(id).get();
+const doc = await db.collection("games").doc(id).get();
 const { title, createdAt } = doc.data()!;
 
 // Avoid fetching entire document if only need a few fields
@@ -71,8 +67,8 @@ Use batch writes for multiple operations:
 ```typescript
 const batch = db.batch();
 
-games.forEach(game => {
-  const ref = db.collection('games').doc();
+games.forEach((game) => {
+  const ref = db.collection("games").doc();
   batch.set(ref, game);
 });
 
@@ -100,8 +96,8 @@ Limit subcollection queries:
 
 ```typescript
 // Good - fetch parent, then subcollection if needed
-const game = await db.collection('games').doc(id).get();
-const players = await db.collection('games').doc(id).collection('players').get();
+const game = await db.collection("games").doc(id).get();
+const players = await db.collection("games").doc(id).collection("players").get();
 
 // Bad - avoid deep nested queries
 ```
@@ -111,4 +107,3 @@ const players = await db.collection('games').doc(id).collection('players').get()
 - [Performance Guide](../../shared/PERFORMANCE.md)
 - [Database Indexes](../../production/database/indexes.md)
 - [Database Schemas](../../production/database/schemas.md)
-

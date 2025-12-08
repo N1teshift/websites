@@ -1,6 +1,6 @@
-import { readdir } from 'fs/promises';
-import { join } from 'path';
-import { createGetHandler } from '@websites/infrastructure/api';
+import { readdir } from "fs/promises";
+import { join } from "path";
+import { createGetHandler } from "@websites/infrastructure/api";
 
 type IconFile = {
   filename: string;
@@ -12,22 +12,22 @@ type IconFile = {
 // Find all .png files in a flat directory
 async function findPngFiles(dir: string, baseDir: string, category: string): Promise<IconFile[]> {
   const files: IconFile[] = [];
-  
+
   try {
     const entries = await readdir(dir, { withFileTypes: true });
-    
+
     for (const entry of entries) {
       // Skip subdirectories (all icons should be flat now)
       if (entry.isDirectory()) {
         continue;
       }
-      
-      if (entry.isFile() && entry.name.toLowerCase().endsWith('.png')) {
+
+      if (entry.isFile() && entry.name.toLowerCase().endsWith(".png")) {
         // Skip texture files and unit files
         const nameLower = entry.name.toLowerCase();
-        if (!nameLower.includes('texture') && !nameLower.includes('pasunit')) {
+        if (!nameLower.includes("texture") && !nameLower.includes("pasunit")) {
           const filename = entry.name;
-          
+
           files.push({
             filename,
             path: `/icons/itt/${filename}`,
@@ -39,7 +39,7 @@ async function findPngFiles(dir: string, baseDir: string, category: string): Pro
   } catch (err) {
     console.warn(`Error reading directory ${dir}:`, err);
   }
-  
+
   return files;
 }
 
@@ -48,12 +48,12 @@ async function findPngFiles(dir: string, baseDir: string, category: string): Pro
  */
 export default createGetHandler<IconFile[]>(
   async () => {
-    const iconsDir = join(process.cwd(), 'public', 'icons', 'itt');
+    const iconsDir = join(process.cwd(), "public", "icons", "itt");
     // All icons are now in a flat directory structure
     const allIcons: IconFile[] = [];
 
     try {
-      const icons = await findPngFiles(iconsDir, iconsDir, 'icons');
+      const icons = await findPngFiles(iconsDir, iconsDir, "icons");
       allIcons.push(...icons);
     } catch (err) {
       console.warn(`Could not read icons directory:`, err);
@@ -80,5 +80,3 @@ export default createGetHandler<IconFile[]>(
     },
   }
 );
-
-

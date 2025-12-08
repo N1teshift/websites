@@ -3,6 +3,7 @@
 Test specifications for custom React hooks.
 
 ### Game Hooks
+
 - [ ] `src/features/modules/games/hooks/useGames.ts`
   - Test fetches games on mount
   - Test applies filters
@@ -17,6 +18,7 @@ Test specifications for custom React hooks.
   - Test handles non-existent game
 
 ### Player Hooks
+
 - [ ] `src/features/modules/players/hooks/usePlayerStats.ts`
   - Test fetches player statistics
   - Test handles loading state
@@ -24,6 +26,7 @@ Test specifications for custom React hooks.
   - Test handles non-existent player
 
 ### Standings Hooks
+
 - [ ] `src/features/modules/standings/hooks/useStandings.ts`
   - Test fetches standings
   - Test applies filters
@@ -31,6 +34,7 @@ Test specifications for custom React hooks.
   - Test handles loading state
 
 ### Archive Hooks
+
 - [ ] `src/features/modules/archives/hooks/useArchiveBaseState.ts`
   - Test initializes state correctly
   - Test handles form field updates
@@ -59,6 +63,7 @@ Test specifications for custom React hooks.
   - Test handles loading/error states
 
 ### Blog Hooks
+
 - [ ] `src/features/modules/blog/hooks/useNewPostForm.ts`
   - Test initializes form state
   - Test handles field updates
@@ -72,24 +77,28 @@ Test specifications for custom React hooks.
   - Test handles submission
 
 ### Scheduled Games Hooks
+
 - [ ] `src/features/modules/scheduled-games/hooks/*`
   - Test fetches scheduled games
   - Test handles join/leave actions
   - Test handles replay upload
 
 ### Guides Hooks
+
 - [ ] `src/features/modules/guides/hooks/useItemsData.ts`
   - Test fetches items data
   - Test filters items
   - Test handles loading state
 
 ### Tools Hooks
+
 - [ ] `src/features/modules/tools/useIconMapperData.ts`
   - Test fetches icon data
   - Test handles mapping updates
   - Test handles export
 
 ### Shared Hooks
+
 - [ ] `src/features/shared/hooks/useFallbackTranslation.ts`
   - Test falls back to key when translation missing
   - Test uses translation when available
@@ -100,4 +109,3 @@ Test specifications for custom React hooks.
 - [Component Tests](./component-tests.md)
 - [Module Tests](./module-tests.md)
 - [Testing Guide](../testing-guide.md)
-

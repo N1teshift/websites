@@ -1,7 +1,7 @@
-import Image from 'next/image';
-import { useMemo, useState, useEffect } from 'react';
-import { getDefaultIconPath, ITTIconCategory, ITTIconState } from '../utils/iconUtils';
-import { resolveExplicitIcon } from '../utils/iconMap';
+import Image from "next/image";
+import { useMemo, useState, useEffect } from "react";
+import { getDefaultIconPath, ITTIconCategory, ITTIconState } from "../utils/iconUtils";
+import { resolveExplicitIcon } from "../utils/iconMap";
 
 type GuideIconProps = {
   category: ITTIconCategory;
@@ -15,18 +15,29 @@ type GuideIconProps = {
 // Helper to ensure we always have a valid icon src
 function ensureValidIconSrc(src: string | undefined | null): string {
   const defaultIcon = getDefaultIconPath();
-  if (!src || typeof src !== 'string' || src.trim() === '') {
+  if (!src || typeof src !== "string" || src.trim() === "") {
     return defaultIcon;
   }
   const trimmed = src.trim();
   // Ensure it's an absolute path (starts with /) or a valid URL
-  if (!trimmed.startsWith('/') && !trimmed.startsWith('http://') && !trimmed.startsWith('https://')) {
+  if (
+    !trimmed.startsWith("/") &&
+    !trimmed.startsWith("http://") &&
+    !trimmed.startsWith("https://")
+  ) {
     return defaultIcon;
   }
   return trimmed;
 }
 
-export default function GuideIcon({ category, name, size = 48, state: _state, className, src: srcOverride }: GuideIconProps) {
+export default function GuideIcon({
+  category,
+  name,
+  size = 48,
+  state: _state,
+  className,
+  src: srcOverride,
+}: GuideIconProps) {
   // Priority: 1. srcOverride, 2. explicit mapping, 3. default fallback
   // Always check for explicit mapping to determine fallback behavior
   const explicit = useMemo(() => resolveExplicitIcon(category, name), [category, name]);
@@ -40,13 +51,14 @@ export default function GuideIcon({ category, name, size = 48, state: _state, cl
   // Track if image failed to load, fallback to appropriate icon
   const [iconSrc, setIconSrc] = useState(() => ensureValidIconSrc(initialIconSrc));
   const [hasErrored, setHasErrored] = useState(false);
-  
+
   // Fallback icon for when a mapping exists but the file is missing
-  const MAPPING_FALLBACK_ICON = '/icons/itt/btnselectherooff.png';
+  const MAPPING_FALLBACK_ICON = "/icons/itt/btnselectherooff.png";
   const NO_MAPPING_FALLBACK_ICON = getDefaultIconPath(); // btncancel.png
 
   // Determine if we have a mapping (either explicit or srcOverride indicates a mapping attempt)
-  const hasMapping = explicit !== null || (srcOverride !== undefined && srcOverride !== null && srcOverride !== '');
+  const hasMapping =
+    explicit !== null || (srcOverride !== undefined && srcOverride !== null && srcOverride !== "");
 
   // Reset error state when initialIconSrc changes
   useEffect(() => {
@@ -73,10 +85,10 @@ export default function GuideIcon({ category, name, size = 48, state: _state, cl
 
   // Ensure iconSrc is always valid before rendering
   const validIconSrc = ensureValidIconSrc(iconSrc);
-  
+
   // Use unoptimized for local icon files to avoid Next.js Image optimization API issues
   // when files are missing. Small icons (48x48) don't need optimization anyway.
-  const isLocalIcon = validIconSrc.startsWith('/icons/itt/');
+  const isLocalIcon = validIconSrc.startsWith("/icons/itt/");
 
   return (
     <Image
@@ -90,6 +102,3 @@ export default function GuideIcon({ category, name, size = 48, state: _state, cl
     />
   );
 }
-
-
-

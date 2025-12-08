@@ -7,6 +7,7 @@ This folder contains the second generation AI system for mathematical object gen
 ## Architecture
 
 The LangGraph system uses:
+
 - **StateGraph**: LangGraph workflow engine for state management
 - **Runnables**: LangChain runnables for type identification and settings extraction
 - **Nodes**: Graph nodes for identification, processing, and completion
@@ -51,4 +52,3 @@ This is the **active system** (USE_LANGGRAPH = true in `core/objectGeneration.ts
 ## Entry Point
 
 `invokeMathObjectGenerator(userPrompt: string)` - Called from `core/objectGeneration.ts`
-

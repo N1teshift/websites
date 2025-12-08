@@ -7,6 +7,7 @@ Class information endpoints.
 List all classes.
 
 **Response**:
+
 ```typescript
 {
   success: true;
@@ -19,12 +20,10 @@ List all classes.
 Get class details.
 
 **Response**:
+
 ```typescript
 {
   success: true;
   data: Class;
 }
 ```
-
-
-

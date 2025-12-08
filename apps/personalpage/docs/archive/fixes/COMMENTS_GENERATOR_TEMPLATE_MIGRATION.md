@@ -16,20 +16,24 @@ Added automatic migration in `useCommentTemplates.ts`:
 
 ```typescript
 // Migration: Ensure all default templates are present
-const storedIds = new Set(parsed.map(t => t.id));
-const missingTemplates = DEFAULT_TEMPLATES.filter(dt => !storedIds.has(dt.id));
+const storedIds = new Set(parsed.map((t) => t.id));
+const missingTemplates = DEFAULT_TEMPLATES.filter((dt) => !storedIds.has(dt.id));
 
 if (missingTemplates.length > 0) {
-    // Add missing templates from defaults
-    const migratedTemplates = [...parsed, ...missingTemplates];
-    setTemplates(migratedTemplates);
-    console.log(`✨ Added ${missingTemplates.length} new template(s):`, missingTemplates.map(t => t.name));
+  // Add missing templates from defaults
+  const migratedTemplates = [...parsed, ...missingTemplates];
+  setTemplates(migratedTemplates);
+  console.log(
+    `✨ Added ${missingTemplates.length} new template(s):`,
+    missingTemplates.map((t) => t.name)
+  );
 } else {
-    setTemplates(parsed);
+  setTemplates(parsed);
 }
 ```
 
 **How it works:**
+
 1. Load stored templates from localStorage
 2. Compare stored template IDs with `DEFAULT_TEMPLATES`
 3. Identify any missing templates
@@ -37,6 +41,7 @@ if (missingTemplates.length > 0) {
 5. Save the merged list back to localStorage
 
 **Benefits:**
+
 - Automatically adds new templates on page reload
 - Preserves user customizations to existing templates
 - No manual action required from users
@@ -59,6 +64,7 @@ Fixed React warning about missing `key` prop in list items.
 ```
 
 **Files Updated:**
+
 - `components/comments/MissingDataWarning.tsx`
 - `components/comments/GeneratedCommentsList.tsx`
 
@@ -79,6 +85,7 @@ Fixed React warning about missing `key` prop in list items.
 ## Testing
 
 After fix:
+
 1. ✅ Reload page - all 3 templates appear in dropdown
 2. ✅ Console shows migration message: "✨ Added 2 new template(s): English Diagnostic TEST 1, English Unit 1 TEST"
 3. ✅ No React warnings about missing keys
@@ -87,11 +94,13 @@ After fix:
 ## Future Considerations
 
 This migration pattern can be used whenever:
+
 - New default templates are added
 - Template structure changes
 - Need to update all users automatically
 
 The pattern is:
+
 1. Compare stored vs. default
 2. Merge missing items
 3. Log the migration
@@ -101,4 +110,3 @@ The pattern is:
 
 - Main refactor: `docs/refactoring/COMMENTS_GENERATOR_REFACTOR.md`
 - Refactor index: `docs/refactoring/REFACTOR_INDEX.md`
-

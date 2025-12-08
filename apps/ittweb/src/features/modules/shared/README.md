@@ -5,17 +5,20 @@
 ## Exports
 
 ### Components
+
 - `DateRangeFilter` - Date range selection component with presets
 - `PlayerFilter` - Player name input filter component
 - `TeamFormatFilter` - Team format selection (e.g., "4v4", "3v3") filter component
 - `GameFilters` - Combined filter component that includes all filter types
 
 ### Types
+
 - `DateRange` - Date range interface with start/end dates
 - `DateRangePreset` - Date range preset with label and date range
 - `FilterState` - URL query parameter filter state interface
 
 ### Utils
+
 - `formatDuration(seconds: number)` - Format seconds to human-readable duration string (e.g., "1h 30m 45s")
 - `formatEloChange(change: number)` - Format ELO change with sign (e.g., "+25.00", "-10.50")
 
@@ -49,7 +52,7 @@ import { DateRangeFilter, PlayerFilter, TeamFormatFilter } from '@/features/modu
 ### Using Utility Functions
 
 ```typescript
-import { formatDuration, formatEloChange } from '@/features/modules/shared/utils';
+import { formatDuration, formatEloChange } from "@/features/modules/shared/utils";
 
 // Format game duration
 const duration = formatDuration(3661); // "1h 1m 1s"
@@ -62,20 +65,20 @@ const loss = formatEloChange(-10.25); // "-10.25"
 ### Using Types
 
 ```typescript
-import type { DateRange, FilterState } from '@/features/modules/shared/types';
+import type { DateRange, FilterState } from "@/features/modules/shared/types";
 
 // Date range type
 const range: DateRange = {
-  start: new Date('2025-01-01'),
-  end: new Date('2025-01-31')
+  start: new Date("2025-01-01"),
+  end: new Date("2025-01-31"),
 };
 
 // Filter state for URL params
 const filters: FilterState = {
-  startDate: '2025-01-01',
-  endDate: '2025-01-31',
-  category: 'ranked',
-  player: 'PlayerName'
+  startDate: "2025-01-01",
+  endDate: "2025-01-31",
+  category: "ranked",
+  player: "PlayerName",
 };
 ```
 

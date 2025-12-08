@@ -1,17 +1,25 @@
-import type { NextApiRequest } from 'next';
-import { createPostHandler, requireSession, parseRequiredQueryString } from '@/lib/api-wrapper';
-import { getGameById, updateEloScores } from '@/features/modules/game-management/games/lib/gameService';
-import { parseReplayFile } from '@/features/modules/game-management/lib/mechanics';
-import { createComponentLogger } from '@websites/infrastructure/logging';
-import { getFirestoreAdmin, getAdminTimestamp, getStorageAdmin, getStorageBucketName } from '@websites/infrastructure/firebase';
-import { timestampToIso, removeUndefined } from '@websites/infrastructure/utils';
-import type { CreateCompletedGame } from '@/features/modules/game-management/games/types';
-import { IncomingForm, Fields, Files, File as FormidableFile } from 'formidable';
-import { promises as fs } from 'fs';
-import os from 'os';
-import { randomUUID } from 'crypto';
+import type { NextApiRequest } from "next";
+import { createPostHandler, requireSession, parseRequiredQueryString } from "@/lib/api-wrapper";
+import {
+  getGameById,
+  updateEloScores,
+} from "@/features/modules/game-management/games/lib/gameService";
+import { parseReplayFile } from "@/features/modules/game-management/lib/mechanics";
+import { createComponentLogger } from "@websites/infrastructure/logging";
+import {
+  getFirestoreAdmin,
+  getAdminTimestamp,
+  getStorageAdmin,
+  getStorageBucketName,
+} from "@websites/infrastructure/firebase";
+import { timestampToIso, removeUndefined } from "@websites/infrastructure/utils";
+import type { CreateCompletedGame } from "@/features/modules/game-management/games/types";
+import { IncomingForm, Fields, Files, File as FormidableFile } from "formidable";
+import { promises as fs } from "fs";
+import os from "os";
+import { randomUUID } from "crypto";
 
-const logger = createComponentLogger('api/games/[id]/upload-replay');
+const logger = createComponentLogger("api/games/[id]/upload-replay");
 
 // Disable body parsing, we'll handle it with formidable
 export const config = {
@@ -27,17 +35,17 @@ export default createPostHandler<{ gameId: string; message: string }>(
   async (req: NextApiRequest, res, context) => {
     // Session is guaranteed due to requireAuth: true
     const session = requireSession(context);
-    const gameId = parseRequiredQueryString(req, 'id');
+    const gameId = parseRequiredQueryString(req, "id");
 
     // Get the game
     const game = await getGameById(gameId);
     if (!game) {
-      throw new Error('Game not found');
+      throw new Error("Game not found");
     }
 
     // Check if game is scheduled
-    if (game.gameState !== 'scheduled') {
-      throw new Error('Can only upload replay for scheduled games');
+    if (game.gameState !== "scheduled") {
+      throw new Error("Can only upload replay for scheduled games");
     }
 
     // Parse form data (replay file + optional game data)
@@ -48,24 +56,26 @@ export default createPostHandler<{ gameId: string; message: string }>(
       multiples: false,
     });
 
-    const { fields, files } = await new Promise<{ fields: Fields; files: Files }>((resolve, reject) => {
-      form.parse(req, (err, fieldsResult, filesResult) => {
-        if (err) {
-          reject(err);
-          return;
-        }
-        resolve({ fields: fieldsResult, files: filesResult });
-      });
-    });
+    const { fields, files } = await new Promise<{ fields: Fields; files: Files }>(
+      (resolve, reject) => {
+        form.parse(req, (err, fieldsResult, filesResult) => {
+          if (err) {
+            reject(err);
+            return;
+          }
+          resolve({ fields: fieldsResult, files: filesResult });
+        });
+      }
+    );
 
     const replayFileField = Array.isArray(files.replay) ? files.replay[0] : files.replay;
     if (!replayFileField) {
-      throw new Error('Replay file is required (field name: replay)');
+      throw new Error("Replay file is required (field name: replay)");
     }
 
     const replayFile = replayFileField as FormidableFile;
     const fileBuffer = await fs.readFile(replayFile.filepath);
-    const originalName = replayFile.originalFilename || 'replay.w3g';
+    const originalName = replayFile.originalFilename || "replay.w3g";
 
     // Upload replay to Firebase Storage
     const adminDb = getFirestoreAdmin();
@@ -80,7 +90,7 @@ export default createPostHandler<{ gameId: string; message: string }>(
 
     await bucket.file(filePath).save(fileBuffer, {
       metadata: {
-        contentType: replayFile.mimetype || 'application/octet-stream',
+        contentType: replayFile.mimetype || "application/octet-stream",
         metadata: {
           firebaseStorageDownloadTokens: token,
         },
@@ -88,19 +98,18 @@ export default createPostHandler<{ gameId: string; message: string }>(
     });
 
     // Remove temporary file
-    await fs.unlink(replayFile.filepath).catch(() => { });
+    await fs.unlink(replayFile.filepath).catch(() => {});
 
     const replayUrl = `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${encodeURIComponent(filePath)}?alt=media&token=${token}`;
 
     // Parse replay file
-    const scheduledCategory = game.teamSize === 'custom'
-      ? game.customTeamSize || undefined
-      : game.teamSize;
+    const scheduledCategory =
+      game.teamSize === "custom" ? game.customTeamSize || undefined : game.teamSize;
 
     const scheduledDateTimeString = game.scheduledDateTime
-      ? (typeof game.scheduledDateTime === 'string'
+      ? typeof game.scheduledDateTime === "string"
         ? game.scheduledDateTime
-        : timestampToIso(game.scheduledDateTime))
+        : timestampToIso(game.scheduledDateTime)
       : new Date().toISOString();
 
     let parsedGameData: CreateCompletedGame | null = null;
@@ -129,7 +138,7 @@ export default createPostHandler<{ gameId: string; message: string }>(
       };
     } catch (parserError) {
       const parseErr = parserError as Error;
-      logger.warn('Replay parsing failed', {
+      logger.warn("Replay parsing failed", {
         gameId,
         error: parseErr.message,
       });
@@ -144,7 +153,7 @@ export default createPostHandler<{ gameId: string; message: string }>(
             datetime: manualData.datetime || scheduledDateTimeString,
             duration: manualData.duration || game.gameLength || 1800,
             gamename: manualData.gamename || `Game ${game.gameId}`,
-            map: manualData.map || 'Unknown',
+            map: manualData.map || "Unknown",
             creatorName: game.creatorName,
             ownername: manualData.ownername || game.creatorName,
             category: manualData.category || scheduledCategory,
@@ -155,28 +164,30 @@ export default createPostHandler<{ gameId: string; message: string }>(
             verified: false,
           };
         } catch {
-          throw new Error('Replay parsing failed and invalid gameData JSON provided. Please provide valid JSON string.');
+          throw new Error(
+            "Replay parsing failed and invalid gameData JSON provided. Please provide valid JSON string."
+          );
         }
       } else {
-        throw new Error('Replay parsing failed. Please supply gameData JSON or try again later.');
+        throw new Error("Replay parsing failed. Please supply gameData JSON or try again later.");
       }
     }
 
     if (!parsedGameData || !parsedGameData.players || parsedGameData.players.length < 2) {
-      throw new Error('Invalid game data: at least 2 players are required');
+      throw new Error("Invalid game data: at least 2 players are required");
     }
 
     // Update the game document to convert from scheduled to completed
     // Keep participants array, add completed game fields, add players subcollection
-    const gameRef = adminDb.collection('games').doc(gameId);
+    const gameRef = adminDb.collection("games").doc(gameId);
 
     // Extract player names for quick access
-    const playerNames = parsedGameData.players.map(p => p.name);
+    const playerNames = parsedGameData.players.map((p) => p.name);
     const playerCount = parsedGameData.players.length;
 
     // Update game document
     const updateData = {
-      gameState: 'completed' as const,
+      gameState: "completed" as const,
       datetime: adminTimestamp.fromDate(new Date(parsedGameData.datetime)),
       duration: parsedGameData.duration,
       gamename: parsedGameData.gamename,
@@ -194,7 +205,7 @@ export default createPostHandler<{ gameId: string; message: string }>(
       // participants array is already in the document
     };
 
-    logger.debug('Updating game to completed state', {
+    logger.debug("Updating game to completed state", {
       gameId,
       updateData: {
         ...updateData,
@@ -204,31 +215,33 @@ export default createPostHandler<{ gameId: string; message: string }>(
 
     try {
       await gameRef.update(updateData);
-      logger.info('Game state updated to completed', { gameId });
+      logger.info("Game state updated to completed", { gameId });
 
       // Verify the update succeeded
       const updatedGameSnap = await gameRef.get();
       if (!updatedGameSnap.exists) {
-        throw new Error('Game document does not exist after update');
+        throw new Error("Game document does not exist after update");
       }
       const updatedGameData = updatedGameSnap.data();
-      if (updatedGameData?.gameState !== 'completed') {
-        logger.error('Game state update verification failed', undefined, {
+      if (updatedGameData?.gameState !== "completed") {
+        logger.error("Game state update verification failed", undefined, {
           gameId,
-          expected: 'completed',
+          expected: "completed",
           actual: updatedGameData?.gameState,
           updateData: {
             gameState: updateData.gameState,
           },
         });
-        throw new Error(`Game state update failed: expected 'completed', got '${updatedGameData?.gameState}'`);
+        throw new Error(
+          `Game state update failed: expected 'completed', got '${updatedGameData?.gameState}'`
+        );
       }
-      logger.info('Game state update verified', { gameId, gameState: updatedGameData.gameState });
+      logger.info("Game state update verified", { gameId, gameState: updatedGameData.gameState });
     } catch (updateError) {
       const err = updateError as Error;
-      logger.error('Failed to update game state to completed', err, {
-        component: 'api/games/[id]/upload-replay',
-        operation: 'updateGameState',
+      logger.error("Failed to update game state to completed", err, {
+        component: "api/games/[id]/upload-replay",
+        operation: "updateGameState",
         gameId,
         updateData: {
           gameState: updateData.gameState,
@@ -239,7 +252,7 @@ export default createPostHandler<{ gameId: string; message: string }>(
     }
 
     // Add players to subcollection (clear existing players first if any)
-    const playersCollection = gameRef.collection('players');
+    const playersCollection = gameRef.collection("players");
     const existingPlayersSnapshot = await playersCollection.get();
     const deletePromises = existingPlayersSnapshot.docs.map((doc) => doc.ref.delete());
     await Promise.all(deletePromises);
@@ -283,23 +296,23 @@ export default createPostHandler<{ gameId: string; message: string }>(
     // Update ELO scores for completed game
     try {
       await updateEloScores(gameId);
-      logger.info('ELO scores updated', { gameId });
+      logger.info("ELO scores updated", { gameId });
     } catch (eloError) {
       // Log but don't fail the request if ELO update fails
-      logger.warn('Failed to update ELO scores', {
+      logger.warn("Failed to update ELO scores", {
         gameId,
         error: eloError instanceof Error ? eloError.message : String(eloError),
       });
     }
 
-    logger.info('Replay uploaded and game converted to completed', {
+    logger.info("Replay uploaded and game converted to completed", {
       gameId,
-      discordId: session.discordId
+      discordId: session.discordId,
     });
 
     return {
       gameId,
-      message: 'Replay uploaded and game completed successfully'
+      message: "Replay uploaded and game completed successfully",
     };
   },
   {
@@ -307,4 +320,3 @@ export default createPostHandler<{ gameId: string; message: string }>(
     logRequests: true,
   }
 );
-

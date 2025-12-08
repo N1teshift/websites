@@ -11,9 +11,7 @@ import type {
   ReplayDecodeResult,
 } from "./types.js";
 
-const resolveSpec = async (
-  options?: DecodeOrdersOptions
-): Promise<MatchMetadataSpec> => {
+const resolveSpec = async (options?: DecodeOrdersOptions): Promise<MatchMetadataSpec> => {
   if (options?.spec) {
     return options.spec;
   }
@@ -58,4 +56,3 @@ export const decodeOrders = async (
   const metadata = parsePayload(payload, spec);
   return { payload, metadata, spec };
 };
-

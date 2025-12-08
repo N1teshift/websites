@@ -1,8 +1,8 @@
-import Link from 'next/link';
-import React, { useRef } from 'react';
-import { ColoredText } from './ColoredText';
+import Link from "next/link";
+import React, { useRef } from "react";
+import { ColoredText } from "./ColoredText";
 
-type TagVariant = 'amber' | 'blue' | 'green' | 'purple' | 'red' | 'gray';
+type TagVariant = "amber" | "blue" | "green" | "purple" | "red" | "gray";
 
 interface TagBadge {
   label: string;
@@ -28,33 +28,25 @@ export interface GuideCardProps {
 
 function getVariantClasses(variant: TagVariant | undefined): string {
   switch (variant) {
-    case 'blue':
-      return 'bg-blue-500/20 text-blue-200';
-    case 'green':
-      return 'bg-green-500/20 text-green-200';
-    case 'purple':
-      return 'bg-purple-500/20 text-purple-200';
-    case 'red':
-      return 'bg-red-500/20 text-red-200';
-    case 'gray':
-      return 'bg-gray-500/20 text-gray-200';
-    case 'amber':
+    case "blue":
+      return "bg-blue-500/20 text-blue-200";
+    case "green":
+      return "bg-green-500/20 text-green-200";
+    case "purple":
+      return "bg-purple-500/20 text-purple-200";
+    case "red":
+      return "bg-red-500/20 text-red-200";
+    case "gray":
+      return "bg-gray-500/20 text-gray-200";
+    case "amber":
     default:
-      return 'bg-amber-500/20 text-amber-200';
+      return "bg-amber-500/20 text-amber-200";
   }
 }
 
 export default function GuideCard(props: GuideCardProps) {
-  const {
-    href,
-    title,
-    icon,
-    description,
-    primaryTagGroup,
-    secondaryTagGroup,
-    footer,
-    className,
-  } = props;
+  const { href, title, icon, description, primaryTagGroup, secondaryTagGroup, footer, className } =
+    props;
 
   const mouseDownPosRef = useRef<{ x: number; y: number } | null>(null);
   const isDraggingRef = useRef(false);
@@ -66,13 +58,15 @@ export default function GuideCard(props: GuideCardProps) {
       e.preventDefault();
       return;
     }
-    
+
     // Prevent navigation if mouse was dragged (not a simple click)
     // Also check if mouse position changed significantly
-    if (isDraggingRef.current || (mouseDownPosRef.current && (
-      Math.abs(e.clientX - mouseDownPosRef.current.x) > 3 ||
-      Math.abs(e.clientY - mouseDownPosRef.current.y) > 3
-    ))) {
+    if (
+      isDraggingRef.current ||
+      (mouseDownPosRef.current &&
+        (Math.abs(e.clientX - mouseDownPosRef.current.x) > 3 ||
+          Math.abs(e.clientY - mouseDownPosRef.current.y) > 3))
+    ) {
       e.preventDefault();
       return;
     }
@@ -105,8 +99,8 @@ export default function GuideCard(props: GuideCardProps) {
   };
 
   return (
-    <Link 
-      href={href} 
+    <Link
+      href={href}
       className="group block focus:outline-none focus:ring-2 focus:ring-amber-400 rounded-lg"
       onClick={handleLinkClick}
       onMouseDown={handleMouseDown}
@@ -116,11 +110,9 @@ export default function GuideCard(props: GuideCardProps) {
       draggable={false}
     >
       <div
-        className={
-          `bg-black/40 backdrop-blur-sm border border-amber-500/30 rounded-lg p-4 hover:border-amber-400/50 transition-colors cursor-pointer ${
-            className || ''
-          }`
-        }
+        className={`bg-black/40 backdrop-blur-sm border border-amber-500/30 rounded-lg p-4 hover:border-amber-400/50 transition-colors cursor-pointer ${
+          className || ""
+        }`}
       >
         <div className="flex items-start justify-between mb-2">
           <h3 className="font-medieval-brand text-lg text-amber-400 group-hover:text-amber-300 select-text">
@@ -131,22 +123,23 @@ export default function GuideCard(props: GuideCardProps) {
 
         {description ? (
           <div className="text-gray-300 text-sm mb-3 leading-relaxed select-text">
-            {typeof description === 'string' ? (
-              <ColoredText text={description} />
-            ) : (
-              description
-            )}
+            {typeof description === "string" ? <ColoredText text={description} /> : description}
           </div>
         ) : null}
 
         {primaryTagGroup && primaryTagGroup.badges?.length > 0 && (
           <div className="mb-3">
             {primaryTagGroup.label ? (
-              <h4 className="text-amber-300 text-sm font-semibold mb-1 select-text">{primaryTagGroup.label}</h4>
+              <h4 className="text-amber-300 text-sm font-semibold mb-1 select-text">
+                {primaryTagGroup.label}
+              </h4>
             ) : null}
             <div className="flex flex-wrap gap-1">
               {primaryTagGroup.badges.map((b, i) => (
-                <span key={i} className={`text-xs px-2 py-1 rounded select-text ${getVariantClasses(b.variant)}`}>
+                <span
+                  key={i}
+                  className={`text-xs px-2 py-1 rounded select-text ${getVariantClasses(b.variant)}`}
+                >
                   {b.icon ? <span className="mr-1 inline-flex items-center">{b.icon}</span> : null}
                   {b.label}
                 </span>
@@ -158,11 +151,16 @@ export default function GuideCard(props: GuideCardProps) {
         {secondaryTagGroup && secondaryTagGroup.badges?.length > 0 && (
           <div className="mb-3">
             {secondaryTagGroup.label ? (
-              <h4 className="text-amber-300 text-sm font-semibold mb-1 select-text">{secondaryTagGroup.label}</h4>
+              <h4 className="text-amber-300 text-sm font-semibold mb-1 select-text">
+                {secondaryTagGroup.label}
+              </h4>
             ) : null}
             <div className="flex flex-wrap gap-1">
               {secondaryTagGroup.badges.map((b, i) => (
-                <span key={i} className={`text-xs px-2 py-1 rounded select-text ${getVariantClasses(b.variant)}`}>
+                <span
+                  key={i}
+                  className={`text-xs px-2 py-1 rounded select-text ${getVariantClasses(b.variant)}`}
+                >
                   {b.icon ? <span className="mr-1 inline-flex items-center">{b.icon}</span> : null}
                   {b.label}
                 </span>
@@ -176,6 +174,3 @@ export default function GuideCard(props: GuideCardProps) {
     </Link>
   );
 }
-
-
-

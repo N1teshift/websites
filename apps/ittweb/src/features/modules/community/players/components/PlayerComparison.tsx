@@ -1,27 +1,24 @@
-import React, { useEffect, useState, Suspense } from 'react';
-import dynamic from 'next/dynamic';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { PageHero } from '@/features/infrastructure/components';
-import { Card } from '@/features/infrastructure/components';
-import { EmptyState } from '@/features/infrastructure/components';
-import type { PlayerComparison as PlayerComparisonType, CategoryStats } from '../types';
+import React, { useEffect, useState, Suspense } from "react";
+import dynamic from "next/dynamic";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { PageHero } from "@/features/infrastructure/components";
+import { Card } from "@/features/infrastructure/components";
+import { EmptyState } from "@/features/infrastructure/components";
+import type { PlayerComparison as PlayerComparisonType, CategoryStats } from "../types";
 
 // Lazy load Recharts components to reduce initial bundle size
-const ELOComparisonChart = dynamic(
-  () => import('./ELOComparisonChart'),
-  {
-    loading: () => (
-      <Card variant="medieval" className="p-8">
-        <div className="animate-pulse space-y-4">
-          <div className="h-4 bg-amber-500/20 rounded w-1/4"></div>
-          <div className="h-64 bg-amber-500/10 rounded"></div>
-        </div>
-      </Card>
-    ),
-    ssr: false,
-  }
-);
+const ELOComparisonChart = dynamic(() => import("./ELOComparisonChart"), {
+  loading: () => (
+    <Card variant="medieval" className="p-8">
+      <div className="animate-pulse space-y-4">
+        <div className="h-4 bg-amber-500/20 rounded w-1/4"></div>
+        <div className="h-64 bg-amber-500/10 rounded"></div>
+      </div>
+    </Card>
+  ),
+  ssr: false,
+});
 
 interface PlayerComparisonProps {
   pageNamespaces: string[];
@@ -32,7 +29,7 @@ export function PlayerComparison({ pageNamespaces: _pageNamespaces }: PlayerComp
   const [comparison, setComparison] = useState<PlayerComparisonType | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [playerNames, setPlayerNames] = useState<string>('');
+  const [playerNames, setPlayerNames] = useState<string>("");
 
   useEffect(() => {
     const namesParam = router.query.names as string;
@@ -50,13 +47,13 @@ export function PlayerComparison({ pageNamespaces: _pageNamespaces }: PlayerComp
       setError(null);
       const response = await fetch(`/api/players/compare?names=${encodeURIComponent(names)}`);
       if (!response.ok) {
-        throw new Error('Failed to load comparison');
+        throw new Error("Failed to load comparison");
       }
       const result = await response.json();
       const comparisonData = result.data || result;
       setComparison(comparisonData);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load comparison');
+      setError(err instanceof Error ? err.message : "Failed to load comparison");
     } finally {
       setLoading(false);
     }
@@ -72,7 +69,7 @@ export function PlayerComparison({ pageNamespaces: _pageNamespaces }: PlayerComp
   const getBestCategory = (player: { categories: { [key: string]: CategoryStats } }) => {
     const categories = Object.entries(player.categories || {});
     if (categories.length === 0) return null;
-    
+
     return categories.reduce<[string, CategoryStats] | null>((best, [name, stats]) => {
       const bestScore = best ? best[1].score : 0;
       return stats.score > bestScore ? [name, stats] : best;
@@ -152,9 +149,7 @@ export function PlayerComparison({ pageNamespaces: _pageNamespaces }: PlayerComp
       <div className="min-h-[calc(100vh-8rem)]">
         <PageHero title="Compare Players" description="Compare statistics between players" />
         <div className="container mx-auto px-4 py-8">
-          <EmptyState 
-            message="No players found to compare."
-          />
+          <EmptyState message="No players found to compare." />
         </div>
       </div>
     );
@@ -163,25 +158,28 @@ export function PlayerComparison({ pageNamespaces: _pageNamespaces }: PlayerComp
   return (
     <div className="min-h-[calc(100vh-8rem)]">
       <PageHero title="Compare Players" description="Compare statistics between players" />
-      
+
       <div className="container mx-auto px-4 py-8 space-y-6">
         {/* Player Stats Comparison */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {players.map((player) => {
             const bestCategory = getBestCategory(player);
             const bestStats = bestCategory ? bestCategory[1] : null;
-            
+
             return (
               <Link key={player.id} href={`/players/${encodeURIComponent(player.name)}`}>
-                <Card variant="medieval" className="p-6 hover:border-amber-500/50 transition-colors cursor-pointer h-full">
+                <Card
+                  variant="medieval"
+                  className="p-6 hover:border-amber-500/50 transition-colors cursor-pointer h-full"
+                >
                   <h3 className="text-xl font-semibold text-amber-400 mb-3">{player.name}</h3>
-                  
+
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
                       <span className="text-gray-500">Total Games:</span>
                       <span className="text-amber-300 font-semibold">{player.totalGames}</span>
                     </div>
-                    
+
                     {bestStats && bestCategory && (
                       <>
                         <div className="flex justify-between">
@@ -190,21 +188,23 @@ export function PlayerComparison({ pageNamespaces: _pageNamespaces }: PlayerComp
                         </div>
                         <div className="flex justify-between">
                           <span className="text-gray-500">ELO:</span>
-                          <span className="text-amber-400 font-semibold">{Math.round(bestStats.score)}</span>
+                          <span className="text-amber-400 font-semibold">
+                            {Math.round(bestStats.score)}
+                          </span>
                         </div>
                         <div className="flex justify-between">
                           <span className="text-gray-500">Win Rate:</span>
                           <span className="text-green-400">
                             {bestStats.games > 0
                               ? `${((bestStats.wins / bestStats.games) * 100).toFixed(1)}%`
-                              : '0%'}
+                              : "0%"}
                           </span>
                         </div>
                         <div className="flex justify-between">
                           <span className="text-gray-500">Record:</span>
                           <span className="text-white">
                             {bestStats.wins}W - {bestStats.losses}L
-                            {bestStats.draws > 0 ? ` - ${bestStats.draws}D` : ''}
+                            {bestStats.draws > 0 ? ` - ${bestStats.draws}D` : ""}
                           </span>
                         </div>
                       </>
@@ -235,7 +235,8 @@ export function PlayerComparison({ pageNamespaces: _pageNamespaces }: PlayerComp
                         </div>
                         {record.wins + record.losses > 0 && (
                           <div className="text-xs text-gray-400">
-                            Win Rate: {((record.wins / (record.wins + record.losses)) * 100).toFixed(1)}%
+                            Win Rate:{" "}
+                            {((record.wins / (record.wins + record.losses)) * 100).toFixed(1)}%
                           </div>
                         )}
                       </div>
@@ -259,15 +260,10 @@ export function PlayerComparison({ pageNamespaces: _pageNamespaces }: PlayerComp
               </Card>
             }
           >
-            <ELOComparisonChart
-              eloComparison={eloComparison}
-              players={players}
-            />
+            <ELOComparisonChart eloComparison={eloComparison} players={players} />
           </Suspense>
         )}
       </div>
     </div>
   );
 }
-
-

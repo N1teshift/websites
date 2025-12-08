@@ -1,9 +1,9 @@
-import { Timestamp } from 'firebase/firestore';
+import { Timestamp } from "firebase/firestore";
 
 /**
  * Unified content type for posts and memories (non-game content)
  */
-export type EntryContentType = 'post' | 'memory';
+export type EntryContentType = "post" | "memory";
 
 /**
  * Entry - unified Post + Archive (non-game)
@@ -19,13 +19,13 @@ export interface Entry {
   createdAt: Timestamp | string;
   updatedAt: Timestamp | string;
   submittedAt?: Timestamp | string;
-  
+
   // Memory-specific fields (optional, only for contentType === 'memory')
   images?: string[];
   videoUrl?: string;
   twitchClipUrl?: string;
-  sectionOrder?: Array<'images' | 'video' | 'twitch' | 'text'>;
-  
+  sectionOrder?: Array<"images" | "video" | "twitch" | "text">;
+
   // Soft delete
   isDeleted?: boolean;
   deletedAt?: Timestamp | string | null;
@@ -42,12 +42,12 @@ export interface CreateEntry {
   creatorName: string;
   createdByDiscordId?: string | null;
   submittedAt?: Timestamp | string;
-  
+
   // Memory-specific fields (optional)
   images?: string[];
   videoUrl?: string;
   twitchClipUrl?: string;
-  sectionOrder?: Array<'images' | 'video' | 'twitch' | 'text'>;
+  sectionOrder?: Array<"images" | "video" | "twitch" | "text">;
 }
 
 /**
@@ -56,7 +56,3 @@ export interface CreateEntry {
 export interface UpdateEntry extends Partial<CreateEntry> {
   updatedAt?: Timestamp | string;
 }
-
-
-
-

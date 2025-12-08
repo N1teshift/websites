@@ -5,14 +5,17 @@
 ## Exports
 
 ### Components
+
 - `ClassesPage` - Main classes overview page listing all classes
 - `ClassDetailPage` - Individual class detail page with statistics and information
 
 ### Hooks
+
 - `useClassesData` - SWR-based hook for fetching classes data with caching
 - `useClassData` - SWR-based hook for fetching individual class data with caching
 
 ### Types
+
 - `ClassStats` - Class statistics and metadata (imported from analytics module)
 
 ## Usage
@@ -32,13 +35,13 @@ import { ClassesPage, ClassDetailPage } from '@/features/modules/classes/compone
 ### Using Data Hooks
 
 ```typescript
-import { useClassesData, useClassData } from '@/features/modules/classes/hooks';
+import { useClassesData, useClassData } from "@/features/modules/classes/hooks";
 
 // Fetch all classes with caching
 const { classes, loading, error } = useClassesData();
 
 // Fetch specific class data with caching
-const { classData, loading, error } = useClassData('mage');
+const { classData, loading, error } = useClassData("mage");
 ```
 
 ## API Routes
@@ -51,5 +54,3 @@ const { classData, loading, error } = useClassData('mage');
 - [Guides Module](./guides/README.md) - Class data source and game mechanics
 - [Analytics Module](./analytics/README.md) - Class statistics and charts
 - [Classes Data](../../guides/data/units/classes.ts) - Raw class data definitions
-
-

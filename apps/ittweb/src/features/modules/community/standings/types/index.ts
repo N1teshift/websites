@@ -1,4 +1,4 @@
-import { GameCategory } from '../../../game-management/games/types';
+import { GameCategory } from "../../../game-management/games/types";
 
 /**
  * Standings entry
@@ -48,8 +48,12 @@ export interface PlayerCategoryStats {
   score: number; // Current ELO
   games: number; // wins + losses + draws
   winRate: number; // Computed: (wins / games) * 100
-  lastPlayed?: string | import('firebase/firestore').Timestamp | import('firebase-admin/firestore').Timestamp;
-  updatedAt: string | import('firebase/firestore').Timestamp | import('firebase-admin/firestore').Timestamp;
+  lastPlayed?:
+    | string
+    | import("firebase/firestore").Timestamp
+    | import("firebase-admin/firestore").Timestamp;
+  updatedAt:
+    | string
+    | import("firebase/firestore").Timestamp
+    | import("firebase-admin/firestore").Timestamp;
 }
-
-

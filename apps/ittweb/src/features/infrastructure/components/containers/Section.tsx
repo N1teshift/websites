@@ -1,13 +1,13 @@
-import React from 'react';
-import { cn } from '@websites/infrastructure/utils';
+import React from "react";
+import { cn } from "@websites/infrastructure/utils";
 
 interface SectionProps extends React.HTMLAttributes<HTMLElement> {
-  variant?: 'default' | 'medieval' | 'glass' | 'minimal';
-  as?: 'section' | 'div' | 'article';
+  variant?: "default" | "medieval" | "glass" | "minimal";
+  as?: "section" | "div" | "article";
 }
 
 export const Section = React.forwardRef<HTMLElement, SectionProps>(
-  ({ className, variant = 'default', as: Component = 'section', ...props }, ref) => {
+  ({ className, variant = "default", as: Component = "section", ...props }, ref) => {
     const variants = {
       default: "bg-white rounded-lg p-6",
       medieval: "section-medieval",
@@ -18,17 +18,10 @@ export const Section = React.forwardRef<HTMLElement, SectionProps>(
     // Type assertion needed for polymorphic component
     const ComponentWithRef = Component as React.ElementType;
 
-    return (
-      <ComponentWithRef
-        ref={ref}
-        className={cn(variants[variant], className)}
-        {...props}
-      />
-    );
+    return <ComponentWithRef ref={ref} className={cn(variants[variant], className)} {...props} />;
   }
 );
 
 Section.displayName = "Section";
 
 export default Section;
-

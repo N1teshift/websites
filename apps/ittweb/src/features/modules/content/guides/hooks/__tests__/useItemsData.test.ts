@@ -1,11 +1,11 @@
-import { act, renderHook, waitFor } from '@testing-library/react';
-import { useItemsData } from '../useItemsData';
-import type { ItemData } from '@/types/items';
+import { act, renderHook, waitFor } from "@testing-library/react";
+import { useItemsData } from "../useItemsData";
+import type { ItemData } from "@/types/items";
 
-describe('useItemsData', () => {
+describe("useItemsData", () => {
   const mockItems: ItemData[] = [
-    { id: 'item1', name: 'Item 1', category: 'weapons', description: 'Test item 1' },
-    { id: 'item2', name: 'Item 2', category: 'buildings', description: 'Test item 2' },
+    { id: "item1", name: "Item 1", category: "weapons", description: "Test item 1" },
+    { id: "item2", name: "Item 2", category: "buildings", description: "Test item 2" },
   ];
 
   const mockApiResponse = {
@@ -29,8 +29,8 @@ describe('useItemsData', () => {
     jest.restoreAllMocks();
   });
 
-  describe('returns expected structure', () => {
-    it('should return items, meta, isLoading, error, and refetch', () => {
+  describe("returns expected structure", () => {
+    it("should return items, meta, isLoading, error, and refetch", () => {
       // Arrange
       const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
       mockFetch.mockResolvedValueOnce({
@@ -42,18 +42,18 @@ describe('useItemsData', () => {
       const { result } = renderHook(() => useItemsData());
 
       // Assert
-      expect(result.current).toHaveProperty('items');
-      expect(result.current).toHaveProperty('meta');
-      expect(result.current).toHaveProperty('isLoading');
-      expect(result.current).toHaveProperty('error');
-      expect(result.current).toHaveProperty('refetch');
-      expect(typeof result.current.refetch).toBe('function');
+      expect(result.current).toHaveProperty("items");
+      expect(result.current).toHaveProperty("meta");
+      expect(result.current).toHaveProperty("isLoading");
+      expect(result.current).toHaveProperty("error");
+      expect(result.current).toHaveProperty("refetch");
+      expect(typeof result.current.refetch).toBe("function");
       expect(Array.isArray(result.current.items)).toBe(true);
     });
   });
 
-  describe('refetch function', () => {
-    it('should allow manual refetch', async () => {
+  describe("refetch function", () => {
+    it("should allow manual refetch", async () => {
       // Arrange
       const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
       mockFetch.mockResolvedValue({
@@ -79,7 +79,7 @@ describe('useItemsData', () => {
       expect(Array.isArray(result.current.items)).toBe(true);
     });
 
-    it('should handle errors during refetch', async () => {
+    it("should handle errors during refetch", async () => {
       // Arrange
       const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
       // First call might succeed (or use cache)
@@ -88,7 +88,7 @@ describe('useItemsData', () => {
         json: async () => mockApiResponse,
       } as Response);
       // Refetch call fails
-      const refetchError = new Error('Refetch error');
+      const refetchError = new Error("Refetch error");
       mockFetch.mockRejectedValueOnce(refetchError);
 
       // Act
@@ -106,19 +106,22 @@ describe('useItemsData', () => {
       });
 
       // Assert
-      await waitFor(() => {
-        expect(result.current.isLoading).toBe(false);
-        // Refetch should set error when it fails
-        if (result.current.error) {
-          expect(result.current.error).toBeInstanceOf(Error);
-          expect(result.current.error?.message).toBe('Refetch error');
-        }
-      }, { timeout: 3000 });
+      await waitFor(
+        () => {
+          expect(result.current.isLoading).toBe(false);
+          // Refetch should set error when it fails
+          if (result.current.error) {
+            expect(result.current.error).toBeInstanceOf(Error);
+            expect(result.current.error?.message).toBe("Refetch error");
+          }
+        },
+        { timeout: 3000 }
+      );
     });
   });
 
-  describe('handles loading state', () => {
-    it('should eventually set loading to false', async () => {
+  describe("handles loading state", () => {
+    it("should eventually set loading to false", async () => {
       // Arrange
       const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
       mockFetch.mockResolvedValueOnce({
@@ -135,4 +138,3 @@ describe('useItemsData', () => {
     });
   });
 });
-

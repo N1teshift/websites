@@ -1,7 +1,12 @@
 import React from "react";
 import BaseMathObjectSettingsContainer from "./BaseMathObjectSettingsContainer";
 import { Dropdown } from "@websites/ui";
-import { FunctionSettings, MathObjectContainerProps, FunctionName, functionNameOptions } from "@math/types/index";
+import {
+  FunctionSettings,
+  MathObjectContainerProps,
+  FunctionName,
+  functionNameOptions,
+} from "@math/types/index";
 
 /**
  * Container component for managing settings for a `Function`.
@@ -14,45 +19,42 @@ import { FunctionSettings, MathObjectContainerProps, FunctionName, functionNameO
  * - Provides a `Dropdown` to select the function name from `functionNameOptions`.
  */
 const FunctionSettingsContainer: React.FC<MathObjectContainerProps<FunctionSettings>> = ({
-    containerId,
-    settings,
-    updateSettings,
-    startIndex = 1,
-    showDescription = false,
-    //objectType = null,
+  containerId,
+  settings,
+  updateSettings,
+  startIndex = 1,
+  showDescription = false,
+  //objectType = null,
 }) => {
-    const handleVariableNameChange = (newFunctionName: string) => {
-        updateSettings({ ...settings, functionName: newFunctionName as FunctionName });
-    };
+  const handleVariableNameChange = (newFunctionName: string) => {
+    updateSettings({ ...settings, functionName: newFunctionName as FunctionName });
+  };
 
-    return (
-        <BaseMathObjectSettingsContainer
-            containerId={containerId}
-            settings={settings}
-            updateSettings={updateSettings}
-            startIndex={startIndex}
-            showDescription={showDescription}
-            objectType="function"
-        >
-            {(props) => (
-                <>
-                        <Dropdown
-                            label={"function_name"}
-                            options={functionNameOptions.map(option => ({
-                                label: option,
-                                value: option,
-                            }))}
-                            value={props.settings.functionName || "f"}
-                            onChange={handleVariableNameChange}
-                            labelPosition={"above"}
-                        />
-                </>
-            )}
-        </BaseMathObjectSettingsContainer>
-    );
+  return (
+    <BaseMathObjectSettingsContainer
+      containerId={containerId}
+      settings={settings}
+      updateSettings={updateSettings}
+      startIndex={startIndex}
+      showDescription={showDescription}
+      objectType="function"
+    >
+      {(props) => (
+        <>
+          <Dropdown
+            label={"function_name"}
+            options={functionNameOptions.map((option) => ({
+              label: option,
+              value: option,
+            }))}
+            value={props.settings.functionName || "f"}
+            onChange={handleVariableNameChange}
+            labelPosition={"above"}
+          />
+        </>
+      )}
+    </BaseMathObjectSettingsContainer>
+  );
 };
 
 export default FunctionSettingsContainer;
-
-
-

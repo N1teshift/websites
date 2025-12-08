@@ -1,18 +1,18 @@
 /**
  * Game Service - Update Operations (Server-Only)
- * 
+ *
  * Server-only functions for updating games.
  * These functions use Firebase Admin SDK and should only be used in API routes.
  */
 
-import { getFirestoreAdmin } from '@websites/infrastructure/firebase';
-import { logError } from '@websites/infrastructure/logging';
-import { removeUndefined, createTimestampFactoryAsync } from '@websites/infrastructure/utils';
-import { invalidateAnalyticsCache } from '@websites/infrastructure/cache/analyticsCache.server';
-import type { UpdateGame } from '../types';
-import { updateEloScores } from '@/features/modules/game-management/lib/mechanics';
+import { getFirestoreAdmin } from "@websites/infrastructure/firebase";
+import { logError } from "@websites/infrastructure/logging";
+import { removeUndefined, createTimestampFactoryAsync } from "@websites/infrastructure/utils";
+import { invalidateAnalyticsCache } from "@websites/infrastructure/cache/analyticsCache.server";
+import type { UpdateGame } from "../types";
+import { updateEloScores } from "@/features/modules/game-management/lib/mechanics";
 
-const GAMES_COLLECTION = 'games';
+const GAMES_COLLECTION = "games";
 
 /**
  * Update a game (Server-Only)
@@ -28,10 +28,13 @@ export async function updateGame(id: string, updates: UpdateGame): Promise<void>
     }
 
     const adminDb = getFirestoreAdmin();
-    await adminDb.collection(GAMES_COLLECTION).doc(id).update({
-      ...updateData,
-      updatedAt: timestampFactory.now(),
-    });
+    await adminDb
+      .collection(GAMES_COLLECTION)
+      .doc(id)
+      .update({
+        ...updateData,
+        updatedAt: timestampFactory.now(),
+      });
 
     // Recalculate ELO if game result changed
     if (cleanedUpdates.players) {
@@ -39,15 +42,14 @@ export async function updateGame(id: string, updates: UpdateGame): Promise<void>
     }
 
     // Invalidate analytics cache
-    invalidateAnalyticsCache().catch(() => { });
+    invalidateAnalyticsCache().catch(() => {});
   } catch (error) {
     const err = error as Error;
-    logError(err, 'Failed to update game', {
-      component: 'gameService',
-      operation: 'updateGame',
+    logError(err, "Failed to update game", {
+      component: "gameService",
+      operation: "updateGame",
       id,
     });
     throw err;
   }
 }
-

@@ -40,4 +40,3 @@ This document outlines all tests needed for the tools module.
   - **What**: Verify input validation works
   - **Expected**: Invalid inputs rejected with appropriate errors
   - **Edge cases**: Missing inputs, invalid types, constraint violations
-

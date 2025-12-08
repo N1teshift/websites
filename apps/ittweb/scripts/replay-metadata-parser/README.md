@@ -5,6 +5,7 @@
 The parser described here has been implemented under `scripts/replay-metadata-parser/`.
 
 ### Highlights
+
 - TypeScript CLI (`npm run replay-meta:decode`) and library (`decodeReplay`, `decodeOrders`).
 - Configurable spec loader with a default placeholder plus support for external JSON specs.
 - Replay reader built on `w3gjs` that extracts metadata order streams, decodes payloads, and validates checksums before emitting structured JSON.

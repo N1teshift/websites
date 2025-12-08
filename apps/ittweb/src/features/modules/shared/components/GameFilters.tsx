@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { DateRangeFilter } from './DateRangeFilter';
-import { PlayerFilter } from './PlayerFilter';
-import { TeamFormatFilter } from './TeamFormatFilter';
-import { Button } from '@/features/infrastructure/components';
-import { Card } from '@/features/infrastructure/components';
-import type { GameFilters } from '@/features/modules/game-management/games/types';
+import React, { useState } from "react";
+import { DateRangeFilter } from "./DateRangeFilter";
+import { PlayerFilter } from "./PlayerFilter";
+import { TeamFormatFilter } from "./TeamFormatFilter";
+import { Button } from "@/features/infrastructure/components";
+import { Card } from "@/features/infrastructure/components";
+import type { GameFilters } from "@/features/modules/game-management/games/types";
 
 interface GameFiltersProps {
   filters: GameFilters;
@@ -12,16 +12,12 @@ interface GameFiltersProps {
   onReset: () => void;
 }
 
-export function GameFiltersComponent({
-  filters,
-  onFiltersChange,
-  onReset,
-}: GameFiltersProps) {
+export function GameFiltersComponent({ filters, onFiltersChange, onReset }: GameFiltersProps) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   // Parse ally/enemy from comma-separated strings
-  const allies = filters.ally ? filters.ally.split(',').filter(Boolean) : [];
-  const enemies = filters.enemy ? filters.enemy.split(',').filter(Boolean) : [];
+  const allies = filters.ally ? filters.ally.split(",").filter(Boolean) : [];
+  const enemies = filters.enemy ? filters.enemy.split(",").filter(Boolean) : [];
 
   // Parse dates from ISO strings
   const startDate = filters.startDate ? new Date(filters.startDate) : null;
@@ -41,16 +37,16 @@ export function GameFiltersComponent({
   const handleDateRangeChange = (start: Date | null, end: Date | null) => {
     onFiltersChange({
       ...filters,
-      startDate: start ? start.toISOString().split('T')[0] : undefined,
-      endDate: end ? end.toISOString().split('T')[0] : undefined,
+      startDate: start ? start.toISOString().split("T")[0] : undefined,
+      endDate: end ? end.toISOString().split("T")[0] : undefined,
     });
   };
 
   const handlePlayerFilterChange = (newAllies: string[], newEnemies: string[]) => {
     onFiltersChange({
       ...filters,
-      ally: newAllies.length > 0 ? newAllies.join(',') : undefined,
-      enemy: newEnemies.length > 0 ? newEnemies.join(',') : undefined,
+      ally: newAllies.length > 0 ? newAllies.join(",") : undefined,
+      enemy: newEnemies.length > 0 ? newEnemies.join(",") : undefined,
     });
   };
 
@@ -76,11 +72,7 @@ export function GameFiltersComponent({
           </div>
           <div className="flex items-center gap-2">
             {activeFilterCount > 0 && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={onReset}
-              >
+              <Button variant="ghost" size="sm" onClick={onReset}>
                 Clear All
               </Button>
             )}
@@ -89,9 +81,9 @@ export function GameFiltersComponent({
               size="sm"
               onClick={() => setIsExpanded(!isExpanded)}
               aria-expanded={isExpanded}
-              aria-label={isExpanded ? 'Collapse filters' : 'Expand filters'}
+              aria-label={isExpanded ? "Collapse filters" : "Expand filters"}
             >
-              {isExpanded ? '▼' : '▶'}
+              {isExpanded ? "▼" : "▶"}
             </Button>
           </div>
         </div>
@@ -105,21 +97,12 @@ export function GameFiltersComponent({
               onChange={handleDateRangeChange}
             />
 
-            <PlayerFilter
-              allies={allies}
-              enemies={enemies}
-              onChange={handlePlayerFilterChange}
-            />
+            <PlayerFilter allies={allies} enemies={enemies} onChange={handlePlayerFilterChange} />
 
-            <TeamFormatFilter
-              value={filters.teamFormat}
-              onChange={handleTeamFormatChange}
-            />
+            <TeamFormatFilter value={filters.teamFormat} onChange={handleTeamFormatChange} />
           </div>
         )}
       </div>
     </Card>
   );
 }
-
-

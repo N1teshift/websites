@@ -1,5 +1,5 @@
-import { useSession } from 'next-auth/react';
-import { useNewPostForm } from '../hooks/useNewPostForm';
+import { useSession } from "next-auth/react";
+import { useNewPostForm } from "../hooks/useNewPostForm";
 
 interface NewPostFormModalProps {
   onSuccess: () => void;
@@ -30,12 +30,17 @@ export default function NewPostFormModal({ onSuccess, onCancel }: NewPostFormMod
             className="text-gray-400 hover:text-white transition-colors disabled:opacity-50"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
             </svg>
           </button>
         </div>
 
-        {status === 'unauthenticated' && (
+        {status === "unauthenticated" && (
           <div className="mb-6 rounded-md border border-amber-500/30 bg-black/30 p-4 text-sm text-gray-200">
             Please sign in with Discord to create a post.
           </div>
@@ -146,10 +151,10 @@ export default function NewPostFormModal({ onSuccess, onCancel }: NewPostFormMod
             </button>
             <button
               type="submit"
-              disabled={!canSubmit || status === 'loading' || isSubmitting}
+              disabled={!canSubmit || status === "loading" || isSubmitting}
               className="px-4 py-2 text-sm font-medium text-white bg-amber-600 hover:bg-amber-500 rounded-md transition-colors disabled:opacity-50"
             >
-              {isSubmitting ? 'Publishing...' : 'Publish Post'}
+              {isSubmitting ? "Publishing..." : "Publish Post"}
             </button>
           </div>
         </form>
@@ -157,5 +162,3 @@ export default function NewPostFormModal({ onSuccess, onCancel }: NewPostFormMod
     </div>
   );
 }
-
-

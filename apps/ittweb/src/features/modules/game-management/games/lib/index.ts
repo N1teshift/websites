@@ -1,5 +1,2 @@
-export * from './gameService';
-export * from './schemas';
-
-
-
+export * from "./gameService";
+export * from "./schemas";

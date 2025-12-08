@@ -1,4 +1,4 @@
-import { Timestamp } from 'firebase/firestore';
+import { Timestamp } from "firebase/firestore";
 
 export interface Post {
   id: string;
@@ -30,11 +30,3 @@ export interface CreatePost {
 }
 
 // PostMeta is defined in src/features/modules/blog/lib/posts.ts
-
-
-
-
-
-
-
-

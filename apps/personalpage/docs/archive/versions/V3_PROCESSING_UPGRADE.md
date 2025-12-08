@@ -9,6 +9,7 @@ The student data processing system has been upgraded to support v3 schema format
 ### 1. Processing Logic
 
 #### **DataProcessorV3** (`src/features/modules/edtech/progressReport/student-data/processors/dataProcessorV3.ts`)
+
 - **Purpose**: Processes Excel assessment data and updates student records in v3 format
 - **Key Features**:
   - Supports v3 schema with unique student IDs
@@ -18,8 +19,9 @@ The student data processing system has been upgraded to support v3 schema format
   - Creates new students with proper v3 structure
 
 **New Assessment Types Supported**:
+
 - `EXT1-5`: Classwork exercises
-- `LNT1-5`: Participation/presentations  
+- `LNT1-5`: Participation/presentations
 - `SD1-3`: Summative assessments with three score types:
   - **P** (Percentage): Points scored on percentage-based tests
   - **MYP**: Middle Years Programme assessment scores (1-8 scale)
@@ -30,6 +32,7 @@ The student data processing system has been upgraded to support v3 schema format
 - `SOC`: Social hours
 
 **SD Assessment Structure**:
+
 ```typescript
 {
   date: "2024-10-15",
@@ -47,6 +50,7 @@ The student data processing system has been upgraded to support v3 schema format
 ```
 
 #### **StudentDataManagerV3** (`src/features/modules/edtech/progressReport/student-data/utils/studentDataManagerV3.ts`)
+
 - **Purpose**: Orchestrates the entire data processing workflow
 - **Key Features**:
   - Loads v3 student JSON files
@@ -57,8 +61,9 @@ The student data processing system has been upgraded to support v3 schema format
   - Generates unique student IDs for new students (format: `ST00001`)
 
 **Processing Workflow**:
+
 1. Load all existing v3 student files
-2. Read Excel data from _S sheets
+2. Read Excel data from \_S sheets
 3. For each student row:
    - Find student by name (with alias resolution)
    - Create new student if not found
@@ -70,17 +75,21 @@ The student data processing system has been upgraded to support v3 schema format
 ### 2. CLI Scripts
 
 #### **processStudentData.ts**
+
 ```bash
 npx tsx scripts/processStudentData.ts raw_data.xlsx
 ```
+
 - Processes Excel file and updates individual student JSON files
 - Outputs detailed statistics
 - Uses v3 manager and processor
 
 #### **exportStudentData.ts**
+
 ```bash
 npx tsx scripts/exportStudentData.ts master_student_data_v3.json
 ```
+
 - Exports all student data to a single master JSON file
 - Includes v3 metadata
 - Sorts by class name and last name
@@ -88,9 +97,11 @@ npx tsx scripts/exportStudentData.ts master_student_data_v3.json
 ### 3. API Endpoint
 
 #### **POST /api/process-student-data**
+
 - **Purpose**: Handles Excel file uploads from dashboard
 - **Request**: Multipart form data with Excel file
 - **Response**:
+
 ```typescript
 {
   success: boolean;
@@ -100,6 +111,7 @@ npx tsx scripts/exportStudentData.ts master_student_data_v3.json
   message: string;
 }
 ```
+
 - **Features**:
   - 10MB file size limit
   - Automatic temp file cleanup
@@ -109,6 +121,7 @@ npx tsx scripts/exportStudentData.ts master_student_data_v3.json
 ### 4. Dashboard Integration
 
 #### **ExcelFileUpload Component**
+
 - **Location**: `src/features/modules/edtech/components/sections/progressReport/ExcelFileUpload.tsx`
 - **Features**:
   - File selection with validation (.xlsx, .xls)
@@ -121,12 +134,14 @@ npx tsx scripts/exportStudentData.ts master_student_data_v3.json
   - Auto-reset after upload
 
 **Updated UI Messages**:
+
 - ✅ "Successfully processed: X students updated, Y assessments added, Z new students created"
 - 👥 Students updated
-- 📝 Assessments added  
+- 📝 Assessments added
 - ✨ New students (only shown if > 0)
 
 #### **DataManagementSection**
+
 - **Location**: `src/features/modules/edtech/components/sections/progressReport/DataManagementSection.tsx`
 - **Features**:
   - Excel processing section with instructions
@@ -137,15 +152,20 @@ npx tsx scripts/exportStudentData.ts master_student_data_v3.json
 ## Key Improvements
 
 ### 1. **Schema Version Validation**
+
 All v3 files are validated to ensure they have `metadata.schema_version: "3.0"`
 
 ### 2. **Unique Student IDs**
+
 New students are assigned sequential IDs:
+
 - Format: `ST00001`, `ST00002`, etc.
 - Automatically incremented from highest existing ID
 
 ### 3. **Enhanced Academic Tracking**
+
 New students include:
+
 ```typescript
 academic: {
   year: "2024-2025",
@@ -156,6 +176,7 @@ academic: {
 ```
 
 ### 4. **Structured Profile Attributes**
+
 ```typescript
 profile: {
   learning_attributes: {
@@ -174,6 +195,7 @@ profile: {
 ```
 
 ### 5. **Computed Metrics Placeholder**
+
 ```typescript
 computed_metrics: {
   // Future: average scores, completion rates, etc.
@@ -181,6 +203,7 @@ computed_metrics: {
 ```
 
 ### 6. **Normalized Cambridge Objectives**
+
 Individual student files no longer contain duplicate Cambridge objective definitions. They reference a centralized `_cambridge_objectives.json` file.
 
 ## Migration Path
@@ -188,16 +211,19 @@ Individual student files no longer contain duplicate Cambridge objective definit
 ### From V2 to V3
 
 1. **Run migration script**:
+
 ```bash
 npx tsx scripts/migrateToV3.ts
 ```
 
 2. **Verify migration**:
+
 - Check student count remains consistent
 - Verify all assessments preserved
 - Confirm metadata fields added
 
 3. **Export master file**:
+
 ```bash
 npx tsx scripts/exportStudentData.ts master_student_data_v3.json
 ```
@@ -212,6 +238,7 @@ npx tsx scripts/exportStudentData.ts master_student_data_v3.json
 ## Testing Results
 
 **Initial V3 Test (October 24, 2025)**:
+
 - ✅ 72 students updated
 - ✅ 34 new assessments added
 - ✅ 5 new students created
@@ -294,7 +321,7 @@ src/features/modules/edtech/components/sections/progressReport/
 ## Support
 
 For issues or questions about the v3 processing system, refer to:
+
 - `docs/V3_MIGRATION_COMPLETE.md` - Migration details
 - `docs/JSON_STRUCTURE_ANALYSIS.md` - Structure improvements
 - `docs/LOGGING.md` - Logging system documentation
-

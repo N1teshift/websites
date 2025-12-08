@@ -6,11 +6,10 @@
  */
 
 // Infrastructure exports - shared across all features
-export * as infrastructure from './infrastructure';
+export * as infrastructure from "./infrastructure";
 
 // Module exports - feature-specific functionality
-export * as modules from './modules';
+export * as modules from "./modules";
 
 // Direct feature group access for convenience (namespaced)
-export { GameManagement, Content, Community, Analytics, Tools, Shared } from './modules';
-
+export { GameManagement, Content, Community, Analytics, Tools, Shared } from "./modules";

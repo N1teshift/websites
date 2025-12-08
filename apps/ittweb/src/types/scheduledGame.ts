@@ -1,10 +1,20 @@
-import { Timestamp } from 'firebase/firestore';
-import type { TeamSize, GameType, GameMode, GameParticipant } from '@/features/modules/game-management/games/types';
+import { Timestamp } from "firebase/firestore";
+import type {
+  TeamSize,
+  GameType,
+  GameMode,
+  GameParticipant,
+} from "@/features/modules/game-management/games/types";
 
 /**
  * Scheduled game status
  */
-export type ScheduledGameStatus = 'scheduled' | 'ongoing' | 'awaiting_replay' | 'archived' | 'cancelled';
+export type ScheduledGameStatus =
+  | "scheduled"
+  | "ongoing"
+  | "awaiting_replay"
+  | "archived"
+  | "cancelled";
 
 /**
  * Scheduled game data
@@ -12,7 +22,7 @@ export type ScheduledGameStatus = 'scheduled' | 'ongoing' | 'awaiting_replay' | 
 export interface ScheduledGame {
   // Document Identity
   id: string; // Firestore document ID
-  
+
   // Core Fields
   scheduledGameId: number; // Unique numeric ID for scheduled games
   scheduledDateTime: Timestamp | string; // ISO 8601 string in UTC or Timestamp
@@ -26,20 +36,20 @@ export interface ScheduledGame {
   modes: GameMode[]; // Array of game modes
   participants: GameParticipant[]; // Array of users who joined
   status: ScheduledGameStatus;
-  
+
   // Standardized Creator Fields (REQUIRED)
   creatorName: string;
   createdByDiscordId: string;
-  
+
   // Standardized Timestamp Fields (REQUIRED)
   createdAt: Timestamp | string;
   updatedAt: Timestamp | string;
   submittedAt?: Timestamp | string;
-  
+
   // Standardized Link Fields (OPTIONAL)
   linkedGameDocumentId?: string; // Link to Game document when replay is uploaded
   linkedArchiveDocumentId?: string; // Link to ArchiveEntry document when archived
-  
+
   // Soft Delete (OPTIONAL)
   isDeleted?: boolean;
   deletedAt?: Timestamp | string | null;
@@ -64,7 +74,3 @@ export interface CreateScheduledGame {
   participants?: GameParticipant[];
   submittedAt?: Timestamp | string;
 }
-
-
-
-

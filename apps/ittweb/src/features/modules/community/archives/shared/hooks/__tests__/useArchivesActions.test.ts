@@ -1,12 +1,12 @@
-import { act, renderHook, waitFor } from '@testing-library/react';
-import { useArchivesActions } from '../useArchivesActions';
-import type { ArchiveEntry } from '@/types/archive';
+import { act, renderHook, waitFor } from "@testing-library/react";
+import { useArchivesActions } from "../useArchivesActions";
+import type { ArchiveEntry } from "@/types/archive";
 
 // Mock next-auth
-const mockUseSession = jest.fn(() => ({ status: 'authenticated' }));
+const mockUseSession = jest.fn(() => ({ status: "authenticated" }));
 const mockSignIn = jest.fn();
 
-jest.mock('next-auth/react', () => ({
+jest.mock("next-auth/react", () => ({
   useSession: () => mockUseSession(),
   signIn: (...args: unknown[]) => mockSignIn(...args),
 }));
@@ -15,14 +15,14 @@ jest.mock('next-auth/react', () => ({
 const mockGetArchiveEntries = jest.fn();
 const mockDeleteArchiveEntry = jest.fn();
 
-jest.mock('@/features/infrastructure/lib/archiveService', () => ({
+jest.mock("@/features/infrastructure/lib/archiveService", () => ({
   getArchiveEntries: jest.fn(() => mockGetArchiveEntries()),
   deleteArchiveEntry: jest.fn((id: string) => mockDeleteArchiveEntry(id)),
   sortArchiveEntries: jest.fn((entries: ArchiveEntry[]) => entries),
 }));
 
 // Mock logging
-jest.mock('@websites/infrastructure/logging', () => ({
+jest.mock("@websites/infrastructure/logging", () => ({
   createComponentLogger: jest.fn(() => ({
     info: jest.fn(),
     debug: jest.fn(),
@@ -31,18 +31,18 @@ jest.mock('@websites/infrastructure/logging', () => ({
   logError: jest.fn(),
 }));
 
-describe('useArchivesActions', () => {
+describe("useArchivesActions", () => {
   const mockArchiveEntry: ArchiveEntry = {
-    id: 'archive1',
-    title: 'Test Archive',
-    content: 'Test content',
-    creatorName: 'Test Author',
+    id: "archive1",
+    title: "Test Archive",
+    content: "Test content",
+    creatorName: "Test Author",
     dateInfo: {
-      type: 'single',
-      singleDate: '2024-01-15',
+      type: "single",
+      singleDate: "2024-01-15",
     },
-    createdAt: '2024-01-15T00:00:00Z',
-    updatedAt: '2024-01-15T00:00:00Z',
+    createdAt: "2024-01-15T00:00:00Z",
+    updatedAt: "2024-01-15T00:00:00Z",
   };
 
   const mockSetEntries = jest.fn();
@@ -66,18 +66,18 @@ describe('useArchivesActions', () => {
     setModalImage: mockSetModalImage,
     setSortOrder: mockSetSortOrder,
     entries: [],
-    sortOrder: 'newest' as const,
+    sortOrder: "newest" as const,
   };
 
   beforeEach(() => {
     jest.clearAllMocks();
-    mockUseSession.mockReturnValue({ status: 'authenticated' });
+    mockUseSession.mockReturnValue({ status: "authenticated" });
     mockGetArchiveEntries.mockResolvedValue([mockArchiveEntry]);
     mockDeleteArchiveEntry.mockResolvedValue(undefined);
   });
 
-  describe('handles create action', () => {
-    it('should reload entries after successful add', async () => {
+  describe("handles create action", () => {
+    it("should reload entries after successful add", async () => {
       // Arrange
       const { result } = renderHook(() => useArchivesActions(defaultProps));
 
@@ -93,7 +93,7 @@ describe('useArchivesActions', () => {
       });
     });
 
-    it('should close form on cancel', () => {
+    it("should close form on cancel", () => {
       // Arrange
       const { result } = renderHook(() => useArchivesActions(defaultProps));
 
@@ -107,8 +107,8 @@ describe('useArchivesActions', () => {
     });
   });
 
-  describe('handles update action', () => {
-    it('should open edit form when authenticated', () => {
+  describe("handles update action", () => {
+    it("should open edit form when authenticated", () => {
       // Arrange
       const { result } = renderHook(() => useArchivesActions(defaultProps));
 
@@ -122,9 +122,9 @@ describe('useArchivesActions', () => {
       expect(mockSetShowEditForm).toHaveBeenCalledWith(true);
     });
 
-    it('should redirect to sign in when not authenticated', () => {
+    it("should redirect to sign in when not authenticated", () => {
       // Arrange
-      mockUseSession.mockReturnValueOnce({ status: 'unauthenticated' });
+      mockUseSession.mockReturnValueOnce({ status: "unauthenticated" });
       const { result } = renderHook(() => useArchivesActions(defaultProps));
 
       // Act
@@ -133,11 +133,11 @@ describe('useArchivesActions', () => {
       });
 
       // Assert
-      expect(mockSignIn).toHaveBeenCalledWith('discord');
+      expect(mockSignIn).toHaveBeenCalledWith("discord");
       expect(mockSetEditingEntry).not.toHaveBeenCalled();
     });
 
-    it('should reload entries after successful edit', async () => {
+    it("should reload entries after successful edit", async () => {
       // Arrange
       const { result } = renderHook(() => useArchivesActions(defaultProps));
 
@@ -154,7 +154,7 @@ describe('useArchivesActions', () => {
       });
     });
 
-    it('should close edit form on cancel', () => {
+    it("should close edit form on cancel", () => {
       // Arrange
       const { result } = renderHook(() => useArchivesActions(defaultProps));
 
@@ -169,8 +169,8 @@ describe('useArchivesActions', () => {
     });
   });
 
-  describe('handles delete action', () => {
-    it('should delete entry when authenticated', async () => {
+  describe("handles delete action", () => {
+    it("should delete entry when authenticated", async () => {
       // Arrange
       const { result } = renderHook(() => useArchivesActions(defaultProps));
 
@@ -182,15 +182,15 @@ describe('useArchivesActions', () => {
       // Assert
       await waitFor(() => {
         expect(mockSetLoading).toHaveBeenCalledWith(true);
-        expect(mockDeleteArchiveEntry).toHaveBeenCalledWith('archive1');
+        expect(mockDeleteArchiveEntry).toHaveBeenCalledWith("archive1");
         expect(mockGetArchiveEntries).toHaveBeenCalled();
         expect(mockSetLoading).toHaveBeenCalledWith(false);
       });
     });
 
-    it('should redirect to sign in when not authenticated', async () => {
+    it("should redirect to sign in when not authenticated", async () => {
       // Arrange
-      mockUseSession.mockReturnValueOnce({ status: 'unauthenticated' });
+      mockUseSession.mockReturnValueOnce({ status: "unauthenticated" });
       const { result } = renderHook(() => useArchivesActions(defaultProps));
 
       // Act
@@ -199,13 +199,13 @@ describe('useArchivesActions', () => {
       });
 
       // Assert
-      expect(mockSignIn).toHaveBeenCalledWith('discord');
+      expect(mockSignIn).toHaveBeenCalledWith("discord");
       expect(mockDeleteArchiveEntry).not.toHaveBeenCalled();
     });
 
-    it('should handle delete errors', async () => {
+    it("should handle delete errors", async () => {
       // Arrange
-      mockDeleteArchiveEntry.mockRejectedValueOnce(new Error('Delete failed'));
+      mockDeleteArchiveEntry.mockRejectedValueOnce(new Error("Delete failed"));
       const { result } = renderHook(() => useArchivesActions(defaultProps));
 
       // Act
@@ -215,15 +215,15 @@ describe('useArchivesActions', () => {
 
       // Assert
       expect(mockSetError).toHaveBeenCalledWith(
-        'Failed to delete archive entry. Please try again.'
+        "Failed to delete archive entry. Please try again."
       );
       // logError is called internally, verify error state is set
       expect(mockSetLoading).toHaveBeenCalledWith(false);
     });
   });
 
-  describe('handles data loading', () => {
-    it('should load entries successfully', async () => {
+  describe("handles data loading", () => {
+    it("should load entries successfully", async () => {
       // Arrange
       const { result } = renderHook(() => useArchivesActions(defaultProps));
 
@@ -242,9 +242,9 @@ describe('useArchivesActions', () => {
       });
     });
 
-    it('should handle load errors', async () => {
+    it("should handle load errors", async () => {
       // Arrange
-      mockGetArchiveEntries.mockRejectedValueOnce(new Error('Load failed'));
+      mockGetArchiveEntries.mockRejectedValueOnce(new Error("Load failed"));
       const { result } = renderHook(() => useArchivesActions(defaultProps));
 
       // Act
@@ -253,14 +253,12 @@ describe('useArchivesActions', () => {
       });
 
       // Assert
-      expect(mockSetError).toHaveBeenCalledWith(
-        'Failed to load archives. Please try again later.'
-      );
+      expect(mockSetError).toHaveBeenCalledWith("Failed to load archives. Please try again later.");
       // logError is called internally, verify error state is set
       expect(mockSetLoading).toHaveBeenCalledWith(false);
     });
 
-    it('should reload entries', async () => {
+    it("should reload entries", async () => {
       // Arrange
       const { result } = renderHook(() => useArchivesActions(defaultProps));
 
@@ -277,25 +275,25 @@ describe('useArchivesActions', () => {
     });
   });
 
-  describe('handles image modal actions', () => {
-    it('should open image modal', () => {
+  describe("handles image modal actions", () => {
+    it("should open image modal", () => {
       // Arrange
       const { result } = renderHook(() => useArchivesActions(defaultProps));
 
       // Act
       act(() => {
-        result.current.handleImageClick('https://example.com/image.jpg', 'Test Image');
+        result.current.handleImageClick("https://example.com/image.jpg", "Test Image");
       });
 
       // Assert
       expect(mockSetModalImage).toHaveBeenCalledWith({
-        url: 'https://example.com/image.jpg',
-        title: 'Test Image',
+        url: "https://example.com/image.jpg",
+        title: "Test Image",
       });
       expect(mockSetShowImageModal).toHaveBeenCalledWith(true);
     });
 
-    it('should close image modal', () => {
+    it("should close image modal", () => {
       // Arrange
       const { result } = renderHook(() => useArchivesActions(defaultProps));
 
@@ -310,23 +308,23 @@ describe('useArchivesActions', () => {
     });
   });
 
-  describe('handles sorting actions', () => {
-    it('should change sort order', () => {
+  describe("handles sorting actions", () => {
+    it("should change sort order", () => {
       // Arrange
       const { result } = renderHook(() => useArchivesActions(defaultProps));
 
       // Act
       act(() => {
-        result.current.handleSortOrderChange('oldest');
+        result.current.handleSortOrderChange("oldest");
       });
 
       // Assert
-      expect(mockSetSortOrder).toHaveBeenCalledWith('oldest');
+      expect(mockSetSortOrder).toHaveBeenCalledWith("oldest");
     });
   });
 
-  describe('handles authentication actions', () => {
-    it('should initiate sign in', () => {
+  describe("handles authentication actions", () => {
+    it("should initiate sign in", () => {
       // Arrange
       const { result } = renderHook(() => useArchivesActions(defaultProps));
 
@@ -336,10 +334,7 @@ describe('useArchivesActions', () => {
       });
 
       // Assert
-      expect(mockSignIn).toHaveBeenCalledWith('discord');
+      expect(mockSignIn).toHaveBeenCalledWith("discord");
     });
   });
 });
-
-
-

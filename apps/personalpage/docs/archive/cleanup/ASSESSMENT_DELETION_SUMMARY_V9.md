@@ -12,32 +12,34 @@
 
 ### What Was Deleted
 
-| Assessment | Date | Type | Students | Status |
-|------------|------|------|----------|--------|
-| Exercise Progress - Weekly Check (Experimental) | Oct 6 | EXT1 | 54 | ✅ Deleted |
-| EXT1 Assessment | Oct 6 | EXT1 | 3 | ✅ Deleted |
-| EXT Assessment (Classwork) | Oct 9 | EXT | 18 | ✅ Deleted |
-| ND1 Assessment (Experimental) | Oct 10 | ND1 | 75 | ✅ Deleted |
-| EXT*2 Classwork | Oct 10 | EXT2 | 18 | ✅ Deleted |
+| Assessment                                      | Date   | Type | Students | Status     |
+| ----------------------------------------------- | ------ | ---- | -------- | ---------- |
+| Exercise Progress - Weekly Check (Experimental) | Oct 6  | EXT1 | 54       | ✅ Deleted |
+| EXT1 Assessment                                 | Oct 6  | EXT1 | 3        | ✅ Deleted |
+| EXT Assessment (Classwork)                      | Oct 9  | EXT  | 18       | ✅ Deleted |
+| ND1 Assessment (Experimental)                   | Oct 10 | ND1  | 75       | ✅ Deleted |
+| EXT\*2 Classwork                                | Oct 10 | EXT2 | 18       | ✅ Deleted |
 
 ### Items Not Found (Already Cleaned)
 
-| Assessment | Reason |
-|------------|--------|
-| EXT*1 from Sep 25 | Not present or already different format |
-| EXT Weekly Assessment (Oct 9) | Already migrated to classwork |
-| EXT2 Weekly Assessment (Oct 10) | Already migrated to classwork |
+| Assessment                      | Reason                                  |
+| ------------------------------- | --------------------------------------- |
+| EXT\*1 from Sep 25              | Not present or already different format |
+| EXT Weekly Assessment (Oct 9)   | Already migrated to classwork           |
+| EXT2 Weekly Assessment (Oct 10) | Already migrated to classwork           |
 
 ---
 
 ## 📁 File Information
 
 ### Input File
+
 - **Name:** `progress_report_data_2025-11-03_v8_final.json`
 - **Schema:** 4.4
 - **Version:** v8.0-final
 
 ### Output File
+
 - **Name:** `progress_report_data_2025-11-03_v9_cleaned.json`
 - **Schema:** 4.5
 - **Version:** v9.0-cleaned
@@ -51,7 +53,7 @@
 
 - **Experimental EXT assessments:** 93 entries
   - Oct 6 EXT1: 57 total
-  - Oct 9 EXT: 18 total  
+  - Oct 9 EXT: 18 total
   - Oct 10 EXT2: 18 total
 
 - **Experimental ND1 assessments:** 75 entries
@@ -68,11 +70,13 @@
 ## 📊 Before vs After
 
 ### Before (v8)
+
 - Total assessment entries: ~8,000+ (estimated)
 - Experimental data: Mixed with production data
 - Duplicate tracking: Multiple systems for same assessments
 
 ### After (v9)
+
 - Total assessment entries: ~7,832
 - Experimental data: Cleaned up
 - Assessment tracking: Streamlined and consistent
@@ -100,6 +104,7 @@ The script uses **deletion rules** that specify criteria:
 3. Run: `npx tsx scripts/deleteAssessments.ts`
 
 **Example:**
+
 ```typescript
 {
     date: '2025-11-01',
@@ -145,53 +150,53 @@ Use `progress_report_data_2025-11-03_v8_final.json` (kept as backup)
 
 ```typescript
 [
-    {
-        date: '2025-10-06',
-        assessment_id: 'exercise-progress-weekly',
-        description: 'Oct 6 - Exercise Progress - Weekly Check (Experimental)'
-    },
-    {
-        date: '2025-09-25',
-        column: 'EXT1',
-        assessment_id: 'classwork-experimental-sept',
-        description: 'Sep 25 - EXT*1 Experimental Classwork'
-    },
-    {
-        date: '2025-10-06',
-        assessment_id: 'classwork-ext-ext1',
-        description: 'Oct 6 - EXT1 Assessment'
-    },
-    {
-        date: '2025-10-09',
-        column: 'EXT',
-        type: 'weekly_assessment',
-        description: 'Oct 9 - EXT Weekly Assessment (Experimental)'
-    },
-    {
-        date: '2025-10-09',
-        column: 'EXT',
-        type: 'classwork',
-        description: 'Oct 9 - EXT Assessment (Classwork)'
-    },
-    {
-        date: '2025-10-10',
-        column: 'EXT2',
-        type: 'weekly_assessment',
-        description: 'Oct 10 - EXT2 Weekly Assessment (Experimental)'
-    },
-    {
-        date: '2025-10-10',
-        column: 'ND1',
-        assessment_id: 'homework-nd-nd1',
-        description: 'Oct 10 - ND1 Assessment (Experimental)'
-    },
-    {
-        date: '2025-10-10',
-        column: 'EXT2',
-        type: 'classwork',
-        description: 'Oct 10 - EXT*2 Classwork'
-    }
-]
+  {
+    date: "2025-10-06",
+    assessment_id: "exercise-progress-weekly",
+    description: "Oct 6 - Exercise Progress - Weekly Check (Experimental)",
+  },
+  {
+    date: "2025-09-25",
+    column: "EXT1",
+    assessment_id: "classwork-experimental-sept",
+    description: "Sep 25 - EXT*1 Experimental Classwork",
+  },
+  {
+    date: "2025-10-06",
+    assessment_id: "classwork-ext-ext1",
+    description: "Oct 6 - EXT1 Assessment",
+  },
+  {
+    date: "2025-10-09",
+    column: "EXT",
+    type: "weekly_assessment",
+    description: "Oct 9 - EXT Weekly Assessment (Experimental)",
+  },
+  {
+    date: "2025-10-09",
+    column: "EXT",
+    type: "classwork",
+    description: "Oct 9 - EXT Assessment (Classwork)",
+  },
+  {
+    date: "2025-10-10",
+    column: "EXT2",
+    type: "weekly_assessment",
+    description: "Oct 10 - EXT2 Weekly Assessment (Experimental)",
+  },
+  {
+    date: "2025-10-10",
+    column: "ND1",
+    assessment_id: "homework-nd-nd1",
+    description: "Oct 10 - ND1 Assessment (Experimental)",
+  },
+  {
+    date: "2025-10-10",
+    column: "EXT2",
+    type: "classwork",
+    description: "Oct 10 - EXT*2 Classwork",
+  },
+];
 ```
 
 ---
@@ -202,7 +207,7 @@ Use `progress_report_data_2025-11-03_v8_final.json` (kept as backup)
 ✅ Database cleaned and optimized  
 ✅ New version (v9) generated  
 ✅ Tool documented for future use  
-✅ Backup files preserved  
+✅ Backup files preserved
 
 **Ready for production use!**
 
@@ -211,5 +216,3 @@ Use `progress_report_data_2025-11-03_v8_final.json` (kept as backup)
 **Generated:** November 5, 2025  
 **Tool Version:** v1.0  
 **Next Version:** v9_cleaned → Ready for dashboard
-
-

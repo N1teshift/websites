@@ -14,6 +14,7 @@ This document summarizes data exploration efforts, particularly around extractin
 **Script**: `extract-from-w3x.mjs`
 
 **New Fields Extracted**:
+
 - `areaOfEffect` (AOE) - from field `aare`
 - `maxTargets` - from field `acap`
 - `hotkey` - from field `ahky`
@@ -25,6 +26,7 @@ This document summarizes data exploration efforts, particularly around extractin
 
 **Level-Specific Data**:
 Now extracts data for all levels (0, 1, 2, etc.) for:
+
 - Damage
 - Mana cost
 - Cooldown
@@ -37,6 +39,7 @@ Now extracts data for all levels (0, 1, 2, etc.) for:
 **Script**: `extract-ability-details-from-wurst.mjs`
 
 **Purpose**: Parses Wurst ability definition files to extract:
+
 - Damage, mana cost, cooldown values (from constants)
 - Area of effect, max targets
 - Hotkeys, target types
@@ -50,7 +53,8 @@ Now extracts data for all levels (0, 1, 2, etc.) for:
 **Script**: `extract-ability-relationships.mjs`
 
 **Purpose**: Parses `TrollUnitTextConstant.wurst` to extract:
-- Which classes get which abilities (HERO_SPELLS_*, NORMAL_SPELLS_*)
+
+- Which classes get which abilities (HERO*SPELLS*_, NORMAL*SPELLS*_)
 - Spellbook contents
 - Ability inheritance chains
 
@@ -61,6 +65,7 @@ Now extracts data for all levels (0, 1, 2, etc.) for:
 **Script**: `ability-converter.mjs`
 
 **Updates**:
+
 - Includes all new fields in conversion
 - Safely parses numeric values
 - Handles level-specific data
@@ -73,6 +78,7 @@ Now extracts data for all levels (0, 1, 2, etc.) for:
 **Purpose**: Extract and process item data from game files
 
 **Key Areas**:
+
 - Item properties
 - Item relationships
 - Item usage patterns
@@ -104,6 +110,7 @@ Now extracts data for all levels (0, 1, 2, etc.) for:
 **Purpose**: Improve data extraction and processing
 
 **Key Areas**:
+
 - Code organization
 - Error handling
 - Data validation
@@ -112,6 +119,7 @@ Now extracts data for all levels (0, 1, 2, etc.) for:
 ## Current State
 
 Data exploration efforts have resulted in:
+
 - ✅ Comprehensive ability data extraction
 - ✅ Item data extraction
 - ✅ Relationship mapping
@@ -128,4 +136,3 @@ Data exploration efforts have resulted in:
 
 - Guides data: `src/features/modules/guides/data/`
 - Data processing scripts: `scripts/` (if applicable)
-

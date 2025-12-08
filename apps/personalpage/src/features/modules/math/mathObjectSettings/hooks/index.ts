@@ -4,9 +4,6 @@
  *              including hooks for managing coefficient settings, interface types,
  *              and synchronizing collection counts.
  */
-export * from './coefficientHooks';
-export * from './useCollectionCountSync';
-export * from './useInterfaceType'; 
-
-
-
+export * from "./coefficientHooks";
+export * from "./useCollectionCountSync";
+export * from "./useInterfaceType";

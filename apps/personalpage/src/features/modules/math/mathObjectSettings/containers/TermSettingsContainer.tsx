@@ -2,7 +2,12 @@ import React from "react";
 import { PowerInput, PowerOrderToggle, TermIdsInput } from "../ui";
 import { Dropdown } from "@websites/ui";
 import BaseMathObjectSettingsContainer from "./BaseMathObjectSettingsContainer";
-import { VariableName, variableNameOptions, TermSettings, MathObjectContainerProps } from "@math/types/index";
+import {
+  VariableName,
+  variableNameOptions,
+  TermSettings,
+  MathObjectContainerProps,
+} from "@math/types/index";
 
 /**
  * Container component for managing settings for a `Term`.
@@ -21,72 +26,68 @@ import { VariableName, variableNameOptions, TermSettings, MathObjectContainerPro
  *   - `variableName`: The variable symbol (e.g., x, y) selected via a `Dropdown`.
  */
 const TermSettingsContainer: React.FC<MathObjectContainerProps<TermSettings>> = ({
-    containerId,
-    settings,
-    updateSettings,
-    startIndex = 1,
-    showDescription = false,
-    objectType = "term",
+  containerId,
+  settings,
+  updateSettings,
+  startIndex = 1,
+  showDescription = false,
+  objectType = "term",
 }) => {
+  const handlePowerChange = (newPower: [number, number]) => {
+    updateSettings({ ...settings, power: newPower });
+  };
 
-    const handlePowerChange = (newPower: [number, number]) => {
-        updateSettings({ ...settings, power: newPower });
-    };
+  const handlePowerOrderChange = (newPowerOrder: boolean) => {
+    updateSettings({ ...settings, powerOrder: newPowerOrder });
+  };
 
-    const handlePowerOrderChange = (newPowerOrder: boolean) => {
-        updateSettings({ ...settings, powerOrder: newPowerOrder });
-    };
+  const handleTermIdsChange = (newTermIds: string[]) => {
+    updateSettings({ ...settings, termIds: newTermIds });
+  };
 
-    const handleTermIdsChange = (newTermIds: string[]) => {
-        updateSettings({ ...settings, termIds: newTermIds });
-    };
+  const handleVariableNameChange = (newVariable: string) => {
+    updateSettings({ ...settings, variableName: newVariable as VariableName });
+  };
 
-    const handleVariableNameChange = (newVariable: string) => {
-        updateSettings({ ...settings, variableName: newVariable as VariableName });
-    };
-
-    return (
-        <BaseMathObjectSettingsContainer
-            containerId={containerId}
-            settings={settings}
-            updateSettings={updateSettings}
-            startIndex={startIndex}
-            showDescription={showDescription}
-            objectType={objectType}
-        >
-            {(props) => (
-                <>
-                    <PowerInput
-                        label={"power_settings"}
-                        power={props.settings.power}
-                        setPower={handlePowerChange}
-                        labelPosition="above"
-                    />
-                    <PowerOrderToggle
-                        powerOrder={props.settings.powerOrder}
-                        setPowerOrder={handlePowerOrderChange}
-                        uniqueId={containerId}
-                        labelPosition="above"
-                        layout="horizontal"
-                    />
-                    <TermIdsInput
-                        termIds={props.settings.termIds}
-                        setTermIds={handleTermIdsChange}
-                        collectionCount={props.settings.coefficients.collectionCount}
-                    />
-                    <Dropdown
-                        label={"variable"}
-                        options={variableNameOptions.map((option) => ({ label: option, value: option }))}
-                        value={props.settings.variableName || variableNameOptions[0]}
-                        onChange={handleVariableNameChange}
-                    />
-                </>
-            )}
-        </BaseMathObjectSettingsContainer>
-    );
+  return (
+    <BaseMathObjectSettingsContainer
+      containerId={containerId}
+      settings={settings}
+      updateSettings={updateSettings}
+      startIndex={startIndex}
+      showDescription={showDescription}
+      objectType={objectType}
+    >
+      {(props) => (
+        <>
+          <PowerInput
+            label={"power_settings"}
+            power={props.settings.power}
+            setPower={handlePowerChange}
+            labelPosition="above"
+          />
+          <PowerOrderToggle
+            powerOrder={props.settings.powerOrder}
+            setPowerOrder={handlePowerOrderChange}
+            uniqueId={containerId}
+            labelPosition="above"
+            layout="horizontal"
+          />
+          <TermIdsInput
+            termIds={props.settings.termIds}
+            setTermIds={handleTermIdsChange}
+            collectionCount={props.settings.coefficients.collectionCount}
+          />
+          <Dropdown
+            label={"variable"}
+            options={variableNameOptions.map((option) => ({ label: option, value: option }))}
+            value={props.settings.variableName || variableNameOptions[0]}
+            onChange={handleVariableNameChange}
+          />
+        </>
+      )}
+    </BaseMathObjectSettingsContainer>
+  );
 };
 
 export default TermSettingsContainer;
-
-
-

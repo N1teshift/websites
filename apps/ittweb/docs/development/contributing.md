@@ -24,14 +24,14 @@ Development standards and contribution process.
 **Always use infrastructure logging for error handling:**
 
 ```typescript
-import { logError, logAndThrow } from '@/features/infrastructure/logging';
+import { logError, logAndThrow } from "@/features/infrastructure/logging";
 
 try {
   // operation
 } catch (error) {
-  logError(error as Error, 'Operation failed', {
-    component: 'myComponent',
-    operation: 'myOperation',
+  logError(error as Error, "Operation failed", {
+    component: "myComponent",
+    operation: "myOperation",
   });
   throw error; // or handle gracefully
 }
@@ -69,6 +69,7 @@ footer (optional)
 ```
 
 **Types:**
+
 - `feat` - New feature
 - `fix` - Bug fix
 - `docs` - Documentation
@@ -78,6 +79,7 @@ footer (optional)
 - `chore` - Maintenance
 
 **Examples:**
+
 ```
 feat(games): add game filtering by category
 
@@ -102,17 +104,22 @@ refactor(services): extract timestamp utility
 
 ```markdown
 ## Description
+
 Brief description of changes
 
 ## Type of Change
+
 Specify the type of change: Bug fix, New feature, Documentation update, or Refactoring
 
 ## Testing
+
 - Tests added/updated for new functionality
 - Manual testing completed to verify changes work as expected
 
 ## Pre-Submission Checklist
+
 Before submitting your PR, ensure:
+
 - Code follows style guidelines
 - Self-review completed
 - Documentation updated if needed
@@ -130,16 +137,17 @@ Before submitting your PR, ensure:
 **Location**: Next to source files or in `__tests__/` subdirectories
 
 **Example**:
+
 ```typescript
 // lib/myService.test.ts
-import { describe, it, expect } from '@jest/globals';
-import { myFunction } from './myService';
+import { describe, it, expect } from "@jest/globals";
+import { myFunction } from "./myService";
 
-describe('myService', () => {
-  describe('myFunction', () => {
-    it('should handle normal case', () => {
-      const result = myFunction('input');
-      expect(result).toBe('expected');
+describe("myService", () => {
+  describe("myFunction", () => {
+    it("should handle normal case", () => {
+      const result = myFunction("input");
+      expect(result).toBe("expected");
     });
   });
 });
@@ -177,6 +185,7 @@ describe('myService', () => {
 ### Review Guidelines
 
 When reviewing code, verify:
+
 - Code follows style guidelines
 - Error handling uses the logging infrastructure (`@/features/infrastructure/logging`)
 - Tests are included and pass
@@ -293,4 +302,3 @@ When reviewing code, verify:
 - [Code Patterns](./code-patterns.md)
 - [Architecture Overview](./architecture.md)
 - [Testing Guide](./operations/testing-guide.md)
-

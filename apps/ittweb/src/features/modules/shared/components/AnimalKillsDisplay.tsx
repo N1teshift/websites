@@ -1,5 +1,5 @@
-import React from 'react';
-import Image from 'next/image';
+import React from "react";
+import Image from "next/image";
 
 export interface AnimalKillsData {
   elk?: number;
@@ -24,34 +24,34 @@ interface AnimalKillsDisplayProps {
  */
 const ANIMAL_CONFIG = {
   elk: {
-    name: 'Elk',
-    icon: '/icons/itt/btnstag.png',
-    color: 'bg-amber-500/20',
+    name: "Elk",
+    icon: "/icons/itt/btnstag.png",
+    color: "bg-amber-500/20",
   },
   hawk: {
-    name: 'Hawk',
-    icon: '/icons/itt/PASBTNEagleSight.png',
-    color: 'bg-sky-500/20',
+    name: "Hawk",
+    icon: "/icons/itt/PASBTNEagleSight.png",
+    color: "bg-sky-500/20",
   },
   snake: {
-    name: 'Snake',
-    icon: '/icons/itt/BTNWindSerpentPassive.png',
-    color: 'bg-green-500/20',
+    name: "Snake",
+    icon: "/icons/itt/BTNWindSerpentPassive.png",
+    color: "bg-green-500/20",
   },
   wolf: {
-    name: 'Wolf',
-    icon: '/icons/itt/BTNTimberWolfPassive.png',
-    color: 'bg-gray-500/20',
+    name: "Wolf",
+    icon: "/icons/itt/BTNTimberWolfPassive.png",
+    color: "bg-gray-500/20",
   },
   bear: {
-    name: 'Bear',
-    icon: '/icons/itt/BTNHungryBear.png',
-    color: 'bg-orange-500/20',
+    name: "Bear",
+    icon: "/icons/itt/BTNHungryBear.png",
+    color: "bg-orange-500/20",
   },
   panther: {
-    name: 'Panther',
-    icon: '/icons/itt/BTNPantherPassive.png',
-    color: 'bg-purple-500/20',
+    name: "Panther",
+    icon: "/icons/itt/BTNPantherPassive.png",
+    color: "bg-purple-500/20",
   },
 } as const;
 
@@ -63,16 +63,16 @@ export function AnimalKillsDisplay({
   showTotal = false,
   compact = false,
   showLabels = true,
-  className = '',
+  className = "",
 }: AnimalKillsDisplayProps) {
   // Always show all animals, even if count is 0
   const animals = [
-    { key: 'elk' as const, count: kills.elk ?? 0 },
-    { key: 'hawk' as const, count: kills.hawk ?? 0 },
-    { key: 'snake' as const, count: kills.snake ?? 0 },
-    { key: 'wolf' as const, count: kills.wolf ?? 0 },
-    { key: 'bear' as const, count: kills.bear ?? 0 },
-    { key: 'panther' as const, count: kills.panther ?? 0 },
+    { key: "elk" as const, count: kills.elk ?? 0 },
+    { key: "hawk" as const, count: kills.hawk ?? 0 },
+    { key: "snake" as const, count: kills.snake ?? 0 },
+    { key: "wolf" as const, count: kills.wolf ?? 0 },
+    { key: "bear" as const, count: kills.bear ?? 0 },
+    { key: "panther" as const, count: kills.panther ?? 0 },
   ];
 
   const total = kills.total ?? animals.reduce((sum, a) => sum + (a.count || 0), 0);
@@ -106,18 +106,16 @@ export function AnimalKillsDisplay({
     <div className={className}>
       {showTotal && total > 0 && (
         <div className="mb-3 text-sm text-gray-400">
-          Total Kills: <span className="text-amber-300 font-semibold">{total.toLocaleString()}</span>
+          Total Kills:{" "}
+          <span className="text-amber-300 font-semibold">{total.toLocaleString()}</span>
         </div>
       )}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
         {animals.map(({ key, count }) => {
           const config = ANIMAL_CONFIG[key];
-          const percentage = total > 0 ? ((count || 0) / total * 100).toFixed(1) : '0.0';
+          const percentage = total > 0 ? (((count || 0) / total) * 100).toFixed(1) : "0.0";
           return (
-            <div
-              key={key}
-              className="bg-black/20 rounded-lg p-3 border border-amber-500/10"
-            >
+            <div key={key} className="bg-black/20 rounded-lg p-3 border border-amber-500/10">
               <div className="flex items-center gap-2 mb-1">
                 <Image
                   src={config.icon}
@@ -127,23 +125,13 @@ export function AnimalKillsDisplay({
                   className="w-10 h-10"
                   unoptimized
                 />
-                {showLabels && (
-                  <span className="text-gray-400 text-xs">{config.name}</span>
-                )}
+                {showLabels && <span className="text-gray-400 text-xs">{config.name}</span>}
               </div>
               <div className="text-xl font-bold text-amber-300">
                 {(count ?? 0).toLocaleString()}
               </div>
-              {total > 0 && (
-                <div className="text-xs text-gray-500">
-                  {percentage}% of total
-                </div>
-              )}
-              {total === 0 && (
-                <div className="text-xs text-gray-600">
-                  0% of total
-                </div>
-              )}
+              {total > 0 && <div className="text-xs text-gray-500">{percentage}% of total</div>}
+              {total === 0 && <div className="text-xs text-gray-600">0% of total</div>}
             </div>
           );
         })}
@@ -151,4 +139,3 @@ export function AnimalKillsDisplay({
     </div>
   );
 }
-

@@ -5,26 +5,31 @@ This section contains documentation that will remain when the ITT Web project is
 ## 📋 Contents
 
 ### API Reference
+
 - **[API Index](./api/README.md)** - Complete API documentation
 - Individual API docs: `games`, `players`, `standings`, `analytics`, `archives`, `blog`, `classes`, `scheduled-games`, `user`, `admin`, `icons`, `items`, `revalidate`
 
 ### Database
+
 - **[Indexes](./database/indexes.md)** - Firestore index configuration (required for queries)
 - **[Schemas](./database/schemas.md)** - Firestore collection schemas (single source of truth)
 
 ### Systems
+
 - **[Game Stats](./systems/game-stats/)** - Game statistics system architecture and data models
 - **[Replay Parser](./systems/replay-parser/)** - Replay file parsing integration
 - **[Data Pipeline](./systems/data-pipeline/)** - Data generation scripts and guides
 - **[Timestamp Management](./systems/timestamp-time-management.md)** - Firestore timestamp handling
 
 ### Product
+
 - **[Summary](./product/summary.md)** - Feature showcase
 - **[Status](./product/status.md)** - Current roadmap and phases
 - **[Improvements](./product/improvements.md)** - Infrastructure and DX upgrades
 - **[User Roles](./product/user-roles.md)** - Access and permissions
 
 ### Security
+
 > **📦 Infrastructure Security Documentation**: See [@websites/infrastructure/docs/guides/security.md](../../../../packages/infrastructure/docs/guides/security.md) for consolidated security best practices.
 
 - **[Authentication & Authorization](../../../../packages/infrastructure/docs/guides/authentication.md)** - Authentication and authorization patterns
@@ -33,6 +38,7 @@ This section contains documentation that will remain when the ITT Web project is
 ## 🎯 Purpose
 
 This documentation represents the **core value** of your ITT Web project:
+
 - Custom API endpoints and business logic
 - Domain-specific data models and schemas
 - User-facing features and functionality

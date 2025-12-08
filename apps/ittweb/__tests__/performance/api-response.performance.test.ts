@@ -1,25 +1,25 @@
 // Mock dependencies first, before imports
-jest.mock('next-auth/next', () => ({
+jest.mock("next-auth/next", () => ({
   getServerSession: jest.fn(),
 }));
 
-jest.mock('@/features/modules/game-management/games/lib/gameService', () => ({
+jest.mock("@/features/modules/game-management/games/lib/gameService", () => ({
   getGames: jest.fn(),
 }));
 
-jest.mock('@/features/modules/community/players/lib/playerService', () => ({
+jest.mock("@/features/modules/community/players/lib/playerService", () => ({
   getAllPlayers: jest.fn(),
 }));
 
-jest.mock('@/features/modules/community/standings/lib/standingsService', () => ({
+jest.mock("@/features/modules/community/standings/lib/standingsService", () => ({
   getStandings: jest.fn(),
 }));
 
-jest.mock('@/features/modules/analytics-group/analytics/lib/analyticsService', () => ({
+jest.mock("@/features/modules/analytics-group/analytics/lib/analyticsService", () => ({
   getActivityData: jest.fn(),
 }));
 
-jest.mock('@/features/infrastructure/logging', () => ({
+jest.mock("@/features/infrastructure/logging", () => ({
   createComponentLogger: jest.fn(() => ({
     info: jest.fn(),
     error: jest.fn(),
@@ -29,23 +29,29 @@ jest.mock('@/features/infrastructure/logging', () => ({
   logError: jest.fn(),
 }));
 
-jest.mock('@/pages/api/auth/[...nextauth]', () => ({
+jest.mock("@/pages/api/auth/[...nextauth]", () => ({
   default: jest.fn(),
   authOptions: {},
 }));
 
 // Now import after mocks are set up
-import type { NextApiRequest } from 'next';
-import { createMockRequest, createMockResponse } from '@/test-utils/mockNext';
-import handlerGamesIndex from '@/pages/api/games/index';
-import handlerPlayersIndex from '@/pages/api/players/index';
-import handlerStandings from '@/pages/api/standings/index';
-import handlerAnalyticsActivity from '@/pages/api/analytics/activity';
+import type { NextApiRequest } from "next";
+import { createMockRequest, createMockResponse } from "@/test-utils/mockNext";
+import handlerGamesIndex from "@/pages/api/games/index";
+import handlerPlayersIndex from "@/pages/api/players/index";
+import handlerStandings from "@/pages/api/standings/index";
+import handlerAnalyticsActivity from "@/pages/api/analytics/activity";
 
-const { getGames } = jest.requireMock('@/features/modules/game-management/games/lib/gameService');
-const { getAllPlayers } = jest.requireMock('@/features/modules/community/players/lib/playerService');
-const { getStandings } = jest.requireMock('@/features/modules/community/standings/lib/standingsService');
-const { getActivityData } = jest.requireMock('@/features/modules/analytics-group/analytics/lib/analyticsService');
+const { getGames } = jest.requireMock("@/features/modules/game-management/games/lib/gameService");
+const { getAllPlayers } = jest.requireMock(
+  "@/features/modules/community/players/lib/playerService"
+);
+const { getStandings } = jest.requireMock(
+  "@/features/modules/community/standings/lib/standingsService"
+);
+const { getActivityData } = jest.requireMock(
+  "@/features/modules/analytics-group/analytics/lib/analyticsService"
+);
 
 // Performance thresholds (in milliseconds)
 const PERFORMANCE_THRESHOLDS = {
@@ -68,13 +74,13 @@ async function measureApiResponseTime(
   return end - start;
 }
 
-describe('API Response Performance', () => {
+describe("API Response Performance", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  describe('API Response Times', () => {
-    it('should respond to API requests within acceptable time limits', async () => {
+  describe("API Response Times", () => {
+    it("should respond to API requests within acceptable time limits", async () => {
       // Arrange
       const mockGames = Array.from({ length: 100 }, (_, i) => ({
         id: `game-${i}`,
@@ -88,8 +94,8 @@ describe('API Response Performance', () => {
       });
 
       const req = createMockRequest({
-        method: 'GET',
-        query: { limit: '100' },
+        method: "GET",
+        query: { limit: "100" },
       });
 
       // Act
@@ -99,7 +105,7 @@ describe('API Response Performance', () => {
       expect(responseTime).toBeLessThan(PERFORMANCE_THRESHOLDS.API_RESPONSE_TIME);
     });
 
-    it('should handle complex queries efficiently', async () => {
+    it("should handle complex queries efficiently", async () => {
       // Arrange
       (getGames as jest.Mock).mockImplementation(async () => {
         await new Promise((resolve) => setTimeout(resolve, 100));
@@ -114,13 +120,13 @@ describe('API Response Performance', () => {
       });
 
       const req = createMockRequest({
-        method: 'GET',
+        method: "GET",
         query: {
-          player: 'TestPlayer',
-          category: 'category1',
-          startDate: '2024-01-01',
-          endDate: '2024-12-31',
-          limit: '500',
+          player: "TestPlayer",
+          category: "category1",
+          startDate: "2024-01-01",
+          endDate: "2024-12-31",
+          limit: "500",
         },
       });
 
@@ -131,7 +137,7 @@ describe('API Response Performance', () => {
       expect(responseTime).toBeLessThan(PERFORMANCE_THRESHOLDS.API_RESPONSE_TIME * 2);
     });
 
-    it('should handle large payloads efficiently', async () => {
+    it("should handle large payloads efficiently", async () => {
       // Arrange
       const largePayload = Array.from({ length: 1000 }, (_, i) => ({
         id: `game-${i}`,
@@ -139,7 +145,7 @@ describe('API Response Performance', () => {
         datetime: new Date().toISOString(),
         players: Array.from({ length: 10 }, (_, j) => ({
           name: `Player${j}`,
-          flag: 'winner' as const,
+          flag: "winner" as const,
         })),
       }));
 
@@ -149,8 +155,8 @@ describe('API Response Performance', () => {
       });
 
       const req = createMockRequest({
-        method: 'GET',
-        query: { limit: '1000' },
+        method: "GET",
+        query: { limit: "1000" },
       });
 
       // Act
@@ -161,8 +167,8 @@ describe('API Response Performance', () => {
     });
   });
 
-  describe('API Concurrent Request Handling', () => {
-    it('should handle concurrent requests without degradation', async () => {
+  describe("API Concurrent Request Handling", () => {
+    it("should handle concurrent requests without degradation", async () => {
       // Arrange
       (getGames as jest.Mock).mockImplementation(async () => {
         await new Promise((resolve) => setTimeout(resolve, 50));
@@ -171,8 +177,8 @@ describe('API Response Performance', () => {
 
       const requests = Array.from({ length: 10 }, () =>
         createMockRequest({
-          method: 'GET',
-          query: { limit: '100' },
+          method: "GET",
+          query: { limit: "100" },
         })
       );
 
@@ -187,7 +193,7 @@ describe('API Response Performance', () => {
       expect(totalTime).toBeLessThan(PERFORMANCE_THRESHOLDS.CONCURRENT_REQUESTS);
     });
 
-    it('should handle many concurrent requests efficiently', async () => {
+    it("should handle many concurrent requests efficiently", async () => {
       // Arrange
       (getAllPlayers as jest.Mock).mockImplementation(async () => {
         await new Promise((resolve) => setTimeout(resolve, 30));
@@ -199,7 +205,7 @@ describe('API Response Performance', () => {
 
       const requests = Array.from({ length: 50 }, () =>
         createMockRequest({
-          method: 'GET',
+          method: "GET",
           query: {},
         })
       );
@@ -216,7 +222,7 @@ describe('API Response Performance', () => {
       expect(totalTime).toBeLessThan(PERFORMANCE_THRESHOLDS.CONCURRENT_REQUESTS * 2);
     });
 
-    it('should handle mixed concurrent requests efficiently', async () => {
+    it("should handle mixed concurrent requests efficiently", async () => {
       // Arrange
       (getGames as jest.Mock).mockImplementation(async () => {
         await new Promise((resolve) => setTimeout(resolve, 50));
@@ -234,13 +240,13 @@ describe('API Response Performance', () => {
       });
 
       const gameRequests = Array.from({ length: 5 }, () =>
-        createMockRequest({ method: 'GET', query: {} })
+        createMockRequest({ method: "GET", query: {} })
       );
       const standingsRequests = Array.from({ length: 5 }, () =>
-        createMockRequest({ method: 'GET', query: {} })
+        createMockRequest({ method: "GET", query: {} })
       );
       const analyticsRequests = Array.from({ length: 5 }, () =>
-        createMockRequest({ method: 'GET', query: {} })
+        createMockRequest({ method: "GET", query: {} })
       );
 
       // Act
@@ -259,15 +265,15 @@ describe('API Response Performance', () => {
     });
   });
 
-  describe('API Error Recovery', () => {
-    it('should recover from errors quickly', async () => {
+  describe("API Error Recovery", () => {
+    it("should recover from errors quickly", async () => {
       // Arrange
       (getGames as jest.Mock)
-        .mockRejectedValueOnce(new Error('Database error'))
+        .mockRejectedValueOnce(new Error("Database error"))
         .mockResolvedValueOnce({ games: [], total: 0 });
 
       const req = createMockRequest({
-        method: 'GET',
+        method: "GET",
         query: {},
       });
 
@@ -282,12 +288,12 @@ describe('API Response Performance', () => {
       expect(recoveryTime).toBeLessThan(PERFORMANCE_THRESHOLDS.API_RESPONSE_TIME);
     });
 
-    it('should handle database errors gracefully', async () => {
+    it("should handle database errors gracefully", async () => {
       // Arrange
-      (getGames as jest.Mock).mockRejectedValue(new Error('Connection timeout'));
+      (getGames as jest.Mock).mockRejectedValue(new Error("Connection timeout"));
 
       const req = createMockRequest({
-        method: 'GET',
+        method: "GET",
         query: {},
       });
 
@@ -298,12 +304,12 @@ describe('API Response Performance', () => {
       expect(errorTime).toBeLessThan(PERFORMANCE_THRESHOLDS.ERROR_RECOVERY);
     });
 
-    it('should handle network errors gracefully', async () => {
+    it("should handle network errors gracefully", async () => {
       // Arrange
-      (getStandings as jest.Mock).mockRejectedValue(new Error('Network error'));
+      (getStandings as jest.Mock).mockRejectedValue(new Error("Network error"));
 
       const req = createMockRequest({
-        method: 'GET',
+        method: "GET",
         query: {},
       });
 
@@ -314,7 +320,7 @@ describe('API Response Performance', () => {
       expect(errorTime).toBeLessThan(PERFORMANCE_THRESHOLDS.ERROR_RECOVERY);
     });
 
-    it('should recover from timeout errors quickly', async () => {
+    it("should recover from timeout errors quickly", async () => {
       // Arrange
       (getActivityData as jest.Mock)
         .mockImplementationOnce(async () => {
@@ -324,7 +330,7 @@ describe('API Response Performance', () => {
         .mockResolvedValueOnce([]);
 
       const req = createMockRequest({
-        method: 'GET',
+        method: "GET",
         query: {},
       });
 
@@ -339,4 +345,3 @@ describe('API Response Performance', () => {
     });
   });
 });
-

@@ -1,5 +1,5 @@
-import type { GameWithPlayers } from '../types';
-import { createUrlDataFetchHook } from '@websites/infrastructure/hooks';
+import type { GameWithPlayers } from "../types";
+import { createUrlDataFetchHook } from "@websites/infrastructure/hooks";
 
 const useGameHook = createUrlDataFetchHook<GameWithPlayers, string>(
   (id: string) => `/api/games/${id}`,
@@ -8,8 +8,8 @@ const useGameHook = createUrlDataFetchHook<GameWithPlayers, string>(
     enabled: (id) => !!id,
     handle404: true,
     cacheBust: true,
-    componentName: 'useGame',
-    operationName: 'fetchGame',
+    componentName: "useGame",
+    operationName: "fetchGame",
   }
 );
 
@@ -22,7 +22,7 @@ interface UseGameResult {
 
 export function useGame(id: string): UseGameResult {
   const { data, loading, error, refetch } = useGameHook(id);
-  
+
   return {
     game: data,
     loading,
@@ -30,6 +30,3 @@ export function useGame(id: string): UseGameResult {
     refetch,
   };
 }
-
-
-

@@ -1,4 +1,4 @@
-import type { CategoryStat } from '@/features/modules/tools-group/tools/types/icon-mapper.types';
+import type { CategoryStat } from "@/features/modules/tools-group/tools/types/icon-mapper.types";
 
 type IconMapperStatsProps = {
   stats: CategoryStat[];
@@ -15,17 +15,17 @@ export default function IconMapperStats({ stats, selectedCategory }: IconMapperS
             key={stat.category}
             className={`p-3 rounded-lg border ${
               selectedCategory === stat.category
-                ? 'border-amber-500 bg-amber-500/10'
-                : 'border-amber-500/30 bg-black/20'
+                ? "border-amber-500 bg-amber-500/10"
+                : "border-amber-500/30 bg-black/20"
             }`}
           >
             <div className="text-sm text-gray-400 mb-1 capitalize">{stat.category}</div>
             <div className="text-2xl font-bold text-amber-400 mb-1">{stat.percentage}%</div>
             <div className="text-xs text-gray-500">
               <span className="text-green-400">{stat.mapped} mapped</span>
-              {' / '}
+              {" / "}
               <span className="text-red-400">{stat.unmapped} unmapped</span>
-              {' / '}
+              {" / "}
               <span className="text-gray-400">{stat.total} total</span>
             </div>
             <div className="mt-2 h-2 bg-black/50 rounded-full overflow-hidden">
@@ -40,6 +40,3 @@ export default function IconMapperStats({ stats, selectedCategory }: IconMapperS
     </div>
   );
 }
-
-
-

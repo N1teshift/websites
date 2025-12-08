@@ -1,16 +1,16 @@
 /**
  * SWR-based hook for items data with client-side caching
- * 
+ *
  * This hook uses SWR for automatic caching, revalidation, and deduplication.
  * Static data like items changes infrequently, so SWR's caching is perfect.
- * 
+ *
  * Note: The existing `useItemsData` hook already has basic caching.
  * This SWR version provides better features like automatic revalidation and shared cache.
  */
 
-import useSWR from 'swr';
-import type { ItemData } from '@/types/items';
-import { createSwrFetcher } from '@websites/infrastructure/hooks';
+import useSWR from "swr";
+import type { ItemData } from "@/types/items";
+import { createSwrFetcher } from "@websites/infrastructure/hooks";
 
 type ItemsMeta = {
   total: number;
@@ -27,10 +27,10 @@ type ItemsApiResult = {
 
 /**
  * Hook to fetch items data with SWR caching
- * 
+ *
  * Data is cached automatically by SWR and shared across components.
  * Revalidates based on SWR config (default: on reconnect, not on focus).
- * 
+ *
  * Benefits over useItemsData:
  * - Automatic cache sharing across components
  * - Background revalidation
@@ -39,7 +39,7 @@ type ItemsApiResult = {
  */
 export function useItemsDataSWR() {
   const { data, error, isLoading, mutate } = useSWR<ItemsApiResult>(
-    '/api/items',
+    "/api/items",
     createSwrFetcher<ItemsApiResult>(),
     {
       // Static data - cache for longer
@@ -58,5 +58,3 @@ export function useItemsDataSWR() {
     refetch: mutate,
   };
 }
-
-

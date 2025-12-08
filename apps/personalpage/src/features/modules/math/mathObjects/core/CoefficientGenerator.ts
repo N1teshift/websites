@@ -1,5 +1,5 @@
-import { NumberSet, CoefficientRule } from "../../types/mathTypes"
-import { isCoefficientSettingsCombinationValid } from '../../shared/coefficientConceptualValidator';
+import { NumberSet, CoefficientRule } from "../../types/mathTypes";
+import { isCoefficientSettingsCombinationValid } from "../../shared/coefficientConceptualValidator";
 import { isSquare, randomInt, randomChoice, getRuleValidator } from "../../shared/numberUtils";
 
 /**
@@ -20,30 +20,29 @@ import { isSquare, randomInt, randomChoice, getRuleValidator } from "../../share
  * This ensures the generated fraction lies within the specified bounds.
  */
 function generateRational(minVal: number = -10, maxVal: number = 10): number[] {
-    if (minVal >= maxVal) {
-        throw new Error("Minimum value must be less than the maximum value.");
+  if (minVal >= maxVal) {
+    throw new Error("Minimum value must be less than the maximum value.");
+  }
+
+  let denominator: number;
+  let L: number, U: number;
+  const maxDenom = 10;
+
+  // Loop until we find a valid denominator where there is at least one integer numerator that satisfies the condition.
+  while (true) {
+    // Choose a positive denominator (e.g. 1 to maxDenom)
+    denominator = randomInt(1, maxDenom);
+    L = Math.ceil(minVal * denominator);
+    U = Math.floor(maxVal * denominator);
+
+    if (U >= L) {
+      break; // Valid range found
     }
+  }
 
-    let denominator: number;
-    let L: number, U: number;
-    const maxDenom = 10;
-
-
-    // Loop until we find a valid denominator where there is at least one integer numerator that satisfies the condition.
-    while (true) {
-        // Choose a positive denominator (e.g. 1 to maxDenom)
-        denominator = randomInt(1, maxDenom);
-        L = Math.ceil(minVal * denominator);
-        U = Math.floor(maxVal * denominator);
-
-        if (U >= L) {
-            break; // Valid range found
-        }
-    }
-
-    // Choose numerator randomly between L and U (inclusive)
-    const numerator = randomInt(L, U);
-    return [numerator, denominator];
+  // Choose numerator randomly between L and U (inclusive)
+  const numerator = randomInt(L, U);
+  return [numerator, denominator];
 }
 
 /**
@@ -71,64 +70,66 @@ function generateRational(minVal: number = -10, maxVal: number = 10): number[] {
  * The function returns `[a, b]`.
  */
 function generateIrrational(minVal: number = -10, maxVal: number = 10): number[] {
-    if (minVal >= maxVal) {
-        console.log("Invalid range");
-        throw new Error("Minimum value must be less than maximum value.");
+  if (minVal >= maxVal) {
+    console.log("Invalid range");
+    throw new Error("Minimum value must be less than maximum value.");
+  }
+
+  // Determine maximum b based on the larger absolute endpoint
+  const maxAbsEndpoint = Math.max(Math.abs(minVal), Math.abs(maxVal));
+  const maxB = Math.floor(maxAbsEndpoint * maxAbsEndpoint); // Square of max endpoint
+  const minB = 2; // Smallest non-square integer
+
+  // Generate possible non-square b values
+  const possibleB: number[] = [];
+  for (let b = minB; b <= maxB; b++) {
+    if (!isSquare(b)) {
+      possibleB.push(b);
     }
+  }
 
-    // Determine maximum b based on the larger absolute endpoint
-    const maxAbsEndpoint = Math.max(Math.abs(minVal), Math.abs(maxVal));
-    const maxB = Math.floor(maxAbsEndpoint * maxAbsEndpoint); // Square of max endpoint
-    const minB = 2; // Smallest non-square integer
+  if (possibleB.length === 0) {
+    throw new Error(`No valid non-square b found in range [${minB}, ${maxB}]`);
+  }
 
-    // Generate possible non-square b values
-    const possibleB: number[] = [];
-    for (let b = minB; b <= maxB; b++) {
-        if (!isSquare(b)) {
-            possibleB.push(b);
-        }
+  // Randomly select a b
+  const b = possibleB[randomInt(0, possibleB.length - 1)];
+
+  const sqrtB = Math.sqrt(b);
+
+  // Calculate minA and maxA to fit [minVal, maxVal]
+  const minA = Math.ceil(minVal / sqrtB);
+  const maxA = Math.floor(maxVal / sqrtB);
+
+  // Ensure at least one valid a exists
+  if (minA > maxA) {
+    throw new Error(`No valid coefficient 'a' found for b = ${b} in range [${minVal}, ${maxVal}]`);
+  }
+
+  // Collect possible a values, excluding 0
+  const possibleA: number[] = [];
+  for (let a = minA; a <= maxA; a++) {
+    if (a !== 0) {
+      possibleA.push(a);
     }
+  }
 
-    if (possibleB.length === 0) {
-        throw new Error(`No valid non-square b found in range [${minB}, ${maxB}]`);
-    }
+  if (possibleA.length === 0) {
+    throw new Error(
+      `No valid nonzero coefficient 'a' found for b = ${b} in range [${minVal}, ${maxVal}]`
+    );
+  }
 
-    // Randomly select a b
-    const b = possibleB[randomInt(0, possibleB.length - 1)];
+  // Randomly select a valid a
+  const a = possibleA[randomInt(0, possibleA.length - 1)];
 
-    const sqrtB = Math.sqrt(b);
+  // Verify the candidate
+  const candidate = a * sqrtB;
+  if (candidate < minVal || candidate > maxVal) {
+    throw new Error(`Generated candidate ${candidate} is out of bounds [${minVal}, ${maxVal}]`);
+  }
 
-    // Calculate minA and maxA to fit [minVal, maxVal]
-    const minA = Math.ceil(minVal / sqrtB);
-    const maxA = Math.floor(maxVal / sqrtB);
-
-    // Ensure at least one valid a exists
-    if (minA > maxA) {
-        throw new Error(`No valid coefficient 'a' found for b = ${b} in range [${minVal}, ${maxVal}]`);
-    }
-
-    // Collect possible a values, excluding 0
-    const possibleA: number[] = [];
-    for (let a = minA; a <= maxA; a++) {
-        if (a !== 0) {
-            possibleA.push(a);
-        }
-    }
-
-    if (possibleA.length === 0) {
-        throw new Error(`No valid nonzero coefficient 'a' found for b = ${b} in range [${minVal}, ${maxVal}]`);
-    }
-
-    // Randomly select a valid a
-    const a = possibleA[randomInt(0, possibleA.length - 1)];
-
-    // Verify the candidate
-    const candidate = a * sqrtB;
-    if (candidate < minVal || candidate > maxVal) {
-        throw new Error(`Generated candidate ${candidate} is out of bounds [${minVal}, ${maxVal}]`);
-    }
-
-    return [a, b];
+  return [a, b];
 }
 
 /**
@@ -142,19 +143,20 @@ function generateIrrational(minVal: number = -10, maxVal: number = 10): number[]
  * - `natural`: Generates a random integer in the range (ensuring it's >= 1) and returns it as `[integer, 1]`.
  */
 const numberSetGenerators: Record<NumberSet, (minVal: number, maxVal: number) => number[]> = {
-    real: (minVal, maxVal) => {
-        // When minVal is negative, don't include 'natural' as an option
-        // since natural numbers can't be negative
-        const options: NumberSet[] = minVal < 0 
-            ? ["rational", "irrational", "integer"] 
-            : ["rational", "irrational", "integer", "natural"];
-        const randomSet = randomChoice(options);
-        return numberSetGenerators[randomSet](minVal, maxVal);
-    },
-    rational: (minVal, maxVal) => generateRational(minVal, maxVal),
-    irrational: (minVal, maxVal) => generateIrrational(minVal, maxVal),
-    integer: (minVal, maxVal) => [randomInt(minVal, maxVal), 1],
-    natural: (minVal, maxVal) => [randomInt(Math.max(minVal, 1), maxVal), 1],
+  real: (minVal, maxVal) => {
+    // When minVal is negative, don't include 'natural' as an option
+    // since natural numbers can't be negative
+    const options: NumberSet[] =
+      minVal < 0
+        ? ["rational", "irrational", "integer"]
+        : ["rational", "irrational", "integer", "natural"];
+    const randomSet = randomChoice(options);
+    return numberSetGenerators[randomSet](minVal, maxVal);
+  },
+  rational: (minVal, maxVal) => generateRational(minVal, maxVal),
+  irrational: (minVal, maxVal) => generateIrrational(minVal, maxVal),
+  integer: (minVal, maxVal) => [randomInt(minVal, maxVal), 1],
+  natural: (minVal, maxVal) => [randomInt(Math.max(minVal, 1), maxVal), 1],
 };
 
 /**
@@ -166,32 +168,35 @@ const numberSetGenerators: Record<NumberSet, (minVal: number, maxVal: number) =>
  * @throws {Error} If both "positive" and "negative" rules are provided simultaneously.
  * @throws {Error} If the generated unit value ([1] or [-1]) fails to satisfy other provided rules (e.g., "even", "odd").
  */
-function generateUnitCoefficient(rules: CoefficientRule[]): { raw: [number, number]; numberSetUsed: NumberSet } {
-    const hasPositive = rules.includes("positive");
-    const hasNegative = rules.includes("negative");
+function generateUnitCoefficient(rules: CoefficientRule[]): {
+  raw: [number, number];
+  numberSetUsed: NumberSet;
+} {
+  const hasPositive = rules.includes("positive");
+  const hasNegative = rules.includes("negative");
 
-    if (hasPositive && hasNegative) {
-        throw new Error("Cannot satisfy both 'positive' and 'negative' rules simultaneously");
-    }
+  if (hasPositive && hasNegative) {
+    throw new Error("Cannot satisfy both 'positive' and 'negative' rules simultaneously");
+  }
 
-    let unitValue: number;
-    if (hasPositive) {
-        unitValue = 1;
-    } else if (hasNegative) {
-        unitValue = -1;
-    } else {
-        unitValue = randomChoice([-1, 1]);
-    }
+  let unitValue: number;
+  if (hasPositive) {
+    unitValue = 1;
+  } else if (hasNegative) {
+    unitValue = -1;
+  } else {
+    unitValue = randomChoice([-1, 1]);
+  }
 
-    const coefficient: [number, number] = [unitValue, 1];
-    const numberSetUsedForOutput: NumberSet = "integer"; // Unit coefficients are integers
+  const coefficient: [number, number] = [unitValue, 1];
+  const numberSetUsedForOutput: NumberSet = "integer"; // Unit coefficients are integers
 
-    // Check if the unit value satisfies all other rules
-    if (!rules.every(rule => getRuleValidator(rule)(coefficient))) {
-        throw new Error(`Cannot generate a unit value that satisfies rules: ${rules.join(', ')}`);
-    }
+  // Check if the unit value satisfies all other rules
+  if (!rules.every((rule) => getRuleValidator(rule)(coefficient))) {
+    throw new Error(`Cannot generate a unit value that satisfies rules: ${rules.join(", ")}`);
+  }
 
-    return { raw: coefficient, numberSetUsed: numberSetUsedForOutput };
+  return { raw: coefficient, numberSetUsed: numberSetUsedForOutput };
 }
 
 /**
@@ -214,61 +219,61 @@ function generateUnitCoefficient(rules: CoefficientRule[]): { raw: [number, numb
  * indicating that randomized generation should be attempted.
  */
 function tryDeterministicIntegerNaturalCoefficient(
-    numberSet: NumberSet,
-    minVal: number,
-    maxVal: number,
-    rules: CoefficientRule[]
+  numberSet: NumberSet,
+  minVal: number,
+  maxVal: number,
+  rules: CoefficientRule[]
 ): { raw: [number, number]; numberSetUsed: NumberSet } | null {
-    // Only applies to integer or natural number sets
-    if (numberSet !== "integer" && numberSet !== "natural") return null;
+  // Only applies to integer or natural number sets
+  if (numberSet !== "integer" && numberSet !== "natural") return null;
 
-    const isNatural = numberSet === "natural";
-    // For natural numbers, the effective minimum value is at least 1.
-    const actualMinForSearch = isNatural ? Math.max(minVal, 1) : minVal;
+  const isNatural = numberSet === "natural";
+  // For natural numbers, the effective minimum value is at least 1.
+  const actualMinForSearch = isNatural ? Math.max(minVal, 1) : minVal;
 
-    // If the adjusted range is invalid, throw an error immediately.
-    if (actualMinForSearch > maxVal) {
-        throw new Error(
-            `Invalid range for ${numberSet} generation: effective minimum (${actualMinForSearch}) is greater than maximum (${maxVal}). Cannot generate coefficient.`
-        );
+  // If the adjusted range is invalid, throw an error immediately.
+  if (actualMinForSearch > maxVal) {
+    throw new Error(
+      `Invalid range for ${numberSet} generation: effective minimum (${actualMinForSearch}) is greater than maximum (${maxVal}). Cannot generate coefficient.`
+    );
+  }
+
+  // Define a threshold for what's considered a "small enough" range for exhaustive search.
+  const SMALL_RANGE_THRESHOLD = 200;
+  const rangeSize = maxVal - actualMinForSearch + 1;
+
+  if (rangeSize <= SMALL_RANGE_THRESHOLD) {
+    // For small ranges, try every possible value deterministically.
+    const possibleIntegers: number[] = [];
+    for (let i = actualMinForSearch; i <= maxVal; i++) {
+      possibleIntegers.push(i);
     }
 
-    // Define a threshold for what's considered a "small enough" range for exhaustive search.
-    const SMALL_RANGE_THRESHOLD = 200;
-    const rangeSize = maxVal - actualMinForSearch + 1;
-
-    if (rangeSize <= SMALL_RANGE_THRESHOLD) {
-        // For small ranges, try every possible value deterministically.
-        const possibleIntegers: number[] = [];
-        for (let i = actualMinForSearch; i <= maxVal; i++) {
-            possibleIntegers.push(i);
-        }
-
-        const validCoefficients: [number, number][] = [];
-        for (const intVal of possibleIntegers) {
-            const candidateCoeff: [number, number] = [intVal, 1]; // Integers are represented as [value, 1]
-            if (rules.every(rule => getRuleValidator(rule)(candidateCoeff))) {
-                validCoefficients.push(candidateCoeff);
-            }
-        }
-
-        if (validCoefficients.length > 0) {
-            // Choose one of the valid coefficients randomly
-            const chosenCoefficient: [number, number] = randomChoice(validCoefficients);
-            return {
-                raw: chosenCoefficient,
-                numberSetUsed: numberSet
-            };
-        } else {
-            // If exhaustive search for this small integer/natural range fails,
-            // then no solution exists for these specific rules and range.
-            throw new Error(
-                `No ${numberSet} number found in the range [${actualMinForSearch}, ${maxVal}] (inclusive) that satisfies all rules: ${rules.join(', ')}. Exhaustive check failed.`
-            );
-        }
+    const validCoefficients: [number, number][] = [];
+    for (const intVal of possibleIntegers) {
+      const candidateCoeff: [number, number] = [intVal, 1]; // Integers are represented as [value, 1]
+      if (rules.every((rule) => getRuleValidator(rule)(candidateCoeff))) {
+        validCoefficients.push(candidateCoeff);
+      }
     }
-    // For large ranges, skip exhaustive search and return null to proceed with random attempts.
-    return null;
+
+    if (validCoefficients.length > 0) {
+      // Choose one of the valid coefficients randomly
+      const chosenCoefficient: [number, number] = randomChoice(validCoefficients);
+      return {
+        raw: chosenCoefficient,
+        numberSetUsed: numberSet,
+      };
+    } else {
+      // If exhaustive search for this small integer/natural range fails,
+      // then no solution exists for these specific rules and range.
+      throw new Error(
+        `No ${numberSet} number found in the range [${actualMinForSearch}, ${maxVal}] (inclusive) that satisfies all rules: ${rules.join(", ")}. Exhaustive check failed.`
+      );
+    }
+  }
+  // For large ranges, skip exhaustive search and return null to proceed with random attempts.
+  return null;
 }
 
 /**
@@ -295,109 +300,116 @@ function tryDeterministicIntegerNaturalCoefficient(
  * 5. If `MAX_ATTEMPTS` are reached without success, it throws an error.
  */
 function tryRandomizedCoefficientGeneration(
-    numberSet: NumberSet,
-    rules: CoefficientRule[],
-    range: [number, number],
-    MAX_ATTEMPTS: number
+  numberSet: NumberSet,
+  rules: CoefficientRule[],
+  range: [number, number],
+  MAX_ATTEMPTS: number
 ): { raw: [number, number]; numberSetUsed: NumberSet } {
-    const [minVal, maxVal] = range;
-    let coefficient: [number, number];
-    let numberSetUsedForOutput: NumberSet = numberSet; // May be updated if 'real' is requested
-    let attempts = 0;
+  const [minVal, maxVal] = range;
+  let coefficient: [number, number];
+  let numberSetUsedForOutput: NumberSet = numberSet; // May be updated if 'real' is requested
+  let attempts = 0;
 
-    while (attempts < MAX_ATTEMPTS) {
-        attempts++;
-        try {
-            let setToGenerateFrom: NumberSet = numberSet; // Start with the originally requested set
-            if (numberSet === "real") {
-                // If "real" is requested, randomly choose a more specific set for this attempt.
-                // Don't include 'natural' as an option if minVal is negative,
-                // as natural numbers must be positive.
-                const validOptions: NumberSet[] = minVal < 0
-                    ? ["rational", "irrational", "integer"]
-                    : ["rational", "irrational", "integer", "natural"];
-                setToGenerateFrom = randomChoice(validOptions);
-            }
-            numberSetUsedForOutput = setToGenerateFrom; // This is the set we are attempting to generate from
+  while (attempts < MAX_ATTEMPTS) {
+    attempts++;
+    try {
+      let setToGenerateFrom: NumberSet = numberSet; // Start with the originally requested set
+      if (numberSet === "real") {
+        // If "real" is requested, randomly choose a more specific set for this attempt.
+        // Don't include 'natural' as an option if minVal is negative,
+        // as natural numbers must be positive.
+        const validOptions: NumberSet[] =
+          minVal < 0
+            ? ["rational", "irrational", "integer"]
+            : ["rational", "irrational", "integer", "natural"];
+        setToGenerateFrom = randomChoice(validOptions);
+      }
+      numberSetUsedForOutput = setToGenerateFrom; // This is the set we are attempting to generate from
 
-            const generator = numberSetGenerators[setToGenerateFrom];
-            if (!generator) {
-                throw new Error(`Unsupported NumberSet for generation: ${setToGenerateFrom}`);
-            }
+      const generator = numberSetGenerators[setToGenerateFrom];
+      if (!generator) {
+        throw new Error(`Unsupported NumberSet for generation: ${setToGenerateFrom}`);
+      }
 
-            // Generate a candidate coefficient using the chosen generator
-            coefficient = generator(minVal, maxVal) as [number, number];
-            
-            // Check if the generated coefficient satisfies all specified rules
-            if (rules.every(rule => getRuleValidator(rule)(coefficient))) {
-                return { raw: coefficient, numberSetUsed: numberSetUsedForOutput }; // Solution found
-            }
-            
-            // If nearing max attempts, log detailed information for debugging
-            if (attempts === Math.floor(MAX_ATTEMPTS * 0.9)) {
-                const value = coefficient[0] / coefficient[1];
-                const failedRules = rules.filter(rule => !getRuleValidator(rule)(coefficient));
-                console.warn(`[Attempt ${attempts}/${MAX_ATTEMPTS}] Generated coefficient ${coefficient} (value: ${value}) for set '${setToGenerateFrom}' failed rules: ${failedRules.join(', ')}`);
-            }
-        } catch (error: unknown) {
-            // Log errors that occur during a specific generation attempt
-            // but continue trying until MAX_ATTEMPTS is reached.
-            let errorMessage = "An unknown error occurred";
-            if (error instanceof Error) {
-                errorMessage = error.message;
-            }
+      // Generate a candidate coefficient using the chosen generator
+      coefficient = generator(minVal, maxVal) as [number, number];
 
-            if (attempts === MAX_ATTEMPTS) {
-                // If it's the last attempt and an error occurred, log it before the final throw.
-                console.error(`Error during coefficient generation on final attempt (${numberSetUsedForOutput || numberSet}): ${errorMessage}`);
-            }
-            // Optionally, log non-critical errors on other attempts for debugging:
-            // else {
-            //    console.debug(`Warning during attempt ${attempts} for ${numberSetUsedForOutput || numberSet}: ${errorMessage}. Retrying...`);
-            // }
-        }
+      // Check if the generated coefficient satisfies all specified rules
+      if (rules.every((rule) => getRuleValidator(rule)(coefficient))) {
+        return { raw: coefficient, numberSetUsed: numberSetUsedForOutput }; // Solution found
+      }
+
+      // If nearing max attempts, log detailed information for debugging
+      if (attempts === Math.floor(MAX_ATTEMPTS * 0.9)) {
+        const value = coefficient[0] / coefficient[1];
+        const failedRules = rules.filter((rule) => !getRuleValidator(rule)(coefficient));
+        console.warn(
+          `[Attempt ${attempts}/${MAX_ATTEMPTS}] Generated coefficient ${coefficient} (value: ${value}) for set '${setToGenerateFrom}' failed rules: ${failedRules.join(", ")}`
+        );
+      }
+    } catch (error: unknown) {
+      // Log errors that occur during a specific generation attempt
+      // but continue trying until MAX_ATTEMPTS is reached.
+      let errorMessage = "An unknown error occurred";
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+
+      if (attempts === MAX_ATTEMPTS) {
+        // If it's the last attempt and an error occurred, log it before the final throw.
+        console.error(
+          `Error during coefficient generation on final attempt (${numberSetUsedForOutput || numberSet}): ${errorMessage}`
+        );
+      }
+      // Optionally, log non-critical errors on other attempts for debugging:
+      // else {
+      //    console.debug(`Warning during attempt ${attempts} for ${numberSetUsedForOutput || numberSet}: ${errorMessage}. Retrying...`);
+      // }
     }
-    // If loop completes without returning, it means no valid coefficient was found
-    throw new Error(
-        `Failed to generate a coefficient in range [${minVal}, ${maxVal}] with requested number set '${numberSet}' that satisfies rules: ${rules.join(', ')} after ${MAX_ATTEMPTS} attempts. Please check if these constraints are mathematically possible or try a wider range/different rules.`
-    );
+  }
+  // If loop completes without returning, it means no valid coefficient was found
+  throw new Error(
+    `Failed to generate a coefficient in range [${minVal}, ${maxVal}] with requested number set '${numberSet}' that satisfies rules: ${rules.join(", ")} after ${MAX_ATTEMPTS} attempts. Please check if these constraints are mathematically possible or try a wider range/different rules.`
+  );
 }
 
 export function generateCoefficient(
-    numberSet: NumberSet, // The *requested* number set
-    rules: CoefficientRule[],
-    range: [number, number]
+  numberSet: NumberSet, // The *requested* number set
+  rules: CoefficientRule[],
+  range: [number, number]
 ): { raw: [number, number]; numberSetUsed: NumberSet } {
-    const [minVal, maxVal] = range;
+  const [minVal, maxVal] = range;
 
-    // Handle specific case: rule 'unit'
-    if (rules.includes("unit")) {
-        // Assuming generateUnitCoefficient correctly returns { raw: [number, number]; ... }
-        return generateUnitCoefficient(rules);
-    }
+  // Handle specific case: rule 'unit'
+  if (rules.includes("unit")) {
+    // Assuming generateUnitCoefficient correctly returns { raw: [number, number]; ... }
+    return generateUnitCoefficient(rules);
+  }
 
-    // Validate constraints before attempting generation
-    if (!isCoefficientSettingsCombinationValid(numberSet, rules, undefined, range)) {
-        // Throw an error if basic validation fails
-        throw new Error(
-            `The requested combination is mathematically impossible or contradictory. ` +
-            `Cannot generate a coefficient with NumberSet='${numberSet}', Rules='${rules.join(', ')}', Range=[${minVal}, ${maxVal}]. ` +
-            `Please review the constraints.`
-        );
-    }
+  // Validate constraints before attempting generation
+  if (!isCoefficientSettingsCombinationValid(numberSet, rules, undefined, range)) {
+    // Throw an error if basic validation fails
+    throw new Error(
+      `The requested combination is mathematically impossible or contradictory. ` +
+        `Cannot generate a coefficient with NumberSet='${numberSet}', Rules='${rules.join(", ")}', Range=[${minVal}, ${maxVal}]. ` +
+        `Please review the constraints.`
+    );
+  }
 
-    // Proceed with generation if the combination is potentially valid...
-    
-    // Try deterministic path for integer/natural sets first
-    const deterministicResult = tryDeterministicIntegerNaturalCoefficient(numberSet, minVal, maxVal, rules);
-    if (deterministicResult) {
-        return deterministicResult;
-    }
-    
-    // Fallback to general random generation case
-    // Assuming tryRandomizedCoefficientGeneration correctly returns { raw: [number, number]; ... }
-    return tryRandomizedCoefficientGeneration(numberSet, rules, range, 1000);
+  // Proceed with generation if the combination is potentially valid...
+
+  // Try deterministic path for integer/natural sets first
+  const deterministicResult = tryDeterministicIntegerNaturalCoefficient(
+    numberSet,
+    minVal,
+    maxVal,
+    rules
+  );
+  if (deterministicResult) {
+    return deterministicResult;
+  }
+
+  // Fallback to general random generation case
+  // Assuming tryRandomizedCoefficientGeneration correctly returns { raw: [number, number]; ... }
+  return tryRandomizedCoefficientGeneration(numberSet, rules, range, 1000);
 }
-
-
-

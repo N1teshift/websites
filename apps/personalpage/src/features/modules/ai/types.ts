@@ -28,8 +28,8 @@ export interface MathObjectResponse {
  * @deprecated Likely related to older AI processing logic.
  */
 export interface PromptData {
-    prompt: string;
-    result: GeneratedMathObjects;
+  prompt: string;
+  result: GeneratedMathObjects;
 }
 
 /**
@@ -38,12 +38,12 @@ export interface PromptData {
  * @deprecated May be superseded by newer response types.
  */
 export interface GeneratedMathObjects {
-    objects: MathInput[];
-    usage?: {
-        total_tokens: number;
-        prompt_tokens?: number;
-        completion_tokens?: number;
-    };
+  objects: MathInput[];
+  usage?: {
+    total_tokens: number;
+    prompt_tokens?: number;
+    completion_tokens?: number;
+  };
 }
 
 /**
@@ -52,14 +52,14 @@ export interface GeneratedMathObjects {
  * @deprecated Possibly part of the legacy chain validation system.
  */
 export interface ValidationResult {
-    isValid: boolean;
-    error?: string;
-    validObjects: MathInput[];
-    usage?: {
-        total_tokens: number;
-        prompt_tokens?: number;
-        completion_tokens?: number;
-    };
+  isValid: boolean;
+  error?: string;
+  validObjects: MathInput[];
+  usage?: {
+    total_tokens: number;
+    prompt_tokens?: number;
+    completion_tokens?: number;
+  };
 }
 
 /**
@@ -73,36 +73,36 @@ export type TypeIdentificationResult = { objectType: ObjectType };
  * to indicate if it's just a warning.
  */
 export interface ValidationError {
-    message: string;
-    isWarning?: boolean;
-  }
+  message: string;
+  isWarning?: boolean;
+}
 
 /**
  * Defines allowed OpenAI model identifiers.
  * Includes specific known models and allows for string flexibility.
  */
-export type OpenAIModel = 'gpt-4o-mini' | 'gpt-4o-mini-2024-07-18' | string;
+export type OpenAIModel = "gpt-4o-mini" | "gpt-4o-mini-2024-07-18" | string;
 
 /**
  * Configuration options for interacting with the OpenAI API proxy (Responses API).
  */
 export interface ResponsesConfig {
-    /** The sampling temperature to use. */
-    temperature?: number;
-    /** The maximum number of tokens to generate. */
-    maxTokens?: number;
-    /** The specific OpenAI model to use. */
-    model?: string;
-    /** An optional system prompt to guide the model. */
-    systemPrompt?: string;
-    /** Specifies the desired response format (text or structured JSON). */
-    textFormat?: 'text' | 'json_object';
-    /** A JSON schema to enforce for the response when `textFormat` is 'json_object'. */
-    schema?: Record<string, unknown>;
-    /** Whether to stream the response. */
-    stream?: boolean;
-    /** A list of messages for chat completion models. */
-    messages?: { role: 'user' | 'assistant' | 'system'; content: string }[];
+  /** The sampling temperature to use. */
+  temperature?: number;
+  /** The maximum number of tokens to generate. */
+  maxTokens?: number;
+  /** The specific OpenAI model to use. */
+  model?: string;
+  /** An optional system prompt to guide the model. */
+  systemPrompt?: string;
+  /** Specifies the desired response format (text or structured JSON). */
+  textFormat?: "text" | "json_object";
+  /** A JSON schema to enforce for the response when `textFormat` is 'json_object'. */
+  schema?: Record<string, unknown>;
+  /** Whether to stream the response. */
+  stream?: boolean;
+  /** A list of messages for chat completion models. */
+  messages?: { role: "user" | "assistant" | "system"; content: string }[];
 }
 
 /**
@@ -138,12 +138,12 @@ export interface ResponsesResult {
  * @deprecated Part of the legacy chain system.
  */
 export interface ChainResult<T = unknown> {
-    /** The primary, validated output of the chain. */
-    output: T;
-    /** The execution context, potentially updated by the chain. */
-    context: Record<string, unknown>;
-    /** Token usage specific to this chain's execution. */
-    usage: TokenUsage;
+  /** The primary, validated output of the chain. */
+  output: T;
+  /** The execution context, potentially updated by the chain. */
+  context: Record<string, unknown>;
+  /** Token usage specific to this chain's execution. */
+  usage: TokenUsage;
 }
 
 /**
@@ -151,9 +151,9 @@ export interface ChainResult<T = unknown> {
  * @deprecated Part of the legacy chain system.
  */
 export interface Chain {
-    name: string;
-    systemPrompt: string;
-    execute(userPrompt: string, context: Record<string, unknown>): Promise<ChainResult>;
+  name: string;
+  systemPrompt: string;
+  execute(userPrompt: string, context: Record<string, unknown>): Promise<ChainResult>;
 }
 
 /**
@@ -164,9 +164,9 @@ export interface Chain {
  * @deprecated Related to the legacy chain system.
  */
 export interface ChainManagerConfig {
-    chains?: Chain[];
-    model?: OpenAIModel;
-    debug?: boolean;
+  chains?: Chain[];
+  model?: OpenAIModel;
+  debug?: boolean;
 }
 
 /**
@@ -174,12 +174,12 @@ export interface ChainManagerConfig {
  * @deprecated May be consolidated or replaced by `ResponsesConfig` or similar.
  */
 export interface OpenAIConfig {
-    temperature?: number;
-    maxTokens?: number;
-    functionSchema?: Record<string, unknown>;
-    functionName?: string;
-    forceFunctionCall?: boolean;
-    model?: OpenAIModel;
+  temperature?: number;
+  maxTokens?: number;
+  functionSchema?: Record<string, unknown>;
+  functionName?: string;
+  forceFunctionCall?: boolean;
+  model?: OpenAIModel;
 }
 
 /**
@@ -190,6 +190,3 @@ export interface TokenUsage {
   output_tokens: number;
   total_tokens: number;
 }
-
-
-

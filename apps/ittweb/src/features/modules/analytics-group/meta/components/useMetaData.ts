@@ -2,14 +2,14 @@
  * Custom hook for fetching meta analytics data
  */
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from "react";
 import type {
   ActivityDataPoint,
   GameLengthDataPoint,
   PlayerActivityDataPoint,
   ClassSelectionData,
   ClassWinRateData,
-} from '../../analytics/types';
+} from "../../analytics/types";
 
 interface MetaData {
   activity: ActivityDataPoint[];
@@ -26,12 +26,7 @@ interface UseMetaDataParams {
   endDate?: string;
 }
 
-export function useMetaData({
-  category,
-  teamFormat,
-  startDate,
-  endDate,
-}: UseMetaDataParams) {
+export function useMetaData({ category, teamFormat, startDate, endDate }: UseMetaDataParams) {
   const [metaData, setMetaData] = useState<MetaData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -40,22 +35,22 @@ export function useMetaData({
     try {
       setLoading(true);
       setError(null);
-      
+
       const params = new URLSearchParams();
-      if (category) params.append('category', category);
-      if (teamFormat) params.append('teamFormat', teamFormat);
-      if (startDate) params.append('startDate', startDate);
-      if (endDate) params.append('endDate', endDate);
+      if (category) params.append("category", category);
+      if (teamFormat) params.append("teamFormat", teamFormat);
+      if (startDate) params.append("startDate", startDate);
+      if (endDate) params.append("endDate", endDate);
 
       const response = await fetch(`/api/analytics/meta?${params.toString()}`);
       if (!response.ok) {
-        throw new Error('Failed to load meta statistics');
+        throw new Error("Failed to load meta statistics");
       }
       const result = await response.json();
       const data = result.data || result;
       setMetaData(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load meta statistics');
+      setError(err instanceof Error ? err.message : "Failed to load meta statistics");
     } finally {
       setLoading(false);
     }
@@ -72,5 +67,3 @@ export function useMetaData({
     refetch: fetchMetaData,
   };
 }
-
-

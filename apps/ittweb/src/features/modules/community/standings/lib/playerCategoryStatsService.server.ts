@@ -1,19 +1,19 @@
 /**
  * Player Category Stats Service - Server-Only Operations
- * 
+ *
  * Server-only functions for managing denormalized player category statistics.
  * These functions use Firebase Admin SDK and should only be used in API routes.
  */
 
-import { getFirestoreAdmin } from '@websites/infrastructure/firebase';
-import { createComponentLogger, logError } from '@websites/infrastructure/logging';
-import { createTimestampFactoryAsync } from '@websites/infrastructure/utils';
-import { normalizePlayerName } from '@/features/modules/community/players/lib/playerService.utils';
-import type { PlayerCategoryStats } from '../types';
-import type { GameCategory } from '../../../game-management/games/types';
+import { getFirestoreAdmin } from "@websites/infrastructure/firebase";
+import { createComponentLogger, logError } from "@websites/infrastructure/logging";
+import { createTimestampFactoryAsync } from "@websites/infrastructure/utils";
+import { normalizePlayerName } from "@/features/modules/community/players/lib/playerService.utils";
+import type { PlayerCategoryStats } from "../types";
+import type { GameCategory } from "../../../game-management/games/types";
 
-const PLAYER_CATEGORY_STATS_COLLECTION = 'playerCategoryStats';
-const logger = createComponentLogger('playerCategoryStatsService');
+const PLAYER_CATEGORY_STATS_COLLECTION = "playerCategoryStats";
+const logger = createComponentLogger("playerCategoryStatsService");
 
 /**
  * Generate document ID for player category stats
@@ -66,9 +66,7 @@ export async function upsertPlayerCategoryStats(
       score: stats.score,
       games,
       winRate,
-      lastPlayed: stats.lastPlayed
-        ? timestampFactory.fromDate(stats.lastPlayed)
-        : undefined,
+      lastPlayed: stats.lastPlayed ? timestampFactory.fromDate(stats.lastPlayed) : undefined,
       updatedAt: now,
     };
 
@@ -76,7 +74,7 @@ export async function upsertPlayerCategoryStats(
     const docRef = adminDb.collection(PLAYER_CATEGORY_STATS_COLLECTION).doc(docId);
     await docRef.set(data, { merge: true });
 
-    logger.debug('Updated player category stats', {
+    logger.debug("Updated player category stats", {
       docId,
       playerId: normalizedPlayerId,
       category,
@@ -84,14 +82,14 @@ export async function upsertPlayerCategoryStats(
     });
   } catch (error) {
     const err = error as Error;
-    logError(err, 'Failed to upsert player category stats', {
-      component: 'playerCategoryStatsService',
-      operation: 'upsertPlayerCategoryStats',
+    logError(err, "Failed to upsert player category stats", {
+      component: "playerCategoryStatsService",
+      operation: "upsertPlayerCategoryStats",
       playerId,
       category,
     });
     // Don't throw - this is a non-critical operation for standings optimization
-    logger.warn('Failed to update denormalized stats, continuing...', {
+    logger.warn("Failed to update denormalized stats, continuing...", {
       playerId,
       category,
       error: err.message,
@@ -115,16 +113,19 @@ export async function deletePlayerCategoryStats(
     const docRef = adminDb.collection(PLAYER_CATEGORY_STATS_COLLECTION).doc(docId);
     await docRef.delete();
 
-    logger.debug('Deleted player category stats', { docId, playerId: normalizedPlayerId, category });
+    logger.debug("Deleted player category stats", {
+      docId,
+      playerId: normalizedPlayerId,
+      category,
+    });
   } catch (error) {
     const err = error as Error;
-    logError(err, 'Failed to delete player category stats', {
-      component: 'playerCategoryStatsService',
-      operation: 'deletePlayerCategoryStats',
+    logError(err, "Failed to delete player category stats", {
+      component: "playerCategoryStatsService",
+      operation: "deletePlayerCategoryStats",
       playerId,
       category,
     });
     // Don't throw - non-critical operation
   }
 }
-

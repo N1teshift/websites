@@ -1,18 +1,18 @@
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import ArchiveFormBase from '../components/ArchiveFormBase';
-import type { ArchiveEntry } from '@/types/archive';
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import ArchiveFormBase from "../components/ArchiveFormBase";
+import type { ArchiveEntry } from "@/types/archive";
 
 // Mock all hooks
 const mockFormData = {
-  title: '',
-  content: '',
-  dateType: 'single' as const,
-  singleDate: '',
-  approximateText: '',
-  entryType: '',
-  mediaUrl: '',
-  twitchClipUrl: '',
+  title: "",
+  content: "",
+  dateType: "single" as const,
+  singleDate: "",
+  approximateText: "",
+  entryType: "",
+  mediaUrl: "",
+  twitchClipUrl: "",
 };
 
 const mockSetFormData = jest.fn();
@@ -34,7 +34,7 @@ const mockUseArchiveBaseStateDefaultReturn = () => ({
   setReplayFile: mockSetReplayFile,
   currentImages: [],
   setCurrentImages: mockSetCurrentImages,
-  sectionOrder: ['text', 'images', 'video', 'twitch', 'replay'],
+  sectionOrder: ["text", "images", "video", "twitch", "replay"],
   setSectionOrder: mockSetSectionOrder,
   existingReplayUrl: undefined,
   existingReplayName: undefined,
@@ -43,13 +43,13 @@ const mockUseArchiveBaseStateDefaultReturn = () => ({
 
 const mockUseArchiveBaseState = jest.fn(mockUseArchiveBaseStateDefaultReturn);
 
-jest.mock('../../hooks/useArchiveBaseState', () => ({
+jest.mock("../../hooks/useArchiveBaseState", () => ({
   useArchiveBaseState: jest.fn((...args: any[]) => {
     return mockUseArchiveBaseState.apply(null, args as any);
   }),
 }));
 
-jest.mock('../../hooks/useArchiveMedia', () => ({
+jest.mock("../../hooks/useArchiveMedia", () => ({
   useArchiveMedia: jest.fn(() => ({
     imagePreviewUrls: [],
   })),
@@ -58,11 +58,11 @@ jest.mock('../../hooks/useArchiveMedia', () => ({
 const mockHandleSubmit = jest.fn();
 const mockSetError = jest.fn();
 
-jest.mock('../../hooks/useArchiveFormSubmit', () => ({
+jest.mock("../../hooks/useArchiveFormSubmit", () => ({
   useArchiveFormSubmit: jest.fn(() => ({
     handleSubmit: mockHandleSubmit,
     isSubmitting: false,
-    error: '',
+    error: "",
     setError: mockSetError,
   })),
 }));
@@ -75,7 +75,7 @@ const mockHandleCombinedFileUpload = jest.fn();
 const mockHandleRemoveExistingImage = jest.fn();
 const mockHandleRemoveReplay = jest.fn();
 
-jest.mock('../../hooks/useArchiveHandlers', () => ({
+jest.mock("../../hooks/useArchiveHandlers", () => ({
   useArchiveHandlers: jest.fn(() => ({
     handleInputChange: mockHandleInputChange,
     handleReorderImages: mockHandleReorderImages,
@@ -88,28 +88,28 @@ jest.mock('../../hooks/useArchiveHandlers', () => ({
 }));
 
 // Mock child components
-jest.mock('../components/sections/FormHeader', () => ({
+jest.mock("../components/sections/FormHeader", () => ({
   __esModule: true,
-  default: ({ mode }: { mode: 'create' | 'edit' }) => (
+  default: ({ mode }: { mode: "create" | "edit" }) => (
     <div data-testid="form-header">Mode: {mode}</div>
   ),
 }));
 
-jest.mock('../components/sections/DateSelector', () => ({
+jest.mock("../components/sections/DateSelector", () => ({
   __esModule: true,
   default: ({ dateType, singleDate, approximateText, onFieldChange }: any) => (
     <div data-testid="date-selector">
       <div>Date Type: {dateType}</div>
       <div>Single Date: {singleDate}</div>
       <div>Approximate: {approximateText}</div>
-      <button onClick={() => onFieldChange({ target: { name: 'dateType', value: 'undated' } })}>
+      <button onClick={() => onFieldChange({ target: { name: "dateType", value: "undated" } })}>
         Change Date Type
       </button>
     </div>
   ),
 }));
 
-jest.mock('../components/sections/MediaSelector', () => ({
+jest.mock("../components/sections/MediaSelector", () => ({
   __esModule: true,
   default: ({ videoUrl, onVideoUrlChange, onFileUpload, videoError }: any) => (
     <div data-testid="media-selector">
@@ -120,17 +120,13 @@ jest.mock('../components/sections/MediaSelector', () => ({
         placeholder="Video URL"
         data-testid="video-url-input"
       />
-      <input
-        type="file"
-        onChange={(e) => onFileUpload(e)}
-        data-testid="file-upload-input"
-      />
+      <input type="file" onChange={(e) => onFileUpload(e)} data-testid="file-upload-input" />
       {videoError && <div data-testid="video-error">{videoError}</div>}
     </div>
   ),
 }));
 
-jest.mock('../components/sections/MediaPreview', () => ({
+jest.mock("../components/sections/MediaPreview", () => ({
   __esModule: true,
   default: ({
     images,
@@ -154,7 +150,7 @@ jest.mock('../components/sections/MediaPreview', () => ({
   ),
 }));
 
-describe('ArchiveFormBase', () => {
+describe("ArchiveFormBase", () => {
   const mockOnSubmit = jest.fn();
   const mockOnCancel = jest.fn();
   const mockOnSuccess = jest.fn();
@@ -163,21 +159,21 @@ describe('ArchiveFormBase', () => {
     jest.clearAllMocks();
     // Reset form data
     Object.assign(mockFormData, {
-      title: '',
-      content: '',
-      dateType: 'single' as const,
-      singleDate: '',
-      approximateText: '',
-      entryType: '',
-      mediaUrl: '',
-      twitchClipUrl: '',
+      title: "",
+      content: "",
+      dateType: "single" as const,
+      singleDate: "",
+      approximateText: "",
+      entryType: "",
+      mediaUrl: "",
+      twitchClipUrl: "",
     });
     // Reset useArchiveBaseState mock to default
     mockUseArchiveBaseState.mockImplementation(mockUseArchiveBaseStateDefaultReturn);
   });
 
-  describe('renders form', () => {
-    it('should render form with create mode', () => {
+  describe("renders form", () => {
+    it("should render form with create mode", () => {
       // Act
       render(
         <ArchiveFormBase
@@ -189,26 +185,26 @@ describe('ArchiveFormBase', () => {
       );
 
       // Assert
-      expect(screen.getByTestId('form-header')).toBeInTheDocument();
-      expect(screen.getByText('Mode: create')).toBeInTheDocument();
+      expect(screen.getByTestId("form-header")).toBeInTheDocument();
+      expect(screen.getByText("Mode: create")).toBeInTheDocument();
       expect(screen.getByLabelText(/Title \*/i)).toBeInTheDocument();
       expect(screen.getByLabelText(/Entry Type/i)).toBeInTheDocument();
       expect(screen.getByLabelText(/Text/i)).toBeInTheDocument();
     });
 
-    it('should render form with edit mode', () => {
+    it("should render form with edit mode", () => {
       // Arrange
       const mockEntry: ArchiveEntry = {
-        id: 'entry1',
-        title: 'Existing Entry',
-        content: 'Existing content',
-        creatorName: 'Test Creator',
+        id: "entry1",
+        title: "Existing Entry",
+        content: "Existing content",
+        creatorName: "Test Creator",
         dateInfo: {
-          type: 'single',
-          singleDate: '2024-01-15',
+          type: "single",
+          singleDate: "2024-01-15",
         },
-        createdAt: '2024-01-15T00:00:00Z',
-        updatedAt: '2024-01-15T00:00:00Z',
+        createdAt: "2024-01-15T00:00:00Z",
+        updatedAt: "2024-01-15T00:00:00Z",
       };
 
       // Act
@@ -223,10 +219,10 @@ describe('ArchiveFormBase', () => {
       );
 
       // Assert
-      expect(screen.getByText('Mode: edit')).toBeInTheDocument();
+      expect(screen.getByText("Mode: edit")).toBeInTheDocument();
     });
 
-    it('should render all form fields', () => {
+    it("should render all form fields", () => {
       // Act
       render(
         <ArchiveFormBase
@@ -240,13 +236,13 @@ describe('ArchiveFormBase', () => {
       // Assert
       expect(screen.getByLabelText(/Title \*/i)).toBeInTheDocument();
       expect(screen.getByLabelText(/Entry Type/i)).toBeInTheDocument();
-      expect(screen.getByTestId('date-selector')).toBeInTheDocument();
+      expect(screen.getByTestId("date-selector")).toBeInTheDocument();
       expect(screen.getByLabelText(/Text/i)).toBeInTheDocument();
-      expect(screen.getByTestId('media-selector')).toBeInTheDocument();
-      expect(screen.getByTestId('media-preview')).toBeInTheDocument();
+      expect(screen.getByTestId("media-selector")).toBeInTheDocument();
+      expect(screen.getByTestId("media-preview")).toBeInTheDocument();
     });
 
-    it('should render submit button with create text', () => {
+    it("should render submit button with create text", () => {
       // Act
       render(
         <ArchiveFormBase
@@ -258,22 +254,22 @@ describe('ArchiveFormBase', () => {
       );
 
       // Assert
-      expect(screen.getByText('Add to Archives')).toBeInTheDocument();
+      expect(screen.getByText("Add to Archives")).toBeInTheDocument();
     });
 
-    it('should render submit button with edit text', () => {
+    it("should render submit button with edit text", () => {
       // Arrange
       const mockEntry: ArchiveEntry = {
-        id: 'entry1',
-        title: 'Existing Entry',
-        content: 'Existing content',
-        creatorName: 'Test Creator',
+        id: "entry1",
+        title: "Existing Entry",
+        content: "Existing content",
+        creatorName: "Test Creator",
         dateInfo: {
-          type: 'single',
-          singleDate: '2024-01-15',
+          type: "single",
+          singleDate: "2024-01-15",
         },
-        createdAt: '2024-01-15T00:00:00Z',
-        updatedAt: '2024-01-15T00:00:00Z',
+        createdAt: "2024-01-15T00:00:00Z",
+        updatedAt: "2024-01-15T00:00:00Z",
       };
 
       // Act
@@ -288,12 +284,12 @@ describe('ArchiveFormBase', () => {
       );
 
       // Assert
-      expect(screen.getByText('Update Entry')).toBeInTheDocument();
+      expect(screen.getByText("Update Entry")).toBeInTheDocument();
     });
   });
 
-  describe('handles form input', () => {
-    it('should call handleInputChange when title changes', async () => {
+  describe("handles form input", () => {
+    it("should call handleInputChange when title changes", async () => {
       // Arrange
       const user = userEvent.setup();
 
@@ -308,13 +304,13 @@ describe('ArchiveFormBase', () => {
       );
 
       const titleInput = screen.getByLabelText(/Title \*/i);
-      await user.type(titleInput, 'New Title');
+      await user.type(titleInput, "New Title");
 
       // Assert
       expect(mockHandleInputChange).toHaveBeenCalled();
     });
 
-    it('should call handleInputChange when content changes', async () => {
+    it("should call handleInputChange when content changes", async () => {
       // Arrange
       const user = userEvent.setup();
 
@@ -329,13 +325,13 @@ describe('ArchiveFormBase', () => {
       );
 
       const contentInput = screen.getByLabelText(/Text/i);
-      await user.type(contentInput, 'New content');
+      await user.type(contentInput, "New content");
 
       // Assert
       expect(mockHandleInputChange).toHaveBeenCalled();
     });
 
-    it('should call handleInputChange when entry type changes', async () => {
+    it("should call handleInputChange when entry type changes", async () => {
       // Arrange
       const user = userEvent.setup();
 
@@ -350,15 +346,15 @@ describe('ArchiveFormBase', () => {
       );
 
       const entryTypeSelect = screen.getByLabelText(/Entry Type/i);
-      await user.selectOptions(entryTypeSelect, 'story');
+      await user.selectOptions(entryTypeSelect, "story");
 
       // Assert
       expect(mockHandleInputChange).toHaveBeenCalled();
     });
   });
 
-  describe('handles form submission', () => {
-    it('should call handleSubmit when form is submitted', async () => {
+  describe("handles form submission", () => {
+    it("should call handleSubmit when form is submitted", async () => {
       // Arrange
       const user = userEvent.setup();
       mockHandleSubmit.mockImplementation((e: React.FormEvent) => {
@@ -375,20 +371,20 @@ describe('ArchiveFormBase', () => {
         />
       );
 
-      const submitButton = screen.getByText('Add to Archives');
+      const submitButton = screen.getByText("Add to Archives");
       await user.click(submitButton);
 
       // Assert
       expect(mockHandleSubmit).toHaveBeenCalled();
     });
 
-    it('should disable submit button when submitting', () => {
+    it("should disable submit button when submitting", () => {
       // Arrange
-      const useArchiveFormSubmit = require('../../hooks/useArchiveFormSubmit').useArchiveFormSubmit;
+      const useArchiveFormSubmit = require("../../hooks/useArchiveFormSubmit").useArchiveFormSubmit;
       useArchiveFormSubmit.mockReturnValueOnce({
         handleSubmit: mockHandleSubmit,
         isSubmitting: true,
-        error: '',
+        error: "",
         setError: mockSetError,
       });
 
@@ -403,30 +399,30 @@ describe('ArchiveFormBase', () => {
       );
 
       // Assert
-      const submitButton = screen.getByText('Adding...');
+      const submitButton = screen.getByText("Adding...");
       expect(submitButton).toBeDisabled();
     });
 
-    it('should show updating text when submitting in edit mode', () => {
+    it("should show updating text when submitting in edit mode", () => {
       // Arrange
       const mockEntry: ArchiveEntry = {
-        id: 'entry1',
-        title: 'Existing Entry',
-        content: 'Existing content',
-        creatorName: 'Test Creator',
+        id: "entry1",
+        title: "Existing Entry",
+        content: "Existing content",
+        creatorName: "Test Creator",
         dateInfo: {
-          type: 'single',
-          singleDate: '2024-01-15',
+          type: "single",
+          singleDate: "2024-01-15",
         },
-        createdAt: '2024-01-15T00:00:00Z',
-        updatedAt: '2024-01-15T00:00:00Z',
+        createdAt: "2024-01-15T00:00:00Z",
+        updatedAt: "2024-01-15T00:00:00Z",
       };
 
-      const useArchiveFormSubmit = require('../hooks/useArchiveFormSubmit').useArchiveFormSubmit;
+      const useArchiveFormSubmit = require("../hooks/useArchiveFormSubmit").useArchiveFormSubmit;
       useArchiveFormSubmit.mockReturnValueOnce({
         handleSubmit: mockHandleSubmit,
         isSubmitting: true,
-        error: '',
+        error: "",
         setError: mockSetError,
       });
 
@@ -442,12 +438,12 @@ describe('ArchiveFormBase', () => {
       );
 
       // Assert
-      expect(screen.getByText('Updating...')).toBeInTheDocument();
+      expect(screen.getByText("Updating...")).toBeInTheDocument();
     });
   });
 
-  describe('handles cancel action', () => {
-    it('should call onCancel when cancel button is clicked', async () => {
+  describe("handles cancel action", () => {
+    it("should call onCancel when cancel button is clicked", async () => {
       // Arrange
       const user = userEvent.setup();
 
@@ -461,7 +457,7 @@ describe('ArchiveFormBase', () => {
         />
       );
 
-      const cancelButton = screen.getByText('Cancel');
+      const cancelButton = screen.getByText("Cancel");
       await user.click(cancelButton);
 
       // Assert
@@ -469,10 +465,10 @@ describe('ArchiveFormBase', () => {
     });
   });
 
-  describe('handles media', () => {
-    it('should pass video URL to MediaSelector', () => {
+  describe("handles media", () => {
+    it("should pass video URL to MediaSelector", () => {
       // Arrange
-      Object.assign(mockFormData, { mediaUrl: 'https://youtube.com/watch?v=test' });
+      Object.assign(mockFormData, { mediaUrl: "https://youtube.com/watch?v=test" });
 
       // Act
       render(
@@ -485,13 +481,13 @@ describe('ArchiveFormBase', () => {
       );
 
       // Assert
-      const videoInput = screen.getByTestId('video-url-input');
-      expect(videoInput).toHaveValue('https://youtube.com/watch?v=test');
+      const videoInput = screen.getByTestId("video-url-input");
+      expect(videoInput).toHaveValue("https://youtube.com/watch?v=test");
     });
 
-    it('should pass Twitch URL to MediaSelector when mediaUrl is not set', () => {
+    it("should pass Twitch URL to MediaSelector when mediaUrl is not set", () => {
       // Arrange
-      Object.assign(mockFormData, { twitchClipUrl: 'https://twitch.tv/clip/test' });
+      Object.assign(mockFormData, { twitchClipUrl: "https://twitch.tv/clip/test" });
 
       // Act
       render(
@@ -504,11 +500,11 @@ describe('ArchiveFormBase', () => {
       );
 
       // Assert
-      const videoInput = screen.getByTestId('video-url-input');
-      expect(videoInput).toHaveValue('https://twitch.tv/clip/test');
+      const videoInput = screen.getByTestId("video-url-input");
+      expect(videoInput).toHaveValue("https://twitch.tv/clip/test");
     });
 
-    it('should call handleVideoUrlChange when video URL changes', async () => {
+    it("should call handleVideoUrlChange when video URL changes", async () => {
       // Arrange
       const user = userEvent.setup();
 
@@ -522,17 +518,17 @@ describe('ArchiveFormBase', () => {
         />
       );
 
-      const videoInput = screen.getByTestId('video-url-input');
-      await user.type(videoInput, 'https://youtube.com/watch?v=test');
+      const videoInput = screen.getByTestId("video-url-input");
+      await user.type(videoInput, "https://youtube.com/watch?v=test");
 
       // Assert
       expect(mockHandleVideoUrlChange).toHaveBeenCalled();
     });
 
-    it('should call handleCombinedFileUpload when file is selected', async () => {
+    it("should call handleCombinedFileUpload when file is selected", async () => {
       // Arrange
       const user = userEvent.setup();
-      const file = new File(['content'], 'test.jpg', { type: 'image/jpeg' });
+      const file = new File(["content"], "test.jpg", { type: "image/jpeg" });
 
       // Act
       render(
@@ -544,21 +540,21 @@ describe('ArchiveFormBase', () => {
         />
       );
 
-      const fileInput = screen.getByTestId('file-upload-input');
+      const fileInput = screen.getByTestId("file-upload-input");
       await user.upload(fileInput, file);
 
       // Assert
       expect(mockHandleCombinedFileUpload).toHaveBeenCalled();
     });
 
-    it('should show video error when error exists and video URL is set', () => {
+    it("should show video error when error exists and video URL is set", () => {
       // Arrange
-      Object.assign(mockFormData, { mediaUrl: 'https://youtube.com/watch?v=test' });
-      const useArchiveFormSubmit = require('../hooks/useArchiveFormSubmit').useArchiveFormSubmit;
+      Object.assign(mockFormData, { mediaUrl: "https://youtube.com/watch?v=test" });
+      const useArchiveFormSubmit = require("../hooks/useArchiveFormSubmit").useArchiveFormSubmit;
       useArchiveFormSubmit.mockReturnValueOnce({
         handleSubmit: mockHandleSubmit,
         isSubmitting: false,
-        error: 'Invalid video URL',
+        error: "Invalid video URL",
         setError: mockSetError,
       });
 
@@ -573,17 +569,17 @@ describe('ArchiveFormBase', () => {
       );
 
       // Assert
-      expect(screen.getByTestId('video-error')).toBeInTheDocument();
-      expect(screen.getByText('Invalid video URL')).toBeInTheDocument();
+      expect(screen.getByTestId("video-error")).toBeInTheDocument();
+      expect(screen.getByText("Invalid video URL")).toBeInTheDocument();
     });
   });
 
-  describe('handles media preview', () => {
-    it('should pass images to MediaPreview', () => {
+  describe("handles media preview", () => {
+    it("should pass images to MediaPreview", () => {
       // Arrange
-      const useArchiveMedia = require('../../hooks/useArchiveMedia').useArchiveMedia;
+      const useArchiveMedia = require("../../hooks/useArchiveMedia").useArchiveMedia;
       useArchiveMedia.mockReturnValueOnce({
-        imagePreviewUrls: ['https://example.com/image1.jpg', 'https://example.com/image2.jpg'],
+        imagePreviewUrls: ["https://example.com/image1.jpg", "https://example.com/image2.jpg"],
       });
       // Mock useArchiveBaseState to return imageFiles so component uses imagePreviewUrls
       mockUseArchiveBaseState.mockReturnValueOnce({
@@ -591,13 +587,13 @@ describe('ArchiveFormBase', () => {
         setFormData: mockSetFormData,
         imageFile: null,
         setImageFile: mockSetImageFile,
-        imageFiles: [new File([''], 'test.jpg'), new File([''], 'test2.jpg')] as File[], // Set imageFiles
+        imageFiles: [new File([""], "test.jpg"), new File([""], "test2.jpg")] as File[], // Set imageFiles
         setImageFiles: mockSetImageFiles,
         replayFile: null,
         setReplayFile: mockSetReplayFile,
         currentImages: [],
         setCurrentImages: mockSetCurrentImages,
-        sectionOrder: ['text', 'images', 'video', 'twitch', 'replay'],
+        sectionOrder: ["text", "images", "video", "twitch", "replay"],
         setSectionOrder: mockSetSectionOrder,
         existingReplayUrl: undefined,
         existingReplayName: undefined,
@@ -615,13 +611,13 @@ describe('ArchiveFormBase', () => {
       );
 
       // Assert
-      expect(screen.getByTestId('preview-images')).toBeInTheDocument();
+      expect(screen.getByTestId("preview-images")).toBeInTheDocument();
       expect(screen.getByText(/Images: 2/i)).toBeInTheDocument();
     });
 
-    it('should pass video URL to MediaPreview', () => {
+    it("should pass video URL to MediaPreview", () => {
       // Arrange
-      Object.assign(mockFormData, { mediaUrl: 'https://youtube.com/watch?v=test' });
+      Object.assign(mockFormData, { mediaUrl: "https://youtube.com/watch?v=test" });
 
       // Act
       render(
@@ -634,12 +630,12 @@ describe('ArchiveFormBase', () => {
       );
 
       // Assert
-      expect(screen.getByTestId('preview-video')).toBeInTheDocument();
+      expect(screen.getByTestId("preview-video")).toBeInTheDocument();
     });
 
-    it('should pass Twitch URL to MediaPreview', () => {
+    it("should pass Twitch URL to MediaPreview", () => {
       // Arrange
-      Object.assign(mockFormData, { twitchClipUrl: 'https://twitch.tv/clip/test' });
+      Object.assign(mockFormData, { twitchClipUrl: "https://twitch.tv/clip/test" });
 
       // Act
       render(
@@ -652,12 +648,12 @@ describe('ArchiveFormBase', () => {
       );
 
       // Assert
-      expect(screen.getByTestId('preview-twitch')).toBeInTheDocument();
+      expect(screen.getByTestId("preview-twitch")).toBeInTheDocument();
     });
 
-    it('should pass content as text preview to MediaPreview', () => {
+    it("should pass content as text preview to MediaPreview", () => {
       // Arrange
-      const testFormData = { ...mockFormData, content: 'Test content preview' };
+      const testFormData = { ...mockFormData, content: "Test content preview" };
       mockUseArchiveBaseState.mockReturnValueOnce({
         formData: testFormData,
         setFormData: mockSetFormData,
@@ -669,7 +665,7 @@ describe('ArchiveFormBase', () => {
         setReplayFile: mockSetReplayFile,
         currentImages: [],
         setCurrentImages: mockSetCurrentImages,
-        sectionOrder: ['text', 'images', 'video', 'twitch', 'replay'],
+        sectionOrder: ["text", "images", "video", "twitch", "replay"],
         setSectionOrder: mockSetSectionOrder,
         existingReplayUrl: undefined,
         existingReplayName: undefined,
@@ -687,29 +683,29 @@ describe('ArchiveFormBase', () => {
       );
 
       // Assert
-      const previewElement = screen.getByTestId('preview-text');
+      const previewElement = screen.getByTestId("preview-text");
       expect(previewElement).toBeInTheDocument();
       // Verify the content is displayed within the preview element
-      expect(previewElement).toHaveTextContent('Test content preview');
+      expect(previewElement).toHaveTextContent("Test content preview");
     });
 
-    it('should show remove image button in edit mode', () => {
+    it("should show remove image button in edit mode", () => {
       // Arrange
       const mockEntry: ArchiveEntry = {
-        id: 'entry1',
-        title: 'Existing Entry',
-        content: 'Existing content',
-        creatorName: 'Test Creator',
+        id: "entry1",
+        title: "Existing Entry",
+        content: "Existing content",
+        creatorName: "Test Creator",
         dateInfo: {
-          type: 'single',
-          singleDate: '2024-01-15',
+          type: "single",
+          singleDate: "2024-01-15",
         },
-        createdAt: '2024-01-15T00:00:00Z',
-        updatedAt: '2024-01-15T00:00:00Z',
+        createdAt: "2024-01-15T00:00:00Z",
+        updatedAt: "2024-01-15T00:00:00Z",
       };
-      const useArchiveMedia = require('../../hooks/useArchiveMedia').useArchiveMedia;
+      const useArchiveMedia = require("../../hooks/useArchiveMedia").useArchiveMedia;
       useArchiveMedia.mockReturnValueOnce({
-        imagePreviewUrls: ['https://example.com/image1.jpg'],
+        imagePreviewUrls: ["https://example.com/image1.jpg"],
       });
 
       // Act
@@ -724,14 +720,14 @@ describe('ArchiveFormBase', () => {
       );
 
       // Assert
-      expect(screen.getByText('Remove Image')).toBeInTheDocument();
+      expect(screen.getByText("Remove Image")).toBeInTheDocument();
     });
 
-    it('should not show remove image button in create mode', () => {
+    it("should not show remove image button in create mode", () => {
       // Arrange
-      const useArchiveMedia = require('../../hooks/useArchiveMedia').useArchiveMedia;
+      const useArchiveMedia = require("../../hooks/useArchiveMedia").useArchiveMedia;
       useArchiveMedia.mockReturnValueOnce({
-        imagePreviewUrls: ['https://example.com/image1.jpg'],
+        imagePreviewUrls: ["https://example.com/image1.jpg"],
       });
 
       // Act
@@ -745,18 +741,18 @@ describe('ArchiveFormBase', () => {
       );
 
       // Assert
-      expect(screen.queryByText('Remove Image')).not.toBeInTheDocument();
+      expect(screen.queryByText("Remove Image")).not.toBeInTheDocument();
     });
   });
 
-  describe('handles error display', () => {
-    it('should display error message when error exists', () => {
+  describe("handles error display", () => {
+    it("should display error message when error exists", () => {
       // Arrange
-      const useArchiveFormSubmit = require('../../hooks/useArchiveFormSubmit').useArchiveFormSubmit;
+      const useArchiveFormSubmit = require("../../hooks/useArchiveFormSubmit").useArchiveFormSubmit;
       useArchiveFormSubmit.mockReturnValueOnce({
         handleSubmit: mockHandleSubmit,
         isSubmitting: false,
-        error: 'Submission failed',
+        error: "Submission failed",
         setError: mockSetError,
       });
 
@@ -771,10 +767,10 @@ describe('ArchiveFormBase', () => {
       );
 
       // Assert
-      expect(screen.getByText('Submission failed')).toBeInTheDocument();
+      expect(screen.getByText("Submission failed")).toBeInTheDocument();
     });
 
-    it('should not display error when error is empty', () => {
+    it("should not display error when error is empty", () => {
       // Act
       render(
         <ArchiveFormBase
@@ -790,8 +786,8 @@ describe('ArchiveFormBase', () => {
     });
   });
 
-  describe('handles default author', () => {
-    it('should pass defaultAuthor to useArchiveFormSubmit', () => {
+  describe("handles default author", () => {
+    it("should pass defaultAuthor to useArchiveFormSubmit", () => {
       // Act
       render(
         <ArchiveFormBase
@@ -804,15 +800,12 @@ describe('ArchiveFormBase', () => {
       );
 
       // Assert
-      const useArchiveFormSubmit = require('../../hooks/useArchiveFormSubmit').useArchiveFormSubmit;
+      const useArchiveFormSubmit = require("../../hooks/useArchiveFormSubmit").useArchiveFormSubmit;
       expect(useArchiveFormSubmit).toHaveBeenCalledWith(
         expect.objectContaining({
-          defaultAuthor: 'Test Author',
+          defaultAuthor: "Test Author",
         })
       );
     });
   });
 });
-
-
-

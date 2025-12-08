@@ -5,6 +5,7 @@ Complete guide for setting up a staging environment that allows you to test chan
 ## Overview
 
 This setup creates a **staging environment** that:
+
 - Deploys automatically when you push to a `staging` branch
 - Uses a separate Vercel URL (not connected to your custom domain)
 - Allows you to test changes in a production-like environment
@@ -57,11 +58,13 @@ git push -u origin staging
    - **Development**: Only for local development
 
 **Recommended Setup:**
+
 - Set all your environment variables for **Production** (for `main` branch)
 - Set all your environment variables for **Preview** (for `staging` branch)
 - Optionally use a separate Firebase project for staging by setting different Firebase variables for Preview
 
 **Important Variables for Staging:**
+
 - `NEXTAUTH_URL`: Set to your staging URL (e.g., `https://ittweb-staging.vercel.app`)
 - All Firebase variables: Can use same project or separate staging project
 - Discord OAuth: Add staging redirect URI (see step 4)
@@ -100,12 +103,14 @@ If you want a cleaner staging URL:
 ### Daily Development Workflow
 
 1. **Develop locally:**
+
    ```bash
    npm run dev
    # Test your changes locally
    ```
 
 2. **Push to staging:**
+
    ```bash
    git checkout staging
    git merge main  # or cherry-pick specific commits
@@ -131,11 +136,13 @@ If you want a cleaner staging URL:
 You can also use feature branches that automatically create preview deployments:
 
 1. **Create feature branch:**
+
    ```bash
    git checkout -b feature/my-feature
    ```
 
 2. **Push feature branch:**
+
    ```bash
    git push -u origin feature/my-feature
    ```
@@ -148,6 +155,7 @@ You can also use feature branches that automatically create preview deployments:
 ## Environment Differences
 
 ### Staging Environment
+
 - **URL**: `https://ittweb-staging.vercel.app` (or similar)
 - **Branch**: `staging`
 - **Purpose**: Pre-production testing
@@ -155,6 +163,7 @@ You can also use feature branches that automatically create preview deployments:
 - **OAuth**: Separate redirect URI configured
 
 ### Production Environment
+
 - **URL**: Your custom domain (e.g., `https://yourdomain.com`)
 - **Branch**: `main`
 - **Purpose**: Live production site
@@ -168,6 +177,7 @@ You can also use feature branches that automatically create preview deployments:
 **Issue**: Pushing to `staging` doesn't create a deployment
 
 **Solutions**:
+
 - Verify the branch exists on GitHub
 - Check Vercel project settings → Git → ensure repository is connected
 - Check Vercel deployment logs for errors
@@ -177,6 +187,7 @@ You can also use feature branches that automatically create preview deployments:
 **Issue**: Staging deployment fails or behaves differently
 
 **Solutions**:
+
 - Verify environment variables are set for **Preview** environment in Vercel
 - Check that `NEXTAUTH_URL` matches your staging URL exactly
 - Ensure Discord redirect URI includes staging URL
@@ -187,6 +198,7 @@ You can also use feature branches that automatically create preview deployments:
 **Issue**: Discord OAuth fails on staging
 
 **Solutions**:
+
 - Verify Discord redirect URI includes staging URL
 - Check `NEXTAUTH_URL` environment variable matches staging URL
 - Ensure `NEXTAUTH_SECRET` is set for Preview environment
@@ -250,4 +262,3 @@ git push -u origin feature/my-feature
 - [Deployment Guide](./deployment.md) - General deployment information
 - [Environment Setup](../getting-started/setup.md) - Environment variable configuration
 - [CI/CD Guide](./ci-cd.md) - CI/CD pipeline documentation
-

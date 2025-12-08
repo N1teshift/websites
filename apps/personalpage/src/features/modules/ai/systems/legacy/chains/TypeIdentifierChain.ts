@@ -24,11 +24,11 @@ export class TypeIdentifierChain extends BaseChain<ObjectType> {
    */
   constructor(validationObjectType?: ObjectType) {
     super("TypeIdentifier", typeIdentifierPrompt);
-    
+
     this.validationObjectType = validationObjectType;
     this.logger.info(`Initialized with validation type: ${validationObjectType}`);
   }
-  
+
   /**
    * Gets the JSON schema required for the TypeIdentifierChain output.
    * The schema defines that the output should be an object containing an `objectType` field.
@@ -39,9 +39,9 @@ export class TypeIdentifierChain extends BaseChain<ObjectType> {
    */
   protected getSchema(_context: Record<string, unknown>): unknown {
     this.logger.debug(`Providing schema: typeIdentifierSchema`);
-    return typeIdentifierSchema; 
+    return typeIdentifierSchema;
   }
-  
+
   /**
    * Prepares the user prompt for the TypeIdentifierChain.
    * In this specific chain, no additional preparation is needed beyond the system prompt.
@@ -76,16 +76,21 @@ export class TypeIdentifierChain extends BaseChain<ObjectType> {
     this.logger.debug(`Validating parsed response: ${JSON.stringify(parsedOutput)}`);
     try {
       // Type guard to check if the input is a non-null object with an objectType string property
-      const hasObjectType = (
-        input: unknown
-      ): input is { objectType: string } => {
-        return typeof input === 'object' && input !== null && 'objectType' in input && typeof input.objectType === 'string';
+      const hasObjectType = (input: unknown): input is { objectType: string } => {
+        return (
+          typeof input === "object" &&
+          input !== null &&
+          "objectType" in input &&
+          typeof input.objectType === "string"
+        );
       };
 
       // Validate the structure and the objectType field using the type guard
       if (!hasObjectType(parsedOutput) || !isValidObjectType(parsedOutput.objectType)) {
         // Log the invalid response for debugging
-        this.logger.warn(`Invalid or missing objectType in parsed response: ${JSON.stringify(parsedOutput)}`);
+        this.logger.warn(
+          `Invalid or missing objectType in parsed response: ${JSON.stringify(parsedOutput)}`
+        );
         // Throw an error to indicate validation failure, potentially triggering fallback
         throw new Error(`Invalid or missing objectType in response`);
       }
@@ -96,12 +101,13 @@ export class TypeIdentifierChain extends BaseChain<ObjectType> {
 
       // Perform validation warning if a validation type was provided and doesn't match
       if (this.validationObjectType && identifiedType !== this.validationObjectType) {
-        this.logger.warn(`Validation mismatch: Identified "${identifiedType}" but expected "${this.validationObjectType}". Using identified type.`);
+        this.logger.warn(
+          `Validation mismatch: Identified "${identifiedType}" but expected "${this.validationObjectType}". Using identified type.`
+        );
         // Note: We proceed with the identified type, the warning is informational.
       }
 
       return identifiedType;
-
     } catch (error) {
       // This catch block now primarily handles validation errors or missing objectType
       const errorMsg = error instanceof Error ? error.message : String(error);
@@ -109,17 +115,16 @@ export class TypeIdentifierChain extends BaseChain<ObjectType> {
 
       // Fallback logic: If a validation type exists, use it as a last resort
       if (this.validationObjectType) {
-        this.logger.warn(`Error validating response. Falling back to validation type: "${this.validationObjectType}"`);
+        this.logger.warn(
+          `Error validating response. Falling back to validation type: "${this.validationObjectType}"`
+        );
         return this.validationObjectType;
       }
-      
+
       // If no fallback is available, re-throw the error
       this.logger.error(`Validation error and no fallback validation type available.`);
       // Re-throw with a more specific message if needed
       throw new Error(`Failed to validate response and no fallback available: ${errorMsg}`);
     }
   }
-} 
-
-
-
+}

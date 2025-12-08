@@ -68,10 +68,6 @@ export function formatValidationError(validationError: string): string {
     .replace(/DECIMAL/g, "decimal")
     .replace(/FRACTION/g, "fraction")
     .replace(/NATURAL/g, "natural number")
-    .replace(/WHOLE/g, "whole number")
-    // Add more replacements as needed
-    ;
+    .replace(/WHOLE/g, "whole number");
+  // Add more replacements as needed
 }
-
-
-

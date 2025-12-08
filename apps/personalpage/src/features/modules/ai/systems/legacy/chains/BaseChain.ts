@@ -17,7 +17,7 @@ export abstract class BaseChain<T = unknown> {
   name: string;
   systemPrompt: string;
   protected logger: ReturnType<typeof createComponentLogger>;
-  
+
   /**
    * Creates an instance of BaseChain.
    * @param {string} name - The name of the chain, used for logging and context keys.
@@ -26,9 +26,9 @@ export abstract class BaseChain<T = unknown> {
   constructor(name: string, systemPrompt: string) {
     this.name = name;
     this.systemPrompt = systemPrompt;
-    this.logger = createComponentLogger(name, 'BaseChain');
+    this.logger = createComponentLogger(name, "BaseChain");
   }
-  
+
   /**
    * Executes the chain's logic.
    * This involves preparing the prompt, calling the LLM with schema enforcement,
@@ -44,7 +44,7 @@ export abstract class BaseChain<T = unknown> {
 
     // Prepare the final user prompt (subclasses might modify it)
     const preparedPrompt = this.preparePrompt(userPrompt);
-    
+
     // Get the schema required for this chain's output
     const schema = this.getSchema(context);
 
@@ -55,8 +55,10 @@ export abstract class BaseChain<T = unknown> {
         this.systemPrompt,
         schema as Record<string, unknown>
       );
-      
-      this.logger.debug(`Raw JSON string response received: ${response.output_text.substring(0, 100)}...`);
+
+      this.logger.debug(
+        `Raw JSON string response received: ${response.output_text.substring(0, 100)}...`
+      );
 
       // 1. Parse the raw JSON string response
       const parsedResponse = await this.parseResponse(response.output_text);
@@ -65,34 +67,34 @@ export abstract class BaseChain<T = unknown> {
       // 2. Validate the parsed response object
       const output = await this.validateResponse(parsedResponse, userPrompt, context);
       this.logger.debug(`Validated response object: ${JSON.stringify(output, null, 2)}`);
-      
+
       // Update the context based on the validated output
       const finalContext = this.updateContext(output, context);
 
       this.logger.debug(`Final context: ${JSON.stringify(finalContext, null, 2)}`);
-      
+
       // Extract token usage information
       const usage: TokenUsage = {
         input_tokens: response.usage?.input_tokens ?? 0,
         output_tokens: response.usage?.output_tokens ?? 0,
-        total_tokens: response.usage?.total_tokens ?? 0
+        total_tokens: response.usage?.total_tokens ?? 0,
       };
-      
+
       // Log completion and return the final result
       this.logger.info(`Completed execution in ${Date.now() - startTime}ms.`);
       return {
         output,
         context: finalContext,
-        usage
+        usage,
       };
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : String(error);
       this.logError(`Error executing chain: ${message}`);
       // Re-throw the error to allow higher-level handling
-      throw error; 
+      throw error;
     }
   }
-  
+
   /**
    * Prepares the user prompt before sending it to the LLM.
    * Subclasses can override this method to modify the prompt based on context or other logic.
@@ -103,7 +105,7 @@ export abstract class BaseChain<T = unknown> {
   protected preparePrompt(userPrompt: string): string {
     return userPrompt;
   }
-  
+
   /**
    * Gets the JSON schema required for validating the LLM's output for this specific chain.
    * This method must be implemented by subclasses.
@@ -113,7 +115,7 @@ export abstract class BaseChain<T = unknown> {
    * @abstract
    */
   protected abstract getSchema(context: Record<string, unknown>): unknown;
-  
+
   /**
    * Parses the raw JSON string response from the LLM into a JavaScript object.
    * @param {string} response - The raw JSON string response from the LLM.
@@ -151,7 +153,7 @@ export abstract class BaseChain<T = unknown> {
     userPrompt: string,
     context: Record<string, unknown>
   ): Promise<T>;
-  
+
   /**
    * Updates the execution context with the output from this chain.
    * By default, it adds the output under a key corresponding to the chain's name.
@@ -164,7 +166,7 @@ export abstract class BaseChain<T = unknown> {
   protected updateContext(output: T, context: Record<string, unknown>): Record<string, unknown> {
     return {
       ...context,
-      [this.name]: output
+      [this.name]: output,
     };
   }
 
@@ -176,7 +178,4 @@ export abstract class BaseChain<T = unknown> {
   protected logError(message: string): void {
     this.logger.error(message);
   }
-} 
-
-
-
+}

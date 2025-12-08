@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react';
-import Link from 'next/link';
+import React, { useState, useRef, useEffect } from "react";
+import Link from "next/link";
 
 interface DropdownMenuProps {
   label: string;
@@ -11,7 +11,7 @@ interface DropdownMenuProps {
  * Dropdown menu component for navigation.
  * Supports keyboard navigation and click-outside-to-close behavior.
  */
-export function DropdownMenu({ label, items, className = '' }: DropdownMenuProps) {
+export function DropdownMenu({ label, items, className = "" }: DropdownMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -23,16 +23,16 @@ export function DropdownMenu({ label, items, className = '' }: DropdownMenuProps
     };
 
     if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
     }
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isOpen]);
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
-    if (event.key === 'Escape') {
+    if (event.key === "Escape") {
       setIsOpen(false);
     }
   };
@@ -49,10 +49,10 @@ export function DropdownMenu({ label, items, className = '' }: DropdownMenuProps
         aria-label={`${label} menu`}
       >
         {label}
-        <svg 
-          className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`} 
-          fill="none" 
-          stroke="currentColor" 
+        <svg
+          className={`w-4 h-4 transition-transform ${isOpen ? "rotate-180" : ""}`}
+          fill="none"
+          stroke="currentColor"
           viewBox="0 0 24 24"
           aria-hidden="true"
         >
@@ -84,5 +84,3 @@ export function DropdownMenu({ label, items, className = '' }: DropdownMenuProps
     </div>
   );
 }
-
-

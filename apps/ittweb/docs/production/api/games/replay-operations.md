@@ -13,6 +13,7 @@ Upload a Warcraft 3 replay file to create a completed game. **Requires authentic
 **Content-Type**: `multipart/form-data`
 
 **Form Fields**:
+
 - `replay` (file, required) - Warcraft 3 replay file (.w3g, .w3x)
 - `scheduledGameId` (string, optional) - Numeric ID of scheduled game to link to
 - `gameData` (string, optional) - JSON string with game data (fallback if replay parsing fails)
@@ -20,20 +21,22 @@ Upload a Warcraft 3 replay file to create a completed game. **Requires authentic
 **File Size Limit**: 50MB
 
 **Example Request** (using fetch):
+
 ```typescript
 const formData = new FormData();
-formData.append('replay', fileInput.files[0]);
+formData.append("replay", fileInput.files[0]);
 // Optional: Link to scheduled game
-formData.append('scheduledGameId', '1234');
+formData.append("scheduledGameId", "1234");
 
-const response = await fetch('/api/games/upload-replay', {
-  method: 'POST',
+const response = await fetch("/api/games/upload-replay", {
+  method: "POST",
   body: formData,
-  credentials: 'include' // Include session cookie
+  credentials: "include", // Include session cookie
 });
 ```
 
 **What It Does**:
+
 1. Parses the replay file to extract game data (players, stats, duration, etc.)
 2. Uploads replay file to Firebase Storage
 3. Creates a completed game with extracted data
@@ -42,6 +45,7 @@ const response = await fetch('/api/games/upload-replay', {
 6. Returns the created game ID
 
 **Response**:
+
 ```typescript
 {
   success: true;
@@ -52,6 +56,7 @@ const response = await fetch('/api/games/upload-replay', {
 ```
 
 Example response:
+
 ```json
 {
   "success": true,
@@ -62,6 +67,7 @@ Example response:
 ```
 
 **Error Responses**:
+
 ```json
 // 401 Unauthorized
 {
@@ -95,6 +101,7 @@ Example response:
 ```
 
 **Note**: If replay parsing fails, you can provide `gameData` as a JSON string with the following structure:
+
 ```json
 {
   "gameId": 1234,
@@ -131,26 +138,29 @@ Upload replay file for a scheduled game and convert it to completed. **Requires 
 **Content-Type**: `multipart/form-data`
 
 **Form Fields**:
+
 - `replay` (file, required) - Warcraft 3 replay file (.w3g, .w3x)
 - `gameData` (string, optional) - JSON string with game data (fallback if replay parsing fails)
 
 **File Size Limit**: 50MB
 
 **Example Request** (using fetch):
+
 ```typescript
 const formData = new FormData();
-formData.append('replay', fileInput.files[0]);
+formData.append("replay", fileInput.files[0]);
 // Optional: Provide game data if replay parsing fails
 // formData.append('gameData', JSON.stringify({ ... }));
 
-const response = await fetch('/api/games/abc123def456/upload-replay', {
-  method: 'POST',
+const response = await fetch("/api/games/abc123def456/upload-replay", {
+  method: "POST",
   body: formData,
-  credentials: 'include' // Include session cookie
+  credentials: "include", // Include session cookie
 });
 ```
 
 **What It Does**:
+
 1. Validates the game exists and is in `'scheduled'` state
 2. Uploads replay file to Firebase Storage
 3. Parses replay to extract game data
@@ -161,6 +171,7 @@ const response = await fetch('/api/games/abc123def456/upload-replay', {
 8. Returns success message
 
 **Response**:
+
 ```typescript
 {
   success: true;
@@ -170,6 +181,7 @@ const response = await fetch('/api/games/abc123def456/upload-replay', {
 ```
 
 Example response:
+
 ```json
 {
   "success": true,
@@ -179,6 +191,7 @@ Example response:
 ```
 
 **Error Responses**:
+
 ```json
 // 401 Unauthorized
 {
@@ -224,11 +237,13 @@ Example response:
 ```
 
 **Note**: This endpoint is different from `/api/games/upload-replay`:
+
 - This endpoint works with **existing scheduled games** (converts them to completed)
 - The standalone endpoint creates **new completed games** from scratch
 - Both endpoints parse replays and update ELO scores
 
 **Note**: If replay parsing fails, you can provide `gameData` as a JSON string with the following structure:
+
 ```json
 {
   "gameId": 1234,
@@ -260,4 +275,3 @@ Example response:
 - [CRUD Operations](./crud-operations.md)
 - [API Reference](../README.md)
 - [Replay Parser System](../../systems/replay-parser/)
-

@@ -42,8 +42,14 @@ Replace `YOUR_DISCORD_ID` with your actual Discord ID (e.g., `257312315265908746
 ### Import the utilities
 
 ```typescript
-import { hasRole, isAdmin, isDeveloper, isModerator, isPremium } from '@/features/infrastructure/utils/user/userRoleUtils';
-import { getUserDataByDiscordId } from '@/features/infrastructure/lib/userDataService';
+import {
+  hasRole,
+  isAdmin,
+  isDeveloper,
+  isModerator,
+  isPremium,
+} from "@/features/infrastructure/utils/user/userRoleUtils";
+import { getUserDataByDiscordId } from "@/features/infrastructure/lib/userDataService";
 ```
 
 ### Example: Check user role in a component
@@ -81,27 +87,27 @@ function MyComponent() {
 ### Example: Protect API routes
 
 ```typescript
-import { NextApiRequest, NextApiResponse } from 'next';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/pages/api/auth/[...nextauth]';
-import { getUserDataByDiscordIdServer } from '@/features/infrastructure/lib/userDataService.server';
-import { isAdmin } from '@/features/infrastructure/utils/user/userRoleUtils';
+import { NextApiRequest, NextApiResponse } from "next";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/pages/api/auth/[...nextauth]";
+import { getUserDataByDiscordIdServer } from "@/features/infrastructure/lib/userDataService.server";
+import { isAdmin } from "@/features/infrastructure/utils/user/userRoleUtils";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const session = await getServerSession(req, res, authOptions);
-  
+
   if (!session?.discordId) {
-    return res.status(401).json({ error: 'Unauthorized' });
+    return res.status(401).json({ error: "Unauthorized" });
   }
 
   const userData = await getUserDataByDiscordId(session.discordId);
-  
+
   if (!isAdmin(userData?.role)) {
-    return res.status(403).json({ error: 'Forbidden: Admin access required' });
+    return res.status(403).json({ error: "Forbidden: Admin access required" });
   }
 
   // Admin-only logic here
-  return res.status(200).json({ message: 'Success' });
+  return res.status(200).json({ message: "Success" });
 }
 ```
 
@@ -141,11 +147,13 @@ user (lowest)
 ```
 
 For example, if you check `hasRole(userRole, 'moderator')`, it will return `true` for:
+
 - `moderator`
 - `admin`
 - `developer`
 
 But `false` for:
+
 - `premium`
 - `user`
 
@@ -162,8 +170,3 @@ But `false` for:
 - New users are created with `role: undefined` (treated as `'user'`)
 - The `removeUndefined()` function ensures undefined roles are not saved to Firestore
 - When checking roles, `undefined` is treated as `'user'` (the default role)
-
-
-
-
-

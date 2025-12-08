@@ -1,8 +1,8 @@
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import MediaSelector from '../components/sections/MediaSelector';
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import MediaSelector from "../components/sections/MediaSelector";
 
-describe('MediaSelector', () => {
+describe("MediaSelector", () => {
   const mockOnVideoUrlChange = jest.fn();
   const mockOnFileUpload = jest.fn();
 
@@ -10,8 +10,8 @@ describe('MediaSelector', () => {
     jest.clearAllMocks();
   });
 
-  describe('renders media selector', () => {
-    it('should render file upload input', () => {
+  describe("renders media selector", () => {
+    it("should render file upload input", () => {
       // Act
       const { container } = render(
         <MediaSelector
@@ -24,12 +24,12 @@ describe('MediaSelector', () => {
       // Assert
       const fileInput = container.querySelector('input[type="file"]');
       expect(fileInput).toBeInTheDocument();
-      expect(fileInput).toHaveAttribute('accept', 'image/*,.w3g');
-      expect(fileInput).toHaveAttribute('multiple');
+      expect(fileInput).toHaveAttribute("accept", "image/*,.w3g");
+      expect(fileInput).toHaveAttribute("multiple");
       expect(screen.getByText(/Upload Images or Replay/i)).toBeInTheDocument();
     });
 
-    it('should render video URL input', () => {
+    it("should render video URL input", () => {
       // Act
       const { container } = render(
         <MediaSelector
@@ -42,11 +42,11 @@ describe('MediaSelector', () => {
       // Assert
       const videoInput = container.querySelector('input[type="url"]');
       expect(videoInput).toBeInTheDocument();
-      expect(videoInput).toHaveAttribute('name', 'videoUrl');
+      expect(videoInput).toHaveAttribute("name", "videoUrl");
       expect(screen.getByText(/Video URL/i)).toBeInTheDocument();
     });
 
-    it('should display header by default', () => {
+    it("should display header by default", () => {
       // Act
       render(
         <MediaSelector
@@ -60,7 +60,7 @@ describe('MediaSelector', () => {
       expect(screen.getByText(/Media \(Optional\)/i)).toBeInTheDocument();
     });
 
-    it('should not display header when showHeader is false', () => {
+    it("should not display header when showHeader is false", () => {
       // Act
       render(
         <MediaSelector
@@ -75,7 +75,7 @@ describe('MediaSelector', () => {
       expect(screen.queryByText(/Media \(Optional\)/i)).not.toBeInTheDocument();
     });
 
-    it('should display file upload instructions', () => {
+    it("should display file upload instructions", () => {
       // Act
       render(
         <MediaSelector
@@ -91,11 +91,11 @@ describe('MediaSelector', () => {
     });
   });
 
-  describe('handles user interactions', () => {
-    it('should call onFileUpload when file is selected', async () => {
+  describe("handles user interactions", () => {
+    it("should call onFileUpload when file is selected", async () => {
       // Arrange
       const user = userEvent.setup();
-      const file = new File(['content'], 'test.jpg', { type: 'image/jpeg' });
+      const file = new File(["content"], "test.jpg", { type: "image/jpeg" });
 
       // Act
       const { container } = render(
@@ -113,7 +113,7 @@ describe('MediaSelector', () => {
       expect(mockOnFileUpload).toHaveBeenCalled();
     });
 
-    it('should call onVideoUrlChange when video URL changes', async () => {
+    it("should call onVideoUrlChange when video URL changes", async () => {
       // Arrange
       const user = userEvent.setup();
 
@@ -127,13 +127,13 @@ describe('MediaSelector', () => {
       );
 
       const videoInput = container.querySelector('input[type="url"]') as HTMLInputElement;
-      await user.type(videoInput, 'https://youtube.com/watch?v=test');
+      await user.type(videoInput, "https://youtube.com/watch?v=test");
 
       // Assert
       expect(mockOnVideoUrlChange).toHaveBeenCalled();
     });
 
-    it('should display video URL value', () => {
+    it("should display video URL value", () => {
       // Act
       const { container } = render(
         <MediaSelector
@@ -145,12 +145,12 @@ describe('MediaSelector', () => {
 
       // Assert
       const videoInput = container.querySelector('input[type="url"]') as HTMLInputElement;
-      expect(videoInput).toHaveValue('https://youtube.com/watch?v=test');
+      expect(videoInput).toHaveValue("https://youtube.com/watch?v=test");
     });
   });
 
-  describe('handles error display', () => {
-    it('should display video error when provided', () => {
+  describe("handles error display", () => {
+    it("should display video error when provided", () => {
       // Act
       render(
         <MediaSelector
@@ -162,10 +162,10 @@ describe('MediaSelector', () => {
       );
 
       // Assert
-      expect(screen.getByText('Invalid video URL')).toBeInTheDocument();
+      expect(screen.getByText("Invalid video URL")).toBeInTheDocument();
     });
 
-    it('should not display error when videoError is not provided', () => {
+    it("should not display error when videoError is not provided", () => {
       // Act
       render(
         <MediaSelector
@@ -180,8 +180,8 @@ describe('MediaSelector', () => {
     });
   });
 
-  describe('handles file input attributes', () => {
-    it('should accept images and w3g files', () => {
+  describe("handles file input attributes", () => {
+    it("should accept images and w3g files", () => {
       // Act
       const { container } = render(
         <MediaSelector
@@ -193,10 +193,10 @@ describe('MediaSelector', () => {
 
       // Assert
       const fileInput = container.querySelector('input[type="file"]');
-      expect(fileInput).toHaveAttribute('accept', 'image/*,.w3g');
+      expect(fileInput).toHaveAttribute("accept", "image/*,.w3g");
     });
 
-    it('should allow multiple file selection', () => {
+    it("should allow multiple file selection", () => {
       // Act
       const { container } = render(
         <MediaSelector
@@ -208,10 +208,7 @@ describe('MediaSelector', () => {
 
       // Assert
       const fileInput = container.querySelector('input[type="file"]');
-      expect(fileInput).toHaveAttribute('multiple');
+      expect(fileInput).toHaveAttribute("multiple");
     });
   });
 });
-
-
-

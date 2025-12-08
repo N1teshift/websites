@@ -7,11 +7,13 @@ This section contains internal development documentation that supports the devel
 ## 📋 Contents
 
 ### Getting Started
+
 - **[Setup](./getting-started/setup.md)** - Firebase, Discord OAuth, and local development setup
 - **[CI/CD Setup](./getting-started/cicd-setup.md)** - Continuous integration setup
 - **[Troubleshooting](./getting-started/troubleshooting.md)** - Common issues and solutions
 
 ### Development Guide
+
 - **[Development Guide](./development-guide.md)** - How to add features, API routes, follow conventions
   - [Adding Features](./adding-features.md)
   - [Adding API Routes](./adding-api-routes.md)
@@ -29,6 +31,7 @@ This section contains internal development documentation that supports the devel
 - **[Contributing](./contributing.md)** - Development standards and contribution process
 
 ### Operations
+
 - **[Testing Guide](./operations/testing-guide.md)** - Testing scenarios and API calls
 - **[Test Plans](./operations/test-plans/)** - Comprehensive test plans by feature
 - **[Test Specifications](./operations/test-specifications/)** - Detailed test specifications by category
@@ -38,6 +41,7 @@ This section contains internal development documentation that supports the devel
 - **[Build Optimization](./operations/build-optimization.md)** - Build and bundle optimization
 
 ### Performance
+
 > **📦 Infrastructure Performance Documentation**: See [@websites/infrastructure/docs/guides/performance.md](../../../../packages/infrastructure/docs/guides/performance.md) for consolidated performance optimization strategies.
 
 - **[Bundle Optimization](./performance/bundle-optimization.md)** - Reducing bundle size
@@ -46,6 +50,7 @@ This section contains internal development documentation that supports the devel
 - **[Monitoring](./performance/monitoring.md)** - Performance monitoring
 
 ### Archive
+
 - **[Analysis](./archive/analysis/)** - Code and system analyses
 - **[History](./archive/history/)** - Historical documentation and milestones
 - **[Issues](./archive/issues/)** - Resolved bugs and issues
@@ -55,6 +60,7 @@ This section contains internal development documentation that supports the devel
 ## 🎯 Purpose
 
 This documentation captures:
+
 - Your development learning journey and discoveries
 - Internal processes and workflows
 - Testing strategies and operational procedures

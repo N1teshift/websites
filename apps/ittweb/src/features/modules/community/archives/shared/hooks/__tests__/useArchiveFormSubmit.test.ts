@@ -1,56 +1,57 @@
-import { act, renderHook, waitFor } from '@testing-library/react';
-import { useArchiveFormSubmit } from '../useArchiveFormSubmit';
-import type { ArchiveEntry } from '@/types/archive';
-import * as archiveValidation from '../../utils/archiveValidation';
-import * as useArchiveMedia from '../useArchiveMedia';
-import * as logging from '@websites/infrastructure/logging';
+import { act, renderHook, waitFor } from "@testing-library/react";
+import { useArchiveFormSubmit } from "../useArchiveFormSubmit";
+import type { ArchiveEntry } from "@/types/archive";
+import * as archiveValidation from "../../utils/archiveValidation";
+import * as useArchiveMedia from "../useArchiveMedia";
+import * as logging from "@websites/infrastructure/logging";
 
 // Mock dependencies
-jest.mock('../../utils/archiveValidation', () => ({
+jest.mock("../../utils/archiveValidation", () => ({
   validateArchiveForm: jest.fn(() => null),
 }));
 
-jest.mock('../../utils/archiveFormUtils', () => ({
+jest.mock("../../utils/archiveFormUtils", () => ({
   buildDateInfo: jest.fn((params) => ({
     type: params.dateType,
-    ...(params.dateType === 'single' && params.singleDate && { singleDate: params.singleDate }),
-    ...(params.dateType === 'undated' && params.approximateText && { approximateText: params.approximateText }),
+    ...(params.dateType === "single" && params.singleDate && { singleDate: params.singleDate }),
+    ...(params.dateType === "undated" &&
+      params.approximateText && { approximateText: params.approximateText }),
   })),
   computeEffectiveSectionOrder: jest.fn((order, flags) => order),
 }));
 
-jest.mock('../useArchiveMedia', () => ({
+jest.mock("../useArchiveMedia", () => ({
   uploadSelectedMedia: jest.fn(async () => ({ images: undefined, replayUrl: undefined })),
 }));
 
-jest.mock('@websites/infrastructure/logging', () => ({
+jest.mock("@websites/infrastructure/logging", () => ({
   logError: jest.fn(),
 }));
 
-describe('useArchiveFormSubmit', () => {
+describe("useArchiveFormSubmit", () => {
   const mockOnSubmit = jest.fn(async () => {});
   const mockOnSuccess = jest.fn();
 
   const defaultFormData = {
-    title: 'Test Archive',
-    content: 'Test content',
-    author: 'Test Author',
-    dateType: 'single',
-    singleDate: '2024-01-15',
-    approximateText: '',
-    entryType: '',
-    mediaUrl: '',
-    twitchClipUrl: '',
+    title: "Test Archive",
+    content: "Test content",
+    author: "Test Author",
+    dateType: "single",
+    singleDate: "2024-01-15",
+    approximateText: "",
+    entryType: "",
+    mediaUrl: "",
+    twitchClipUrl: "",
   };
 
   const defaultProps = {
-    mode: 'create' as const,
+    mode: "create" as const,
     formData: defaultFormData,
     imageFile: null,
     imageFiles: [],
     currentImages: [],
     replayFile: null,
-    sectionOrder: ['text', 'images'],
+    sectionOrder: ["text", "images"],
     onSubmit: mockOnSubmit,
     onSuccess: mockOnSuccess,
   };
@@ -59,19 +60,19 @@ describe('useArchiveFormSubmit', () => {
     jest.clearAllMocks();
   });
 
-  describe('initializes state correctly', () => {
-    it('should initialize with default values', () => {
+  describe("initializes state correctly", () => {
+    it("should initialize with default values", () => {
       // Act
       const { result } = renderHook(() => useArchiveFormSubmit(defaultProps));
 
       // Assert
       expect(result.current.isSubmitting).toBe(false);
-      expect(result.current.error).toBe('');
+      expect(result.current.error).toBe("");
     });
   });
 
-  describe('handles form submission', () => {
-    it('should submit create form successfully', async () => {
+  describe("handles form submission", () => {
+    it("should submit create form successfully", async () => {
       // Arrange
       const { result } = renderHook(() => useArchiveFormSubmit(defaultProps));
       const event = { preventDefault: jest.fn() } as unknown as React.FormEvent;
@@ -87,29 +88,29 @@ describe('useArchiveFormSubmit', () => {
         expect(mockOnSubmit).toHaveBeenCalled();
         expect(mockOnSuccess).toHaveBeenCalled();
         expect(result.current.isSubmitting).toBe(false);
-        expect(result.current.error).toBe('');
+        expect(result.current.error).toBe("");
       });
     });
 
-    it('should submit edit form successfully', async () => {
+    it("should submit edit form successfully", async () => {
       // Arrange
       const mockEntry: ArchiveEntry = {
-        id: 'archive1',
-        title: 'Existing Archive',
-        content: 'Existing content',
-        creatorName: 'Existing Author',
+        id: "archive1",
+        title: "Existing Archive",
+        content: "Existing content",
+        creatorName: "Existing Author",
         dateInfo: {
-          type: 'single',
-          singleDate: '2024-01-10',
+          type: "single",
+          singleDate: "2024-01-10",
         },
-        createdAt: '2024-01-10T00:00:00Z',
-        updatedAt: '2024-01-10T00:00:00Z',
+        createdAt: "2024-01-10T00:00:00Z",
+        updatedAt: "2024-01-10T00:00:00Z",
       };
 
       const { result } = renderHook(() =>
         useArchiveFormSubmit({
           ...defaultProps,
-          mode: 'edit',
+          mode: "edit",
           initialEntry: mockEntry,
         })
       );
@@ -128,7 +129,7 @@ describe('useArchiveFormSubmit', () => {
       });
     });
 
-    it('should set isSubmitting during submission', async () => {
+    it("should set isSubmitting during submission", async () => {
       // Arrange
       let resolveSubmit: () => void;
       const delayedSubmit = jest.fn(
@@ -164,11 +165,13 @@ describe('useArchiveFormSubmit', () => {
     });
   });
 
-  describe('handles form validation', () => {
-    it('should set error when validation fails', async () => {
+  describe("handles form validation", () => {
+    it("should set error when validation fails", async () => {
       // Arrange
-      const validateArchiveForm = archiveValidation.validateArchiveForm as jest.MockedFunction<typeof archiveValidation.validateArchiveForm>;
-      validateArchiveForm.mockReturnValueOnce('Title is required');
+      const validateArchiveForm = archiveValidation.validateArchiveForm as jest.MockedFunction<
+        typeof archiveValidation.validateArchiveForm
+      >;
+      validateArchiveForm.mockReturnValueOnce("Title is required");
 
       const { result } = renderHook(() => useArchiveFormSubmit(defaultProps));
       const event = { preventDefault: jest.fn() } as unknown as React.FormEvent;
@@ -179,20 +182,22 @@ describe('useArchiveFormSubmit', () => {
       });
 
       // Assert
-      expect(result.current.error).toBe('Title is required');
+      expect(result.current.error).toBe("Title is required");
       expect(mockOnSubmit).not.toHaveBeenCalled();
       expect(mockOnSuccess).not.toHaveBeenCalled();
       expect(result.current.isSubmitting).toBe(false);
     });
 
-    it('should use defaultAuthor in create mode', async () => {
+    it("should use defaultAuthor in create mode", async () => {
       // Arrange
-      const validateArchiveForm = archiveValidation.validateArchiveForm as jest.MockedFunction<typeof archiveValidation.validateArchiveForm>;
+      const validateArchiveForm = archiveValidation.validateArchiveForm as jest.MockedFunction<
+        typeof archiveValidation.validateArchiveForm
+      >;
       const { result } = renderHook(() =>
         useArchiveFormSubmit({
           ...defaultProps,
-          defaultAuthor: 'Default Author',
-          formData: { ...defaultFormData, author: '' },
+          defaultAuthor: "Default Author",
+          formData: { ...defaultFormData, author: "" },
         })
       );
       const event = { preventDefault: jest.fn() } as unknown as React.FormEvent;
@@ -205,17 +210,19 @@ describe('useArchiveFormSubmit', () => {
       // Assert
       expect(validateArchiveForm).toHaveBeenCalledWith(
         expect.objectContaining({
-          author: 'Default Author',
+          author: "Default Author",
         })
       );
     });
   });
 
-  describe('handles media uploads', () => {
-    it('should upload images during submission', async () => {
+  describe("handles media uploads", () => {
+    it("should upload images during submission", async () => {
       // Arrange
-      const uploadSelectedMedia = useArchiveMedia.uploadSelectedMedia as jest.MockedFunction<typeof useArchiveMedia.uploadSelectedMedia>;
-      const imageFile = new File(['content'], 'test.jpg', { type: 'image/jpeg' });
+      const uploadSelectedMedia = useArchiveMedia.uploadSelectedMedia as jest.MockedFunction<
+        typeof useArchiveMedia.uploadSelectedMedia
+      >;
+      const imageFile = new File(["content"], "test.jpg", { type: "image/jpeg" });
 
       const { result } = renderHook(() =>
         useArchiveFormSubmit({
@@ -235,17 +242,19 @@ describe('useArchiveFormSubmit', () => {
         imageFile,
         [],
         [],
-        'create',
+        "create",
         null,
         undefined
       );
     });
 
-    it('should upload replay file during submission', async () => {
+    it("should upload replay file during submission", async () => {
       // Arrange
-      const uploadSelectedMedia = useArchiveMedia.uploadSelectedMedia as jest.MockedFunction<typeof useArchiveMedia.uploadSelectedMedia>;
-      const replayFile = new File(['content'], 'replay.w3g', {
-        type: 'application/octet-stream',
+      const uploadSelectedMedia = useArchiveMedia.uploadSelectedMedia as jest.MockedFunction<
+        typeof useArchiveMedia.uploadSelectedMedia
+      >;
+      const replayFile = new File(["content"], "replay.w3g", {
+        type: "application/octet-stream",
       });
 
       const { result } = renderHook(() =>
@@ -266,29 +275,31 @@ describe('useArchiveFormSubmit', () => {
         null,
         [],
         [],
-        'create',
+        "create",
         replayFile,
         undefined
       );
     });
 
-    it('should pass entryId in edit mode', async () => {
+    it("should pass entryId in edit mode", async () => {
       // Arrange
-      const uploadSelectedMedia = useArchiveMedia.uploadSelectedMedia as jest.MockedFunction<typeof useArchiveMedia.uploadSelectedMedia>;
+      const uploadSelectedMedia = useArchiveMedia.uploadSelectedMedia as jest.MockedFunction<
+        typeof useArchiveMedia.uploadSelectedMedia
+      >;
       const mockEntry: ArchiveEntry = {
-        id: 'archive1',
-        title: 'Test',
-        content: 'Content',
-        creatorName: 'Author',
-        dateInfo: { type: 'single', singleDate: '2024-01-15' },
-        createdAt: '2024-01-15T00:00:00Z',
-        updatedAt: '2024-01-15T00:00:00Z',
+        id: "archive1",
+        title: "Test",
+        content: "Content",
+        creatorName: "Author",
+        dateInfo: { type: "single", singleDate: "2024-01-15" },
+        createdAt: "2024-01-15T00:00:00Z",
+        updatedAt: "2024-01-15T00:00:00Z",
       };
 
       const { result } = renderHook(() =>
         useArchiveFormSubmit({
           ...defaultProps,
-          mode: 'edit',
+          mode: "edit",
           initialEntry: mockEntry,
         })
       );
@@ -300,22 +311,15 @@ describe('useArchiveFormSubmit', () => {
       });
 
       // Assert
-      expect(uploadSelectedMedia).toHaveBeenCalledWith(
-        null,
-        [],
-        [],
-        'edit',
-        null,
-        'archive1'
-      );
+      expect(uploadSelectedMedia).toHaveBeenCalledWith(null, [], [], "edit", null, "archive1");
     });
   });
 
-  describe('handles errors', () => {
-    it('should handle submission errors', async () => {
+  describe("handles errors", () => {
+    it("should handle submission errors", async () => {
       // Arrange
-      const { logError } = jest.requireMock('@websites/infrastructure/logging');
-      const error = new Error('Submission failed');
+      const { logError } = jest.requireMock("@websites/infrastructure/logging");
+      const error = new Error("Submission failed");
       mockOnSubmit.mockRejectedValueOnce(error);
 
       const { result } = renderHook(() => useArchiveFormSubmit(defaultProps));
@@ -328,16 +332,16 @@ describe('useArchiveFormSubmit', () => {
 
       // Assert
       await waitFor(() => {
-        expect(result.current.error).toBe('Submission failed');
+        expect(result.current.error).toBe("Submission failed");
         expect(logging.logError).toHaveBeenCalled();
         expect(result.current.isSubmitting).toBe(false);
         expect(mockOnSuccess).not.toHaveBeenCalled();
       });
     });
 
-    it('should handle unknown errors', async () => {
+    it("should handle unknown errors", async () => {
       // Arrange
-      mockOnSubmit.mockRejectedValueOnce('String error');
+      mockOnSubmit.mockRejectedValueOnce("String error");
 
       const { result } = renderHook(() => useArchiveFormSubmit(defaultProps));
       const event = { preventDefault: jest.fn() } as unknown as React.FormEvent;
@@ -355,13 +359,15 @@ describe('useArchiveFormSubmit', () => {
     });
   });
 
-  describe('handles create mode payload', () => {
-    it('should include all fields in create payload', async () => {
+  describe("handles create mode payload", () => {
+    it("should include all fields in create payload", async () => {
       // Arrange
-      const uploadSelectedMedia = useArchiveMedia.uploadSelectedMedia as jest.MockedFunction<typeof useArchiveMedia.uploadSelectedMedia>;
+      const uploadSelectedMedia = useArchiveMedia.uploadSelectedMedia as jest.MockedFunction<
+        typeof useArchiveMedia.uploadSelectedMedia
+      >;
       uploadSelectedMedia.mockResolvedValueOnce({
-        images: ['https://example.com/image.jpg'],
-        replayUrl: 'https://example.com/replay.w3g',
+        images: ["https://example.com/image.jpg"],
+        replayUrl: "https://example.com/replay.w3g",
       });
 
       const { result } = renderHook(() =>
@@ -369,9 +375,9 @@ describe('useArchiveFormSubmit', () => {
           ...defaultProps,
           formData: {
             ...defaultFormData,
-            entryType: 'story',
-            mediaUrl: 'https://youtube.com/watch?v=test',
-            twitchClipUrl: 'https://twitch.tv/clip/test',
+            entryType: "story",
+            mediaUrl: "https://youtube.com/watch?v=test",
+            twitchClipUrl: "https://twitch.tv/clip/test",
           },
         })
       );
@@ -385,36 +391,36 @@ describe('useArchiveFormSubmit', () => {
       // Assert
       expect(mockOnSubmit).toHaveBeenCalledWith(
         expect.objectContaining({
-          title: 'Test Archive',
-          content: 'Test content',
-          creatorName: 'Test Author',
-          entryType: 'story',
-          images: ['https://example.com/image.jpg'],
-          videoUrl: 'https://youtube.com/watch?v=test',
-          twitchClipUrl: 'https://twitch.tv/clip/test',
-          replayUrl: 'https://example.com/replay.w3g',
+          title: "Test Archive",
+          content: "Test content",
+          creatorName: "Test Author",
+          entryType: "story",
+          images: ["https://example.com/image.jpg"],
+          videoUrl: "https://youtube.com/watch?v=test",
+          twitchClipUrl: "https://twitch.tv/clip/test",
+          replayUrl: "https://example.com/replay.w3g",
         })
       );
     });
   });
 
-  describe('handles edit mode payload', () => {
-    it('should include updates in edit payload', async () => {
+  describe("handles edit mode payload", () => {
+    it("should include updates in edit payload", async () => {
       // Arrange
       const mockEntry: ArchiveEntry = {
-        id: 'archive1',
-        title: 'Old Title',
-        content: 'Old content',
-        creatorName: 'Old Author',
-        dateInfo: { type: 'single', singleDate: '2024-01-10' },
-        createdAt: '2024-01-10T00:00:00Z',
-        updatedAt: '2024-01-10T00:00:00Z',
+        id: "archive1",
+        title: "Old Title",
+        content: "Old content",
+        creatorName: "Old Author",
+        dateInfo: { type: "single", singleDate: "2024-01-10" },
+        createdAt: "2024-01-10T00:00:00Z",
+        updatedAt: "2024-01-10T00:00:00Z",
       };
 
       const { result } = renderHook(() =>
         useArchiveFormSubmit({
           ...defaultProps,
-          mode: 'edit',
+          mode: "edit",
           initialEntry: mockEntry,
         })
       );
@@ -428,31 +434,28 @@ describe('useArchiveFormSubmit', () => {
       // Assert
       expect(mockOnSubmit).toHaveBeenCalledWith(
         expect.objectContaining({
-          title: 'Test Archive',
-          content: 'Test content',
-          creatorName: 'Test Author',
-          videoUrl: '',
-          twitchClipUrl: '',
+          title: "Test Archive",
+          content: "Test content",
+          creatorName: "Test Author",
+          videoUrl: "",
+          twitchClipUrl: "",
         })
       );
     });
   });
 
-  describe('handles error state', () => {
-    it('should allow setting error manually', () => {
+  describe("handles error state", () => {
+    it("should allow setting error manually", () => {
       // Arrange
       const { result } = renderHook(() => useArchiveFormSubmit(defaultProps));
 
       // Act
       act(() => {
-        result.current.setError('Manual error');
+        result.current.setError("Manual error");
       });
 
       // Assert
-      expect(result.current.error).toBe('Manual error');
+      expect(result.current.error).toBe("Manual error");
     });
   });
 });
-
-
-

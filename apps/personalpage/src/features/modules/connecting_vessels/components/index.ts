@@ -1,5 +1,1 @@
-export { default as ConnectingVesselsPage } from './ConnectingVesselsPage';
-
-
-
-
+export { default as ConnectingVesselsPage } from "./ConnectingVesselsPage";

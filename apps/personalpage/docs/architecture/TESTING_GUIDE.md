@@ -1,6 +1,7 @@
 # Testing Guide - Standard Unit Tests (Jest)
 
 > **Note**: This project has **two testing systems**:
+>
 > 1. **Standard Unit Tests (Jest)** - This guide (testing regular code)
 > 2. **AI/Math Object Generation Tests** - See `TESTING_SYSTEMS_EXPLAINED.md` (testing AI behavior)
 >
@@ -9,6 +10,7 @@
 ## Overview
 
 This guide outlines the **standard unit testing strategy** using Jest. Tests are essential for:
+
 - **AI-assisted development**: Ensuring AI changes don't break existing functionality
 - **Regression prevention**: Catching bugs before they reach production
 - **Documentation**: Tests serve as living examples of how code should work
@@ -35,6 +37,7 @@ This guide outlines the **standard unit testing strategy** using Jest. Tests are
 ### What to Test
 
 **Priority 1 - Start Here:**
+
 - ✅ **Pure utility functions** (easier, high value)
   - Date manipulation functions
   - Data transformation functions
@@ -42,18 +45,21 @@ This guide outlines the **standard unit testing strategy** using Jest. Tests are
   - Calculation functions
 
 **Priority 2 - Core Business Logic:**
+
 - ✅ **API services** (with mocks)
   - Data fetching logic
   - Error handling
   - Response transformations
 
 **Priority 3 - Complex Features:**
+
 - ✅ **React hooks** (testing-library/react-hooks)
 - ✅ **Component logic** (not styling, but behavior)
 - ✅ **Form validation**
 - ✅ **State management**
 
 **Lower Priority:**
+
 - Simple presentational components (unless they have complex logic)
 - Styling/CSS (visual regression tests if needed)
 - Third-party library code (mock it instead)
@@ -83,6 +89,7 @@ src/
 ```
 
 **Convention**: Place test files next to the source files they test:
+
 - `eventTransformer.ts` → `eventTransformer.test.ts`
 - `Calendar.tsx` → `Calendar.test.tsx`
 
@@ -94,46 +101,44 @@ src/
 
 ```typescript
 // eventTransformer.test.ts
-import { transformToGoogleEvent } from './eventTransformer';
+import { transformToGoogleEvent } from "./eventTransformer";
 
-describe('transformToGoogleEvent', () => {
-  it('should transform basic event details correctly', () => {
+describe("transformToGoogleEvent", () => {
+  it("should transform basic event details correctly", () => {
     const input = {
-      summary: 'Test Event',
-      startDateTime: '2024-01-01T10:00:00Z',
-      endDateTime: '2024-01-01T11:00:00Z',
-      attendees: []
+      summary: "Test Event",
+      startDateTime: "2024-01-01T10:00:00Z",
+      endDateTime: "2024-01-01T11:00:00Z",
+      attendees: [],
     };
 
     const result = transformToGoogleEvent(input);
 
-    expect(result.summary).toBe('Test Event');
-    expect(result.start.dateTime).toBe('2024-01-01T10:00:00Z');
-    expect(result.end.dateTime).toBe('2024-01-01T11:00:00Z');
+    expect(result.summary).toBe("Test Event");
+    expect(result.start.dateTime).toBe("2024-01-01T10:00:00Z");
+    expect(result.end.dateTime).toBe("2024-01-01T11:00:00Z");
   });
 
-  it('should handle attendees correctly', () => {
+  it("should handle attendees correctly", () => {
     const input = {
-      summary: 'Meeting',
-      startDateTime: '2024-01-01T10:00:00Z',
-      endDateTime: '2024-01-01T11:00:00Z',
-      attendees: [
-        { email: 'test@example.com', name: 'Test User' }
-      ]
+      summary: "Meeting",
+      startDateTime: "2024-01-01T10:00:00Z",
+      endDateTime: "2024-01-01T11:00:00Z",
+      attendees: [{ email: "test@example.com", name: "Test User" }],
     };
 
     const result = transformToGoogleEvent(input);
 
     expect(result.attendees).toHaveLength(1);
-    expect(result.attendees[0].email).toBe('test@example.com');
-    expect(result.attendees[0].displayName).toBe('Test User');
+    expect(result.attendees[0].email).toBe("test@example.com");
+    expect(result.attendees[0].displayName).toBe("Test User");
   });
 
-  it('should handle missing optional fields', () => {
+  it("should handle missing optional fields", () => {
     const input = {
-      summary: 'Event',
-      startDateTime: '2024-01-01T10:00:00Z',
-      endDateTime: '2024-01-01T11:00:00Z'
+      summary: "Event",
+      startDateTime: "2024-01-01T10:00:00Z",
+      endDateTime: "2024-01-01T11:00:00Z",
     };
 
     const result = transformToGoogleEvent(input);
@@ -147,6 +152,7 @@ describe('transformToGoogleEvent', () => {
 ### 2. Testing with Mocks
 
 **When to mock:**
+
 - External APIs (Google Calendar, Firebase, OpenAI)
 - Database calls
 - File system operations
@@ -155,9 +161,9 @@ describe('transformToGoogleEvent', () => {
 **Example: Mocking Firebase**
 
 ```typescript
-jest.mock('@/features/infrastructure/api/firebase/firestoreService', () => ({
+jest.mock("@/features/infrastructure/api/firebase/firestoreService", () => ({
   getDocument: jest.fn(),
-  saveDocument: jest.fn()
+  saveDocument: jest.fn(),
 }));
 ```
 
@@ -196,11 +202,11 @@ describe('Calendar Component', () => {
 ### 4. Testing Hooks
 
 ```typescript
-import { renderHook, act } from '@testing-library/react-hooks';
-import { useCalendarData } from './useCalendarData';
+import { renderHook, act } from "@testing-library/react-hooks";
+import { useCalendarData } from "./useCalendarData";
 
-describe('useCalendarData', () => {
-  it('should load calendar data', async () => {
+describe("useCalendarData", () => {
+  it("should load calendar data", async () => {
     const { result, waitForNextUpdate } = renderHook(() => useCalendarData());
 
     await waitForNextUpdate();
@@ -225,10 +231,10 @@ Create shared test utilities in `src/__tests__/utils/`:
 ```typescript
 // src/__tests__/utils/testHelpers.ts
 export const createMockEvent = (overrides = {}) => ({
-  summary: 'Test Event',
-  startDateTime: '2024-01-01T10:00:00Z',
-  endDateTime: '2024-01-01T11:00:00Z',
-  ...overrides
+  summary: "Test Event",
+  startDateTime: "2024-01-01T10:00:00Z",
+  endDateTime: "2024-01-01T11:00:00Z",
+  ...overrides,
 });
 ```
 
@@ -301,4 +307,3 @@ npm test -- --testNamePattern="should transform"
 - [Jest Documentation](https://jestjs.io/docs/getting-started)
 - [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/)
 - [Testing Best Practices](https://kentcdodds.com/blog/common-mistakes-with-react-testing-library)
-

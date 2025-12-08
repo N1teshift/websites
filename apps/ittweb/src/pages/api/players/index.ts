@@ -1,6 +1,6 @@
-import type { NextApiRequest } from 'next';
-import { createApiHandler } from '@websites/infrastructure/api';
-import { getAllPlayers } from '@/features/modules/community/players/lib/playerService';
+import type { NextApiRequest } from "next";
+import { createApiHandler } from "@websites/infrastructure/api";
+import { getAllPlayers } from "@/features/modules/community/players/lib/playerService";
 
 /**
  * GET /api/players - Get all players with pagination
@@ -15,7 +15,7 @@ export default createApiHandler(
     return await getAllPlayers(limit, lastPlayerName);
   },
   {
-    methods: ['GET'],
+    methods: ["GET"],
     requireAuth: false,
     logRequests: true,
     // Cache for 2 minutes - player list changes as new players join
@@ -26,9 +26,3 @@ export default createApiHandler(
     },
   }
 );
-
-
-
-
-
-

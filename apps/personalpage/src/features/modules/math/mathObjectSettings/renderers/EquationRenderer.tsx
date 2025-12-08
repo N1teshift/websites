@@ -3,10 +3,14 @@ import BaseMathObjectRenderer from "./BaseMathObjectRenderer";
 import ExpressionRenderer from "./ExpressionRenderer";
 import EquationSettingsContainer from "../containers/EquationSettingsContainer";
 import {
-    EquationSettings, ExpressionSettings, TermSettings, TermsSettings,
-    MathObjectContainerProps,
-    DEFAULT_SIMPLE_EQUATION_SETTINGS, DEFAULT_COMPLEX_EQUATION_SETTINGS
- } from "@math/types/index";
+  EquationSettings,
+  ExpressionSettings,
+  TermSettings,
+  TermsSettings,
+  MathObjectContainerProps,
+  DEFAULT_SIMPLE_EQUATION_SETTINGS,
+  DEFAULT_COMPLEX_EQUATION_SETTINGS,
+} from "@math/types/index";
 import useInterfaceType from "../hooks/useInterfaceType";
 
 /**
@@ -30,93 +34,98 @@ import useInterfaceType from "../hooks/useInterfaceType";
  *     variable naming across sides.
  */
 const EquationRenderer: React.FC<MathObjectContainerProps<EquationSettings>> = ({
-    containerId,
-    settings,
-    updateSettings,
-    startIndex = 1,
-    showDescription = false,
-    objectType = null,
+  containerId,
+  settings,
+  updateSettings,
+  startIndex = 1,
+  showDescription = false,
+  objectType = null,
 }) => {
-    const { interfaceType } = useInterfaceType(containerId);
+  const { interfaceType } = useInterfaceType(containerId);
 
-    const renderChildren = () => {
-        let currentStartIndex = startIndex;
+  const renderChildren = () => {
+    let currentStartIndex = startIndex;
 
-        if (interfaceType === "simple") {
-            const exprSettings = settings.terms[0];
-            const commonProps = {
-                containerId: `${containerId}-expression`,
-                settings: exprSettings as ExpressionSettings,
-                updateSettings: (newExprSettings: ExpressionSettings) =>
-                    updateSettings({
-                        ...settings,
-                        terms: [newExprSettings] as [ExpressionSettings],
-                    }),
-                startIndex: currentStartIndex,
-                showDescription: false,
-                objectType: objectType, // Pass root "equation" type
-            };
+    if (interfaceType === "simple") {
+      const exprSettings = settings.terms[0];
+      const commonProps = {
+        containerId: `${containerId}-expression`,
+        settings: exprSettings as ExpressionSettings,
+        updateSettings: (newExprSettings: ExpressionSettings) =>
+          updateSettings({
+            ...settings,
+            terms: [newExprSettings] as [ExpressionSettings],
+          }),
+        startIndex: currentStartIndex,
+        showDescription: false,
+        objectType: objectType, // Pass root "equation" type
+      };
 
-            return (
-                    <ExpressionRenderer {...commonProps} />
-            );
+      return <ExpressionRenderer {...commonProps} />;
+    } else {
+      const terms = settings.terms as [ExpressionSettings, ExpressionSettings];
+      return terms.map((side, sideIndex) => {
+        const subContainerId = `${containerId}-side-${sideIndex}`;
+        const commonProps = {
+          containerId: subContainerId,
+          settings: side as ExpressionSettings,
+          updateSettings: (newSideSettings: ExpressionSettings) =>
+            updateSettings({
+              ...settings,
+              terms: terms.map((s, i) => (i === sideIndex ? newSideSettings : s)) as [
+                ExpressionSettings,
+                ExpressionSettings,
+              ],
+            }),
+          startIndex: currentStartIndex,
+          showDescription: true,
+          objectType: objectType, // Pass root "equation" type
+        };
+
+        const coefficientCount = side.expressions.reduce(
+          (sum, expr) =>
+            sum +
+            ("coefficients" in expr && "termIds" in expr
+              ? (expr as TermSettings).coefficients.collectionCount
+              : (expr as TermsSettings).terms.reduce(
+                  (s, t) => s + t.coefficients.collectionCount,
+                  0
+                )),
+          0
+        );
+        currentStartIndex += coefficientCount;
+
+        return (
+          <div key={sideIndex} className="mt-1">
+            <ExpressionRenderer {...commonProps} />
+            {sideIndex === 0}
+          </div>
+        );
+      });
+    }
+  };
+
+  return (
+    <BaseMathObjectRenderer
+      containerId={containerId}
+      settings={settings}
+      updateSettings={updateSettings}
+      startIndex={startIndex}
+      showDescription={showDescription}
+      objectType={objectType}
+      settingsContainer={EquationSettingsContainer}
+      supportsInterfaceToggle={true}
+      onInterfaceChange={(newInterface) => {
+        if (newInterface === "simple") {
+          updateSettings(DEFAULT_SIMPLE_EQUATION_SETTINGS);
         } else {
-            const terms = settings.terms as [ExpressionSettings, ExpressionSettings];
-            return terms.map((side, sideIndex) => {
-                const subContainerId = `${containerId}-side-${sideIndex}`;
-                const commonProps = {
-                    containerId: subContainerId,
-                    settings: side as ExpressionSettings,
-                    updateSettings: (newSideSettings: ExpressionSettings) =>
-                        updateSettings({
-                            ...settings,
-                            terms: terms.map((s, i) => (i === sideIndex ? newSideSettings : s)) as [ExpressionSettings, ExpressionSettings],
-                        }),
-                    startIndex: currentStartIndex,
-                    showDescription: true,
-                    objectType: objectType, // Pass root "equation" type
-                };
-
-                const coefficientCount = side.expressions.reduce((sum, expr) =>
-                    sum + ("coefficients" in expr && "termIds" in expr
-                        ? (expr as TermSettings).coefficients.collectionCount
-                        : (expr as TermsSettings).terms.reduce((s, t) => s + t.coefficients.collectionCount, 0)), 0);
-                currentStartIndex += coefficientCount;
-
-                return (
-                    <div key={sideIndex} className="mt-1">
-                        <ExpressionRenderer {...commonProps} />
-                        {sideIndex === 0}
-                    </div>
-                );
-            });
+          // Use the default complex settings directly
+          updateSettings(DEFAULT_COMPLEX_EQUATION_SETTINGS);
         }
-    };
-
-    return (
-        <BaseMathObjectRenderer
-            containerId={containerId}
-            settings={settings}
-            updateSettings={updateSettings}
-            startIndex={startIndex}
-            showDescription={showDescription}
-            objectType={objectType}
-            settingsContainer={EquationSettingsContainer}
-            supportsInterfaceToggle={true}
-            onInterfaceChange={(newInterface) => {
-                if (newInterface === "simple") {
-                    updateSettings(DEFAULT_SIMPLE_EQUATION_SETTINGS);
-                } else {
-                    // Use the default complex settings directly
-                    updateSettings(DEFAULT_COMPLEX_EQUATION_SETTINGS);
-                }
-            }}
-            childrenRenderer={() => renderChildren()}
-        />
-    );
+      }}
+      childrenRenderer={() => renderChildren()}
+    />
+  );
 };
 
 export default EquationRenderer;
-
-
-

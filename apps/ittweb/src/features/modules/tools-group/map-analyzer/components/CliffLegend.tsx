@@ -1,8 +1,14 @@
-import React from 'react';
+import React from "react";
 
 type Counts = Record<number, number>;
 
-export default function CliffLegend({ visible = false, counts }: { visible?: boolean; counts?: Counts }) {
+export default function CliffLegend({
+  visible = false,
+  counts,
+}: {
+  visible?: boolean;
+  counts?: Counts;
+}) {
   if (!visible) return null;
   const palette: Record<number, [number, number, number]> = {
     [-1]: [180, 180, 180],
@@ -34,6 +40,3 @@ export default function CliffLegend({ visible = false, counts }: { visible?: boo
     </div>
   );
 }
-
-
-

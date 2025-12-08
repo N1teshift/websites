@@ -1,11 +1,11 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiRequest, NextApiResponse } from "next";
 // Import server-side mocks FIRST before handler
-import '../../../../../__tests__/helpers/mockUserDataService.server';
+import "../../../../../__tests__/helpers/mockUserDataService.server";
 import {
   mockGetUserDataByDiscordIdServer,
   setIsServerSide,
-} from '../../../../../__tests__/helpers/mockUserDataService.server';
-import handler from '../data-notice-status';
+} from "../../../../../__tests__/helpers/mockUserDataService.server";
+import handler from "../data-notice-status";
 
 // Mock dependencies
 const mockInfo = jest.fn();
@@ -13,7 +13,7 @@ const mockError = jest.fn();
 const mockWarn = jest.fn();
 const mockDebug = jest.fn();
 
-jest.mock('@websites/infrastructure/logging', () => ({
+jest.mock("@websites/infrastructure/logging", () => ({
   createComponentLogger: jest.fn(() => ({
     info: mockInfo,
     error: mockError,
@@ -23,21 +23,22 @@ jest.mock('@websites/infrastructure/logging', () => ({
 }));
 
 const mockGetServerSession = jest.fn();
-jest.mock('next-auth/next', () => ({
+jest.mock("next-auth/next", () => ({
   getServerSession: (...args: unknown[]) => mockGetServerSession(...args),
 }));
 
-jest.mock('@/pages/api/auth/[...nextauth]', () => ({
+jest.mock("@/pages/api/auth/[...nextauth]", () => ({
   authOptions: {},
 }));
 
-describe('GET /api/user/data-notice-status', () => {
-  const createRequest = (): NextApiRequest => ({
-    method: 'GET',
-    query: {},
-    body: null,
-    url: '/api/user/data-notice-status',
-  } as NextApiRequest);
+describe("GET /api/user/data-notice-status", () => {
+  const createRequest = (): NextApiRequest =>
+    ({
+      method: "GET",
+      query: {},
+      body: null,
+      url: "/api/user/data-notice-status",
+    }) as NextApiRequest;
 
   const createResponse = (): NextApiResponse => {
     const res = {} as NextApiResponse;
@@ -48,9 +49,9 @@ describe('GET /api/user/data-notice-status', () => {
   };
 
   const mockSession = {
-    user: { name: 'Test User' },
-    discordId: 'discord123',
-    expires: '2024-12-31',
+    user: { name: "Test User" },
+    discordId: "discord123",
+    expires: "2024-12-31",
   };
 
   beforeEach(() => {
@@ -59,7 +60,7 @@ describe('GET /api/user/data-notice-status', () => {
     mockGetServerSession.mockResolvedValue(mockSession);
   });
 
-  it('returns accepted status when user has accepted notice', async () => {
+  it("returns accepted status when user has accepted notice", async () => {
     // Arrange
     mockGetUserDataByDiscordIdServer.mockResolvedValue({
       dataCollectionNoticeAccepted: true,
@@ -71,7 +72,7 @@ describe('GET /api/user/data-notice-status', () => {
     await handler(req, res);
 
     // Assert
-    expect(mockGetUserDataByDiscordIdServer).toHaveBeenCalledWith('discord123');
+    expect(mockGetUserDataByDiscordIdServer).toHaveBeenCalledWith("discord123");
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.json).toHaveBeenCalledWith({
       success: true,
@@ -79,7 +80,7 @@ describe('GET /api/user/data-notice-status', () => {
     });
   });
 
-  it('returns not accepted status when user has not accepted notice', async () => {
+  it("returns not accepted status when user has not accepted notice", async () => {
     // Arrange
     mockGetUserDataByDiscordIdServer.mockResolvedValue({
       dataCollectionNoticeAccepted: false,
@@ -98,7 +99,7 @@ describe('GET /api/user/data-notice-status', () => {
     });
   });
 
-  it('returns not accepted status when userData is null', async () => {
+  it("returns not accepted status when userData is null", async () => {
     // Arrange
     mockGetUserDataByDiscordIdServer.mockResolvedValue(null);
     const req = createRequest();
@@ -115,7 +116,7 @@ describe('GET /api/user/data-notice-status', () => {
     });
   });
 
-  it('returns not accepted status when dataCollectionNoticeAccepted is undefined', async () => {
+  it("returns not accepted status when dataCollectionNoticeAccepted is undefined", async () => {
     // Arrange
     mockGetUserDataByDiscordIdServer.mockResolvedValue({
       // No dataCollectionNoticeAccepted field
@@ -134,7 +135,7 @@ describe('GET /api/user/data-notice-status', () => {
     });
   });
 
-  it('requires authentication', async () => {
+  it("requires authentication", async () => {
     // Arrange
     mockGetServerSession.mockResolvedValue(null);
     const req = createRequest();
@@ -148,16 +149,16 @@ describe('GET /api/user/data-notice-status', () => {
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         success: false,
-        error: 'Authentication required',
+        error: "Authentication required",
       })
     );
     expect(mockGetUserDataByDiscordIdServer).not.toHaveBeenCalled();
   });
 
-  it('handles missing discordId in session', async () => {
+  it("handles missing discordId in session", async () => {
     // Arrange
     mockGetServerSession.mockResolvedValue({
-      user: { name: 'Test User' },
+      user: { name: "Test User" },
       // No discordId
     });
     const req = createRequest();
@@ -168,13 +169,13 @@ describe('GET /api/user/data-notice-status', () => {
 
     // Assert
     // The handler uses session.discordId || '', so it will call with empty string
-    expect(mockGetUserDataByDiscordIdServer).toHaveBeenCalledWith('');
+    expect(mockGetUserDataByDiscordIdServer).toHaveBeenCalledWith("");
     expect(res.status).toHaveBeenCalledWith(200);
   });
 
-  it('handles error from getUserDataByDiscordId', async () => {
+  it("handles error from getUserDataByDiscordId", async () => {
     // Arrange
-    const error = new Error('Database error');
+    const error = new Error("Database error");
     mockGetUserDataByDiscordIdServer.mockRejectedValue(error);
     const req = createRequest();
     const res = createResponse();
@@ -187,18 +188,18 @@ describe('GET /api/user/data-notice-status', () => {
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         success: false,
-        error: expect.stringContaining('Database error'),
+        error: expect.stringContaining("Database error"),
       })
     );
   });
 
-  it('rejects POST method', async () => {
+  it("rejects POST method", async () => {
     // Arrange
     const req = {
-      method: 'POST',
+      method: "POST",
       query: {},
       body: null,
-      url: '/api/user/data-notice-status',
+      url: "/api/user/data-notice-status",
     } as NextApiRequest;
     const res = createResponse();
 
@@ -210,18 +211,18 @@ describe('GET /api/user/data-notice-status', () => {
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         success: false,
-        error: 'Method POST not allowed. Allowed methods: GET',
+        error: "Method POST not allowed. Allowed methods: GET",
       })
     );
   });
 
-  it('rejects PUT method', async () => {
+  it("rejects PUT method", async () => {
     // Arrange
     const req = {
-      method: 'PUT',
+      method: "PUT",
       query: {},
       body: null,
-      url: '/api/user/data-notice-status',
+      url: "/api/user/data-notice-status",
     } as NextApiRequest;
     const res = createResponse();
 
@@ -233,18 +234,18 @@ describe('GET /api/user/data-notice-status', () => {
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         success: false,
-        error: 'Method PUT not allowed. Allowed methods: GET',
+        error: "Method PUT not allowed. Allowed methods: GET",
       })
     );
   });
 
-  it('rejects DELETE method', async () => {
+  it("rejects DELETE method", async () => {
     // Arrange
     const req = {
-      method: 'DELETE',
+      method: "DELETE",
       query: {},
       body: null,
-      url: '/api/user/data-notice-status',
+      url: "/api/user/data-notice-status",
     } as NextApiRequest;
     const res = createResponse();
 
@@ -256,10 +257,8 @@ describe('GET /api/user/data-notice-status', () => {
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         success: false,
-        error: 'Method DELETE not allowed. Allowed methods: GET',
+        error: "Method DELETE not allowed. Allowed methods: GET",
       })
     );
   });
 });
-
-

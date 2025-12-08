@@ -1,7 +1,7 @@
 /// <reference types="@testing-library/jest-dom" />
 
 // Extend Jest's expect matchers with jest-dom types
-import '@testing-library/jest-dom';
+import "@testing-library/jest-dom";
 
 // Explicitly declare the matchers to ensure TypeScript recognizes them
 declare global {
@@ -34,7 +34,7 @@ declare global {
 }
 
 // Also ensure Promise matchers are extended
-declare module '@jest/expect' {
+declare module "@jest/expect" {
   interface Matchers<R = void> {
     toBeInTheDocument(): R;
     toHaveFocus(): R;

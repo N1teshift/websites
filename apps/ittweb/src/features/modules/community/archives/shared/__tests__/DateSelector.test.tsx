@@ -1,16 +1,16 @@
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import DateSelector from '../components/sections/DateSelector';
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import DateSelector from "../components/sections/DateSelector";
 
-describe('DateSelector', () => {
+describe("DateSelector", () => {
   const mockOnFieldChange = jest.fn();
 
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  describe('renders date selector', () => {
-    it('should render date type radio buttons', () => {
+  describe("renders date selector", () => {
+    it("should render date type radio buttons", () => {
       // Act
       render(
         <DateSelector
@@ -22,11 +22,11 @@ describe('DateSelector', () => {
       );
 
       // Assert
-      expect(screen.getByLabelText('Date')).toBeInTheDocument();
-      expect(screen.getByLabelText('Undated')).toBeInTheDocument();
+      expect(screen.getByLabelText("Date")).toBeInTheDocument();
+      expect(screen.getByLabelText("Undated")).toBeInTheDocument();
     });
 
-    it('should show date input when dateType is single', () => {
+    it("should show date input when dateType is single", () => {
       // Act
       render(
         <DateSelector
@@ -38,12 +38,13 @@ describe('DateSelector', () => {
       );
 
       // Assert
-      const dateInput = document.querySelector('input[type="date"]') || 
-                       document.querySelector('input[type="number"]');
+      const dateInput =
+        document.querySelector('input[type="date"]') ||
+        document.querySelector('input[type="number"]');
       expect(dateInput).toBeInTheDocument();
     });
 
-    it('should show approximate text input when dateType is undated', () => {
+    it("should show approximate text input when dateType is undated", () => {
       // Act
       render(
         <DateSelector
@@ -57,12 +58,12 @@ describe('DateSelector', () => {
       // Assert
       const approximateInput = screen.getByPlaceholderText(/e.g., Early 2016/i);
       expect(approximateInput).toBeInTheDocument();
-      expect(approximateInput).toHaveValue('Early 2016');
+      expect(approximateInput).toHaveValue("Early 2016");
     });
   });
 
-  describe('handles date type selection', () => {
-    it('should call onFieldChange when date type changes', async () => {
+  describe("handles date type selection", () => {
+    it("should call onFieldChange when date type changes", async () => {
       // Arrange
       const user = userEvent.setup();
       render(
@@ -75,7 +76,7 @@ describe('DateSelector', () => {
       );
 
       // Act
-      const undatedRadio = screen.getByLabelText('Undated');
+      const undatedRadio = screen.getByLabelText("Undated");
       await user.click(undatedRadio);
 
       // Assert
@@ -83,8 +84,8 @@ describe('DateSelector', () => {
     });
   });
 
-  describe('handles date precision', () => {
-    it('should show year precision option when dateType is single', () => {
+  describe("handles date precision", () => {
+    it("should show year precision option when dateType is single", () => {
       // Act
       render(
         <DateSelector
@@ -96,11 +97,11 @@ describe('DateSelector', () => {
       );
 
       // Assert
-      expect(screen.getByLabelText('Year only')).toBeInTheDocument();
-      expect(screen.getByLabelText('Full Date')).toBeInTheDocument();
+      expect(screen.getByLabelText("Year only")).toBeInTheDocument();
+      expect(screen.getByLabelText("Full Date")).toBeInTheDocument();
     });
 
-    it('should use year input when precision is year', () => {
+    it("should use year input when precision is year", () => {
       // Act
       render(
         <DateSelector
@@ -112,12 +113,12 @@ describe('DateSelector', () => {
       );
 
       // Assert
-      const yearInput = screen.getByPlaceholderText('2025');
+      const yearInput = screen.getByPlaceholderText("2025");
       expect(yearInput).toBeInTheDocument();
-      expect(yearInput).toHaveAttribute('type', 'number');
+      expect(yearInput).toHaveAttribute("type", "number");
     });
 
-    it('should use date input when precision is day', () => {
+    it("should use date input when precision is day", () => {
       // Act
       render(
         <DateSelector
@@ -133,7 +134,7 @@ describe('DateSelector', () => {
       expect(dateInput).toBeInTheDocument();
     });
 
-    it('should change precision when radio button is clicked', async () => {
+    it("should change precision when radio button is clicked", async () => {
       // Arrange
       const user = userEvent.setup();
       render(
@@ -146,7 +147,7 @@ describe('DateSelector', () => {
       );
 
       // Act
-      const yearOnlyRadio = screen.getByLabelText('Year only');
+      const yearOnlyRadio = screen.getByLabelText("Year only");
       await user.click(yearOnlyRadio);
 
       // Assert
@@ -154,8 +155,8 @@ describe('DateSelector', () => {
     });
   });
 
-  describe('handles date input', () => {
-    it('should call onFieldChange when date input changes', async () => {
+  describe("handles date input", () => {
+    it("should call onFieldChange when date input changes", async () => {
       // Arrange
       const user = userEvent.setup();
       render(
@@ -170,14 +171,14 @@ describe('DateSelector', () => {
       // Act
       const dateInput = document.querySelector('input[type="date"]') as HTMLInputElement;
       if (dateInput) {
-        await user.type(dateInput, '2024-01-15');
+        await user.type(dateInput, "2024-01-15");
       }
 
       // Assert
       expect(mockOnFieldChange).toHaveBeenCalled();
     });
 
-    it('should call onFieldChange when approximate text changes', async () => {
+    it("should call onFieldChange when approximate text changes", async () => {
       // Arrange
       const user = userEvent.setup();
       render(
@@ -191,15 +192,15 @@ describe('DateSelector', () => {
 
       // Act
       const approximateInput = screen.getByPlaceholderText(/e.g., Early 2016/i);
-      await user.type(approximateInput, 'Early 2016');
+      await user.type(approximateInput, "Early 2016");
 
       // Assert
       expect(mockOnFieldChange).toHaveBeenCalled();
     });
   });
 
-  describe('handles different date formats', () => {
-    it('should handle year-only format', () => {
+  describe("handles different date formats", () => {
+    it("should handle year-only format", () => {
       // Act
       render(
         <DateSelector
@@ -211,11 +212,11 @@ describe('DateSelector', () => {
       );
 
       // Assert
-      const yearInput = screen.getByPlaceholderText('2025');
+      const yearInput = screen.getByPlaceholderText("2025");
       expect(yearInput).toHaveValue(2024);
     });
 
-    it('should handle full date format', () => {
+    it("should handle full date format", () => {
       // Act
       render(
         <DateSelector
@@ -234,6 +235,3 @@ describe('DateSelector', () => {
     });
   });
 });
-
-
-

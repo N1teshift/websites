@@ -449,4 +449,3 @@ This document outlines all tests needed for the games module including services,
   - **What**: Verify missing W3MMD data is handled
   - **Expected**: Returns null or partial data, doesn't crash
   - **Edge cases**: No W3MMD block, partial data, malformed W3MMD
-

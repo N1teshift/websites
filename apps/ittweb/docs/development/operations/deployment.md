@@ -44,6 +44,7 @@ ITT Web is deployed to **Vercel** (recommended) with automated CI/CD via GitHub 
 In Vercel Project Settings → Environment Variables, add:
 
 **Firebase Client (Public)**:
+
 ```
 NEXT_PUBLIC_FIREBASE_API_KEY
 NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
@@ -55,17 +56,20 @@ NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID (optional)
 ```
 
 **Firebase Admin (Server-side)**:
+
 ```
 FIREBASE_SERVICE_ACCOUNT_KEY
 ```
 
 **NextAuth**:
+
 ```
 NEXTAUTH_URL (production URL)
 NEXTAUTH_SECRET
 ```
 
 **Discord OAuth**:
+
 ```
 DISCORD_CLIENT_ID
 DISCORD_CLIENT_SECRET
@@ -196,6 +200,7 @@ Build settings are configured in `vercel.json`:
 ```
 
 **Build Process**:
+
 1. Install dependencies: `npm ci`
 2. Validate environment variables: `npm run validate-env`
 3. Build application: `npm run build`
@@ -220,30 +225,36 @@ Build settings are configured in `vercel.json`:
 ### Build Failures
 
 **Issue**: Build fails with environment variable errors
+
 - **Solution**: Verify all required environment variables are set in Vercel
 - **Check**: Run `npm run validate-env` locally
 
 **Issue**: Build fails with TypeScript errors
+
 - **Solution**: Run `npm run type-check` locally and fix errors
 - **Check**: Ensure all types are correct
 
 **Issue**: Build fails with linting errors
+
 - **Solution**: Run `npm run lint` locally and fix errors
 - **Check**: Ensure code follows linting rules
 
 ### Deployment Failures
 
 **Issue**: Deployment succeeds but application doesn't work
+
 - **Solution**: Check Vercel deployment logs
 - **Check**: Verify environment variables are correct
 - **Check**: Verify Firebase connection
 
 **Issue**: Authentication not working
+
 - **Solution**: Verify `NEXTAUTH_URL` matches deployment URL exactly
 - **Check**: Verify Discord redirect URI matches
 - **Check**: Verify `NEXTAUTH_SECRET` is set
 
 **Issue**: Database connection fails
+
 - **Solution**: Verify `FIREBASE_SERVICE_ACCOUNT_KEY` is correct
 - **Check**: Verify Firebase project ID matches
 - **Check**: Verify Firestore security rules allow operations
@@ -251,6 +262,7 @@ Build settings are configured in `vercel.json`:
 ### Performance Issues
 
 **Issue**: Slow page loads
+
 - **Solution**: Check bundle size with `ANALYZE=true npm run build`
 - **Check**: Review Core Web Vitals in Firebase Performance
 - **Check**: Optimize images and assets
@@ -273,4 +285,3 @@ Build settings are configured in `vercel.json`:
 - [CI/CD Guide](./ci-cd.md) - CI/CD pipeline documentation
 - [Monitoring Guide](./monitoring.md) - Monitoring and observability
 - [Architecture](../development/architecture.md) - System architecture
-

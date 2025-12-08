@@ -1,13 +1,13 @@
-import type { NextApiRequest } from 'next';
-import { createApiHandler, parseQueryString } from '@websites/infrastructure/api';
-import { searchPlayers } from '@/features/modules/community/players/lib/playerService';
+import type { NextApiRequest } from "next";
+import { createApiHandler, parseQueryString } from "@websites/infrastructure/api";
+import { searchPlayers } from "@/features/modules/community/players/lib/playerService";
 
 /**
  * GET /api/players/search?q=... - Search players
  */
 export default createApiHandler(
   async (req: NextApiRequest) => {
-    const query = parseQueryString(req, 'q');
+    const query = parseQueryString(req, "q");
     if (!query || query.trim().length < 2) {
       return [];
     }
@@ -15,7 +15,7 @@ export default createApiHandler(
     return await searchPlayers(query);
   },
   {
-    methods: ['GET'],
+    methods: ["GET"],
     requireAuth: false,
     logRequests: true,
     cacheControl: {
@@ -24,10 +24,3 @@ export default createApiHandler(
     },
   }
 );
-
-
-
-
-
-
-

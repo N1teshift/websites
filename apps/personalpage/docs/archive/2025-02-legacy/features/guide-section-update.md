@@ -7,9 +7,11 @@ Updated the Guide tab in the Progress Report Dashboard to better reflect the cur
 ## Changes Made
 
 ### Removed
+
 - **Step 4: Filter and Sort** - This was outdated and didn't match current functionality
 
 ### Added
+
 - **Step 4: Track Learning Objectives** (Amber/Orange)
   - Links to Objectives tab
   - Describes Cambridge Learning Objectives tracking
@@ -28,16 +30,19 @@ Updated the Guide tab in the Progress Report Dashboard to better reflect the cur
 ## Layout Changes
 
 **Before:** 2-column grid (4 cards)
+
 ```
 md:grid-cols-2
 ```
 
 **After:** 3-column grid (6 cards)
+
 ```
 md:grid-cols-2 lg:grid-cols-3
 ```
 
 This creates a responsive layout:
+
 - **Mobile**: 1 column
 - **Tablet** (md): 2 columns
 - **Desktop** (lg): 3 columns
@@ -45,12 +50,14 @@ This creates a responsive layout:
 ## Visual Design
 
 Each new card follows the existing pattern:
+
 - **Colored background** with matching border
 - **Numbered circle badge** (continues 1-6 sequence)
 - **Title and description**
 - **"Go to..." button** with matching color scheme
 
 ### Color Scheme
+
 1. Blue - Data Management
 2. Green - Class View
 3. Purple - Student View
@@ -99,4 +106,3 @@ Each new card follows the existing pattern:
 ✅ Responsive layout (1/2/3 columns)
 ✅ All navigation buttons work
 ✅ Color scheme is consistent
-

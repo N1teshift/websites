@@ -1,4 +1,4 @@
-import { StudentData, Assessment } from '../types/ProgressReportTypes';
+import { StudentData, Assessment } from "../types/ProgressReportTypes";
 
 /**
  * Get the latest assessment score for a specific column
@@ -7,17 +7,17 @@ import { StudentData, Assessment } from '../types/ProgressReportTypes';
  * @returns The score as a string, or null if not found
  */
 export const getAssessmentScore = (student: StudentData, columnName: string): string | null => {
-    if (!student.assessments) return null;
-    
-    const assessments = student.assessments.filter(a => 
-        a.column?.toUpperCase() === columnName.toUpperCase()
-    );
-    
-    if (assessments.length === 0) return null;
-    
-    // Sort by date descending and get the latest
-    assessments.sort((a, b) => b.date.localeCompare(a.date));
-    return assessments[0].score;
+  if (!student.assessments) return null;
+
+  const assessments = student.assessments.filter(
+    (a) => a.column?.toUpperCase() === columnName.toUpperCase()
+  );
+
+  if (assessments.length === 0) return null;
+
+  // Sort by date descending and get the latest
+  assessments.sort((a, b) => b.date.localeCompare(a.date));
+  return assessments[0].score;
 };
 
 /**
@@ -26,19 +26,22 @@ export const getAssessmentScore = (student: StudentData, columnName: string): st
  * @param columnName - Assessment column name
  * @returns Array of assessments
  */
-export const getAssessmentsByColumn = (students: StudentData[], columnName: string): Assessment[] => {
-    const assessments: Assessment[] = [];
-    
-    students.forEach(student => {
-        if (!student.assessments) return;
-        
-        const studentAssessments = student.assessments.filter(a => 
-            a.column?.toUpperCase() === columnName.toUpperCase()
-        );
-        assessments.push(...studentAssessments);
-    });
-    
-    return assessments;
+export const getAssessmentsByColumn = (
+  students: StudentData[],
+  columnName: string
+): Assessment[] => {
+  const assessments: Assessment[] = [];
+
+  students.forEach((student) => {
+    if (!student.assessments) return;
+
+    const studentAssessments = student.assessments.filter(
+      (a) => a.column?.toUpperCase() === columnName.toUpperCase()
+    );
+    assessments.push(...studentAssessments);
+  });
+
+  return assessments;
 };
 
 /**
@@ -47,18 +50,21 @@ export const getAssessmentsByColumn = (students: StudentData[], columnName: stri
  * @param columnName - Assessment column name
  * @returns The latest assessment object, or null if not found
  */
-export const getLatestAssessment = (student: StudentData, columnName: string): Assessment | null => {
-    if (!student.assessments) return null;
-    
-    const assessments = student.assessments.filter(a => 
-        a.column?.toUpperCase() === columnName.toUpperCase()
-    );
-    
-    if (assessments.length === 0) return null;
-    
-    // Sort by date descending and get the latest
-    assessments.sort((a, b) => b.date.localeCompare(a.date));
-    return assessments[0];
+export const getLatestAssessment = (
+  student: StudentData,
+  columnName: string
+): Assessment | null => {
+  if (!student.assessments) return null;
+
+  const assessments = student.assessments.filter(
+    (a) => a.column?.toUpperCase() === columnName.toUpperCase()
+  );
+
+  if (assessments.length === 0) return null;
+
+  // Sort by date descending and get the latest
+  assessments.sort((a, b) => b.date.localeCompare(a.date));
+  return assessments[0];
 };
 
 /**
@@ -68,13 +74,13 @@ export const getLatestAssessment = (student: StudentData, columnName: string): A
  * @returns Formatted score for display
  */
 export const formatAssessmentScore = (score: string | null): string => {
-    if (!score) return '-';
-    if (score === '?' || score === 'n') return score;
-    
-    const numScore = parseFloat(score);
-    if (isNaN(numScore)) return score;
-    
-    return numScore.toString();
+  if (!score) return "-";
+  if (score === "?" || score === "n") return score;
+
+  const numScore = parseFloat(score);
+  if (isNaN(numScore)) return score;
+
+  return numScore.toString();
 };
 
 /**
@@ -84,14 +90,14 @@ export const formatAssessmentScore = (score: string | null): string => {
  * @returns Formatted score for display
  */
 export const formatHomeworkCompletion = (score: string | null, _type?: string): string => {
-    if (!score) return '-';
-    if (score === '?' || score === 'n') return score;
-    
-    const numScore = parseFloat(score);
-    if (isNaN(numScore)) return score;
-    
-    // For all homework types, just show the numeric value as-is
-    return numScore.toString();
+  if (!score) return "-";
+  if (score === "?" || score === "n") return score;
+
+  const numScore = parseFloat(score);
+  if (isNaN(numScore)) return score;
+
+  // For all homework types, just show the numeric value as-is
+  return numScore.toString();
 };
 
 /**
@@ -100,19 +106,19 @@ export const formatHomeworkCompletion = (score: string | null, _type?: string): 
  * @returns Array of unique column names
  */
 export const getUniqueAssessmentColumns = (students: StudentData[]): string[] => {
-    const columns = new Set<string>();
-    
-    students.forEach(student => {
-        if (!student.assessments) return;
-        
-        student.assessments.forEach(assessment => {
-            if (assessment.column) {
-                columns.add(assessment.column);
-            }
-        });
+  const columns = new Set<string>();
+
+  students.forEach((student) => {
+    if (!student.assessments) return;
+
+    student.assessments.forEach((assessment) => {
+      if (assessment.column) {
+        columns.add(assessment.column);
+      }
     });
-    
-    return Array.from(columns).sort();
+  });
+
+  return Array.from(columns).sort();
 };
 
 /**
@@ -122,19 +128,19 @@ export const getUniqueAssessmentColumns = (students: StudentData[]): string[] =>
  * @returns Array of column names of that type
  */
 export const getAssessmentColumnsByType = (students: StudentData[], type: string): string[] => {
-    const columns = new Set<string>();
-    
-    students.forEach(student => {
-        if (!student.assessments) return;
-        
-        student.assessments.forEach(assessment => {
-            if (assessment.type === type && assessment.column) {
-                columns.add(assessment.column);
-            }
-        });
+  const columns = new Set<string>();
+
+  students.forEach((student) => {
+    if (!student.assessments) return;
+
+    student.assessments.forEach((assessment) => {
+      if (assessment.type === type && assessment.column) {
+        columns.add(assessment.column);
+      }
     });
-    
-    return Array.from(columns).sort();
+  });
+
+  return Array.from(columns).sort();
 };
 
 /**
@@ -143,18 +149,19 @@ export const getAssessmentColumnsByType = (students: StudentData[], type: string
  * @param assessmentId - Assessment ID (e.g., 'homework-nd1', 'test-u1s1-irrational-numbers')
  * @returns The score as a string, or null if not found
  */
-export const getAssessmentScoreById = (student: StudentData, assessmentId: string): string | null => {
-    if (!student.assessments) return null;
-    
-    const assessments = student.assessments.filter(a => 
-        a.assessment_id === assessmentId
-    );
-    
-    if (assessments.length === 0) return null;
-    
-    // Sort by date descending and get the latest
-    assessments.sort((a, b) => b.date.localeCompare(a.date));
-    return assessments[0].score;
+export const getAssessmentScoreById = (
+  student: StudentData,
+  assessmentId: string
+): string | null => {
+  if (!student.assessments) return null;
+
+  const assessments = student.assessments.filter((a) => a.assessment_id === assessmentId);
+
+  if (assessments.length === 0) return null;
+
+  // Sort by date descending and get the latest
+  assessments.sort((a, b) => b.date.localeCompare(a.date));
+  return assessments[0].score;
 };
 
 /**
@@ -163,18 +170,19 @@ export const getAssessmentScoreById = (student: StudentData, assessmentId: strin
  * @param assessmentId - Assessment ID
  * @returns The latest assessment object, or null if not found
  */
-export const getLatestAssessmentById = (student: StudentData, assessmentId: string): Assessment | null => {
-    if (!student.assessments) return null;
-    
-    const assessments = student.assessments.filter(a => 
-        a.assessment_id === assessmentId
-    );
-    
-    if (assessments.length === 0) return null;
-    
-    // Sort by date descending and get the latest
-    assessments.sort((a, b) => b.date.localeCompare(a.date));
-    return assessments[0];
+export const getLatestAssessmentById = (
+  student: StudentData,
+  assessmentId: string
+): Assessment | null => {
+  if (!student.assessments) return null;
+
+  const assessments = student.assessments.filter((a) => a.assessment_id === assessmentId);
+
+  if (assessments.length === 0) return null;
+
+  // Sort by date descending and get the latest
+  assessments.sort((a, b) => b.date.localeCompare(a.date));
+  return assessments[0];
 };
 
 /**
@@ -184,18 +192,16 @@ export const getLatestAssessmentById = (student: StudentData, assessmentId: stri
  * @returns Array of assessments
  */
 export const getAssessmentsById = (students: StudentData[], assessmentId: string): Assessment[] => {
-    const assessments: Assessment[] = [];
-    
-    students.forEach(student => {
-        if (!student.assessments) return;
-        
-        const studentAssessments = student.assessments.filter(a => 
-            a.assessment_id === assessmentId
-        );
-        assessments.push(...studentAssessments);
-    });
-    
-    return assessments;
+  const assessments: Assessment[] = [];
+
+  students.forEach((student) => {
+    if (!student.assessments) return;
+
+    const studentAssessments = student.assessments.filter((a) => a.assessment_id === assessmentId);
+    assessments.push(...studentAssessments);
+  });
+
+  return assessments;
 };
 
 /**
@@ -205,35 +211,31 @@ export const getAssessmentsById = (students: StudentData[], assessmentId: string
  * @returns Array of objects with assessment_id and assessment_title
  */
 export const getUniqueAssessments = (
-    students: StudentData[], 
-    types?: string[]
+  students: StudentData[],
+  types?: string[]
 ): Array<{ id: string; title: string; type: string }> => {
-    const assessmentMap = new Map<string, { id: string; title: string; type: string }>();
-    
-    students.forEach(student => {
-        if (!student.assessments) return;
-        
-        student.assessments.forEach(assessment => {
-            if (assessment.assessment_id && assessment.assessment_title) {
-                // Filter by type if specified
-                if (types && !types.includes(assessment.type)) {
-                    return;
-                }
-                
-                if (!assessmentMap.has(assessment.assessment_id)) {
-                    assessmentMap.set(assessment.assessment_id, {
-                        id: assessment.assessment_id,
-                        title: assessment.assessment_title,
-                        type: assessment.type
-                    });
-                }
-            }
-        });
+  const assessmentMap = new Map<string, { id: string; title: string; type: string }>();
+
+  students.forEach((student) => {
+    if (!student.assessments) return;
+
+    student.assessments.forEach((assessment) => {
+      if (assessment.assessment_id && assessment.assessment_title) {
+        // Filter by type if specified
+        if (types && !types.includes(assessment.type)) {
+          return;
+        }
+
+        if (!assessmentMap.has(assessment.assessment_id)) {
+          assessmentMap.set(assessment.assessment_id, {
+            id: assessment.assessment_id,
+            title: assessment.assessment_title,
+            type: assessment.type,
+          });
+        }
+      }
     });
-    
-    return Array.from(assessmentMap.values());
+  });
+
+  return Array.from(assessmentMap.values());
 };
-
-
-
-

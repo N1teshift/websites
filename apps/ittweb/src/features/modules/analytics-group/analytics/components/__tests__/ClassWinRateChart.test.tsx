@@ -1,10 +1,10 @@
-import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
-import { ClassWinRateChart } from '../ClassWinRateChart';
-import type { ClassWinRateData } from '../../types';
+import React from "react";
+import { render, screen, waitFor } from "@testing-library/react";
+import { ClassWinRateChart } from "../ClassWinRateChart";
+import type { ClassWinRateData } from "../../types";
 
 // Mock recharts
-jest.mock('recharts', () => ({
+jest.mock("recharts", () => ({
   ResponsiveContainer: ({ children }: { children: React.ReactNode }) => (
     <div data-testid="responsive-container">{children}</div>
   ),
@@ -18,7 +18,7 @@ jest.mock('recharts', () => ({
   Tooltip: () => <div data-testid="tooltip" />,
 }));
 
-jest.mock('@/features/infrastructure/components/containers/Card', () => ({
+jest.mock("@/features/infrastructure/components/containers/Card", () => ({
   Card: ({ children, title }: { children: React.ReactNode; title?: string }) => (
     <div data-testid="card">
       {title && <h3>{title}</h3>}
@@ -27,12 +27,12 @@ jest.mock('@/features/infrastructure/components/containers/Card', () => ({
   ),
 }));
 
-describe('ClassWinRateChart', () => {
-  it('should render class win rates', async () => {
+describe("ClassWinRateChart", () => {
+  it("should render class win rates", async () => {
     // Arrange
     const data: ClassWinRateData[] = [
-      { className: 'warrior', winRate: 60 },
-      { className: 'mage', winRate: 45 },
+      { className: "warrior", winRate: 60 },
+      { className: "mage", winRate: 45 },
     ];
 
     // Act
@@ -40,12 +40,12 @@ describe('ClassWinRateChart', () => {
 
     // Assert
     await waitFor(() => {
-      expect(screen.getByTestId('bar-chart')).toBeInTheDocument();
+      expect(screen.getByTestId("bar-chart")).toBeInTheDocument();
     });
-    expect(screen.getByTestId('responsive-container')).toBeInTheDocument();
+    expect(screen.getByTestId("responsive-container")).toBeInTheDocument();
   });
 
-  it('should handle no data', () => {
+  it("should handle no data", () => {
     // Arrange
     const data: ClassWinRateData[] = [];
 
@@ -53,10 +53,10 @@ describe('ClassWinRateChart', () => {
     render(<ClassWinRateChart data={data} />);
 
     // Assert
-    expect(screen.getByText('No class win rate data available')).toBeInTheDocument();
+    expect(screen.getByText("No class win rate data available")).toBeInTheDocument();
   });
 
-  it('should handle many classes', async () => {
+  it("should handle many classes", async () => {
     // Arrange
     const data: ClassWinRateData[] = Array.from({ length: 20 }, (_, i) => ({
       className: `class${i}`,
@@ -67,10 +67,10 @@ describe('ClassWinRateChart', () => {
     render(<ClassWinRateChart data={data} />);
 
     // Assert
-    expect(screen.getByTestId('bar-chart')).toBeInTheDocument();
+    expect(screen.getByTestId("bar-chart")).toBeInTheDocument();
   });
 
-  it('should handle missing classes', () => {
+  it("should handle missing classes", () => {
     // Arrange
     const data = null as unknown as ClassWinRateData[];
 
@@ -78,34 +78,32 @@ describe('ClassWinRateChart', () => {
     render(<ClassWinRateChart data={data} />);
 
     // Assert
-    expect(screen.getByText('No class win rate data available')).toBeInTheDocument();
+    expect(screen.getByText("No class win rate data available")).toBeInTheDocument();
   });
 
-  it('should compare classes side-by-side', () => {
+  it("should compare classes side-by-side", () => {
     // Arrange
     const data: ClassWinRateData[] = [
-      { className: 'warrior', winRate: 60 },
-      { className: 'mage', winRate: 60 },
-      { className: 'rogue', winRate: 50 },
+      { className: "warrior", winRate: 60 },
+      { className: "mage", winRate: 60 },
+      { className: "rogue", winRate: 50 },
     ];
 
     // Act
     render(<ClassWinRateChart data={data} />);
 
     // Assert
-    expect(screen.getByTestId('bar-chart')).toBeInTheDocument();
+    expect(screen.getByTestId("bar-chart")).toBeInTheDocument();
   });
 
-  it('should display custom title', () => {
+  it("should display custom title", () => {
     // Arrange
-    const data: ClassWinRateData[] = [{ className: 'warrior', winRate: 60 }];
+    const data: ClassWinRateData[] = [{ className: "warrior", winRate: 60 }];
 
     // Act
     render(<ClassWinRateChart data={data} title="Custom Class Win Rate" />);
 
     // Assert
-    expect(screen.getByText('Custom Class Win Rate')).toBeInTheDocument();
+    expect(screen.getByText("Custom Class Win Rate")).toBeInTheDocument();
   });
 });
-
-

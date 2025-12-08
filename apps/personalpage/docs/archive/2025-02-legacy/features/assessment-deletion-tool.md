@@ -9,6 +9,7 @@
 ## 🎯 Overview
 
 This tool allows you to selectively delete assessments from your student data by specifying criteria like:
+
 - Date
 - Column name
 - Assessment ID
@@ -25,17 +26,17 @@ Open `scripts/deleteAssessments.ts` and modify the `DELETION_RULES` array:
 
 ```typescript
 const DELETION_RULES: DeletionRule[] = [
-    {
-        date: '2025-10-06',
-        assessment_id: 'exercise-progress-weekly',
-        description: 'Oct 6 - Exercise Progress - Weekly Check'
-    },
-    {
-        date: '2025-09-25',
-        column: 'EXT1',
-        description: 'Sep 25 - EXT1 Experimental'
-    }
-    // Add more rules here...
+  {
+    date: "2025-10-06",
+    assessment_id: "exercise-progress-weekly",
+    description: "Oct 6 - Exercise Progress - Weekly Check",
+  },
+  {
+    date: "2025-09-25",
+    column: "EXT1",
+    description: "Sep 25 - EXT1 Experimental",
+  },
+  // Add more rules here...
 ];
 ```
 
@@ -46,6 +47,7 @@ npx tsx scripts/deleteAssessments.ts
 ```
 
 The script will:
+
 - Read the current data file
 - Apply all deletion rules
 - Generate a new cleaned file
@@ -88,16 +90,16 @@ This will delete assessments that match **BOTH** Oct 6 **AND** column EXT1.
 
 ### Assessments Deleted
 
-| Rule | Count | Status |
-|------|-------|--------|
-| Oct 6 - Exercise Progress - Weekly Check (Experimental) | 54 | ✅ Deleted |
-| Sep 25 - EXT*1 Experimental Classwork | 0 | ⚠️ Not found |
-| Oct 6 - EXT1 Assessment | 3 | ✅ Deleted |
-| Oct 9 - EXT Weekly Assessment (Experimental) | 0 | ⚠️ Not found |
-| Oct 9 - EXT Assessment (Classwork) | 18 | ✅ Deleted |
-| Oct 10 - EXT2 Weekly Assessment (Experimental) | 0 | ⚠️ Not found |
-| Oct 10 - ND1 Assessment (Experimental) | 75 | ✅ Deleted |
-| Oct 10 - EXT*2 Classwork | 18 | ✅ Deleted |
+| Rule                                                    | Count | Status       |
+| ------------------------------------------------------- | ----- | ------------ |
+| Oct 6 - Exercise Progress - Weekly Check (Experimental) | 54    | ✅ Deleted   |
+| Sep 25 - EXT\*1 Experimental Classwork                  | 0     | ⚠️ Not found |
+| Oct 6 - EXT1 Assessment                                 | 3     | ✅ Deleted   |
+| Oct 9 - EXT Weekly Assessment (Experimental)            | 0     | ⚠️ Not found |
+| Oct 9 - EXT Assessment (Classwork)                      | 18    | ✅ Deleted   |
+| Oct 10 - EXT2 Weekly Assessment (Experimental)          | 0     | ⚠️ Not found |
+| Oct 10 - ND1 Assessment (Experimental)                  | 75    | ✅ Deleted   |
+| Oct 10 - EXT\*2 Classwork                               | 18    | ✅ Deleted   |
 
 **Total Deleted:** 168 assessments
 
@@ -193,8 +195,8 @@ This will delete assessments that match **BOTH** Oct 6 **AND** column EXT1.
 Change these lines in the script:
 
 ```typescript
-const inputFilePath = path.join(__dirname, '..', 'your_input_file.json');
-const outputFilePath = path.join(__dirname, '..', 'your_output_file.json');
+const inputFilePath = path.join(__dirname, "..", "your_input_file.json");
+const outputFilePath = path.join(__dirname, "..", "your_output_file.json");
 ```
 
 ---
@@ -202,6 +204,7 @@ const outputFilePath = path.join(__dirname, '..', 'your_output_file.json');
 ## 📁 File Versioning
 
 The script automatically updates:
+
 - **Schema version** (incremented)
 - **Export version** (e.g., v9.0-cleaned)
 - **Exported timestamp**
@@ -226,6 +229,7 @@ This helps track which deletions have been applied.
 ### "0 entries found"
 
 This means:
+
 - Assessment doesn't exist in the data
 - Criteria don't match (check spelling, case, date format)
 - Assessment was already deleted in a previous run
@@ -233,6 +237,7 @@ This means:
 ### Too many deletions
 
 If more assessments are deleted than expected:
+
 - Make your criteria more specific
 - Add additional criteria to narrow the match
 - Check the matching logic
@@ -240,6 +245,7 @@ If more assessments are deleted than expected:
 ### Assessment still present
 
 If an assessment isn't deleted:
+
 - Verify the criteria match exactly
 - Check the assessment structure in the JSON
 - Try matching by assessment_id instead of title
@@ -281,6 +287,3 @@ When the script runs successfully, you'll see:
 ```
 
 The cleaned file is ready to use in your dashboard!
-
-
-

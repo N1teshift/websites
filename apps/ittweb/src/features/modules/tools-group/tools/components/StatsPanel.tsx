@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 export type TrollComputedStats = {
   str: number;
@@ -30,7 +30,7 @@ export default function StatsPanel({ stats }: { stats: TrollComputedStats }) {
       <div>
         <div className="text-gray-400">Armor</div>
         <div>
-          {stats.armor.toFixed(1)}{' '}
+          {stats.armor.toFixed(1)}{" "}
           <span className="text-gray-400">({stats.armorReductionPct.toFixed(1)}%)</span>
         </div>
       </div>
@@ -53,6 +53,3 @@ export default function StatsPanel({ stats }: { stats: TrollComputedStats }) {
     </div>
   );
 }
-
-
-

@@ -1,5 +1,5 @@
-import React from 'react';
-import { Card } from '@/features/infrastructure/components';
+import React from "react";
+import { Card } from "@/features/infrastructure/components";
 
 /**
  * Skeleton loader for GameCard component
@@ -21,4 +21,3 @@ export function GameCardSkeleton() {
     </Card>
   );
 }
-

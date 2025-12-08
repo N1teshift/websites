@@ -5,14 +5,17 @@
 The Algirdas class sheet in `dataJ.xlsx` had all Unit Test columns shifted by **1 column to the right** compared to other classes.
 
 ### Comparison:
+
 **M. R. Juodasis** (first sheet):
+
 - Column 45: Listening
-- Column 46: Reading  
+- Column 46: Reading
 - Column 47: VOC 1
 - ...
 - Column 52: %
 
 **Algirdas**:
+
 - Column 46: Listening (shifted +1)
 - Column 47: Reading (shifted +1)
 - Column 48: VOC 1 (shifted +1)
@@ -31,6 +34,7 @@ The original `importDataJ.ts` script used **hardcoded column numbers** which onl
 ```
 
 This caused Algirdas data to be read from wrong columns, resulting in:
+
 - Unit 1 TEST% showing Total data
 - Actual percentage not visible
 - All component scores shifted
@@ -52,30 +56,32 @@ const unitRanges: { unitNum: number; startCol: number; endCol: number }[] = [];
 
 // Scan for "UNIT X" markers in row1
 for (let col = 1; col <= 120; col++) {
-    const section = getCellVal(row1.getCell(col)).toLowerCase();
-    const unitMatch = section.match(/unit\s*(\d+)/i);
-    if (unitMatch) {
-        // Track range for this unit
-    }
+  const section = getCellVal(row1.getCell(col)).toLowerCase();
+  const unitMatch = section.match(/unit\s*(\d+)/i);
+  if (unitMatch) {
+    // Track range for this unit
+  }
 }
 
 // Map columns within each range by header names
 for (const range of unitRanges) {
-    for (let col = range.startCol; col <= range.endCol; col++) {
-        const header = getCellVal(row2.getCell(col)).toLowerCase();
-        if (header.includes('listening')) colMap[`t${unitNum}_lis1`] = col;
-        // ...
-    }
+  for (let col = range.startCol; col <= range.endCol; col++) {
+    const header = getCellVal(row2.getCell(col)).toLowerCase();
+    if (header.includes("listening")) colMap[`t${unitNum}_lis1`] = col;
+    // ...
+  }
 }
 ```
 
 ## Verification
 
 **Before (Algirdas - Ariana):**
+
 - T1%: showing "13" (total)
 - Actual %: not visible ❌
 
 **After (Algirdas - Ariana):**
+
 ```json
 {
   "lis1": 4,
@@ -87,6 +93,7 @@ for (const range of unitRanges) {
   "total_percent": 39.39
 }
 ```
+
 ✅ Correct!
 
 ## Files Changed
@@ -112,4 +119,3 @@ npx tsx scripts/importDataJ.ts
 ✅ Unit test data properly aligned  
 ✅ Diagnostic test data unaffected (was already correct)  
 ✅ Ready to upload to dashboard
-

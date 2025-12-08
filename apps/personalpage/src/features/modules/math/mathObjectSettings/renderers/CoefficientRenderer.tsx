@@ -17,36 +17,36 @@ import { getDefaultSettings } from "../utils/interfaceDefaults";
  *   to the defaults for the chosen interface type, while preserving the core `numberSet` and `range`.
  */
 const CoefficientRenderer: React.FC<MathObjectContainerProps<CoefficientSettings>> = ({
-    containerId,
-    settings,
-    updateSettings,
-    startIndex = 1,
-    showDescription = false,
-    objectType = null,
+  containerId,
+  settings,
+  updateSettings,
+  startIndex = 1,
+  showDescription = false,
+  objectType = null,
 }) => {
-    return (
-        <BaseMathObjectRenderer
-            containerId={containerId}
-            settings={settings}
-            updateSettings={updateSettings}
-            startIndex={startIndex}
-            showDescription={showDescription}
-            objectType={objectType}
-            settingsContainer={CoefficientSettingsContainer}
-            supportsInterfaceToggle={true}
-            onInterfaceChange={(newInterface, updateSettings) => {
-                const defaultSettings = getDefaultSettings<CoefficientSettings>("coefficient", newInterface);
-                updateSettings({
-                    ...defaultSettings,
-                    numberSet: settings.numberSet,
-                    range: settings.range,
-                });
-            }}
-        />
-    );
+  return (
+    <BaseMathObjectRenderer
+      containerId={containerId}
+      settings={settings}
+      updateSettings={updateSettings}
+      startIndex={startIndex}
+      showDescription={showDescription}
+      objectType={objectType}
+      settingsContainer={CoefficientSettingsContainer}
+      supportsInterfaceToggle={true}
+      onInterfaceChange={(newInterface, updateSettings) => {
+        const defaultSettings = getDefaultSettings<CoefficientSettings>(
+          "coefficient",
+          newInterface
+        );
+        updateSettings({
+          ...defaultSettings,
+          numberSet: settings.numberSet,
+          range: settings.range,
+        });
+      }}
+    />
+  );
 };
 
 export default CoefficientRenderer;
-
-
-

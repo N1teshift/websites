@@ -5,6 +5,7 @@
 ## Exports
 
 ### Components
+
 - `MapContainer` - Main map visualization container with interactive features
 - `MapControls` - Zoom, pan, and layer control interface
 - `MapFileUploader` - .w3x map file upload component with validation
@@ -21,10 +22,12 @@
 - `HeightDistributionChart` - Terrain height distribution analytics
 
 ### Types
+
 - `SimpleTile` - Individual map tile data (height, water, cliffs, pathing flags)
 - `SimpleMapData` - Complete parsed map data structure
 
 ### Utils
+
 - `mapUtils` - Map parsing, processing, and analysis utilities
   - Map file parsing from .w3x format
   - Terrain analysis functions
@@ -63,13 +66,13 @@ import {
 ### Using Map Data Types
 
 ```typescript
-import type { SimpleMapData, SimpleTile } from '@/features/modules/map-analyzer/types';
+import type { SimpleMapData, SimpleTile } from "@/features/modules/map-analyzer/types";
 
 // Working with parsed map data
 const mapData: SimpleMapData = {
   width: 128,
   height: 128,
-  tiles: [] // Array of SimpleTile objects
+  tiles: [], // Array of SimpleTile objects
 };
 
 const tile: SimpleTile = {
@@ -79,7 +82,7 @@ const tile: SimpleTile = {
   cliffLevel: 2,
   flagsMask: 0x0001, // Walkable
   isRamp: false,
-  isNoWater: true
+  isNoWater: true,
 };
 ```
 
@@ -95,5 +98,3 @@ const tile: SimpleTile = {
 
 - [Data Pipeline](../../../../docs/production/systems/data-pipeline/) - Map data extraction process
 - [Map Types](./types/map.ts) - Type definitions
-
-

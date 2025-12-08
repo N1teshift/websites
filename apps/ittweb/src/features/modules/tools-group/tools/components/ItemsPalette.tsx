@@ -1,35 +1,35 @@
-import React from 'react';
-import GuideIcon from '@/features/modules/content/guides/components/GuideIcon';
-import type { ItemCategory } from '@/types/items';
-import { useItemsDataSWR } from '@/features/modules/content/guides/hooks/useItemsDataSWR';
+import React from "react";
+import GuideIcon from "@/features/modules/content/guides/components/GuideIcon";
+import type { ItemCategory } from "@/types/items";
+import { useItemsDataSWR } from "@/features/modules/content/guides/hooks/useItemsDataSWR";
 
 // Note: We use GuideIcon without src override to leverage the ICON_MAP system,
 // which provides consistent icon resolution across all pages (same as guides pages).
 
 export default function ItemsPalette() {
-  const [query, setQuery] = React.useState('');
-  const [category, setCategory] = React.useState<ItemCategory | 'all'>('all');
+  const [query, setQuery] = React.useState("");
+  const [category, setCategory] = React.useState<ItemCategory | "all">("all");
   const [collapsed, setCollapsed] = React.useState(false);
   const contentId = React.useId();
   const { items, isLoading, error } = useItemsDataSWR();
 
-  const categories: { key: ItemCategory | 'all'; label: string }[] = [
-    { key: 'all', label: 'All' },
-    { key: 'weapons', label: 'Weapons' },
-    { key: 'armor', label: 'Armor' },
-    { key: 'raw-materials', label: 'Raw Materials' },
-    { key: 'potions', label: 'Potions' },
-    { key: 'scrolls', label: 'Scrolls' },
-    { key: 'buildings', label: 'Buildings' },
+  const categories: { key: ItemCategory | "all"; label: string }[] = [
+    { key: "all", label: "All" },
+    { key: "weapons", label: "Weapons" },
+    { key: "armor", label: "Armor" },
+    { key: "raw-materials", label: "Raw Materials" },
+    { key: "potions", label: "Potions" },
+    { key: "scrolls", label: "Scrolls" },
+    { key: "buildings", label: "Buildings" },
   ];
 
   const filtered = React.useMemo(() => {
     const q = query.trim().toLowerCase();
     return items.filter((it) => {
-      const inCategory = category === 'all' ? true : it.category === category;
+      const inCategory = category === "all" ? true : it.category === category;
       if (!inCategory) return false;
       if (!q) return true;
-      const hay = `${it.name} ${it.description} ${(it.recipe || []).join(' ')}`.toLowerCase();
+      const hay = `${it.name} ${it.description} ${(it.recipe || []).join(" ")}`.toLowerCase();
       return hay.includes(q);
     });
   }, [query, category, items]);
@@ -40,7 +40,7 @@ export default function ItemsPalette() {
         <h3 className="font-medieval-brand text-xl">Items</h3>
         <div className="flex items-center gap-3">
           <span className="hidden sm:inline text-sm text-gray-300">
-            {collapsed ? 'Collapsed' : "Drag an item into a Troll's inventory"}
+            {collapsed ? "Collapsed" : "Drag an item into a Troll's inventory"}
           </span>
           <button
             type="button"
@@ -49,7 +49,7 @@ export default function ItemsPalette() {
             className="px-2 py-1 text-sm rounded border border-amber-500/30 bg-black/40 text-gray-200 hover:border-amber-400"
             onClick={() => setCollapsed((v) => !v)}
           >
-            {collapsed ? 'Expand' : 'Collapse'}
+            {collapsed ? "Expand" : "Collapse"}
           </button>
         </div>
       </div>
@@ -61,7 +61,9 @@ export default function ItemsPalette() {
                 key={c.key}
                 type="button"
                 className={`px-3 py-1 rounded border text-sm ${
-                  c.key === category ? 'bg-amber-600 text-black border-amber-400' : 'bg-black/40 text-gray-200 border-amber-500/30 hover:border-amber-400'
+                  c.key === category
+                    ? "bg-amber-600 text-black border-amber-400"
+                    : "bg-black/40 text-gray-200 border-amber-500/30 hover:border-amber-400"
                 }`}
                 onClick={() => setCategory(c.key)}
               >
@@ -84,9 +86,7 @@ export default function ItemsPalette() {
                 Failed to load items. {error.message}
               </div>
             )}
-            {!error && isLoading && (
-              <div className="text-gray-400 text-sm">Loading items...</div>
-            )}
+            {!error && isLoading && <div className="text-gray-400 text-sm">Loading items...</div>}
             {!error && !isLoading && filtered.length === 0 && (
               <div className="text-gray-400 text-sm">No items match your filters.</div>
             )}
@@ -98,16 +98,22 @@ export default function ItemsPalette() {
                     className="cursor-move text-center border border-transparent hover:border-amber-400/50 rounded p-0.5 text-gray-200 inline-flex flex-col items-center transition-colors"
                     draggable
                     onDragStart={(e) => {
-                      e.dataTransfer.effectAllowed = 'copyMove';
+                      e.dataTransfer.effectAllowed = "copyMove";
                       e.dataTransfer.setData(
-                        'text/plain',
-                        JSON.stringify({ kind: 'paletteItem', itemId: it.id })
+                        "text/plain",
+                        JSON.stringify({ kind: "paletteItem", itemId: it.id })
                       );
                     }}
                     title={it.name}
                   >
-                    <GuideIcon category={it.category === 'buildings' ? 'buildings' : 'items'} name={it.name} size={64} />
-                    <div className="text-xs font-semibold text-amber-200 break-words text-center mt-0.5 leading-tight">{it.name}</div>
+                    <GuideIcon
+                      category={it.category === "buildings" ? "buildings" : "items"}
+                      name={it.name}
+                      size={64}
+                    />
+                    <div className="text-xs font-semibold text-amber-200 break-words text-center mt-0.5 leading-tight">
+                      {it.name}
+                    </div>
                     {(it.stats?.damage || it.stats?.armor) && (
                       <div className="text-[8px] text-amber-300/80 leading-tight">
                         {it.stats?.damage && <span>+{it.stats.damage}</span>}
@@ -125,6 +131,3 @@ export default function ItemsPalette() {
     </div>
   );
 }
-
-
-

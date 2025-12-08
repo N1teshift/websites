@@ -1,6 +1,6 @@
-import { Button } from '@/features/infrastructure/components';
-import { useEditPostForm } from '../hooks/useEditPostForm';
-import type { PostFormState } from '../hooks/useNewPostForm';
+import { Button } from "@/features/infrastructure/components";
+import { useEditPostForm } from "../hooks/useEditPostForm";
+import type { PostFormState } from "../hooks/useNewPostForm";
 
 type EditPostFormProps = {
   postId: string;
@@ -30,7 +30,7 @@ export default function EditPostForm({ postId, initialPost }: EditPostFormProps)
 
   return (
     <>
-      {status === 'unauthenticated' && (
+      {status === "unauthenticated" && (
         <div className="mb-6 rounded-md border border-amber-500/30 bg-black/30 p-4 text-sm text-gray-200">
           Please sign in with Discord to edit a post.
         </div>
@@ -125,17 +125,11 @@ export default function EditPostForm({ postId, initialPost }: EditPostFormProps)
         )}
 
         <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
-          <Button
-            type="submit"
-            disabled={!canSubmit || status === 'loading'}
-            className="sm:w-auto"
-          >
-            {isSubmitting ? 'Updating...' : 'Update Post'}
+          <Button type="submit" disabled={!canSubmit || status === "loading"} className="sm:w-auto">
+            {isSubmitting ? "Updating..." : "Update Post"}
           </Button>
         </div>
       </form>
     </>
   );
 }
-
-

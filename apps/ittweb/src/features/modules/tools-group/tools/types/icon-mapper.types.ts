@@ -1,4 +1,4 @@
-import { ITTIconCategory } from '@/features/modules/content/guides/utils/iconUtils';
+import { ITTIconCategory } from "@/features/modules/content/guides/utils/iconUtils";
 
 export type IconFile = {
   filename: string;
@@ -26,7 +26,7 @@ export type CategoryStat = {
 };
 
 export type EntityStat = {
-  category: 'abilities' | 'units' | 'items' | 'buildings';
+  category: "abilities" | "units" | "items" | "buildings";
   total: number;
   mapped: number;
   unmapped: number;
@@ -34,5 +34,3 @@ export type EntityStat = {
 };
 
 export type MarkedForDeletion = Set<string>; // Set of icon paths marked for deletion
-
-

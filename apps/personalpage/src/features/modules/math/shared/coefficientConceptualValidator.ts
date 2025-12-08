@@ -2,21 +2,26 @@
  * Provides functions to validate the conceptual consistency and compatibility
  * of various `CoefficientSettings` properties, such as number set, representation type,
  * generation rules, and numerical range.
- * 
+ *
  * It ensures that selected settings are mathematically sound and can produce valid coefficients.
  * Uses helper functions and constraints defined in `mathematicalConstraints.ts`.
  */
-import { NumberSet, CoefficientRule, RepresentationType } from '../types/mathTypes';
+import { NumberSet, CoefficientRule, RepresentationType } from "../types/mathTypes";
 import {
-  isRuleValidForNumberSet, getAllowedRepresentationTypes, COEFFICIENT_RULE_CONSTRAINTS
-} from './mathematicalConstraints';
-import { createComponentLogger } from '@websites/infrastructure/logging';
-import { isPrime } from './numberUtils';
+  isRuleValidForNumberSet,
+  getAllowedRepresentationTypes,
+  COEFFICIENT_RULE_CONSTRAINTS,
+} from "./mathematicalConstraints";
+import { createComponentLogger } from "@websites/infrastructure/logging";
+import { isPrime } from "./numberUtils";
 
-const logger = createComponentLogger('CoefficientConceptualValidator');
+const logger = createComponentLogger("CoefficientConceptualValidator");
 
 // Check if a representation is compatible with a number set
-function isRepresentationCompatibleWithNumberSet(numberSet: NumberSet, repr: RepresentationType): boolean {
+function isRepresentationCompatibleWithNumberSet(
+  numberSet: NumberSet,
+  repr: RepresentationType
+): boolean {
   return getAllowedRepresentationTypes(numberSet).includes(repr);
 }
 
@@ -28,7 +33,10 @@ function isRepresentationCompatibleWithNumberSet(numberSet: NumberSet, repr: Rep
  * @returns {boolean} True if the rule is compatible with the number set, false otherwise.
  * @remarks Internally uses `isRuleValidForNumberSet` from `mathematicalConstraints`.
  */
-export function isRuleCompatibleWithNumberSet(numberSet: NumberSet, rule: CoefficientRule): boolean {
+export function isRuleCompatibleWithNumberSet(
+  numberSet: NumberSet,
+  rule: CoefficientRule
+): boolean {
   return isRuleValidForNumberSet(rule, numberSet);
 }
 
@@ -44,7 +52,7 @@ function isRangeValid(min: number, max: number): boolean {
 // Check if a range is compatible with a number set
 function isRangeCompatibleWithNumberSet(numberSet: NumberSet, range: [number, number]): boolean {
   const [min, max] = range;
-  
+
   // Check if the range itself is valid
   if (!isRangeValid(min, max)) {
     return false;
@@ -52,7 +60,7 @@ function isRangeCompatibleWithNumberSet(numberSet: NumberSet, range: [number, nu
 
   // Check number set specific constraints
   switch (numberSet) {
-    case 'natural':
+    case "natural":
       // For natural numbers, the range is valid if it contains at least one natural number.
       // This means the maximum value must be at least 1.
       if (max < 1) {
@@ -60,11 +68,11 @@ function isRangeCompatibleWithNumberSet(numberSet: NumberSet, range: [number, nu
         return false;
       }
       return true;
-    case 'integer':
-    case 'rational':
-    case 'irrational':
-    case 'real':
-      return true; 
+    case "integer":
+    case "rational":
+    case "irrational":
+    case "real":
+      return true;
     default:
       // If the number set is unknown or not handled, consider the range incompatible.
       logger.debug(`Unknown or unhandled number set: ${numberSet}`);
@@ -81,13 +89,13 @@ function hasSquareInRange(min: number, max: number): boolean {
     let found = false;
 
     // Check positive square (i*i)
-    const positiveSquareInRange = (square >= min && square <= max);
+    const positiveSquareInRange = square >= min && square <= max;
     if (positiveSquareInRange) {
       found = true;
     }
 
     // Check negative square (-i*i), skip for i=0
-    const negativeSquareInRange = (i !== 0 && (-square >= min) && (-square <= max));
+    const negativeSquareInRange = i !== 0 && -square >= min && -square <= max;
     if (!found && negativeSquareInRange) {
       found = true;
     }
@@ -100,23 +108,25 @@ function hasSquareInRange(min: number, max: number): boolean {
     }
 
     // Optimization: If the positive square is already greater than max
-    // AND the negative square is already less than min, then no further 
+    // AND the negative square is already less than min, then no further
     // squares (or their negatives) can possibly be in the range.
     if (square > max && -square < min) {
       break; // Exit the loop
     }
-    
-    // Safety break: Prevent infinite loop in unforeseen edge cases, 
+
+    // Safety break: Prevent infinite loop in unforeseen edge cases,
     // e.g., if max is extremely large or min extremely small.
     // Check if i*i would likely overflow Number.MAX_SAFE_INTEGER if we continue.
-    if (i > Math.sqrt(Number.MAX_SAFE_INTEGER)) { 
-        logger.debug(`Stopping hasSquareInRange early due to large i=${i}`);
-        break; 
+    if (i > Math.sqrt(Number.MAX_SAFE_INTEGER)) {
+      logger.debug(`Stopping hasSquareInRange early due to large i=${i}`);
+      break;
     }
   }
 
   // If the loop completes without finding a suitable square
-  logger.debug(`No qualifying square values (positive or negative) found in range [${min}, ${max}]`);
+  logger.debug(
+    `No qualifying square values (positive or negative) found in range [${min}, ${max}]`
+  );
   return false;
 }
 
@@ -133,7 +143,7 @@ function hasCubeInRange(min: number, max: number): boolean {
   // Iterate through the potential base integers.
   for (let i = start_i; i <= end_i; i++) {
     const cube = i * i * i;
-    // Double check if the cube is within the original range 
+    // Double check if the cube is within the original range
     // (important for potential floating point inaccuracies near boundaries)
     if (cube >= min && cube <= max) {
       // Found one!
@@ -142,7 +152,9 @@ function hasCubeInRange(min: number, max: number): boolean {
   }
 
   // If the loop completes without finding a cube.
-  logger.debug(`No cube numbers found in range [${min}, ${max}] (checked integers from ${start_i} to ${end_i})`);
+  logger.debug(
+    `No cube numbers found in range [${min}, ${max}] (checked integers from ${start_i} to ${end_i})`
+  );
   return false;
 }
 
@@ -159,13 +171,19 @@ function hasPrimeInRange(min: number, max: number): boolean {
 }
 
 // Refactored: Check if a rule is compatible with a representation
-function isRuleCompatibleWithRepresentation(rule: CoefficientRule, repr: RepresentationType): boolean {
-    // Use the imported constraints
-    if (repr === 'mixed' && COEFFICIENT_RULE_CONSTRAINTS.mixedRepresentationIncompatibleRules.has(rule)) {
-        logger.debug(`Rule '${rule}' is incompatible with representation '${repr}'`);
-        return false; 
-    }
-    return true; 
+function isRuleCompatibleWithRepresentation(
+  rule: CoefficientRule,
+  repr: RepresentationType
+): boolean {
+  // Use the imported constraints
+  if (
+    repr === "mixed" &&
+    COEFFICIENT_RULE_CONSTRAINTS.mixedRepresentationIncompatibleRules.has(rule)
+  ) {
+    logger.debug(`Rule '${rule}' is incompatible with representation '${repr}'`);
+    return false;
+  }
+  return true;
 }
 
 /**
@@ -185,53 +203,53 @@ function isRuleCompatibleWithRepresentation(rule: CoefficientRule, repr: Represe
 export function isRuleCompatibleWithRange(rule: CoefficientRule, range: [number, number]): boolean {
   const [min, max] = range;
   let isValid = true;
-  let reason = '';
+  let reason = "";
 
   switch (rule) {
-    case 'positive':
+    case "positive":
       // At least some values in the range should be positive
       isValid = max > 0;
-      if (!isValid) reason = 'max <= 0';
+      if (!isValid) reason = "max <= 0";
       break;
-    case 'negative':
+    case "negative":
       // At least some values in the range should be negative
       isValid = min < 0;
-      if (!isValid) reason = 'min >= 0';
+      if (!isValid) reason = "min >= 0";
       break;
-    case 'nonzero':
+    case "nonzero":
       // The range must allow for zero for the nonzero rule to be meaningful
       // Check using the imported constraints object
       isValid = min <= 0 && max >= 0 && !COEFFICIENT_RULE_CONSTRAINTS.zeroRules.has(rule); // This logic might need review based on how zeroRules is used.
-                                                                                      // Original validator didn't seem to directly use a zeroRules set here.
-                                                                                      // The original check was just min <= 0 && max >= 0
+      // Original validator didn't seem to directly use a zeroRules set here.
+      // The original check was just min <= 0 && max >= 0
       // Reverting to original check for nonzero range compatibility, as zeroRules set usage here isn't clear.
-      isValid = min <= 0 && max >= 0; 
-      if (!isValid) reason = 'range does not include 0';
+      isValid = min <= 0 && max >= 0;
+      if (!isValid) reason = "range does not include 0";
       break;
-    case 'prime':
+    case "prime":
       // Range must contain at least one prime number.
       // Primes are natural numbers >= 2.
       // First, check if the range can possibly contain any number >= 2.
       if (max < 2) {
         isValid = false;
-        reason = 'range ends before 2 (max < 2)';
+        reason = "range ends before 2 (max < 2)";
       } else {
         // If the range extends to 2 or beyond, check if there is actually
         // a prime within the effective part of the range [max(2, min), max].
         isValid = hasPrimeInRange(min, max);
         // Note: hasPrimeInRange logs if no primes are found within its checked interval.
-        if (!isValid) reason = 'no prime numbers found within the applicable range interval';
+        if (!isValid) reason = "no prime numbers found within the applicable range interval";
       }
       break;
-    case 'odd':
+    case "odd":
       // Check if at least one odd integer exists within the effective integer range [ceil(min), floor(max)].
       const intMinOdd = Math.ceil(min);
       const intMaxOdd = Math.floor(max);
-      
+
       if (intMinOdd > intMaxOdd) {
         // No integers exist in the range.
         isValid = false;
-        reason = 'range contains no integers';
+        reason = "range contains no integers";
       } else {
         // Check if the first or last integer in the effective range is odd,
         // or if the range contains at least two integers (guaranteeing an odd one).
@@ -240,10 +258,10 @@ export function isRuleCompatibleWithRange(rule: CoefficientRule, range: [number,
         const hasMultipleIntegers = intMaxOdd - intMinOdd >= 1; // Need at least 2 for guarantee
 
         isValid = hasOddStart || hasOddEnd || hasMultipleIntegers;
-        if (!isValid) reason = 'no odd integers exist in the effective integer range';
+        if (!isValid) reason = "no odd integers exist in the effective integer range";
       }
       break;
-    case 'even':
+    case "even":
       // Check if at least one even integer exists within the effective integer range [ceil(min), floor(max)].
       const intMinEven = Math.ceil(min);
       const intMaxEven = Math.floor(max);
@@ -251,7 +269,7 @@ export function isRuleCompatibleWithRange(rule: CoefficientRule, range: [number,
       if (intMinEven > intMaxEven) {
         // No integers exist in the range.
         isValid = false;
-        reason = 'range contains no integers';
+        reason = "range contains no integers";
       } else {
         // Check if the first or last integer in the effective range is even,
         // or if the range contains at least two integers (guaranteeing an even one).
@@ -260,25 +278,25 @@ export function isRuleCompatibleWithRange(rule: CoefficientRule, range: [number,
         const hasMultipleIntegers = intMaxEven - intMinEven >= 1;
 
         isValid = hasEvenStart || hasEvenEnd || hasMultipleIntegers;
-        if (!isValid) reason = 'no even integers exist in the effective integer range';
+        if (!isValid) reason = "no even integers exist in the effective integer range";
       }
       break;
-    case 'square':
+    case "square":
       // Range must contain at least one perfect square
       isValid = hasSquareInRange(min, max);
       // Note: hasSquareInRange logs if no squares are found
-      if (!isValid) reason = 'no square numbers found in the range';
+      if (!isValid) reason = "no square numbers found in the range";
       break;
-    case 'cube':
+    case "cube":
       // Range must contain at least one perfect cube
       isValid = hasCubeInRange(min, max);
       // Note: hasCubeInRange logs if no cubes are found
-      if (!isValid) reason = 'no cube numbers found in the range';
+      if (!isValid) reason = "no cube numbers found in the range";
       break;
-    case 'unit':
+    case "unit":
       // Range must include 1 or -1
       isValid = (min <= 1 && max >= 1) || (min <= -1 && max >= -1);
-      if (!isValid) reason = 'range does not include 1 or -1';
+      if (!isValid) reason = "range does not include 1 or -1";
       break;
     default:
       // Unknown rules are considered compatible by default
@@ -301,67 +319,80 @@ export function isRuleCompatibleWithRange(rule: CoefficientRule, range: [number,
  * @returns {boolean} True if the rules are compatible, false otherwise.
  * @remarks Uses `COEFFICIENT_RULE_CONSTRAINTS` for direct incompatibilities and implications.
  */
-export function areRulesPairwiseCompatible(rule1: CoefficientRule, rule2: CoefficientRule): boolean {
+export function areRulesPairwiseCompatible(
+  rule1: CoefficientRule,
+  rule2: CoefficientRule
+): boolean {
   // Use the imported constraints object
-  const { 
-    parityRules, 
-    signRules, 
-    unitIncompatibleRules, 
-    primeIncompatibleRules 
-  } = COEFFICIENT_RULE_CONSTRAINTS;
+  const { parityRules, signRules, unitIncompatibleRules, primeIncompatibleRules } =
+    COEFFICIENT_RULE_CONSTRAINTS;
 
   // Parity incompatibilities
   if (parityRules.has(rule1) && parityRules.has(rule2) && rule1 !== rule2) {
-    logger.debug(`Rule '${rule1}' and '${rule2}' are incompatible because they are both even or odd`);
+    logger.debug(
+      `Rule '${rule1}' and '${rule2}' are incompatible because they are both even or odd`
+    );
     return false;
   }
-  
+
   // Sign incompatibilities: positive and negative are mutually exclusive
   if (signRules.has(rule1) && signRules.has(rule2) && rule1 !== rule2) {
-    logger.debug(`Rule '${rule1}' and '${rule2}' are incompatible because they are both positive or negative`);
+    logger.debug(
+      `Rule '${rule1}' and '${rule2}' are incompatible because they are both positive or negative`
+    );
     return false;
   }
-  
-  // Sign and zero relationships: 
+
+  // Sign and zero relationships:
   // positive and nonzero are redundant (positive implies nonzero)
-  if ((rule1 === 'positive' && rule2 === 'nonzero') || 
-      (rule1 === 'nonzero' && rule2 === 'positive') ||
-      (rule1 === 'negative' && rule2 === 'nonzero') ||
-      (rule1 === 'nonzero' && rule2 === 'negative')) {
-    logger.debug(`Rule '${rule1}' and '${rule2}' are redundant due to nonzero relationship with signs`);
+  if (
+    (rule1 === "positive" && rule2 === "nonzero") ||
+    (rule1 === "nonzero" && rule2 === "positive") ||
+    (rule1 === "negative" && rule2 === "nonzero") ||
+    (rule1 === "nonzero" && rule2 === "negative")
+  ) {
+    logger.debug(
+      `Rule '${rule1}' and '${rule2}' are redundant due to nonzero relationship with signs`
+    );
     return false;
   }
-  
+
   // Odd and nonzero relationship:
   // odd implies nonzero (since zero is even)
-  if ((rule1 === 'odd' && rule2 === 'nonzero') || 
-      (rule1 === 'nonzero' && rule2 === 'odd')) {
-    logger.debug(`Rule '${rule1}' and '${rule2}' are redundant due to nonzero relationship with odd`);
+  if ((rule1 === "odd" && rule2 === "nonzero") || (rule1 === "nonzero" && rule2 === "odd")) {
+    logger.debug(
+      `Rule '${rule1}' and '${rule2}' are redundant due to nonzero relationship with odd`
+    );
     return false;
   }
-  
+
   // Unit and nonzero relationship:
   // unit implies nonzero (since unit values are 1 or -1, which are nonzero)
-  if ((rule1 === 'unit' && rule2 === 'nonzero') || 
-      (rule1 === 'nonzero' && rule2 === 'unit')) {
-    logger.debug(`Rule '${rule1}' and '${rule2}' are redundant due to nonzero relationship with unit`);
+  if ((rule1 === "unit" && rule2 === "nonzero") || (rule1 === "nonzero" && rule2 === "unit")) {
+    logger.debug(
+      `Rule '${rule1}' and '${rule2}' are redundant due to nonzero relationship with unit`
+    );
     return false;
   }
-  
+
   // Unit incompatibilities (using imported set)
-  if (rule1 === 'unit' || rule2 === 'unit') {
-    const otherRule = rule1 === 'unit' ? rule2 : rule1;
+  if (rule1 === "unit" || rule2 === "unit") {
+    const otherRule = rule1 === "unit" ? rule2 : rule1;
     if (unitIncompatibleRules.has(otherRule)) {
-      logger.debug(`Rule '${rule1}' and '${rule2}' are incompatible because one is unit and the other (${otherRule}) is in the unitIncompatible set`);
+      logger.debug(
+        `Rule '${rule1}' and '${rule2}' are incompatible because one is unit and the other (${otherRule}) is in the unitIncompatible set`
+      );
       return false;
     }
   }
 
   // Prime incompatibilities (using imported set)
-  if (rule1 === 'prime' || rule2 === 'prime') {
-    const otherRule = rule1 === 'prime' ? rule2 : rule1;
+  if (rule1 === "prime" || rule2 === "prime") {
+    const otherRule = rule1 === "prime" ? rule2 : rule1;
     if (primeIncompatibleRules.has(otherRule)) {
-      logger.debug(`Rule '${rule1}' and '${rule2}' are incompatible because one is prime and the other (${otherRule}) is in the primeIncompatible set`);
+      logger.debug(
+        `Rule '${rule1}' and '${rule2}' are incompatible because one is prime and the other (${otherRule}) is in the primeIncompatible set`
+      );
       return false;
     }
   }
@@ -379,7 +410,7 @@ function areRulesConsistent(rules: CoefficientRule[]): boolean {
       }
     }
   }
-  
+
   return true;
 }
 
@@ -391,25 +422,25 @@ function checkAdditionalRuleConstraints(
 ): boolean {
   // Most constraints are handled by the more specific functions
   if (!range) return true;
-  
+
   // Special case: 'prime' rule should only be used with 'natural' number set
-  if (rules.includes('prime') && numberSet !== 'natural') {
+  if (rules.includes("prime") && numberSet !== "natural") {
     logger.debug(`Rule 'prime' is not compatible with number set ${numberSet}`);
     return false;
   }
 
   // For natural numbers, positive is redundant (natural numbers are always positive)
-  if (numberSet === 'natural' && (rules.includes('positive') || rules.includes('nonzero'))) {
+  if (numberSet === "natural" && (rules.includes("positive") || rules.includes("nonzero"))) {
     logger.debug(`Rule 'positive' or 'nonzero' is not compatible with number set ${numberSet}`);
     return false;
   }
-  
+
   // Note: We no longer check for redundant nonzero rule with positive/negative-only ranges
-  // because our new approach requires that the nonzero rule is only meaningful when the range 
+  // because our new approach requires that the nonzero rule is only meaningful when the range
   // includes zero, which is handled directly in isRuleCompatibleWithRange
-  
+
   // Validate if the range can satisfy all the rules simultaneously
-  return rules.every(rule => isRuleCompatibleWithRange(rule, range));
+  return rules.every((rule) => isRuleCompatibleWithRange(rule, range));
 }
 
 /**
@@ -437,14 +468,13 @@ export function isCoefficientSettingsCombinationValid(
   representationType?: RepresentationType,
   range?: [number, number]
 ): boolean {
-
   if (rules && rules.length > 1 && !areRulesConsistent(rules)) {
-    logger.debug(`Rules are not consistent: ${rules.join(', ')}`);
+    logger.debug(`Rules are not consistent: ${rules.join(", ")}`);
     return false;
   }
-  
+
   // Remaining validation steps in order of increasing complexity...
-  
+
   // Check if each rule is compatible with the number set
   if (numberSet && rules.length > 0) {
     for (const rule of rules) {
@@ -454,25 +484,29 @@ export function isCoefficientSettingsCombinationValid(
       }
     }
   }
-  
+
   // Check if the representation type is compatible with the number set
   if (numberSet && representationType) {
     if (!isRepresentationCompatibleWithNumberSet(numberSet, representationType)) {
-      logger.debug(`Representation type ${representationType} is not compatible with number set ${numberSet}`);
+      logger.debug(
+        `Representation type ${representationType} is not compatible with number set ${numberSet}`
+      );
       return false;
     }
   }
-  
+
   // Check if each rule is compatible with the representation type
   if (representationType && rules.length > 0) {
     for (const rule of rules) {
       if (!isRuleCompatibleWithRepresentation(rule, representationType)) {
-        logger.debug(`Rule '${rule}' is not compatible with representation type ${representationType}`);
+        logger.debug(
+          `Rule '${rule}' is not compatible with representation type ${representationType}`
+        );
         return false;
       }
     }
   }
-  
+
   // Check if the range is compatible with the number set
   if (numberSet && range) {
     if (!isRangeCompatibleWithNumberSet(numberSet, range)) {
@@ -480,7 +514,7 @@ export function isCoefficientSettingsCombinationValid(
       return false;
     }
   }
-  
+
   // Check if each rule is compatible with the range
   if (range && rules.length > 0) {
     for (const rule of rules) {
@@ -490,14 +524,18 @@ export function isCoefficientSettingsCombinationValid(
       }
     }
   }
-  
+
   // Check for specific rules that need additional validation
-  if (rules.length > 0 && numberSet && range && !checkAdditionalRuleConstraints(numberSet, rules, range)) {
-    logger.debug(`Additional rule constraints are not met for number set ${numberSet}, range ${range}, and rules ${rules.join(', ')}`);
+  if (
+    rules.length > 0 &&
+    numberSet &&
+    range &&
+    !checkAdditionalRuleConstraints(numberSet, rules, range)
+  ) {
+    logger.debug(
+      `Additional rule constraints are not met for number set ${numberSet}, range ${range}, and rules ${rules.join(", ")}`
+    );
     return false;
   }
   return true;
 }
-
-
-

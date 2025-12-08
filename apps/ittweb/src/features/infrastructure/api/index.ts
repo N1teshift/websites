@@ -1,5 +1,5 @@
-export * from './handlers/routeHandlers';
-export * from './firebase';
+export * from "./handlers/routeHandlers";
+export * from "./firebase";
 // Re-export parsing, zod, and schemas from centralized package
 export {
   parseQueryString,
@@ -17,4 +17,4 @@ export {
   createCustomValidator,
   formatZodErrors,
   RevalidateSchema,
-} from '@websites/infrastructure/api';
+} from "@websites/infrastructure/api";

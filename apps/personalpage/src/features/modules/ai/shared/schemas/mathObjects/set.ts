@@ -7,53 +7,78 @@
  *       and is used for structured output parsing in the LangGraph implementation.
  */
 export const setSettingsSchema = {
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "SetSettings",
-  "type": "object",
-  "description": "Settings for a mathematical set object",
-  "properties": {
-    "coefficients": {
-      "type": "object",
-      "description": "Settings for the coefficients representing the set elements",
-      "properties": {
-        "collectionCount": {
-          "type": "number",
-          "minimum": 1,
-          "description": "Number of coefficients in the collection"
+  $schema: "http://json-schema.org/draft-07/schema#",
+  title: "SetSettings",
+  type: "object",
+  description: "Settings for a mathematical set object",
+  properties: {
+    coefficients: {
+      type: "object",
+      description: "Settings for the coefficients representing the set elements",
+      properties: {
+        collectionCount: {
+          type: "number",
+          minimum: 1,
+          description: "Number of coefficients in the collection",
         },
-        "rules": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "enum": ["increasing", "decreasing", "neq"]
+        rules: {
+          type: "array",
+          items: {
+            type: "string",
+            enum: ["increasing", "decreasing", "neq"],
           },
-          "description": "Rules for the coefficients (e.g., increasing, decreasing, not equal)"
+          description: "Rules for the coefficients (e.g., increasing, decreasing, not equal)",
         },
-        "range": {
-          "type": "array",
-          "items": { "type": "number" },
-          "minItems": 2,
-          "maxItems": 2,
-          "description": "The numerical range [min, max] for the coefficients"
-        }
+        range: {
+          type: "array",
+          items: { type: "number" },
+          minItems: 2,
+          maxItems: 2,
+          description: "The numerical range [min, max] for the coefficients",
+        },
       },
-      "required": ["collectionCount", "rules", "range"]
+      required: ["collectionCount", "rules", "range"],
     },
-    "name": {
-      "type": "string",
-      "enum": ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"],
-      "default": "A",
-      "description": "The name assigned to the set (typically a capital letter)"
+    name: {
+      type: "string",
+      enum: [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+        "H",
+        "I",
+        "J",
+        "K",
+        "L",
+        "M",
+        "N",
+        "O",
+        "P",
+        "Q",
+        "R",
+        "S",
+        "T",
+        "U",
+        "V",
+        "W",
+        "X",
+        "Y",
+        "Z",
+      ],
+      default: "A",
+      description: "The name assigned to the set (typically a capital letter)",
     },
-    "showName": {
-      "type": "boolean",
-      "default": true,
-      "description": "If true, displays the set's name (e.g., 'A = {1, 2, 3}'). If false, only shows the set '{1, 2, 3}'"
-    }
+    showName: {
+      type: "boolean",
+      default: true,
+      description:
+        "If true, displays the set's name (e.g., 'A = {1, 2, 3}'). If false, only shows the set '{1, 2, 3}'",
+    },
   },
-  "required": ["coefficients", "name", "showName"],
-  "additionalProperties": false
+  required: ["coefficients", "name", "showName"],
+  additionalProperties: false,
 } as const;
-
-
-

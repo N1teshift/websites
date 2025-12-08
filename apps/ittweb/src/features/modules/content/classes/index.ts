@@ -1,4 +1,3 @@
 // Classes module exports
-export * from './components';
-export * from './hooks';
-
+export * from "./components";
+export * from "./hooks";

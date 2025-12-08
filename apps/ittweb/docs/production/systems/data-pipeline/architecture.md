@@ -174,6 +174,7 @@ Raw ability IDs → abilityIdMapper.ts (raw ID → slug mapping)
 **Output:** Typed TypeScript data files
 
 **Merging Priority:**
+
 1. Wurst data (most accurate) takes precedence
 2. Raw war3map data as fallback
 3. Category mappings for classification
@@ -193,7 +194,7 @@ Raw ability IDs → abilityIdMapper.ts (raw ID → slug mapping)
 
 **Purpose:** Parse source formats into structured JSON
 
-- `extract-from-w3x.mjs` - Binary file parser (war3map.*)
+- `extract-from-w3x.mjs` - Binary file parser (war3map.\*)
 - `extract-metadata.mjs` - JASS code parser (war3map.j)
 - `extract-ability-details-from-wurst.mjs` - Wurst parser (abilities)
 - `extract-item-details-from-wurst.mjs` - Wurst parser (items)
@@ -227,31 +228,37 @@ Raw ability IDs → abilityIdMapper.ts (raw ID → slug mapping)
 ## Data Sources & Their Roles
 
 ### war3map.w3t (Items)
+
 - **Role:** Primary item data source
 - **Contains:** Item names, descriptions, costs, icons, basic properties
 - **Limitations:** Some properties may be missing or incomplete
 
 ### war3map.w3a (Abilities)
+
 - **Role:** Primary ability data source
 - **Contains:** Ability names, descriptions, mana costs, cooldowns, icons
 - **Limitations:** Level-specific data may be incomplete
 
 ### war3map.w3u (Units)
+
 - **Role:** Primary unit data source
 - **Contains:** Unit stats, names, descriptions, icons
 - **Limitations:** Classification may need additional processing
 
 ### war3map.j (JASS Code)
+
 - **Role:** Recipe source and metadata
 - **Contains:** Crafting recipes, item/unit constants
 - **Limitations:** Requires parsing JASS syntax
 
 ### Wurst Source Files
+
 - **Role:** Enhanced property data
 - **Contains:** Detailed stat bonuses, relationships, accurate values
 - **Advantage:** Most accurate data, directly from source code
 
 ### Icon Files (`public/icons/itt/`)
+
 - **Role:** Visual assets
 - **Contains:** PNG icon files for all entities
 - **Usage:** Generates icon mapping for application
@@ -302,11 +309,13 @@ Stage 9 (Resolve Field References)
 **Purpose:** Manual curation of item and ability categories
 
 **Structure:**
+
 - Maps item/ability IDs/names to categories
 - Used by converters to classify entities
 - Manually maintained (not auto-generated)
 
 **Why Manual:**
+
 - Game data doesn't include explicit categories
 - Categories are application-specific
 - Requires domain knowledge
@@ -374,4 +383,3 @@ See `scripts/data/REFACTORING_PLAN.md` for optimization backlog.
 - [Troubleshooting](./troubleshooting.md) - Common issues and debugging
 - [Main Pipeline README](../../../scripts/README.md) - Operational guide
 - [Refactoring Plan](../../../scripts/data/REFACTORING_PLAN.md) - Known issues and improvements
-

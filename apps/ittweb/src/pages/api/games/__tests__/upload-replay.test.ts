@@ -1,8 +1,8 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-import handler from '../upload-replay';
-import { IncomingForm } from 'formidable';
-import { promises as fs } from 'fs';
-import { randomUUID } from 'crypto';
+import type { NextApiRequest, NextApiResponse } from "next";
+import handler from "../upload-replay";
+import { IncomingForm } from "formidable";
+import { promises as fs } from "fs";
+import { randomUUID } from "crypto";
 
 // Mock dependencies
 const mockCreateCompletedGame = jest.fn();
@@ -14,13 +14,13 @@ const mockError = jest.fn();
 const mockWarn = jest.fn();
 const mockDebug = jest.fn();
 
-jest.mock('@/features/modules/game-management/games/lib/gameService', () => ({
+jest.mock("@/features/modules/game-management/games/lib/gameService", () => ({
   createCompletedGame: (...args: unknown[]) => mockCreateCompletedGame(...args),
   getGames: (...args: unknown[]) => mockGetGames(...args),
   updateEloScores: (...args: unknown[]) => mockUpdateEloScores(...args),
 }));
 
-jest.mock('@/features/modules/game-management/lib/mechanics', () => ({
+jest.mock("@/features/modules/game-management/lib/mechanics", () => ({
   parseReplayFile: (...args: unknown[]) => mockParseReplayFile(...args),
 }));
 
@@ -30,7 +30,7 @@ const mockGetFirestoreAdmin = jest.fn();
 const mockGetAdminTimestamp = jest.fn();
 
 // Mock firebase-admin/storage to prevent real Cloud Storage library import
-jest.mock('firebase-admin/storage', () => ({
+jest.mock("firebase-admin/storage", () => ({
   getStorage: jest.fn(() => ({
     bucket: jest.fn(() => ({
       file: jest.fn(() => ({
@@ -40,7 +40,7 @@ jest.mock('firebase-admin/storage', () => ({
   })),
 }));
 
-jest.mock('@websites/infrastructure/firebase', () => {
+jest.mock("@websites/infrastructure/firebase", () => {
   const mockStorageAdminFn = jest.fn();
   const mockStorageBucketNameFn = jest.fn();
   const mockFirestoreAdminFn = jest.fn();
@@ -59,7 +59,7 @@ jest.mock('@websites/infrastructure/firebase', () => {
   };
 });
 
-jest.mock('@websites/infrastructure/logging', () => ({
+jest.mock("@websites/infrastructure/logging", () => ({
   createComponentLogger: jest.fn(() => ({
     info: mockInfo,
     error: mockError,
@@ -68,38 +68,39 @@ jest.mock('@websites/infrastructure/logging', () => ({
   })),
 }));
 
-jest.mock('formidable', () => ({
+jest.mock("formidable", () => ({
   IncomingForm: jest.fn(),
 }));
 
-jest.mock('fs', () => ({
+jest.mock("fs", () => ({
   promises: {
     readFile: jest.fn(),
     unlink: jest.fn(),
   },
 }));
 
-jest.mock('crypto', () => ({
+jest.mock("crypto", () => ({
   randomUUID: jest.fn(),
   randomBytes: jest.fn((size: number) => Buffer.alloc(size, 0)),
 }));
 
 const mockGetServerSession = jest.fn();
-jest.mock('next-auth/next', () => ({
+jest.mock("next-auth/next", () => ({
   getServerSession: (...args: unknown[]) => mockGetServerSession(...args),
 }));
 
-jest.mock('@/pages/api/auth/[...nextauth]', () => ({
+jest.mock("@/pages/api/auth/[...nextauth]", () => ({
   authOptions: {},
 }));
 
-describe('POST /api/games/upload-replay', () => {
-  const createRequest = (): NextApiRequest => ({
-    method: 'POST',
-    query: {},
-    body: null,
-    url: '/api/games/upload-replay',
-  } as NextApiRequest);
+describe("POST /api/games/upload-replay", () => {
+  const createRequest = (): NextApiRequest =>
+    ({
+      method: "POST",
+      query: {},
+      body: null,
+      url: "/api/games/upload-replay",
+    }) as NextApiRequest;
 
   const createResponse = (): NextApiResponse => {
     const res = {} as NextApiResponse;
@@ -110,24 +111,24 @@ describe('POST /api/games/upload-replay', () => {
   };
 
   const mockSession = {
-    user: { name: 'Test User' },
-    discordId: 'discord123',
-    expires: '2024-12-31',
+    user: { name: "Test User" },
+    discordId: "discord123",
+    expires: "2024-12-31",
   };
 
   const mockParsedReplay = {
     gameData: {
       gameId: 123,
-      datetime: '2024-01-15T12:00:00Z',
+      datetime: "2024-01-15T12:00:00Z",
       duration: 1800,
-      gamename: 'Test Game',
-      map: 'Test Map',
-      creatorName: 'Creator',
-      ownername: 'Creator',
-      category: '4v4',
+      gamename: "Test Game",
+      map: "Test Map",
+      creatorName: "Creator",
+      ownername: "Creator",
+      category: "4v4",
       players: [
-        { name: 'Player1', pid: 0, team: 1, result: 'win', elo: 1500 },
-        { name: 'Player2', pid: 1, team: 1, result: 'win', elo: 1500 },
+        { name: "Player1", pid: 0, team: 1, result: "win", elo: 1500 },
+        { name: "Player2", pid: 1, team: 1, result: "win", elo: 1500 },
       ],
     },
     w3mmd: { raw: [], lookup: {} },
@@ -135,14 +136,14 @@ describe('POST /api/games/upload-replay', () => {
 
   const mockFormParse = jest.fn();
   const mockFile = {
-    filepath: '/tmp/mock-file.w3g',
-    originalFilename: 'replay.w3g',
-    mimetype: 'application/octet-stream',
+    filepath: "/tmp/mock-file.w3g",
+    originalFilename: "replay.w3g",
+    mimetype: "application/octet-stream",
   };
 
   const mockBucket = {
     file: jest.fn(),
-    name: 'test-bucket',
+    name: "test-bucket",
   };
 
   const mockFileRef = {
@@ -170,7 +171,7 @@ describe('POST /api/games/upload-replay', () => {
 
     // Setup games mock
     mockGetGames.mockResolvedValue({ games: [], cursor: null });
-    mockCreateCompletedGame.mockResolvedValue('created-game-id');
+    mockCreateCompletedGame.mockResolvedValue("created-game-id");
     mockUpdateEloScores.mockResolvedValue(undefined);
 
     // Setup replay parser mock
@@ -186,16 +187,16 @@ describe('POST /api/games/upload-replay', () => {
     });
 
     // Setup file system mock
-    (fs.readFile as jest.Mock).mockResolvedValue(Buffer.from('mock file content'));
+    (fs.readFile as jest.Mock).mockResolvedValue(Buffer.from("mock file content"));
     (fs.unlink as jest.Mock).mockResolvedValue(undefined);
 
     // Setup crypto mock
-    (randomUUID as jest.Mock).mockReturnValue('mock-uuid-token');
+    (randomUUID as jest.Mock).mockReturnValue("mock-uuid-token");
 
     // Setup Firebase Storage mock
     // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const adminModule = require('@websites/infrastructure/firebase') as any;
-    adminModule.__mockStorageBucketName.mockReturnValue('test-bucket');
+    const adminModule = require("@websites/infrastructure/firebase") as any;
+    adminModule.__mockStorageBucketName.mockReturnValue("test-bucket");
     const mockStorage = {
       bucket: jest.fn(() => mockBucket),
     };
@@ -212,7 +213,7 @@ describe('POST /api/games/upload-replay', () => {
     adminModule.__mockAdminTimestamp.mockReturnValue(mockTimestamp);
   });
 
-  it('uploads replay and creates completed game', async () => {
+  it("uploads replay and creates completed game", async () => {
     // Arrange
     const req = createRequest();
     const res = createResponse();
@@ -222,33 +223,33 @@ describe('POST /api/games/upload-replay', () => {
 
     // Assert
     expect(mockFormParse).toHaveBeenCalled();
-    expect(fs.readFile).toHaveBeenCalledWith('/tmp/mock-file.w3g');
+    expect(fs.readFile).toHaveBeenCalledWith("/tmp/mock-file.w3g");
     expect(mockParseReplayFile).toHaveBeenCalled();
     expect(mockGetGames).toHaveBeenCalledWith({ gameId: 123, limit: 1 });
     expect(mockCreateCompletedGame).toHaveBeenCalled();
-    expect(mockBucket.file).toHaveBeenCalledWith('games/created-game-id/replay.w3g');
+    expect(mockBucket.file).toHaveBeenCalledWith("games/created-game-id/replay.w3g");
     expect(mockFileRef.save).toHaveBeenCalled();
     expect(mockDocRef.update).toHaveBeenCalledWith(
       expect.objectContaining({
-        replayUrl: expect.stringContaining('firebasestorage.googleapis.com'),
-        replayFileName: 'replay.w3g',
+        replayUrl: expect.stringContaining("firebasestorage.googleapis.com"),
+        replayFileName: "replay.w3g",
       })
     );
-    expect(mockUpdateEloScores).toHaveBeenCalledWith('created-game-id');
+    expect(mockUpdateEloScores).toHaveBeenCalledWith("created-game-id");
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         success: true,
         data: expect.objectContaining({
-          id: 'created-game-id',
+          id: "created-game-id",
           gameId: 123,
-          message: 'Replay uploaded and game created successfully',
+          message: "Replay uploaded and game created successfully",
         }),
       })
     );
   });
 
-  it('requires authentication', async () => {
+  it("requires authentication", async () => {
     // Arrange
     mockGetServerSession.mockResolvedValue(null);
     const req = createRequest();
@@ -262,16 +263,16 @@ describe('POST /api/games/upload-replay', () => {
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         success: false,
-        error: 'Authentication required',
+        error: "Authentication required",
       })
     );
     expect(mockCreateCompletedGame).not.toHaveBeenCalled();
   });
 
-  it('requires discordId in session', async () => {
+  it("requires discordId in session", async () => {
     // Arrange
     mockGetServerSession.mockResolvedValue({
-      user: { name: 'Test User' },
+      user: { name: "Test User" },
       // No discordId
     });
     const req = createRequest();
@@ -285,12 +286,12 @@ describe('POST /api/games/upload-replay', () => {
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         success: false,
-        error: expect.stringContaining('Discord ID is required'),
+        error: expect.stringContaining("Discord ID is required"),
       })
     );
   });
 
-  it('handles error when replay file is missing', async () => {
+  it("handles error when replay file is missing", async () => {
     // Arrange
     mockFormParse.mockImplementation((req, callback) => {
       callback(null, {}, {}); // No replay file
@@ -306,14 +307,14 @@ describe('POST /api/games/upload-replay', () => {
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         success: false,
-        error: expect.stringContaining('Replay file is required'),
+        error: expect.stringContaining("Replay file is required"),
       })
     );
   });
 
-  it('handles error when form parsing fails', async () => {
+  it("handles error when form parsing fails", async () => {
     // Arrange
-    const parseError = new Error('Form parsing failed');
+    const parseError = new Error("Form parsing failed");
     mockFormParse.mockImplementation((req, callback) => {
       callback(parseError, {}, {});
     });
@@ -328,14 +329,14 @@ describe('POST /api/games/upload-replay', () => {
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         success: false,
-        error: expect.stringContaining('Form parsing failed'),
+        error: expect.stringContaining("Form parsing failed"),
       })
     );
   });
 
-  it('handles error when replay parsing fails and no gameData provided', async () => {
+  it("handles error when replay parsing fails and no gameData provided", async () => {
     // Arrange
-    const parseError = new Error('Replay parsing failed');
+    const parseError = new Error("Replay parsing failed");
     mockParseReplayFile.mockRejectedValue(parseError);
     mockFormParse.mockImplementation((req, callback) => {
       callback(null, {}, { replay: mockFile }); // No gameData field
@@ -351,11 +352,11 @@ describe('POST /api/games/upload-replay', () => {
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         success: false,
-        error: expect.stringContaining('Replay parsing failed'),
+        error: expect.stringContaining("Replay parsing failed"),
       })
     );
     expect(mockError).toHaveBeenCalledWith(
-      'Replay parsing failed',
+      "Replay parsing failed",
       parseError,
       expect.objectContaining({
         scheduledGameId: undefined,
@@ -363,22 +364,22 @@ describe('POST /api/games/upload-replay', () => {
     );
   });
 
-  it('uses manual gameData when replay parsing fails', async () => {
+  it("uses manual gameData when replay parsing fails", async () => {
     // Arrange
-    const parseError = new Error('Replay parsing failed');
+    const parseError = new Error("Replay parsing failed");
     mockParseReplayFile.mockRejectedValue(parseError);
     const manualGameData = {
       gameId: 456,
-      datetime: '2024-01-15T12:00:00Z',
+      datetime: "2024-01-15T12:00:00Z",
       duration: 1800,
-      gamename: 'Manual Game',
-      map: 'Manual Map',
-      creatorName: 'Creator',
-      ownername: 'Creator',
-      category: '4v4',
+      gamename: "Manual Game",
+      map: "Manual Map",
+      creatorName: "Creator",
+      ownername: "Creator",
+      category: "4v4",
       players: [
-        { name: 'Player1', pid: 0, team: 1, result: 'win' },
-        { name: 'Player2', pid: 1, team: 1, result: 'win' },
+        { name: "Player1", pid: 0, team: 1, result: "win" },
+        { name: "Player2", pid: 1, team: 1, result: "win" },
       ],
     };
     mockFormParse.mockImplementation((req, callback) => {
@@ -393,7 +394,7 @@ describe('POST /api/games/upload-replay', () => {
 
     // Assert
     expect(mockError).toHaveBeenCalledWith(
-      'Replay parsing failed',
+      "Replay parsing failed",
       parseError,
       expect.objectContaining({
         scheduledGameId: undefined,
@@ -402,20 +403,20 @@ describe('POST /api/games/upload-replay', () => {
     expect(mockCreateCompletedGame).toHaveBeenCalledWith(
       expect.objectContaining({
         gameId: 456,
-        gamename: 'Manual Game',
-        map: 'Manual Map',
+        gamename: "Manual Game",
+        map: "Manual Map",
       })
     );
     expect(res.status).toHaveBeenCalledWith(200);
   });
 
-  it('handles error when manual gameData is missing required fields', async () => {
+  it("handles error when manual gameData is missing required fields", async () => {
     // Arrange
-    const parseError = new Error('Replay parsing failed');
+    const parseError = new Error("Replay parsing failed");
     mockParseReplayFile.mockRejectedValue(parseError);
     const invalidGameData = {
       // Missing gameId, datetime, players
-      gamename: 'Invalid Game',
+      gamename: "Invalid Game",
     };
     mockFormParse.mockImplementation((req, callback) => {
       callback(null, { gameData: JSON.stringify(invalidGameData) }, { replay: mockFile });
@@ -431,17 +432,17 @@ describe('POST /api/games/upload-replay', () => {
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         success: false,
-        error: expect.stringContaining('gameId, datetime, and players are required'),
+        error: expect.stringContaining("gameId, datetime, and players are required"),
       })
     );
   });
 
-  it('handles error when manual gameData is invalid JSON', async () => {
+  it("handles error when manual gameData is invalid JSON", async () => {
     // Arrange
-    const parseError = new Error('Replay parsing failed');
+    const parseError = new Error("Replay parsing failed");
     mockParseReplayFile.mockRejectedValue(parseError);
     mockFormParse.mockImplementation((req, callback) => {
-      callback(null, { gameData: 'invalid json' }, { replay: mockFile });
+      callback(null, { gameData: "invalid json" }, { replay: mockFile });
     });
     const req = createRequest();
     const res = createResponse();
@@ -454,19 +455,21 @@ describe('POST /api/games/upload-replay', () => {
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         success: false,
-        error: expect.stringContaining('invalid gameData JSON'),
+        error: expect.stringContaining("invalid gameData JSON"),
       })
     );
   });
 
-  it('handles error when game with same gameId already exists (scheduled)', async () => {
+  it("handles error when game with same gameId already exists (scheduled)", async () => {
     // Arrange
     mockGetGames.mockResolvedValue({
-      games: [{
-        id: 'existing-game-id',
-        gameId: 123,
-        gameState: 'scheduled',
-      }],
+      games: [
+        {
+          id: "existing-game-id",
+          gameId: 123,
+          gameState: "scheduled",
+        },
+      ],
       cursor: null,
     });
     const req = createRequest();
@@ -480,20 +483,22 @@ describe('POST /api/games/upload-replay', () => {
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         success: false,
-        error: expect.stringContaining('A scheduled game with gameId 123 already exists'),
+        error: expect.stringContaining("A scheduled game with gameId 123 already exists"),
       })
     );
     expect(mockCreateCompletedGame).not.toHaveBeenCalled();
   });
 
-  it('handles error when game with same gameId already exists (completed)', async () => {
+  it("handles error when game with same gameId already exists (completed)", async () => {
     // Arrange
     mockGetGames.mockResolvedValue({
-      games: [{
-        id: 'existing-game-id',
-        gameId: 123,
-        gameState: 'completed',
-      }],
+      games: [
+        {
+          id: "existing-game-id",
+          gameId: 123,
+          gameState: "completed",
+        },
+      ],
       cursor: null,
     });
     const req = createRequest();
@@ -507,16 +512,16 @@ describe('POST /api/games/upload-replay', () => {
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         success: false,
-        error: expect.stringContaining('A completed game with gameId 123 already exists'),
+        error: expect.stringContaining("A completed game with gameId 123 already exists"),
       })
     );
     expect(mockCreateCompletedGame).not.toHaveBeenCalled();
   });
 
-  it('handles optional scheduledGameId field', async () => {
+  it("handles optional scheduledGameId field", async () => {
     // Arrange
     mockFormParse.mockImplementation((req, callback) => {
-      callback(null, { scheduledGameId: '789' }, { replay: mockFile });
+      callback(null, { scheduledGameId: "789" }, { replay: mockFile });
     });
     mockParseReplayFile.mockResolvedValue({
       ...mockParsedReplay,
@@ -541,9 +546,9 @@ describe('POST /api/games/upload-replay', () => {
     expect(res.status).toHaveBeenCalledWith(200);
   });
 
-  it('handles error when ELO update fails (logs but does not fail request)', async () => {
+  it("handles error when ELO update fails (logs but does not fail request)", async () => {
     // Arrange
-    const eloError = new Error('ELO update failed');
+    const eloError = new Error("ELO update failed");
     // Override the default resolved mock from beforeEach to reject
     mockUpdateEloScores.mockReset();
     mockUpdateEloScores.mockRejectedValue(eloError);
@@ -556,17 +561,17 @@ describe('POST /api/games/upload-replay', () => {
     // Assert
     // Check that the handler succeeded despite ELO update failure
     expect(res.status).toHaveBeenCalledWith(200);
-    expect(mockUpdateEloScores).toHaveBeenCalledWith('created-game-id');
+    expect(mockUpdateEloScores).toHaveBeenCalledWith("created-game-id");
     expect(mockWarn).toHaveBeenCalledWith(
-      'Failed to update ELO scores',
+      "Failed to update ELO scores",
       expect.objectContaining({
-        gameId: 'created-game-id',
-        error: 'ELO update failed',
+        gameId: "created-game-id",
+        error: "ELO update failed",
       })
     );
   });
 
-  it('removes temporary file after upload', async () => {
+  it("removes temporary file after upload", async () => {
     // Arrange
     const req = createRequest();
     const res = createResponse();
@@ -575,16 +580,16 @@ describe('POST /api/games/upload-replay', () => {
     await handler(req, res);
 
     // Assert
-    expect(fs.unlink).toHaveBeenCalledWith('/tmp/mock-file.w3g');
+    expect(fs.unlink).toHaveBeenCalledWith("/tmp/mock-file.w3g");
   });
 
-  it('rejects GET method', async () => {
+  it("rejects GET method", async () => {
     // Arrange
     const req = {
-      method: 'GET',
+      method: "GET",
       query: {},
       body: null,
-      url: '/api/games/upload-replay',
+      url: "/api/games/upload-replay",
     } as NextApiRequest;
     const res = createResponse();
 
@@ -596,18 +601,18 @@ describe('POST /api/games/upload-replay', () => {
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         success: false,
-        error: 'Method GET not allowed. Allowed methods: POST',
+        error: "Method GET not allowed. Allowed methods: POST",
       })
     );
   });
 
-  it('rejects PUT method', async () => {
+  it("rejects PUT method", async () => {
     // Arrange
     const req = {
-      method: 'PUT',
+      method: "PUT",
       query: {},
       body: null,
-      url: '/api/games/upload-replay',
+      url: "/api/games/upload-replay",
     } as NextApiRequest;
     const res = createResponse();
 
@@ -619,18 +624,18 @@ describe('POST /api/games/upload-replay', () => {
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         success: false,
-        error: 'Method PUT not allowed. Allowed methods: POST',
+        error: "Method PUT not allowed. Allowed methods: POST",
       })
     );
   });
 
-  it('rejects DELETE method', async () => {
+  it("rejects DELETE method", async () => {
     // Arrange
     const req = {
-      method: 'DELETE',
+      method: "DELETE",
       query: {},
       body: null,
-      url: '/api/games/upload-replay',
+      url: "/api/games/upload-replay",
     } as NextApiRequest;
     const res = createResponse();
 
@@ -642,10 +647,8 @@ describe('POST /api/games/upload-replay', () => {
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         success: false,
-        error: 'Method DELETE not allowed. Allowed methods: POST',
+        error: "Method DELETE not allowed. Allowed methods: POST",
       })
     );
   });
 });
-
-

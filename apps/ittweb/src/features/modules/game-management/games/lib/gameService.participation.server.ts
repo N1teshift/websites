@@ -1,58 +1,54 @@
 /**
  * Game Service - Participation Operations (Server-Only)
- * 
+ *
  * Server-only functions for game participation (join/leave).
  * These functions use Firebase Admin SDK and should only be used in API routes.
  */
 
-import { getFirestoreAdmin } from '@websites/infrastructure/firebase';
-import { logError } from '@websites/infrastructure/logging';
-import { createTimestampFactoryAsync } from '@websites/infrastructure/utils';
-import type { GameParticipant } from '../types';
+import { getFirestoreAdmin } from "@websites/infrastructure/firebase";
+import { logError } from "@websites/infrastructure/logging";
+import { createTimestampFactoryAsync } from "@websites/infrastructure/utils";
+import type { GameParticipant } from "../types";
 
-const GAMES_COLLECTION = 'games';
+const GAMES_COLLECTION = "games";
 
 /**
  * Join a scheduled game (add participant) (Server-Only)
  */
-export async function joinGame(
-  gameId: string,
-  discordId: string,
-  name: string
-): Promise<void> {
+export async function joinGame(gameId: string, discordId: string, name: string): Promise<void> {
   try {
     const timestampFactory = await createTimestampFactoryAsync();
     const adminDb = getFirestoreAdmin();
     const gameRef = adminDb.collection(GAMES_COLLECTION).doc(gameId);
     const gameDoc = await gameRef.get();
-    
+
     if (!gameDoc.exists) {
-      throw new Error('Game not found');
+      throw new Error("Game not found");
     }
-    
+
     const gameData = gameDoc.data();
     if (!gameData) {
-      throw new Error('Game not found');
+      throw new Error("Game not found");
     }
-    
-    if (gameData.gameState !== 'scheduled') {
-      throw new Error('Can only join scheduled games');
+
+    if (gameData.gameState !== "scheduled") {
+      throw new Error("Can only join scheduled games");
     }
-    
+
     const participants = (gameData.participants || []) as GameParticipant[];
-    
+
     // Check if user is already a participant
-    if (participants.some(p => p.discordId === discordId)) {
-      throw new Error('User is already a participant');
+    if (participants.some((p) => p.discordId === discordId)) {
+      throw new Error("User is already a participant");
     }
-    
+
     // Add user to participants
     participants.push({
       discordId,
       name,
       joinedAt: new Date().toISOString(),
     });
-    
+
     const now = timestampFactory.now();
     await gameRef.update({
       participants,
@@ -60,9 +56,9 @@ export async function joinGame(
     });
   } catch (error) {
     const err = error as Error;
-    logError(err, 'Failed to join game', {
-      component: 'gameService',
-      operation: 'joinGame',
+    logError(err, "Failed to join game", {
+      component: "gameService",
+      operation: "joinGame",
       gameId,
       discordId,
     });
@@ -73,32 +69,29 @@ export async function joinGame(
 /**
  * Leave a scheduled game (remove participant) (Server-Only)
  */
-export async function leaveGame(
-  gameId: string,
-  discordId: string
-): Promise<void> {
+export async function leaveGame(gameId: string, discordId: string): Promise<void> {
   try {
     const timestampFactory = await createTimestampFactoryAsync();
     const adminDb = getFirestoreAdmin();
     const gameRef = adminDb.collection(GAMES_COLLECTION).doc(gameId);
     const gameDoc = await gameRef.get();
-    
+
     if (!gameDoc.exists) {
-      throw new Error('Game not found');
+      throw new Error("Game not found");
     }
-    
+
     const gameData = gameDoc.data();
     if (!gameData) {
-      throw new Error('Game not found');
+      throw new Error("Game not found");
     }
-    
-    if (gameData.gameState !== 'scheduled') {
-      throw new Error('Can only leave scheduled games');
+
+    if (gameData.gameState !== "scheduled") {
+      throw new Error("Can only leave scheduled games");
     }
-    
+
     const participants = (gameData.participants || []) as GameParticipant[];
-    const updatedParticipants = participants.filter(p => p.discordId !== discordId);
-    
+    const updatedParticipants = participants.filter((p) => p.discordId !== discordId);
+
     const now = timestampFactory.now();
     await gameRef.update({
       participants: updatedParticipants,
@@ -106,13 +99,12 @@ export async function leaveGame(
     });
   } catch (error) {
     const err = error as Error;
-    logError(err, 'Failed to leave game', {
-      component: 'gameService',
-      operation: 'leaveGame',
+    logError(err, "Failed to leave game", {
+      component: "gameService",
+      operation: "leaveGame",
       gameId,
       discordId,
     });
     throw err;
   }
 }
-

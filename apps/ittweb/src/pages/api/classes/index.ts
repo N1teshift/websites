@@ -1,6 +1,6 @@
-import type { NextApiRequest } from 'next';
-import { createApiHandler } from '@websites/infrastructure/api';
-import { getClassStats } from '@/features/modules/analytics-group/analytics/lib/analyticsService';
+import type { NextApiRequest } from "next";
+import { createApiHandler } from "@websites/infrastructure/api";
+import { getClassStats } from "@/features/modules/analytics-group/analytics/lib/analyticsService";
 
 /**
  * GET /api/classes?category=... - Get class statistics
@@ -11,7 +11,7 @@ export default createApiHandler(
     return await getClassStats(category);
   },
   {
-    methods: ['GET'],
+    methods: ["GET"],
     requireAuth: false,
     logRequests: true,
     // Cache for 5 minutes - class stats don't change very frequently
@@ -22,9 +22,3 @@ export default createApiHandler(
     },
   }
 );
-
-
-
-
-
-

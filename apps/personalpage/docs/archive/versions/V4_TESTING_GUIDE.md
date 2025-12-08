@@ -9,6 +9,7 @@ Follow these steps to verify the v4 migration is working correctly.
 ## ✅ **Test 1: Excel Import**
 
 ### Steps:
+
 1. Start your development server
 2. Navigate to `/projects/edtech/progressReport`
 3. Click **Data Management** tab
@@ -18,6 +19,7 @@ Follow these steps to verify the v4 migration is working correctly.
 7. Click **Confirm Import**
 
 ### Expected Results:
+
 - ✅ Import completes successfully
 - ✅ Shows: "X students updated, Y assessments added"
 - ✅ No errors in browser console
@@ -36,22 +38,23 @@ Follow these steps to verify the v4 migration is working correctly.
 ```json
 {
   "metadata": {
-    "schema_version": "4.0"  // ✓ Should be 4.0
+    "schema_version": "4.0" // ✓ Should be 4.0
   },
   "students": [
     {
       "academic": {
-        "year": "2025-2026",  // ✓ Current year
-        "enrolled_date": null  // ✓ Should be null
+        "year": "2025-2026", // ✓ Current year
+        "enrolled_date": null // ✓ Should be null
       },
       "assessments": [
         {
-          "type": "board_solving",  // ✓ NOT "participation"
-          "evaluation_details": {   // ✓ NOT "summative_details"
+          "type": "board_solving", // ✓ NOT "participation"
+          "evaluation_details": {
+            // ✓ NOT "summative_details"
             "percentage_score": 85
           },
-          "assessment_id": "homework-nd1",      // ✓ Has ID
-          "assessment_title": "Homework ND1"    // ✓ Has title
+          "assessment_id": "homework-nd1", // ✓ Has ID
+          "assessment_title": "Homework ND1" // ✓ Has title
         }
       ]
     }
@@ -70,6 +73,7 @@ Follow these steps to verify the v4 migration is working correctly.
 ## ✅ **Test 3: Dashboard Display**
 
 ### Class View:
+
 1. Click **Class View** tab
 2. Select a class from dropdown
 3. Verify:
@@ -79,6 +83,7 @@ Follow these steps to verify the v4 migration is working correctly.
    - ✅ Charts display correctly
 
 ### Student View:
+
 1. Click **Student View** tab
 2. Select a student
 3. Verify:
@@ -141,8 +146,9 @@ Open browser DevTools console and verify:
 ```json
 {
   "column": "SD1",
-  "type": "test",  // ✓ NOT "summative"
-  "evaluation_details": {  // ✓ NOT "summative_details"
+  "type": "test", // ✓ NOT "summative"
+  "evaluation_details": {
+    // ✓ NOT "summative_details"
     "percentage_score": 85,
     "myp_score": 6,
     "cambridge_score": 1
@@ -185,11 +191,13 @@ Test duplicate handling:
 Throughout testing, monitor browser console:
 
 **Good Signs:**
+
 - ✅ "Processing Excel upload (v4)"
 - ✅ "Excel processing successful (v4)"
 - ✅ No errors or warnings
 
 **Red Flags:**
+
 - ❌ "summative_details is undefined"
 - ❌ "Unknown assessment type: participation"
 - ❌ Any schema validation errors
@@ -229,6 +237,7 @@ Throughout testing, monitor browser console:
 ## 📊 **Performance Testing**
 
 ### Large Dataset Test:
+
 1. Import full dataset (75+ students)
 2. Time the import process
 3. Verify:
@@ -277,6 +286,7 @@ If issues occur:
 **Environment:** [dev/production]
 
 ### Tests Completed:
+
 - [ ] Test 1: Excel Import
 - [ ] Test 2: Data Structure
 - [ ] Test 3: Dashboard Display
@@ -289,14 +299,17 @@ If issues occur:
 - [ ] Test 10: Browser Console
 
 ### Issues Found:
+
 [List any issues here]
 
 ### Overall Result:
+
 [ ] ✅ PASS - All tests successful
 [ ] ⚠️ PARTIAL - Some issues found
 [ ] ❌ FAIL - Critical issues
 
 ### Notes:
+
 [Additional observations]
 ```
 
@@ -315,6 +328,3 @@ If issues occur:
 **Testing Status:** Ready to Test  
 **Expected Duration:** 15-20 minutes  
 **Difficulty:** Easy
-
-
-

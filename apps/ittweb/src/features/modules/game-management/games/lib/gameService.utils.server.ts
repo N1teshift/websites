@@ -1,16 +1,16 @@
 /**
  * Game Service Utilities (Server-Only)
- * 
+ *
  * Server-only utility functions for game services.
  * Client-safe utilities are in gameService.utils.ts
  */
 
-import { getFirestoreAdmin } from '@websites/infrastructure/firebase';
-import { createComponentLogger, logError } from '@websites/infrastructure/logging';
-import { queryWithIndexFallback } from '@/features/infrastructure/api/firebase/queryWithIndexFallback';
+import { getFirestoreAdmin } from "@websites/infrastructure/firebase";
+import { createComponentLogger, logError } from "@websites/infrastructure/logging";
+import { queryWithIndexFallback } from "@/features/infrastructure/api/firebase/queryWithIndexFallback";
 
-const GAMES_COLLECTION = 'games';
-const logger = createComponentLogger('gameService');
+const GAMES_COLLECTION = "games";
+const logger = createComponentLogger("gameService");
 
 /**
  * Get the next available game ID (Server-Only)
@@ -25,8 +25,9 @@ export async function getNextGameId(): Promise<number> {
         const docs: Array<{ data: () => Record<string, unknown>; id: string }> = [];
 
         const adminDb = getFirestoreAdmin();
-        const querySnapshot = await adminDb.collection(GAMES_COLLECTION)
-          .orderBy('gameId', 'desc')
+        const querySnapshot = await adminDb
+          .collection(GAMES_COLLECTION)
+          .orderBy("gameId", "desc")
           .limit(1)
           .get();
 
@@ -46,7 +47,8 @@ export async function getNextGameId(): Promise<number> {
         let maxGameId = 0;
         docs.forEach((doc) => {
           const gameData = doc.data();
-          const gameId = typeof gameData.gameId === 'number' ? gameData.gameId : Number(gameData.gameId) || 0;
+          const gameId =
+            typeof gameData.gameId === "number" ? gameData.gameId : Number(gameData.gameId) || 0;
           if (gameId > maxGameId) {
             maxGameId = gameId;
           }
@@ -57,18 +59,18 @@ export async function getNextGameId(): Promise<number> {
     });
 
     if (maxGameId === 0) {
-      logger.info('No games found, starting with gameId 1');
+      logger.info("No games found, starting with gameId 1");
       return 1;
     }
 
     const nextId = maxGameId + 1;
-    logger.info('Next game ID calculated', { nextId, maxGameId });
+    logger.info("Next game ID calculated", { nextId, maxGameId });
     return nextId;
   } catch (error) {
     const err = error as Error;
-    logError(err, 'Failed to get next game ID, defaulting to 1', {
-      component: 'gameService',
-      operation: 'getNextGameId',
+    logError(err, "Failed to get next game ID, defaulting to 1", {
+      component: "gameService",
+      operation: "getNextGameId",
       errorCode: (error as { code?: string }).code,
       errorMessage: err.message,
     });
@@ -76,4 +78,3 @@ export async function getNextGameId(): Promise<number> {
     return 1;
   }
 }
-

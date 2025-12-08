@@ -1,6 +1,6 @@
-import React from 'react';
-import Image from 'next/image';
-import { useModalAccessibility } from '@websites/infrastructure/hooks';
+import React from "react";
+import Image from "next/image";
+import { useModalAccessibility } from "@websites/infrastructure/hooks";
 
 interface ImageModalProps {
   isOpen: boolean;
@@ -19,7 +19,7 @@ export default function ImageModal({ isOpen, image, onClose }: ImageModalProps) 
   if (!isOpen || !image) return null;
 
   return (
-    <div 
+    <div
       ref={modalRef}
       className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4"
       onClick={onClose}
@@ -35,7 +35,12 @@ export default function ImageModal({ isOpen, image, onClose }: ImageModalProps) 
           className="absolute top-4 right-4 bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-colors z-10"
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M6 18L18 6M6 6l12 12"
+            />
           </svg>
         </button>
 
@@ -52,12 +57,10 @@ export default function ImageModal({ isOpen, image, onClose }: ImageModalProps) 
             // Unoptimized for Firebase Storage URLs: Next.js Image optimization cannot access
             // authenticated external URLs with query parameters. Images are already compressed
             // on upload (see archiveService.ts compression logic).
-            unoptimized={image.url.includes('firebasestorage.googleapis.com')}
+            unoptimized={image.url.includes("firebasestorage.googleapis.com")}
           />
         </div>
       </div>
     </div>
   );
 }
-
-

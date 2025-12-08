@@ -1,6 +1,6 @@
-'use client';
-import React, { useEffect, useMemo, useState } from 'react';
-import { extractTwitchClipId } from '@/features/modules/community/archives/services';
+"use client";
+import React, { useEffect, useMemo, useState } from "react";
+import { extractTwitchClipId } from "@/features/modules/community/archives/services";
 
 interface TwitchClipEmbedProps {
   url: string;
@@ -8,15 +8,14 @@ interface TwitchClipEmbedProps {
 }
 
 function buildParentParams(hostname?: string) {
-  const envParents = process.env.NEXT_PUBLIC_TWITCH_PARENT
-    ?.split(',')
+  const envParents = process.env.NEXT_PUBLIC_TWITCH_PARENT?.split(",")
     .map((p) => p.trim())
     .filter(Boolean);
   const parents = envParents && envParents.length > 0 ? envParents : hostname ? [hostname] : [];
   if (parents.length === 0) {
-    parents.push('localhost');
+    parents.push("localhost");
   }
-  return parents.map((p) => `parent=${encodeURIComponent(p)}`).join('&');
+  return parents.map((p) => `parent=${encodeURIComponent(p)}`).join("&");
 }
 
 export default function TwitchClipEmbed({ url, title }: TwitchClipEmbedProps) {
@@ -24,8 +23,8 @@ export default function TwitchClipEmbed({ url, title }: TwitchClipEmbedProps) {
   const [hostname, setHostname] = useState<string>();
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      setHostname(window.location.hostname || 'localhost');
+    if (typeof window !== "undefined") {
+      setHostname(window.location.hostname || "localhost");
     }
   }, []);
 
@@ -37,9 +36,7 @@ export default function TwitchClipEmbed({ url, title }: TwitchClipEmbedProps) {
 
   if (!clipId) {
     return (
-      <div className="text-sm text-red-300">
-        Unable to load Twitch clip. Invalid clip URL.
-      </div>
+      <div className="text-sm text-red-300">Unable to load Twitch clip. Invalid clip URL.</div>
     );
   }
 
@@ -64,6 +61,3 @@ export default function TwitchClipEmbed({ url, title }: TwitchClipEmbedProps) {
     </div>
   );
 }
-
-
-

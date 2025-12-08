@@ -20,7 +20,7 @@ The icon mapping system manages icons for game entities (items, abilities, units
 - **Total icons**: 403 files
 - **By category**:
   - `abilities/`: 56 icons
-  - `items/`: 217 icons  
+  - `items/`: 217 icons
   - `buildings/`: 4 icons
   - `trolls/`: 16 icons
   - `base/`: 96 icons (unused?)
@@ -34,11 +34,21 @@ The `ICON_MAP` object has the following structure:
 
 ```typescript
 export const ICON_MAP: IconMap = {
-  abilities: { /* name -> filename */ },
-  items: { /* name -> filename */ },
-  buildings: { /* name -> filename */ },
-  trolls: { /* name -> filename */ },
-  units: { /* name -> filename */ },
+  abilities: {
+    /* name -> filename */
+  },
+  items: {
+    /* name -> filename */
+  },
+  buildings: {
+    /* name -> filename */
+  },
+  trolls: {
+    /* name -> filename */
+  },
+  units: {
+    /* name -> filename */
+  },
 };
 ```
 
@@ -47,16 +57,19 @@ Maps entity names → icon filenames (without path). Uses `resolveExplicitIcon()
 ### How Icons Are Resolved
 
 **GuideIcon Component** (`src/features/modules/guides/components/GuideIcon.tsx`):
+
 1. Priority 1: `src` prop (explicit override)
 2. Priority 2: `resolveExplicitIcon(category, name)` - checks ICON_MAP
 3. Priority 3: Default fallback icon (`/icons/itt/items/BTNYellowHerb.png`)
 
 **For Units**:
+
 - Units can have `iconPath` in their data
 - Currently passed as `src` prop to GuideIcon
 - Not using ICON_MAP system
 
 **For Items**:
+
 - Some items have `iconPath` in data
 - Uses `getItemIconPathFromRecord()` utility
 - Also checks ICON_MAP
@@ -65,6 +78,7 @@ Maps entity names → icon filenames (without path). Uses `resolveExplicitIcon()
   - This ensures Next.js Image components resolve paths correctly regardless of page location
 
 **For Abilities**:
+
 - Some abilities have `iconPath` in data
 - Checks ICON_MAP by ability name
 
@@ -96,37 +110,42 @@ Maps entity names → icon filenames (without path). Uses `resolveExplicitIcon()
 ## Current Status
 
 **Total Entities:** 1,342
+
 - **Mapped:** 817 (61%)
 - **Unmapped:** 525 (39%)
 
 ### Breakdown by Category
 
-| Category | Total | Mapped | Unmapped | Coverage |
-|----------|-------|--------|----------|----------|
-| Items | 313 | 264 | 49 | 84% |
-| Abilities | 684 | 378 | 306 | 55% |
-| Units | 310 | 175 | 135 | 56% |
-| Base Classes | 7 | 0 | 7 | 0% |
-| Derived Classes | 28 | 0 | 28 | 0% |
+| Category        | Total | Mapped | Unmapped | Coverage |
+| --------------- | ----- | ------ | -------- | -------- |
+| Items           | 313   | 264    | 49       | 84%      |
+| Abilities       | 684   | 378    | 306      | 55%      |
+| Units           | 310   | 175    | 135      | 56%      |
+| Base Classes    | 7     | 0      | 7        | 0%       |
+| Derived Classes | 28    | 0      | 28       | 0%       |
 
 ### What's Been Done
 
 ✅ **Created comprehensive analysis script** - `analyze-icon-mapping-comprehensive.mjs`
+
 - Properly reads all TypeScript data files
 - Provides accurate statistics
 - Shows unmapped entities
 
 ✅ **Created migration script** - `migrate-iconpaths-to-iconmap.mjs`
+
 - Migrates existing iconPath/iconSrc to ICON_MAP
 - Verifies icon files exist
 - Handles case-insensitive matching
 
 ✅ **Created extraction list generator** - `map-available-icons-and-generate-extraction-list.mjs`
+
 - Identifies entities needing icons
 - Groups by icon filename
 - Generates detailed extraction list
 
 ✅ **Fixed iconMap.ts issues**
+
 - Removed trailing backslashes from keys
 - Removed duplicate ICON_MAP declarations
 - Removed duplicate keys
@@ -137,11 +156,13 @@ Maps entity names → icon filenames (without path). Uses `resolveExplicitIcon()
 ### Analysis
 
 **Analyze current icon mapping status:**
+
 ```bash
 node scripts/data/generate/regenerate-iconmap.mjs
 ```
 
 What it does:
+
 - Scans all icon directories
 - Reads all items, abilities, units, and classes from TypeScript files
 - Parses ICON_MAP to see current mappings
@@ -151,11 +172,13 @@ What it does:
 ### Migration
 
 **Migrate iconPath/iconSrc to ICON_MAP:**
+
 ```bash
 node scripts/data/migrate-iconpaths.mjs
 ```
 
 What it does:
+
 - Reads all entities with iconPath/iconSrc in their data
 - Verifies icon files exist
 - Adds mappings to ICON_MAP
@@ -166,11 +189,13 @@ What it does:
 ### Icon Mapping Management
 
 **Manage icon mappings:**
+
 ```bash
 node scripts/data/generate/regenerate-iconmap.mjs
 ```
 
 Features:
+
 - Map available icons to entities
 - Find missing icons with fuzzy matching
 - Generate extraction lists
@@ -179,11 +204,13 @@ Features:
 ### Icon Map Maintenance
 
 **Maintain icon map:**
+
 ```bash
 node scripts/data/generate/regenerate-iconmap.mjs
 ```
 
 Features:
+
 - Fix duplicate ICON_MAP entries
 - Fix escaping issues
 - Regenerate clean iconMap.ts
@@ -192,11 +219,13 @@ Features:
 ### Icon Cleanup
 
 **Cleanup icons:**
+
 ```bash
 node scripts/data/generate/regenerate-iconmap.mjs
 ```
 
 Features:
+
 - Remove duplicate icon files
 - Normalize icon filenames
 - Delete icons from text lists
@@ -205,21 +234,27 @@ Features:
 ### Recommended Workflow
 
 1. **Run analysis first:**
+
    ```bash
    node scripts/data/generate/regenerate-iconmap.mjs
    ```
+
    This gives you the current state.
 
 2. **Migrate existing iconPaths:**
+
    ```bash
    node scripts/data/migrate-iconpaths.mjs
    ```
+
    This will populate ICON_MAP with entities that already have iconPath/iconSrc.
 
 3. **Generate extraction list:**
+
    ```bash
    node scripts/data/generate/regenerate-iconmap.mjs
    ```
+
    This shows what icons need to be extracted (see `ICON_EXTRACTION_LIST.md`).
 
 4. **Extract missing icons:**
@@ -229,6 +264,7 @@ Features:
    - Organize into proper directories
 
 5. **Map newly extracted icons:**
+
    ```bash
    node scripts/data/generate/regenerate-iconmap.mjs
    ```
@@ -274,16 +310,19 @@ Features:
 ### 5. Data Cleanup Needed
 
 **Remove trailing backslashes from entity names:**
+
 - Many items/abilities/units have names ending with `\` (e.g., `Coat of Wolf\`)
 - These should be cleaned up in the source TypeScript files
 
 ### 6. Path-Based Icons
 
 **6 entities have full paths** like:
+
 - `ReplaceableTextures/PassiveButtons/PASBTNElunesBlessing.png`
 - `ReplaceableTextures/CommandButtonsDisabled/DISPASBTNImmolation.png`
 
 These need to be:
+
 - Extracted from game files
 - Or mapped to existing icons if available
 
@@ -295,7 +334,7 @@ These need to be:
    - **87 unique icon files needed** to cover **482 entities**
    - See `ICON_EXTRACTION_LIST.md` for the complete list
    - Items: 27 need extraction
-   - Abilities: 288 need extraction  
+   - Abilities: 288 need extraction
    - Units: 132 need extraction
    - Classes: 35 need extraction
 
@@ -333,6 +372,7 @@ These need to be:
 ### Icon Mapper UI
 
 Visual tool for mapping icons:
+
 - Location: `/tools/icon-mapper`
 - Shows stats per category
 - Can export mappings
@@ -340,6 +380,7 @@ Visual tool for mapping icons:
 ### Extraction List
 
 See `ICON_EXTRACTION_LIST.md` for:
+
 - Complete list of icons to extract
 - Grouped by filename
 - Shows which entities use each icon
@@ -349,4 +390,3 @@ See `ICON_EXTRACTION_LIST.md` for:
 - [`extract-w3x.md`](./extract-w3x.md) - How to extract data/icons from .w3x files
 - [`field-references.md`](./field-references.md) - Understanding field references in tooltips
 - [`icon-extraction-list.md`](./icon-extraction-list.md) - Complete list of icons to extract
-

@@ -1,5 +1,5 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-import handler from '../index';
+import type { NextApiRequest, NextApiResponse } from "next";
+import handler from "../index";
 
 // Mock dependencies
 const mockGetAllPosts = jest.fn();
@@ -9,12 +9,12 @@ const mockError = jest.fn();
 const mockWarn = jest.fn();
 const mockDebug = jest.fn();
 
-jest.mock('@/features/modules/content/blog/lib/postService', () => ({
+jest.mock("@/features/modules/content/blog/lib/postService", () => ({
   getAllPosts: (...args: unknown[]) => mockGetAllPosts(...args),
   createPost: (...args: unknown[]) => mockCreatePost(...args),
 }));
 
-jest.mock('@websites/infrastructure/logging', () => ({
+jest.mock("@websites/infrastructure/logging", () => ({
   createComponentLogger: jest.fn(() => ({
     info: mockInfo,
     error: mockError,
@@ -24,21 +24,22 @@ jest.mock('@websites/infrastructure/logging', () => ({
 }));
 
 const mockGetServerSession = jest.fn();
-jest.mock('next-auth/next', () => ({
+jest.mock("next-auth/next", () => ({
   getServerSession: (...args: unknown[]) => mockGetServerSession(...args),
 }));
 
-jest.mock('@/pages/api/auth/[...nextauth]', () => ({
+jest.mock("@/pages/api/auth/[...nextauth]", () => ({
   authOptions: {},
 }));
 
-describe('GET /api/posts', () => {
-  const createRequest = (query: Record<string, string> = {}): NextApiRequest => ({
-    method: 'GET',
-    query,
-    body: null,
-    url: '/api/posts',
-  } as NextApiRequest);
+describe("GET /api/posts", () => {
+  const createRequest = (query: Record<string, string> = {}): NextApiRequest =>
+    ({
+      method: "GET",
+      query,
+      body: null,
+      url: "/api/posts",
+    }) as NextApiRequest;
 
   const createResponse = (): NextApiResponse => {
     const res = {} as NextApiResponse;
@@ -49,8 +50,8 @@ describe('GET /api/posts', () => {
   };
 
   const mockPosts = [
-    { id: 'post1', title: 'Post 1', slug: 'post-1', published: true },
-    { id: 'post2', title: 'Post 2', slug: 'post-2', published: true },
+    { id: "post1", title: "Post 1", slug: "post-1", published: true },
+    { id: "post2", title: "Post 2", slug: "post-2", published: true },
   ];
 
   beforeEach(() => {
@@ -58,7 +59,7 @@ describe('GET /api/posts', () => {
     mockGetAllPosts.mockResolvedValue(mockPosts);
   });
 
-  it('returns list of published posts by default', async () => {
+  it("returns list of published posts by default", async () => {
     // Arrange
     const req = createRequest();
     const res = createResponse();
@@ -75,9 +76,9 @@ describe('GET /api/posts', () => {
     });
   });
 
-  it('includes unpublished posts when includeUnpublished is true', async () => {
+  it("includes unpublished posts when includeUnpublished is true", async () => {
     // Arrange
-    const req = createRequest({ includeUnpublished: 'true' });
+    const req = createRequest({ includeUnpublished: "true" });
     const res = createResponse();
 
     // Act
@@ -88,9 +89,9 @@ describe('GET /api/posts', () => {
     expect(res.status).toHaveBeenCalledWith(200);
   });
 
-  it('excludes unpublished posts when includeUnpublished is false', async () => {
+  it("excludes unpublished posts when includeUnpublished is false", async () => {
     // Arrange
-    const req = createRequest({ includeUnpublished: 'false' });
+    const req = createRequest({ includeUnpublished: "false" });
     const res = createResponse();
 
     // Act
@@ -101,7 +102,7 @@ describe('GET /api/posts', () => {
     expect(res.status).toHaveBeenCalledWith(200);
   });
 
-  it('handles empty posts list', async () => {
+  it("handles empty posts list", async () => {
     // Arrange
     mockGetAllPosts.mockResolvedValue([]);
     const req = createRequest();
@@ -118,9 +119,9 @@ describe('GET /api/posts', () => {
     });
   });
 
-  it('handles error from getAllPosts', async () => {
+  it("handles error from getAllPosts", async () => {
     // Arrange
-    const error = new Error('Database error');
+    const error = new Error("Database error");
     mockGetAllPosts.mockRejectedValue(error);
     const req = createRequest();
     const res = createResponse();
@@ -133,12 +134,12 @@ describe('GET /api/posts', () => {
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         success: false,
-        error: expect.stringContaining('Database error'),
+        error: expect.stringContaining("Database error"),
       })
     );
   });
 
-  it('does not require authentication for GET', async () => {
+  it("does not require authentication for GET", async () => {
     // Arrange
     mockGetServerSession.mockResolvedValue(null);
     const req = createRequest();
@@ -156,13 +157,14 @@ describe('GET /api/posts', () => {
   });
 });
 
-describe('POST /api/posts', () => {
-  const createRequest = (body: unknown): NextApiRequest => ({
-    method: 'POST',
-    query: {},
-    body,
-    url: '/api/posts',
-  } as NextApiRequest);
+describe("POST /api/posts", () => {
+  const createRequest = (body: unknown): NextApiRequest =>
+    ({
+      method: "POST",
+      query: {},
+      body,
+      url: "/api/posts",
+    }) as NextApiRequest;
 
   const createResponse = (): NextApiResponse => {
     const res = {} as NextApiResponse;
@@ -173,25 +175,25 @@ describe('POST /api/posts', () => {
   };
 
   const mockSession = {
-    user: { name: 'Test User' },
-    discordId: 'discord123',
-    expires: '2024-12-31',
+    user: { name: "Test User" },
+    discordId: "discord123",
+    expires: "2024-12-31",
   };
 
   const validPostData = {
-    title: 'Test Post',
-    content: 'Test content',
-    slug: 'test-post',
-    date: '2024-01-15',
+    title: "Test Post",
+    content: "Test content",
+    slug: "test-post",
+    date: "2024-01-15",
   };
 
   beforeEach(() => {
     jest.clearAllMocks();
     mockGetServerSession.mockResolvedValue(mockSession);
-    mockCreatePost.mockResolvedValue('created-post-id');
+    mockCreatePost.mockResolvedValue("created-post-id");
   });
 
-  it('creates post successfully', async () => {
+  it("creates post successfully", async () => {
     // Arrange
     const req = createRequest(validPostData);
     const res = createResponse();
@@ -202,23 +204,23 @@ describe('POST /api/posts', () => {
     // Assert
     expect(mockCreatePost).toHaveBeenCalledWith(
       expect.objectContaining({
-        title: 'Test Post',
-        content: 'Test content',
-        slug: 'test-post',
-        date: '2024-01-15',
-        creatorName: 'Test User',
-        createdByDiscordId: 'discord123',
+        title: "Test Post",
+        content: "Test content",
+        slug: "test-post",
+        date: "2024-01-15",
+        creatorName: "Test User",
+        createdByDiscordId: "discord123",
         published: true,
       })
     );
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.json).toHaveBeenCalledWith({
       success: true,
-      data: { id: 'created-post-id' },
+      data: { id: "created-post-id" },
     });
   });
 
-  it('requires authentication', async () => {
+  it("requires authentication", async () => {
     // Arrange
     mockGetServerSession.mockResolvedValue(null);
     const req = createRequest(validPostData);
@@ -233,17 +235,17 @@ describe('POST /api/posts', () => {
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         success: false,
-        error: expect.stringContaining('Authentication required'),
+        error: expect.stringContaining("Authentication required"),
       })
     );
     expect(mockCreatePost).not.toHaveBeenCalled();
   });
 
-  it('uses custom creatorName if provided', async () => {
+  it("uses custom creatorName if provided", async () => {
     // Arrange
     const req = createRequest({
       ...validPostData,
-      creatorName: 'Custom Creator',
+      creatorName: "Custom Creator",
     });
     const res = createResponse();
 
@@ -253,13 +255,13 @@ describe('POST /api/posts', () => {
     // Assert
     expect(mockCreatePost).toHaveBeenCalledWith(
       expect.objectContaining({
-        creatorName: 'Custom Creator',
+        creatorName: "Custom Creator",
       })
     );
     expect(res.status).toHaveBeenCalledWith(200);
   });
 
-  it('defaults to session user name if creatorName not provided', async () => {
+  it("defaults to session user name if creatorName not provided", async () => {
     // Arrange
     const req = createRequest(validPostData);
     const res = createResponse();
@@ -270,15 +272,15 @@ describe('POST /api/posts', () => {
     // Assert
     expect(mockCreatePost).toHaveBeenCalledWith(
       expect.objectContaining({
-        creatorName: 'Test User',
+        creatorName: "Test User",
       })
     );
   });
 
-  it('defaults to Unknown if no user name in session', async () => {
+  it("defaults to Unknown if no user name in session", async () => {
     // Arrange
     mockGetServerSession.mockResolvedValue({
-      discordId: 'discord123',
+      discordId: "discord123",
       // No user.name
     });
     const req = createRequest(validPostData);
@@ -290,12 +292,12 @@ describe('POST /api/posts', () => {
     // Assert
     expect(mockCreatePost).toHaveBeenCalledWith(
       expect.objectContaining({
-        creatorName: 'Unknown',
+        creatorName: "Unknown",
       })
     );
   });
 
-  it('defaults published to true if not provided', async () => {
+  it("defaults published to true if not provided", async () => {
     // Arrange
     const req = createRequest(validPostData);
     const res = createResponse();
@@ -311,7 +313,7 @@ describe('POST /api/posts', () => {
     );
   });
 
-  it('respects published field when provided', async () => {
+  it("respects published field when provided", async () => {
     // Arrange
     const req = createRequest({
       ...validPostData,
@@ -330,11 +332,11 @@ describe('POST /api/posts', () => {
     );
   });
 
-  it('validates required fields', async () => {
+  it("validates required fields", async () => {
     // Arrange
     const req = createRequest({
       // Missing required fields
-      title: 'Test Post',
+      title: "Test Post",
     });
     const res = createResponse();
 
@@ -346,17 +348,17 @@ describe('POST /api/posts', () => {
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         success: false,
-        error: expect.stringContaining('required'),
+        error: expect.stringContaining("required"),
       })
     );
     expect(mockCreatePost).not.toHaveBeenCalled();
   });
 
-  it('validates title is not empty', async () => {
+  it("validates title is not empty", async () => {
     // Arrange
     const req = createRequest({
       ...validPostData,
-      title: '',
+      title: "",
     });
     const res = createResponse();
 
@@ -368,17 +370,17 @@ describe('POST /api/posts', () => {
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         success: false,
-        error: expect.stringContaining('title'),
+        error: expect.stringContaining("title"),
       })
     );
     expect(mockCreatePost).not.toHaveBeenCalled();
   });
 
-  it('validates slug is not empty', async () => {
+  it("validates slug is not empty", async () => {
     // Arrange
     const req = createRequest({
       ...validPostData,
-      slug: '',
+      slug: "",
     });
     const res = createResponse();
 
@@ -390,15 +392,15 @@ describe('POST /api/posts', () => {
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         success: false,
-        error: expect.stringContaining('slug'),
+        error: expect.stringContaining("slug"),
       })
     );
     expect(mockCreatePost).not.toHaveBeenCalled();
   });
 
-  it('handles error from createPost', async () => {
+  it("handles error from createPost", async () => {
     // Arrange
-    const error = new Error('Database error');
+    const error = new Error("Database error");
     mockCreatePost.mockRejectedValue(error);
     const req = createRequest(validPostData);
     const res = createResponse();
@@ -411,18 +413,18 @@ describe('POST /api/posts', () => {
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         success: false,
-        error: expect.stringContaining('Database error'),
+        error: expect.stringContaining("Database error"),
       })
     );
   });
 
-  it('rejects PUT method', async () => {
+  it("rejects PUT method", async () => {
     // Arrange
     const req = {
-      method: 'PUT',
+      method: "PUT",
       query: {},
       body: validPostData,
-      url: '/api/posts',
+      url: "/api/posts",
     } as NextApiRequest;
     const res = createResponse();
 
@@ -434,18 +436,18 @@ describe('POST /api/posts', () => {
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         success: false,
-        error: expect.stringContaining('Method PUT not allowed'),
+        error: expect.stringContaining("Method PUT not allowed"),
       })
     );
   });
 
-  it('rejects DELETE method', async () => {
+  it("rejects DELETE method", async () => {
     // Arrange
     const req = {
-      method: 'DELETE',
+      method: "DELETE",
       query: {},
       body: null,
-      url: '/api/posts',
+      url: "/api/posts",
     } as NextApiRequest;
     const res = createResponse();
 
@@ -457,10 +459,8 @@ describe('POST /api/posts', () => {
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         success: false,
-        error: expect.stringContaining('Method DELETE not allowed'),
+        error: expect.stringContaining("Method DELETE not allowed"),
       })
     );
   });
 });
-
-

@@ -1,8 +1,8 @@
-import { useState, useCallback } from 'react';
-import { useRouter } from 'next/router';
-import { useSession, signIn } from 'next-auth/react';
-import { Logger } from '@websites/infrastructure/logging';
-import type { GameWithPlayers } from '@/features/modules/game-management/games/types';
+import { useState, useCallback } from "react";
+import { useRouter } from "next/router";
+import { useSession, signIn } from "next-auth/react";
+import { Logger } from "@websites/infrastructure/logging";
+import type { GameWithPlayers } from "@/features/modules/game-management/games/types";
 
 interface UseGameActionsResult {
   // State
@@ -14,7 +14,7 @@ interface UseGameActionsResult {
   isLeaving: boolean;
   isDeleting: boolean;
   errorMessage: string | null;
-  
+
   // Handlers
   handleEdit: (game: GameWithPlayers) => void;
   handleEditSubmit: (updates: {
@@ -36,9 +36,7 @@ interface UseGameActionsResult {
   handleUploadReplayClose: () => void;
 }
 
-export function useGameActions(
-  refetch?: () => void | Promise<void>
-): UseGameActionsResult {
+export function useGameActions(refetch?: () => void | Promise<void>): UseGameActionsResult {
   const router = useRouter();
   const { data: session, status } = useSession();
   const [editingGame, setEditingGame] = useState<GameWithPlayers | null>(null);
@@ -51,8 +49,8 @@ export function useGameActions(
   const [uploadingReplayGame, setUploadingReplayGame] = useState<GameWithPlayers | null>(null);
 
   const handleEdit = (game: GameWithPlayers) => {
-    if (status !== 'authenticated') {
-      signIn('discord');
+    if (status !== "authenticated") {
+      signIn("discord");
       return;
     }
     setEditingGame(game);
@@ -74,23 +72,23 @@ export function useGameActions(
 
       // Use unified games API
       const response = await fetch(`/api/games/${editingGame.id}`, {
-        method: 'PUT',
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(updates),
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to update game');
+        throw new Error(errorData.error || "Failed to update game");
       }
 
       setEditingGame(null);
       await refetch?.();
       router.push(`/games/${editingGame.id}`);
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to update game';
+      const errorMessage = err instanceof Error ? err.message : "Failed to update game";
       setErrorMessage(errorMessage);
       throw err;
     } finally {
@@ -104,8 +102,8 @@ export function useGameActions(
   };
 
   const handleDelete = (game: GameWithPlayers) => {
-    if (status !== 'authenticated') {
-      signIn('discord');
+    if (status !== "authenticated") {
+      signIn("discord");
       return;
     }
     setPendingDeleteGame(game);
@@ -120,23 +118,23 @@ export function useGameActions(
 
       // Use unified games API
       const response = await fetch(`/api/games/${pendingDeleteGame.id}`, {
-        method: 'DELETE',
+        method: "DELETE",
       });
 
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({ 
-          error: 'Failed to delete game' 
+        const errorData = await response.json().catch(() => ({
+          error: "Failed to delete game",
         }));
-        throw new Error(errorData.error || 'Failed to delete game');
+        throw new Error(errorData.error || "Failed to delete game");
       }
 
       setPendingDeleteGame(null);
-      router.push('/');
+      router.push("/");
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to delete game';
+      const errorMessage = err instanceof Error ? err.message : "Failed to delete game";
       setErrorMessage(errorMessage);
-      Logger.error('Failed to delete game', {
-        component: 'useGameActions',
+      Logger.error("Failed to delete game", {
+        component: "useGameActions",
         gameId: pendingDeleteGame.id,
         error: errorMessage,
       });
@@ -149,80 +147,86 @@ export function useGameActions(
     setPendingDeleteGame(null);
   };
 
-  const handleJoin = useCallback(async (gameId: string) => {
-    if (status !== 'authenticated') {
-      signIn('discord');
-      return;
-    }
-
-    if (!session?.discordId || !session?.user?.name) {
-      setErrorMessage('Discord ID or name is missing');
-      return;
-    }
-
-    try {
-      setIsJoining(true);
-      setErrorMessage(null);
-
-      const response = await fetch(`/api/games/${gameId}/join`, {
-        method: 'POST',
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to join game');
+  const handleJoin = useCallback(
+    async (gameId: string) => {
+      if (status !== "authenticated") {
+        signIn("discord");
+        return;
       }
 
-      await refetch?.();
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to join game';
-      setErrorMessage(errorMessage);
-      Logger.error('Failed to join game', {
-        component: 'useGameActions',
-        gameId,
-        error: errorMessage,
-      });
-    } finally {
-      setIsJoining(false);
-    }
-  }, [status, session?.discordId, session?.user?.name, refetch]);
-
-  const handleLeave = useCallback(async (gameId: string) => {
-    if (status !== 'authenticated') {
-      signIn('discord');
-      return;
-    }
-
-    try {
-      setIsLeaving(true);
-      setErrorMessage(null);
-
-      const response = await fetch(`/api/games/${gameId}/leave`, {
-        method: 'POST',
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to leave game');
+      if (!session?.discordId || !session?.user?.name) {
+        setErrorMessage("Discord ID or name is missing");
+        return;
       }
 
-      await refetch?.();
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to leave game';
-      setErrorMessage(errorMessage);
-      Logger.error('Failed to leave game', {
-        component: 'useGameActions',
-        gameId,
-        error: errorMessage,
-      });
-    } finally {
-      setIsLeaving(false);
-    }
-  }, [status, refetch]);
+      try {
+        setIsJoining(true);
+        setErrorMessage(null);
+
+        const response = await fetch(`/api/games/${gameId}/join`, {
+          method: "POST",
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || "Failed to join game");
+        }
+
+        await refetch?.();
+      } catch (err) {
+        const errorMessage = err instanceof Error ? err.message : "Failed to join game";
+        setErrorMessage(errorMessage);
+        Logger.error("Failed to join game", {
+          component: "useGameActions",
+          gameId,
+          error: errorMessage,
+        });
+      } finally {
+        setIsJoining(false);
+      }
+    },
+    [status, session?.discordId, session?.user?.name, refetch]
+  );
+
+  const handleLeave = useCallback(
+    async (gameId: string) => {
+      if (status !== "authenticated") {
+        signIn("discord");
+        return;
+      }
+
+      try {
+        setIsLeaving(true);
+        setErrorMessage(null);
+
+        const response = await fetch(`/api/games/${gameId}/leave`, {
+          method: "POST",
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || "Failed to leave game");
+        }
+
+        await refetch?.();
+      } catch (err) {
+        const errorMessage = err instanceof Error ? err.message : "Failed to leave game";
+        setErrorMessage(errorMessage);
+        Logger.error("Failed to leave game", {
+          component: "useGameActions",
+          gameId,
+          error: errorMessage,
+        });
+      } finally {
+        setIsLeaving(false);
+      }
+    },
+    [status, refetch]
+  );
 
   const handleUploadReplay = (game: GameWithPlayers) => {
-    if (status !== 'authenticated') {
-      signIn('discord');
+    if (status !== "authenticated") {
+      signIn("discord");
       return;
     }
     setUploadingReplayGame(game);
@@ -261,4 +265,3 @@ export function useGameActions(
     handleUploadReplayClose,
   };
 }
-

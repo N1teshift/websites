@@ -1,3 +1,2 @@
-export { EmptyState, default as EmptyStateDefault } from './EmptyState';
-export { Tooltip, default as TooltipDefault } from './Tooltip';
-
+export { EmptyState, default as EmptyStateDefault } from "./EmptyState";
+export { Tooltip, default as TooltipDefault } from "./Tooltip";

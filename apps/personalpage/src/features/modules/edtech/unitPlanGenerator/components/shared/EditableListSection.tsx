@@ -1,7 +1,7 @@
-import React from 'react';
-import { useFallbackTranslation } from '@websites/infrastructure/i18n/client';
-import { FiTrash2 } from 'react-icons/fi';
-import { IconButton } from '@websites/ui';
+import React from "react";
+import { useFallbackTranslation } from "@websites/infrastructure/i18n/client";
+import { FiTrash2 } from "react-icons/fi";
+import { IconButton } from "@websites/ui";
 
 interface EditableListSectionProps {
   title: string;
@@ -22,22 +22,20 @@ const EditableListSection: React.FC<EditableListSectionProps> = ({
   onRemove,
   placeholder,
   addButtonText,
-  rows = 3
+  rows = 3,
 }) => {
   const { t } = useFallbackTranslation();
 
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h4 className="text-lg font-medium text-text-primary">
-          {title}
-        </h4>
+        <h4 className="text-lg font-medium text-text-primary">{title}</h4>
         <button
           type="button"
           onClick={onAdd}
           className="px-3 py-1 bg-brand text-text-inverse text-sm rounded-md hover:bg-brand-hover focus:outline-none focus:ring-2 focus:ring-brand"
         >
-          {addButtonText || t('add_item')}
+          {addButtonText || t("add_item")}
         </button>
       </div>
 
@@ -56,7 +54,7 @@ const EditableListSection: React.FC<EditableListSectionProps> = ({
               onClick={() => onRemove(index)}
               color="red"
               size="medium"
-              title={t('remove')}
+              title={t("remove")}
             />
           </div>
         ))}
@@ -66,10 +64,3 @@ const EditableListSection: React.FC<EditableListSectionProps> = ({
 };
 
 export default EditableListSection;
-
-
-
-
-
-
-

@@ -1,9 +1,9 @@
-import { Timestamp } from 'firebase/firestore';
+import { Timestamp } from "firebase/firestore";
 
 /**
  * User role types that control website functionality
  */
-export type UserRole = 'user' | 'admin' | 'moderator' | 'premium' | 'developer';
+export type UserRole = "user" | "admin" | "moderator" | "premium" | "developer";
 
 export interface UserData {
   id?: string; // Document ID
@@ -34,6 +34,3 @@ export interface CreateUserData {
   role?: UserRole; // User role that controls website functionality
   dataCollectionNoticeAccepted?: boolean; // Whether user has accepted the data collection notice
 }
-
-
-

@@ -68,6 +68,7 @@ npx tsx scripts/tools/inspectExcel.ts data.xlsx --mode=raw
 ```
 
 **Options:**
+
 - `--mode=summary` - Quick overview (default)
 - `--mode=detailed` - Full analysis with patterns
 - `--mode=raw` - Raw cell data with types
@@ -98,6 +99,7 @@ npx tsx scripts/tools/analyzeAssessments.ts data.json --type=homework --class="8
 ```
 
 **Options:**
+
 - `--mode=summary` - Quick statistics (default)
 - `--mode=detailed` - Detailed breakdown by type
 - `--mode=deep` - Deep analysis with student-level data
@@ -133,9 +135,10 @@ npx tsx scripts/tools/importData.ts \
 ```
 
 **Options:**
+
 - `--excel=<file>` - Excel file to import from (required)
 - `--json=<file>` - JSON file to update (required)
-- `--output=<file>` - Output file (default: adds _updated suffix)
+- `--output=<file>` - Output file (default: adds \_updated suffix)
 - `--type=assessments` - Import regular assessments (default)
 - `--type=cambridge` - Import Cambridge objectives
 - `--validate-only` - Only validate, don't import
@@ -176,6 +179,7 @@ npx tsx scripts/tools/exportData.ts \
 ```
 
 **Options:**
+
 - `--input=<file>` - Input JSON file
 - `--output=<file>` - Output file (required)
 - `--format=json|csv` - Export format (default: json)
@@ -210,6 +214,7 @@ npx tsx scripts/tools/validate.ts data.json \
 ```
 
 **Options:**
+
 - `--level=quick` - Check only critical fields
 - `--level=standard` - Check all important fields (default)
 - `--level=deep` - Comprehensive validation
@@ -220,6 +225,7 @@ npx tsx scripts/tools/validate.ts data.json \
 - `--no-backup` - Skip backup creation
 
 **Validation Levels:**
+
 - **quick**: Checks only `assessment_id` fields
 - **standard**: Checks all important fields and formats (default)
 - **deep**: Comprehensive validation including naming conventions
@@ -302,6 +308,7 @@ node scripts/web/addJsExtensions.js
 Historical scripts kept for reference. **Do not use these for new work.**
 
 ### Migrations (`archive/migrations/`)
+
 - `migrateToV3.ts` - v2 → v3 migration
 - `migrateToV4.ts` - v3 → v4 migration (master file)
 - `migrateV3toV4.ts` - v3 → v4 migration (individual files)
@@ -309,10 +316,12 @@ Historical scripts kept for reference. **Do not use these for new work.**
 - `migrateAssessmentData.ts` - Assessment data migration
 
 ### Normalizations (`archive/normalizations/`)
+
 - `normalizeHomeworkScores.ts` - Normalize homework scores
 - `standardizeColumnNames.ts` - Standardize column naming
 
 ### Validations (`archive/validations/`)
+
 - `validateV4Database.ts` - V4 validation
 
 ---
@@ -409,17 +418,20 @@ npx tsx scripts/tools/exportData.ts \
 ### Tool Priorities
 
 **Use these tools first (formalized, maintained):**
+
 - `tools/inspectExcel.ts`
 - `tools/analyzeAssessments.ts`
 - `tools/exportData.ts`
 - `tools/validate.ts`
 
 **Use these when needed (specialized utilities):**
+
 - `utilities/cleanupDataV5.ts`
 - `utilities/validateAndFixDatabase.ts`
 - `utilities/importCambridgeObjectives.ts` (full implementation)
 
 **Avoid these (archived, historical):**
+
 - Anything in `archive/` folder
 
 ---
@@ -434,6 +446,7 @@ When adding new scripts:
 4. **Web** (`web/`) - Web development scripts only
 
 Keep scripts:
+
 - **Modular** - Under 200 lines if possible
 - **Documented** - Clear usage and examples
 - **Safe** - Always offer dry-run or validation modes
@@ -449,6 +462,7 @@ npx tsx scripts/tools/<tool>.ts --help
 ```
 
 For comprehensive assessment and cleanup recommendations, see:
+
 - `scripts/SCRIPTS_ASSESSMENT.md`
 
 ---
@@ -456,7 +470,7 @@ For comprehensive assessment and cleanup recommendations, see:
 ## 📈 Statistics
 
 **Before Cleanup:** 71 scripts  
-**After Cleanup:** 26 scripts (63% reduction)  
+**After Cleanup:** 26 scripts (63% reduction)
 
 - **Deleted:** 30 one-time fixes
 - **Archived:** 7 historical scripts
@@ -470,4 +484,3 @@ For comprehensive assessment and cleanup recommendations, see:
 **Last cleanup:** November 10, 2025  
 **Maintained by:** AI Assistant  
 **Data Schema:** V5
-

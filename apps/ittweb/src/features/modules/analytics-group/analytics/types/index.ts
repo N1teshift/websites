@@ -147,7 +147,7 @@ export interface AggregateITTStats {
  * Animal kills distribution data (for pie chart)
  */
 export interface AnimalKillsDistribution {
-  animalType: 'elk' | 'hawk' | 'snake' | 'wolf' | 'bear' | 'panther';
+  animalType: "elk" | "hawk" | "snake" | "wolf" | "bear" | "panther";
   count: number;
   percentage: number;
 }
@@ -172,6 +172,3 @@ export interface TopHealerEntry {
   allyHealing: number;
   gamesPlayed: number;
 }
-
-
-

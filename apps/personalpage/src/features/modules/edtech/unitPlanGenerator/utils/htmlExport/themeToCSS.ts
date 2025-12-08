@@ -1,5 +1,5 @@
 // Convert React inline styles from theme to CSS string for HTML export
-import { KMMColors } from '../../components/sections/preview/previewTheme';
+import { KMMColors } from "../../components/sections/preview/previewTheme";
 
 export const generateCSSFromTheme = (): string => `
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -344,7 +344,3 @@ export const generateCSSFromTheme = (): string => `
         }
     }
 `;
-
-
-
-

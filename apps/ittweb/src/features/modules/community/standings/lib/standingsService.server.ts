@@ -1,23 +1,23 @@
 /**
  * Standings Service - Server-Only Operations
- * 
+ *
  * Server-only functions for standings/leaderboard services.
  * These functions use Firebase Admin SDK and should only be used in API routes.
  */
 
-import { getFirestoreAdmin } from '@websites/infrastructure/firebase';
-import { createComponentLogger, logError } from '@websites/infrastructure/logging';
-import { queryWithIndexFallback } from '@/features/infrastructure/api/firebase/queryWithIndexFallback';
-import type { StandingsEntry, StandingsResponse, StandingsFilters } from '../types';
+import { getFirestoreAdmin } from "@websites/infrastructure/firebase";
+import { createComponentLogger, logError } from "@websites/infrastructure/logging";
+import { queryWithIndexFallback } from "@/features/infrastructure/api/firebase/queryWithIndexFallback";
+import type { StandingsEntry, StandingsResponse, StandingsFilters } from "../types";
 import {
   createStandingsEntryFromOptimized,
   createStandingsEntryFromLegacy,
   processStandingsEntries,
-} from './standingsService.utils';
+} from "./standingsService.utils";
 
-const PLAYER_STATS_COLLECTION = 'playerStats';
-const PLAYER_CATEGORY_STATS_COLLECTION = 'playerCategoryStats';
-const logger = createComponentLogger('standingsService');
+const PLAYER_STATS_COLLECTION = "playerStats";
+const PLAYER_CATEGORY_STATS_COLLECTION = "playerCategoryStats";
+const logger = createComponentLogger("standingsService");
 
 /**
  * Minimum games required to be ranked
@@ -30,10 +30,10 @@ export const MIN_GAMES_FOR_RANKING = 10;
  */
 export async function getStandings(filters: StandingsFilters = {}): Promise<StandingsResponse> {
   try {
-    logger.info('Fetching standings', { filters });
+    logger.info("Fetching standings", { filters });
 
     const {
-      category = 'default',
+      category = "default",
       minGames = MIN_GAMES_FOR_RANKING,
       page = 1,
       limit: pageLimit = 50,
@@ -44,7 +44,7 @@ export async function getStandings(filters: StandingsFilters = {}): Promise<Stan
       return await getStandingsOptimized(category, minGames, page, pageLimit);
     } catch (error) {
       // If optimized query fails (e.g., no data in new collection yet), fall back to legacy
-      logger.warn('Optimized standings query failed, falling back to legacy method', {
+      logger.warn("Optimized standings query failed, falling back to legacy method", {
         error: error instanceof Error ? error.message : String(error),
         category,
       });
@@ -52,9 +52,9 @@ export async function getStandings(filters: StandingsFilters = {}): Promise<Stan
     }
   } catch (error) {
     const err = error as Error;
-    logError(err, 'Failed to fetch standings', {
-      component: 'standingsService',
-      operation: 'getStandings',
+    logError(err, "Failed to fetch standings", {
+      component: "standingsService",
+      operation: "getStandings",
       filters,
     });
     throw err;
@@ -78,12 +78,12 @@ async function getStandingsOptimized(
     const adminDb = getFirestoreAdmin();
     const totalQuery = adminDb
       .collection(PLAYER_CATEGORY_STATS_COLLECTION)
-      .where('category', '==', category)
-      .where('games', '>=', minGames);
+      .where("category", "==", category)
+      .where("games", ">=", minGames);
     const totalSnapshot = await totalQuery.get();
     total = totalSnapshot.size;
   } catch (error) {
-    logger.warn('Failed to get total count for standings', { category, error });
+    logger.warn("Failed to get total count for standings", { category, error });
   }
 
   const standings = await queryWithIndexFallback({
@@ -94,9 +94,9 @@ async function getStandingsOptimized(
       const adminDb = getFirestoreAdmin();
       const standingsQuery = adminDb
         .collection(PLAYER_CATEGORY_STATS_COLLECTION)
-        .where('category', '==', category)
-        .where('games', '>=', minGames)
-        .orderBy('score', 'desc')
+        .where("category", "==", category)
+        .where("games", ">=", minGames)
+        .orderBy("score", "desc")
         .limit(fetchLimit);
 
       const snapshot = await standingsQuery.get();
@@ -155,28 +155,24 @@ async function getStandingsLegacy(
 /**
  * Calculate player's rank in a category (Server-Only)
  */
-export async function calculateRank(
-  playerName: string,
-  category: string
-): Promise<number | null> {
+export async function calculateRank(playerName: string, category: string): Promise<number | null> {
   try {
-    logger.info('Calculating rank', { playerName, category });
+    logger.info("Calculating rank", { playerName, category });
 
     const standings = await getStandings({ category, minGames: MIN_GAMES_FOR_RANKING });
     const playerEntry = standings.standings.find(
-      entry => entry.name.toLowerCase() === playerName.toLowerCase()
+      (entry) => entry.name.toLowerCase() === playerName.toLowerCase()
     );
 
     return playerEntry?.rank ?? null;
   } catch (error) {
     const err = error as Error;
-    logError(err, 'Failed to calculate rank', {
-      component: 'standingsService',
-      operation: 'calculateRank',
+    logError(err, "Failed to calculate rank", {
+      component: "standingsService",
+      operation: "calculateRank",
       playerName,
       category,
     });
     return null;
   }
 }
-

@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
-import type { BasicTile } from './TileInfoPanel';
-import type { SimpleMapData } from '../types/map';
+import React, { useEffect, useRef, useState } from "react";
+import type { BasicTile } from "./TileInfoPanel";
+import type { SimpleMapData } from "../types/map";
 
 export default function MapContainer({
   onHover,
@@ -13,7 +13,7 @@ export default function MapContainer({
   initialScrollLeft = 0,
   initialScrollTop = 0,
   onScrollChange,
-  renderMode = 'complete',
+  renderMode = "complete",
   minHeight,
   maxHeight,
   selectedFlags,
@@ -31,7 +31,7 @@ export default function MapContainer({
   initialScrollLeft?: number;
   initialScrollTop?: number;
   onScrollChange?: (pos: { left: number; top: number }) => void;
-  renderMode?: 'complete' | 'elevation' | 'cliffs';
+  renderMode?: "complete" | "elevation" | "cliffs";
   minHeight?: number;
   maxHeight?: number;
   selectedFlags?: number[];
@@ -69,7 +69,7 @@ export default function MapContainer({
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
     const width = map?.width ?? fallbackWidth;
     const height = map?.height ?? fallbackHeight;
@@ -78,7 +78,7 @@ export default function MapContainer({
     canvas.height = height * cell;
 
     // background
-    ctx.fillStyle = 'rgb(12,12,12)';
+    ctx.fillStyle = "rgb(12,12,12)";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     // draw tiles when map provided
@@ -86,25 +86,25 @@ export default function MapContainer({
       for (let y = 0; y < height; y++) {
         for (let x = 0; x < width; x++) {
           const t = map.tiles[y * width + x];
-          if (renderMode === 'complete') {
+          if (renderMode === "complete") {
             if (t.isWater) {
-              const depth = typeof t.waterHeight === 'number' ? (t.waterHeight - t.groundHeight) : 0;
+              const depth = typeof t.waterHeight === "number" ? t.waterHeight - t.groundHeight : 0;
               const d = Math.max(0, Math.min(255, Math.floor(depth)));
               ctx.fillStyle = `rgb(${Math.max(0, 20 - d * 0.1)}, ${Math.max(0, 120 - d * 0.2)}, ${200 - d * 0.3})`;
             } else {
               ctx.fillStyle = landColorFromHeight(t.groundHeight, minHeight, maxHeight);
             }
-          } else if (renderMode === 'elevation') {
+          } else if (renderMode === "elevation") {
             if (t.isWater) {
-              ctx.fillStyle = 'rgb(10,70,140)';
+              ctx.fillStyle = "rgb(10,70,140)";
             } else {
               ctx.fillStyle = landColorFromHeight(t.groundHeight, minHeight, maxHeight);
             }
           } else {
             // cliffs render: map cliffLevel if present; fallback to elevation
             if (t.isWater) {
-              ctx.fillStyle = 'rgb(10,70,140)';
-            } else if (typeof t.cliffLevel === 'number') {
+              ctx.fillStyle = "rgb(10,70,140)";
+            } else if (typeof t.cliffLevel === "number") {
               ctx.fillStyle = cliffColorFromLevel(t.cliffLevel);
             } else {
               ctx.fillStyle = landColorFromHeight(t.groundHeight, minHeight, maxHeight);
@@ -131,13 +131,13 @@ export default function MapContainer({
       }
 
       // height slice dimming overlay
-      if (sliceEnabled && (typeof sliceMin === 'number' || typeof sliceMax === 'number')) {
-        const low = typeof sliceMin === 'number' ? sliceMin : -Infinity;
-        const high = typeof sliceMax === 'number' ? sliceMax : Infinity;
+      if (sliceEnabled && (typeof sliceMin === "number" || typeof sliceMax === "number")) {
+        const low = typeof sliceMin === "number" ? sliceMin : -Infinity;
+        const high = typeof sliceMax === "number" ? sliceMax : Infinity;
         const minRange = Math.min(low, high);
         const maxRange = Math.max(low, high);
         ctx.save();
-        ctx.fillStyle = 'rgba(0,0,0,0.5)';
+        ctx.fillStyle = "rgba(0,0,0,0.5)";
         for (let y = 0; y < height; y++) {
           for (let x = 0; x < width; x++) {
             const t = map.tiles[y * width + x];
@@ -154,7 +154,7 @@ export default function MapContainer({
 
     // grid (only draw when cell is large enough to be readable)
     if (cell >= 8) {
-      ctx.strokeStyle = 'rgba(255,191,0,0.12)';
+      ctx.strokeStyle = "rgba(255,191,0,0.12)";
       for (let y = 0; y <= height; y++) {
         ctx.beginPath();
         ctx.moveTo(0, y * cell + 0.5);
@@ -168,11 +168,24 @@ export default function MapContainer({
         ctx.stroke();
       }
     }
-  }, [map, fallbackWidth, fallbackHeight, baseCell, zoom, renderMode, minHeight, maxHeight, selectedFlags, sliceEnabled, sliceMin, sliceMax]);
+  }, [
+    map,
+    fallbackWidth,
+    fallbackHeight,
+    baseCell,
+    zoom,
+    renderMode,
+    minHeight,
+    maxHeight,
+    selectedFlags,
+    sliceEnabled,
+    sliceMin,
+    sliceMax,
+  ]);
 
   function landColorFromHeight(h: number, minH?: number, maxH?: number): string {
-    const minv = typeof minH === 'number' ? minH : 0;
-    const maxv = typeof maxH === 'number' && maxH > minv ? maxH : minv + 1;
+    const minv = typeof minH === "number" ? minH : 0;
+    const maxv = typeof maxH === "number" && maxH > minv ? maxH : minv + 1;
     let p = (h - minv) / (maxv - minv);
     p = Math.max(0, Math.min(1, p));
     const stops = [
@@ -210,11 +223,11 @@ export default function MapContainer({
   function flagColor(flagId: number): string {
     // Known wc3 terrain flags in this app
     // Water 0x20000000 -> blue, Ramp 0x2 -> purple, NoWater 0x4 -> orange
-    if (flagId === 0x20000000) return 'rgb(0,120,220)';
-    if (flagId === 0x00000002) return 'rgb(180,80,200)';
-    if (flagId === 0x00000004) return 'rgb(220,150,40)';
+    if (flagId === 0x20000000) return "rgb(0,120,220)";
+    if (flagId === 0x00000002) return "rgb(180,80,200)";
+    if (flagId === 0x00000004) return "rgb(220,150,40)";
     // default red
-    return 'rgb(220,60,60)';
+    return "rgb(220,60,60)";
   }
 
   const getTileFromEvent = (e: React.MouseEvent<HTMLCanvasElement>) => {
@@ -235,8 +248,8 @@ export default function MapContainer({
   return (
     <div
       ref={containerRef}
-      className={`relative w-full overflow-auto border border-amber-500/30 rounded select-none ${isDraggingRef.current ? 'cursor-grabbing' : 'cursor-grab'}`}
-      style={{ height: viewportHeightPx, overscrollBehavior: 'contain' }}
+      className={`relative w-full overflow-auto border border-amber-500/30 rounded select-none ${isDraggingRef.current ? "cursor-grabbing" : "cursor-grab"}`}
+      style={{ height: viewportHeightPx, overscrollBehavior: "contain" }}
       onPointerDown={(e) => {
         if (e.button !== 0) return; // left button only
         isDraggingRef.current = true;
@@ -248,7 +261,7 @@ export default function MapContainer({
             top: containerRef.current.scrollTop,
           };
         }
-        try { 
+        try {
           if (e.currentTarget.setPointerCapture) {
             e.currentTarget.setPointerCapture(e.pointerId);
           }
@@ -256,7 +269,12 @@ export default function MapContainer({
         e.preventDefault();
       }}
       onPointerMove={(e) => {
-        if (isDraggingRef.current && dragStartMouseRef.current && dragStartScrollRef.current && containerRef.current) {
+        if (
+          isDraggingRef.current &&
+          dragStartMouseRef.current &&
+          dragStartScrollRef.current &&
+          containerRef.current
+        ) {
           const dx = e.clientX - dragStartMouseRef.current.x;
           const dy = e.clientY - dragStartMouseRef.current.y;
           if (!didDragRef.current && (Math.abs(dx) > 2 || Math.abs(dy) > 2)) {
@@ -271,7 +289,7 @@ export default function MapContainer({
         isDraggingRef.current = false;
         dragStartMouseRef.current = null;
         dragStartScrollRef.current = null;
-        try { 
+        try {
           if (e.currentTarget.releasePointerCapture) {
             e.currentTarget.releasePointerCapture(e.pointerId);
           }
@@ -302,49 +320,49 @@ export default function MapContainer({
           top: containerRef.current.scrollTop,
         });
       }}
-        onWheel={(e) => {
+      onWheel={(e) => {
         if (!onZoomChange || !containerRef.current) return;
         e.preventDefault();
-          zoomingRef.current = true;
-          wheelAccumRef.current += e.deltaY;
-          if (wheelRafRef.current == null) {
-            const rect = containerRef.current.getBoundingClientRect();
-            const mouseX = e.clientX - rect.left;
-            const mouseY = e.clientY - rect.top;
-            const contentX = (containerRef.current.scrollLeft ?? 0) + mouseX;
-            const contentY = (containerRef.current.scrollTop ?? 0) + mouseY;
-            const oldScale = baseCell * zoom;
-            const tileX = contentX / oldScale;
-            const tileY = contentY / oldScale;
-            wheelRafRef.current = requestAnimationFrame(() => {
-              wheelRafRef.current = null;
-              const dy = wheelAccumRef.current;
-              wheelAccumRef.current = 0;
-              const factor = Math.exp(-dy * 0.001);
-              const nextZoom = Math.max(0.1, Math.min(4, +(zoom * factor).toFixed(3)));
-              const newScale = baseCell * nextZoom;
-              const newContentX = tileX * newScale;
-              const newContentY = tileY * newScale;
-              const nextScrollLeft = newContentX - mouseX;
-              const nextScrollTop = newContentY - mouseY;
-              onZoomChange(nextZoom);
-              // apply scroll after two frames for layout stabilization
+        zoomingRef.current = true;
+        wheelAccumRef.current += e.deltaY;
+        if (wheelRafRef.current == null) {
+          const rect = containerRef.current.getBoundingClientRect();
+          const mouseX = e.clientX - rect.left;
+          const mouseY = e.clientY - rect.top;
+          const contentX = (containerRef.current.scrollLeft ?? 0) + mouseX;
+          const contentY = (containerRef.current.scrollTop ?? 0) + mouseY;
+          const oldScale = baseCell * zoom;
+          const tileX = contentX / oldScale;
+          const tileY = contentY / oldScale;
+          wheelRafRef.current = requestAnimationFrame(() => {
+            wheelRafRef.current = null;
+            const dy = wheelAccumRef.current;
+            wheelAccumRef.current = 0;
+            const factor = Math.exp(-dy * 0.001);
+            const nextZoom = Math.max(0.1, Math.min(4, +(zoom * factor).toFixed(3)));
+            const newScale = baseCell * nextZoom;
+            const newContentX = tileX * newScale;
+            const newContentY = tileY * newScale;
+            const nextScrollLeft = newContentX - mouseX;
+            const nextScrollTop = newContentY - mouseY;
+            onZoomChange(nextZoom);
+            // apply scroll after two frames for layout stabilization
+            requestAnimationFrame(() => {
               requestAnimationFrame(() => {
-                requestAnimationFrame(() => {
-                  if (!containerRef.current) return;
-                  containerRef.current.scrollLeft = nextScrollLeft;
-                  containerRef.current.scrollTop = nextScrollTop;
-                  if (wheelTimerRef.current) {
-                    window.clearTimeout(wheelTimerRef.current);
-                    wheelTimerRef.current = null;
-                  }
-                  wheelTimerRef.current = window.setTimeout(() => {
-                    zoomingRef.current = false;
-                  }, 100);
-                });
+                if (!containerRef.current) return;
+                containerRef.current.scrollLeft = nextScrollLeft;
+                containerRef.current.scrollTop = nextScrollTop;
+                if (wheelTimerRef.current) {
+                  window.clearTimeout(wheelTimerRef.current);
+                  wheelTimerRef.current = null;
+                }
+                wheelTimerRef.current = window.setTimeout(() => {
+                  zoomingRef.current = false;
+                }, 100);
               });
             });
-          }
+          });
+        }
       }}
     >
       <canvas
@@ -375,7 +393,3 @@ export default function MapContainer({
     </div>
   );
 }
-
-
-
-

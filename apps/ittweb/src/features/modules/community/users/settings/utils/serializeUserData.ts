@@ -1,5 +1,5 @@
-import { Timestamp } from 'firebase/firestore';
-import type { UserData } from '@/types/userData';
+import { Timestamp } from "firebase/firestore";
+import type { UserData } from "@/types/userData";
 
 type SerializedUserData = Record<string, unknown> | null;
 
@@ -20,7 +20,12 @@ export const serializeUserData = (data: UserData | null): SerializedUserData => 
       return;
     }
 
-    if (value && typeof value === 'object' && 'toDate' in value && typeof (value as Timestamp).toDate === 'function') {
+    if (
+      value &&
+      typeof value === "object" &&
+      "toDate" in value &&
+      typeof (value as Timestamp).toDate === "function"
+    ) {
       serialized[key] = (value as Timestamp).toDate().toISOString();
       return;
     }
@@ -30,4 +35,3 @@ export const serializeUserData = (data: UserData | null): SerializedUserData => 
 
   return serialized;
 };
-

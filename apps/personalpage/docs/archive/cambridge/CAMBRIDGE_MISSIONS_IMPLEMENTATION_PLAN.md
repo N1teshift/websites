@@ -6,6 +6,7 @@
 ---
 
 ## 📋 Table of Contents
+
 1. [System Overview](#system-overview)
 2. [Assessment Mappings](#assessment-mappings)
 3. [Data Structures](#data-structures)
@@ -20,15 +21,18 @@
 ## 1. System Overview
 
 ### Purpose
+
 Automatically identify students with unmastered Cambridge learning objectives and create targeted missions for reassessment and mastery.
 
 ### Key Concepts
+
 - **PD Assessments**: "Papildomas Darbas" (Additional Work) - custom assessments for specific learning objectives
 - **Mission**: Collection of learning objectives a student needs to master
 - **Missing Points**: `1 - current_score` (e.g., score 0 = 1 point missing, score 0.5 = 0.5 points missing)
 - **Not Mastered**: Score < 1 (includes both 0 and 0.5)
 
 ### Mission Lifecycle
+
 ```
 Not Started → In Progress → Completed
      ↓             ↓            ↓
@@ -130,6 +134,7 @@ KD15 → 9Ss.03, 9Ss.04
 ```
 
 **KD Excel Structure:**
+
 - Each objective gets its own C column: `KD3 C1`, `KD3 C2`, `KD3 C3`, `KD3 C4`
 - Plus: `KD3 P` (points), `KD3 MYP` (MYP level), `KD3` (final grade)
 
@@ -146,7 +151,7 @@ KD15 → 9Ss.03, 9Ss.04
     "total_students": 75,
     "schema_version": "5.1"
   },
-  
+
   "pd_mappings": {
     "PD1": ["9Ni.01", "9Ni.04"],
     "PD2": ["9Ni.03"],
@@ -154,13 +159,13 @@ KD15 → 9Ss.03, 9Ss.04
     "PD4": ["9Ae.01"],
     ...
   },
-  
+
   "kd_mappings": {
     "KD1": ["9Ni.01", "9Ni.02", "9Ni.03"],
     "KD2": ["9Ae.01", "9Ae.02", "9Ae.03", "9Ae.04"],
     ...
   },
-  
+
   "students": [ ... ]
 }
 ```
@@ -175,7 +180,7 @@ KD15 → 9Ss.03, 9Ss.04
   "student_id": "GRE-ANDR-001",
   "status": "in_progress",
   "deadline": "2025-11-20",
-  
+
   "cambridge_objectives": {
     "9Ae.01": {
       "initial_score": 0,
@@ -200,7 +205,7 @@ KD15 → 9Ss.03, 9Ss.04
       "attempts": []
     }
   },
-  
+
   "created_date": "2025-11-08",
   "started_date": "2025-11-08",
   "completed_date": null,
@@ -218,9 +223,7 @@ KD15 → 9Ss.03, 9Ss.04
       "9Ae.01": {
         "current_score": 0,
         "last_updated": "2025-10-21",
-        "history": [
-          { "score": 0, "date": "2025-10-21", "assessment": "SD4" }
-        ]
+        "history": [{ "score": 0, "date": "2025-10-21", "assessment": "SD4" }]
       }
     },
     "cambridge_objectives_summary": {
@@ -245,11 +248,13 @@ KD15 → 9Ss.03, 9Ss.04
 **Options Proposed:**
 
 #### Option A: Date in Column Name
+
 ```
 Headers: PD3P.1_2025-10-21 | PD3MYP.1_2025-10-21 | PD3C.1_2025-10-21
 ```
 
 #### Option B: Separate PD Sheet ⭐ RECOMMENDED
+
 ```
 Sheet: Vyd_PD
 
@@ -259,11 +264,13 @@ Adomas B.     | 2025-10-23 | 6     | 4       | 0.5   |            |       | ...
 ```
 
 #### Option C: Date Column per PD Group
+
 ```
 Headers: PD3 Date | PD3 P | PD3 MYP | PD3 C | PD5 Date | PD5 P | ...
 ```
 
 #### Option D: Single Log Sheet
+
 ```
 Sheet: PD_Log
 
@@ -276,6 +283,7 @@ Date       | Student    | Class   | PD_Number | Points | MYP | Cambridge
 ### 4.2 PD Columns Pattern
 
 For attempts tracking:
+
 - First attempt: `PD3 P.1`, `PD3 MYP.1`, `PD3 C.1`
 - Second attempt: `PD3 P.2`, `PD3 MYP.2`, `PD3 C.2`
 - Third attempt: `PD3 P.3`, `PD3 MYP.3`, `PD3 C.3`
@@ -283,12 +291,14 @@ For attempts tracking:
 ### 4.3 KD Columns Structure
 
 Example: KD3 tests 4 objectives
+
 ```
 KD3 | KD3 P | KD3 MYP | KD3 C1 | KD3 C2 | KD3 C3 | KD3 C4
  8  |   7   |    6    |   1    |  0.5   |   1    |   1
 ```
 
 Where:
+
 - `KD3` = Final grade
 - `KD3 P` = Total points
 - `KD3 MYP` = MYP level
@@ -501,6 +511,7 @@ COMPLETED
 ## 7. Implementation Phases
 
 ### Phase 1: Data Structure & Mappings ⭐ START HERE
+
 **Priority: Critical**
 
 1. Add mappings to data structure
@@ -519,6 +530,7 @@ COMPLETED
    - Validate structure
 
 **Files to create/modify:**
+
 - `src/features/modules/edtech/progressReport/student-data/config/pdKdMappings.ts` (new)
 - `src/features/modules/edtech/progressReport/types/ProgressReportTypes.ts` (update)
 - `data_2025-11-09.json` (update)
@@ -528,6 +540,7 @@ COMPLETED
 ---
 
 ### Phase 2: Mission Data Types & Storage
+
 **Priority: Critical**
 
 1. Define mission types
@@ -540,6 +553,7 @@ COMPLETED
    - Create mission CRUD utilities
 
 **Files to create/modify:**
+
 - `src/features/modules/edtech/progressReport/types/MissionTypes.ts` (new)
 - Mission storage decision needed
 
@@ -548,6 +562,7 @@ COMPLETED
 ---
 
 ### Phase 3: Mission Creator UI
+
 **Priority: High**
 
 1. Redesign Objectives tab
@@ -573,6 +588,7 @@ COMPLETED
    - Bulk creation confirmation
 
 **Files to create:**
+
 - `src/features/modules/edtech/progressReport/components/missions/MissionCreator.tsx`
 - `src/features/modules/edtech/progressReport/components/missions/StudentMissionCard.tsx`
 - `src/features/modules/edtech/progressReport/components/missions/CreateMissionDialog.tsx`
@@ -583,6 +599,7 @@ COMPLETED
 ---
 
 ### Phase 4: My Missions View
+
 **Priority: High**
 
 1. Mission list component
@@ -603,6 +620,7 @@ COMPLETED
    - Progress visualization
 
 **Files to create:**
+
 - `src/features/modules/edtech/progressReport/components/missions/MyMissions.tsx`
 - `src/features/modules/edtech/progressReport/components/missions/MissionList.tsx`
 - `src/features/modules/edtech/progressReport/components/missions/MissionCard.tsx`
@@ -613,9 +631,11 @@ COMPLETED
 ---
 
 ### Phase 5: Excel PD Import Logic
-**Priority: Critical - NEEDS DECISION ON EXCEL FORMAT
+
+\*\*Priority: Critical - NEEDS DECISION ON EXCEL FORMAT
 
 **Prerequisites:**
+
 - ⚠️ **DECISION NEEDED:** Excel PD structure (Option B or D recommended)
 
 1. Create PD reader utility
@@ -637,6 +657,7 @@ COMPLETED
    - Auto-complete if all objectives assessed
 
 **Files to create/modify:**
+
 - `src/features/modules/edtech/progressReport/student-data/utils/pdAssessmentReader.ts` (new)
 - `src/features/modules/edtech/progressReport/student-data/processors/dataProcessorV5.ts` (update)
 - `scripts/processStudentData.ts` (update)
@@ -646,6 +667,7 @@ COMPLETED
 ---
 
 ### Phase 6: KD Import Enhancement
+
 **Priority: Medium**
 
 1. Update KD processing
@@ -657,6 +679,7 @@ COMPLETED
    - Check if KD assessment completes mission objectives
 
 **Files to modify:**
+
 - `src/features/modules/edtech/progressReport/student-data/processors/dataProcessorV5.ts`
 - `src/features/modules/edtech/progressReport/student-data/config/cambridgeObjectiveMapping.ts`
 
@@ -665,6 +688,7 @@ COMPLETED
 ---
 
 ### Phase 7: PD Mappings Management UI
+
 **Priority: Low**
 
 1. Create mappings view in Data Management tab
@@ -675,6 +699,7 @@ COMPLETED
    - Delete (with warning if in use)
 
 **Files to create:**
+
 - `src/features/modules/edtech/progressReport/components/admin/PDMappingsManager.tsx`
 
 **Estimated time:** 3-4 hours
@@ -682,6 +707,7 @@ COMPLETED
 ---
 
 ### Phase 8: Testing & Refinement
+
 **Priority: High**
 
 1. Test mission creation workflow
@@ -768,19 +794,19 @@ function processExcelFile(excelData) {
           const attempt = extractAttempt(column);    // 1, 2, 3
           const date = getDateForPD(row, pdNumber);
           const score = row[column];
-          
+
           // Look up what objectives this PD tests
           const objectives = pd_mappings[pdNumber]; // ["9Ni.02"]
-          
+
           for each objective in objectives {
             // Update student's cambridge_objectives
             updateCambridgeObjective(student, objective, score, date, `PD${pdNumber}.${attempt}`);
-            
+
             // Check if student has active mission with this objective
             const missions = findActiveMissions(student.id, objective);
             for each mission in missions {
               updateMissionObjective(mission, objective, score, date, attempt);
-              
+
               // Check if mission complete
               if (allObjectivesAssessed(mission)) {
                 completeMission(mission.id);
@@ -800,7 +826,9 @@ function processExcelFile(excelData) {
 ## 9. Open Questions & Decisions Needed
 
 ### 🔴 **CRITICAL - Excel PD Structure**
+
 **Decision Required:** Which Excel structure for PD assessments?
+
 - Option B (Separate PD sheets) - Recommended
 - Option D (Single log sheet) - Most flexible
 
@@ -831,6 +859,7 @@ function processExcelFile(excelData) {
 ## 10. Success Metrics
 
 After implementation, system should:
+
 - ✅ Automatically identify students needing intervention
 - ✅ Allow easy creation of targeted missions
 - ✅ Support bulk mission creation (save time!)
@@ -844,17 +873,17 @@ After implementation, system should:
 
 ## 11. Timeline Estimate
 
-| Phase | Hours | Dependencies |
-|-------|-------|--------------|
-| Phase 1: Data Structure | 2-3 | None |
-| Phase 2: Mission Types | 1-2 | Phase 1 |
-| Phase 3: Mission Creator UI | 8-10 | Phase 1, 2 |
-| Phase 4: My Missions View | 6-8 | Phase 2 |
-| Phase 5: PD Import Logic | 6-8 | Phase 1, Excel decision |
-| Phase 6: KD Enhancement | 3-4 | Phase 1 |
-| Phase 7: PD Management UI | 3-4 | Phase 1 |
-| Phase 8: Testing | 4-6 | All |
-| **TOTAL** | **34-45 hours** | |
+| Phase                       | Hours           | Dependencies            |
+| --------------------------- | --------------- | ----------------------- |
+| Phase 1: Data Structure     | 2-3             | None                    |
+| Phase 2: Mission Types      | 1-2             | Phase 1                 |
+| Phase 3: Mission Creator UI | 8-10            | Phase 1, 2              |
+| Phase 4: My Missions View   | 6-8             | Phase 2                 |
+| Phase 5: PD Import Logic    | 6-8             | Phase 1, Excel decision |
+| Phase 6: KD Enhancement     | 3-4             | Phase 1                 |
+| Phase 7: PD Management UI   | 3-4             | Phase 1                 |
+| Phase 8: Testing            | 4-6             | All                     |
+| **TOTAL**                   | **34-45 hours** |                         |
 
 ---
 
@@ -871,4 +900,3 @@ After implementation, system should:
 **Status:** Ready to begin implementation
 **Last Updated:** November 9, 2025
 **Version:** 1.0
-

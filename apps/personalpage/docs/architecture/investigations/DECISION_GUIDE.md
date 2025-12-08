@@ -12,6 +12,7 @@ This guide provides context and pros/cons for the 3 decisions identified in the 
 ### Context
 
 **Current Situation:**
+
 - **2 IdBuilders are deterministic**: `CoefficientIdBuilder` and `CoefficientsIdBuilder` generate IDs based solely on settings (no timestamp)
 - **8 IdBuilders use `Date.now()`**: Append `t:${Date.now()}` to ensure uniqueness
 - **Test IDs are used for**:
@@ -21,11 +22,13 @@ This guide provides context and pros/cons for the 3 decisions identified in the 
 
 **The Problem:**
 When a test ID includes a timestamp, the same test settings generate different IDs on each run. This breaks:
+
 - Matching with historical test results
 - Deduplication (same test appears as different tests)
 - Statistics tracking (can't find previous results)
 
 **Example:**
+
 ```typescript
 // TermsIdBuilder with timestamp (current)
 // Run 1: "terms_comb:mult_count:3_t:1706389200000"
@@ -45,6 +48,7 @@ When a test ID includes a timestamp, the same test settings generate different I
 **Approach:** Remove `Date.now()` from all IdBuilders, make IDs based solely on settings (like `CoefficientIdBuilder`)
 
 **Pros:**
+
 - ✅ **Reproducible** - Same settings = same ID every time
 - ✅ **Enables matching** - Can find previous test results by ID
 - ✅ **Enables deduplication** - Duplicate tests are properly identified
@@ -53,13 +57,15 @@ When a test ID includes a timestamp, the same test settings generate different I
 - ✅ **No external dependencies** - Pure function based on settings
 
 **Cons:**
+
 - ⚠️ **Potential collisions** - If two tests have identical settings, they get the same ID
-  - *Mitigation*: This is actually desired behavior (same test = same ID)
-  - *If truly different tests need different IDs*: Add a category or test name to the ID
+  - _Mitigation_: This is actually desired behavior (same test = same ID)
+  - _If truly different tests need different IDs_: Add a category or test name to the ID
 - ⚠️ **No chronological info** - Can't tell when test was created from ID
-  - *Mitigation*: Timestamps can be stored separately in test metadata
+  - _Mitigation_: Timestamps can be stored separately in test metadata
 
 **Implementation:**
+
 - Remove `idParts.push(\`t:${Date.now()}\`)` from 8 IdBuilder classes
 - Ensure all relevant settings are included in ID generation
 - Test that identical settings produce identical IDs
@@ -73,11 +79,13 @@ When a test ID includes a timestamp, the same test settings generate different I
 **Approach:** Keep `Date.now()` in all IdBuilders that currently use it
 
 **Pros:**
+
 - ✅ **Guaranteed uniqueness** - Even identical settings get different IDs
 - ✅ **Chronological info** - Can extract creation time from ID
 - ✅ **No collision risk** - Even if called in same millisecond, very unlikely
 
 **Cons:**
+
 - ❌ **Breaks matching** - Can't match with previous test results
 - ❌ **Breaks deduplication** - Same test appears as different tests
 - ❌ **Inconsistent** - Some builders deterministic, others not
@@ -92,11 +100,13 @@ When a test ID includes a timestamp, the same test settings generate different I
 **Approach:** Replace `Date.now()` with UUID v4 or nanoid
 
 **Pros:**
+
 - ✅ **Better uniqueness** - Collision probability is astronomically low
 - ✅ **No timestamp dependency** - Works in distributed systems
 - ✅ **Standard approach** - Common pattern for unique IDs
 
 **Cons:**
+
 - ❌ **Still breaks matching** - Same test gets different ID each time
 - ❌ **Not human-readable** - IDs like `550e8400-e29b-41d4-a716-446655440000`
 - ❌ **External dependency** - Need to add `uuid` or `nanoid` package
@@ -109,6 +119,7 @@ When a test ID includes a timestamp, the same test settings generate different I
 ### Recommendation
 
 **Choose Option A (Deterministic IDs)** because:
+
 1. Test IDs are used for matching with historical results
 2. Deduplication relies on consistent IDs
 3. You already have a working pattern (`CoefficientIdBuilder`)
@@ -123,6 +134,7 @@ When a test ID includes a timestamp, the same test settings generate different I
 ### Context
 
 **Current Situation:**
+
 - Task mentions: "Investigate TypeScript errors from `langgraphjs` to disable `"skipErrorChecking": true`"
 - **Problem:** `skipErrorChecking` is not a standard TypeScript compiler option
 - Found: `langgraphjs` is excluded in `tsconfig.json` (line 38)
@@ -142,16 +154,19 @@ When a test ID includes a timestamp, the same test settings generate different I
 **Approach:** Ask what the actual goal is
 
 **Questions to answer:**
+
 - Do you want to remove `as any` from `graph.ts`? (See Type Safety task)
 - Do you want to fix LangGraph type errors? (May need dependency update)
 - Do you want to include langgraphjs in TypeScript compilation? (May cause errors)
 - Is there a specific error you're seeing?
 
 **Pros:**
+
 - ✅ **Clear direction** - Know exactly what to fix
 - ✅ **Avoid duplicate work** - Don't duplicate Type Safety task
 
 **Cons:**
+
 - ⚠️ **Requires input** - Need clarification from team
 
 **When to choose:** When the requirement is unclear (current situation).
@@ -163,11 +178,13 @@ When a test ID includes a timestamp, the same test settings generate different I
 **Approach:** Fix type definitions in `graph.ts` to remove `as any`
 
 **Pros:**
+
 - ✅ **Better type safety** - Catch errors at compile time
 - ✅ **Better IDE support** - Autocomplete and type checking
 - ✅ **Already planned** - Covered in Type Safety task group (line 674)
 
 **Cons:**
+
 - ⚠️ **May be difficult** - LangGraph API may have complex types
 - ⚠️ **May require workarounds** - Type system limitations
 
@@ -180,10 +197,12 @@ When a test ID includes a timestamp, the same test settings generate different I
 **Approach:** Remove `"langgraphjs"` from `tsconfig.json` exclude list
 
 **Pros:**
+
 - ✅ **Type check dependencies** - Catch errors in node_modules
 - ✅ **Standard practice** - Most projects type-check dependencies
 
 **Cons:**
+
 - ❌ **May cause errors** - LangGraph may have type errors
 - ❌ **Slower compilation** - Type-checking node_modules is slow
 - ❌ **May not be fixable** - Errors may be in library code
@@ -197,6 +216,7 @@ When a test ID includes a timestamp, the same test settings generate different I
 **Choose Option A (Clarify)** first, then likely **Option B (Remove `as any`)**.
 
 The mention of `skipErrorChecking` suggests this might be:
+
 - A misunderstanding (option doesn't exist)
 - A reference to removing `as any` (Type Safety task)
 - A custom configuration that doesn't exist
@@ -210,6 +230,7 @@ The mention of `skipErrorChecking` suggests this might be:
 ### Context
 
 **Current Situation:**
+
 - 5 feature flags are disabled
 - 2 have complete implementations (exercisesGenerator, examGenerator)
 - 3 need decisions (myTasks, fieldCompletion, ittMap)
@@ -227,10 +248,12 @@ The mention of `skipErrorChecking` suggests this might be:
 **Approach:** Remove `myTasks` flag and navigation link
 
 **Pros:**
+
 - ✅ **Cleaner codebase** - Remove unused code
 - ✅ **Less confusion** - No broken links
 
 **Cons:**
+
 - ❌ **Lose feature** - If you plan to build it later, need to recreate
 
 **When to choose:** If the feature is abandoned or not planned.
@@ -242,10 +265,12 @@ The mention of `skipErrorChecking` suggests this might be:
 **Approach:** Create the page and keep flag disabled until ready
 
 **Pros:**
+
 - ✅ **Complete implementation** - Feature is ready when enabled
 - ✅ **Consistent pattern** - Matches exercisesGenerator/examGenerator
 
 **Cons:**
+
 - ⚠️ **Requires development** - Need to build the feature
 
 **When to choose:** If the feature is planned but not yet ready.
@@ -257,6 +282,7 @@ The mention of `skipErrorChecking` suggests this might be:
 **Status:** Used in components, flag is disabled
 
 **Locations:**
+
 - `src/features/modules/edtech/unitPlanGenerator/components/ui/FieldCompletionIndicator.tsx`
 - `src/features/modules/edtech/unitPlanGenerator/components/shared/FormField.tsx`
 - `src/features/modules/edtech/unitPlanGenerator/components/ui/ProgressBar.tsx`
@@ -269,10 +295,12 @@ The mention of `skipErrorChecking` suggests this might be:
 **Approach:** Set `fieldCompletion: true` in `features.ts`
 
 **Pros:**
+
 - ✅ **Feature is ready** - Components already implemented
 - ✅ **Users get feature** - Field completion UI becomes available
 
 **Cons:**
+
 - ⚠️ **May have bugs** - If disabled for a reason, enabling may expose issues
 
 **When to choose:** If the feature is complete and tested.
@@ -284,10 +312,12 @@ The mention of `skipErrorChecking` suggests this might be:
 **Approach:** Remove flag, always show field completion UI
 
 **Pros:**
+
 - ✅ **Simpler code** - No conditional logic
 - ✅ **Always available** - Feature is always on
 
 **Cons:**
+
 - ❌ **Can't disable** - If issues arise, can't easily turn off
 
 **When to choose:** If the feature is stable and always wanted.
@@ -299,9 +329,11 @@ The mention of `skipErrorChecking` suggests this might be:
 **Approach:** Keep flag disabled, remove components if not needed
 
 **Pros:**
+
 - ✅ **No changes** - Status quo
 
 **Cons:**
+
 - ❌ **Dead code** - Components exist but unused
 - ❌ **Confusing** - Why is code there if feature is off?
 
@@ -322,10 +354,12 @@ The mention of `skipErrorChecking` suggests this might be:
 **Approach:** Remove `ittMap` flag and documentation reference
 
 **Pros:**
+
 - ✅ **Cleaner codebase** - Remove unused code
 - ✅ **Accurate docs** - Documentation matches reality
 
 **Cons:**
+
 - ❌ **Lose feature** - If you plan to build it later, need to recreate
 
 **When to choose:** If the feature is abandoned or not planned.
@@ -337,10 +371,12 @@ The mention of `skipErrorChecking` suggests this might be:
 **Approach:** Create the page and keep flag disabled until ready
 
 **Pros:**
+
 - ✅ **Complete implementation** - Feature is ready when enabled
 - ✅ **Consistent pattern** - Matches exercisesGenerator/examGenerator
 
 **Cons:**
+
 - ⚠️ **Requires development** - Need to build the feature
 
 **When to choose:** If the feature is planned but not yet ready.
@@ -350,14 +386,17 @@ The mention of `skipErrorChecking` suggests this might be:
 ### Recommendations
 
 **For `myTasks`:**
+
 - **If abandoned:** Remove flag and navigation link (Option A)
 - **If planned:** Create page component (Option B)
 
 **For `fieldCompletion`:**
+
 - **If complete:** Enable flag (Option A) or remove flag entirely (Option B)
 - **If in development:** Keep disabled, document status (Option C)
 
 **For `ittMap`:**
+
 - **If abandoned:** Remove flag and doc reference (Option A)
 - **If planned:** Create page component (Option B)
 
@@ -367,11 +406,11 @@ The mention of `skipErrorChecking` suggests this might be:
 
 ## Summary
 
-| Decision | Recommended Option | Why |
-|----------|-------------------|-----|
-| **ID Generation** | Option A: Deterministic IDs | Enables matching with historical results, consistent with existing pattern |
-| **langgraphjs** | Option A: Clarify requirement | Requirement unclear, may be duplicate of Type Safety task |
-| **Feature Flags** | Varies by feature | Depends on whether features are abandoned, planned, or complete |
+| Decision          | Recommended Option            | Why                                                                        |
+| ----------------- | ----------------------------- | -------------------------------------------------------------------------- |
+| **ID Generation** | Option A: Deterministic IDs   | Enables matching with historical results, consistent with existing pattern |
+| **langgraphjs**   | Option A: Clarify requirement | Requirement unclear, may be duplicate of Type Safety task                  |
+| **Feature Flags** | Varies by feature             | Depends on whether features are abandoned, planned, or complete            |
 
 ---
 
@@ -380,4 +419,3 @@ The mention of `skipErrorChecking` suggests this might be:
 1. **ID Generation:** Decide on deterministic vs. timestamps → Implement chosen approach
 2. **langgraphjs:** Clarify requirement → Fix accordingly
 3. **Feature Flags:** Make decision for each → Implement (remove, create, or enable)
-

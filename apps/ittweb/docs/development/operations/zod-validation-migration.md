@@ -21,18 +21,18 @@ Routes used inline validation logic with custom validators:
 
 ```typescript
 validateBody: (body: unknown) => {
-  if (body && typeof body === 'object' && body !== null) {
-    const requiredError = validateRequiredFields(body, ['title', 'content', 'slug', 'date']);
+  if (body && typeof body === "object" && body !== null) {
+    const requiredError = validateRequiredFields(body, ["title", "content", "slug", "date"]);
     if (requiredError) return requiredError;
     const bodyObj = body as { title?: unknown; slug?: unknown };
-    const titleResult = validateString(bodyObj.title, 'title', 1);
-    if (typeof titleResult === 'string' && titleResult.startsWith('title must be')) {
+    const titleResult = validateString(bodyObj.title, "title", 1);
+    if (typeof titleResult === "string" && titleResult.startsWith("title must be")) {
       return titleResult;
     }
     // ... more manual validation
   }
   return true;
-}
+};
 ```
 
 ### After (Zod Validation)
@@ -53,16 +53,20 @@ validateBody: zodValidator(CreatePostSchema),
 Create a Zod schema in `src/features/infrastructure/api/schemas.ts`:
 
 ```typescript
-import { z } from 'zod';
+import { z } from "zod";
 
 export const CreateGameSchema = z.object({
-  gameId: z.number().int().positive('gameId must be a positive integer'),
-  datetime: z.string().datetime('datetime must be a valid ISO 8601 datetime string'),
-  players: z.array(z.object({
-    name: z.string().min(1),
-    flag: z.enum(['winner', 'loser', 'drawer']),
-    pid: z.number().int(),
-  })).min(2, 'At least 2 players are required'),
+  gameId: z.number().int().positive("gameId must be a positive integer"),
+  datetime: z.string().datetime("datetime must be a valid ISO 8601 datetime string"),
+  players: z
+    .array(
+      z.object({
+        name: z.string().min(1),
+        flag: z.enum(["winner", "loser", "drawer"]),
+        pid: z.number().int(),
+      })
+    )
+    .min(2, "At least 2 players are required"),
   category: z.string().optional(),
 });
 ```
@@ -72,8 +76,8 @@ export const CreateGameSchema = z.object({
 Import and use `zodValidator` with your schema:
 
 ```typescript
-import { zodValidator } from '@/features/infrastructure/api/zodValidation';
-import { CreateGameSchema } from '@/features/infrastructure/api/schemas';
+import { zodValidator } from "@/features/infrastructure/api/zodValidation";
+import { CreateGameSchema } from "@/features/infrastructure/api/schemas";
 
 export default createPostHandler(
   async (req, res, context) => {
@@ -92,8 +96,8 @@ export default createPostHandler(
 For better type safety, you can use `validateZodBody` to get typed data:
 
 ```typescript
-import { validateZodBody } from '@/features/infrastructure/api/zodValidation';
-import { CreateGameSchema } from '@/features/infrastructure/api/schemas';
+import { validateZodBody } from "@/features/infrastructure/api/zodValidation";
+import { CreateGameSchema } from "@/features/infrastructure/api/schemas";
 
 export default createPostHandler(
   async (req, res, context) => {
@@ -102,7 +106,7 @@ export default createPostHandler(
       // This shouldn't happen if validateBody is set, but useful for manual validation
       return res.status(400).json({ error: result.error });
     }
-    
+
     // result.data is fully typed!
     const gameData = result.data;
     // ... handler logic
@@ -132,13 +136,13 @@ export default createPostHandler(
       if (body && typeof body === 'object' && body !== null) {
         const requiredError = validateRequiredFields(body, ['title', 'contentType', 'date']);
         if (requiredError) return requiredError;
-        
+
         const bodyObj = body as { contentType?: unknown; title?: unknown };
         const contentTypeResult = validateEnum(bodyObj.contentType, 'contentType', ['post', 'memory']);
         if (contentTypeResult === null || ...) {
           return contentTypeResult || 'contentType must be a string';
         }
-        
+
         const titleResult = validateString(bodyObj.title, 'title', 1);
         if (typeof titleResult === 'string' && titleResult.startsWith('title must be')) {
           return titleResult;
@@ -156,11 +160,11 @@ export default createPostHandler(
 
 ```typescript
 export const CreateEntrySchema = z.object({
-  title: z.string().min(1, 'title must be a non-empty string'),
-  contentType: z.enum(['post', 'memory'], {
+  title: z.string().min(1, "title must be a non-empty string"),
+  contentType: z.enum(["post", "memory"], {
     errorMap: () => ({ message: 'contentType must be either "post" or "memory"' }),
   }),
-  date: z.string().datetime('date must be a valid ISO 8601 datetime string'),
+  date: z.string().datetime("date must be a valid ISO 8601 datetime string"),
   // ... other fields
 });
 ```
@@ -168,8 +172,8 @@ export const CreateEntrySchema = z.object({
 2. **Update route:**
 
 ```typescript
-import { zodValidator } from '@/features/infrastructure/api/zodValidation';
-import { CreateEntrySchema } from '@/features/infrastructure/api/schemas';
+import { zodValidator } from "@/features/infrastructure/api/zodValidation";
+import { CreateEntrySchema } from "@/features/infrastructure/api/schemas";
 
 export default createPostHandler(
   async (req, res, context) => {
@@ -190,10 +194,10 @@ export default createPostHandler(
 export default createPostHandler(
   async (req, res, context) => {
     const body = req.body as { gameId?: number; datetime?: string };
-    
+
     // Manual validation in handler
     if (!body.gameId || !body.datetime) {
-      throw new Error('Missing required fields: gameId and datetime are required');
+      throw new Error("Missing required fields: gameId and datetime are required");
     }
     // ... handler logic
   },
@@ -218,8 +222,8 @@ export const CreateGameSchema = z.object({
 2. **Update route:**
 
 ```typescript
-import { zodValidator } from '@/features/infrastructure/api/zodValidation';
-import { CreateGameSchema } from '@/features/infrastructure/api/schemas';
+import { zodValidator } from "@/features/infrastructure/api/zodValidation";
+import { CreateGameSchema } from "@/features/infrastructure/api/schemas";
 
 export default createPostHandler(
   async (req, res, context) => {
@@ -239,9 +243,9 @@ export default createPostHandler(
 
 ```typescript
 z.object({
-  required: z.string(),              // Required field
-  optional: z.string().optional(),   // Optional field
-  nullable: z.string().nullable(),    // Can be null
+  required: z.string(), // Required field
+  optional: z.string().optional(), // Optional field
+  nullable: z.string().nullable(), // Can be null
   optionalNullable: z.string().nullable().optional(), // Can be null or undefined
 });
 ```
@@ -249,27 +253,27 @@ z.object({
 ### String Validation
 
 ```typescript
-z.string().min(1)                    // Non-empty string
-z.string().min(1).max(100)          // String with length constraints
-z.string().email()                   // Valid email
-z.string().url()                     // Valid URL
-z.string().datetime()                // ISO 8601 datetime string
-z.string().uuid()                    // UUID string
+z.string().min(1); // Non-empty string
+z.string().min(1).max(100); // String with length constraints
+z.string().email(); // Valid email
+z.string().url(); // Valid URL
+z.string().datetime(); // ISO 8601 datetime string
+z.string().uuid(); // UUID string
 ```
 
 ### Number Validation
 
 ```typescript
-z.number().int()                     // Integer
-z.number().positive()                 // Positive number
-z.number().min(0).max(100)           // Number in range
+z.number().int(); // Integer
+z.number().positive(); // Positive number
+z.number().min(0).max(100); // Number in range
 ```
 
 ### Enum Validation
 
 ```typescript
-z.enum(['option1', 'option2'])      // String enum
-z.nativeEnum(MyEnum)                 // TypeScript enum
+z.enum(["option1", "option2"]); // String enum
+z.nativeEnum(MyEnum); // TypeScript enum
 ```
 
 ### Array Validation
@@ -284,17 +288,14 @@ z.array(z.object({ ... }))          // Array of objects
 ### Union Types
 
 ```typescript
-z.union([z.string(), z.number()])    // String or number
-z.string().or(z.literal(''))         // String or empty string
+z.union([z.string(), z.number()]); // String or number
+z.string().or(z.literal("")); // String or empty string
 ```
 
 ### Custom Validation
 
 ```typescript
-z.string().refine(
-  (val) => val.length > 5,
-  { message: 'Must be longer than 5 characters' }
-)
+z.string().refine((val) => val.length > 5, { message: "Must be longer than 5 characters" });
 ```
 
 ## Available Schemas
@@ -349,4 +350,3 @@ The following routes may need validation depending on their requirements:
 - Other routes that accept POST/PUT/PATCH requests
 
 Note: Routes that only handle GET requests typically don't need body validation.
-

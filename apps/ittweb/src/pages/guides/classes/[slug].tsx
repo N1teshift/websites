@@ -1,21 +1,36 @@
-import { GetStaticPaths, GetStaticProps } from 'next';
-import { getStaticPropsWithTranslations } from '@websites/infrastructure/i18n/getStaticProps';
-import { ErrorBoundary, Section } from '@/features/infrastructure/components';
-import Link from 'next/link';
-import { BASE_TROLL_CLASS_SLUGS, getClassBySlug, TrollClassData } from '@/features/modules/content/guides/data/units/classes';
-import { getSubclassesByParentSlug, getSupersByParentSlug } from '@/features/modules/content/guides/data/units/derivedClasses';
-import { getAbilitiesByClass, ABILITY_CATEGORIES, AbilityData } from '@/features/modules/content/guides/data/abilities';
-import ClassHeader from '@/features/modules/content/guides/components/ClassHeader';
-import StatsCard from '@/features/modules/content/guides/components/StatsCard';
-import GuideCard from '@/features/modules/content/guides/components/GuideCard';
-import GuideIcon from '@/features/modules/content/guides/components/GuideIcon';
-import { MOVESPEED_PER_LEVEL, getMoveSpeedOffset, ATTR_START_MULTIPLIER } from '@/features/modules/content/guides/config/balance';
+import { GetStaticPaths, GetStaticProps } from "next";
+import { getStaticPropsWithTranslations } from "@websites/infrastructure/i18n/getStaticProps";
+import { ErrorBoundary, Section } from "@/features/infrastructure/components";
+import Link from "next/link";
+import {
+  BASE_TROLL_CLASS_SLUGS,
+  getClassBySlug,
+  TrollClassData,
+} from "@/features/modules/content/guides/data/units/classes";
+import {
+  getSubclassesByParentSlug,
+  getSupersByParentSlug,
+} from "@/features/modules/content/guides/data/units/derivedClasses";
+import {
+  getAbilitiesByClass,
+  ABILITY_CATEGORIES,
+  AbilityData,
+} from "@/features/modules/content/guides/data/abilities";
+import ClassHeader from "@/features/modules/content/guides/components/ClassHeader";
+import StatsCard from "@/features/modules/content/guides/components/StatsCard";
+import GuideCard from "@/features/modules/content/guides/components/GuideCard";
+import GuideIcon from "@/features/modules/content/guides/components/GuideIcon";
+import {
+  MOVESPEED_PER_LEVEL,
+  getMoveSpeedOffset,
+  ATTR_START_MULTIPLIER,
+} from "@/features/modules/content/guides/config/balance";
 
 type Props = { cls: TrollClassData };
 
 const pageNamespaces = ["common"];
 export const getStaticProps: GetStaticProps<Props> = async ({ params, locale }) => {
-  const slug = String(params?.slug || '');
+  const slug = String(params?.slug || "");
   const cls = getClassBySlug(slug);
   if (!cls) {
     return { notFound: true };
@@ -31,7 +46,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params, locale }) 
 
 export const getStaticPaths: GetStaticPaths = async () => {
   if (!BASE_TROLL_CLASS_SLUGS || BASE_TROLL_CLASS_SLUGS.length === 0) {
-    console.error('BASE_TROLL_CLASS_SLUGS is undefined or empty');
+    console.error("BASE_TROLL_CLASS_SLUGS is undefined or empty");
     return {
       paths: [],
       fallback: false,
@@ -46,36 +61,35 @@ export const getStaticPaths: GetStaticPaths = async () => {
 function AbilityCard({ ability }: { ability: AbilityData }) {
   const primaryBadges = [
     ability.manaCost !== undefined
-      ? { label: `Mana: ${ability.manaCost}`, variant: 'blue' as const }
+      ? { label: `Mana: ${ability.manaCost}`, variant: "blue" as const }
       : null,
     ability.cooldown !== undefined
-      ? { label: `Cooldown: ${ability.cooldown}s`, variant: 'purple' as const }
+      ? { label: `Cooldown: ${ability.cooldown}s`, variant: "purple" as const }
       : null,
     ability.range !== undefined
-      ? { label: `Range: ${ability.range}`, variant: 'green' as const }
+      ? { label: `Range: ${ability.range}`, variant: "green" as const }
       : null,
     ability.areaOfEffect !== undefined
-      ? { label: `AOE: ${ability.areaOfEffect}`, variant: 'green' as const }
+      ? { label: `AOE: ${ability.areaOfEffect}`, variant: "green" as const }
       : null,
     ability.maxTargets !== undefined
-      ? { label: `Targets: ${ability.maxTargets}`, variant: 'purple' as const }
+      ? { label: `Targets: ${ability.maxTargets}`, variant: "purple" as const }
       : null,
     ability.duration !== undefined
-      ? { label: `Duration: ${ability.duration}s`, variant: 'amber' as const }
+      ? { label: `Duration: ${ability.duration}s`, variant: "amber" as const }
       : null,
-    ability.damage
-      ? { label: `Damage: ${ability.damage}`, variant: 'red' as const }
-      : null,
-  ].filter(Boolean) as { label: string; variant: 'blue' | 'purple' | 'green' | 'amber' | 'red' }[];
+    ability.damage ? { label: `Damage: ${ability.damage}`, variant: "red" as const } : null,
+  ].filter(Boolean) as { label: string; variant: "blue" | "purple" | "green" | "amber" | "red" }[];
 
   const secondaryBadges = [
-    ability.hotkey
-      ? { label: `[${ability.hotkey}]`, variant: 'amber' as const }
-      : null,
+    ability.hotkey ? { label: `[${ability.hotkey}]`, variant: "amber" as const } : null,
     ability.category
-      ? { label: ABILITY_CATEGORIES[ability.category] || ability.category, variant: 'gray' as const }
+      ? {
+          label: ABILITY_CATEGORIES[ability.category] || ability.category,
+          variant: "gray" as const,
+        }
       : null,
-  ].filter(Boolean) as { label: string; variant: 'amber' | 'gray' }[];
+  ].filter(Boolean) as { label: string; variant: "amber" | "gray" }[];
 
   const footer = ability.effects && ability.effects.length > 0 && (
     <div className="text-xs">
@@ -88,13 +102,7 @@ function AbilityCard({ ability }: { ability: AbilityData }) {
     </div>
   );
 
-  const icon = (
-    <GuideIcon 
-      category="abilities" 
-      name={ability.name} 
-      size={48}
-    />
-  );
+  const icon = <GuideIcon category="abilities" name={ability.name} size={48} />;
 
   return (
     <GuideCard
@@ -113,12 +121,14 @@ export default function TrollClassDetail({ cls }: Props) {
   const subs = getSubclassesByParentSlug(cls.slug);
   const supers = getSupersByParentSlug(cls.slug);
   const abilities = getAbilitiesByClass(cls.slug);
-  const msOffset = getMoveSpeedOffset('base');
+  const msOffset = getMoveSpeedOffset("base");
   return (
     <ErrorBoundary>
-    <div className="min-h-[calc(100vh-8rem)] px-6 py-10 max-w-4xl mx-auto">
+      <div className="min-h-[calc(100vh-8rem)] px-6 py-10 max-w-4xl mx-auto">
         <div className="mb-6">
-          <Link href="/guides/troll-classes" className="link-amber">← Troll Classes Overview</Link>
+          <Link href="/guides/troll-classes" className="link-amber">
+            ← Troll Classes Overview
+          </Link>
         </div>
 
         <ClassHeader slug={cls.slug} name={cls.name} summary={cls.summary} iconSrc={cls.iconSrc} />
@@ -133,7 +143,11 @@ export default function TrollClassDetail({ cls }: Props) {
             ms: cls.baseMoveSpeed,
             atkSpd: cls.baseAttackSpeed,
           }}
-          growth={{ str: cls.growth.strength, agi: cls.growth.agility, int: cls.growth.intelligence }}
+          growth={{
+            str: cls.growth.strength,
+            agi: cls.growth.agility,
+            int: cls.growth.intelligence,
+          }}
           msOffset={msOffset}
           perLevelMsBonus={MOVESPEED_PER_LEVEL}
         />
@@ -145,7 +159,9 @@ export default function TrollClassDetail({ cls }: Props) {
               <ul className="text-gray-300 list-disc pl-5 space-y-1">
                 {subs.map((s) => (
                   <li key={s.slug}>
-                    <Link href={`/guides/subclasses/${s.slug}`} className="link-amber">{s.name}</Link>
+                    <Link href={`/guides/subclasses/${s.slug}`} className="link-amber">
+                      {s.name}
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -160,7 +176,9 @@ export default function TrollClassDetail({ cls }: Props) {
               {supers.length > 0 ? (
                 supers.map((s) => (
                   <li key={s.slug}>
-                    <Link href={`/guides/supers/${s.slug}`} className="link-amber">{s.name}</Link>
+                    <Link href={`/guides/supers/${s.slug}`} className="link-amber">
+                      {s.name}
+                    </Link>
                   </li>
                 ))
               ) : (
@@ -189,9 +207,7 @@ export default function TrollClassDetail({ cls }: Props) {
             </div>
           </Section>
         )}
-    </div>
+      </div>
     </ErrorBoundary>
   );
 }
-
-

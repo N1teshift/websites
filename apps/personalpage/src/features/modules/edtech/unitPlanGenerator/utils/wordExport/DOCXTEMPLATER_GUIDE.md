@@ -1,11 +1,13 @@
 # Docxtemplater Template Guide
 
 ## Overview
+
 Docxtemplater allows you to create Word document templates with placeholders that get replaced with actual data when exporting. This guide shows you how to create placeholders in your Word document.
 
 ## Basic Placeholders
 
 ### Simple Text Replacement
+
 Use curly braces `{}` to create simple text placeholders:
 
 ```
@@ -17,6 +19,7 @@ MYP Year: {mypYear}
 ```
 
 ### Available Basic Fields
+
 - `{schoolName}` - School name
 - `{unitTitle}` - Unit title
 - `{academicYear}` - Academic year
@@ -42,6 +45,7 @@ MYP Year: {mypYear}
 ## Advanced Placeholders
 
 ### Lists and Arrays
+
 For arrays like questions, use the loop syntax:
 
 ```
@@ -64,6 +68,7 @@ Debatable Questions:
 **Note**: Each question will automatically start on a new line with a bullet point.
 
 ### Complex Objects (Subunits)
+
 For subunits with multiple properties:
 
 ```
@@ -79,6 +84,7 @@ Formative Assessment: {formativeAssessment}
 ```
 
 ### Conditional Content
+
 Use conditional placeholders to show/hide content:
 
 ```
@@ -97,11 +103,13 @@ Contributing Teachers: {contributingTeachers}
 ## Creating Your Template
 
 ### Step 1: Create a Word Document
+
 1. Open Microsoft Word or any compatible word processor
 2. Create your document with the desired layout and formatting
 3. Add placeholders where you want dynamic content
 
 ### Step 2: Add Placeholders
+
 Insert placeholders using the syntax above. For example:
 
 ```
@@ -151,9 +159,11 @@ Future Planning: {reflectionFuturePlanning}
 ```
 
 ### Step 3: Save as .docx
+
 Save your document as a .docx file (not .doc).
 
 ### Step 4: Upload Template
+
 1. Go to the Data Management tab in your unit plan generator
 2. Click "Upload Template" and select your .docx file
 3. The template will be stored and available for export
@@ -161,6 +171,7 @@ Save your document as a .docx file (not .doc).
 ## Template Examples
 
 ### Simple Template
+
 ```
 UNIT PLAN TEMPLATE
 
@@ -175,6 +186,7 @@ Assessment: {summativeAssessment}
 ```
 
 ### Detailed Template
+
 ```
 MYP UNIT PLAN
 
@@ -264,12 +276,14 @@ Total Lessons: {lessonCount}
 ## Troubleshooting
 
 ### Common Issues
+
 1. **Placeholders not replaced**: Check spelling and case sensitivity
 2. **Formatting lost**: Ensure you're using .docx format, not .doc
 3. **Special characters**: Some special characters in placeholders may cause issues
 4. **Large files**: Very large templates may take longer to process
 
 ### Error Messages
+
 - "Template file is required": Upload a template first
 - "Selected template not found": Template may have been deleted, upload again
 - "Export failed": Check template syntax and data availability
@@ -277,6 +291,7 @@ Total Lessons: {lessonCount}
 ## Advanced Features
 
 ### Custom Functions
+
 You can extend Docxtemplater with custom functions for more complex logic:
 
 ```javascript
@@ -287,7 +302,9 @@ const formatDate = (date) => {
 ```
 
 ### Multiple Templates
+
 You can upload multiple templates and switch between them for different export formats or styles.
 
 ### Template Validation
+
 Consider adding validation to ensure all required fields are present in your template.

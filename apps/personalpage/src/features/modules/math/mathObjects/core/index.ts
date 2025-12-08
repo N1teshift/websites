@@ -10,12 +10,9 @@
  * This allows importing core functionalities from a single entry point.
  */
 
-export * from '../../shared/Orchestrator';
-export * from './generateObjectFactory';
-export * from './TermFormatter';
-export * from './CoefficientFormatter';
-export * from './OtherFormatters';
-export * from './CoefficientGenerator'; 
-
-
-
+export * from "../../shared/Orchestrator";
+export * from "./generateObjectFactory";
+export * from "./TermFormatter";
+export * from "./CoefficientFormatter";
+export * from "./OtherFormatters";
+export * from "./CoefficientGenerator";

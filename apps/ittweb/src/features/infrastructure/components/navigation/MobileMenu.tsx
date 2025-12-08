@@ -1,6 +1,6 @@
-import React from 'react';
-import Link from 'next/link';
-import { useSession } from 'next-auth/react';
+import React from "react";
+import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -14,12 +14,12 @@ interface MobileMenuProps {
  * Mobile navigation menu component.
  * Displays navigation links in a collapsible menu for mobile devices.
  */
-export function MobileMenu({ 
-  isOpen, 
-  onClose, 
-  guidesItems, 
-  communityItems, 
-  toolsItems 
+export function MobileMenu({
+  isOpen,
+  onClose,
+  guidesItems,
+  communityItems,
+  toolsItems,
 }: MobileMenuProps) {
   const { data: session, status } = useSession();
   const [guidesDropdownOpen, setGuidesDropdownOpen] = React.useState(false);
@@ -31,14 +31,14 @@ export function MobileMenu({
   return (
     <div className="md:hidden">
       <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-black/50 backdrop-blur-sm border-t border-amber-500/30">
-        <Link 
-          href="/" 
-          className="font-medieval-brand-hover block px-3 py-2 rounded-md text-lg" 
+        <Link
+          href="/"
+          className="font-medieval-brand-hover block px-3 py-2 rounded-md text-lg"
           onClick={onClose}
         >
           Home
         </Link>
-        
+
         {/* Guides Dropdown */}
         <div>
           <button
@@ -48,14 +48,19 @@ export function MobileMenu({
             aria-label="Guides menu"
           >
             Guides
-            <svg 
-              className={`w-4 h-4 transition-transform ${guidesDropdownOpen ? 'rotate-180' : ''}`} 
-              fill="none" 
-              stroke="currentColor" 
+            <svg
+              className={`w-4 h-4 transition-transform ${guidesDropdownOpen ? "rotate-180" : ""}`}
+              fill="none"
+              stroke="currentColor"
               viewBox="0 0 24 24"
               aria-hidden="true"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M19 9l-7 7-7-7"
+              />
             </svg>
           </button>
           {guidesDropdownOpen && (
@@ -87,14 +92,19 @@ export function MobileMenu({
             aria-label="Community menu"
           >
             Community
-            <svg 
-              className={`w-4 h-4 transition-transform ${communityDropdownOpen ? 'rotate-180' : ''}`} 
-              fill="none" 
-              stroke="currentColor" 
+            <svg
+              className={`w-4 h-4 transition-transform ${communityDropdownOpen ? "rotate-180" : ""}`}
+              fill="none"
+              stroke="currentColor"
               viewBox="0 0 24 24"
               aria-hidden="true"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M19 9l-7 7-7-7"
+              />
             </svg>
           </button>
           {communityDropdownOpen && (
@@ -126,14 +136,19 @@ export function MobileMenu({
             aria-label="Tools menu"
           >
             Tools
-            <svg 
-              className={`w-4 h-4 transition-transform ${toolsDropdownOpen ? 'rotate-180' : ''}`} 
-              fill="none" 
-              stroke="currentColor" 
+            <svg
+              className={`w-4 h-4 transition-transform ${toolsDropdownOpen ? "rotate-180" : ""}`}
+              fill="none"
+              stroke="currentColor"
               viewBox="0 0 24 24"
               aria-hidden="true"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M19 9l-7 7-7-7"
+              />
             </svg>
           </button>
           {toolsDropdownOpen && (
@@ -156,41 +171,39 @@ export function MobileMenu({
           )}
         </div>
 
-        <Link 
-          href="/development" 
-          className="font-medieval-brand-hover block px-3 py-2 rounded-md text-lg" 
+        <Link
+          href="/development"
+          className="font-medieval-brand-hover block px-3 py-2 rounded-md text-lg"
           onClick={onClose}
         >
           Development
         </Link>
-        <Link 
-          href="/download" 
-          className="font-medieval-brand-hover block px-3 py-2 rounded-md text-lg" 
+        <Link
+          href="/download"
+          className="font-medieval-brand-hover block px-3 py-2 rounded-md text-lg"
           onClick={onClose}
         >
           Download
         </Link>
-        
-        {status === 'authenticated' && (
-          <Link 
-            href="/settings" 
-            className="font-medieval-brand-hover block px-3 py-2 rounded-md text-lg flex items-center gap-2" 
+
+        {status === "authenticated" && (
+          <Link
+            href="/settings"
+            className="font-medieval-brand-hover block px-3 py-2 rounded-md text-lg flex items-center gap-2"
             onClick={onClose}
           >
             {session?.user?.image && (
               // eslint-disable-next-line @next/next/no-img-element
-              <img 
-                src={session.user.image} 
-                alt={session.user.name || 'User'} 
-                className="w-6 h-6 rounded-full" 
+              <img
+                src={session.user.image}
+                alt={session.user.name || "User"}
+                className="w-6 h-6 rounded-full"
               />
             )}
-            <span>{session?.user?.name || 'User'}</span>
+            <span>{session?.user?.name || "User"}</span>
           </Link>
         )}
       </div>
     </div>
   );
 }
-
-

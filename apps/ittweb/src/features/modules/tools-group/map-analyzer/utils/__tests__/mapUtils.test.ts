@@ -1,8 +1,8 @@
-import { normalizeJsonToSimpleMap } from '../mapUtils';
-import type { SimpleMapData } from '../../types/map';
+import { normalizeJsonToSimpleMap } from "../mapUtils";
+import type { SimpleMapData } from "../../types/map";
 
-describe('normalizeJsonToSimpleMap', () => {
-  it('parses optimized tile arrays into SimpleMapData', () => {
+describe("normalizeJsonToSimpleMap", () => {
+  it("parses optimized tile arrays into SimpleMapData", () => {
     const input = {
       meta: { w: 2, h: 2 },
       tiles: [
@@ -25,7 +25,7 @@ describe('normalizeJsonToSimpleMap', () => {
     });
   });
 
-  it('extracts data from raw translator JSON with flags and cliffs', () => {
+  it("extracts data from raw translator JSON with flags and cliffs", () => {
     const WATER_FLAG = 0x20000000;
     const RAMP = 0x00000002;
     const NO_WATER = 0x00000004;
@@ -63,9 +63,8 @@ describe('normalizeJsonToSimpleMap', () => {
     });
   });
 
-  it('validates input and throws for invalid or unsupported shapes', () => {
-    expect(() => normalizeJsonToSimpleMap(null)).toThrow('Invalid JSON');
-    expect(() => normalizeJsonToSimpleMap({})).toThrow('Unsupported map JSON format');
+  it("validates input and throws for invalid or unsupported shapes", () => {
+    expect(() => normalizeJsonToSimpleMap(null)).toThrow("Invalid JSON");
+    expect(() => normalizeJsonToSimpleMap({})).toThrow("Unsupported map JSON format");
   });
 });
-

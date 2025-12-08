@@ -16,6 +16,7 @@ After adding metadata recording capabilities to the Island Troll Tribes map and 
 ### Initial Diagnostic
 
 Created a diagnostic script (`scripts/diagnose-replays.mjs`) to test all parsing methods:
+
 - **Old method**: `extractITTMetadata()` - used by the website parser
 - **MMD method**: `readMMDData()` - w3mmd protocol parser
 - **Order method**: `decodeReplay()` - order-based encoding parser
@@ -26,11 +27,13 @@ Created a diagnostic script (`scripts/diagnose-replays.mjs`) to test all parsing
 **Replay: `Replay_2025_12_04_2333.w3g`**
 
 The MMD parser successfully extracted metadata with 3 players:
+
 - SlotIndex 0: "Scatman33_2333" - All stats present
-- SlotIndex 2: "Staycool_21990" - All stats present  
+- SlotIndex 2: "Staycool_21990" - All stats present
 - SlotIndex 3: "Bel_1873" - All stats present
 
 However, the replay file contains 6 players total:
+
 - Player 1: "Scatman33#2333" (matched correctly)
 - Player 2: "LampLight#31707" (incorrectly matched to SlotIndex 2)
 - Player 3: "Staycool#21990" (matched correctly)
@@ -60,6 +63,7 @@ const hasClass = schemaVersion >= 3;
 ### Issue 2: Player Matching Logic Bug (NOT FIXED)
 
 **Problem**: The player matching logic in `parseReplayFile()` is too loose and causes:
+
 - False matches (Player 2 matching SlotIndex 2 incorrectly)
 - Multiple players matching the same ITT player
 - Stats overwriting each other
@@ -67,20 +71,24 @@ const hasClass = schemaVersion >= 3;
 **Location**: `src/features/modules/game-management/lib/mechanics/replay/parser.ts` (lines 86-90)
 
 **Current Logic**:
+
 ```typescript
 const ittPlayer = ittMetadata?.players.find(
-  (p) => p.slotIndex === player.id ||
-    p.name.toLowerCase().replace(/[^a-z0-9]/g, '') ===
-    (player.name || '').toLowerCase().replace(/[^a-z0-9]/g, '')
+  (p) =>
+    p.slotIndex === player.id ||
+    p.name.toLowerCase().replace(/[^a-z0-9]/g, "") ===
+      (player.name || "").toLowerCase().replace(/[^a-z0-9]/g, "")
 );
 ```
 
 **Issues**:
+
 1. `find()` returns only the first match, so if multiple players match the same ITT player, only the first gets stats
 2. Normalized name matching is too loose and can cause false positives
 3. No tracking of which ITT players have already been matched
 
-**Recommended Fix**: 
+**Recommended Fix**:
+
 - Use a more strict matching priority (slotIndex → exact name → normalized name)
 - Track matched ITT players to prevent duplicates
 - Use `??` instead of `||` to handle zero values correctly
@@ -90,6 +98,7 @@ const ittPlayer = ittMetadata?.players.find(
 **Problem**: Players from defeated enemy tribes are not included in metadata.
 
 **Root Cause**: In `island-troll-tribes/wurst/systems/core/Tribe.wurst`:
+
 - When a tribe is defeated, `wasDefeated()` calls `makePlayersObservers()` (line 143)
 - This converts defeated players to observers
 - In `MatchMetadataEncoder.wurst` (line 127), the check `not member.isObserver()` excludes them
@@ -97,6 +106,7 @@ const ittPlayer = ittMetadata?.players.find(
 **Location**: `island-troll-tribes/wurst/systems/core/MatchMetadataEncoder.wurst`
 
 **Current Logic**:
+
 ```wurst
 for tribe in Tribe.getTribes()
     for member in tribe.getMembers()
@@ -106,6 +116,7 @@ for tribe in Tribe.getTribes()
 **Impact**: All players from defeated tribes are missing from metadata, even though they played the game.
 
 **Fix Needed**: The metadata encoder should include defeated players. Options:
+
 1. Track original players before they're made observers
 2. Remove the `not member.isObserver()` check and filter differently
 3. Include all players who were ever in a tribe, regardless of observer status
@@ -115,6 +126,7 @@ for tribe in Tribe.getTribes()
 ### What's Recorded Correctly
 
 The metadata recording system in the map correctly records:
+
 - All players who are in non-defeated tribes at game end
 - Complete stats for each player (damage, healing, kills, etc.)
 - Schema v3 format with class information
@@ -214,4 +226,3 @@ node ./scripts/replay-metadata-parser/dist/cli.js mmd Replay_2025_12_04_2333.w3g
 - `scripts/diagnose-replays.mjs` - Diagnostic tool
 - `scripts/compare-parsers.mjs` - Parser comparison tool
 - `island-troll-tribes/wurst/systems/core/MatchMetadataEncoder.wurst` - Metadata recording (defeated players bug)
-

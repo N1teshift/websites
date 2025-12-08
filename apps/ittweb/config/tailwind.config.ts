@@ -91,12 +91,3 @@ const tailwindConfig: Config = {
 } satisfies Config;
 
 export default tailwindConfig;
-
-
-
-
-
-
-
-
-

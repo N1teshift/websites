@@ -1,1 +1,1 @@
-export * from '@/features/modules/tools-group/tools/types';
+export * from "@/features/modules/tools-group/tools/types";

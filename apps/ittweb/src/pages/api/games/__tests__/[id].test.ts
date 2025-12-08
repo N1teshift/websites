@@ -1,5 +1,5 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-import handler from '../[id]';
+import type { NextApiRequest, NextApiResponse } from "next";
+import handler from "../[id]";
 
 // Mock dependencies
 const mockGetGameById = jest.fn();
@@ -11,21 +11,21 @@ const mockError = jest.fn();
 const mockWarn = jest.fn();
 const mockDebug = jest.fn();
 
-jest.mock('@/features/modules/game-management/games/lib/gameService', () => ({
+jest.mock("@/features/modules/game-management/games/lib/gameService", () => ({
   getGameById: (...args: unknown[]) => mockGetGameById(...args),
   updateGame: (...args: unknown[]) => mockUpdateGame(...args),
   deleteGame: (...args: unknown[]) => mockDeleteGame(...args),
 }));
 
-jest.mock('@/lib/api', () => {
-  const actual = jest.requireActual('@/lib/api');
+jest.mock("@/lib/api", () => {
+  const actual = jest.requireActual("@/lib/api");
   return {
     ...actual,
     checkResourceOwnership: (...args: unknown[]) => mockCheckResourceOwnership(...args),
   };
 });
 
-jest.mock('@websites/infrastructure/logging', () => ({
+jest.mock("@websites/infrastructure/logging", () => ({
   createComponentLogger: jest.fn(() => ({
     info: mockInfo,
     error: mockError,
@@ -35,21 +35,22 @@ jest.mock('@websites/infrastructure/logging', () => ({
 }));
 
 const mockGetServerSession = jest.fn();
-jest.mock('next-auth/next', () => ({
+jest.mock("next-auth/next", () => ({
   getServerSession: (...args: unknown[]) => mockGetServerSession(...args),
 }));
 
-jest.mock('@/pages/api/auth/[...nextauth]', () => ({
+jest.mock("@/pages/api/auth/[...nextauth]", () => ({
   authOptions: {},
 }));
 
-describe('GET /api/games/[id]', () => {
-  const createRequest = (id: string): NextApiRequest => ({
-    method: 'GET',
-    query: { id },
-    body: null,
-    url: `/api/games/${id}`,
-  } as unknown as NextApiRequest);
+describe("GET /api/games/[id]", () => {
+  const createRequest = (id: string): NextApiRequest =>
+    ({
+      method: "GET",
+      query: { id },
+      body: null,
+      url: `/api/games/${id}`,
+    }) as unknown as NextApiRequest;
 
   const createResponse = (): NextApiResponse => {
     const res = {} as NextApiResponse;
@@ -63,23 +64,23 @@ describe('GET /api/games/[id]', () => {
     jest.clearAllMocks();
   });
 
-  it('returns game by ID', async () => {
+  it("returns game by ID", async () => {
     // Arrange
     const game = {
-      id: 'game-123',
+      id: "game-123",
       gameId: 123,
-      gameState: 'completed',
+      gameState: "completed",
       datetime: new Date().toISOString(),
     };
     mockGetGameById.mockResolvedValue(game);
-    const req = createRequest('game-123');
+    const req = createRequest("game-123");
     const res = createResponse();
 
     // Act
     await handler(req, res);
 
     // Assert
-    expect(mockGetGameById).toHaveBeenCalledWith('game-123');
+    expect(mockGetGameById).toHaveBeenCalledWith("game-123");
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.json).toHaveBeenCalledWith({
       success: true,
@@ -87,32 +88,32 @@ describe('GET /api/games/[id]', () => {
     });
   });
 
-  it('returns 500 when game not found', async () => {
+  it("returns 500 when game not found", async () => {
     // Arrange
     mockGetGameById.mockResolvedValue(null);
-    const req = createRequest('non-existent');
+    const req = createRequest("non-existent");
     const res = createResponse();
 
     // Act
     await handler(req, res);
 
     // Assert
-    expect(mockGetGameById).toHaveBeenCalledWith('non-existent');
+    expect(mockGetGameById).toHaveBeenCalledWith("non-existent");
     expect(res.status).toHaveBeenCalledWith(500);
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         success: false,
-        error: expect.stringContaining('Game not found'),
+        error: expect.stringContaining("Game not found"),
       })
     );
   });
 
-  it('does not require authentication', async () => {
+  it("does not require authentication", async () => {
     // Arrange
     mockGetServerSession.mockResolvedValue(null);
-    const game = { id: 'game-123', gameId: 123 };
+    const game = { id: "game-123", gameId: 123 };
     mockGetGameById.mockResolvedValue(game);
-    const req = createRequest('game-123');
+    const req = createRequest("game-123");
     const res = createResponse();
 
     // Act
@@ -126,11 +127,11 @@ describe('GET /api/games/[id]', () => {
     });
   });
 
-  it('handles errors from getGameById', async () => {
+  it("handles errors from getGameById", async () => {
     // Arrange
-    const error = new Error('Database error');
+    const error = new Error("Database error");
     mockGetGameById.mockRejectedValue(error);
-    const req = createRequest('game-123');
+    const req = createRequest("game-123");
     const res = createResponse();
 
     // Act
@@ -141,23 +142,24 @@ describe('GET /api/games/[id]', () => {
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         success: false,
-        error: expect.stringContaining('Database error'),
+        error: expect.stringContaining("Database error"),
       })
     );
   });
 });
 
-describe('PUT /api/games/[id]', () => {
+describe("PUT /api/games/[id]", () => {
   const createRequest = (
     id: string,
     body: Record<string, unknown> = {},
     session: unknown = null
-  ): NextApiRequest => ({
-    method: 'PUT',
-    query: { id },
-    body,
-    url: `/api/games/${id}`,
-  } as unknown as NextApiRequest);
+  ): NextApiRequest =>
+    ({
+      method: "PUT",
+      query: { id },
+      body,
+      url: `/api/games/${id}`,
+    }) as unknown as NextApiRequest;
 
   const createResponse = (): NextApiResponse => {
     const res = {} as NextApiResponse;
@@ -168,16 +170,16 @@ describe('PUT /api/games/[id]', () => {
   };
 
   const mockSession = {
-    user: { name: 'Test User' },
-    discordId: 'discord123',
-    expires: '2024-12-31',
+    user: { name: "Test User" },
+    discordId: "discord123",
+    expires: "2024-12-31",
   };
 
   const mockGame = {
-    id: 'game-123',
+    id: "game-123",
     gameId: 123,
-    gameState: 'completed',
-    createdByDiscordId: 'discord123',
+    gameState: "completed",
+    createdByDiscordId: "discord123",
   };
 
   beforeEach(() => {
@@ -188,19 +190,19 @@ describe('PUT /api/games/[id]', () => {
     mockUpdateGame.mockResolvedValue(undefined);
   });
 
-  it('updates game successfully', async () => {
+  it("updates game successfully", async () => {
     // Arrange
-    const updates = { category: '1v1', map: 'New Map' };
-    const req = createRequest('game-123', updates);
+    const updates = { category: "1v1", map: "New Map" };
+    const req = createRequest("game-123", updates);
     const res = createResponse();
 
     // Act
     await handler(req, res);
 
     // Assert
-    expect(mockGetGameById).toHaveBeenCalledWith('game-123');
+    expect(mockGetGameById).toHaveBeenCalledWith("game-123");
     expect(mockCheckResourceOwnership).toHaveBeenCalled();
-    expect(mockUpdateGame).toHaveBeenCalledWith('game-123', updates);
+    expect(mockUpdateGame).toHaveBeenCalledWith("game-123", updates);
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.json).toHaveBeenCalledWith({
       success: true,
@@ -208,10 +210,10 @@ describe('PUT /api/games/[id]', () => {
     });
   });
 
-  it('requires authentication', async () => {
+  it("requires authentication", async () => {
     // Arrange
     mockGetServerSession.mockResolvedValue(null);
-    const req = createRequest('game-123', { category: '1v1' });
+    const req = createRequest("game-123", { category: "1v1" });
     const res = createResponse();
 
     // Act
@@ -222,19 +224,19 @@ describe('PUT /api/games/[id]', () => {
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         success: false,
-        error: expect.stringContaining('Authentication required'),
+        error: expect.stringContaining("Authentication required"),
       })
     );
     expect(mockUpdateGame).not.toHaveBeenCalled();
   });
 
-  it('requires discordId in session', async () => {
+  it("requires discordId in session", async () => {
     // Arrange
     mockGetServerSession.mockResolvedValue({
-      user: { name: 'Test User' },
+      user: { name: "Test User" },
       // No discordId
     });
-    const req = createRequest('game-123', { category: '1v1' });
+    const req = createRequest("game-123", { category: "1v1" });
     const res = createResponse();
 
     // Act
@@ -245,16 +247,16 @@ describe('PUT /api/games/[id]', () => {
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         success: false,
-        error: expect.stringContaining('Authentication required'),
+        error: expect.stringContaining("Authentication required"),
       })
     );
     expect(mockUpdateGame).not.toHaveBeenCalled();
   });
 
-  it('returns 500 when game not found', async () => {
+  it("returns 500 when game not found", async () => {
     // Arrange
     mockGetGameById.mockResolvedValue(null);
-    const req = createRequest('non-existent', { category: '1v1' });
+    const req = createRequest("non-existent", { category: "1v1" });
     const res = createResponse();
 
     // Act
@@ -265,16 +267,16 @@ describe('PUT /api/games/[id]', () => {
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         success: false,
-        error: expect.stringContaining('Game not found'),
+        error: expect.stringContaining("Game not found"),
       })
     );
     expect(mockUpdateGame).not.toHaveBeenCalled();
   });
 
-  it('requires resource ownership', async () => {
+  it("requires resource ownership", async () => {
     // Arrange
     mockCheckResourceOwnership.mockResolvedValue(false);
-    const req = createRequest('game-123', { category: '1v1' });
+    const req = createRequest("game-123", { category: "1v1" });
     const res = createResponse();
 
     // Act
@@ -286,54 +288,54 @@ describe('PUT /api/games/[id]', () => {
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         success: false,
-        error: expect.stringContaining('You do not have permission to edit this game'),
+        error: expect.stringContaining("You do not have permission to edit this game"),
       })
     );
     expect(mockUpdateGame).not.toHaveBeenCalled();
   });
 
-  it('allows update when user owns the resource', async () => {
+  it("allows update when user owns the resource", async () => {
     // Arrange
     mockCheckResourceOwnership.mockResolvedValue(true);
-    const updates = { category: '2v2' };
-    const req = createRequest('game-123', updates);
+    const updates = { category: "2v2" };
+    const req = createRequest("game-123", updates);
     const res = createResponse();
 
     // Act
     await handler(req, res);
 
     // Assert
-    expect(mockUpdateGame).toHaveBeenCalledWith('game-123', updates);
+    expect(mockUpdateGame).toHaveBeenCalledWith("game-123", updates);
     expect(res.status).toHaveBeenCalledWith(200);
   });
 
-  it('allows update when user is admin', async () => {
+  it("allows update when user is admin", async () => {
     // Arrange
     // Admin users should have access even if they don't own the resource
     const adminGame = {
-      id: 'game-456',
+      id: "game-456",
       gameId: 456,
-      createdByDiscordId: 'other-user',
+      createdByDiscordId: "other-user",
     };
     mockGetGameById.mockResolvedValue(adminGame);
     mockCheckResourceOwnership.mockResolvedValue(true); // Admin check passes
-    const updates = { category: '1v1' };
-    const req = createRequest('game-456', updates);
+    const updates = { category: "1v1" };
+    const req = createRequest("game-456", updates);
     const res = createResponse();
 
     // Act
     await handler(req, res);
 
     // Assert
-    expect(mockUpdateGame).toHaveBeenCalledWith('game-456', updates);
+    expect(mockUpdateGame).toHaveBeenCalledWith("game-456", updates);
     expect(res.status).toHaveBeenCalledWith(200);
   });
 
-  it('handles errors from updateGame', async () => {
+  it("handles errors from updateGame", async () => {
     // Arrange
-    const error = new Error('Update failed');
+    const error = new Error("Update failed");
     mockUpdateGame.mockRejectedValue(error);
-    const req = createRequest('game-123', { category: '1v1' });
+    const req = createRequest("game-123", { category: "1v1" });
     const res = createResponse();
 
     // Act
@@ -344,16 +346,16 @@ describe('PUT /api/games/[id]', () => {
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         success: false,
-        error: expect.stringContaining('Update failed'),
+        error: expect.stringContaining("Update failed"),
       })
     );
   });
 
-  it('handles errors from checkResourceOwnership', async () => {
+  it("handles errors from checkResourceOwnership", async () => {
     // Arrange
-    const error = new Error('Ownership check failed');
+    const error = new Error("Ownership check failed");
     mockCheckResourceOwnership.mockRejectedValue(error);
-    const req = createRequest('game-123', { category: '1v1' });
+    const req = createRequest("game-123", { category: "1v1" });
     const res = createResponse();
 
     // Act
@@ -364,16 +366,14 @@ describe('PUT /api/games/[id]', () => {
   });
 });
 
-describe('DELETE /api/games/[id]', () => {
-  const createRequest = (
-    id: string,
-    session: unknown = null
-  ): NextApiRequest => ({
-    method: 'DELETE',
-    query: { id },
-    body: null,
-    url: `/api/games/${id}`,
-  } as unknown as NextApiRequest);
+describe("DELETE /api/games/[id]", () => {
+  const createRequest = (id: string, session: unknown = null): NextApiRequest =>
+    ({
+      method: "DELETE",
+      query: { id },
+      body: null,
+      url: `/api/games/${id}`,
+    }) as unknown as NextApiRequest;
 
   const createResponse = (): NextApiResponse => {
     const res = {} as NextApiResponse;
@@ -384,16 +384,16 @@ describe('DELETE /api/games/[id]', () => {
   };
 
   const mockSession = {
-    user: { name: 'Test User' },
-    discordId: 'discord123',
-    expires: '2024-12-31',
+    user: { name: "Test User" },
+    discordId: "discord123",
+    expires: "2024-12-31",
   };
 
   const mockGame = {
-    id: 'game-123',
+    id: "game-123",
     gameId: 123,
-    gameState: 'completed',
-    createdByDiscordId: 'discord123',
+    gameState: "completed",
+    createdByDiscordId: "discord123",
   };
 
   beforeEach(() => {
@@ -404,18 +404,18 @@ describe('DELETE /api/games/[id]', () => {
     mockDeleteGame.mockResolvedValue(undefined);
   });
 
-  it('deletes game successfully', async () => {
+  it("deletes game successfully", async () => {
     // Arrange
-    const req = createRequest('game-123');
+    const req = createRequest("game-123");
     const res = createResponse();
 
     // Act
     await handler(req, res);
 
     // Assert
-    expect(mockGetGameById).toHaveBeenCalledWith('game-123');
+    expect(mockGetGameById).toHaveBeenCalledWith("game-123");
     expect(mockCheckResourceOwnership).toHaveBeenCalled();
-    expect(mockDeleteGame).toHaveBeenCalledWith('game-123');
+    expect(mockDeleteGame).toHaveBeenCalledWith("game-123");
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.json).toHaveBeenCalledWith({
       success: true,
@@ -423,10 +423,10 @@ describe('DELETE /api/games/[id]', () => {
     });
   });
 
-  it('requires authentication', async () => {
+  it("requires authentication", async () => {
     // Arrange
     mockGetServerSession.mockResolvedValue(null);
-    const req = createRequest('game-123');
+    const req = createRequest("game-123");
     const res = createResponse();
 
     // Act
@@ -437,19 +437,19 @@ describe('DELETE /api/games/[id]', () => {
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         success: false,
-        error: expect.stringContaining('Authentication required'),
+        error: expect.stringContaining("Authentication required"),
       })
     );
     expect(mockDeleteGame).not.toHaveBeenCalled();
   });
 
-  it('requires discordId in session', async () => {
+  it("requires discordId in session", async () => {
     // Arrange
     mockGetServerSession.mockResolvedValue({
-      user: { name: 'Test User' },
+      user: { name: "Test User" },
       // No discordId
     });
-    const req = createRequest('game-123');
+    const req = createRequest("game-123");
     const res = createResponse();
 
     // Act
@@ -460,16 +460,16 @@ describe('DELETE /api/games/[id]', () => {
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         success: false,
-        error: expect.stringContaining('Authentication required'),
+        error: expect.stringContaining("Authentication required"),
       })
     );
     expect(mockDeleteGame).not.toHaveBeenCalled();
   });
 
-  it('returns 500 when game not found', async () => {
+  it("returns 500 when game not found", async () => {
     // Arrange
     mockGetGameById.mockResolvedValue(null);
-    const req = createRequest('non-existent');
+    const req = createRequest("non-existent");
     const res = createResponse();
 
     // Act
@@ -480,16 +480,16 @@ describe('DELETE /api/games/[id]', () => {
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         success: false,
-        error: expect.stringContaining('Game not found'),
+        error: expect.stringContaining("Game not found"),
       })
     );
     expect(mockDeleteGame).not.toHaveBeenCalled();
   });
 
-  it('requires resource ownership', async () => {
+  it("requires resource ownership", async () => {
     // Arrange
     mockCheckResourceOwnership.mockResolvedValue(false);
-    const req = createRequest('game-123');
+    const req = createRequest("game-123");
     const res = createResponse();
 
     // Act
@@ -501,51 +501,51 @@ describe('DELETE /api/games/[id]', () => {
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         success: false,
-        error: expect.stringContaining('You do not have permission to delete this game'),
+        error: expect.stringContaining("You do not have permission to delete this game"),
       })
     );
     expect(mockDeleteGame).not.toHaveBeenCalled();
   });
 
-  it('allows delete when user owns the resource', async () => {
+  it("allows delete when user owns the resource", async () => {
     // Arrange
     mockCheckResourceOwnership.mockResolvedValue(true);
-    const req = createRequest('game-123');
+    const req = createRequest("game-123");
     const res = createResponse();
 
     // Act
     await handler(req, res);
 
     // Assert
-    expect(mockDeleteGame).toHaveBeenCalledWith('game-123');
+    expect(mockDeleteGame).toHaveBeenCalledWith("game-123");
     expect(res.status).toHaveBeenCalledWith(200);
   });
 
-  it('allows delete when user is admin', async () => {
+  it("allows delete when user is admin", async () => {
     // Arrange
     const adminGame = {
-      id: 'game-456',
+      id: "game-456",
       gameId: 456,
-      createdByDiscordId: 'other-user',
+      createdByDiscordId: "other-user",
     };
     mockGetGameById.mockResolvedValue(adminGame);
     mockCheckResourceOwnership.mockResolvedValue(true); // Admin check passes
-    const req = createRequest('game-456');
+    const req = createRequest("game-456");
     const res = createResponse();
 
     // Act
     await handler(req, res);
 
     // Assert
-    expect(mockDeleteGame).toHaveBeenCalledWith('game-456');
+    expect(mockDeleteGame).toHaveBeenCalledWith("game-456");
     expect(res.status).toHaveBeenCalledWith(200);
   });
 
-  it('handles errors from deleteGame', async () => {
+  it("handles errors from deleteGame", async () => {
     // Arrange
-    const error = new Error('Delete failed');
+    const error = new Error("Delete failed");
     mockDeleteGame.mockRejectedValue(error);
-    const req = createRequest('game-123');
+    const req = createRequest("game-123");
     const res = createResponse();
 
     // Act
@@ -556,16 +556,16 @@ describe('DELETE /api/games/[id]', () => {
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         success: false,
-        error: expect.stringContaining('Delete failed'),
+        error: expect.stringContaining("Delete failed"),
       })
     );
   });
 
-  it('handles errors from checkResourceOwnership', async () => {
+  it("handles errors from checkResourceOwnership", async () => {
     // Arrange
-    const error = new Error('Ownership check failed');
+    const error = new Error("Ownership check failed");
     mockCheckResourceOwnership.mockRejectedValue(error);
-    const req = createRequest('game-123');
+    const req = createRequest("game-123");
     const res = createResponse();
 
     // Act
@@ -576,7 +576,7 @@ describe('DELETE /api/games/[id]', () => {
   });
 });
 
-describe('Method Not Allowed', () => {
+describe("Method Not Allowed", () => {
   const createResponse = (): NextApiResponse => {
     const res = {} as NextApiResponse;
     res.status = jest.fn().mockReturnValue(res);
@@ -585,13 +585,13 @@ describe('Method Not Allowed', () => {
     return res;
   };
 
-  it('rejects POST method', async () => {
+  it("rejects POST method", async () => {
     // Arrange
     const req = {
-      method: 'POST',
-      query: { id: 'game-123' },
+      method: "POST",
+      query: { id: "game-123" },
       body: null,
-      url: '/api/games/game-123',
+      url: "/api/games/game-123",
     } as unknown as NextApiRequest;
     const res = createResponse();
 
@@ -603,18 +603,18 @@ describe('Method Not Allowed', () => {
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         success: false,
-        error: 'Method POST not allowed. Allowed methods: GET, PUT, DELETE',
+        error: "Method POST not allowed. Allowed methods: GET, PUT, DELETE",
       })
     );
   });
 
-  it('rejects PATCH method', async () => {
+  it("rejects PATCH method", async () => {
     // Arrange
     const req = {
-      method: 'PATCH',
-      query: { id: 'game-123' },
+      method: "PATCH",
+      query: { id: "game-123" },
       body: null,
-      url: '/api/games/game-123',
+      url: "/api/games/game-123",
     } as unknown as NextApiRequest;
     const res = createResponse();
 
@@ -626,9 +626,8 @@ describe('Method Not Allowed', () => {
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         success: false,
-        error: 'Method PATCH not allowed. Allowed methods: GET, PUT, DELETE',
+        error: "Method PATCH not allowed. Allowed methods: GET, PUT, DELETE",
       })
     );
   });
 });
-

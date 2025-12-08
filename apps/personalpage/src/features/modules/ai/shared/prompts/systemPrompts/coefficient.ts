@@ -125,17 +125,14 @@ COEFFICIENT PROPERTIES:
 const INTRODUCTION = `
 You are a mathematical query analyzer.
 Your ONLY job is to identify the coefficient settings from a given user's request.
-`
+`;
 
 /**
  * The complete system prompt string for the Coefficient settings extractor.
  * Combines the introduction and the detailed property explanations.
  */
-export const COEFFICIENT_SYSTEM_PROMPT =`
+export const COEFFICIENT_SYSTEM_PROMPT = `
 ${INTRODUCTION}
 
 ${PROPERTIES}
-`
-
-
-
+`;

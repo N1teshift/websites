@@ -1,16 +1,20 @@
 /**
  * Query Builder with Index Fallback Utility
- * 
+ *
  * Provides a helper for executing Firestore queries with automatic fallback
  * to in-memory filtering when indexes are still building.
- * 
+ *
  * This pattern is commonly needed when Firestore composite indexes are required
  * but may not be ready yet.
  */
 
-import { getFirestoreAdmin, isServerSide, getFirestoreInstance } from '@websites/infrastructure/firebase';
-import { collection, getDocs } from 'firebase/firestore';
-import { createComponentLogger } from '@websites/infrastructure/logging';
+import {
+  getFirestoreAdmin,
+  isServerSide,
+  getFirestoreInstance,
+} from "@websites/infrastructure/firebase";
+import { collection, getDocs } from "firebase/firestore";
+import { createComponentLogger } from "@websites/infrastructure/logging";
 
 /**
  * Options for query with index fallback
@@ -21,7 +25,9 @@ export interface QueryWithIndexFallbackOptions<T> {
   /** Build and execute the optimized query (may throw index error) */
   executeQuery: () => Promise<Array<{ data: () => Record<string, unknown>; id: string }>>;
   /** Fallback: filter all documents in memory when index is missing */
-  fallbackFilter: (docs: Array<{ data: () => Record<string, unknown>; id: string }>) => Array<{ data: () => Record<string, unknown>; id: string }>;
+  fallbackFilter: (
+    docs: Array<{ data: () => Record<string, unknown>; id: string }>
+  ) => Array<{ data: () => Record<string, unknown>; id: string }>;
   /** Transform documents to entities */
   transform: (docs: Array<{ data: () => Record<string, unknown>; id: string }>) => T;
   /** Optional: sort entities after transformation (for in-memory sorting) */
@@ -32,10 +38,10 @@ export interface QueryWithIndexFallbackOptions<T> {
 
 /**
  * Execute a query with automatic index fallback
- * 
+ *
  * If the query fails due to a missing index (error code 9), it falls back to
  * fetching all documents and filtering in memory.
- * 
+ *
  * @example
  * ```typescript
  * const posts = await queryWithIndexFallback({
@@ -72,12 +78,12 @@ export async function queryWithIndexFallback<T>(
     // Admin SDK uses numeric code 9, Client SDK uses string 'failed-precondition'
     const isIndexError =
       firestoreError?.code === 9 ||
-      firestoreError?.code === 'failed-precondition' ||
-      firestoreError?.message?.includes('index') ||
-      firestoreError?.message?.includes('index is currently building');
+      firestoreError?.code === "failed-precondition" ||
+      firestoreError?.message?.includes("index") ||
+      firestoreError?.message?.includes("index is currently building");
 
     if (isIndexError) {
-      logger.info('Index still building, falling back to in-memory filtering', { collectionName });
+      logger.info("Index still building, falling back to in-memory filtering", { collectionName });
 
       // Fallback: fetch all documents
       const allDocs: Array<{ data: () => Record<string, unknown>; id: string }> = [];
@@ -108,5 +114,3 @@ export async function queryWithIndexFallback<T>(
     throw error;
   }
 }
-
-

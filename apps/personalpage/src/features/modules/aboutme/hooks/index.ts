@@ -1,4 +1,4 @@
-import { useFallbackTranslation } from '@websites/infrastructure/i18n';
+import { useFallbackTranslation } from "@websites/infrastructure/i18n";
 import {
   isSkillCategories,
   isExperienceItem,
@@ -6,18 +6,18 @@ import {
   isEducationItem,
   isLanguageItem,
   isStringArray,
-  useTranslatedObject
-} from '../utils';
+  useTranslatedObject,
+} from "../utils";
 import type {
   SkillCategory,
   ExperienceItem,
   ProjectItem,
   EducationItem,
-  LanguageItem
-} from '../types';
+  LanguageItem,
+} from "../types";
 
 export interface UseAboutMeDataReturn {
-  t: ReturnType<typeof useFallbackTranslation>['t'];
+  t: ReturnType<typeof useFallbackTranslation>["t"];
   techSkills: { [key: string]: SkillCategory };
   experience: ExperienceItem[];
   projects: ProjectItem[];
@@ -30,29 +30,29 @@ export interface UseAboutMeDataReturn {
 export function useAboutMeData(): UseAboutMeDataReturn {
   const { t } = useFallbackTranslation();
 
-  const techSkills = useTranslatedObject('techSkills', isSkillCategories, {});
+  const techSkills = useTranslatedObject("techSkills", isSkillCategories, {});
   const experience = useTranslatedObject(
-    'experience',
+    "experience",
     (obj): obj is ExperienceItem[] => Array.isArray(obj) && obj.every(isExperienceItem),
     []
   );
   const projects = useTranslatedObject(
-    'projects',
+    "projects",
     (obj): obj is ProjectItem[] => Array.isArray(obj) && obj.every(isProjectItem),
     []
   );
   const education = useTranslatedObject(
-    'education',
+    "education",
     (obj): obj is EducationItem[] => Array.isArray(obj) && obj.every(isEducationItem),
     []
   );
   const languages = useTranslatedObject(
-    'languages',
+    "languages",
     (obj): obj is LanguageItem[] => Array.isArray(obj) && obj.every(isLanguageItem),
     []
   );
-  const interests = useTranslatedObject('interests', isStringArray, []);
-  const softSkills = useTranslatedObject('softSkills', isStringArray, []);
+  const interests = useTranslatedObject("interests", isStringArray, []);
+  const softSkills = useTranslatedObject("softSkills", isStringArray, []);
 
   return {
     t,
@@ -62,9 +62,6 @@ export function useAboutMeData(): UseAboutMeDataReturn {
     education,
     languages,
     interests,
-    softSkills
+    softSkills,
   };
 }
-
-
-

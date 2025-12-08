@@ -31,12 +31,16 @@ components/
 ## Component Categories
 
 ### Layout & Navigation (`layout/`)
+
 Components responsible for the overall page structure and navigation:
+
 - **Navigation.tsx** - Fixed navigation bar with smooth scrolling
 - **LoadingScreen.tsx** - Loading state component
 
 ### Content Sections (`content/`)
+
 Main content sections that make up the page:
+
 - **HeroSection.tsx** - Hero section with artist intro and image
 - **HeroContent.tsx** - Content for the hero section
 - **PhilosophySection.tsx** - "body, my canvas. our voice" philosophy section
@@ -48,17 +52,22 @@ Main content sections that make up the page:
 - **ContactMeSection.tsx** - Contact section
 
 ### UI Components (`ui/`)
+
 Reusable UI components that can be used across different sections:
+
 - **WorkItem.tsx** - Reusable component for displaying individual works
 
 ### Utilities (`utilities/`)
+
 Helper components for styling, animations, and other utilities:
+
 - **ArtisticStyles.tsx** - Global CSS styles and artistic theming
 - **ScrollAnimations.tsx** - JavaScript for scroll animations and interactions
 
 ## Site Structure
 
 The website follows this section order:
+
 1. **Hero** - Introduction and main artistic statement
 2. **Philosophy** - "body, my canvas. our voice" philosophy
 3. **Education** - Education and training background
@@ -73,9 +82,9 @@ The website follows this section order:
 All components are exported through the main `index.ts` file, so you can import them like this:
 
 ```typescript
-import { 
-  Navigation, 
-  HeroSection, 
+import {
+  Navigation,
+  HeroSection,
   PhilosophySection,
   EducationSection,
   WorksSection,
@@ -84,8 +93,8 @@ import {
   GallerySection,
   ContactMeSection,
   WorkItem,
-  ArtisticStyles 
-} from './components';
+  ArtisticStyles,
+} from "./components";
 ```
 
 ## Benefits of This Structure

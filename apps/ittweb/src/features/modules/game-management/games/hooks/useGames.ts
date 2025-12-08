@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
-import type { Game, GameFilters, GameListResponse } from '../types';
-import { logError } from '@websites/infrastructure/logging';
+import { useState, useEffect } from "react";
+import type { Game, GameFilters, GameListResponse } from "../types";
+import { logError } from "@websites/infrastructure/logging";
 
 interface UseGamesResult {
   games: Game[];
@@ -24,23 +24,23 @@ export function useGames(filters: GameFilters = {}): UseGamesResult {
       setError(null);
 
       const queryParams = new URLSearchParams();
-      if (filters.gameState) queryParams.append('gameState', filters.gameState);
-      if (filters.startDate) queryParams.append('startDate', filters.startDate);
-      if (filters.endDate) queryParams.append('endDate', filters.endDate);
-      if (filters.category) queryParams.append('category', filters.category);
-      if (filters.player) queryParams.append('player', filters.player);
-      if (filters.ally) queryParams.append('ally', filters.ally);
-      if (filters.enemy) queryParams.append('enemy', filters.enemy);
-      if (filters.teamFormat) queryParams.append('teamFormat', filters.teamFormat);
-      if (filters.page) queryParams.append('page', filters.page.toString());
-      if (filters.limit) queryParams.append('limit', filters.limit.toString());
-      if (filters.cursor) queryParams.append('cursor', filters.cursor);
-      
+      if (filters.gameState) queryParams.append("gameState", filters.gameState);
+      if (filters.startDate) queryParams.append("startDate", filters.startDate);
+      if (filters.endDate) queryParams.append("endDate", filters.endDate);
+      if (filters.category) queryParams.append("category", filters.category);
+      if (filters.player) queryParams.append("player", filters.player);
+      if (filters.ally) queryParams.append("ally", filters.ally);
+      if (filters.enemy) queryParams.append("enemy", filters.enemy);
+      if (filters.teamFormat) queryParams.append("teamFormat", filters.teamFormat);
+      if (filters.page) queryParams.append("page", filters.page.toString());
+      if (filters.limit) queryParams.append("limit", filters.limit.toString());
+      if (filters.cursor) queryParams.append("cursor", filters.cursor);
+
       // Add cache-busting timestamp to ensure fresh data
-      queryParams.append('t', Date.now().toString());
+      queryParams.append("t", Date.now().toString());
 
       const response = await fetch(`/api/games?${queryParams.toString()}`, {
-        cache: 'no-store', // Force fresh fetch, bypass browser cache
+        cache: "no-store", // Force fresh fetch, bypass browser cache
       });
       if (!response.ok) {
         throw new Error(`Failed to fetch games: ${response.statusText}`);
@@ -48,7 +48,7 @@ export function useGames(filters: GameFilters = {}): UseGamesResult {
 
       const data = await response.json();
       if (!data.success) {
-        throw new Error(data.error || 'Failed to fetch games');
+        throw new Error(data.error || "Failed to fetch games");
       }
 
       const result = data.data as GameListResponse;
@@ -56,10 +56,10 @@ export function useGames(filters: GameFilters = {}): UseGamesResult {
       setHasMore(result.hasMore);
       setNextCursor(result.nextCursor);
     } catch (err) {
-      const error = err instanceof Error ? err : new Error('Unknown error');
-      logError(error, 'Failed to fetch games', {
-        component: 'useGames',
-        operation: 'fetchGames',
+      const error = err instanceof Error ? err : new Error("Unknown error");
+      logError(error, "Failed to fetch games", {
+        component: "useGames",
+        operation: "fetchGames",
         filters,
       });
       setError(error);
@@ -93,6 +93,3 @@ export function useGames(filters: GameFilters = {}): UseGamesResult {
     refetch: fetchGames,
   };
 }
-
-
-

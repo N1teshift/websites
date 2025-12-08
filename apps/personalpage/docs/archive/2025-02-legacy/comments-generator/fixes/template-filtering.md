@@ -13,8 +13,8 @@ Implemented teacher-specific template filtering in the Comments Generator to ens
 ```typescript
 case 'comments-generator':
     return data ? (
-        <CommentsGeneratorSection 
-            students={data.students} 
+        <CommentsGeneratorSection
+            students={data.students}
             teacherType={teacherType}  // ✅ Added
         />
     ) : (
@@ -30,8 +30,8 @@ interface CommentsGeneratorSectionProps {
     teacherType?: string;  // ✅ Added
 }
 
-const CommentsGeneratorSection: React.FC<CommentsGeneratorSectionProps> = ({ 
-    students, 
+const CommentsGeneratorSection: React.FC<CommentsGeneratorSectionProps> = ({
+    students,
     teacherType = 'main'  // ✅ Default to 'main'
 }) => {
     // Rename to allTemplates
@@ -46,15 +46,15 @@ const CommentsGeneratorSection: React.FC<CommentsGeneratorSectionProps> = ({
     // Filter templates based on teacher type
     const templates = useMemo(() => {
         const isEnglishTeacher = teacherType === 'J' || teacherType === 'A';
-        
+
         if (isEnglishTeacher) {
             // English teachers: only show English templates
-            return allTemplates.filter(t => 
+            return allTemplates.filter(t =>
                 t.id === 'english-diagnostic-1' || t.id === 'english-unit-1'
             );
         } else {
             // Main teachers: only show Math templates
-            return allTemplates.filter(t => 
+            return allTemplates.filter(t =>
                 t.id === 'default-unit1'
             );
         }
@@ -71,18 +71,24 @@ const CommentsGeneratorSection: React.FC<CommentsGeneratorSectionProps> = ({
 ## Template Filtering Logic
 
 ### For English Teachers (Teacher Type: 'J' or 'A')
+
 **Shows only:**
+
 - ✅ English Diagnostic TEST 1
 - ✅ English Unit 1 TEST
 
 **Hides:**
+
 - ❌ Default Unit 1 Comments (Math)
 
 ### For Main/Math Teachers (Teacher Type: 'main')
+
 **Shows only:**
+
 - ✅ Default Unit 1 Comments (Math)
 
 **Hides:**
+
 - ❌ English Diagnostic TEST 1
 - ❌ English Unit 1 TEST
 
@@ -118,6 +124,7 @@ This prevents errors where an English teacher might have a Math template selecte
 ## Example User Experience
 
 ### English Teacher (Teacher A)
+
 1. Loads `master_student_data_J_v5.json`
 2. Opens Comments Generator
 3. Sees dropdown with:
@@ -126,6 +133,7 @@ This prevents errors where an English teacher might have a Math template selecte
 4. ✅ Cannot see or select Math templates
 
 ### Math Teacher
+
 1. Loads `data_2025-11-09.json`
 2. Opens Comments Generator
 3. Sees dropdown with:
@@ -163,4 +171,3 @@ This prevents errors where an English teacher might have a Math template selecte
 - Comments Generator Refactor: `../refactoring/refactor.md`
 - Template Migration Fix: `docs/fixes/COMMENTS_GENERATOR_TEMPLATE_MIGRATION.md`
 - English Test Data Integration: `../../progress-report/data/teacher-j-integration-complete.md`
-

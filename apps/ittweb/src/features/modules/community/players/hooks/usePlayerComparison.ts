@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import type { PlayerComparison } from '../types';
+import { useState } from "react";
+import type { PlayerComparison } from "../types";
 
 export function usePlayerComparison() {
   const [compareMode, setCompareMode] = useState(false);
@@ -20,19 +20,19 @@ export function usePlayerComparison() {
 
   const handleCompareSelected = async () => {
     if (selectedPlayers.size >= 2) {
-      const names = Array.from(selectedPlayers).join(',');
+      const names = Array.from(selectedPlayers).join(",");
       try {
         setComparisonLoading(true);
         setComparisonError(null);
         const response = await fetch(`/api/players/compare?names=${encodeURIComponent(names)}`);
         if (!response.ok) {
-          throw new Error('Failed to load comparison');
+          throw new Error("Failed to load comparison");
         }
         const result = await response.json();
         const comparisonData = result.data || result;
         setComparison(comparisonData);
       } catch (err) {
-        setComparisonError(err instanceof Error ? err.message : 'Failed to load comparison');
+        setComparisonError(err instanceof Error ? err.message : "Failed to load comparison");
       } finally {
         setComparisonLoading(false);
       }
@@ -59,5 +59,3 @@ export function usePlayerComparison() {
     exitCompareMode,
   };
 }
-
-

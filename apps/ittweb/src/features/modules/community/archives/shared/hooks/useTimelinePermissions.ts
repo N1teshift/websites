@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
-import { useSession } from 'next-auth/react';
-import type { UserRole } from '@/types/userData';
-import { isAdmin } from '@/features/modules/community/users';
+import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
+import type { UserRole } from "@/types/userData";
+import { isAdmin } from "@/features/modules/community/users";
 
 interface UseTimelinePermissionsReturn {
   userRole: UserRole | undefined;
@@ -17,7 +17,7 @@ export function useTimelinePermissions(): UseTimelinePermissionsReturn {
   const { data: session, status } = useSession();
   const [userRole, setUserRole] = useState<UserRole | undefined>();
 
-  const isAuthenticated = status === 'authenticated';
+  const isAuthenticated = status === "authenticated";
   const currentDiscordId = session?.discordId;
 
   // Fetch user role
@@ -25,7 +25,7 @@ export function useTimelinePermissions(): UseTimelinePermissionsReturn {
     let isMounted = true;
 
     const fetchUserRole = async () => {
-      if (status !== 'authenticated' || !session?.discordId) {
+      if (status !== "authenticated" || !session?.discordId) {
         if (isMounted) {
           setUserRole(undefined);
         }
@@ -33,9 +33,9 @@ export function useTimelinePermissions(): UseTimelinePermissionsReturn {
       }
 
       try {
-        const response = await fetch('/api/user/me');
+        const response = await fetch("/api/user/me");
         if (!response.ok) {
-          throw new Error('Failed to fetch user data');
+          throw new Error("Failed to fetch user data");
         }
         const result = await response.json();
         const userData = result.data;
@@ -65,6 +65,3 @@ export function useTimelinePermissions(): UseTimelinePermissionsReturn {
     canManageEntries,
   };
 }
-
-
-

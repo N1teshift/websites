@@ -1,19 +1,19 @@
 /**
  * Player Service - Read Operations (Server-Only)
- * 
+ *
  * Server-only functions for reading player data.
  * These functions use Firebase Admin SDK and should only be used in API routes.
  */
 
-import { getFirestoreAdmin } from '@websites/infrastructure/firebase';
-import { createComponentLogger, logError } from '@websites/infrastructure/logging';
-import { timestampToIso } from '@websites/infrastructure/utils';
-import type { PlayerStats, PlayerProfile, PlayerSearchFilters } from '../types';
-import { getGames } from '../../../game-management/games/lib/gameService.read.server';
-import { calculateTotalGames, normalizePlayerName } from './playerService.utils';
+import { getFirestoreAdmin } from "@websites/infrastructure/firebase";
+import { createComponentLogger, logError } from "@websites/infrastructure/logging";
+import { timestampToIso } from "@websites/infrastructure/utils";
+import type { PlayerStats, PlayerProfile, PlayerSearchFilters } from "../types";
+import { getGames } from "../../../game-management/games/lib/gameService.read.server";
+import { calculateTotalGames, normalizePlayerName } from "./playerService.utils";
 
-const PLAYER_STATS_COLLECTION = 'playerStats';
-const logger = createComponentLogger('playerService.read');
+const PLAYER_STATS_COLLECTION = "playerStats";
+const logger = createComponentLogger("playerService.read");
 
 /**
  * Get player statistics (Server-Only)
@@ -23,14 +23,14 @@ export async function getPlayerStats(
   filters?: PlayerSearchFilters
 ): Promise<PlayerProfile | null> {
   try {
-    logger.info('Fetching player stats', { name, filters });
+    logger.info("Fetching player stats", { name, filters });
 
     const normalizedName = normalizePlayerName(name);
     const adminDb = getFirestoreAdmin();
     const playerDoc = await adminDb.collection(PLAYER_STATS_COLLECTION).doc(normalizedName).get();
 
     if (!playerDoc.exists) {
-      logger.info('Player not found', { name: normalizedName });
+      logger.info("Player not found", { name: normalizedName });
       return null;
     }
 
@@ -65,9 +65,9 @@ export async function getPlayerStats(
     return profile;
   } catch (error) {
     const err = error as Error;
-    logError(err, 'Failed to fetch player stats', {
-      component: 'playerService.read',
-      operation: 'getPlayerStats',
+    logError(err, "Failed to fetch player stats", {
+      component: "playerService.read",
+      operation: "getPlayerStats",
       name,
     });
     throw err;
@@ -82,17 +82,19 @@ export async function getAllPlayers(
   lastPlayerName?: string
 ): Promise<{ players: PlayerStats[]; hasMore: boolean; lastPlayerName: string | null }> {
   try {
-    logger.info('Fetching all players', { limit, lastPlayerName });
+    logger.info("Fetching all players", { limit, lastPlayerName });
 
     const adminDb = getFirestoreAdmin();
-    let adminQuery = adminDb.collection(PLAYER_STATS_COLLECTION)
-      .orderBy('name')
+    let adminQuery = adminDb
+      .collection(PLAYER_STATS_COLLECTION)
+      .orderBy("name")
       .limit(limit + 1); // Fetch one extra to check if there are more
 
     // Apply cursor if provided
     if (lastPlayerName) {
-      const lastDocSnapshot = await adminDb.collection(PLAYER_STATS_COLLECTION)
-        .where('name', '==', lastPlayerName)
+      const lastDocSnapshot = await adminDb
+        .collection(PLAYER_STATS_COLLECTION)
+        .where("name", "==", lastPlayerName)
         .limit(1)
         .get();
 
@@ -130,9 +132,9 @@ export async function getAllPlayers(
     };
   } catch (error) {
     const err = error as Error;
-    logError(err, 'Failed to get all players', {
-      component: 'playerService.read',
-      operation: 'getAllPlayers',
+    logError(err, "Failed to get all players", {
+      component: "playerService.read",
+      operation: "getAllPlayers",
       limit,
       lastPlayerName,
     });
@@ -145,7 +147,7 @@ export async function getAllPlayers(
  */
 export async function searchPlayers(searchQuery: string): Promise<string[]> {
   try {
-    logger.info('Searching players', { query: searchQuery });
+    logger.info("Searching players", { query: searchQuery });
 
     if (!searchQuery || searchQuery.trim().length < 2) {
       return [];
@@ -153,9 +155,10 @@ export async function searchPlayers(searchQuery: string): Promise<string[]> {
 
     const searchTerm = normalizePlayerName(searchQuery);
     const adminDb = getFirestoreAdmin();
-    const snapshot = await adminDb.collection(PLAYER_STATS_COLLECTION)
-      .where('name', '>=', searchTerm)
-      .where('name', '<=', searchTerm + '\uf8ff')
+    const snapshot = await adminDb
+      .collection(PLAYER_STATS_COLLECTION)
+      .where("name", ">=", searchTerm)
+      .where("name", "<=", searchTerm + "\uf8ff")
       .limit(20)
       .get();
 
@@ -170,13 +173,12 @@ export async function searchPlayers(searchQuery: string): Promise<string[]> {
     return players;
   } catch (error) {
     const err = error as Error;
-    logError(err, 'Failed to search players', {
-      component: 'playerService.read',
-      operation: 'searchPlayers',
+    logError(err, "Failed to search players", {
+      component: "playerService.read",
+      operation: "searchPlayers",
       query: searchQuery,
     });
     // Return empty array on error (search is non-critical)
     return [];
   }
 }
-

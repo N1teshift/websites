@@ -25,20 +25,24 @@ This document lists all the easy-to-test functions in your codebase, prioritized
 ### Calendar Module
 
 #### `src/features/modules/calendar/utils/dateUtils.ts`
+
 - ✅ Already tested: `formatDateTime`, `calculateEndTime`, `getAvailableGap`
 
 #### `src/features/modules/calendar/utils/eventRegistrationUtils.ts`
+
 - ⭐ `parseRegistrationInfoFromUrl` - Parse JSON from query params
 - ⭐ `getSuccessMessageKey` - Simple switch statement mapping
 - ⭐ `createTemporaryEvent` - Create event object from details
   **Coverage**: ~15% of calendar module
 
 #### `src/features/modules/calendar/utils/eventDetailsExtractor.ts`
+
 - ⭐ `extractEventDetailsFromQuery` - Extract and validate from query params
 - ⭐ `extractEventDetailsFromBody` - Extract and validate from body
   **Coverage**: ~10% of calendar module
 
 #### `src/features/modules/calendar/utils/emailFormatter.ts`
+
 - ⭐⭐ `formatEmailBody` - Template string replacement (needs mock file system)
   **Coverage**: ~5% of calendar module
 
@@ -49,6 +53,7 @@ This document lists all the easy-to-test functions in your codebase, prioritized
 ### Math Module
 
 #### `src/features/modules/math/shared/numberUtils.ts` ⭐⭐⭐ HIGH VALUE
+
 - ⭐ `randomChoice<T>` - Select random element from array
 - ⭐ `randomInt` - Generate random integer in range
 - ⭐ `isPrime` - Check if number is prime
@@ -60,6 +65,7 @@ This document lists all the easy-to-test functions in your codebase, prioritized
   **Coverage**: ~25% of math module utils
 
 #### `src/features/modules/math/mathObjects/utils/formattingUtils.ts`
+
 - ⭐⭐ Various formatting functions (need to check what's exported)
   **Coverage**: ~10% of math module
 
@@ -70,11 +76,13 @@ This document lists all the easy-to-test functions in your codebase, prioritized
 ### Progress Report Module
 
 #### `src/features/modules/edtech/progressReport/utils/progressReportUtils.ts`
+
 - ⭐⭐ `calculateStudentStats` - Calculate averages, attendance, completion
 - ⭐ `filterAssessmentsByType` - Filter array by type
   **Coverage**: ~15% of progress report utils
 
 #### `src/features/modules/edtech/progressReport/utils/missionUtils.ts` ⭐⭐⭐ HIGH VALUE
+
 - ⭐ `generateMissionId` - Generate unique ID
 - ⭐ `calculateMissingPoints` - Simple calculation: `Math.max(0, 1 - score)`
 - ⭐ `calculateTotalMissingPoints` - Sum missing points
@@ -99,6 +107,7 @@ This document lists all the easy-to-test functions in your codebase, prioritized
   **Coverage**: ~40% of progress report utils
 
 #### `src/features/modules/edtech/progressReport/utils/assessmentColumnUtils.ts`
+
 - ⭐ `getAssessmentScore` - Get latest score for column
 - ⭐ `getAssessmentsByColumn` - Filter assessments by column
 - ⭐ `getLatestAssessment` - Get latest assessment for column
@@ -113,11 +122,13 @@ This document lists all the easy-to-test functions in your codebase, prioritized
   **Coverage**: ~20% of progress report utils
 
 #### `src/features/modules/edtech/progressReport/utils/processing/classStatistics.ts`
+
 - ⭐⭐ `calculateClassStatistics` - Calculate class averages
 - ⭐ `calculateAverageScore` - Calculate average score
   **Coverage**: ~10% of progress report utils
 
 #### `src/features/modules/edtech/progressReport/utils/processing/gradeCalculations.ts`
+
 - ⭐⭐ `calculateGradeFromSum` - Calculate grade from sum
 - ⭐⭐ `calculateGrade` - Calculate grade for student
 - ⭐ `hasAllTestScores` - Check if all scores present
@@ -130,10 +141,12 @@ This document lists all the easy-to-test functions in your codebase, prioritized
 ### Infrastructure/Shared
 
 #### `src/features/infrastructure/shared/utils/functionUtils.ts`
+
 - ⭐⭐ `debounce` - Debounce function wrapper (needs timer mocking)
   **Coverage**: ~5% of shared utils
 
 #### `src/features/infrastructure/cache/cacheUtils.ts`
+
 - ⭐⭐ `makeCacheKey` - Simple string concatenation
 - ⭐⭐ `hasCache` - Check if cache exists (needs localStorage mock)
 - ⭐⭐ Cache functions (need browser environment mocks)
@@ -145,13 +158,13 @@ This document lists all the easy-to-test functions in your codebase, prioritized
 
 ## Summary by Module
 
-| Module | Functions | Difficulty | Coverage | Priority |
-|--------|-----------|------------|----------|----------|
-| **Calendar Utils** | 6 | ⭐-⭐⭐ | ~30% | High |
-| **Math Utils** | 8+ | ⭐ | ~35% | High |
-| **Progress Report** | 35+ | ⭐-⭐⭐ | ~95% | **Highest** |
-| **Infrastructure** | 3+ | ⭐⭐ | ~5% | Medium |
-| **TOTAL** | **~52+** | ⭐-⭐⭐ | **~30-40% overall** | |
+| Module              | Functions | Difficulty | Coverage            | Priority    |
+| ------------------- | --------- | ---------- | ------------------- | ----------- |
+| **Calendar Utils**  | 6         | ⭐-⭐⭐    | ~30%                | High        |
+| **Math Utils**      | 8+        | ⭐         | ~35%                | High        |
+| **Progress Report** | 35+       | ⭐-⭐⭐    | ~95%                | **Highest** |
+| **Infrastructure**  | 3+        | ⭐⭐       | ~5%                 | Medium      |
+| **TOTAL**           | **~52+**  | ⭐-⭐⭐    | **~30-40% overall** |             |
 
 ---
 
@@ -227,19 +240,20 @@ touch src/features/modules/edtech/progressReport/utils/missionUtils.test.ts
 ```
 
 **Example first test**:
-```typescript
-import { calculateMissingPoints } from './missionUtils';
 
-describe('calculateMissingPoints', () => {
-  it('should return 0 for score of 1', () => {
+```typescript
+import { calculateMissingPoints } from "./missionUtils";
+
+describe("calculateMissingPoints", () => {
+  it("should return 0 for score of 1", () => {
     expect(calculateMissingPoints(1)).toBe(0);
   });
-  
-  it('should return missing points for score < 1', () => {
+
+  it("should return missing points for score < 1", () => {
     expect(calculateMissingPoints(0.5)).toBe(0.5);
   });
-  
-  it('should handle null score', () => {
+
+  it("should handle null score", () => {
     expect(calculateMissingPoints(null)).toBe(0);
   });
 });
@@ -268,12 +282,14 @@ More complex data transformations, but still manageable.
 ## Next Steps
 
 After completing easy tests, you'll have:
+
 - ✅ ~30-40% code coverage
 - ✅ Confidence in utility functions
 - ✅ Test examples for harder functions
 - ✅ Foundation for testing components/hooks later
 
 Then move on to:
+
 - React hooks testing
 - Component testing (with React Testing Library)
 - API service testing (with mocks)
@@ -303,6 +319,3 @@ src/features/modules/
                 ├── assessmentColumnUtils.test.ts
                 └── progressReportUtils.test.ts
 ```
-
-
-

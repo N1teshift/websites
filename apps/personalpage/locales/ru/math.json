@@ -18,7 +18,6 @@
   "set": "Множество",
   "sets": "Множества",
 
-
   "number_set": "Множество чисел",
   "real": "Действительное",
   "irrational": "Иррациональное",
@@ -28,7 +27,6 @@
   "integer": "Целый",
   "natural": "Натуральный",
 
-
   "representation_type": "Тип выражения",
   "representation": "Выражение",
   "decimal": "Десятичный",
@@ -36,7 +34,6 @@
   "root": "Корень",
   "fraction": "Дробь",
   "logarithm": "Логарифм",
-
 
   "coefficient_constraints": "Коэффициенты",
   "odd": "Нечетный",
@@ -51,7 +48,6 @@
 
   "range": "Интервал",
 
-
   "coefficients_set_constraints": "Коэффициенты",
   "increasing": "Возрастающий",
   "decreasing": "Убывающий",
@@ -59,14 +55,12 @@
 
   "collection_count": "Коллекция",
 
-
   "power_settings": "Степень",
   "power": "Степень",
   "powers": "Степени",
   "first_f": "Первый",
   "term_orders": "Степени",
   "variable": "Переменная",
-
 
   "combination_type": "Тип комбинации",
   "addition": "Сложение",
@@ -76,9 +70,7 @@
   "root_sq_div": "Корень, квадрат, деление",
   "none": "Нет",
 
-
   "expression_count": "Количество выражений",
-
 
   "inequality_type": "Тип неравенства",
   "less": "Меньше",
@@ -86,12 +78,10 @@
   "leq": "Меньше или равно",
   "geq": "Больше или равно",
 
-
   "function_name": "Имя функции",
   "point_name": "Имя точки",
   "set_name": "Имя множества",
   "interval_name": "Имя интервала",
-
 
   "interval_type": "Тип интервала",
   "closed": "Закрытый",
@@ -100,9 +90,6 @@
   "open_closed": "Открытый/Закрытый",
 
   "minimum_length": "Минимальная длина",
-
-
-
 
   "quantity": "Количество",
   "generated_content_will_be_here": "Сгенерированный контент будет здесь",

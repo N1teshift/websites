@@ -5,6 +5,7 @@
 ## Infrastructure Principles
 
 This folder contains **generic, reusable code** that:
+
 - ✅ Can be extracted to a separate package/library
 - ✅ Works across different projects
 - ✅ Has no business logic dependencies
@@ -34,11 +35,13 @@ See [API README](./api/README.md) for detailed documentation.
   - Firestore helper utilities
 
 ### Logging (`logging/`)
+
 - `logger.ts` - Logger implementation
 - Component-specific logger creation
 - Error categorization and logging
 
 ### Components (`components/`)
+
 - **Layout Components**: `Layout`, `Header`, `PageHero`, `DiscordButton`, `GitHubButton`
 - **Button Components**: `Button`, `GitHubButton`, `DiscordButton`
 - **Container Components**: `Card`
@@ -46,69 +49,79 @@ See [API README](./api/README.md) for detailed documentation.
 - **Feedback Components**: `EmptyState`, `Tooltip`
 
 ### Services (`lib/`)
+
 - `userDataService` - User data CRUD operations
 - `archiveService` - Archive entry service
 - `getStaticProps` - Next.js static props utilities
 - `TranslationNamespaceContext` - i18n namespace context
 
 ### Utils (`utils/`)
+
 - `objectUtils` - Object manipulation utilities
 - `timestampUtils` - Timestamp conversion utilities
 - `accessibility/helpers` - Accessibility testing utilities
 - `loggerUtils` - Error logging utilities (deprecated, use `logging/`)
 
 ### Hooks (`hooks/`)
+
 - `useFallbackTranslation` - Translation fallback handling
 
 ## Usage
 
 ### Authentication
+
 ```typescript
-import { getServerSession } from 'next-auth/next';
-import { authOptions } from '@/pages/api/auth/[...nextauth]';
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/pages/api/auth/[...nextauth]";
 
 const session = await getServerSession(req, res, authOptions);
 ```
 
 ### Firebase
+
 ```typescript
-import { getFirestoreAdmin } from '@/features/infrastructure/api/firebase/admin';
-import { db } from '@/features/infrastructure/api/firebase/firebaseClient';
-import { getDocument, getCollectionSnapshot } from '@/features/infrastructure/api/firebase/firestoreHelpers';
+import { getFirestoreAdmin } from "@/features/infrastructure/api/firebase/admin";
+import { db } from "@/features/infrastructure/api/firebase/firebaseClient";
+import {
+  getDocument,
+  getCollectionSnapshot,
+} from "@/features/infrastructure/api/firebase/firestoreHelpers";
 
 // Server-side
 const adminDb = getFirestoreAdmin();
 
 // Client-side
-const doc = await db.collection('games').doc('id').get();
+const doc = await db.collection("games").doc("id").get();
 
 // Using helpers (server/client aware)
-const gameDoc = await getDocument('games', 'game-id');
-const gamesSnapshot = await getCollectionSnapshot('games');
+const gameDoc = await getDocument("games", "game-id");
+const gamesSnapshot = await getCollectionSnapshot("games");
 ```
 
 ### Logging
+
 ```typescript
-import { createComponentLogger, logError } from '@websites/infrastructure/logging';
+import { createComponentLogger, logError } from "@websites/infrastructure/logging";
 
-const logger = createComponentLogger('my-component');
-logger.info('Message', { meta: 'data' });
+const logger = createComponentLogger("my-component");
+logger.info("Message", { meta: "data" });
 
-logError(error, 'Operation failed', { component: 'my-component' });
+logError(error, "Operation failed", { component: "my-component" });
 ```
 
 ### Route Handlers
+
 ```typescript
-import { createApiHandler, createPostHandler, requireSession } from '@/features/infrastructure/api';
+import { createApiHandler, createPostHandler, requireSession } from "@/features/infrastructure/api";
 
 // Using createApiHandler (supports multiple methods)
 export default createApiHandler(
   async (req, res, context) => {
     // Handler logic
-    return { data: 'result' };
+    return { data: "result" };
   },
   {
-    methods: ['GET', 'POST'],
+    methods: ["GET", "POST"],
     requireAuth: false, // Set to true to require authentication
     logRequests: true,
   }
@@ -133,8 +146,8 @@ export default createPostHandler(
 #### Zod Validation (Recommended)
 
 ```typescript
-import { zodValidator } from '@/features/infrastructure/api';
-import { CreatePostSchema } from '@/features/modules/content/blog/lib';
+import { zodValidator } from "@/features/infrastructure/api";
+import { CreatePostSchema } from "@/features/modules/content/blog/lib";
 
 // Use with route handler
 export default createPostHandler(
@@ -151,8 +164,6 @@ export default createPostHandler(
 
 See [Zod Validation Migration Guide](../../../docs/operations/zod-validation-migration.md) for more details.
 
-
 ## Related Documentation
 
 - [Error Handling Guide](../../../docs/operations/testing-guide.md)
-

@@ -50,9 +50,7 @@
       "company": "Edrana Baltic",
       "dates": "2019 – 2020",
       "location": "Vilnius, Lietuva",
-      "responsibilities": [
-        "Testavau buhalterinę programinę įrangą"
-      ],
+      "responsibilities": ["Testavau buhalterinę programinę įrangą"],
       "title": "Programinės įrangos testuotojas"
     },
     {
@@ -66,11 +64,7 @@
     }
   ],
   "experienceTitle": "Profesinė patirtis",
-  "interests": [
-    "Savanoriavimas",
-    "Šachmatai",
-    "Kelionės"
-  ],
+  "interests": ["Savanoriavimas", "Šachmatai", "Kelionės"],
   "interestsTitle": "Pomėgiai",
   "languages": [
     {
@@ -144,30 +138,15 @@
       "title": "Enterprise Integrations"
     },
     "frontend": {
-      "items": [
-        "React",
-        "Next.js",
-        "TypeScript",
-        "Tailwind CSS",
-        "i18next"
-      ],
+      "items": ["React", "Next.js", "TypeScript", "Tailwind CSS", "i18next"],
       "title": "Front-End"
     },
     "fullstack": {
-      "items": [
-        "LangChain & LangGraph",
-        "OpenAI API",
-        "Firebase Admin SDK & Firestore",
-        "Vercel"
-      ],
+      "items": ["LangChain & LangGraph", "OpenAI API", "Firebase Admin SDK & Firestore", "Vercel"],
       "title": "Full-Stack & Cloud"
     },
     "tooling": {
-      "items": [
-        "Git/GitHub",
-        "ESLint",
-        "Basic CI/CD"
-      ],
+      "items": ["Git/GitHub", "ESLint", "Basic CI/CD"],
       "title": "Tooling & Workflow"
     }
   },

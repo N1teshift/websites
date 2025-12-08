@@ -1,6 +1,6 @@
-import React from 'react';
-import type { Game } from '@/features/modules/game-management/games/types';
-import { ScheduledGameCard } from './ScheduledGameCard';
+import React from "react";
+import type { Game } from "@/features/modules/game-management/games/types";
+import { ScheduledGameCard } from "./ScheduledGameCard";
 
 interface ScheduledGamesListProps {
   games: Game[];
@@ -17,10 +17,10 @@ interface ScheduledGamesListProps {
   userIsAdmin?: boolean;
 }
 
-export default function ScheduledGamesList({ 
-  games, 
-  onGameClick, 
-  onJoin, 
+export default function ScheduledGamesList({
+  games,
+  onGameClick,
+  onJoin,
   onLeave,
   onEdit,
   onRequestDelete,
@@ -44,7 +44,7 @@ export default function ScheduledGamesList({
     <div className="space-y-4">
       {games.map((game) => (
         <ScheduledGameCard
-            key={game.id}
+          key={game.id}
           game={game}
           onGameClick={onGameClick}
           onJoin={onJoin}
@@ -58,9 +58,7 @@ export default function ScheduledGamesList({
           isUploadingReplay={isUploadingReplay}
           userIsAdmin={userIsAdmin}
         />
-                  ))}
+      ))}
     </div>
   );
 }
-
-

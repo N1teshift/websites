@@ -1,41 +1,41 @@
-import { act, renderHook, waitFor } from '@testing-library/react';
-import { useGames } from '../useGames';
-import type { Game, GameFilters, GameListResponse } from '../../types';
+import { act, renderHook, waitFor } from "@testing-library/react";
+import { useGames } from "../useGames";
+import type { Game, GameFilters, GameListResponse } from "../../types";
 
 // Mock logger
-jest.mock('@websites/infrastructure/logging', () => ({
+jest.mock("@websites/infrastructure/logging", () => ({
   logError: jest.fn(),
 }));
 
-describe('useGames', () => {
+describe("useGames", () => {
   const mockGames: Game[] = [
     {
-      id: '1',
+      id: "1",
       gameId: 1,
-      gameState: 'completed',
-      creatorName: 'Test Creator',
-      createdAt: '2024-01-01T00:00:00Z',
-      updatedAt: '2024-01-01T00:00:00Z',
-      datetime: '2024-01-01T00:00:00Z',
+      gameState: "completed",
+      creatorName: "Test Creator",
+      createdAt: "2024-01-01T00:00:00Z",
+      updatedAt: "2024-01-01T00:00:00Z",
+      datetime: "2024-01-01T00:00:00Z",
       duration: 3600,
-      gamename: 'Test Game',
-      map: 'Test Map',
-      ownername: 'Test Owner',
-      category: '1v1',
+      gamename: "Test Game",
+      map: "Test Map",
+      ownername: "Test Owner",
+      category: "1v1",
     },
     {
-      id: '2',
+      id: "2",
       gameId: 2,
-      gameState: 'completed',
-      creatorName: 'Test Creator 2',
-      createdAt: '2024-01-02T00:00:00Z',
-      updatedAt: '2024-01-02T00:00:00Z',
-      datetime: '2024-01-02T00:00:00Z',
+      gameState: "completed",
+      creatorName: "Test Creator 2",
+      createdAt: "2024-01-02T00:00:00Z",
+      updatedAt: "2024-01-02T00:00:00Z",
+      datetime: "2024-01-02T00:00:00Z",
       duration: 1800,
-      gamename: 'Test Game 2',
-      map: 'Test Map 2',
-      ownername: 'Test Owner 2',
-      category: '2v2',
+      gamename: "Test Game 2",
+      map: "Test Map 2",
+      ownername: "Test Owner 2",
+      category: "2v2",
     },
   ];
 
@@ -54,8 +54,8 @@ describe('useGames', () => {
     jest.restoreAllMocks();
   });
 
-  describe('fetches games on mount', () => {
-    it('should fetch games when hook mounts', async () => {
+  describe("fetches games on mount", () => {
+    it("should fetch games when hook mounts", async () => {
       // Arrange
       const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
       mockFetch.mockResolvedValueOnce({
@@ -71,12 +71,12 @@ describe('useGames', () => {
 
       // Assert
       await waitFor(() => expect(result.current.loading).toBe(false));
-      expect(mockFetch).toHaveBeenCalledWith('/api/games?');
+      expect(mockFetch).toHaveBeenCalledWith("/api/games?");
       expect(result.current.games).toEqual(mockGames);
       expect(result.current.error).toBeNull();
     });
 
-    it('should handle empty results', async () => {
+    it("should handle empty results", async () => {
       // Arrange
       const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
       mockFetch.mockResolvedValueOnce({
@@ -96,10 +96,10 @@ describe('useGames', () => {
       expect(result.current.hasMore).toBe(false);
     });
 
-    it('should handle network errors', async () => {
+    it("should handle network errors", async () => {
       // Arrange
       const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
-      mockFetch.mockRejectedValueOnce(new Error('Network error'));
+      mockFetch.mockRejectedValueOnce(new Error("Network error"));
 
       // Act
       const { result } = renderHook(() => useGames());
@@ -107,10 +107,10 @@ describe('useGames', () => {
       // Assert
       await waitFor(() => expect(result.current.loading).toBe(false));
       expect(result.current.error).toBeInstanceOf(Error);
-      expect(result.current.error?.message).toBe('Network error');
+      expect(result.current.error?.message).toBe("Network error");
     });
 
-    it('should handle slow responses', async () => {
+    it("should handle slow responses", async () => {
       // Arrange
       const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
       mockFetch.mockImplementationOnce(
@@ -138,10 +138,10 @@ describe('useGames', () => {
     });
   });
 
-  describe('applies filters', () => {
-    it('should apply gameState filter', async () => {
+  describe("applies filters", () => {
+    it("should apply gameState filter", async () => {
       // Arrange
-      const filters: GameFilters = { gameState: 'completed' };
+      const filters: GameFilters = { gameState: "completed" };
       const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
       mockFetch.mockResolvedValueOnce({
         ok: true,
@@ -156,16 +156,16 @@ describe('useGames', () => {
 
       // Assert
       await waitFor(() => expect(result.current.loading).toBe(false));
-      expect(mockFetch).toHaveBeenCalledWith('/api/games?gameState=completed');
+      expect(mockFetch).toHaveBeenCalledWith("/api/games?gameState=completed");
     });
 
-    it('should apply multiple filters', async () => {
+    it("should apply multiple filters", async () => {
       // Arrange
       const filters: GameFilters = {
-        gameState: 'completed',
-        category: '1v1',
-        startDate: '2024-01-01',
-        endDate: '2024-01-31',
+        gameState: "completed",
+        category: "1v1",
+        startDate: "2024-01-01",
+        endDate: "2024-01-31",
       };
       const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
       mockFetch.mockResolvedValueOnce({
@@ -182,11 +182,11 @@ describe('useGames', () => {
       // Assert
       await waitFor(() => expect(result.current.loading).toBe(false));
       expect(mockFetch).toHaveBeenCalledWith(
-        '/api/games?gameState=completed&startDate=2024-01-01&endDate=2024-01-31&category=1v1'
+        "/api/games?gameState=completed&startDate=2024-01-01&endDate=2024-01-31&category=1v1"
       );
     });
 
-    it('should refetch when filters change', async () => {
+    it("should refetch when filters change", async () => {
       // Arrange
       const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
       mockFetch.mockResolvedValue({
@@ -198,26 +198,23 @@ describe('useGames', () => {
       } as Response);
 
       // Act
-      const { result, rerender } = renderHook(
-        ({ filters }) => useGames(filters),
-        {
-          initialProps: { filters: { gameState: 'completed' as const } },
-        }
-      );
+      const { result, rerender } = renderHook(({ filters }) => useGames(filters), {
+        initialProps: { filters: { gameState: "completed" as const } },
+      });
 
       await waitFor(() => expect(result.current.loading).toBe(false));
       expect(mockFetch).toHaveBeenCalledTimes(1);
 
       // Change filter
-      rerender({ filters: { gameState: 'scheduled' as const } as any });
+      rerender({ filters: { gameState: "scheduled" as const } as any });
 
       // Assert
       await waitFor(() => expect(result.current.loading).toBe(false));
       expect(mockFetch).toHaveBeenCalledTimes(2);
-      expect(mockFetch).toHaveBeenLastCalledWith('/api/games?gameState=scheduled');
+      expect(mockFetch).toHaveBeenLastCalledWith("/api/games?gameState=scheduled");
     });
 
-    it('should handle rapid filter changes', async () => {
+    it("should handle rapid filter changes", async () => {
       // Arrange
       const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
       mockFetch.mockResolvedValue({
@@ -229,28 +226,25 @@ describe('useGames', () => {
       } as Response);
 
       // Act
-      const { result, rerender } = renderHook(
-        ({ filters }) => useGames(filters),
-        {
-          initialProps: { filters: { category: '1v1' } },
-        }
-      );
+      const { result, rerender } = renderHook(({ filters }) => useGames(filters), {
+        initialProps: { filters: { category: "1v1" } },
+      });
 
       await waitFor(() => expect(result.current.loading).toBe(false));
 
       // Rapid filter changes
-      rerender({ filters: { category: '2v2' } });
-      rerender({ filters: { category: '3v3' } });
-      rerender({ filters: { category: '4v4' } });
+      rerender({ filters: { category: "2v2" } });
+      rerender({ filters: { category: "3v3" } });
+      rerender({ filters: { category: "4v4" } });
 
       // Assert
       await waitFor(() => expect(result.current.loading).toBe(false));
       expect(mockFetch).toHaveBeenCalledTimes(4);
     });
 
-    it('should handle same filter value (no unnecessary refetch)', async () => {
+    it("should handle same filter value (no unnecessary refetch)", async () => {
       // Arrange
-      const filters: GameFilters = { gameState: 'completed' };
+      const filters: GameFilters = { gameState: "completed" };
       const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
       mockFetch.mockResolvedValue({
         ok: true,
@@ -261,12 +255,9 @@ describe('useGames', () => {
       } as Response);
 
       // Act
-      const { result, rerender } = renderHook(
-        ({ filters }) => useGames(filters),
-        {
-          initialProps: { filters },
-        }
-      );
+      const { result, rerender } = renderHook(({ filters }) => useGames(filters), {
+        initialProps: { filters },
+      });
 
       await waitFor(() => expect(result.current.loading).toBe(false));
       const firstCallCount = mockFetch.mock.calls.length;
@@ -281,8 +272,8 @@ describe('useGames', () => {
     });
   });
 
-  describe('handles loading state', () => {
-    it('should set loading to true during fetch', async () => {
+  describe("handles loading state", () => {
+    it("should set loading to true during fetch", async () => {
       // Arrange
       const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
       let resolveFetch: (value: Response) => void;
@@ -309,7 +300,7 @@ describe('useGames', () => {
       await waitFor(() => expect(result.current.loading).toBe(false));
     });
 
-    it('should set loading to false after fetch completes', async () => {
+    it("should set loading to false after fetch completes", async () => {
       // Arrange
       const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
       mockFetch.mockResolvedValueOnce({
@@ -328,7 +319,7 @@ describe('useGames', () => {
       expect(result.current.loading).toBe(false);
     });
 
-    it('should handle multiple rapid fetches', async () => {
+    it("should handle multiple rapid fetches", async () => {
       // Arrange
       const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
       mockFetch.mockResolvedValue({
@@ -340,19 +331,16 @@ describe('useGames', () => {
       } as Response);
 
       // Act
-      const { result, rerender } = renderHook(
-        ({ filters }) => useGames(filters),
-        {
-          initialProps: { filters: {} },
-        }
-      );
+      const { result, rerender } = renderHook(({ filters }) => useGames(filters), {
+        initialProps: { filters: {} },
+      });
 
       await waitFor(() => expect(result.current.loading).toBe(false));
 
       // Trigger multiple rapid filter changes
-      rerender({ filters: { category: '1v1' } });
-      rerender({ filters: { category: '2v2' } });
-      rerender({ filters: { category: '3v3' } });
+      rerender({ filters: { category: "1v1" } });
+      rerender({ filters: { category: "2v2" } });
+      rerender({ filters: { category: "3v3" } });
 
       // Assert
       await waitFor(() => expect(result.current.loading).toBe(false));
@@ -360,10 +348,10 @@ describe('useGames', () => {
     });
   });
 
-  describe('handles error state', () => {
-    it('should capture and expose network errors', async () => {
+  describe("handles error state", () => {
+    it("should capture and expose network errors", async () => {
       // Arrange
-      const networkError = new Error('Network request failed');
+      const networkError = new Error("Network request failed");
       const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
       mockFetch.mockRejectedValueOnce(networkError);
 
@@ -373,15 +361,15 @@ describe('useGames', () => {
       // Assert
       await waitFor(() => expect(result.current.loading).toBe(false));
       expect(result.current.error).toBeInstanceOf(Error);
-      expect(result.current.error?.message).toBe('Network request failed');
+      expect(result.current.error?.message).toBe("Network request failed");
     });
 
-    it('should handle HTTP error responses', async () => {
+    it("should handle HTTP error responses", async () => {
       // Arrange
       const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
       mockFetch.mockResolvedValueOnce({
         ok: false,
-        statusText: 'Internal Server Error',
+        statusText: "Internal Server Error",
       } as Response);
 
       // Act
@@ -390,17 +378,17 @@ describe('useGames', () => {
       // Assert
       await waitFor(() => expect(result.current.loading).toBe(false));
       expect(result.current.error).toBeInstanceOf(Error);
-      expect(result.current.error?.message).toContain('Failed to fetch games');
+      expect(result.current.error?.message).toContain("Failed to fetch games");
     });
 
-    it('should handle API error responses', async () => {
+    it("should handle API error responses", async () => {
       // Arrange
       const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
       mockFetch.mockResolvedValueOnce({
         ok: true,
         json: async () => ({
           success: false,
-          error: 'Invalid filters provided',
+          error: "Invalid filters provided",
         }),
       } as Response);
 
@@ -410,16 +398,16 @@ describe('useGames', () => {
       // Assert
       await waitFor(() => expect(result.current.loading).toBe(false));
       expect(result.current.error).toBeInstanceOf(Error);
-      expect(result.current.error?.message).toBe('Invalid filters provided');
+      expect(result.current.error?.message).toBe("Invalid filters provided");
     });
 
-    it('should handle permission errors', async () => {
+    it("should handle permission errors", async () => {
       // Arrange
       const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
       mockFetch.mockResolvedValueOnce({
         ok: false,
         status: 403,
-        statusText: 'Forbidden',
+        statusText: "Forbidden",
       } as Response);
 
       // Act
@@ -428,12 +416,12 @@ describe('useGames', () => {
       // Assert
       await waitFor(() => expect(result.current.loading).toBe(false));
       expect(result.current.error).toBeInstanceOf(Error);
-      expect(result.current.error?.message).toContain('Failed to fetch games');
+      expect(result.current.error?.message).toContain("Failed to fetch games");
     });
   });
 
-  describe('refetches on filter change', () => {
-    it('should trigger refetch when filter changes', async () => {
+  describe("refetches on filter change", () => {
+    it("should trigger refetch when filter changes", async () => {
       // Arrange
       const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
       mockFetch.mockResolvedValue({
@@ -445,25 +433,22 @@ describe('useGames', () => {
       } as Response);
 
       // Act
-      const { result, rerender } = renderHook(
-        ({ filters }) => useGames(filters),
-        {
-          initialProps: { filters: { gameState: 'completed' as const } },
-        }
-      );
+      const { result, rerender } = renderHook(({ filters }) => useGames(filters), {
+        initialProps: { filters: { gameState: "completed" as const } },
+      });
 
       await waitFor(() => expect(result.current.loading).toBe(false));
       const initialCallCount = mockFetch.mock.calls.length;
 
       // Change filter
-      rerender({ filters: { gameState: 'scheduled' as const, category: '1v1' as const } as any });
+      rerender({ filters: { gameState: "scheduled" as const, category: "1v1" as const } as any });
 
       // Assert
       await waitFor(() => expect(result.current.loading).toBe(false));
       expect(mockFetch.mock.calls.length).toBeGreaterThan(initialCallCount);
     });
 
-    it('should handle pagination filters', async () => {
+    it("should handle pagination filters", async () => {
       // Arrange
       const filters: GameFilters = { page: 2, limit: 10 };
       const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
@@ -471,7 +456,7 @@ describe('useGames', () => {
         ok: true,
         json: async () => ({
           success: true,
-          data: { ...mockGameListResponse, nextCursor: 'cursor123' },
+          data: { ...mockGameListResponse, nextCursor: "cursor123" },
         }),
       } as Response);
 
@@ -480,13 +465,13 @@ describe('useGames', () => {
 
       // Assert
       await waitFor(() => expect(result.current.loading).toBe(false));
-      expect(mockFetch).toHaveBeenCalledWith('/api/games?page=2&limit=10');
-      expect(result.current.nextCursor).toBe('cursor123');
+      expect(mockFetch).toHaveBeenCalledWith("/api/games?page=2&limit=10");
+      expect(result.current.nextCursor).toBe("cursor123");
     });
   });
 
-  describe('refetch function', () => {
-    it('should allow manual refetch', async () => {
+  describe("refetch function", () => {
+    it("should allow manual refetch", async () => {
       // Arrange
       const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
       mockFetch.mockResolvedValue({
@@ -514,5 +499,3 @@ describe('useGames', () => {
     });
   });
 });
-
-

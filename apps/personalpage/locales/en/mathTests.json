@@ -1,53 +1,44 @@
 {
+  "category": "Category",
 
-    "category": "Category",
+  "visible_columns": "Visible columns",
+  "test_id": "Test ID",
+  "prompt": "Prompt",
+  "generated_example": "Generated example",
+  "expected_values": "Expected values",
+  "success_rate": "Success Rate",
+  "last_run": "Last run",
 
+  "passed": "Passed",
+  "failed": "Failed",
+  "running": "Running",
+  "not_generated": "Not generated",
 
-    "visible_columns": "Visible columns",
-    "test_id": "Test ID",
-    "prompt": "Prompt",
-    "generated_example": "Generated example",
-    "expected_values": "Expected values",
-    "success_rate": "Success Rate",
-    "last_run": "Last run",
-    
-
-
-
-
-    "passed": "Passed",
-    "failed": "Failed",
-    "running": "Running",
-    "not_generated": "Not generated",
-
-    "test_summary": "Test summary",
-    "passed_tests": "Passed tests",
-    "failed_tests": "Failed tests",
-    "total_tests": "Total tests",
-    "pass_rate": "Pass rate",
-    "total_time": "Total time",
-    "total_tokens": "Total tokens",
-    "total_prompt_tokens": "Total prompt tokens",
-    "total_completion_tokens": "Total completion tokens",
-    "estimated_cost": "Estimated cost",
-    "history": "History",
-    "show_object_type": "Show object type",
-    "hide_object_type": "Hide object type",
-    "test_runner_title": "Test Runner",
-    "tests_with_errors": "Tests with errors",
-    "average_time": "Average time",
-    "total_input_tokens": "Total input tokens",
-    "total_output_tokens": "Total output tokens",
-
+  "test_summary": "Test summary",
+  "passed_tests": "Passed tests",
+  "failed_tests": "Failed tests",
+  "total_tests": "Total tests",
+  "pass_rate": "Pass rate",
+  "total_time": "Total time",
+  "total_tokens": "Total tokens",
+  "total_prompt_tokens": "Total prompt tokens",
+  "total_completion_tokens": "Total completion tokens",
+  "estimated_cost": "Estimated cost",
+  "history": "History",
+  "show_object_type": "Show object type",
+  "hide_object_type": "Hide object type",
+  "test_runner_title": "Test Runner",
+  "tests_with_errors": "Tests with errors",
+  "average_time": "Average time",
+  "total_input_tokens": "Total input tokens",
+  "total_output_tokens": "Total output tokens",
 
   "run_selected_tests": "Run selected tests",
   "running_tests": "Running tests",
 
-
   "reset_test_stats": "Reset test statistics",
   "reset_test_stats_confirmation": "This will reset your test statistics and history. Continue?",
   "resetting_test_stats": "Resetting test statistics...",
-
 
   "db_fetching": "DB fetching",
   "database_fetching": "Database fetching",
@@ -60,7 +51,6 @@
   "off": "Off",
   "no_cache_available": "No cache available",
 
-
   "total": "Total",
   "execution_time": "Execution time",
   "cost": "Cost",
@@ -69,11 +59,9 @@
   "output": "Output",
   "no_data": "No data",
 
-
-
   "not_run": "Not run",
   "results_saved_successfully": "Results saved successfully!",
-  
+
   "ai_system": "AI System",
   "system_1": "System 1",
   "system_2": "System 2",

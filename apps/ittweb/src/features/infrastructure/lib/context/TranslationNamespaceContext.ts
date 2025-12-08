@@ -1,4 +1,4 @@
-import { createContext, useContext } from 'react';
+import { createContext, useContext } from "react";
 
 // Define the shape of your context data
 interface TranslationNamespaceContextType {
@@ -11,8 +11,8 @@ interface TranslationNamespaceContextType {
 // This default ('common') would be used if a component somehow
 // gets rendered outside a provider, or if you want a general fallback.
 export const TranslationNamespaceContext = createContext<TranslationNamespaceContextType>({
-  translationNs: 'common',
-  defaultNS: 'common', // Default primary namespace
+  translationNs: "common",
+  defaultNS: "common", // Default primary namespace
   fallbackNS: [], // Default empty array for fallbacks
 });
 
@@ -23,4 +23,4 @@ export const TranslationNamespaceContext = createContext<TranslationNamespaceCon
  * @returns The translation namespace context object.
  */
 // Custom hook for easy consumption of the context
-export const useTranslationNamespace = () => useContext(TranslationNamespaceContext); 
+export const useTranslationNamespace = () => useContext(TranslationNamespaceContext);

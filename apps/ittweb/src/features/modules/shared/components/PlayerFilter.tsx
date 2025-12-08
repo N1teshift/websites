@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Card } from '@/features/infrastructure/components';
+import React, { useState, useEffect, useRef } from "react";
+import { Card } from "@/features/infrastructure/components";
 
 interface PlayerFilterProps {
   allies?: string[];
@@ -12,10 +12,10 @@ export function PlayerFilter({
   allies = [],
   enemies = [],
   onChange,
-  placeholder = 'Search players...',
+  placeholder = "Search players...",
 }: PlayerFilterProps) {
-  const [alliesSearch, setAlliesSearch] = useState('');
-  const [enemiesSearch, setEnemiesSearch] = useState('');
+  const [alliesSearch, setAlliesSearch] = useState("");
+  const [enemiesSearch, setEnemiesSearch] = useState("");
   const [alliesSuggestions, setAlliesSuggestions] = useState<string[]>([]);
   const [enemiesSuggestions, setEnemiesSuggestions] = useState<string[]>([]);
   const [showAlliesSuggestions, setShowAlliesSuggestions] = useState(false);
@@ -27,7 +27,10 @@ export function PlayerFilter({
 
   // Search for players
   useEffect(() => {
-    const searchPlayers = async (query: string, setSuggestions: (suggestions: string[]) => void) => {
+    const searchPlayers = async (
+      query: string,
+      setSuggestions: (suggestions: string[]) => void
+    ) => {
       if (query.trim().length < 2) {
         setSuggestions([]);
         return;
@@ -36,12 +39,12 @@ export function PlayerFilter({
       try {
         const response = await fetch(`/api/players/search?q=${encodeURIComponent(query)}`);
         if (!response.ok) return;
-        
+
         const data = await response.json();
         if (data.success && Array.isArray(data.data)) {
           // Filter out already selected players
-          const filtered = data.data.filter((name: string) => 
-            !allies.includes(name) && !enemies.includes(name)
+          const filtered = data.data.filter(
+            (name: string) => !allies.includes(name) && !enemies.includes(name)
           );
           setSuggestions(filtered.slice(0, 10)); // Limit to 10 suggestions
         }
@@ -94,32 +97,38 @@ export function PlayerFilter({
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const addAlly = (playerName: string) => {
     if (!allies.includes(playerName)) {
       onChange([...allies, playerName], enemies);
     }
-    setAlliesSearch('');
+    setAlliesSearch("");
     setShowAlliesSuggestions(false);
   };
 
   const removeAlly = (playerName: string) => {
-    onChange(allies.filter(name => name !== playerName), enemies);
+    onChange(
+      allies.filter((name) => name !== playerName),
+      enemies
+    );
   };
 
   const addEnemy = (playerName: string) => {
     if (!enemies.includes(playerName)) {
       onChange(allies, [...enemies, playerName]);
     }
-    setEnemiesSearch('');
+    setEnemiesSearch("");
     setShowEnemiesSuggestions(false);
   };
 
   const removeEnemy = (playerName: string) => {
-    onChange(allies, enemies.filter(name => name !== playerName));
+    onChange(
+      allies,
+      enemies.filter((name) => name !== playerName)
+    );
   };
 
   return (
@@ -240,5 +249,3 @@ export function PlayerFilter({
     </Card>
   );
 }
-
-

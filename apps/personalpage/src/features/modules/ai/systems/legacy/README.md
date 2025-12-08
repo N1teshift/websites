@@ -7,6 +7,7 @@ This folder contains the first generation AI system for mathematical object gene
 ## Architecture
 
 The legacy system uses a custom chain pattern with:
+
 - **BaseChain**: Abstract base class for all chains
 - **TypeIdentifierChain**: Identifies the mathematical object type from user prompts
 - **SettingsExtractorChain**: Extracts structured settings for identified object types
@@ -36,4 +37,3 @@ This system is preserved for reference and can be activated by setting `USE_LANG
   - Validation logic
   - Services (OpenAI client)
   - Utils (token tracking, prompt utilities)
-

@@ -12,38 +12,35 @@
  *             should be deleted.
  */
 export const coefficientSettingsSchema = {
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "CoefficientSettings", // More specific title
-  "type": "object",
-  "description": "Settings for a single coefficient object", // Slightly updated description
-  "properties": {
-      "numberSet": { 
-      "type": "string", 
-      "enum": ["real", "rational", "irrational", "integer", "natural"],
-      "description": "The number set this coefficient belongs to" 
+  $schema: "http://json-schema.org/draft-07/schema#",
+  title: "CoefficientSettings", // More specific title
+  type: "object",
+  description: "Settings for a single coefficient object", // Slightly updated description
+  properties: {
+    numberSet: {
+      type: "string",
+      enum: ["real", "rational", "irrational", "integer", "natural"],
+      description: "The number set this coefficient belongs to",
     },
-    "representationType": { 
-      "type": "string", 
-      "enum": ["fraction", "mixed", "decimal", "root", "logarithm"],
-      "description": "How the coefficient should be represented" 
+    representationType: {
+      type: "string",
+      enum: ["fraction", "mixed", "decimal", "root", "logarithm"],
+      description: "How the coefficient should be represented",
     },
-    "rules": { 
-      "type": "array", 
-      "items": { 
-        "type": "string", 
-        "enum": ["odd", "even", "square", "cube", "prime", "nonzero", "positive", "negative", "unit"] 
+    rules: {
+      type: "array",
+      items: {
+        type: "string",
+        enum: ["odd", "even", "square", "cube", "prime", "nonzero", "positive", "negative", "unit"],
       },
-      "description": "Rules this coefficient should follow (e.g., odd, positive)" // Updated description
+      description: "Rules this coefficient should follow (e.g., odd, positive)", // Updated description
     },
-    "range": { 
-      "type": "array", 
-      "items": { "type": "number" }, 
-      "description": "The numerical range [min, max] for this coefficient" 
-    }
+    range: {
+      type: "array",
+      items: { type: "number" },
+      description: "The numerical range [min, max] for this coefficient",
+    },
   },
-  "required": ["numberSet", "representationType", "rules", "range"],
-  "additionalProperties": false // Prevent unexpected extra properties
+  required: ["numberSet", "representationType", "rules", "range"],
+  additionalProperties: false, // Prevent unexpected extra properties
 } as const;
-
-
-

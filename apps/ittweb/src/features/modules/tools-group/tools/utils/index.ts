@@ -1,3 +1,2 @@
 // Tools utilities
-export * from './icon-mapper.utils';
-
+export * from "./icon-mapper.utils";

@@ -15,15 +15,15 @@ import { updateDependentSettings } from "../mathObjects/utils/dependencyUtils";
  *                                    and values are arrays of `MathInput` objects with that priority.
  */
 export function groupByPriority(inputs: MathInput[]): Map<number, MathInput[]> {
-    const groups = new Map<number, MathInput[]>();
-    inputs.forEach(input => {
-        const priority = input.priority || 0;
-        if (!groups.has(priority)) {
-            groups.set(priority, []);
-        }
-        groups.get(priority)!.push(input);
-    });
-    return groups;
+  const groups = new Map<number, MathInput[]>();
+  inputs.forEach((input) => {
+    const priority = input.priority || 0;
+    if (!groups.has(priority)) {
+      groups.set(priority, []);
+    }
+    groups.get(priority)!.push(input);
+  });
+  return groups;
 }
 
 /**
@@ -40,47 +40,49 @@ export function groupByPriority(inputs: MathInput[]): Map<number, MathInput[]> {
  * @private
  */
 function generateByPriority(
-    inputs: MathInput[],
-    generateObjectsFunc: (inputs: MathInput[]) => MathObjects[],
-    updateDependentSettingsFunc: (input: MathInput, parent: MathObjects) => void
+  inputs: MathInput[],
+  generateObjectsFunc: (inputs: MathInput[]) => MathObjects[],
+  updateDependentSettingsFunc: (input: MathInput, parent: MathObjects) => void
 ): MathObjects[] {
-    // Group inputs by their priority value
-    const groups = groupByPriority(inputs);
-    // Sort priorities from lowest to highest
-    const sortedPriorities = Array.from(groups.keys()).sort((a, b) => a - b);
+  // Group inputs by their priority value
+  const groups = groupByPriority(inputs);
+  // Sort priorities from lowest to highest
+  const sortedPriorities = Array.from(groups.keys()).sort((a, b) => a - b);
 
-    const generatedObjects: MathObjects[] = [];
-    let lastGroupGenerated: MathObjects[] = [];
+  const generatedObjects: MathObjects[] = [];
+  let lastGroupGenerated: MathObjects[] = [];
 
-    // Iterate through each priority group in order
-    for (const priority of sortedPriorities) {
-        const groupInputs = groups.get(priority)!;
+  // Iterate through each priority group in order
+  for (const priority of sortedPriorities) {
+    const groupInputs = groups.get(priority)!;
 
-        if (priority === 0) {
-            // Priority 0: no dependencies, generate directly
-            const groupGenerated = generateObjectsFunc(groupInputs);
-            generatedObjects.push(...groupGenerated);
-            lastGroupGenerated = groupGenerated;
-        } else {
-            // Higher priorities: may depend on previous group
-            if (lastGroupGenerated.length === 0) {
-                // Warn if no previous group exists for dependency resolution
-                console.warn(`No generated objects found for dependency resolution at priority ${priority}`);
-                continue;
-            }
-            // Use the first object from the previous group as the parent for dependencies
-            const parentObj = lastGroupGenerated[0];
-            groupInputs.forEach(dependentInput => {
-                updateDependentSettingsFunc(dependentInput, parentObj);
-            });
-            // Generate objects for this group
-            const groupGenerated = generateObjectsFunc(groupInputs);
-            generatedObjects.push(...groupGenerated);
-            lastGroupGenerated = groupGenerated;
-        }
+    if (priority === 0) {
+      // Priority 0: no dependencies, generate directly
+      const groupGenerated = generateObjectsFunc(groupInputs);
+      generatedObjects.push(...groupGenerated);
+      lastGroupGenerated = groupGenerated;
+    } else {
+      // Higher priorities: may depend on previous group
+      if (lastGroupGenerated.length === 0) {
+        // Warn if no previous group exists for dependency resolution
+        console.warn(
+          `No generated objects found for dependency resolution at priority ${priority}`
+        );
+        continue;
+      }
+      // Use the first object from the previous group as the parent for dependencies
+      const parentObj = lastGroupGenerated[0];
+      groupInputs.forEach((dependentInput) => {
+        updateDependentSettingsFunc(dependentInput, parentObj);
+      });
+      // Generate objects for this group
+      const groupGenerated = generateObjectsFunc(groupInputs);
+      generatedObjects.push(...groupGenerated);
+      lastGroupGenerated = groupGenerated;
     }
-    // Return all generated objects in order
-    return generatedObjects;
+  }
+  // Return all generated objects in order
+  return generatedObjects;
 }
 
 /**
@@ -96,12 +98,9 @@ function generateByPriority(
  * - Object generation is performed by `generateObjects` from `../mathObjects/core/generateObjectFactory`.
  */
 export function generate(inputs: MathInput[]): string[] {
-    // Use the helper to generate all objects by priority, resolving dependencies
-    const generatedObjects = generateByPriority(inputs, generateObjects, updateDependentSettings);
+  // Use the helper to generate all objects by priority, resolving dependencies
+  const generatedObjects = generateByPriority(inputs, generateObjects, updateDependentSettings);
 
-    // Only return the main LaTeX string for each generated object
-    return generatedObjects.map(item => item.mathItem || "");
+  // Only return the main LaTeX string for each generated object
+  return generatedObjects.map((item) => item.mathItem || "");
 }
-
-
-

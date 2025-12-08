@@ -1,6 +1,6 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiRequest, NextApiResponse } from "next";
 import { getOAuth2Client } from "@websites/infrastructure/api/google/auth/googleAuth";
-import { extractEventDetailsFromQuery } from '../../../features/modules/calendar/utils/eventDetailsExtractor';
+import { extractEventDetailsFromQuery } from "../../../features/modules/calendar/utils/eventDetailsExtractor";
 
 /**
  * @file API route handler for initiating the Google OAuth login flow.
@@ -26,32 +26,29 @@ import { extractEventDetailsFromQuery } from '../../../features/modules/calendar
  * @returns {Promise<void>} A promise that resolves when the redirection is initiated or an error occurs.
  */
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    try {
-        // Step 1: Use the shared extractor to get event details
-        const eventDetails = extractEventDetailsFromQuery(req);
+  try {
+    // Step 1: Use the shared extractor to get event details
+    const eventDetails = extractEventDetailsFromQuery(req);
 
-        // Step 2: Encode the event details into a state parameter
-        const state = encodeURIComponent(JSON.stringify(eventDetails));
+    // Step 2: Encode the event details into a state parameter
+    const state = encodeURIComponent(JSON.stringify(eventDetails));
 
-        // Step 3: Set the required scopes for Google Calendar and user profile
-        const scopes = ['https://www.googleapis.com/auth/calendar', 'profile', 'email'];
+    // Step 3: Set the required scopes for Google Calendar and user profile
+    const scopes = ["https://www.googleapis.com/auth/calendar", "profile", "email"];
 
-        // Step 4: Generate the auth URL with event details as state
-        const oauth2Client = getOAuth2Client();
+    // Step 4: Generate the auth URL with event details as state
+    const oauth2Client = getOAuth2Client();
 
-        const url = oauth2Client.generateAuthUrl({
-            access_type: 'offline',
-            scope: scopes,
-            state: state,
-        });
+    const url = oauth2Client.generateAuthUrl({
+      access_type: "offline",
+      scope: scopes,
+      state: state,
+    });
 
-        // Step 5: Redirect the user to Google's OAuth login page
-        res.redirect(url);
-    } catch (error) {
-        console.error("Error during login process:", error);
-        res.status(500).json({ message: "Server error during login." });
-    }
+    // Step 5: Redirect the user to Google's OAuth login page
+    res.redirect(url);
+  } catch (error) {
+    console.error("Error during login process:", error);
+    res.status(500).json({ message: "Server error during login." });
+  }
 }
-
-
-

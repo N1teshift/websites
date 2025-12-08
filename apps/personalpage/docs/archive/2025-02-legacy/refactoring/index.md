@@ -5,11 +5,13 @@ This directory contains documentation for major refactoring efforts in the proje
 ## Completed Refactors
 
 ### 1. Chart Component Refactor
+
 **File**: `chart-component.md`
 
 Refactored `ClassPerformanceChartEnhanced.tsx` from **559 lines** to **264 lines**.
 
 **Key Changes**:
+
 - Extracted chart utilities to `chartAssessmentUtils.ts`
 - Created chart scale configuration system (`chartScaleConfig.ts`)
 - Built custom hooks: `useAvailableScoreTypes.ts`, `useChartData.ts`
@@ -19,11 +21,13 @@ Refactored `ClassPerformanceChartEnhanced.tsx` from **559 lines** to **264 lines
 ---
 
 ### 2. Comments Generator Refactor
+
 **File**: `../../comments-generator/refactoring/refactor.md`
 
 Refactored `CommentsGeneratorSection.tsx` from **1023 lines** to **156 lines**.
 
 **Key Changes**:
+
 - Extracted data extraction logic to `commentDataExtractors.ts`
 - Created separate comment generators for Math and English
 - Built custom hooks: `useStudentCommentData.ts`, `useGeneratedComments.ts`
@@ -34,6 +38,7 @@ Refactored `CommentsGeneratorSection.tsx` from **1023 lines** to **156 lines**.
   - `TemplateEditor.tsx`
 
 **Impact**:
+
 - 85% reduction in main component size
 - Clear separation of concerns
 - Much easier to test and maintain
@@ -44,23 +49,29 @@ Refactored `CommentsGeneratorSection.tsx` from **1023 lines** to **156 lines**.
 ## Refactoring Principles
 
 ### 1. **Single Responsibility**
+
 Each file and function should do one thing well.
 
 ### 2. **File Size Limit**
+
 Target: Under 200 lines per file [[memory:7016492]]
 
 ### 3. **Separation of Concerns**
+
 - **Utils**: Pure functions, no side effects
 - **Hooks**: Data processing, state management
 - **Components**: UI rendering only
 
 ### 4. **Type Safety**
+
 Explicit TypeScript interfaces for all data structures.
 
 ### 5. **Testability**
+
 Isolated functions are easier to test.
 
 ### 6. **Reusability**
+
 Extract common patterns into shared utilities.
 
 ---
@@ -84,12 +95,14 @@ When refactoring a large component:
 ## Benefits Achieved
 
 ### Chart Component
+
 - **43% reduction** in main component size
 - **5 new utility functions** for reuse
 - **2 custom hooks** for data processing
 - **3 UI components** for better UX
 
 ### Comments Generator
+
 - **85% reduction** in main component size
 - **8 new data extractors** for different test types
 - **3 comment generators** for different templates
@@ -111,4 +124,3 @@ When refactoring a large component:
 - Component structure: `../../features/`
 - Bug fixes: `../fixes/`
 - Data integration: `../../../data/`
-

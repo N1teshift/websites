@@ -1,20 +1,20 @@
-import type { NextApiRequest } from 'next';
-import { getServerSession } from 'next-auth/next';
-import { authOptions } from '../auth/[...nextauth]';
-import { createApiHandler, zodValidator } from '@/lib/api-wrapper';
-import { UpdatePostSchema } from '@/features/modules/content/blog/lib';
+import type { NextApiRequest } from "next";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "../auth/[...nextauth]";
+import { createApiHandler, zodValidator } from "@/lib/api-wrapper";
+import { UpdatePostSchema } from "@/features/modules/content/blog/lib";
 import {
   getPostById,
   updatePost,
-  deletePost
-} from '@/features/modules/content/blog/lib/postService';
-import { CreatePost } from '@/types/post';
-import { createComponentLogger } from '@websites/infrastructure/logging';
-import { getUserDataByDiscordIdServer } from '@/features/modules/community/users/services/userDataService.server';
-import { isAdmin } from '@/features/modules/community/users';
-import type { Post } from '@/types/post';
+  deletePost,
+} from "@/features/modules/content/blog/lib/postService";
+import { CreatePost } from "@/types/post";
+import { createComponentLogger } from "@websites/infrastructure/logging";
+import { getUserDataByDiscordIdServer } from "@/features/modules/community/users/services/userDataService.server";
+import { isAdmin } from "@/features/modules/community/users";
+import type { Post } from "@/types/post";
 
-const logger = createComponentLogger('api/posts/[id]');
+const logger = createComponentLogger("api/posts/[id]");
 
 /**
  * GET /api/posts/[id] - Get post by ID (public)
@@ -26,30 +26,30 @@ export default createApiHandler<Post | { success: boolean }>(
   async (req: NextApiRequest, res) => {
     const { id } = req.query;
 
-    if (!id || typeof id !== 'string') {
-      throw new Error('Post ID is required');
+    if (!id || typeof id !== "string") {
+      throw new Error("Post ID is required");
     }
 
-    if (req.method === 'GET') {
+    if (req.method === "GET") {
       // Get a single post (public)
       const post = await getPostById(id);
       if (!post) {
-        throw new Error('Post not found');
+        throw new Error("Post not found");
       }
       return post;
     }
 
-    if (req.method === 'PUT' || req.method === 'PATCH') {
+    if (req.method === "PUT" || req.method === "PATCH") {
       // Update a post (requires authentication and permission)
       const session = await getServerSession(req, res, authOptions);
       if (!session || !session.discordId) {
-        throw new Error('Authentication required');
+        throw new Error("Authentication required");
       }
 
       // Get the post to check permissions
       const post = await getPostById(id);
       if (!post) {
-        throw new Error('Post not found');
+        throw new Error("Post not found");
       }
 
       // Check if user is admin or the author
@@ -58,28 +58,28 @@ export default createApiHandler<Post | { success: boolean }>(
       const userIsAuthor = post.createdByDiscordId === session.discordId;
 
       if (!userIsAdmin && !userIsAuthor) {
-        throw new Error('You do not have permission to edit this post');
+        throw new Error("You do not have permission to edit this post");
       }
 
       // Body is already validated by validateBody option
       const updates: Partial<CreatePost> = req.body;
       await updatePost(id, updates);
-      logger.info('Post updated', { id, userId: session.discordId });
+      logger.info("Post updated", { id, userId: session.discordId });
 
       return { success: true };
     }
 
-    if (req.method === 'DELETE') {
+    if (req.method === "DELETE") {
       // Delete a post (requires authentication and permission)
       const session = await getServerSession(req, res, authOptions);
       if (!session || !session.discordId) {
-        throw new Error('Authentication required');
+        throw new Error("Authentication required");
       }
 
       // Get the post to check permissions
       const post = await getPostById(id);
       if (!post) {
-        throw new Error('Post not found');
+        throw new Error("Post not found");
       }
 
       // Check if user is admin or the author
@@ -88,19 +88,19 @@ export default createApiHandler<Post | { success: boolean }>(
       const userIsAuthor = post.createdByDiscordId === session.discordId;
 
       if (!userIsAdmin && !userIsAuthor) {
-        throw new Error('You do not have permission to delete this post');
+        throw new Error("You do not have permission to delete this post");
       }
 
       await deletePost(id);
-      logger.info('Post deleted', { id, userId: session.discordId });
+      logger.info("Post deleted", { id, userId: session.discordId });
 
       return { success: true };
     }
 
-    throw new Error('Method not allowed');
+    throw new Error("Method not allowed");
   },
   {
-    methods: ['GET', 'PUT', 'PATCH', 'DELETE'],
+    methods: ["GET", "PUT", "PATCH", "DELETE"],
     requireAuth: false, // GET is public, others check auth manually
     logRequests: true,
     // Cache for 10 minutes - posts don't change frequently
@@ -113,4 +113,3 @@ export default createApiHandler<Post | { success: boolean }>(
     validateBody: zodValidator(UpdatePostSchema),
   }
 );
-

@@ -1,4 +1,1 @@
-export * from './TranslationNamespaceContext';
-
-
-
+export * from "./TranslationNamespaceContext";

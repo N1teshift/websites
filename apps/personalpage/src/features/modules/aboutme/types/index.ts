@@ -39,6 +39,3 @@ export interface LanguageItem {
   name?: string; /** Alternative name property for the language. */
   proficiency?: string; /** Alternative proficiency property. */
 }
-
-
-

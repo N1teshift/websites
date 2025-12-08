@@ -7,11 +7,13 @@ When selecting "English Unit 1 TEST" template in the Comments Generator, all stu
 ## Root Cause
 
 The `extractEnglishUnit1Data` function had rigid logic that required:
+
 - **Listening**: Both lis1 AND lis2 to be non-null
-- **Vocabulary**: Both voc1 AND voc2 to be non-null  
+- **Vocabulary**: Both voc1 AND voc2 to be non-null
 - **Grammar**: ALL THREE gr1 AND gr2 AND gr3 to be non-null
 
 But in reality:
+
 - **Unit tests typically don't have gr3** (only gr1 and gr2)
 - Some tests might be missing certain components
 - Max points vary based on which components are present
@@ -25,29 +27,39 @@ This caused the system to mark students as having missing data even when they ha
 Updated `commentDataExtractors.ts` to dynamically calculate combined scores and max points based on **which components are actually present**:
 
 **Before (Rigid):**
+
 ```typescript
 // Required ALL components
-const t1Gr = (t1Gr1 !== null && t1Gr2 !== null && t1Gr3 !== null) 
-    ? t1Gr1 + t1Gr2 + t1Gr3 
-    : null;
+const t1Gr = t1Gr1 !== null && t1Gr2 !== null && t1Gr3 !== null ? t1Gr1 + t1Gr2 + t1Gr3 : null;
 const t1GrMax = 15; // Always 15
 ```
 
 **After (Flexible):**
+
 ```typescript
 // Grammar: combine available components (unit tests typically only have gr1 and gr2)
 let t1Gr: number | null = null;
 let t1GrMax = 0;
 
 if (t1Gr1 !== null || t1Gr2 !== null || t1Gr3 !== null) {
-    t1Gr = 0;
-    if (t1Gr1 !== null) { t1Gr += t1Gr1; t1GrMax += 5; }
-    if (t1Gr2 !== null) { t1Gr += t1Gr2; t1GrMax += 5; }
-    if (t1Gr3 !== null) { t1Gr += t1Gr3; t1GrMax += 5; }
+  t1Gr = 0;
+  if (t1Gr1 !== null) {
+    t1Gr += t1Gr1;
+    t1GrMax += 5;
+  }
+  if (t1Gr2 !== null) {
+    t1Gr += t1Gr2;
+    t1GrMax += 5;
+  }
+  if (t1Gr3 !== null) {
+    t1Gr += t1Gr3;
+    t1GrMax += 5;
+  }
 }
 ```
 
 **Applied to:**
+
 - ✅ Listening (lis1 + lis2)
 - ✅ Vocabulary (voc1 + voc2)
 - ✅ Grammar (gr1 + gr2 + gr3)
@@ -57,24 +69,26 @@ if (t1Gr1 !== null || t1Gr2 !== null || t1Gr3 !== null) {
 Updated `englishCommentGenerator.ts` to only calculate percentages for components that actually have data:
 
 **Before (Unsafe):**
+
 ```typescript
 const scores = [
-    { section: 'Listening', percent: (t1Lis! / t1LisMax!) * 100 },
-    { section: 'Reading', percent: (t1Read! / t1ReadMax!) * 100 },
-    { section: 'Vocabulary', percent: (t1Voc! / t1VocMax!) * 100 },
-    { section: 'Grammar', percent: (t1Gr! / t1GrMax!) * 100 }
+  { section: "Listening", percent: (t1Lis! / t1LisMax!) * 100 },
+  { section: "Reading", percent: (t1Read! / t1ReadMax!) * 100 },
+  { section: "Vocabulary", percent: (t1Voc! / t1VocMax!) * 100 },
+  { section: "Grammar", percent: (t1Gr! / t1GrMax!) * 100 },
 ];
 ```
 
 **After (Safe):**
+
 ```typescript
 const scores: Array<{ section: string; percent: number }> = [];
 
 if (t1Lis !== null && t1LisMax > 0) {
-    scores.push({ section: 'Listening', percent: (t1Lis / t1LisMax) * 100 });
+  scores.push({ section: "Listening", percent: (t1Lis / t1LisMax) * 100 });
 }
 if (t1Read !== null && t1ReadMax > 0) {
-    scores.push({ section: 'Reading', percent: (t1Read / t1ReadMax) * 100 });
+  scores.push({ section: "Reading", percent: (t1Read / t1ReadMax) * 100 });
 }
 // ... etc
 ```
@@ -88,7 +102,7 @@ Updated variable replacement to show "—" for missing values instead of crashin
 comment = comment.replace(/{Grammar_Score}/g, t1Gr!.toString());
 
 // After (safe)
-comment = comment.replace(/{Grammar_Score}/g, t1Gr !== null ? t1Gr.toString() : '—');
+comment = comment.replace(/{Grammar_Score}/g, t1Gr !== null ? t1Gr.toString() : "—");
 ```
 
 ## Benefits
@@ -128,6 +142,7 @@ comment = comment.replace(/{Grammar_Score}/g, t1Gr !== null ? t1Gr.toString() : 
 ## Testing
 
 After fix:
+
 - ✅ Select "English Unit 1 TEST" template
 - ✅ Students with gr1+gr2 (no gr3) show as having complete data
 - ✅ Comments generate successfully
@@ -137,6 +152,7 @@ After fix:
 ## Example Scenarios
 
 ### Scenario 1: Typical Unit Test (gr1 + gr2 only)
+
 ```json
 {
   "gr1": 4,
@@ -144,13 +160,16 @@ After fix:
   "gr3": null
 }
 ```
+
 **Result:**
+
 - Grammar Score: 7
 - Grammar Max: 10 (not 15)
 - Grammar %: 70%
 - ✅ Shows as complete data
 
 ### Scenario 2: Full Components
+
 ```json
 {
   "gr1": 4,
@@ -158,13 +177,16 @@ After fix:
   "gr3": 5
 }
 ```
+
 **Result:**
+
 - Grammar Score: 12
 - Grammar Max: 15
 - Grammar %: 80%
 - ✅ Shows as complete data
 
 ### Scenario 3: Missing Component
+
 ```json
 {
   "gr1": 4,
@@ -172,7 +194,9 @@ After fix:
   "gr3": null
 }
 ```
+
 **Result:**
+
 - Grammar Score: 4
 - Grammar Max: 5
 - Grammar %: 80%
@@ -182,4 +206,3 @@ After fix:
 
 - Comments Generator Refactor: `docs/refactoring/COMMENTS_GENERATOR_REFACTOR.md`
 - Template Migration Fix: `docs/fixes/COMMENTS_GENERATOR_TEMPLATE_MIGRATION.md`
-

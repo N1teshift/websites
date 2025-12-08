@@ -1,9 +1,5 @@
 import { computeChecksum } from "../../src/checksum/checksum.js";
-import type {
-  MatchMetadataSpec,
-  ReplayOrderEvent,
-  ReplayOrderReader,
-} from "../../src/types";
+import type { MatchMetadataSpec, ReplayOrderEvent, ReplayOrderReader } from "../../src/types";
 
 const beforeChecksum = [
   "v1",
@@ -19,9 +15,7 @@ const beforeChecksum = [
 
 const charsetSeed = `${beforeChecksum}\nchecksum:\nEND0123456789`;
 const encodeChars = Array.from(new Set(charsetSeed.split("")));
-const symbolOrderStrings = encodeChars.map(
-  (_, idx) => `ord${idx.toString().padStart(3, "0")}`
-);
+const symbolOrderStrings = encodeChars.map((_, idx) => `ord${idx.toString().padStart(3, "0")}`);
 
 export const sampleSpec: MatchMetadataSpec = {
   version: 99,
@@ -64,5 +58,3 @@ export class StubReplayReader implements ReplayOrderReader {
     return this.events;
   }
 }
-
-

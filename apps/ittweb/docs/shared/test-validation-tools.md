@@ -40,6 +40,7 @@ npm run test:validate:ci
 **Purpose**: Comprehensive test validation combining multiple techniques.
 
 **What it does**:
+
 - Runs unit tests with coverage
 - Analyzes coverage quality and thresholds
 - Validates test file structure
@@ -47,6 +48,7 @@ npm run test:validate:ci
 - Optional: mutation testing and E2E tests
 
 **Usage**:
+
 ```bash
 npm run test:validate          # Full validation
 npm run test:validate:quick    # Skip mutation testing
@@ -60,6 +62,7 @@ npm run test:validate:ci       # Strict CI mode
 **Purpose**: Deep analysis of test coverage beyond basic percentages.
 
 **What it does**:
+
 - Parses LCOV coverage data
 - Identifies files with low coverage
 - Lists uncovered lines, branches, and functions
@@ -67,6 +70,7 @@ npm run test:validate:ci       # Strict CI mode
 - Validates coverage thresholds
 
 **Usage**:
+
 ```bash
 npm run test:coverage              # Generate coverage data
 npm run analyze:coverage           # Analyze coverage
@@ -81,12 +85,14 @@ npm run analyze:coverage -- --file=path/to/file.ts  # Specific file
 **Purpose**: Verify tests would fail if code changes (prevents false positives).
 
 **What it does**:
+
 - Makes small changes (mutations) to code
 - Runs tests to see if they detect changes
 - Reports mutation score and survived mutants
 - Identifies weak tests that don't validate behavior
 
 **Usage**:
+
 ```bash
 npm run test:mutation       # Full mutation testing
 npm run test:mutation:ci    # CI-optimized (faster, less verbose)
@@ -99,12 +105,14 @@ npm run test:mutation:ci    # CI-optimized (faster, less verbose)
 **Purpose**: Catch common test anti-patterns and quality issues.
 
 **What it does**:
+
 - Validates test naming conventions
 - Ensures mocks are properly verified
 - Prevents empty or meaningless tests
 - Checks for `.only` usage that hides tests
 
 **Rules**:
+
 - `no-only-tests`: Prevents `.only` in test files
 - `no-empty-test`: Ensures tests have assertions
 - `no-mock-without-assert`: Verifies mock usage
@@ -112,6 +120,7 @@ npm run test:mutation:ci    # CI-optimized (faster, less verbose)
 - `test-naming-convention`: Validates test names
 
 **Usage**:
+
 ```bash
 npm run lint:test
 ```
@@ -171,7 +180,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: "18"
       - run: npm ci
       - run: npm run test:validate:ci
       - uses: actions/upload-artifact@v3
@@ -184,6 +193,7 @@ jobs:
 ### Validation Results
 
 The CI validation provides:
+
 - ✅ **Pass/Fail Status** - Overall validation result
 - 📊 **Coverage Reports** - Detailed HTML reports
 - 🧬 **Mutation Scores** - Quality metrics
@@ -224,20 +234,20 @@ The CI validation provides:
 
 ```javascript
 module.exports = {
-  extends: ['next/core-web-vitals'],
-  plugins: ['test-quality'],
+  extends: ["next/core-web-vitals"],
+  plugins: ["test-quality"],
   overrides: [
     {
-      files: ['**/__tests__/**/*.ts', '**/__tests__/**/*.tsx', '**/*.test.ts', '**/*.test.tsx'],
+      files: ["**/__tests__/**/*.ts", "**/__tests__/**/*.tsx", "**/*.test.ts", "**/*.test.tsx"],
       rules: {
-        'test-quality/no-only-tests': 'error',
-        'test-quality/no-empty-test': 'warn',
-        'test-quality/no-mock-without-assert': 'warn',
-        'test-quality/meaningful-assertions': 'warn',
-        'test-quality/test-naming-convention': 'warn'
-      }
-    }
-  ]
+        "test-quality/no-only-tests": "error",
+        "test-quality/no-empty-test": "warn",
+        "test-quality/no-mock-without-assert": "warn",
+        "test-quality/meaningful-assertions": "warn",
+        "test-quality/test-naming-convention": "warn",
+      },
+    },
+  ],
 };
 ```
 
@@ -248,7 +258,7 @@ const config = {
   // ... existing config
   testMatch: ["**/__tests__/**/*.[jt]s?(x)", "**/?(*.)+(spec|test).[jt]s?(x)"],
   // Test categorization
-  testNamePattern: process.env.TEST_CATEGORY || '.*',
+  testNamePattern: process.env.TEST_CATEGORY || ".*",
   // ... rest of config
 };
 ```
@@ -282,29 +292,38 @@ const config = {
 ### Common Issues
 
 #### 1. **ES Module Errors**
+
 ```
 ReferenceError: require is not defined in ES module scope
 ```
+
 **Solution**: All scripts use ES modules. Ensure package.json has `"type": "module"`.
 
 #### 2. **Coverage Data Not Found**
+
 ```
 ❌ Coverage data not found. Run "npm run test:coverage" first.
 ```
+
 **Solution**: Generate coverage data before analysis:
+
 ```bash
 npm run test:coverage
 npm run analyze:coverage
 ```
 
 #### 3. **Mutation Testing Timeout**
+
 **Solution**: Increase timeout in Stryker config or run on fewer files:
+
 ```bash
 npx stryker run --mutate src/specific/file.ts
 ```
 
 #### 4. **Test Quality Linting Not Working**
+
 **Solution**: Ensure ESLint test config is loaded:
+
 ```bash
 npm run lint:test
 ```
@@ -312,11 +331,13 @@ npm run lint:test
 ### Performance Optimization
 
 #### For Large Codebases
+
 - Use `test:validate:quick` for faster feedback
 - Run mutation testing on specific files only
 - Parallelize test execution in CI
 
 #### CI Optimization
+
 ```yaml
 # Run fast checks first
 - run: npm run test:validate:quick
@@ -380,6 +401,7 @@ npm run test:validate:quick
 ### IDE Integration
 
 #### VS Code Settings
+
 ```json
 {
   "eslint.options": {
@@ -390,6 +412,7 @@ npm run test:validate:quick
 ```
 
 #### Test Coverage in IDE
+
 - Install "Coverage Gutters" extension
 - Configure to read `coverage/lcov.info`
 - Shows uncovered lines directly in editor

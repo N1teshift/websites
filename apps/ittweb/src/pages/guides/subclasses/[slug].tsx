@@ -1,20 +1,28 @@
-import { GetStaticPaths, GetStaticProps } from 'next';
-import { getStaticPropsWithTranslations } from '@websites/infrastructure/i18n/getStaticProps';
-import { ErrorBoundary } from '@/features/infrastructure/components';
-import Link from 'next/link';
-import { getDerivedClassBySlug, SUBCLASS_SLUGS, DerivedClassData } from '@/features/modules/content/guides/data/units/derivedClasses';
-import { getClassBySlug } from '@/features/modules/content/guides/data/units/classes';
-import ClassHeader from '@/features/modules/content/guides/components/ClassHeader';
-import StatsCard from '@/features/modules/content/guides/components/StatsCard';
-import { MOVESPEED_PER_LEVEL, getMoveSpeedOffset, ATTR_START_MULTIPLIER } from '@/features/modules/content/guides/config/balance';
+import { GetStaticPaths, GetStaticProps } from "next";
+import { getStaticPropsWithTranslations } from "@websites/infrastructure/i18n/getStaticProps";
+import { ErrorBoundary } from "@/features/infrastructure/components";
+import Link from "next/link";
+import {
+  getDerivedClassBySlug,
+  SUBCLASS_SLUGS,
+  DerivedClassData,
+} from "@/features/modules/content/guides/data/units/derivedClasses";
+import { getClassBySlug } from "@/features/modules/content/guides/data/units/classes";
+import ClassHeader from "@/features/modules/content/guides/components/ClassHeader";
+import StatsCard from "@/features/modules/content/guides/components/StatsCard";
+import {
+  MOVESPEED_PER_LEVEL,
+  getMoveSpeedOffset,
+  ATTR_START_MULTIPLIER,
+} from "@/features/modules/content/guides/config/balance";
 
 type Props = { cls: DerivedClassData };
 
 const pageNamespaces = ["common"];
 export const getStaticProps: GetStaticProps<Props> = async ({ params, locale }) => {
-  const slug = String(params?.slug || '');
+  const slug = String(params?.slug || "");
   const cls = getDerivedClassBySlug(slug);
-  if (!cls || cls.type !== 'sub') {
+  if (!cls || cls.type !== "sub") {
     return { notFound: true };
   }
   const base = await getStaticPropsWithTranslations(pageNamespaces)({ locale: locale as string });
@@ -27,14 +35,18 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export default function SubclassDetail({ cls }: Props) {
   const parent = getClassBySlug(cls.parentSlug);
-  const msOffset = getMoveSpeedOffset('sub');
+  const msOffset = getMoveSpeedOffset("sub");
   return (
     <ErrorBoundary>
-    <div className="min-h-[calc(100vh-8rem)] px-6 py-10 max-w-4xl mx-auto">
+      <div className="min-h-[calc(100vh-8rem)] px-6 py-10 max-w-4xl mx-auto">
         <div className="mb-6 space-x-4">
-          <Link href="/guides/troll-classes" className="link-amber">← Troll Classes Overview</Link>
+          <Link href="/guides/troll-classes" className="link-amber">
+            ← Troll Classes Overview
+          </Link>
           {parent && (
-            <Link href={`/guides/classes/${parent.slug}`} className="link-amber">{parent.name}</Link>
+            <Link href={`/guides/classes/${parent.slug}`} className="link-amber">
+              {parent.name}
+            </Link>
           )}
         </div>
 
@@ -50,7 +62,11 @@ export default function SubclassDetail({ cls }: Props) {
             ms: cls.baseMoveSpeed,
             atkSpd: cls.baseAttackSpeed,
           }}
-          growth={{ str: cls.growth.strength, agi: cls.growth.agility, int: cls.growth.intelligence }}
+          growth={{
+            str: cls.growth.strength,
+            agi: cls.growth.agility,
+            int: cls.growth.intelligence,
+          }}
           msOffset={msOffset}
           perLevelMsBonus={MOVESPEED_PER_LEVEL}
         />
@@ -58,5 +74,3 @@ export default function SubclassDetail({ cls }: Props) {
     </ErrorBoundary>
   );
 }
-
-

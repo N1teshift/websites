@@ -9,7 +9,8 @@
     "lint": "next lint",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,md}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,css,md}\"",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "analyze": "cross-env ANALYZE=true next build"
   },
   "dependencies": {
     "next": "15.5.7",
@@ -22,6 +23,7 @@
     "@vercel/speed-insights": "^1.2.0"
   },
   "devDependencies": {
+    "@next/bundle-analyzer": "^16.0.3",
     "@types/node": "^20",
     "@types/react": "^18.3.21",
     "@types/react-dom": "^18",
@@ -30,6 +32,7 @@
     "@websites/config-tailwind": "workspace:*",
     "@websites/eslint-config": "workspace:*",
     "@websites/prettier-config": "workspace:*",
+    "cross-env": "^7.0.3",
     "eslint": "^9",
     "eslint-config-next": "15.5.7",
     "postcss": "^8",

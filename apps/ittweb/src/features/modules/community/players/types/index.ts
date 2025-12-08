@@ -1,5 +1,5 @@
-import { Timestamp } from 'firebase/firestore';
-import { GameCategory } from '../../../game-management/games/types';
+import { Timestamp } from "firebase/firestore";
+import { GameCategory } from "../../../game-management/games/types";
 
 /**
  * Category-specific player statistics
@@ -35,7 +35,7 @@ export interface PlayerStats {
  * Player profile data (includes additional computed data)
  */
 export interface PlayerProfile extends PlayerStats {
-  recentGames?: import('../../../game-management/games/types').Game[];
+  recentGames?: import("../../../game-management/games/types").Game[];
   activity?: { [date: string]: number }; // Games per day
   eloHistory?: Array<{ date: string; elo: number }>;
   classStats?: {
@@ -76,6 +76,3 @@ export interface PlayerSearchFilters {
   endDate?: string;
   includeGames?: boolean;
 }
-
-
-

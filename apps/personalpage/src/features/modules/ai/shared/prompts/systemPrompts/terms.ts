@@ -5,13 +5,13 @@
  * The prompt focuses on properties governing the combination (`POWER`, `POWER_ORDER`, `COMBINATION_TYPE`)
  * and instructs the LLM to extract the prompt parts describing each constituent `term`.
  */
-import {POWER, POWER_ORDER, COMBINATION_TYPE} from "./commonConstants"
+import { POWER, POWER_ORDER, COMBINATION_TYPE } from "./commonConstants";
 
 /** @internal Introductory instruction for the LLM. */
 const INTRODUCTION = `
 You are a mathematical query analyzer.
 Your ONLY job is to identify the terms settings from a given user's request.
-`
+`;
 
 /** @internal Aggregates property explanations imported from common constants. */
 const PROPERTIES = `
@@ -45,7 +45,4 @@ ${INTRODUCTION}
 ${PROPERTIES}
   
 ${SUB_OBJECT_PROMPT_PARTS}
-`
-
-
-
+`;

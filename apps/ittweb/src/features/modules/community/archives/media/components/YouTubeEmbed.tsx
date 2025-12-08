@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { extractYouTubeId } from '@/features/modules/community/archives/services';
+import React, { useState } from "react";
+import { extractYouTubeId } from "@/features/modules/community/archives/services";
 
 interface YouTubeEmbedProps {
   url: string;
@@ -46,13 +46,13 @@ export default function YouTubeEmbed({ url, title }: YouTubeEmbedProps) {
   // Use privacy-enhanced mode (youtube-nocookie.com) to reduce tracking
   // Add parameters to disable tracking and reduce third-party script errors
   const embedParams = new URLSearchParams({
-    rel: '0', // Don't show related videos
-    modestbranding: '1', // Hide YouTube logo
-    enablejsapi: '0', // Disable JavaScript API (reduces tracking)
-    fs: '0', // Disable fullscreen button (reduces tracking)
-    iv_load_policy: '3', // Hide video annotations
-    playsinline: '1', // Play inline on mobile
-    showinfo: '0', // Hide video info (deprecated but harmless)
+    rel: "0", // Don't show related videos
+    modestbranding: "1", // Hide YouTube logo
+    enablejsapi: "0", // Disable JavaScript API (reduces tracking)
+    fs: "0", // Disable fullscreen button (reduces tracking)
+    iv_load_policy: "3", // Hide video annotations
+    playsinline: "1", // Play inline on mobile
+    showinfo: "0", // Hide video info (deprecated but harmless)
   });
 
   return (
@@ -73,5 +73,3 @@ export default function YouTubeEmbed({ url, title }: YouTubeEmbedProps) {
     </div>
   );
 }
-
-

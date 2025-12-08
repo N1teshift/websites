@@ -1,11 +1,11 @@
-import { serialize } from 'next-mdx-remote/serialize';
-import type { MDXRemoteSerializeResult } from 'next-mdx-remote';
-import remarkGfm from 'remark-gfm';
-import rehypeSlug from 'rehype-slug';
-import rehypeAutolinkHeadings from 'rehype-autolink-headings';
-import { getAllPosts, getLatestPost } from './postService.server';
-import { getPostBySlug } from './postService';
-import type { Post } from '@/types/post';
+import { serialize } from "next-mdx-remote/serialize";
+import type { MDXRemoteSerializeResult } from "next-mdx-remote";
+import remarkGfm from "remark-gfm";
+import rehypeSlug from "rehype-slug";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import { getAllPosts, getLatestPost } from "./postService.server";
+import { getPostBySlug } from "./postService";
+import type { Post } from "@/types/post";
 
 export type PostMeta = {
   id?: string;
@@ -55,13 +55,7 @@ function postToMeta(post: Post): PostMeta {
  */
 export async function listPostSlugs(): Promise<string[]> {
   const posts = await getAllPosts();
-  return Array.from(
-    new Set(
-      posts
-        .filter(isValidPost)
-        .map((post) => post.slug)
-    )
-  );
+  return Array.from(new Set(posts.filter(isValidPost).map((post) => post.slug)));
 }
 
 /**
@@ -82,12 +76,10 @@ export async function loadPostBySlug(slug: string): Promise<LoadedPost | null> {
  */
 export async function loadAllPosts(): Promise<LoadedPost[]> {
   const posts = await getAllPosts();
-  return posts
-    .filter(isValidPost)
-    .map((post) => ({
-      meta: postToMeta(post),
-      content: post.content,
-    }));
+  return posts.filter(isValidPost).map((post) => ({
+    meta: postToMeta(post),
+    content: post.content,
+  }));
 }
 
 /**
@@ -100,14 +92,11 @@ export async function loadLatestPostSerialized(): Promise<SerializedPost | null>
   const mdxSource = await serialize(latest.content, {
     mdxOptions: {
       remarkPlugins: [remarkGfm],
-      rehypePlugins: [rehypeSlug, [rehypeAutolinkHeadings, { behavior: 'wrap' }]],
-      format: 'mdx',
+      rehypePlugins: [rehypeSlug, [rehypeAutolinkHeadings, { behavior: "wrap" }]],
+      format: "mdx",
     },
     parseFrontmatter: false,
   });
 
   return { meta: postToMeta(latest), mdxSource };
 }
-
-
-

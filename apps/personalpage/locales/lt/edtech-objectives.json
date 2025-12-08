@@ -1,28 +1,27 @@
 {
-    "objective": {
-        "A": "A - Žinojimas ir supratimas",
-        "B": "B - Modelių tyrinėjimas",
-        "C": "C - Komunikavimas",
-        "D": "D - Matematika praktinėse situacijose"
-    },
-    "strand": {
-        "A-i": "Pasirinkti tinkamą matematiką sprendžiant uždavinius tiek pažįstamose, tiek nepažįstamose situacijose",
-        "A-ii": "Sėkmingai pritaikyti pasirinktą matematiką sprendžiant uždavinius",
-        "A-iii": "Teisingai spręsti uždavinius įvairiuose kontekstuose",
-        "B-i": "Pasirinkti ir taikyti matematinius problemų sprendimo metodus sudėtingiems modeliams atrasti",
-        "B-ii": "Apibūdinti modelius kaip bendras taisykles, atitinkančias pastebėjimus",
-        "B-iii": "Įrodyti arba patikrinti ir pagrįsti bendras taisykles",
-        "C-i": "Naudoti tinkamą matematinius simbolius, užrašus ir terminologiją žodiniuose ir rašytiniuose paaiškinimuose",
-        "C-ii": "Naudoti tinkamas matematines atvaizdavimo formas informacijai pateikti",
-        "C-iii": "Pereiti tarp skirtingų matematinių atvaizdavimo formų",
-        "C-iv": "Pateikti pilnas, nuoseklias ir glaustas matematines argumentacijas",
-        "C-v": "Organizuoti informaciją naudojant loginę struktūrą",
-        "D-i": "Nustatyti aktualius autentiškų realaus gyvenimo situacijų elementus",
-        "D-ii": "Pasirinkti tinkamas matematines strategijas sprendžiant autentiškas realaus gyvenimo situacijas",
-        "D-iii": "Sėkmingai pritaikyti pasirinktą matematinių strategijų sprendžiant",
-        "D-iv": "Pagrįsti sprendimo tikslumo laipsnį",
-        "D-v": "Pagrįsti, ar sprendimas yra prasmingas konkrečioje realaus gyvenimo situacijoje"
-    },
-    "strand_focus": "Ši sritis orientuota į"
+  "objective": {
+    "A": "A - Žinojimas ir supratimas",
+    "B": "B - Modelių tyrinėjimas",
+    "C": "C - Komunikavimas",
+    "D": "D - Matematika praktinėse situacijose"
+  },
+  "strand": {
+    "A-i": "Pasirinkti tinkamą matematiką sprendžiant uždavinius tiek pažįstamose, tiek nepažįstamose situacijose",
+    "A-ii": "Sėkmingai pritaikyti pasirinktą matematiką sprendžiant uždavinius",
+    "A-iii": "Teisingai spręsti uždavinius įvairiuose kontekstuose",
+    "B-i": "Pasirinkti ir taikyti matematinius problemų sprendimo metodus sudėtingiems modeliams atrasti",
+    "B-ii": "Apibūdinti modelius kaip bendras taisykles, atitinkančias pastebėjimus",
+    "B-iii": "Įrodyti arba patikrinti ir pagrįsti bendras taisykles",
+    "C-i": "Naudoti tinkamą matematinius simbolius, užrašus ir terminologiją žodiniuose ir rašytiniuose paaiškinimuose",
+    "C-ii": "Naudoti tinkamas matematines atvaizdavimo formas informacijai pateikti",
+    "C-iii": "Pereiti tarp skirtingų matematinių atvaizdavimo formų",
+    "C-iv": "Pateikti pilnas, nuoseklias ir glaustas matematines argumentacijas",
+    "C-v": "Organizuoti informaciją naudojant loginę struktūrą",
+    "D-i": "Nustatyti aktualius autentiškų realaus gyvenimo situacijų elementus",
+    "D-ii": "Pasirinkti tinkamas matematines strategijas sprendžiant autentiškas realaus gyvenimo situacijas",
+    "D-iii": "Sėkmingai pritaikyti pasirinktą matematinių strategijų sprendžiant",
+    "D-iv": "Pagrįsti sprendimo tikslumo laipsnį",
+    "D-v": "Pagrįsti, ar sprendimas yra prasmingas konkrečioje realaus gyvenimo situacijoje"
+  },
+  "strand_focus": "Ši sritis orientuota į"
 }
-

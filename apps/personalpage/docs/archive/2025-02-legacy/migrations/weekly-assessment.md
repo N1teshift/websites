@@ -11,12 +11,14 @@ This migration converts all `weekly_assessment` type records to `classwork` type
 **Records Affected:** 103 `weekly_assessment` records across all students
 
 **Changes Made:**
+
 1. **Type Change**: `weekly_assessment` → `classwork`
 2. **Task Name Update**: Appends "(experimental)" to task names that don't already have it
 3. **Assessment Title Update**: Appends "(Experimental)" to assessment titles
 4. **Schema Version**: Updated to `4.2`
 
 **Example Before:**
+
 ```json
 {
   "date": "2025-10-06",
@@ -30,6 +32,7 @@ This migration converts all `weekly_assessment` type records to `classwork` type
 ```
 
 **Example After:**
+
 ```json
 {
   "date": "2025-10-06",
@@ -45,23 +48,29 @@ This migration converts all `weekly_assessment` type records to `classwork` type
 ### Code Changes
 
 #### 1. Type Definitions (`ProgressReportTypes.ts`)
+
 - **Removed** `weekly_assessment` from `AssessmentType` union
 - Updated comment for `classwork` to indicate it includes experimental classwork
 
 #### 2. Filter Logic (Timeline & Student View)
+
 Enhanced experimental filtering to exclude:
+
 - EXT classwork from September 2025
 - EXT classwork from October 2025
 - Any classwork with "experimental" in the task name
 
 **Filter Logic:**
+
 ```typescript
-if (assessment.column?.startsWith('EXT') && 
-    assessment.type === 'classwork' &&
-    (assessment.date.startsWith('2025-09') || 
-     assessment.date.startsWith('2025-10') ||
-     assessment.task_name?.toLowerCase().includes('experimental'))) {
-    return; // Filter out
+if (
+  assessment.column?.startsWith("EXT") &&
+  assessment.type === "classwork" &&
+  (assessment.date.startsWith("2025-09") ||
+    assessment.date.startsWith("2025-10") ||
+    assessment.task_name?.toLowerCase().includes("experimental"))
+) {
+  return; // Filter out
 }
 ```
 
@@ -74,6 +83,7 @@ npm run migrate:weekly-to-classwork
 ```
 
 Or directly:
+
 ```bash
 npx ts-node scripts/convertWeeklyAssessmentToClasswork.ts
 ```
@@ -81,11 +91,13 @@ npx ts-node scripts/convertWeeklyAssessmentToClasswork.ts
 ### Step 2: Review Output
 
 The script will:
+
 1. ✅ Create a backup: `master_student_data_v4_1_backup_YYYY-MM-DD.json`
 2. ✅ Generate new database: `master_student_data_v4_2.json`
 3. ✅ Display conversion statistics
 
 **Expected Output:**
+
 ```
 🔄 Starting migration: weekly_assessment -> classwork (experimental)
 📂 Reading from: master_student_data_v4_1_final.json
@@ -108,10 +120,10 @@ Update any configuration or environment variables that reference the database fi
 
 ```typescript
 // Before (if you had it hardcoded anywhere)
-const DATABASE_FILE = 'master_student_data_v4_1_final.json';
+const DATABASE_FILE = "master_student_data_v4_1_final.json";
 
 // After
-const DATABASE_FILE = 'master_student_data_v4_2.json';
+const DATABASE_FILE = "master_student_data_v4_2.json";
 
 // Note: The Progress Report loads data via file upload in the browser,
 // so no code changes are needed - just upload the new v4_2 file.
@@ -151,6 +163,7 @@ If you need to revert the migration:
 ## Impact Assessment
 
 ### ✅ What Will Work
+
 - All existing data display functionality
 - Timeline charts (experimental data hidden)
 - Assessment tables (experimental data hidden)
@@ -159,11 +172,13 @@ If you need to revert the migration:
 - All other assessment types
 
 ### ⚠️ What Changed
+
 - Weekly assessments now appear as classwork (but are filtered out as experimental)
 - `weekly_assessment` type no longer exists in the system
 - EXT classwork from Sept/Oct is hidden from display
 
 ### ❌ No Breaking Changes
+
 - No API changes
 - No UI changes (except filtered data)
 - No data loss
@@ -171,17 +186,21 @@ If you need to revert the migration:
 ## Files Modified
 
 ### Migration Script
+
 - `scripts/convertWeeklyAssessmentToClasswork.ts` (new)
 - `package.json` (added migration command)
 
 ### Type Definitions
+
 - `src/features/modules/edtech/types/ProgressReportTypes.ts`
 
 ### Components
+
 - `src/features/modules/edtech/components/progressReport/ActivityTimelineChart.tsx`
 - `src/features/modules/edtech/components/sections/progressReport/StudentViewSectionEnhanced.tsx`
 
 ### Documentation
+
 - `WEEKLY_ASSESSMENT_MIGRATION.md` (this file)
 
 ## Support
@@ -207,4 +226,3 @@ If you encounter any issues during migration:
 **Database Version**: v4.1 → v4.2
 **Breaking Changes**: None
 **Data Loss Risk**: None (backup created)
-

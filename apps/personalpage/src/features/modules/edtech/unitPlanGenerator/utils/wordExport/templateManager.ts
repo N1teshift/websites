@@ -23,7 +23,7 @@ class TemplateManager {
     try {
       const buffer = await file.arrayBuffer();
       const id = this.generateTemplateId();
-      
+
       const templateInfo: TemplateInfo = {
         id,
         name: file.name,
@@ -40,8 +40,8 @@ class TemplateManager {
 
       return templateInfo;
     } catch (error) {
-      console.error('Error uploading template:', error);
-      throw new Error('Failed to upload template');
+      console.error("Error uploading template:", error);
+      throw new Error("Failed to upload template");
     }
   }
 
@@ -105,28 +105,28 @@ class TemplateManager {
 
     try {
       // Import the default template file
-      const response = await fetch('/templates/wordTemplate.docx');
+      const response = await fetch("/templates/wordTemplate.docx");
       if (!response.ok) {
-        throw new Error('Failed to load default template');
+        throw new Error("Failed to load default template");
       }
-      
+
       const buffer = await response.arrayBuffer();
       const templateInfo: TemplateInfo = {
-        id: 'default_template',
-        name: 'Default Unit Plan Template',
-        description: 'Built-in default template for unit plans',
+        id: "default_template",
+        name: "Default Unit Plan Template",
+        description: "Built-in default template for unit plans",
         lastModified: new Date(),
         size: buffer.byteLength,
       };
 
-      this.templates.set('default_template', buffer);
-      this.templateInfo.set('default_template', templateInfo);
+      this.templates.set("default_template", buffer);
+      this.templateInfo.set("default_template", templateInfo);
       this.defaultTemplateLoaded = true;
 
       // Save to localStorage
       this.saveToLocalStorage();
     } catch (error) {
-      console.warn('Could not load default template:', error);
+      console.warn("Could not load default template:", error);
     }
   }
 
@@ -143,19 +143,19 @@ class TemplateManager {
   private saveToLocalStorage(): void {
     try {
       // Check if we're in a browser environment
-      if (typeof window === 'undefined' || typeof localStorage === 'undefined') {
+      if (typeof window === "undefined" || typeof localStorage === "undefined") {
         return;
       }
 
       const templateData = Array.from(this.templateInfo.entries()).map(([id, info]) => ({
         id,
         info,
-        data: Array.from(new Uint8Array(this.templates.get(id)!))
+        data: Array.from(new Uint8Array(this.templates.get(id)!)),
       }));
 
-      localStorage.setItem('docxtemplater_templates', JSON.stringify(templateData));
+      localStorage.setItem("docxtemplater_templates", JSON.stringify(templateData));
     } catch (error) {
-      console.warn('Could not save templates to localStorage:', error);
+      console.warn("Could not save templates to localStorage:", error);
     }
   }
 
@@ -165,22 +165,22 @@ class TemplateManager {
   loadFromLocalStorage(): void {
     try {
       // Check if we're in a browser environment
-      if (typeof window === 'undefined' || typeof localStorage === 'undefined') {
+      if (typeof window === "undefined" || typeof localStorage === "undefined") {
         return;
       }
 
-      const stored = localStorage.getItem('docxtemplater_templates');
+      const stored = localStorage.getItem("docxtemplater_templates");
       if (!stored) return;
 
       const templateData = JSON.parse(stored);
-      
+
       templateData.forEach((item: { id: string; info: TemplateInfo; data: number[] }) => {
         const buffer = new Uint8Array(item.data).buffer;
         this.templates.set(item.id, buffer);
         this.templateInfo.set(item.id, item.info);
       });
     } catch (error) {
-      console.warn('Could not load templates from localStorage:', error);
+      console.warn("Could not load templates from localStorage:", error);
     }
   }
 
@@ -190,10 +190,10 @@ class TemplateManager {
   clearAllTemplates(): void {
     this.templates.clear();
     this.templateInfo.clear();
-    
+
     // Check if we're in a browser environment
-    if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
-      localStorage.removeItem('docxtemplater_templates');
+    if (typeof window !== "undefined" && typeof localStorage !== "undefined") {
+      localStorage.removeItem("docxtemplater_templates");
     }
   }
 }
@@ -203,6 +203,3 @@ export const templateManager = new TemplateManager();
 
 // Load templates on module initialization
 templateManager.loadFromLocalStorage();
-
-
-

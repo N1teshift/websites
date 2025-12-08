@@ -1,41 +1,50 @@
-import React, { useEffect, useMemo, useCallback, useState } from 'react';
-import { useSession } from 'next-auth/react';
-import { createComponentLogger, logError } from '@websites/infrastructure/logging';
-import { PageHero } from '@/features/infrastructure/components';
-import type { ArchiveEntry } from '@/types/archive';
-import type { GameFilters } from '@/features/modules/game-management/games/types';
+import React, { useEffect, useMemo, useCallback, useState } from "react";
+import { useSession } from "next-auth/react";
+import { createComponentLogger, logError } from "@websites/infrastructure/logging";
+import { PageHero } from "@/features/infrastructure/components";
+import type { ArchiveEntry } from "@/types/archive";
+import type { GameFilters } from "@/features/modules/game-management/games/types";
 import {
   ArchiveForm,
-  ArchiveEditForm
-} from '@/features/modules/community/archives/forms/components';
+  ArchiveEditForm,
+} from "@/features/modules/community/archives/forms/components";
+import { ArchivesToolbar } from "@/features/modules/community/archives/shared/components";
+import { ArchivesContent } from "@/features/modules/community/archives/timeline/components";
+import ImageModal from "@/features/modules/community/archives/shared/components/sections/ImageModal";
 import {
-  ArchivesToolbar
-} from '@/features/modules/community/archives/shared/components';
-import {
-  ArchivesContent
-} from '@/features/modules/community/archives/timeline/components';
-import ImageModal from '@/features/modules/community/archives/shared/components/sections/ImageModal';
-import { useArchivesPage, useArchivesActions } from '@/features/modules/community/archives/shared/hooks';
-import { useGames } from '@/features/modules/game-management/games/hooks/useGames';
-import { UserRole } from '@/types/userData';
-import { isAdmin } from '@/features/modules/community/users';
-import ArchiveDeleteDialog from '@/features/modules/community/archives/forms/components/ArchiveDeleteDialog';
+  useArchivesPage,
+  useArchivesActions,
+} from "@/features/modules/community/archives/shared/hooks";
+import { useGames } from "@/features/modules/game-management/games/hooks/useGames";
+import { UserRole } from "@/types/userData";
+import { isAdmin } from "@/features/modules/community/users";
+import ArchiveDeleteDialog from "@/features/modules/community/archives/forms/components/ArchiveDeleteDialog";
 
 interface ArchivesPageProps {
   pageNamespaces: string[];
 }
 
 const ArchivesPage: React.FC<ArchivesPageProps> = ({ pageNamespaces: _pageNamespaces }) => {
-  const logger = createComponentLogger('ArchivesPage');
+  const logger = createComponentLogger("ArchivesPage");
   const { data: session, status } = useSession();
   const [userRole, setUserRole] = useState<UserRole | undefined>();
   const [entryPendingDelete, setEntryPendingDelete] = useState<ArchiveEntry | null>(null);
   const [isDeletingEntry, setIsDeletingEntry] = useState(false);
   const [gameFilters, setGameFilters] = useState<GameFilters>({});
-  
+
   // Use our custom hooks
   const {
-    state: { entries, loading, error, showForm, showEditForm, editingEntry, showImageModal, modalImage, sortOrder },
+    state: {
+      entries,
+      loading,
+      error,
+      showForm,
+      showEditForm,
+      editingEntry,
+      showImageModal,
+      modalImage,
+      sortOrder,
+    },
     datedEntries,
     undatedEntries,
     setEntries,
@@ -82,7 +91,7 @@ const ArchivesPage: React.FC<ArchivesPageProps> = ({ pageNamespaces: _pageNamesp
     let isMounted = true;
 
     const fetchUserRole = async () => {
-      if (status !== 'authenticated' || !session?.discordId) {
+      if (status !== "authenticated" || !session?.discordId) {
         if (isMounted) {
           setUserRole(undefined);
         }
@@ -90,9 +99,9 @@ const ArchivesPage: React.FC<ArchivesPageProps> = ({ pageNamespaces: _pageNamesp
       }
 
       try {
-        const response = await fetch('/api/user/me');
+        const response = await fetch("/api/user/me");
         if (!response.ok) {
-          throw new Error('Failed to fetch user data');
+          throw new Error("Failed to fetch user data");
         }
         const result = await response.json();
         const userData = result.data;
@@ -102,8 +111,8 @@ const ArchivesPage: React.FC<ArchivesPageProps> = ({ pageNamespaces: _pageNamesp
       } catch (error) {
         logError(
           error instanceof Error ? error : new Error(String(error)),
-          'Failed to fetch user role for archives page',
-          { component: 'ArchivesPage', operation: 'fetchUserRole' }
+          "Failed to fetch user role for archives page",
+          { component: "ArchivesPage", operation: "fetchUserRole" }
         );
         if (isMounted) {
           setUserRole(undefined);
@@ -126,10 +135,10 @@ const ArchivesPage: React.FC<ArchivesPageProps> = ({ pageNamespaces: _pageNamesp
 
   // Log page visit
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      logger.info('Archives page visited', {
+    if (typeof window !== "undefined") {
+      logger.info("Archives page visited", {
         path: window.location.pathname,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       });
     }
   }, [logger]);
@@ -139,7 +148,7 @@ const ArchivesPage: React.FC<ArchivesPageProps> = ({ pageNamespaces: _pageNamesp
     setShowForm(true);
   }, [setShowForm]);
 
-  const isAuthenticated = useMemo(() => status === 'authenticated', [status]);
+  const isAuthenticated = useMemo(() => status === "authenticated", [status]);
   const currentDiscordId = session?.discordId;
   const canManageEntries = useMemo(() => isAdmin(userRole), [userRole]);
   const handleRequestDelete = useCallback((entry: ArchiveEntry) => {
@@ -189,8 +198,7 @@ const ArchivesPage: React.FC<ArchivesPageProps> = ({ pageNamespaces: _pageNamesp
         isAuthenticated={isAuthenticated}
         canManageEntries={canManageEntries}
         canDeleteEntry={(entry) =>
-          canManageEntries ||
-          (!!currentDiscordId && entry.createdByDiscordId === currentDiscordId)
+          canManageEntries || (!!currentDiscordId && entry.createdByDiscordId === currentDiscordId)
         }
         onEdit={handleEdit}
         onRequestDelete={handleRequestDelete}
@@ -200,10 +208,7 @@ const ArchivesPage: React.FC<ArchivesPageProps> = ({ pageNamespaces: _pageNamesp
       />
 
       {isAuthenticated && showForm && (
-        <ArchiveForm
-          onSuccess={handleAddSuccess}
-          onCancel={handleAddCancel}
-        />
+        <ArchiveForm onSuccess={handleAddSuccess} onCancel={handleAddCancel} />
       )}
 
       {isAuthenticated && showEditForm && editingEntry && (
@@ -228,5 +233,3 @@ const ArchivesPage: React.FC<ArchivesPageProps> = ({ pageNamespaces: _pageNamesp
 };
 
 export default ArchivesPage;
-
-

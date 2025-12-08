@@ -1,12 +1,12 @@
-import { useState, FormEvent } from 'react';
-import { useSession } from 'next-auth/react';
-import Image from 'next/image';
-import { EntryContentType } from '@/types/entry';
-import { uploadImage } from '@/features/modules/community/archives/services';
-import { createComponentLogger, logError } from '@websites/infrastructure/logging';
-import type { ArchiveEntry } from '@/types/archive';
+import { useState, FormEvent } from "react";
+import { useSession } from "next-auth/react";
+import Image from "next/image";
+import { EntryContentType } from "@/types/entry";
+import { uploadImage } from "@/features/modules/community/archives/services";
+import { createComponentLogger, logError } from "@websites/infrastructure/logging";
+import type { ArchiveEntry } from "@/types/archive";
 
-const logger = createComponentLogger('EntryEditModal');
+const logger = createComponentLogger("EntryEditModal");
 
 interface EntryEditModalProps {
   entry: ArchiveEntry;
@@ -15,32 +15,39 @@ interface EntryEditModalProps {
   onCancel: () => void;
 }
 
-export default function EntryEditModal({ entry, entryId, onSuccess, onCancel }: EntryEditModalProps) {
+export default function EntryEditModal({
+  entry,
+  entryId,
+  onSuccess,
+  onCancel,
+}: EntryEditModalProps) {
   const { data: session } = useSession();
   const [contentType, setContentType] = useState<EntryContentType>(
-    entry.entryType === 'story' ? 'post' : 'memory'
+    entry.entryType === "story" ? "post" : "memory"
   );
   const [title, setTitle] = useState(entry.title);
   const [content, setContent] = useState(entry.content);
   const [date, setDate] = useState(
-    entry.dateInfo.singleDate ? entry.dateInfo.singleDate.split('T')[0] : new Date().toISOString().slice(0, 10)
+    entry.dateInfo.singleDate
+      ? entry.dateInfo.singleDate.split("T")[0]
+      : new Date().toISOString().slice(0, 10)
   );
   const [images, setImages] = useState<File[]>([]);
   const [imagePreviewUrls, setImagePreviewUrls] = useState<string[]>(entry.images || []);
-  const [videoUrl, setVideoUrl] = useState(entry.videoUrl || '');
-  const [twitchClipUrl, setTwitchClipUrl] = useState(entry.twitchClipUrl || '');
-  const [sectionOrder] = useState<Array<'images' | 'video' | 'twitch' | 'text'>>(
-    (entry.sectionOrder as Array<'images' | 'video' | 'twitch' | 'text'>) || ['text']
+  const [videoUrl, setVideoUrl] = useState(entry.videoUrl || "");
+  const [twitchClipUrl, setTwitchClipUrl] = useState(entry.twitchClipUrl || "");
+  const [sectionOrder] = useState<Array<"images" | "video" | "twitch" | "text">>(
+    (entry.sectionOrder as Array<"images" | "video" | "twitch" | "text">) || ["text"]
   );
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     setImages(files);
 
     // Create preview URLs for new files
-    const newUrls = files.map(file => URL.createObjectURL(file));
+    const newUrls = files.map((file) => URL.createObjectURL(file));
     setImagePreviewUrls([...imagePreviewUrls, ...newUrls]);
   };
 
@@ -53,15 +60,15 @@ export default function EntryEditModal({ entry, entryId, onSuccess, onCancel }: 
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    setError('');
+    setError("");
 
     if (!session?.user) {
-      setError('You must be signed in to edit an entry');
+      setError("You must be signed in to edit an entry");
       return;
     }
 
     if (!title.trim() || !content.trim()) {
-      setError('Title and content are required');
+      setError("Title and content are required");
       return;
     }
 
@@ -70,7 +77,7 @@ export default function EntryEditModal({ entry, entryId, onSuccess, onCancel }: 
     try {
       // Upload new images if any
       const uploadedImageUrls: string[] = [];
-      if (contentType === 'memory' && images.length > 0) {
+      if (contentType === "memory" && images.length > 0) {
         for (const image of images) {
           const url = await uploadImage(image);
           uploadedImageUrls.push(url);
@@ -78,8 +85,8 @@ export default function EntryEditModal({ entry, entryId, onSuccess, onCancel }: 
       }
 
       // Separate existing images (URLs) from new blob previews
-      const existingImageUrls = imagePreviewUrls.filter(url =>
-        !url.startsWith('blob:') && typeof url === 'string' && url.length > 0
+      const existingImageUrls = imagePreviewUrls.filter(
+        (url) => !url.startsWith("blob:") && typeof url === "string" && url.length > 0
       );
       const allImageUrls = [...existingImageUrls, ...uploadedImageUrls];
 
@@ -88,26 +95,25 @@ export default function EntryEditModal({ entry, entryId, onSuccess, onCancel }: 
         content: content.trim(),
         contentType,
         date: new Date(date).toISOString(),
-        ...(contentType === 'memory' && {
+        ...(contentType === "memory" && {
           images: allImageUrls.length > 0 ? allImageUrls : undefined,
           videoUrl: videoUrl.trim() || undefined,
           twitchClipUrl: twitchClipUrl.trim() || undefined,
-          sectionOrder: allImageUrls.length > 0 || videoUrl || twitchClipUrl
-            ? sectionOrder
-            : undefined,
+          sectionOrder:
+            allImageUrls.length > 0 || videoUrl || twitchClipUrl ? sectionOrder : undefined,
         }),
       };
 
       const response = await fetch(`/api/entries/${entryId}`, {
-        method: 'PUT',
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(entryData),
       });
 
       if (!response.ok) {
-        let errorMessage = 'Failed to update entry';
+        let errorMessage = "Failed to update entry";
         try {
           const errorData = await response.json();
           errorMessage = errorData.error || errorMessage;
@@ -122,19 +128,19 @@ export default function EntryEditModal({ entry, entryId, onSuccess, onCancel }: 
         throw new Error(errorMessage);
       }
 
-      logger.info('Entry updated', { entryId, contentType, title });
+      logger.info("Entry updated", { entryId, contentType, title });
 
       // Pass entryId to onSuccess so parent can fetch and update the entry
       onSuccess(entryId);
     } catch (err) {
       const error = err as Error;
-      logError(error, 'Failed to update entry', {
-        component: 'EntryEditModal',
-        operation: 'updateEntry',
+      logError(error, "Failed to update entry", {
+        component: "EntryEditModal",
+        operation: "updateEntry",
         entryId,
         contentType,
       });
-      setError(error.message || 'Failed to update entry');
+      setError(error.message || "Failed to update entry");
     } finally {
       setIsSubmitting(false);
     }
@@ -151,7 +157,12 @@ export default function EntryEditModal({ entry, entryId, onSuccess, onCancel }: 
             className="text-gray-400 hover:text-white transition-colors disabled:opacity-50"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
             </svg>
           </button>
         </div>
@@ -210,7 +221,7 @@ export default function EntryEditModal({ entry, entryId, onSuccess, onCancel }: 
           </div>
 
           {/* Memory-specific fields */}
-          {contentType === 'memory' && (
+          {contentType === "memory" && (
             <>
               {/* Images */}
               <div>
@@ -238,8 +249,18 @@ export default function EntryEditModal({ entry, entryId, onSuccess, onCancel }: 
                           onClick={() => handleRemoveImage(i)}
                           className="absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
                         >
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                          <svg
+                            className="w-4 h-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M6 18L18 6M6 6l12 12"
+                            />
                           </svg>
                         </button>
                       </div>
@@ -296,7 +317,7 @@ export default function EntryEditModal({ entry, entryId, onSuccess, onCancel }: 
               disabled={isSubmitting}
               className="px-4 py-2 text-sm font-medium text-white bg-amber-600 hover:bg-amber-500 rounded-md transition-colors disabled:opacity-50"
             >
-              {isSubmitting ? 'Updating...' : 'Update Entry'}
+              {isSubmitting ? "Updating..." : "Update Entry"}
             </button>
           </div>
         </form>
@@ -304,5 +325,3 @@ export default function EntryEditModal({ entry, entryId, onSuccess, onCancel }: 
     </div>
   );
 }
-
-

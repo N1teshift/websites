@@ -15,6 +15,7 @@ A modern website for Island Troll Tribes game statistics, guides, and community 
 ## Core Features
 
 ### Game Statistics
+
 - ✅ Game tracking and management
 - ✅ ELO rating system
 - ✅ Player statistics and profiles
@@ -23,12 +24,14 @@ A modern website for Island Troll Tribes game statistics, guides, and community 
 - ✅ Analytics dashboard
 
 ### Community Features
+
 - ✅ Scheduled games with timezone support
 - ✅ Archive entries (replays, clips)
 - ✅ Blog posts with MDX support
 - ✅ Game guides and class information
 
 ### Tools
+
 - ✅ Map analyzer (Warcraft 3 map visualization)
 - ✅ Icon mapper utilities
 - ✅ Replay parser integration
@@ -59,23 +62,26 @@ ittweb/
 
 ### Prerequisites
 
-- Node.js 18+ 
+- Node.js 18+
 - npm or yarn
 
 ### Installation
 
 1. Clone the repository:
+
 ```bash
 git clone <repository-url>
 cd ittweb
 ```
 
 2. Install dependencies:
+
 ```bash
 npm install
 ```
 
 3. Start the development server:
+
 ```bash
 npm run dev
 ```
@@ -96,7 +102,6 @@ npm run dev
 - `npm run replay-meta:build` - Build the replay metadata CLI
 - `npm run replay-meta:decode -- <path>` - Decode a `.w3g` replay (after build)
 
-
 ## Internationalization
 
 The project uses i18next for internationalization. Currently supports English, but can be easily extended to support additional languages.
@@ -111,6 +116,7 @@ The project uses i18next for internationalization. Currently supports English, b
 ## Logging
 
 The application uses a lightweight console-based logging system with:
+
 - Environment-aware logging levels
 - Error categorization (VALIDATION, NETWORK, DATABASE, etc.)
 - Component-specific logging
@@ -143,6 +149,7 @@ The application uses a lightweight console-based logging system with:
 ### Module Structure
 
 Each module should have:
+
 - `README.md` - Module documentation
 - `components/` - React components
 - `lib/` - Service layer

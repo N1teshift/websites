@@ -1,23 +1,17 @@
 /**
  * Game Service - Read Operations (Server-Only)
- * 
+ *
  * Server-only functions for reading games.
  * These functions use Firebase Admin SDK and should only be used in API routes.
  */
 
-import { getFirestoreAdmin } from '@websites/infrastructure/firebase';
-import { createComponentLogger, logError } from '@websites/infrastructure/logging';
-import type {
-  Game,
-  GamePlayer,
-  GameWithPlayers,
-  GameFilters,
-  GameListResponse,
-} from '../types';
-import { convertGameDoc, convertGamePlayerDoc } from './gameService.utils';
+import { getFirestoreAdmin } from "@websites/infrastructure/firebase";
+import { createComponentLogger, logError } from "@websites/infrastructure/logging";
+import type { Game, GamePlayer, GameWithPlayers, GameFilters, GameListResponse } from "../types";
+import { convertGameDoc, convertGamePlayerDoc } from "./gameService.utils";
 
-const GAMES_COLLECTION = 'games';
-const logger = createComponentLogger('gameService');
+const GAMES_COLLECTION = "games";
+const logger = createComponentLogger("gameService");
 
 /**
  * Get a game by ID (Server-Only)
@@ -28,7 +22,7 @@ export async function getGameById(id: string): Promise<GameWithPlayers | null> {
     const gameDoc = await adminDb.collection(GAMES_COLLECTION).doc(id).get();
 
     if (!gameDoc.exists) {
-      logger.info('Game not found', { id });
+      logger.info("Game not found", { id });
       return null;
     }
 
@@ -39,12 +33,12 @@ export async function getGameById(id: string): Promise<GameWithPlayers | null> {
 
     // Filter out deleted games
     if (gameData.isDeleted === true) {
-      logger.info('Game is deleted', { id });
+      logger.info("Game is deleted", { id });
       return null;
     }
 
     // Get players
-    const playersSnapshot = await gameDoc.ref.collection('players').get();
+    const playersSnapshot = await gameDoc.ref.collection("players").get();
     const players: GamePlayer[] = [];
     playersSnapshot.forEach((playerDoc) => {
       players.push(convertGamePlayerDoc(playerDoc.data(), playerDoc.id));
@@ -59,9 +53,9 @@ export async function getGameById(id: string): Promise<GameWithPlayers | null> {
     };
   } catch (error) {
     const err = error as Error;
-    logError(err, 'Failed to fetch game by ID', {
-      component: 'gameService',
-      operation: 'getGameById',
+    logError(err, "Failed to fetch game by ID", {
+      component: "gameService",
+      operation: "getGameById",
       id,
     });
     throw err;
@@ -89,7 +83,7 @@ export async function batchGetPlayersForGames(
       const playersSnapshot = await adminDb
         .collection(GAMES_COLLECTION)
         .doc(gameId)
-        .collection('players')
+        .collection("players")
         .get();
 
       const players: GamePlayer[] = [];
@@ -108,17 +102,17 @@ export async function batchGetPlayersForGames(
       result.set(gameId, players);
     });
 
-    logger.debug('Batch fetched players', {
+    logger.debug("Batch fetched players", {
       gameCount: gameIds.length,
-      totalPlayers: Array.from(result.values()).reduce((sum, p) => sum + p.length, 0)
+      totalPlayers: Array.from(result.values()).reduce((sum, p) => sum + p.length, 0),
     });
 
     return result;
   } catch (error) {
     const err = error as Error;
-    logError(err, 'Failed to batch fetch players', {
-      component: 'gameService',
-      operation: 'batchGetPlayersForGames',
+    logError(err, "Failed to batch fetch players", {
+      component: "gameService",
+      operation: "batchGetPlayersForGames",
       gameCount: gameIds.length,
     });
     throw err;
@@ -140,11 +134,11 @@ export async function getGamesWithPlayers(
   }
 
   // Batch fetch all players
-  const gameIds = gamesResult.games.map(g => g.id);
+  const gameIds = gamesResult.games.map((g) => g.id);
   const playersMap = await batchGetPlayersForGames(gameIds);
 
   // Combine games with their players
-  const gamesWithPlayers: GameWithPlayers[] = gamesResult.games.map(game => ({
+  const gamesWithPlayers: GameWithPlayers[] = gamesResult.games.map((game) => ({
     ...game,
     players: playersMap.get(game.id) || [],
   }));
@@ -161,64 +155,71 @@ export async function getGamesWithPlayers(
  */
 export async function getGames(filters: GameFilters = {}): Promise<GameListResponse> {
   try {
-    logger.info('Fetching games', { filters });
+    logger.info("Fetching games", { filters });
 
-    const {
-      gameState,
-      startDate,
-      endDate,
-      category,
-      player,
-      gameId,
-      limit = 20,
-      cursor,
-    } = filters;
+    const { gameState, startDate, endDate, category, player, gameId, limit = 20, cursor } = filters;
 
     const adminDb = getFirestoreAdmin();
-    const { createTimestampFactoryAsync } = await import('@websites/infrastructure/utils');
+    const { createTimestampFactoryAsync } = await import("@websites/infrastructure/utils");
     const timestampFactory = await createTimestampFactoryAsync();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let gamesQuery: any = adminDb.collection(GAMES_COLLECTION);
 
     // Apply filters
     // Always filter out deleted games
-    gamesQuery = gamesQuery.where('isDeleted', '==', false);
+    gamesQuery = gamesQuery.where("isDeleted", "==", false);
 
     if (gameState) {
-      gamesQuery = gamesQuery.where('gameState', '==', gameState);
+      gamesQuery = gamesQuery.where("gameState", "==", gameState);
 
-      if (gameState === 'scheduled') {
+      if (gameState === "scheduled") {
         // For scheduled games, filter by scheduledDateTime
         if (startDate) {
-          gamesQuery = gamesQuery.where('scheduledDateTime', '>=', timestampFactory.fromDate(new Date(startDate)));
+          gamesQuery = gamesQuery.where(
+            "scheduledDateTime",
+            ">=",
+            timestampFactory.fromDate(new Date(startDate))
+          );
         }
         if (endDate) {
-          gamesQuery = gamesQuery.where('scheduledDateTime', '<=', timestampFactory.fromDate(new Date(endDate)));
+          gamesQuery = gamesQuery.where(
+            "scheduledDateTime",
+            "<=",
+            timestampFactory.fromDate(new Date(endDate))
+          );
         }
         if (gameId !== undefined) {
-          gamesQuery = gamesQuery.where('gameId', '==', gameId);
+          gamesQuery = gamesQuery.where("gameId", "==", gameId);
         } else {
           // Note: This requires a composite index on (gameState, isDeleted, scheduledDateTime)
           // If index doesn't exist or is building, the outer try-catch will use fallback
-          gamesQuery = gamesQuery.orderBy('scheduledDateTime', 'asc');
+          gamesQuery = gamesQuery.orderBy("scheduledDateTime", "asc");
         }
-      } else if (gameState === 'completed') {
+      } else if (gameState === "completed") {
         // For completed games, filter by datetime
         if (startDate) {
-          gamesQuery = gamesQuery.where('datetime', '>=', timestampFactory.fromDate(new Date(startDate)));
+          gamesQuery = gamesQuery.where(
+            "datetime",
+            ">=",
+            timestampFactory.fromDate(new Date(startDate))
+          );
         }
         if (endDate) {
-          gamesQuery = gamesQuery.where('datetime', '<=', timestampFactory.fromDate(new Date(endDate)));
+          gamesQuery = gamesQuery.where(
+            "datetime",
+            "<=",
+            timestampFactory.fromDate(new Date(endDate))
+          );
         }
         if (category) {
-          gamesQuery = gamesQuery.where('category', '==', category);
+          gamesQuery = gamesQuery.where("category", "==", category);
         }
         if (gameId !== undefined) {
-          gamesQuery = gamesQuery.where('gameId', '==', gameId);
+          gamesQuery = gamesQuery.where("gameId", "==", gameId);
         } else {
           // Note: This requires a composite index on (gameState, isDeleted, datetime)
           // If index doesn't exist or is building, the outer try-catch will use fallback
-          gamesQuery = gamesQuery.orderBy('datetime', 'desc');
+          gamesQuery = gamesQuery.orderBy("datetime", "desc");
         }
       }
     } else {
@@ -226,12 +227,12 @@ export async function getGames(filters: GameFilters = {}): Promise<GameListRespo
       // because they're on different fields. Filter by gameId if provided, otherwise
       // we'll need to fetch all and filter in memory (or require gameState to be specified)
       if (gameId !== undefined) {
-        gamesQuery = gamesQuery.where('gameId', '==', gameId);
+        gamesQuery = gamesQuery.where("gameId", "==", gameId);
       } else {
         // Without gameState, we can't order by datetime or scheduledDateTime
         // Default to ordering by createdAt descending (requires index on isDeleted, createdAt)
         // If index doesn't exist, the outer try-catch will use fallback
-        gamesQuery = gamesQuery.orderBy('createdAt', 'desc');
+        gamesQuery = gamesQuery.orderBy("createdAt", "desc");
       }
       // Note: startDate/endDate and category filters are ignored when gameState is not specified
       // because they apply to different fields for scheduled vs completed games
@@ -250,17 +251,18 @@ export async function getGames(filters: GameFilters = {}): Promise<GameListRespo
     } catch (queryError) {
       // If query fails (likely due to missing index), try a simpler query without orderBy
       const error = queryError as { code?: number; message?: string };
-      if (error?.code === 9 || error?.message?.includes('index')) {
+      if (error?.code === 9 || error?.message?.includes("index")) {
         // Index missing/building - using fallback query (this is expected during development)
         // Fallback: query without orderBy (will sort in memory)
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        let fallbackQuery: any = adminDb.collection(GAMES_COLLECTION)
-          .where('isDeleted', '==', false);
+        let fallbackQuery: any = adminDb
+          .collection(GAMES_COLLECTION)
+          .where("isDeleted", "==", false);
         if (gameState) {
-          fallbackQuery = fallbackQuery.where('gameState', '==', gameState);
+          fallbackQuery = fallbackQuery.where("gameState", "==", gameState);
         }
         if (gameId !== undefined) {
-          fallbackQuery = fallbackQuery.where('gameId', '==', gameId);
+          fallbackQuery = fallbackQuery.where("gameId", "==", gameId);
         }
         // Don't use orderBy in fallback - will sort in memory instead
         fallbackQuery = fallbackQuery.limit(limit * 2); // Get more to account for no ordering
@@ -283,41 +285,43 @@ export async function getGames(filters: GameFilters = {}): Promise<GameListRespo
     // Sort in memory if fallback was used
     if (needsInMemorySort) {
       games.sort((a, b) => {
-        if (a.gameState === 'scheduled' && b.gameState === 'scheduled') {
+        if (a.gameState === "scheduled" && b.gameState === "scheduled") {
           const dateA = a.scheduledDateTime
-            ? (typeof a.scheduledDateTime === 'string'
+            ? typeof a.scheduledDateTime === "string"
               ? new Date(a.scheduledDateTime).getTime()
-              : a.scheduledDateTime.toMillis())
+              : a.scheduledDateTime.toMillis()
             : 0;
           const dateB = b.scheduledDateTime
-            ? (typeof b.scheduledDateTime === 'string'
+            ? typeof b.scheduledDateTime === "string"
               ? new Date(b.scheduledDateTime).getTime()
-              : b.scheduledDateTime.toMillis())
+              : b.scheduledDateTime.toMillis()
             : 0;
           return dateA - dateB; // Ascending for scheduled games
         }
-        if (a.gameState === 'completed' && b.gameState === 'completed') {
+        if (a.gameState === "completed" && b.gameState === "completed") {
           const dateA = a.datetime
-            ? (typeof a.datetime === 'string'
+            ? typeof a.datetime === "string"
               ? new Date(a.datetime).getTime()
-              : a.datetime.toMillis())
+              : a.datetime.toMillis()
             : 0;
           const dateB = b.datetime
-            ? (typeof b.datetime === 'string'
+            ? typeof b.datetime === "string"
               ? new Date(b.datetime).getTime()
-              : b.datetime.toMillis())
+              : b.datetime.toMillis()
             : 0;
           return dateB - dateA; // Descending for completed games
         }
         // Fallback to createdAt
-        const dateA = typeof a.createdAt === 'string'
-          ? new Date(a.createdAt).getTime()
-          : // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          (a.createdAt as any)?.toMillis?.() || 0;
-        const dateB = typeof b.createdAt === 'string'
-          ? new Date(b.createdAt).getTime()
-          : // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          (b.createdAt as any)?.toMillis?.() || 0;
+        const dateA =
+          typeof a.createdAt === "string"
+            ? new Date(a.createdAt).getTime()
+            : // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              (a.createdAt as any)?.toMillis?.() || 0;
+        const dateB =
+          typeof b.createdAt === "string"
+            ? new Date(b.createdAt).getTime()
+            : // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              (b.createdAt as any)?.toMillis?.() || 0;
         return dateB - dateA;
       });
       // Limit after sorting
@@ -342,12 +346,11 @@ export async function getGames(filters: GameFilters = {}): Promise<GameListRespo
     };
   } catch (error) {
     const err = error as Error;
-    logError(err, 'Failed to fetch games', {
-      component: 'gameService',
-      operation: 'getGames',
+    logError(err, "Failed to fetch games", {
+      component: "gameService",
+      operation: "getGames",
       filters,
     });
     throw err;
   }
 }
-

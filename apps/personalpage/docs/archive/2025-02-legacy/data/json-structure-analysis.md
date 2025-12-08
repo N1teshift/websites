@@ -3,6 +3,7 @@
 ## 📊 Current Structure Analysis
 
 ### File Overview
+
 - **75 individual student JSON files** (~13-15KB each)
 - **1 metadata file** with Cambridge objectives
 - **Total**: ~1.1MB of student data
@@ -24,6 +25,7 @@
 ```
 
 **Impact:**
+
 - 40 objectives × 75 students = **3,000 redundant entries**
 - Each file is ~2KB larger than needed
 - Updates require changing 75 files
@@ -37,14 +39,15 @@
 **Problem:** Multiple `Record<string, unknown>[]` arrays that are never populated:
 
 ```typescript
-classwork: []                    // Always empty
-assessments_evidence: []         // Always empty
-external_resources: []           // Always empty
-communication_log: []            // Always empty (should be used?)
-praises_and_remarks: []          // Always empty (should be used?)
+classwork: []; // Always empty
+assessments_evidence: []; // Always empty
+external_resources: []; // Always empty
+communication_log: []; // Always empty (should be used?)
+praises_and_remarks: []; // Always empty (should be used?)
 ```
 
 **Impact:**
+
 - Cluttered JSON structure
 - Confusing for developers
 - Type safety issues with `unknown`
@@ -68,6 +71,7 @@ praises_and_remarks: []          // Always empty (should be used?)
 ```
 
 **Impact:**
+
 - Confusing semantics ("1" = good or bad?)
 - Harder to query/filter
 - Type coercion issues
@@ -91,6 +95,7 @@ praises_and_remarks: []          // Always empty (should be used?)
 ```
 
 **Impact:**
+
 - Hard to understand relationships
 - Difficult to add new categories
 
@@ -106,13 +111,14 @@ praises_and_remarks: []          // Always empty (should be used?)
 {
   "date": "2025-09-16",
   "column": "KD1",
-  "type": "summative",
+  "type": "summative"
   // Missing: which Cambridge objectives this tests?
   // Missing: which material units this covers?
 }
 ```
 
 **Impact:**
+
 - Can't analyze curriculum coverage
 - Can't generate progress reports by objective
 
@@ -127,7 +133,7 @@ praises_and_remarks: []          // Always empty (should be used?)
 ```json
 {
   "first_name": "Monika",
-  "class_name": "8 Vydūnas",
+  "class_name": "8 Vydūnas"
   // Missing: academic_year: "2024-2025"
   // Missing: grade_level: 8
   // What happens when they move to grade 9?
@@ -135,6 +141,7 @@ praises_and_remarks: []          // Always empty (should be used?)
 ```
 
 **Impact:**
+
 - Can't handle multi-year data
 - Can't archive properly
 
@@ -149,12 +156,13 @@ praises_and_remarks: []          // Always empty (should be used?)
 ```json
 {
   "first_name": "Monika",
-  "last_name": "Aleknavičiūtė",
+  "last_name": "Aleknavičiūtė"
   // Missing: student_id: "VYD-001"
 }
 ```
 
 **Impact:**
+
 - Name changes break everything
 - Hard to merge duplicate records
 - No foreign key references
@@ -176,6 +184,7 @@ praises_and_remarks: []          // Always empty (should be used?)
 ```
 
 **Impact:**
+
 - Slower dashboard performance
 - Repeated calculations
 
@@ -213,6 +222,7 @@ praises_and_remarks: []          // Always empty (should be used?)
 ```
 
 **Benefits:**
+
 - ✅ Reduces file size by 90% (~2KB per file)
 - ✅ Single source of truth
 - ✅ Easy to update objectives
@@ -229,7 +239,7 @@ praises_and_remarks: []          // Always empty (should be used?)
   "first_name": "Monika",
   "last_name": "Aleknavičiūtė",
   "class_name": "8 Vydūnas",
-  
+
   // ACADEMIC CONTEXT
   "academic": {
     "year": "2024-2025",
@@ -237,7 +247,7 @@ praises_and_remarks: []          // Always empty (should be used?)
     "class_id": "8-vydūnas",
     "enrolled_date": "2024-09-01"
   },
-  
+
   // PROFILE
   "profile": {
     "date_of_birth": "2011-03-15",
@@ -255,10 +265,10 @@ praises_and_remarks: []          // Always empty (should be used?)
       "interests": ["Music", "Art"]
     }
   },
-  
+
   // ASSESSMENTS (no change - works well)
   "assessments": [...],
-  
+
   // CURRICULUM PROGRESS
   "curriculum_progress": {
     "cambridge_objectives": {
@@ -269,7 +279,7 @@ praises_and_remarks: []          // Always empty (should be used?)
       "unit_2_5": { "percentage": 100, "completed_date": "2025-10-03" }
     }
   },
-  
+
   // ENGAGEMENT
   "engagement": {
     "attendance": [...],
@@ -277,14 +287,14 @@ praises_and_remarks: []          // Always empty (should be used?)
     "social_hours": 1200,
     "participation_score": 85
   },
-  
+
   // COMMUNICATION (if used)
   "communication": {
     "parent_contacts": [],
     "teacher_notes": [],
     "reporting_checkpoints": [...]
   },
-  
+
   // SYSTEM METADATA
   "metadata": {
     "schema_version": "3.0",
@@ -296,6 +306,7 @@ praises_and_remarks: []          // Always empty (should be used?)
 ```
 
 **Benefits:**
+
 - ✅ Clear logical grouping
 - ✅ Easier to navigate
 - ✅ Simpler to extend
@@ -340,6 +351,7 @@ type ObjectiveLevel = 0 | 1 | 2 | 3;  // Specific numbering
 ```
 
 **Benefits:**
+
 - ✅ Full curriculum coverage analysis
 - ✅ Objective-level progress tracking
 - ✅ Better reporting capabilities
@@ -376,6 +388,7 @@ type ObjectiveLevel = 0 | 1 | 2 | 3;  // Specific numbering
 ```
 
 **Benefits:**
+
 - ✅ Faster dashboard loading
 - ✅ Pre-computed insights
 - ✅ Consistent calculations
@@ -388,7 +401,7 @@ type ObjectiveLevel = 0 | 1 | 2 | 3;  // Specific numbering
 {
   "current_year": "2024-2025",
   "assessments": [...],  // Current year only
-  
+
   "archived_years": {
     "2023-2024": {
       "final_grade": 8,
@@ -403,17 +416,20 @@ type ObjectiveLevel = 0 | 1 | 2 | 3;  // Specific numbering
 ## 🎯 Migration Strategy
 
 ### Phase 1: Critical (Immediate) ✅
+
 1. **Extract Cambridge objectives** to shared file
 2. **Add unique IDs** to all students
 3. **Add academic context** (year, grade)
 4. **Add schema version** to records
 
 ### Phase 2: Structure (Next iteration)
+
 5. **Reorganize into logical groups** (identity, academic, profile, etc.)
 6. **Convert boolean strings** to proper enums
 7. **Remove unused arrays** or define their purpose
 
 ### Phase 3: Enhancement (Future)
+
 8. **Add curriculum mapping** to assessments
 9. **Implement computed metrics** cache
 10. **Add multi-year** archive support
@@ -423,6 +439,7 @@ type ObjectiveLevel = 0 | 1 | 2 | 3;  // Specific numbering
 ## 📋 Breaking Changes Checklist
 
 **If we migrate, we need to update:**
+
 - ✅ All processing scripts
 - ✅ Dashboard reading logic
 - ✅ Export/import functions
@@ -437,11 +454,13 @@ type ObjectiveLevel = 0 | 1 | 2 | 3;  // Specific numbering
 **Current:** ~1.1MB for 75 students
 
 **After normalization:**
+
 - Student files: ~750KB (32% reduction)
 - Shared objectives: ~5KB
 - **Total: ~755KB** (31% smaller)
 
 **With computed metrics:**
+
 - Add ~500B per student = +37KB
 - **Total: ~792KB** (still 28% smaller)
 
@@ -457,6 +476,7 @@ type ObjectiveLevel = 0 | 1 | 2 | 3;  // Specific numbering
 4. **Consider Proposal 4 & 5** for next major version
 
 **Priority order:**
+
 1. 🔴 Normalize Cambridge objectives (massive duplication)
 2. 🟡 Add student IDs and academic context
 3. 🟡 Fix type inconsistencies (strings → enums)
@@ -466,4 +486,3 @@ type ObjectiveLevel = 0 | 1 | 2 | 3;  // Specific numbering
 ---
 
 **What are your thoughts? Should I proceed with Proposal 1 (normalizing objectives) as a quick win?**
-

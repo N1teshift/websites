@@ -37,7 +37,7 @@ export interface TestSummary {
   passRate: string;
   totalTime: number;
   totalTokens: number;
-  totalPromptTokens: number; 
+  totalPromptTokens: number;
   totalCompletionTokens: number;
   estimatedCost: number;
 }
@@ -50,7 +50,4 @@ export interface FilterOptions {
   passedLast?: boolean;
   failedLast?: boolean;
   debugMatching?: boolean;
-} 
-
-
-
+}

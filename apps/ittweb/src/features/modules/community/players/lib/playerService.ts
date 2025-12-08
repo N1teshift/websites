@@ -1,6 +1,6 @@
 /**
  * Player Service - Main Entry Point
- * 
+ *
  * This file re-exports all player service functions from split modules for backward compatibility.
  * The service has been split into smaller modules:
  * - playerService.utils.ts - Helper functions
@@ -10,25 +10,13 @@
  */
 
 // Re-export utilities
-export {
-  normalizePlayerName,
-  calculateTotalGames,
-} from './playerService.utils';
+export { normalizePlayerName, calculateTotalGames } from "./playerService.utils";
 
 // Re-export all read operations (server-only)
-export {
-  getPlayerStats,
-  getAllPlayers,
-  searchPlayers,
-} from './playerService.read.server';
+export { getPlayerStats, getAllPlayers, searchPlayers } from "./playerService.read.server";
 
 // Re-export update operations (server-only)
-export {
-  updatePlayerStats,
-} from './playerService.update.server';
+export { updatePlayerStats } from "./playerService.update.server";
 
 // Re-export compare operations
-export {
-  comparePlayers,
-} from './playerService.compare';
-
+export { comparePlayers } from "./playerService.compare";

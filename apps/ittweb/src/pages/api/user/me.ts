@@ -1,7 +1,7 @@
-import type { NextApiRequest } from 'next';
-import { createGetHandler, requireSession } from '@websites/infrastructure/api';
-import { getUserDataByDiscordIdServer } from '@/features/modules/community/users/services/userDataService.server';
-import type { UserData } from '@/types/userData';
+import type { NextApiRequest } from "next";
+import { createGetHandler, requireSession } from "@websites/infrastructure/api";
+import { getUserDataByDiscordIdServer } from "@/features/modules/community/users/services/userDataService.server";
+import type { UserData } from "@/types/userData";
 
 /**
  * GET /api/user/me - Get current user's data (requires authentication)
@@ -9,7 +9,7 @@ import type { UserData } from '@/types/userData';
 export default createGetHandler<UserData | null>(
   async (req: NextApiRequest, res, context) => {
     const session = requireSession(context);
-    const userData = await getUserDataByDiscordIdServer(session.discordId || '');
+    const userData = await getUserDataByDiscordIdServer(session.discordId || "");
 
     return userData;
   },
@@ -24,5 +24,3 @@ export default createGetHandler<UserData | null>(
     },
   }
 );
-
-

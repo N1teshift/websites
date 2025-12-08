@@ -9,13 +9,15 @@ Manually trigger revalidation of a static page after content changes. This endpo
 **Authentication**: Required (must be logged in)
 
 **Request Body**:
+
 ```typescript
 {
-  path: string  // Path to revalidate (e.g., "/", "/posts/my-post")
+  path: string; // Path to revalidate (e.g., "/", "/posts/my-post")
 }
 ```
 
 **Response**:
+
 ```typescript
 {
   revalidated: true,
@@ -24,6 +26,7 @@ Manually trigger revalidation of a static page after content changes. This endpo
 ```
 
 **Example Request**:
+
 ```typescript
 POST /api/revalidate
 Content-Type: application/json
@@ -34,6 +37,7 @@ Content-Type: application/json
 ```
 
 **Example Response**:
+
 ```json
 {
   "revalidated": true,
@@ -44,6 +48,7 @@ Content-Type: application/json
 **Error Responses**:
 
 **401 Unauthorized** (not authenticated):
+
 ```json
 {
   "error": "Authentication required"
@@ -51,6 +56,7 @@ Content-Type: application/json
 ```
 
 **400 Bad Request** (missing or invalid path):
+
 ```json
 {
   "error": "Path is required"
@@ -58,6 +64,7 @@ Content-Type: application/json
 ```
 
 **500 Internal Server Error** (revalidation failed):
+
 ```json
 {
   "error": "Error revalidating path",
@@ -66,6 +73,7 @@ Content-Type: application/json
 ```
 
 **Status Codes**:
+
 - `200` - Revalidation successful
 - `400` - Bad request (missing or invalid path)
 - `401` - Unauthorized (authentication required)
@@ -94,4 +102,3 @@ This endpoint is used internally by the application in the following scenarios:
 
 - [Next.js ISR Documentation](https://nextjs.org/docs/basic-features/data-fetching/incremental-static-regeneration)
 - [Next.js revalidate API](https://nextjs.org/docs/api-reference/next.config.js/revalidate)
-

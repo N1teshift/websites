@@ -44,16 +44,16 @@ export default createApiHandler(
 
 ### Implemented Cache Durations
 
-| Endpoint | Duration | Reason |
-|----------|----------|--------|
-| `/api/items` | 1 hour | Static game data |
-| `/api/icons/list` | 1 hour | Static icon list |
-| `/api/classes` | 5 minutes | Class stats |
-| `/api/standings` | 5 minutes | Player rankings |
-| `/api/analytics/*` | 5 minutes | Analytics (Firestore cached) |
-| `/api/games` | 2 minutes | Game list |
-| `/api/players` | 2 minutes | Player data |
-| `/api/posts` | 10 minutes | News posts |
+| Endpoint           | Duration   | Reason                       |
+| ------------------ | ---------- | ---------------------------- |
+| `/api/items`       | 1 hour     | Static game data             |
+| `/api/icons/list`  | 1 hour     | Static icon list             |
+| `/api/classes`     | 5 minutes  | Class stats                  |
+| `/api/standings`   | 5 minutes  | Player rankings              |
+| `/api/analytics/*` | 5 minutes  | Analytics (Firestore cached) |
+| `/api/games`       | 2 minutes  | Game list                    |
+| `/api/players`     | 2 minutes  | Player data                  |
+| `/api/posts`       | 10 minutes | News posts                   |
 
 ### Cache Control Options
 
@@ -75,10 +75,10 @@ For expensive analytics computations, results are cached in Firestore's `analyti
 ### How It Works
 
 ```typescript
-import { getOrComputeAnalytics } from '@/features/infrastructure/lib/analyticsCache';
+import { getOrComputeAnalytics } from "@/features/infrastructure/lib/analyticsCache";
 
 // Returns cached result if valid, otherwise computes and caches
-const data = await getOrComputeAnalytics('classStats', filters, async () => {
+const data = await getOrComputeAnalytics("classStats", filters, async () => {
   // Expensive computation here
   return computeClassStats();
 });
@@ -90,18 +90,18 @@ Located in `src/features/infrastructure/lib/analyticsCache.ts`:
 
 ```typescript
 export const CACHE_CONFIGS: Record<string, CacheConfig> = {
-  meta: { ttlSeconds: 300, version: 1 },           // 5 minutes
-  activity: { ttlSeconds: 300, version: 1 },       // 5 minutes
-  classStats: { ttlSeconds: 600, version: 1 },     // 10 minutes
+  meta: { ttlSeconds: 300, version: 1 }, // 5 minutes
+  activity: { ttlSeconds: 300, version: 1 }, // 5 minutes
+  classStats: { ttlSeconds: 600, version: 1 }, // 10 minutes
   classSelection: { ttlSeconds: 600, version: 1 }, // 10 minutes
-  classWinRate: { ttlSeconds: 600, version: 1 },   // 10 minutes
-  gameLength: { ttlSeconds: 600, version: 1 },     // 10 minutes
+  classWinRate: { ttlSeconds: 600, version: 1 }, // 10 minutes
+  gameLength: { ttlSeconds: 600, version: 1 }, // 10 minutes
   playerActivity: { ttlSeconds: 600, version: 1 }, // 10 minutes
-  ittStats: { ttlSeconds: 600, version: 1 },       // 10 minutes
-  topHunters: { ttlSeconds: 600, version: 1 },     // 10 minutes
-  topHealers: { ttlSeconds: 600, version: 1 },     // 10 minutes
-  eloHistory: { ttlSeconds: 300, version: 1 },     // 5 minutes
-  winRate: { ttlSeconds: 300, version: 1 },        // 5 minutes
+  ittStats: { ttlSeconds: 600, version: 1 }, // 10 minutes
+  topHunters: { ttlSeconds: 600, version: 1 }, // 10 minutes
+  topHealers: { ttlSeconds: 600, version: 1 }, // 10 minutes
+  eloHistory: { ttlSeconds: 300, version: 1 }, // 5 minutes
+  winRate: { ttlSeconds: 300, version: 1 }, // 5 minutes
 };
 ```
 
@@ -110,13 +110,13 @@ export const CACHE_CONFIGS: Record<string, CacheConfig> = {
 Cache is automatically invalidated when games are created, updated, or deleted:
 
 ```typescript
-import { invalidateAnalyticsCache } from '@/features/infrastructure/lib/analyticsCache';
+import { invalidateAnalyticsCache } from "@/features/infrastructure/lib/analyticsCache";
 
 // Invalidate all analytics caches
 await invalidateAnalyticsCache();
 
 // Invalidate only caches for a specific category
-await invalidateAnalyticsCache('1v1');
+await invalidateAnalyticsCache("1v1");
 ```
 
 ## Batch Player Fetching
@@ -124,6 +124,7 @@ await invalidateAnalyticsCache('1v1');
 The N+1 query problem was solved by batch fetching players:
 
 ### Before (N+1 Problem)
+
 ```typescript
 // BAD: Fetches players individually for each game
 const games = await getGames();
@@ -133,6 +134,7 @@ for (const game of games) {
 ```
 
 ### After (Batch Fetching)
+
 ```typescript
 // GOOD: Fetches all players in one batch
 const { games } = await getGamesWithPlayers(filters);
@@ -141,9 +143,9 @@ const { games } = await getGamesWithPlayers(filters);
 
 ### Functions
 
-| Function | Description |
-|----------|-------------|
-| `getGamesWithPlayers()` | Fetches games with players in batch |
+| Function                    | Description                                    |
+| --------------------------- | ---------------------------------------------- |
+| `getGamesWithPlayers()`     | Fetches games with players in batch            |
 | `batchGetPlayersForGames()` | Fetches players for multiple games in parallel |
 
 ## Request-Scoped Cache
@@ -151,15 +153,15 @@ const { games } = await getGamesWithPlayers(filters);
 Prevents duplicate database calls within a single API request:
 
 ```typescript
-import { createRequestCache } from '@/features/infrastructure/lib/requestCache';
+import { createRequestCache } from "@/features/infrastructure/lib/requestCache";
 
 const cache = createRequestCache();
 
 // First call fetches from DB
-const game1 = await cache.getOrFetch('game:abc', () => getGameById('abc'));
+const game1 = await cache.getOrFetch("game:abc", () => getGameById("abc"));
 
 // Second call returns cached result (no DB call)
-const game2 = await cache.getOrFetch('game:abc', () => getGameById('abc'));
+const game2 = await cache.getOrFetch("game:abc", () => getGameById("abc"));
 ```
 
 ## Client-Side Caching (SWR)
@@ -168,22 +170,24 @@ SWR configuration in `src/features/infrastructure/lib/swrConfig.ts`:
 
 ```typescript
 export const swrConfig: SWRConfiguration = {
-  revalidateOnFocus: false,    // Don't revalidate on window focus
+  revalidateOnFocus: false, // Don't revalidate on window focus
   revalidateOnReconnect: true, // Revalidate when network reconnects
-  dedupingInterval: 2000,      // Dedupe requests within 2 seconds
-  errorRetryCount: 3,          // Retry failed requests up to 3 times
-  errorRetryInterval: 5000,    // Wait 5 seconds between retries
+  dedupingInterval: 2000, // Dedupe requests within 2 seconds
+  errorRetryCount: 3, // Retry failed requests up to 3 times
+  errorRetryInterval: 5000, // Wait 5 seconds between retries
 };
 ```
 
 ## Performance Impact
 
 ### Before Optimization
+
 - Single `/api/analytics/meta` request: ~2500+ Firestore reads (N+1 problem)
 - No server-side caching
 - 2-minute HTTP cache
 
 ### After Optimization
+
 - Single `/api/analytics/meta` request: ~1-2 Firestore reads (cached or batch)
 - 5-10 minute Firestore cache for analytics
 - 5-minute HTTP cache

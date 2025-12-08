@@ -1,4 +1,4 @@
-import type { IconMapping } from '@/features/modules/tools-group/tools/types/icon-mapper.types';
+import type { IconMapping } from "@/features/modules/tools-group/tools/types/icon-mapper.types";
 
 /**
  * Format category mappings for export
@@ -7,8 +7,8 @@ export function formatCategoryForExport(category: Record<string, string>): strin
   const entries = Object.entries(category)
     .sort(([a], [b]) => a.localeCompare(b))
     .map(([key, value]) => `    '${key}': '${value}'`)
-    .join(',\n');
-  return entries ? `{\n${entries}\n  }` : '{}';
+    .join(",\n");
+  return entries ? `{\n${entries}\n  }` : "{}";
 }
 
 /**
@@ -34,16 +34,22 @@ export function exportMarkedForDeletion(markedForDeletion: Set<string>): string 
 /**
  * Export both mappings and marked for deletion as a combined JSON
  */
-export function exportMappingsAndDeletions(mappings: IconMapping, markedForDeletion: Set<string>): string {
+export function exportMappingsAndDeletions(
+  mappings: IconMapping,
+  markedForDeletion: Set<string>
+): string {
   const paths = Array.from(markedForDeletion).sort();
-  return JSON.stringify({
-    mappings: {
-      abilities: mappings.abilities,
-      items: mappings.items,
-      buildings: mappings.buildings,
-      trolls: mappings.trolls,
+  return JSON.stringify(
+    {
+      mappings: {
+        abilities: mappings.abilities,
+        items: mappings.items,
+        buildings: mappings.buildings,
+        trolls: mappings.trolls,
+      },
+      markedForDeletion: paths,
     },
-    markedForDeletion: paths,
-  }, null, 2);
+    null,
+    2
+  );
 }
-

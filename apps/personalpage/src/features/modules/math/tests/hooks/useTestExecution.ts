@@ -1,15 +1,15 @@
-import { TestResultData, TestSummary } from '../../types/testsTypes';
-import { TestCase } from '../../tests/cases/TestCase';
-import { useState, useMemo } from 'react';
-import { runTests } from '../core/TestRunner';
-import { saveTestResults } from '../utils/testResultsApi';
-import { calculateSummaryFromResults } from '../utils/common/testDataHelpers';
-import { createComponentLogger } from '@websites/infrastructure/logging';
+import { TestResultData, TestSummary } from "../../types/testsTypes";
+import { TestCase } from "../../tests/cases/TestCase";
+import { useState, useMemo } from "react";
+import { runTests } from "../core/TestRunner";
+import { saveTestResults } from "../utils/testResultsApi";
+import { calculateSummaryFromResults } from "../utils/common/testDataHelpers";
+import { createComponentLogger } from "@websites/infrastructure/logging";
 
 /**
  * Custom React hook for managing the execution of test cases, tracking results,
  * calculating summaries, and saving results to a backend service (Firestore).
- * 
+ *
  * **Key Behaviors:**
  * - Each call to `executeTests` initiates a new, independent test run.
  * - State like `results` and `summary` is cleared at the start of each new run
@@ -33,8 +33,8 @@ import { createComponentLogger } from '@websites/infrastructure/logging';
  *          - `summary`: Memoized `TestSummary` calculated from the `results` of the most recent run.
  */
 export const useTestExecution = (refreshStats?: () => void) => {
-  const logger = createComponentLogger('TestExecution');
-  
+  const logger = createComponentLogger("TestExecution");
+
   /** State storing the results ONLY from the latest execution run. Cleared on new run. */
   const [results, setResults] = useState<TestResultData<Record<string, unknown>>[]>([]);
   /** State indicating if a test run is currently active. */
@@ -44,7 +44,7 @@ export const useTestExecution = (refreshStats?: () => void) => {
   /** State indicating if the asynchronous save operation is in progress. */
   const [isSavingResults, setIsSavingResults] = useState(false);
   /** State holding user-facing messages about the status of the save operation. */
-  const [saveResultsMessage, setSaveResultsMessage] = useState('');
+  const [saveResultsMessage, setSaveResultsMessage] = useState("");
 
   /** Memoized calculation of the test summary based on the results of the most recent run. */
   const summary = useMemo<TestSummary>(() => calculateSummaryFromResults(results), [results]);
@@ -58,7 +58,7 @@ export const useTestExecution = (refreshStats?: () => void) => {
   const updateResultsArray = (newResult: TestResultData<Record<string, unknown>>) => {
     logger.info(`Updating results array with new result: ${JSON.stringify(newResult, null, 2)}`);
     // This correctly schedules the state update for future renders
-    setResults(prevResults => [...prevResults, newResult]);
+    setResults((prevResults) => [...prevResults, newResult]);
   };
 
   /**
@@ -68,9 +68,12 @@ export const useTestExecution = (refreshStats?: () => void) => {
    * @param tests The full array of tests being executed in the current run.
    * @private
    */
-  const updateProgressIndicator = (completedTestName: string, tests: TestCase<Record<string, unknown>>[]) => {
-    const testIndex = tests.findIndex(test => test.name === completedTestName);
-    const nextIndex = (testIndex >= 0 && testIndex + 1 < tests.length) ? testIndex + 1 : -1;
+  const updateProgressIndicator = (
+    completedTestName: string,
+    tests: TestCase<Record<string, unknown>>[]
+  ) => {
+    const testIndex = tests.findIndex((test) => test.name === completedTestName);
+    const nextIndex = testIndex >= 0 && testIndex + 1 < tests.length ? testIndex + 1 : -1;
     setCurrentTestIndex(nextIndex);
   };
 
@@ -83,7 +86,8 @@ export const useTestExecution = (refreshStats?: () => void) => {
    * @private
    */
   const createTestCompletionHandler = (selectedTests: TestCase<Record<string, unknown>>[]) => {
-    return (result: TestResultData<Record<string, unknown>>) => { // No need for async here anymore
+    return (result: TestResultData<Record<string, unknown>>) => {
+      // No need for async here anymore
       updateResultsArray(result);
       updateProgressIndicator(result.test.name, selectedTests);
     };
@@ -99,34 +103,39 @@ export const useTestExecution = (refreshStats?: () => void) => {
    * @private
    * @async
    */
-  const saveRunResults = async (runResults: TestResultData<Record<string, unknown>>[], finalSummary: TestSummary) => {
+  const saveRunResults = async (
+    runResults: TestResultData<Record<string, unknown>>[],
+    finalSummary: TestSummary
+  ) => {
     if (runResults.length === 0) {
-      console.warn('No test results were generated in this run to save.');
-      setSaveResultsMessage('No new test results to save.');
+      console.warn("No test results were generated in this run to save.");
+      setSaveResultsMessage("No new test results to save.");
       return; // Exit early if nothing to save
     }
 
-    setSaveResultsMessage('Saving test results to cloud...');
+    setSaveResultsMessage("Saving test results to cloud...");
     setIsSavingResults(true);
-    
+
     try {
       // Save the results and summary from this specific run
-      const response = await saveTestResults(finalSummary, runResults); 
-      
+      const response = await saveTestResults(finalSummary, runResults);
+
       if (response.success) {
-        logger.info('Test results saved successfully!');
-        setSaveResultsMessage('Results saved successfully!');
+        logger.info("Test results saved successfully!");
+        setSaveResultsMessage("Results saved successfully!");
         // Optionally refresh stats after successful save
         if (refreshStats) {
-          setTimeout(refreshStats, 1500); 
+          setTimeout(refreshStats, 1500);
         }
       } else {
-        console.error('Error saving results:', response.error);
+        console.error("Error saving results:", response.error);
         setSaveResultsMessage(`Error saving results: ${response.error}`);
       }
     } catch (error) {
-      console.error('Error during save operation:', error);
-      setSaveResultsMessage(`Error during save: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      console.error("Error during save operation:", error);
+      setSaveResultsMessage(
+        `Error during save: ${error instanceof Error ? error.message : "Unknown error"}`
+      );
     } finally {
       // Ensure saving indicator is turned off regardless of outcome
       setIsSavingResults(false);
@@ -146,52 +155,58 @@ export const useTestExecution = (refreshStats?: () => void) => {
    * @param system The AI system to use for generation ('legacy' or 'langgraph').
    * @async
    */
-  const executeTests = async (selectedTests: TestCase<Record<string, unknown>>[], system: 'legacy' | 'langgraph' = 'langgraph') => {
+  const executeTests = async (
+    selectedTests: TestCase<Record<string, unknown>>[],
+    system: "legacy" | "langgraph" = "langgraph"
+  ) => {
     if (!selectedTests || selectedTests.length === 0) {
-      logger.info('No tests selected to run.');
+      logger.info("No tests selected to run.");
       return;
     }
-    
+
     let runResults: TestResultData<Record<string, unknown>>[] = []; // Variable to hold results from this specific run
 
     // --- Phase 1: Setup ---
     // Set initial state for the run
     setIsRunning(true);
-    setCurrentTestIndex(0); 
-    setSaveResultsMessage(''); 
+    setCurrentTestIndex(0);
+    setSaveResultsMessage("");
     setResults([]); // Clear state from previous runs
     logger.info(`Starting execution of ${selectedTests.length} tests. State cleared.`);
-      
+
     try {
       // --- Phase 2: Create Completion Handler ---
       const handleTestComplete = createTestCompletionHandler(selectedTests);
-      
+
       // --- Phase 3: Execute Tests ---
       // runTests collects and returns all results for this specific run.
-      runResults = await runTests(selectedTests, undefined, handleTestComplete, 3, system); 
-      logger.info(`Completed results (from runTests return): ${JSON.stringify(runResults, null, 2)}`);
-      
+      runResults = await runTests(selectedTests, undefined, handleTestComplete, 3, system);
+      logger.info(
+        `Completed results (from runTests return): ${JSON.stringify(runResults, null, 2)}`
+      );
+
       // --- Phase 4: Save Results (using helper) ---
       // Calculate summary based on the completed results from THIS run
       const finalSummary = calculateSummaryFromResults(runResults);
       // Call the dedicated save function
-      await saveRunResults(runResults, finalSummary); 
-      
+      await saveRunResults(runResults, finalSummary);
     } catch (error) {
       // Handle errors specifically from test execution (phases 2 or 3)
       console.error("Error running tests:", error);
-      setSaveResultsMessage(`Error during test execution: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      setSaveResultsMessage(
+        `Error during test execution: ${error instanceof Error ? error.message : "Unknown error"}`
+      );
       // Ensure results state is cleared if the run fails mid-way
-      setResults([]); 
+      setResults([]);
       // Also clear runResults for consistency as saving won't happen
       runResults = [];
     } finally {
       // --- Phase 5: Cleanup ---
       // This block runs regardless of success or failure in the try block
       setIsRunning(false);
-      setCurrentTestIndex(-1); 
-      // Note: The 'results' state should eventually reflect the 'runResults' 
-      // after the updates within handleTestComplete have settled. 
+      setCurrentTestIndex(-1);
+      // Note: The 'results' state should eventually reflect the 'runResults'
+      // after the updates within handleTestComplete have settled.
       // The save helper manages its own messages and state.
     }
   };
@@ -206,24 +221,26 @@ export const useTestExecution = (refreshStats?: () => void) => {
   const saveResultsToFirestore = async () => {
     // This function correctly uses the 'results' state, which reflects the last completed run.
     if (results.length === 0) {
-      setSaveResultsMessage('No results from the last run to save.');
+      setSaveResultsMessage("No results from the last run to save.");
       return;
     }
-    
+
     setIsSavingResults(true);
-    setSaveResultsMessage('Saving results from last run to cloud...');
-    
+    setSaveResultsMessage("Saving results from last run to cloud...");
+
     try {
       // Use the current 'summary' (based on 'results' state) and 'results' state
       const response = await saveTestResults(summary, results);
-      
+
       if (response.success) {
-        setSaveResultsMessage('Results saved successfully!');
+        setSaveResultsMessage("Results saved successfully!");
       } else {
         setSaveResultsMessage(`Error saving results: ${response.error}`);
       }
     } catch (error) {
-      setSaveResultsMessage(`Error during manual save: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      setSaveResultsMessage(
+        `Error during manual save: ${error instanceof Error ? error.message : "Unknown error"}`
+      );
     } finally {
       setIsSavingResults(false);
     }
@@ -240,9 +257,6 @@ export const useTestExecution = (refreshStats?: () => void) => {
     saveResultsMessage, // Feedback message for the save operation
     executeTests, // Function to start a new test run (clears previous results)
     saveResultsToFirestore, // Function to save results from the last run
-    summary // Memoized summary of the results from the last run
+    summary, // Memoized summary of the results from the last run
   };
-}; 
-
-
-
+};

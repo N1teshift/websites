@@ -1,4 +1,2 @@
 // Forms sub-module exports
-export * from './components';
-
-
+export * from "./components";

@@ -7,10 +7,12 @@ Archive entry management endpoints.
 List archive entries.
 
 **Query Parameters**:
+
 - `limit` (number, optional) - Results limit
 - `cursor` (string, optional) - Pagination cursor
 
 **Response**:
+
 ```typescript
 {
   success: true;
@@ -25,6 +27,7 @@ List archive entries.
 Get archive entry by ID.
 
 **Response**:
+
 ```typescript
 {
   success: true;
@@ -37,6 +40,7 @@ Get archive entry by ID.
 Create archive entry. **Requires authentication.**
 
 **Request Body**:
+
 ```typescript
 {
   title: string;
@@ -63,6 +67,7 @@ Create archive entry. **Requires authentication.**
 ```
 
 **Response**:
+
 ```typescript
 {
   success: true;
@@ -75,11 +80,13 @@ Create archive entry. **Requires authentication.**
 Update archive entry. **Requires authentication.**
 
 **Request Body**:
+
 ```typescript
-Partial<ArchiveEntry>
+Partial<ArchiveEntry>;
 ```
 
 **Response**:
+
 ```typescript
 {
   success: true;
@@ -92,10 +99,9 @@ Partial<ArchiveEntry>
 Delete archive entry. **Requires authentication.**
 
 **Response**:
+
 ```typescript
 {
   success: true;
 }
 ```
-
-

@@ -1,8 +1,7 @@
 import type { MatchMetadataSpec } from "../types.js";
 
 // Must match MatchMetadataConfig.wurst from island-troll-tribes
-const ENCODE_CHARS =
-  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789:|._- \n";
+const ENCODE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789:|._- \n";
 
 // Order IDs from JASS/Wurst OrderIds for each SYMBOL_ORDER_STRING
 // These get converted to hex strings by orderFormatter when read from replay

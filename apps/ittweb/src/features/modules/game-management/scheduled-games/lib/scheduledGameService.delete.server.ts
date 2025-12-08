@@ -1,27 +1,27 @@
 /**
  * Scheduled Game Service - Delete Operations (Server-Only)
- * 
+ *
  * Server-only functions for deleting scheduled games.
  * These functions use Firebase Admin SDK and should only be used in API routes.
  */
 
-import { getFirestoreAdmin } from '@websites/infrastructure/firebase';
-import { createComponentLogger, logError } from '@websites/infrastructure/logging';
-import { createTimestampFactoryAsync } from '@websites/infrastructure/utils';
+import { getFirestoreAdmin } from "@websites/infrastructure/firebase";
+import { createComponentLogger, logError } from "@websites/infrastructure/logging";
+import { createTimestampFactoryAsync } from "@websites/infrastructure/utils";
 
-const GAMES_COLLECTION = 'games'; // Unified games collection (scheduled and completed)
-const logger = createComponentLogger('scheduledGameService');
+const GAMES_COLLECTION = "games"; // Unified games collection (scheduled and completed)
+const logger = createComponentLogger("scheduledGameService");
 
 /**
  * Delete a scheduled game (Server-Only)
  */
 export async function deleteScheduledGame(id: string): Promise<void> {
   try {
-    logger.info('Deleting scheduled game', { id });
+    logger.info("Deleting scheduled game", { id });
 
     const timestampFactory = await createTimestampFactoryAsync();
     const now = timestampFactory.now();
-    
+
     const deleteData = {
       isDeleted: true,
       deletedAt: now,
@@ -31,15 +31,14 @@ export async function deleteScheduledGame(id: string): Promise<void> {
     const adminDb = getFirestoreAdmin();
     await adminDb.collection(GAMES_COLLECTION).doc(id).update(deleteData);
 
-    logger.info('Scheduled game deleted', { id });
+    logger.info("Scheduled game deleted", { id });
   } catch (error) {
     const err = error as Error;
-    logError(err, 'Failed to delete scheduled game', {
-      component: 'scheduledGameService',
-      operation: 'deleteScheduledGame',
+    logError(err, "Failed to delete scheduled game", {
+      component: "scheduledGameService",
+      operation: "deleteScheduledGame",
       id,
     });
     throw err;
   }
 }
-

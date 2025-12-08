@@ -1,4 +1,4 @@
-jest.mock('firebase/firestore', () => {
+jest.mock("firebase/firestore", () => {
   const mockGetDoc = jest.fn();
   return {
     mockGetDoc,
@@ -13,46 +13,44 @@ jest.mock('firebase/firestore', () => {
     orderBy: jest.fn(),
     where: jest.fn(),
     limit: jest.fn(),
-    serverTimestamp: jest.fn(() => new Date('2020-01-01T00:00:00Z')),
+    serverTimestamp: jest.fn(() => new Date("2020-01-01T00:00:00Z")),
     Timestamp: {
-      now: jest.fn(() => ({ toDate: () => new Date('2020-01-01T00:00:00Z') })),
+      now: jest.fn(() => ({ toDate: () => new Date("2020-01-01T00:00:00Z") })),
       fromDate: jest.fn((date: Date) => ({ toDate: () => date })),
     },
   };
 });
 
-jest.mock('@websites/infrastructure/api/firebase', () => ({
+jest.mock("@websites/infrastructure/api/firebase", () => ({
   getFirestoreInstance: jest.fn(() => ({})),
 }));
 
-jest.mock('@websites/infrastructure/firebase', () => ({
+jest.mock("@websites/infrastructure/firebase", () => ({
   getFirestoreAdmin: jest.fn(() => ({ collection: jest.fn() })),
   isServerSide: jest.fn(() => false),
   getAdminTimestamp: jest.fn(() => ({
-    now: jest.fn(() => ({ toDate: () => new Date('2020-01-01T00:00:00Z') })),
+    now: jest.fn(() => ({ toDate: () => new Date("2020-01-01T00:00:00Z") })),
     fromDate: jest.fn((date: Date) => ({ toDate: () => date })),
   })),
 }));
 
-jest.mock('@websites/infrastructure/logging', () => ({
+jest.mock("@websites/infrastructure/logging", () => ({
   createComponentLogger: jest.fn(() => ({ info: jest.fn(), warn: jest.fn(), error: jest.fn() })),
   logError: jest.fn(),
 }));
 
-const { mockGetDoc } = jest.requireMock('firebase/firestore');
-import { getUserDataByDiscordId } from '../userDataService';
+const { mockGetDoc } = jest.requireMock("firebase/firestore");
+import { getUserDataByDiscordId } from "../userDataService";
 
-describe('userDataService', () => {
+describe("userDataService", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  it('returns null when user data is not found', async () => {
+  it("returns null when user data is not found", async () => {
     mockGetDoc.mockResolvedValue({ exists: () => false });
 
-    const result = await getUserDataByDiscordId('unknown');
+    const result = await getUserDataByDiscordId("unknown");
     expect(result).toBeNull();
   });
 });
-
-

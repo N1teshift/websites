@@ -1,37 +1,34 @@
-import React from 'react';
-import { render } from '@testing-library/react';
-import { describe, it, expect, beforeEach } from '@jest/globals';
+import React from "react";
+import { render } from "@testing-library/react";
+import { describe, it, expect, beforeEach } from "@jest/globals";
 
 // Mock logger - must be before importing helpers
 const mockLogError = jest.fn();
-jest.mock('@/features/infrastructure/logging', () => {
-  const actual = jest.requireActual('@/features/infrastructure/logging');
+jest.mock("@/features/infrastructure/logging", () => {
+  const actual = jest.requireActual("@/features/infrastructure/logging");
   return {
     ...actual,
     logError: (...args: unknown[]) => mockLogError(...args),
   };
 });
 
-import {
-  getContrastRatio,
-  meetsWCAGContrast,
-} from '@websites/infrastructure/utils';
+import { getContrastRatio, meetsWCAGContrast } from "@websites/infrastructure/utils";
 
-describe('Color Contrast', () => {
+describe("Color Contrast", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  describe('Basic color contrast calculation', () => {
-    it('should verify color contrast meets WCAG standards', () => {
+  describe("Basic color contrast calculation", () => {
+    it("should verify color contrast meets WCAG standards", () => {
       // Arrange
-      const foreground = '#000000'; // Black
-      const background = '#FFFFFF'; // White
+      const foreground = "#000000"; // Black
+      const background = "#FFFFFF"; // White
 
       // Act
       const ratio = getContrastRatio(foreground, background);
-      const meetsAA = meetsWCAGContrast(foreground, background, 'AA');
-      const meetsAAA = meetsWCAGContrast(foreground, background, 'AAA');
+      const meetsAA = meetsWCAGContrast(foreground, background, "AA");
+      const meetsAAA = meetsWCAGContrast(foreground, background, "AAA");
 
       // Assert
       expect(ratio).toBeGreaterThan(20); // Black on white has ~21:1 ratio
@@ -39,28 +36,28 @@ describe('Color Contrast', () => {
       expect(meetsAAA).toBe(true);
     });
 
-    it('should calculate contrast ratio for normal text (AA: 4.5:1)', () => {
+    it("should calculate contrast ratio for normal text (AA: 4.5:1)", () => {
       // Arrange
-      const foreground = '#333333'; // Dark gray
-      const background = '#FFFFFF'; // White
+      const foreground = "#333333"; // Dark gray
+      const background = "#FFFFFF"; // White
 
       // Act
       const ratio = getContrastRatio(foreground, background);
-      const meetsAA = meetsWCAGContrast(foreground, background, 'AA', false);
+      const meetsAA = meetsWCAGContrast(foreground, background, "AA", false);
 
       // Assert
       expect(ratio).toBeGreaterThan(4.5);
       expect(meetsAA).toBe(true);
     });
 
-    it('should calculate contrast ratio for large text (AA: 3:1)', () => {
+    it("should calculate contrast ratio for large text (AA: 3:1)", () => {
       // Arrange
-      const foreground = '#666666'; // Medium gray
-      const background = '#FFFFFF'; // White
+      const foreground = "#666666"; // Medium gray
+      const background = "#FFFFFF"; // White
 
       // Act
       const ratio = getContrastRatio(foreground, background);
-      const meetsAA = meetsWCAGContrast(foreground, background, 'AA', true);
+      const meetsAA = meetsWCAGContrast(foreground, background, "AA", true);
 
       // Assert
       expect(ratio).toBeGreaterThan(3);
@@ -68,41 +65,41 @@ describe('Color Contrast', () => {
     });
   });
 
-  describe('WCAG AA compliance', () => {
-    it('should pass AA for normal text with sufficient contrast', () => {
+  describe("WCAG AA compliance", () => {
+    it("should pass AA for normal text with sufficient contrast", () => {
       // Arrange
-      const foreground = '#000000';
-      const background = '#FFFFFF';
+      const foreground = "#000000";
+      const background = "#FFFFFF";
 
       // Act
-      const meetsAA = meetsWCAGContrast(foreground, background, 'AA', false);
+      const meetsAA = meetsWCAGContrast(foreground, background, "AA", false);
 
       // Assert
       expect(meetsAA).toBe(true);
     });
 
-    it('should fail AA for normal text with insufficient contrast', () => {
+    it("should fail AA for normal text with insufficient contrast", () => {
       // Arrange
-      const foreground = '#CCCCCC'; // Light gray
-      const background = '#FFFFFF'; // White
+      const foreground = "#CCCCCC"; // Light gray
+      const background = "#FFFFFF"; // White
 
       // Act
       const ratio = getContrastRatio(foreground, background);
-      const meetsAA = meetsWCAGContrast(foreground, background, 'AA', false);
+      const meetsAA = meetsWCAGContrast(foreground, background, "AA", false);
 
       // Assert
       expect(ratio).toBeLessThan(4.5);
       expect(meetsAA).toBe(false);
     });
 
-    it('should pass AA for large text with lower threshold', () => {
+    it("should pass AA for large text with lower threshold", () => {
       // Arrange
-      const foreground = '#888888'; // Medium gray
-      const background = '#FFFFFF'; // White
+      const foreground = "#888888"; // Medium gray
+      const background = "#FFFFFF"; // White
 
       // Act
       const ratio = getContrastRatio(foreground, background);
-      const meetsAA = meetsWCAGContrast(foreground, background, 'AA', true);
+      const meetsAA = meetsWCAGContrast(foreground, background, "AA", true);
 
       // Assert
       // Large text only needs 3:1 for AA
@@ -111,29 +108,29 @@ describe('Color Contrast', () => {
     });
   });
 
-  describe('WCAG AAA compliance', () => {
-    it('should pass AAA for normal text (7:1)', () => {
+  describe("WCAG AAA compliance", () => {
+    it("should pass AAA for normal text (7:1)", () => {
       // Arrange
-      const foreground = '#000000';
-      const background = '#FFFFFF';
+      const foreground = "#000000";
+      const background = "#FFFFFF";
 
       // Act
       const ratio = getContrastRatio(foreground, background);
-      const meetsAAA = meetsWCAGContrast(foreground, background, 'AAA', false);
+      const meetsAAA = meetsWCAGContrast(foreground, background, "AAA", false);
 
       // Assert
       expect(ratio).toBeGreaterThan(7);
       expect(meetsAAA).toBe(true);
     });
 
-    it('should pass AAA for large text (4.5:1)', () => {
+    it("should pass AAA for large text (4.5:1)", () => {
       // Arrange
-      const foreground = '#333333';
-      const background = '#FFFFFF';
+      const foreground = "#333333";
+      const background = "#FFFFFF";
 
       // Act
       const ratio = getContrastRatio(foreground, background);
-      const meetsAAA = meetsWCAGContrast(foreground, background, 'AAA', true);
+      const meetsAAA = meetsWCAGContrast(foreground, background, "AAA", true);
 
       // Assert
       expect(ratio).toBeGreaterThan(4.5);
@@ -141,30 +138,30 @@ describe('Color Contrast', () => {
     });
   });
 
-  describe('Edge cases for color contrast', () => {
-    it('should handle dark mode color combinations', () => {
+  describe("Edge cases for color contrast", () => {
+    it("should handle dark mode color combinations", () => {
       // Arrange
-      const foreground = '#FFFFFF'; // White text
-      const background = '#1A1A1A'; // Dark background
+      const foreground = "#FFFFFF"; // White text
+      const background = "#1A1A1A"; // Dark background
 
       // Act
       const ratio = getContrastRatio(foreground, background);
-      const meetsAA = meetsWCAGContrast(foreground, background, 'AA');
+      const meetsAA = meetsWCAGContrast(foreground, background, "AA");
 
       // Assert
       expect(ratio).toBeGreaterThan(4.5);
       expect(meetsAA).toBe(true);
     });
 
-    it('should handle custom theme color combinations', () => {
+    it("should handle custom theme color combinations", () => {
       // Arrange
       // Example: Amber theme
-      const foreground = '#F59E0B'; // Amber-500
-      const background = '#1F2937'; // Gray-800
+      const foreground = "#F59E0B"; // Amber-500
+      const background = "#1F2937"; // Gray-800
 
       // Act
       const ratio = getContrastRatio(foreground, background);
-      const meetsAA = meetsWCAGContrast(foreground, background, 'AA');
+      const meetsAA = meetsWCAGContrast(foreground, background, "AA");
 
       // Assert
       // This may or may not pass depending on actual colors
@@ -172,28 +169,28 @@ describe('Color Contrast', () => {
       expect(ratio).toBeGreaterThan(0);
     });
 
-    it('should handle RGB color format', () => {
+    it("should handle RGB color format", () => {
       // Arrange
-      const foreground = 'rgb(0, 0, 0)';
-      const background = 'rgb(255, 255, 255)';
+      const foreground = "rgb(0, 0, 0)";
+      const background = "rgb(255, 255, 255)";
 
       // Act
       const ratio = getContrastRatio(foreground, background);
-      const meetsAA = meetsWCAGContrast(foreground, background, 'AA');
+      const meetsAA = meetsWCAGContrast(foreground, background, "AA");
 
       // Assert
       expect(ratio).toBeGreaterThan(20);
       expect(meetsAA).toBe(true);
     });
 
-    it('should handle RGBA color format', () => {
+    it("should handle RGBA color format", () => {
       // Arrange
-      const foreground = 'rgba(0, 0, 0, 1)';
-      const background = 'rgba(255, 255, 255, 1)';
+      const foreground = "rgba(0, 0, 0, 1)";
+      const background = "rgba(255, 255, 255, 1)";
 
       // Act
       const ratio = getContrastRatio(foreground, background);
-      const meetsAA = meetsWCAGContrast(foreground, background, 'AA');
+      const meetsAA = meetsWCAGContrast(foreground, background, "AA");
 
       // Assert
       expect(ratio).toBeGreaterThan(20);
@@ -201,14 +198,14 @@ describe('Color Contrast', () => {
     });
   });
 
-  describe('Component color contrast testing', () => {
-    it('should verify button text contrast', () => {
+  describe("Component color contrast testing", () => {
+    it("should verify button text contrast", () => {
       // Arrange
       const TestComponent = () => (
         <button
           style={{
-            color: '#FFFFFF',
-            backgroundColor: '#1F2937',
+            color: "#FFFFFF",
+            backgroundColor: "#1F2937",
           }}
         >
           Button Text
@@ -217,22 +214,22 @@ describe('Color Contrast', () => {
 
       // Act
       render(<TestComponent />);
-      const foreground = '#FFFFFF';
-      const background = '#1F2937';
-      const meetsAA = meetsWCAGContrast(foreground, background, 'AA');
+      const foreground = "#FFFFFF";
+      const background = "#1F2937";
+      const meetsAA = meetsWCAGContrast(foreground, background, "AA");
 
       // Assert
       expect(meetsAA).toBe(true);
     });
 
-    it('should verify link text contrast', () => {
+    it("should verify link text contrast", () => {
       // Arrange
       const TestComponent = () => (
         <a
           href="/test"
           style={{
-            color: '#3B82F6',
-            backgroundColor: '#FFFFFF',
+            color: "#3B82F6",
+            backgroundColor: "#FFFFFF",
           }}
         >
           Link Text
@@ -241,8 +238,8 @@ describe('Color Contrast', () => {
 
       // Act
       render(<TestComponent />);
-      const foreground = '#3B82F6';
-      const background = '#FFFFFF';
+      const foreground = "#3B82F6";
+      const background = "#FFFFFF";
       const ratio = getContrastRatio(foreground, background);
 
       // Assert
@@ -251,13 +248,13 @@ describe('Color Contrast', () => {
       // Note: Actual blue may need adjustment for WCAG compliance
     });
 
-    it('should verify heading text contrast', () => {
+    it("should verify heading text contrast", () => {
       // Arrange
       const TestComponent = () => (
         <h1
           style={{
-            color: '#111827',
-            backgroundColor: '#F9FAFB',
+            color: "#111827",
+            backgroundColor: "#F9FAFB",
           }}
         >
           Heading Text
@@ -266,21 +263,21 @@ describe('Color Contrast', () => {
 
       // Act
       render(<TestComponent />);
-      const foreground = '#111827';
-      const background = '#F9FAFB';
-      const meetsAA = meetsWCAGContrast(foreground, background, 'AA');
+      const foreground = "#111827";
+      const background = "#F9FAFB";
+      const meetsAA = meetsWCAGContrast(foreground, background, "AA");
 
       // Assert
       expect(meetsAA).toBe(true);
     });
   });
 
-  describe('Error handling for color contrast', () => {
-    it('should handle invalid color formats gracefully', () => {
+  describe("Error handling for color contrast", () => {
+    it("should handle invalid color formats gracefully", () => {
       // Arrange
-      const invalidForeground = 'invalid-color';
-      const background = '#FFFFFF';
-      const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation();
+      const invalidForeground = "invalid-color";
+      const background = "#FFFFFF";
+      const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation();
 
       // Act
       const ratio = getContrastRatio(invalidForeground, background);
@@ -289,21 +286,21 @@ describe('Color Contrast', () => {
       expect(ratio).toBe(0);
       // Verify that an error was logged (logError calls console.error via Logger.error)
       expect(consoleErrorSpy).toHaveBeenCalledWith(
-        expect.stringContaining('[ERROR] Failed to calculate color contrast'),
+        expect.stringContaining("[ERROR] Failed to calculate color contrast"),
         expect.objectContaining({
-          component: 'accessibilityHelpers',
-          operation: 'getContrastRatio',
-          error: expect.stringContaining('Unsupported color format'),
+          component: "accessibilityHelpers",
+          operation: "getContrastRatio",
+          error: expect.stringContaining("Unsupported color format"),
         })
       );
-      
+
       consoleErrorSpy.mockRestore();
     });
 
-    it('should handle missing color values', () => {
+    it("should handle missing color values", () => {
       // Arrange
-      const foreground = '';
-      const background = '#FFFFFF';
+      const foreground = "";
+      const background = "#FFFFFF";
 
       // Act
       const ratio = getContrastRatio(foreground, background);
@@ -313,20 +310,20 @@ describe('Color Contrast', () => {
     });
   });
 
-  describe('Real-world color combinations', () => {
-    it('should test common Tailwind color combinations', () => {
+  describe("Real-world color combinations", () => {
+    it("should test common Tailwind color combinations", () => {
       // Arrange - Common Tailwind combinations
       const combinations = [
-        { fg: '#FFFFFF', bg: '#1F2937', name: 'White on Gray-800' },
-        { fg: '#000000', bg: '#F3F4F6', name: 'Black on Gray-100' },
-        { fg: '#F59E0B', bg: '#1F2937', name: 'Amber-500 on Gray-800' },
+        { fg: "#FFFFFF", bg: "#1F2937", name: "White on Gray-800" },
+        { fg: "#000000", bg: "#F3F4F6", name: "Black on Gray-100" },
+        { fg: "#F59E0B", bg: "#1F2937", name: "Amber-500 on Gray-800" },
       ];
 
       // Act & Assert
       combinations.forEach(({ fg, bg, name }) => {
         const ratio = getContrastRatio(fg, bg);
-        const meetsAA = meetsWCAGContrast(fg, bg, 'AA');
-        
+        const meetsAA = meetsWCAGContrast(fg, bg, "AA");
+
         // Log for debugging (not asserting, just documenting)
         expect(ratio).toBeGreaterThan(0);
         // Note: Some combinations may not meet WCAG - this documents them
@@ -334,4 +331,3 @@ describe('Color Contrast', () => {
     });
   });
 });
-

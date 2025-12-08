@@ -10,9 +10,9 @@ Standard button component with multiple variants and sizes.
 
 ```typescript
 interface ButtonProps {
-  variant?: 'primary' | 'secondary' | 'ghost' | 'amber' | 'success' | 'danger';
-  size?: 'sm' | 'md' | 'lg';
-  as?: 'button' | 'a';  // Render as button or link
+  variant?: "primary" | "secondary" | "ghost" | "amber" | "success" | "danger";
+  size?: "sm" | "md" | "lg";
+  as?: "button" | "a"; // Render as button or link
   // ... standard HTML button/anchor attributes
 }
 ```
@@ -64,7 +64,7 @@ Container component for grouping content.
 
 ```typescript
 interface CardProps {
-  variant?: 'default' | 'glass' | 'medieval';
+  variant?: "default" | "glass" | "medieval";
   // ... standard HTML div attributes
 }
 ```
@@ -105,7 +105,7 @@ Overlay component for background operations.
 ```typescript
 interface LoadingOverlayProps {
   isVisible: boolean;
-  message?: string;  // Default: "Loading..."
+  message?: string; // Default: "Loading..."
 }
 ```
 
@@ -125,7 +125,7 @@ Full-screen loading component for page loads.
 
 ```typescript
 interface LoadingScreenProps {
-  message?: string;  // Default: "Loading..."
+  message?: string; // Default: "Loading..."
 }
 ```
 
@@ -168,5 +168,3 @@ function MyComponent() {
 
 - [Development Guide](./development-guide.md)
 - [Infrastructure README](../src/features/infrastructure/README.md)
-
-

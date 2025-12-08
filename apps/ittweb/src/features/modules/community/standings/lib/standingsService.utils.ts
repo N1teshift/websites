@@ -3,7 +3,7 @@
  * Extracted to reduce code duplication between optimized/legacy and server/client paths
  */
 
-import type { StandingsEntry } from '../types';
+import type { StandingsEntry } from "../types";
 
 /**
  * Sort standings entries by score (ELO) descending, then by win rate, then by wins
@@ -41,7 +41,10 @@ export function paginateStandings(
 /**
  * Create a standings entry from optimized collection data
  */
-export function createStandingsEntryFromOptimized(data: Record<string, unknown>, docId: string): StandingsEntry {
+export function createStandingsEntryFromOptimized(
+  data: Record<string, unknown>,
+  docId: string
+): StandingsEntry {
   return {
     rank: 0, // Will be calculated after sorting
     name: (data.playerName || data.playerId || docId) as string,
@@ -62,12 +65,14 @@ export function createStandingsEntryFromLegacy(
   category: string,
   minGames: number
 ): StandingsEntry | null {
-  const categoryStats = (data.categories as Record<string, unknown>)?.[category] as {
-    wins?: number;
-    losses?: number;
-    draws?: number;
-    score?: number;
-  } | undefined;
+  const categoryStats = (data.categories as Record<string, unknown>)?.[category] as
+    | {
+        wins?: number;
+        losses?: number;
+        draws?: number;
+        score?: number;
+      }
+    | undefined;
 
   if (!categoryStats) return null;
 
@@ -124,5 +129,3 @@ export function processStandingsEntries(
     hasMore: endIndex < sorted.length,
   };
 }
-
-

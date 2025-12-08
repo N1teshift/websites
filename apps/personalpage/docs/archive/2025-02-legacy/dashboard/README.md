@@ -27,7 +27,9 @@ http://localhost:3000/projects/edtech/progressReport
 This project includes comprehensive documentation:
 
 ### 📖 Main Documentation
+
 **[PROGRESS_REPORT_DASHBOARD_DOCUMENTATION.md](./PROGRESS_REPORT_DASHBOARD_DOCUMENTATION.md)**
+
 - Complete feature reference
 - User guide
 - Technical implementation
@@ -35,14 +37,18 @@ This project includes comprehensive documentation:
 - Data structure details
 
 ### ⚡ Quick Reference
+
 **[PROGRESS_REPORT_SUMMARY.md](./PROGRESS_REPORT_SUMMARY.md)**
+
 - Feature overview
 - Quick start guide
 - File organization
 - Design decisions
 
 ### 🔧 Implementation Notes
+
 **[IMPLEMENTATION_NOTES.md](./IMPLEMENTATION_NOTES.md)**
+
 - Development journey
 - Key decisions
 - Challenges and solutions
@@ -54,12 +60,14 @@ This project includes comprehensive documentation:
 ## ✨ Key Features
 
 ### 🎓 Student View
+
 - Individual student analysis
 - Smart dual-mode timeline
 - Activity tracking (assessments, consultations, tests)
 - Advanced filtering and sorting
 
 ### 📊 Class View
+
 - Class-level analytics
 - Dynamic performance metrics
 - 5 chart types (KD1, KD, ND1, ND2, ND4)
@@ -67,6 +75,7 @@ This project includes comprehensive documentation:
 - Distribution analysis
 
 ### 💾 Data Management
+
 - JSON file upload
 - localStorage persistence
 - Export functionality
@@ -77,17 +86,22 @@ This project includes comprehensive documentation:
 ## 🎯 What Makes It Special
 
 ### Intelligent Timeline
+
 The timeline automatically adapts:
+
 - **Activity Mode**: Show all activities when no filter or 2+ types selected
 - **Score Mode**: Show score progression when 1 type selected
 
 ### Dynamic Statistics
+
 Stats card updates based on chart selection - always showing relevant metrics
 
 ### Individual Assessment Tracking
+
 See exact scores for each test - no more confusing averages
 
 ### Rich Tooltips
+
 Hover over any data point for comprehensive details including comments
 
 ---
@@ -147,25 +161,27 @@ locales/
 
 ## 🎨 Assessment Types
 
-| Column | Description | Scale |
-|--------|-------------|-------|
-| KD1 | Unit 1 Test | 1-10 |
-| KD | Unit 2 Test (Cambridge) | 1-10 |
-| ND1 | Homework (Binary) | 0% or 100% |
-| ND2 | Homework (Binary) | 0% or 100% |
-| ND4 | Homework (Scored) | 1-10 |
+| Column | Description             | Scale      |
+| ------ | ----------------------- | ---------- |
+| KD1    | Unit 1 Test             | 1-10       |
+| KD     | Unit 2 Test (Cambridge) | 1-10       |
+| ND1    | Homework (Binary)       | 0% or 100% |
+| ND2    | Homework (Binary)       | 0% or 100% |
+| ND4    | Homework (Scored)       | 1-10       |
 
 ---
 
 ## 🚦 Usage
 
 ### Class View
+
 1. Select a class from dropdown (or "All Classes")
 2. Choose assessment type in chart dropdown
 3. View distribution and metrics
 4. Click student row for detailed view
 
 ### Student View
+
 1. Search or select a student
 2. Apply filters (date range, assessment type)
 3. Explore timeline and tables
@@ -182,7 +198,7 @@ locales/
 ✅ 10-bar histograms for granular distribution  
 ✅ Fixed all styling issues (gray text/backgrounds)  
 ✅ Added consultation and Cambridge test tracking  
-✅ Improved chart aesthetics (line charts)  
+✅ Improved chart aesthetics (line charts)
 
 ---
 
@@ -198,8 +214,9 @@ locales/
 ## 🌍 Multi-Language
 
 Supports 3 languages:
+
 - 🇬🇧 English
-- 🇱🇹 Lithuanian  
+- 🇱🇹 Lithuanian
 - 🇷🇺 Russian
 
 All UI elements are translated.
@@ -209,6 +226,7 @@ All UI elements are translated.
 ## 🔮 Future Enhancements
 
 Planned for Phase 4:
+
 - 📝 Data editing capabilities
 - 📊 More chart types (radar, heat maps)
 - 📤 PDF/Excel export
@@ -221,16 +239,19 @@ Planned for Phase 4:
 ## 🐛 Troubleshooting
 
 ### Data not loading?
+
 - Check browser console for errors
 - Verify localStorage is not disabled
 - Ensure JSON format is correct
 
 ### Gray text in controls?
+
 - Clear browser cache
 - Check Tailwind CSS is loaded
 - Verify no conflicting styles
 
 ### Chart not showing?
+
 - Ensure students have data for selected assessment
 - Check console for Recharts errors
 - Verify data format
@@ -252,11 +273,13 @@ See [PROGRESS_REPORT_DASHBOARD_DOCUMENTATION.md](./PROGRESS_REPORT_DASHBOARD_DOC
 ## 🎓 Learning Resources
 
 ### For Users
+
 1. Start with [Quick Summary](./PROGRESS_REPORT_SUMMARY.md)
 2. Read [User Guide](./PROGRESS_REPORT_DASHBOARD_DOCUMENTATION.md#user-guide)
 3. Explore features hands-on
 
 ### For Developers
+
 1. Review [Architecture](./PROGRESS_REPORT_DASHBOARD_DOCUMENTATION.md#architecture)
 2. Check [Component Reference](./PROGRESS_REPORT_DASHBOARD_DOCUMENTATION.md#component-reference)
 3. Read [Implementation Notes](./IMPLEMENTATION_NOTES.md)
@@ -266,6 +289,7 @@ See [PROGRESS_REPORT_DASHBOARD_DOCUMENTATION.md](./PROGRESS_REPORT_DASHBOARD_DOC
 ## ✅ Quality Assurance
 
 ### Manual Testing
+
 - ✅ Data upload/export
 - ✅ All filtering combinations
 - ✅ Chart mode switching
@@ -274,6 +298,7 @@ See [PROGRESS_REPORT_DASHBOARD_DOCUMENTATION.md](./PROGRESS_REPORT_DASHBOARD_DOC
 - ✅ Edge cases
 
 ### Code Quality
+
 - ✅ TypeScript strict mode
 - ✅ ESLint compliant
 - ✅ No console errors
@@ -285,6 +310,7 @@ See [PROGRESS_REPORT_DASHBOARD_DOCUMENTATION.md](./PROGRESS_REPORT_DASHBOARD_DOC
 ## 📝 Version History
 
 ### v1.0.0 (October 2025) - Production Release
+
 - ✅ Complete feature set (Phases 1-3)
 - ✅ Student and Class views
 - ✅ Smart timeline system
@@ -297,6 +323,7 @@ See [PROGRESS_REPORT_DASHBOARD_DOCUMENTATION.md](./PROGRESS_REPORT_DASHBOARD_DOC
 ## 🤝 Contributing
 
 This project follows these principles:
+
 - **Type Safety**: Always use TypeScript types
 - **Component Reusability**: Extract common patterns
 - **Performance**: Use memoization for expensive calculations
@@ -314,6 +341,7 @@ Part of the Educational Tools project.
 ## 📞 Support
 
 For questions or issues:
+
 1. Check [Documentation](./PROGRESS_REPORT_DASHBOARD_DOCUMENTATION.md)
 2. Review [Implementation Notes](./IMPLEMENTATION_NOTES.md)
 3. Contact development team
@@ -337,12 +365,14 @@ For questions or issues:
 ## 🌟 Highlights
 
 ### Most Innovative Features
+
 1. **Dual-Mode Timeline** - Adapts to user needs automatically
 2. **Dynamic Stats** - Always shows relevant metrics
 3. **Rich Tooltips** - Full context on hover
 4. **Individual Assessments** - No more averaged confusion
 
 ### Best Design Decisions
+
 1. Line charts instead of bars (elegant & clean)
 2. 10-bar histograms (granular distribution)
 3. Activity mode for multiple filters (solves Y-axis problem)
@@ -359,7 +389,7 @@ For questions or issues:
 ---
 
 ### Quick Links
+
 - 📖 [Full Documentation](./PROGRESS_REPORT_DASHBOARD_DOCUMENTATION.md)
 - ⚡ [Quick Summary](./PROGRESS_REPORT_SUMMARY.md)
 - 🔧 [Implementation Notes](./IMPLEMENTATION_NOTES.md)
-

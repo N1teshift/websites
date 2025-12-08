@@ -1,18 +1,18 @@
-export type AbilityCategory = 
-  | 'basic' 
-  | 'hunter' 
-  | 'beastmaster' 
-  | 'mage' 
-  | 'priest' 
-  | 'thief' 
-  | 'scout' 
-  | 'gatherer' 
-  | 'item'
-  | 'building'
-  | 'bonushandler'
-  | 'buff'
-  | 'auradummy'
-  | 'unknown';
+export type AbilityCategory =
+  | "basic"
+  | "hunter"
+  | "beastmaster"
+  | "mage"
+  | "priest"
+  | "thief"
+  | "scout"
+  | "gatherer"
+  | "item"
+  | "building"
+  | "bonushandler"
+  | "buff"
+  | "auradummy"
+  | "unknown";
 
 export type AbilityData = {
   id: string;
@@ -42,14 +42,16 @@ export type AbilityData = {
     [key: string]: unknown; // Allow other visual effect properties
   };
   // Level-specific data (keys are level numbers as strings, e.g., "1", "2")
-  levels?: Record<string, {
-    manaCost?: number;
-    cooldown?: number;
-    duration?: number;
-    range?: number;
-    damage?: string;
-    areaOfEffect?: number;
-    [key: string]: unknown; // Allow other level-specific properties
-  }>;
+  levels?: Record<
+    string,
+    {
+      manaCost?: number;
+      cooldown?: number;
+      duration?: number;
+      range?: number;
+      damage?: string;
+      areaOfEffect?: number;
+      [key: string]: unknown; // Allow other level-specific properties
+    }
+  >;
 };
-

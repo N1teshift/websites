@@ -1,10 +1,10 @@
-import { getFirestoreAdmin, isServerSide } from '@websites/infrastructure/firebase';
-import { createComponentLogger, logError } from '@websites/infrastructure/logging';
-import { timestampToIso } from '@websites/infrastructure/utils';
-import { ArchiveEntry } from '@/types/archive';
+import { getFirestoreAdmin, isServerSide } from "@websites/infrastructure/firebase";
+import { createComponentLogger, logError } from "@websites/infrastructure/logging";
+import { timestampToIso } from "@websites/infrastructure/utils";
+import { ArchiveEntry } from "@/types/archive";
 
-const logger = createComponentLogger('archiveService.server');
-const ARCHIVE_COLLECTION = 'archives';
+const logger = createComponentLogger("archiveService.server");
+const ARCHIVE_COLLECTION = "archives";
 
 /**
  * Get all archive entries (server-side only)
@@ -12,7 +12,7 @@ const ARCHIVE_COLLECTION = 'archives';
  */
 export async function getAllArchiveEntries(): Promise<ArchiveEntry[]> {
   try {
-    logger.info('Fetching all archive entries');
+    logger.info("Fetching all archive entries");
 
     const entries: ArchiveEntry[] = [];
 
@@ -21,9 +21,10 @@ export async function getAllArchiveEntries(): Promise<ArchiveEntry[]> {
 
       try {
         // Try optimized query first
-        const querySnapshot = await adminDb.collection(ARCHIVE_COLLECTION)
-          .where('isDeleted', '==', false)
-          .orderBy('createdAt', 'desc')
+        const querySnapshot = await adminDb
+          .collection(ARCHIVE_COLLECTION)
+          .where("isDeleted", "==", false)
+          .orderBy("createdAt", "desc")
           .get();
 
         querySnapshot.forEach((docSnap) => {
@@ -32,7 +33,7 @@ export async function getAllArchiveEntries(): Promise<ArchiveEntry[]> {
             id: docSnap.id,
             title: data.title,
             content: data.content,
-            creatorName: data.creatorName || 'Unknown',
+            creatorName: data.creatorName || "Unknown",
             createdByDiscordId: data.createdByDiscordId ?? null,
             entryType: data.entryType,
             images: data.images,
@@ -52,8 +53,11 @@ export async function getAllArchiveEntries(): Promise<ArchiveEntry[]> {
       } catch (queryError: unknown) {
         // If index is still building, fall back to fetching all and filtering in memory
         const firestoreError = queryError as { code?: number; message?: string };
-        if (firestoreError?.code === 9 || firestoreError?.message?.includes('index is currently building')) {
-          logger.info('Index still building, falling back to in-memory filtering');
+        if (
+          firestoreError?.code === 9 ||
+          firestoreError?.message?.includes("index is currently building")
+        ) {
+          logger.info("Index still building, falling back to in-memory filtering");
 
           const querySnapshot = await adminDb.collection(ARCHIVE_COLLECTION).get();
 
@@ -69,7 +73,7 @@ export async function getAllArchiveEntries(): Promise<ArchiveEntry[]> {
               id: docSnap.id,
               title: data.title,
               content: data.content,
-              creatorName: data.creatorName || 'Unknown',
+              creatorName: data.creatorName || "Unknown",
               createdByDiscordId: data.createdByDiscordId ?? null,
               entryType: data.entryType,
               images: data.images,
@@ -98,23 +102,19 @@ export async function getAllArchiveEntries(): Promise<ArchiveEntry[]> {
         }
       }
     } else {
-      throw new Error('getAllArchiveEntries is only available on the server side');
+      throw new Error("getAllArchiveEntries is only available on the server side");
     }
 
-    logger.info('Archive entries fetched', { count: entries.length });
+    logger.info("Archive entries fetched", { count: entries.length });
     return entries;
   } catch (error) {
     const err = error as Error;
-    logError(err, 'Failed to fetch archive entries', {
-      component: 'archiveService.server',
-      operation: 'getAllArchiveEntries',
+    logError(err, "Failed to fetch archive entries", {
+      component: "archiveService.server",
+      operation: "getAllArchiveEntries",
     });
 
     // Return empty array if there's an error
     return [];
   }
 }
-
-
-
-

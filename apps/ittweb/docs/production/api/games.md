@@ -22,7 +22,9 @@ The Games API provides endpoints for managing both scheduled and completed games
 ## Game States
 
 ### Scheduled Games
+
 Games that are planned but not yet played. Include:
+
 - `scheduledDateTime` - When the game is scheduled
 - `timezone` - Timezone for the scheduled time
 - `teamSize` - Team format (1v1, 2v2, etc.)
@@ -30,7 +32,9 @@ Games that are planned but not yet played. Include:
 - `participants` - List of expected participants
 
 ### Completed Games
+
 Games that have been played. Include:
+
 - `datetime` - When the game was played
 - `duration` - Game length in seconds
 - `gamename` - Game name
@@ -44,6 +48,7 @@ Games that have been played. Include:
 All endpoints use the standardized response format:
 
 **Success**:
+
 ```typescript
 {
   success: true;
@@ -52,6 +57,7 @@ All endpoints use the standardized response format:
 ```
 
 **Error**:
+
 ```typescript
 {
   success: false;

@@ -31,6 +31,7 @@ Most POST/PUT/DELETE endpoints require authentication via NextAuth session. Incl
 **All API routes use the standardized response format via `createApiHandler`:**
 
 **Success Response:**
+
 ```typescript
 {
   success: true,
@@ -39,6 +40,7 @@ Most POST/PUT/DELETE endpoints require authentication via NextAuth session. Incl
 ```
 
 **Error Response:**
+
 ```typescript
 {
   success: false,
@@ -51,6 +53,7 @@ Most POST/PUT/DELETE endpoints require authentication via NextAuth session. Incl
 When using `createApiHandler`, your handler should return the data directly (not wrapped in `{ success: true }`). The handler automatically wraps it:
 
 **Creation Endpoints:**
+
 ```typescript
 // Handler returns:
 return { id: gameId };
@@ -63,6 +66,7 @@ return { id: gameId };
 ```
 
 **Update/Delete Endpoints:**
+
 ```typescript
 // Handler returns:
 return {}; // or return { success: true };
@@ -75,6 +79,7 @@ return {}; // or return { success: true };
 ```
 
 **Data Endpoints:**
+
 ```typescript
 // Handler returns:
 return { items: [...], meta: {...} };
@@ -91,6 +96,7 @@ return { items: [...], meta: {...} };
 **Standardization Complete**: All API routes have been migrated to use `createApiHandler` and the standardized response format. This ensures consistent error handling, authentication, and response structure across all endpoints.
 
 ### Status Codes
+
 - `200` - Success
 - `201` - Created
 - `400` - Bad Request
@@ -99,4 +105,3 @@ return { items: [...], meta: {...} };
 - `404` - Not Found
 - `405` - Method Not Allowed
 - `500` - Internal Server Error
-

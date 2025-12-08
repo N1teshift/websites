@@ -4,17 +4,17 @@
  */
 
 // Lazy load functions for large data files
-export const loadAllUnits = () => import('./units/allUnits');
-export const loadUnknownAbilities = () => import('./abilities/unknown');
-export const loadUnknownItems = () => import('./items/unknown');
-export const loadBuildingData = () => import('./abilities/building');
+export const loadAllUnits = () => import("./units/allUnits");
+export const loadUnknownAbilities = () => import("./abilities/unknown");
+export const loadUnknownItems = () => import("./items/unknown");
+export const loadBuildingData = () => import("./abilities/building");
 
 // Type-safe lazy loading with caching
 type LoadedModule = Record<string, unknown>;
 const loadedData = new Map<string, LoadedModule>();
 
 export async function getAllUnits() {
-  const key = 'allUnits';
+  const key = "allUnits";
   if (!loadedData.has(key)) {
     const importedModule = await loadAllUnits();
     loadedData.set(key, importedModule);
@@ -23,7 +23,7 @@ export async function getAllUnits() {
 }
 
 export async function getUnknownAbilities() {
-  const key = 'unknownAbilities';
+  const key = "unknownAbilities";
   if (!loadedData.has(key)) {
     const importedModule = await loadUnknownAbilities();
     loadedData.set(key, importedModule);
@@ -32,7 +32,7 @@ export async function getUnknownAbilities() {
 }
 
 export async function getUnknownItems() {
-  const key = 'unknownItems';
+  const key = "unknownItems";
   if (!loadedData.has(key)) {
     const importedModule = await loadUnknownItems();
     loadedData.set(key, importedModule);
@@ -41,11 +41,10 @@ export async function getUnknownItems() {
 }
 
 export async function getBuildingData() {
-  const key = 'buildingData';
+  const key = "buildingData";
   if (!loadedData.has(key)) {
     const importedModule = await loadBuildingData();
     loadedData.set(key, importedModule);
   }
   return loadedData.get(key);
 }
-

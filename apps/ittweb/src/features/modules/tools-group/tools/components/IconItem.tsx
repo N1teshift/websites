@@ -1,9 +1,13 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useMemo, useRef } from 'react';
-import Image from 'next/image';
-import { ITTIconCategory } from '@/features/modules/content/guides/utils/iconUtils';
-import type { IconFile, IconMapping, IconMappingEntry } from '@/features/modules/tools-group/tools/types/icon-mapper.types';
+import { useState, useEffect, useMemo, useRef } from "react";
+import Image from "next/image";
+import { ITTIconCategory } from "@/features/modules/content/guides/utils/iconUtils";
+import type {
+  IconFile,
+  IconMapping,
+  IconMappingEntry,
+} from "@/features/modules/tools-group/tools/types/icon-mapper.types";
 
 type IconItemProps = {
   icon: IconFile;
@@ -16,9 +20,18 @@ type IconItemProps = {
   gameNameOptions: Record<ITTIconCategory, string[]>;
 };
 
-export default function IconItem({ icon, allMappingsForIcon, onUpdate, onRemove, allMappings, isMarkedForDeletion, onToggleMarkForDeletion, gameNameOptions }: IconItemProps) {
-  const [selectedCategory, setSelectedCategory] = useState<ITTIconCategory>('items');
-  const [gameName, setGameName] = useState('');
+export default function IconItem({
+  icon,
+  allMappingsForIcon,
+  onUpdate,
+  onRemove,
+  allMappings,
+  isMarkedForDeletion,
+  onToggleMarkForDeletion,
+  gameNameOptions,
+}: IconItemProps) {
+  const [selectedCategory, setSelectedCategory] = useState<ITTIconCategory>("items");
+  const [gameName, setGameName] = useState("");
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(-1);
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -27,16 +40,16 @@ export default function IconItem({ icon, allMappingsForIcon, onUpdate, onRemove,
   const inputRef = useRef<HTMLInputElement>(null);
   const suggestionsRef = useRef<HTMLDivElement>(null);
   const imageErrorHandledRef = useRef(false);
-  
+
   // Check if filename has special characters that cause issues with Next.js Image
   const hasSpecialChars = /[%&!()]/.test(icon.filename);
-  
+
   // Check if current input is a valid game name
   const isValidGameName = useMemo(() => {
     if (!gameName.trim()) return true; // Empty is valid (not yet entered)
     const validNames = gameNameOptions[selectedCategory] ?? [];
     if (validNames.length === 0) return true;
-    return validNames.some(name => name.toLowerCase() === gameName.trim().toLowerCase());
+    return validNames.some((name) => name.toLowerCase() === gameName.trim().toLowerCase());
   }, [gameName, selectedCategory, gameNameOptions]);
 
   useEffect(() => {
@@ -72,21 +85,23 @@ export default function IconItem({ icon, allMappingsForIcon, onUpdate, onRemove,
         // Get valid game names for this category
         const validNames = gameNameOptions[selectedCategory] ?? [];
         // If no data available, allow any name (user can enter manually)
-        const isValidName = validNames.length === 0 || validNames.some(name => name.toLowerCase() === newName.toLowerCase());
-        
+        const isValidName =
+          validNames.length === 0 ||
+          validNames.some((name) => name.toLowerCase() === newName.toLowerCase());
+
         if (!isValidName) {
           // Invalid name - show error and keep the input for correction
           setIsInvalid(true);
           return;
         }
-        
+
         // Check if this mapping already exists
         const existing = allMappingsForIcon.find(
-          m => m.category === selectedCategory && m.gameName === newName
+          (m) => m.category === selectedCategory && m.gameName === newName
         );
         if (!existing) {
           onUpdate(selectedCategory, icon.filename, newName);
-          setGameName('');
+          setGameName("");
           setShowAddMapping(false);
           setIsInvalid(false);
         }
@@ -104,22 +119,24 @@ export default function IconItem({ icon, allMappingsForIcon, onUpdate, onRemove,
     setGameName(suggestion);
     setShowSuggestions(false);
     onUpdate(selectedCategory, icon.filename, suggestion);
-    setGameName('');
+    setGameName("");
     setShowAddMapping(false);
     inputRef.current?.blur();
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       if (selectedSuggestionIndex >= 0 && suggestions[selectedSuggestionIndex]) {
         selectSuggestion(suggestions[selectedSuggestionIndex]);
       } else {
         // Validate before submitting
         const newName = gameName.trim();
         if (newName) {
-        const validNames = gameNameOptions[selectedCategory] ?? [];
-        const isValidName = validNames.length === 0 || validNames.some(name => name.toLowerCase() === newName.toLowerCase());
-          
+          const validNames = gameNameOptions[selectedCategory] ?? [];
+          const isValidName =
+            validNames.length === 0 ||
+            validNames.some((name) => name.toLowerCase() === newName.toLowerCase());
+
           if (!isValidName) {
             setIsInvalid(true);
             e.preventDefault();
@@ -128,18 +145,20 @@ export default function IconItem({ icon, allMappingsForIcon, onUpdate, onRemove,
         }
         e.currentTarget.blur();
       }
-    } else if (e.key === 'ArrowDown') {
+    } else if (e.key === "ArrowDown") {
       e.preventDefault();
-      setSelectedSuggestionIndex(prev => 
-        prev < suggestions.length - 1 ? prev + 1 : prev
-      );
-    } else if (e.key === 'ArrowUp') {
+      setSelectedSuggestionIndex((prev) => (prev < suggestions.length - 1 ? prev + 1 : prev));
+    } else if (e.key === "ArrowUp") {
       e.preventDefault();
-      setSelectedSuggestionIndex(prev => prev > 0 ? prev - 1 : -1);
-    } else if (e.key === 'Escape') {
+      setSelectedSuggestionIndex((prev) => (prev > 0 ? prev - 1 : -1));
+    } else if (e.key === "Escape") {
       setShowSuggestions(false);
       inputRef.current?.blur();
-    } else if (e.key === 'Tab' && selectedSuggestionIndex >= 0 && suggestions[selectedSuggestionIndex]) {
+    } else if (
+      e.key === "Tab" &&
+      selectedSuggestionIndex >= 0 &&
+      suggestions[selectedSuggestionIndex]
+    ) {
       e.preventDefault();
       selectSuggestion(suggestions[selectedSuggestionIndex]);
     }
@@ -147,30 +166,30 @@ export default function IconItem({ icon, allMappingsForIcon, onUpdate, onRemove,
 
   // Get the best match for ghost preview
   const ghostPreview = useMemo(() => {
-    if (!gameName || suggestions.length === 0) return '';
+    if (!gameName || suggestions.length === 0) return "";
     const bestMatch = suggestions[0];
     if (bestMatch && bestMatch.toLowerCase().startsWith(gameName.toLowerCase())) {
       return bestMatch.substring(gameName.length);
     }
-    return '';
+    return "";
   }, [gameName, suggestions]);
 
   const categoryColors: Record<ITTIconCategory, string> = {
-    abilities: 'bg-blue-500/20 text-blue-300 border-blue-500/30',
-    items: 'bg-green-500/20 text-green-300 border-green-500/30',
-    buildings: 'bg-purple-500/20 text-purple-300 border-purple-500/30',
-    trolls: 'bg-amber-500/20 text-amber-300 border-amber-500/30',
-    units: 'bg-cyan-500/20 text-cyan-300 border-cyan-500/30',
+    abilities: "bg-blue-500/20 text-blue-300 border-blue-500/30",
+    items: "bg-green-500/20 text-green-300 border-green-500/30",
+    buildings: "bg-purple-500/20 text-purple-300 border-purple-500/30",
+    trolls: "bg-amber-500/20 text-amber-300 border-amber-500/30",
+    units: "bg-cyan-500/20 text-cyan-300 border-cyan-500/30",
   };
 
-  const categories: ITTIconCategory[] = ['abilities', 'items', 'buildings', 'trolls'];
+  const categories: ITTIconCategory[] = ["abilities", "items", "buildings", "trolls"];
 
   return (
-    <div className={`bg-black/20 border rounded-lg p-3 hover:border-amber-500/50 transition-colors relative ${
-      isMarkedForDeletion 
-        ? 'border-red-500/50 bg-red-500/10' 
-        : 'border-amber-500/20'
-    }`}>
+    <div
+      className={`bg-black/20 border rounded-lg p-3 hover:border-amber-500/50 transition-colors relative ${
+        isMarkedForDeletion ? "border-red-500/50 bg-red-500/10" : "border-amber-500/20"
+      }`}
+    >
       {isMarkedForDeletion && (
         <div className="absolute top-1 right-1 bg-red-500 text-white text-xs px-2 py-1 rounded font-bold">
           DELETE
@@ -190,9 +209,9 @@ export default function IconItem({ icon, allMappingsForIcon, onUpdate, onRemove,
               onError={(e) => {
                 const img = e.target as HTMLImageElement;
                 // Prevent infinite loop: only set fallback once and check if already using fallback
-                if (!imageErrorHandledRef.current && !img.src.includes('BTNYellowHerb.png')) {
+                if (!imageErrorHandledRef.current && !img.src.includes("BTNYellowHerb.png")) {
                   imageErrorHandledRef.current = true;
-                  img.src = '/icons/itt/BTNYellowHerb.png';
+                  img.src = "/icons/itt/BTNYellowHerb.png";
                 }
               }}
             />
@@ -207,14 +226,14 @@ export default function IconItem({ icon, allMappingsForIcon, onUpdate, onRemove,
             onError={(e) => {
               const img = e.target as HTMLImageElement;
               // Prevent infinite loop: only set fallback once and check if already using fallback
-              if (!imageErrorHandledRef.current && !img.src.includes('BTNYellowHerb.png')) {
+              if (!imageErrorHandledRef.current && !img.src.includes("BTNYellowHerb.png")) {
                 imageErrorHandledRef.current = true;
-                img.src = '/icons/itt/BTNYellowHerb.png';
+                img.src = "/icons/itt/BTNYellowHerb.png";
               }
             }}
           />
         )}
-        
+
         {/* Existing Mappings */}
         {allMappingsForIcon.length > 0 && (
           <div className="w-full space-y-1">
@@ -253,13 +272,13 @@ export default function IconItem({ icon, allMappingsForIcon, onUpdate, onRemove,
               value={selectedCategory}
               onChange={(e) => {
                 setSelectedCategory(e.target.value as ITTIconCategory);
-                setGameName('');
+                setGameName("");
                 setSuggestions([]);
                 setIsInvalid(false);
               }}
               className="w-full px-2 py-1 text-xs bg-black/30 border border-amber-500/30 rounded text-white"
             >
-              {categories.map(cat => (
+              {categories.map((cat) => (
                 <option key={cat} value={cat}>
                   {cat}
                 </option>
@@ -278,15 +297,16 @@ export default function IconItem({ icon, allMappingsForIcon, onUpdate, onRemove,
                   onKeyDown={handleKeyDown}
                   className={`w-full px-2 py-1 text-xs bg-black/30 border rounded text-white placeholder-gray-500 focus:outline-none relative z-10 ${
                     isInvalid
-                      ? 'border-red-500 focus:border-red-400'
+                      ? "border-red-500 focus:border-red-400"
                       : isValidGameName || !gameName.trim()
-                      ? 'border-amber-500/30 focus:border-amber-400/50'
-                      : 'border-yellow-500/50 focus:border-yellow-400/70'
+                        ? "border-amber-500/30 focus:border-amber-400/50"
+                        : "border-yellow-500/50 focus:border-yellow-400/70"
                   }`}
                 />
                 {isInvalid && gameName.trim() && (
                   <div className="text-xs text-red-400 mt-1">
-                    Invalid name. Please select from suggestions or enter a valid {selectedCategory} name.
+                    Invalid name. Please select from suggestions or enter a valid {selectedCategory}{" "}
+                    name.
                   </div>
                 )}
                 {/* Ghost preview */}
@@ -309,11 +329,13 @@ export default function IconItem({ icon, allMappingsForIcon, onUpdate, onRemove,
                       type="button"
                       onClick={() => selectSuggestion(suggestion)}
                       className={`w-full text-left px-3 py-2 text-xs hover:bg-amber-500/20 transition-colors ${
-                        index === selectedSuggestionIndex ? 'bg-amber-500/30' : ''
+                        index === selectedSuggestionIndex ? "bg-amber-500/30" : ""
                       }`}
                     >
                       <span className="text-white">{gameName}</span>
-                      <span className="text-amber-400">{suggestion.substring(gameName.length)}</span>
+                      <span className="text-amber-400">
+                        {suggestion.substring(gameName.length)}
+                      </span>
                     </button>
                   ))}
                 </div>
@@ -322,7 +344,7 @@ export default function IconItem({ icon, allMappingsForIcon, onUpdate, onRemove,
             <button
               onClick={() => {
                 setShowAddMapping(false);
-                setGameName('');
+                setGameName("");
                 setSuggestions([]);
               }}
               className="w-full px-2 py-1 text-xs bg-black/30 border border-gray-500/30 rounded text-gray-400 hover:bg-gray-500/10 transition-colors"
@@ -336,23 +358,20 @@ export default function IconItem({ icon, allMappingsForIcon, onUpdate, onRemove,
           {icon.subdirectory && <span className="text-gray-600">{icon.subdirectory}/</span>}
           {icon.filename}
         </p>
-        
+
         {/* Mark for Deletion Button */}
         <button
           onClick={() => onToggleMarkForDeletion(icon.path)}
           className={`w-full px-2 py-1 text-xs rounded transition-colors ${
             isMarkedForDeletion
-              ? 'bg-red-600 hover:bg-red-500 text-white border border-red-500'
-              : 'bg-black/30 border border-gray-500/30 text-gray-400 hover:bg-red-500/10 hover:border-red-500/50 hover:text-red-400'
+              ? "bg-red-600 hover:bg-red-500 text-white border border-red-500"
+              : "bg-black/30 border border-gray-500/30 text-gray-400 hover:bg-red-500/10 hover:border-red-500/50 hover:text-red-400"
           }`}
-          title={isMarkedForDeletion ? 'Unmark for deletion' : 'Mark for deletion'}
+          title={isMarkedForDeletion ? "Unmark for deletion" : "Mark for deletion"}
         >
-          {isMarkedForDeletion ? '✓ Marked for Deletion' : 'Mark for Deletion'}
+          {isMarkedForDeletion ? "✓ Marked for Deletion" : "Mark for Deletion"}
         </button>
       </div>
     </div>
   );
 }
-
-
-

@@ -33,6 +33,7 @@ MafaldaGarcia/
 ## Image Management
 
 Images are stored in Firebase Storage and served dynamically through the API. The system:
+
 - Automatically scans for available images in Firebase Storage
 - Provides placeholder images for missing content
 - Handles errors gracefully with fallback images
@@ -41,21 +42,24 @@ Images are stored in Firebase Storage and served dynamically through the API. Th
 ## Setup
 
 1. **Clone the repository**
+
    ```bash
    git clone <repository-url>
    cd MafaldaGarcia
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Environment setup**
+
    ```bash
    cp env.example .env.local
    ```
-   
+
    Configure the following environment variables:
    - `FIREBASE_SERVICE_ACCOUNT_KEY` - Firebase service account JSON
    - `FIREBASE_STORAGE_BUCKET` - Firebase Storage bucket name
@@ -69,6 +73,7 @@ Images are stored in Firebase Storage and served dynamically through the API. Th
 ## Deployment
 
 The project is configured for deployment on Vercel with:
+
 - Automatic image optimization
 - Edge functions for API routes
 - Environment variable management

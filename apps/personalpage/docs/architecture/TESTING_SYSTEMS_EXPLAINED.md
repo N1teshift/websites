@@ -10,9 +10,11 @@ This project has **two different testing systems** that serve different purposes
 ## System 1: AI/Math Object Generation Tests
 
 ### Purpose
+
 Tests whether your AI system correctly generates mathematical objects (coefficients, terms, expressions) when given prompts.
 
 ### Location
+
 - **Scripts**: `src/scripts/test/`
 - **Core Logic**: `src/features/modules/math/tests/`
 - **UI**: `src/features/modules/math/MathObjectsGeneratorTestsPage.tsx`
@@ -24,11 +26,12 @@ Tests whether your AI system correctly generates mathematical objects (coefficie
    - Each test specifies what object type to generate
 
 2. **Execution Flow**:
+
    ```
    Prompt → OpenAI API → Generated Objects → Validation → Pass/Fail
    ```
 
-3. **Results Storage**: 
+3. **Results Storage**:
    - Results saved to Firestore database
    - Tracks pass/fail rates over time
    - Stores error messages, token usage, elapsed time
@@ -63,6 +66,7 @@ npm run test:openai:failed:10
 ```
 
 ### When to Use
+
 - Testing AI behavior and quality
 - Validating math object generation
 - Tracking AI performance over time
@@ -73,9 +77,11 @@ npm run test:openai:failed:10
 ## System 2: Standard Unit Tests (Jest)
 
 ### Purpose
+
 Tests your regular code functions, utilities, and components to ensure they work correctly.
 
 ### Location
+
 - **Config**: `jest.config.cjs`, `jest.setup.cjs`
 - **Tests**: `*.test.ts` files next to source files
 - **Examples**: `src/features/modules/calendar/utils/*.test.ts`
@@ -87,11 +93,12 @@ Tests your regular code functions, utilities, and components to ensure they work
    - `dateUtils.ts` → `dateUtils.test.ts`
 
 2. **Execution Flow**:
+
    ```
    Test File → Jest Runner → Assertions → Pass/Fail
    ```
 
-3. **No Database**: 
+3. **No Database**:
    - Pure unit tests
    - No external dependencies (unless mocked)
    - Fast execution
@@ -120,6 +127,7 @@ npm run test:windows -- --watch
 ```
 
 ### When to Use
+
 - Testing utility functions
 - Testing data transformations
 - Testing calculations
@@ -131,15 +139,15 @@ npm run test:windows -- --watch
 
 ## Comparison
 
-| Aspect | AI Tests | Unit Tests |
-|--------|----------|------------|
-| **Purpose** | Test AI behavior | Test code functions |
-| **Speed** | Slow (API calls) | Fast |
-| **Database** | Yes (Firestore) | No |
-| **External APIs** | Yes (OpenAI) | No (mocked if needed) |
-| **Cost** | Yes (API tokens) | Free |
-| **When to run** | Periodic validation | Before every commit |
-| **Examples** | "Does AI generate correct coefficients?" | "Does `calculateEndTime()` work correctly?" |
+| Aspect            | AI Tests                                 | Unit Tests                                  |
+| ----------------- | ---------------------------------------- | ------------------------------------------- |
+| **Purpose**       | Test AI behavior                         | Test code functions                         |
+| **Speed**         | Slow (API calls)                         | Fast                                        |
+| **Database**      | Yes (Firestore)                          | No                                          |
+| **External APIs** | Yes (OpenAI)                             | No (mocked if needed)                       |
+| **Cost**          | Yes (API tokens)                         | Free                                        |
+| **When to run**   | Periodic validation                      | Before every commit                         |
+| **Examples**      | "Does AI generate correct coefficients?" | "Does `calculateEndTime()` work correctly?" |
 
 ---
 
@@ -148,6 +156,7 @@ npm run test:windows -- --watch
 ### Workflow for AI-Assisted Development
 
 1. **Before AI changes**:
+
    ```bash
    # Run unit tests to see current state
    npm run test:windows
@@ -156,10 +165,11 @@ npm run test:windows -- --watch
 2. **Make AI changes** (e.g., refactor code, add features)
 
 3. **After AI changes**:
+
    ```bash
    # Run unit tests again to catch regressions
    npm run test:windows
-   
+
    # If tests fail, show AI the failures and ask it to fix
    ```
 
@@ -210,18 +220,20 @@ npm run test:windows -- --watch
 ## Examples
 
 ### Unit Test Example
+
 ```typescript
 // eventTransformer.test.ts
-describe('transformToGoogleEvent', () => {
-  it('should transform basic event details correctly', () => {
-    const input = { summary: 'Test', startDateTime: '2024-01-01T10:00:00Z' };
+describe("transformToGoogleEvent", () => {
+  it("should transform basic event details correctly", () => {
+    const input = { summary: "Test", startDateTime: "2024-01-01T10:00:00Z" };
     const result = transformToGoogleEvent(input);
-    expect(result.summary).toBe('Test');
+    expect(result.summary).toBe("Test");
   });
 });
 ```
 
 ### AI Test Example
+
 ```typescript
 // TestCase in math/tests/cases/
 {
@@ -242,10 +254,10 @@ Both testing systems are valuable and serve different purposes:
 - **AI Tests**: Periodic validation of AI-generated content
 
 For AI-assisted development, **unit tests are most important** because they:
+
 - Run quickly
 - Catch regressions immediately
 - Give fast feedback to AI assistants
 - Don't cost money (no API calls)
 
 Use AI tests when specifically working on or improving your AI math object generation features.
-

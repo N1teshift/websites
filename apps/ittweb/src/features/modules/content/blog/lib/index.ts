@@ -1,4 +1,2 @@
-export * from './posts';
-export * from './schemas';
-
-
+export * from "./posts";
+export * from "./schemas";

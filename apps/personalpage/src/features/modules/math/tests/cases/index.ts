@@ -5,27 +5,24 @@
  *              re-exports the `TestRegistry` and related functions from `../core/TestRegistry`
  *              for managing and accessing these test cases.
  */
-export { TestCase } from './TestCase';
-export { CoefficientTestCase } from './CoefficientTestCase';
-export { TermTestCase } from './TermTestCase';
-export { TermsTestCase } from './TermsTestCase';
-export { CoefficientsTestCase } from './CoefficientsTestCase';
-export { ExpressionTestCase } from './ExpressionTestCase';
-export { EquationTestCase } from './EquationTestCase';
-export { InequalityTestCase } from './InequalityTestCase';
-export { SetTestCase } from './SetTestCase';
-export { IntervalTestCase } from './IntervalTestCase';
-export { PointTestCase } from './PointTestCase';
+export { TestCase } from "./TestCase";
+export { CoefficientTestCase } from "./CoefficientTestCase";
+export { TermTestCase } from "./TermTestCase";
+export { TermsTestCase } from "./TermsTestCase";
+export { CoefficientsTestCase } from "./CoefficientsTestCase";
+export { ExpressionTestCase } from "./ExpressionTestCase";
+export { EquationTestCase } from "./EquationTestCase";
+export { InequalityTestCase } from "./InequalityTestCase";
+export { SetTestCase } from "./SetTestCase";
+export { IntervalTestCase } from "./IntervalTestCase";
+export { PointTestCase } from "./PointTestCase";
 
 // Export registry functionality
-export { 
+export {
   TestRegistry,
   getAllTestsFlat as getAllTests,
   createTestCase,
   getAvailableTypes as getAvailableTestTypes,
   getTestsForType,
-  allTests
-} from '../core/TestRegistry'; 
-
-
-
+  allTests,
+} from "../core/TestRegistry";

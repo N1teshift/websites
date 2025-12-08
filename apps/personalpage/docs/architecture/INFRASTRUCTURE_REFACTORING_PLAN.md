@@ -1,7 +1,9 @@
 # Infrastructure Refactoring Plan
 
 ## Goal
+
 Route everything so packages are used directly, and the infrastructure folder should either disappear from particular projects or be super minimal - just what is needed for that project. Everything else should be:
+
 - **Shared infrastructure** → `@websites/infrastructure` package
 - **Not infrastructure** → `modules/` folder
 
@@ -12,16 +14,19 @@ Route everything so packages are used directly, and the infrastructure folder sh
 **Current Location:** `src/features/infrastructure/api/`
 
 **What exists:**
+
 - `apiRequest.ts` - Axios-based API request utility (project-specific wrapper)
 - `routeHandlers.ts` - Wrapper around `@websites/infrastructure/api` with personalpage auth config
 - `index.ts` - Exports
 
 **What's in packages:** `@websites/infrastructure/api` has:
+
 - Generic route handlers
 - API schemas and validation
 - Query parsing
 
 **Recommendation:**
+
 - ✅ **Keep `routeHandlers.ts`** - It's a thin wrapper that adds personalpage-specific auth config
 - ❓ **Evaluate `apiRequest.ts`** - This is an axios wrapper. Options:
   - **Option A:** Move to `@websites/infrastructure/api` if it's generic enough
@@ -29,6 +34,7 @@ Route everything so packages are used directly, and the infrastructure folder sh
   - **Option C:** Replace with fetch-based solution from packages if available
 
 **Action Items:**
+
 1. Review `apiRequest.ts` - is it generic or project-specific?
 2. If generic, move to `@websites/infrastructure/api`
 3. Update all imports to use `@websites/infrastructure/api` for `apiRequest`
@@ -41,22 +47,26 @@ Route everything so packages are used directly, and the infrastructure folder sh
 **Current Location:** `src/features/infrastructure/auth/`
 
 **What exists:**
+
 - `userService.ts` - Firestore user operations
 - `oauth.ts` - OAuth utilities (likely project-specific)
 - `session.ts` - JWT session management (likely project-specific)
 - `AuthContext.tsx` - React context (likely project-specific)
 
 **What's in packages:** `@websites/infrastructure/auth` has:
+
 - `oauth/google.ts` - Google OAuth utilities
 - `session.ts` - Generic session management
 - `userService.ts` - Generic user service
 - `providers/AuthContext.tsx` - Generic auth context
 
 **Recommendation:**
+
 - ❌ **Remove local auth folder** - Everything should use `@websites/infrastructure/auth`
 - ✅ **Migrate any personalpage-specific logic** to packages if it's reusable, or to modules if it's feature-specific
 
 **Action Items:**
+
 1. Compare local `auth/` with `@websites/infrastructure/auth`
 2. Identify any personalpage-specific differences
 3. If differences are project-specific config, use wrapper pattern (like routeHandlers)
@@ -71,22 +81,26 @@ Route everything so packages are used directly, and the infrastructure folder sh
 **Current Location:** `src/features/infrastructure/cache/`
 
 **What exists:**
+
 - `cacheUtils.ts` - Generic localStorage + in-memory cache with expiry
 - `index.ts` - Exports
 
 **What's in packages:** `@websites/infrastructure/cache` has:
+
 - `swrConfig.ts` - SWR configuration
 - `requestCache.ts` - Request-level caching
 - `analyticsCache.ts` - Analytics-specific caching
 - `analyticsCache.server.ts` - Server-side analytics cache
 
 **Recommendation:**
+
 - ❓ **Evaluate consolidation** - personalpage's `cacheUtils.ts` is more generic than packages' cache
 - **Option A:** Move `cacheUtils.ts` to `@websites/infrastructure/cache` as generic utility
 - **Option B:** Keep if it's project-specific, but rename to make it clear it's project-specific
 - **Option C:** Replace with packages' cache if it can serve the same purpose
 
 **Action Items:**
+
 1. Compare `cacheUtils.ts` with packages cache utilities
 2. If `cacheUtils.ts` is more generic/useful, move to packages
 3. If packages cache is sufficient, migrate to use packages
@@ -100,17 +114,20 @@ Route everything so packages are used directly, and the infrastructure folder sh
 **Current Location:** `src/features/infrastructure/shared/`
 
 **What exists:**
+
 - `components/mathParser.tsx` - Math parsing component (project-specific)
 - `components/table/` - Table components (MathDisplay, Tag) - project-specific
 - `components/ui/MathItemsDisplay.tsx` - Math display component (project-specific)
 - `utils/functionUtils.ts` - Generic utility functions
 
 **What's in packages:** `@websites/ui` has:
+
 - Generic UI components (Button, Card, Input, etc.)
 - Table components (GenericTable, etc.)
 - Layout components
 
 **Recommendation:**
+
 - ✅ **Move math-specific components to `modules/math/`** - These are feature-specific, not infrastructure
   - `mathParser.tsx` → `modules/math/shared/components/MathParser.tsx`
   - `table/MathDisplay.tsx` → `modules/math/shared/components/MathDisplay.tsx`
@@ -121,6 +138,7 @@ Route everything so packages are used directly, and the infrastructure folder sh
   - If project-specific → Keep but move to project root utils or appropriate module
 
 **Action Items:**
+
 1. Move all math-specific components to `modules/math/shared/components/`
 2. Evaluate `functionUtils.ts` - move to packages if generic
 3. Check if `table/` components are generic enough for `@websites/ui`
@@ -132,14 +150,17 @@ Route everything so packages are used directly, and the infrastructure folder sh
 ## Summary of Recommendations
 
 ### Can be removed (use packages):
+
 - ✅ **`infrastructure/auth/`** → Use `@websites/infrastructure/auth`
 - ❓ **`infrastructure/cache/`** → Evaluate and consolidate with `@websites/infrastructure/cache`
 
 ### Should be minimal wrappers:
+
 - ✅ **`infrastructure/api/routeHandlers.ts`** → Keep as thin wrapper (already done)
 - ❓ **`infrastructure/api/apiRequest.ts`** → Evaluate if it should move to packages
 
 ### Should move to modules:
+
 - ✅ **`infrastructure/shared/components/mathParser.tsx`** → `modules/math/`
 - ✅ **`infrastructure/shared/components/table/MathDisplay.tsx`** → `modules/math/`
 - ✅ **`infrastructure/shared/components/ui/MathItemsDisplay.tsx`** → `modules/math/`

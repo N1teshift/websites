@@ -9,17 +9,17 @@
  * getRuleSetDescription("positive") // => "\\{ x \\mid x > 0 \\}"
  */
 export const getRuleSetDescription = (rule: string): string => {
-    const ruleDescriptions: Record<string, string> = {
-        odd: "\\{ 2n+1 \\mid n \\in \\mathbf{Z} \\}",
-        even: "\\{ 2n \\mid n \\in \\mathbf{Z} \\}",
-        positive: "\\{ x \\mid x > 0 \\}",
-        negative: "\\{ x \\mid x < 0 \\}",
-        nonzero: "\\{ x \\mid x \\neq 0 \\}",
-        square: "\\{ n^2 \\mid n \\in \\mathbf{N} \\}",
-        cube: "\\{ n^3 \\mid n \\in \\mathbf{Z} \\}",
-        prime: "\\{ n \\mid n \\text{ yra pirminis} \\}",
-    };
-    return ruleDescriptions[rule] || rule;
+  const ruleDescriptions: Record<string, string> = {
+    odd: "\\{ 2n+1 \\mid n \\in \\mathbf{Z} \\}",
+    even: "\\{ 2n \\mid n \\in \\mathbf{Z} \\}",
+    positive: "\\{ x \\mid x > 0 \\}",
+    negative: "\\{ x \\mid x < 0 \\}",
+    nonzero: "\\{ x \\mid x \\neq 0 \\}",
+    square: "\\{ n^2 \\mid n \\in \\mathbf{N} \\}",
+    cube: "\\{ n^3 \\mid n \\in \\mathbf{Z} \\}",
+    prime: "\\{ n \\mid n \\text{ yra pirminis} \\}",
+  };
+  return ruleDescriptions[rule] || rule;
 };
 
 /**
@@ -31,7 +31,7 @@ export const getRuleSetDescription = (rule: string): string => {
  * getRangeSetDescription([-5, 5]) // => "[-5;5]"
  */
 export const getRangeSetDescription = (range: number[]): string => {
-    return `[${range.join(";")}]`;
+  return `[${range.join(";")}]`;
 };
 
 /**
@@ -45,18 +45,18 @@ export const getRangeSetDescription = (range: number[]): string => {
  * getRepresentationPrefix("fraction", "x") // => "x = \\frac{b}{c} \\in "
  * getRepresentationPrefix("decimal", "y") // => "y \\in "
  */
-export const getRepresentationPrefix = (representationType: string, variableName: string): string => {
-    switch (representationType) {
-        case "fraction":
-            return `${variableName} = \\frac{b}{c} \\in `;
-        case "mixed":
-            return `${variableName} = A \\frac{b}{c} \\in `;
-        case "irrational":
-            return `${variableName} = \\sqrt{b} \\in `;
-        default:
-            return `${variableName} \\in `;
-    }
+export const getRepresentationPrefix = (
+  representationType: string,
+  variableName: string
+): string => {
+  switch (representationType) {
+    case "fraction":
+      return `${variableName} = \\frac{b}{c} \\in `;
+    case "mixed":
+      return `${variableName} = A \\frac{b}{c} \\in `;
+    case "irrational":
+      return `${variableName} = \\sqrt{b} \\in `;
+    default:
+      return `${variableName} \\in `;
+  }
 };
-
-
-

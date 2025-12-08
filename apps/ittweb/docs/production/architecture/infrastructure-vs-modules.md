@@ -13,6 +13,7 @@ This project follows a **Layered Architecture** pattern (also known as Clean Arc
 **Purpose**: Generic, reusable code that can be extracted to a separate package/library.
 
 **Characteristics**:
+
 - ✅ Framework-aware but domain-agnostic
 - ✅ No business logic dependencies
 - ✅ Reusable across different projects
@@ -20,6 +21,7 @@ This project follows a **Layered Architecture** pattern (also known as Clean Arc
 - ✅ Can be "drag and drop" to other projects
 
 **Contains**:
+
 - Generic UI components (Button, Card, LoadingScreen)
 - Framework utilities (Firebase helpers, API handlers)
 - Cross-cutting concerns (logging, monitoring, error tracking)
@@ -27,6 +29,7 @@ This project follows a **Layered Architecture** pattern (also known as Clean Arc
 - Generic hooks (data fetching, translation)
 
 **Should NOT contain**:
+
 - ❌ Business logic
 - ❌ Domain-specific types
 - ❌ Project-specific components (e.g., GameCardSkeleton)
@@ -38,12 +41,14 @@ This project follows a **Layered Architecture** pattern (also known as Clean Arc
 **Purpose**: Project-specific business logic and domain implementations.
 
 **Characteristics**:
+
 - ✅ Contains business/domain logic
 - ✅ Depends on infrastructure, not vice versa
 - ✅ Project-specific to ITT Web application
 - ✅ Uses infrastructure utilities
 
 **Contains**:
+
 - Domain modules (games, players, archives, analytics)
 - Business services (archiveService, playerService)
 - Domain-specific components (PlayerCard, GameDetailsSection)
@@ -59,10 +64,11 @@ Modules → Infrastructure (✅ Good)
 ```
 
 Modules can import from infrastructure:
+
 ```typescript
-import { logError } from '@/features/infrastructure/logging';
-import { Button, Card } from '@/features/infrastructure/components';
-import { getFirestoreInstance } from '@/features/infrastructure/api/firebase';
+import { logError } from "@/features/infrastructure/logging";
+import { Button, Card } from "@/features/infrastructure/components";
+import { getFirestoreInstance } from "@/features/infrastructure/api/firebase";
 ```
 
 ### ❌ Forbidden Dependencies
@@ -72,9 +78,10 @@ Infrastructure → Modules (❌ Never)
 ```
 
 Infrastructure should NEVER import from modules:
+
 ```typescript
 // ❌ BAD - Infrastructure importing from modules
-import { GameService } from '@/features/modules/game-management/games';
+import { GameService } from "@/features/modules/game-management/games";
 ```
 
 ## Decision Criteria
@@ -82,12 +89,14 @@ import { GameService } from '@/features/modules/game-management/games';
 ### When to put code in Infrastructure
 
 Ask yourself:
+
 1. **Can this be used in another project?** → Infrastructure
 2. **Is this framework-aware but domain-agnostic?** → Infrastructure
 3. **Does this have no business logic?** → Infrastructure
 4. **Is this a pure utility function?** → Infrastructure
 
 **Examples**:
+
 - ✅ `utils/object/objectUtils.ts` - Pure object manipulation
 - ✅ `api/firebase/firestoreHelpers.ts` - Generic Firestore utilities
 - ✅ `components/containers/Card.tsx` - Generic card component
@@ -96,12 +105,14 @@ Ask yourself:
 ### When to put code in Modules
 
 Ask yourself:
+
 1. **Is this specific to ITT Web?** → Modules
 2. **Does this contain business logic?** → Modules
 3. **Does this depend on domain types?** → Modules
 4. **Is this a project-specific component?** → Modules
 
 **Examples**:
+
 - ✅ `modules/community/archives/services/archiveService.ts` - ITT-specific archive logic
 - ✅ `modules/game-management/games/lib/gameService.ts` - Game business logic
 - ✅ `modules/shared/components/skeletons/GameCardSkeleton.tsx` - ITT-specific skeleton
@@ -143,6 +154,7 @@ When moving code from infrastructure to modules:
 ## Related Patterns
 
 This architecture is inspired by:
+
 - **Clean Architecture** (Infrastructure = outer layer)
 - **Hexagonal Architecture** (Infrastructure = adapters)
 - **Onion Architecture** (Infrastructure = outer rings)
@@ -196,7 +208,7 @@ export function PlayerCard({ player }: { player: Player }) {
 
 ```typescript
 // ❌ infrastructure/utils/user/userRoleUtils.ts
-import { UserRole } from '@/types/userData'; // Depends on project types
+import { UserRole } from "@/types/userData"; // Depends on project types
 // Should be in modules/community/users/utils/
 ```
 
@@ -205,4 +217,3 @@ import { UserRole } from '@/types/userData'; // Depends on project types
 - [Clean Architecture by Robert C. Martin](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
 - [Hexagonal Architecture](https://alistair.cockburn.us/hexagonal-architecture/)
 - [Layered Architecture Pattern](https://www.oreilly.com/library/view/software-architecture-patterns/9781491971437/ch01.html)
-

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Navigation,
   HeroSection,
@@ -12,20 +12,19 @@ import {
   FloatingFooter,
   ScrollAnimations,
   ArtisticStyles,
-  LoadingScreen
-} from './features/components';
-import { usePortfolioImages, useScrollPosition } from './features/hooks';
+  LoadingScreen,
+} from "./features/components";
+import { usePortfolioImages, useScrollPosition } from "./features/hooks";
 
 interface MafaldaGarciaPageProps {
   title?: string;
   sections?: Array<{ heading?: string; paragraphs: string[]; backgroundColor?: string }>;
 }
 
-export const MafaldaGarciaPage: React.FC<MafaldaGarciaPageProps> = ({ 
-}) => {
+export const MafaldaGarciaPage: React.FC<MafaldaGarciaPageProps> = ({}) => {
   const { images, loading, error } = usePortfolioImages({
     numImageSlots: 16,
-    placeholderImage: 'education.jpg'
+    placeholderImage: "education.jpg",
   });
   const { isAtBottom } = useScrollPosition();
 
@@ -34,7 +33,7 @@ export const MafaldaGarciaPage: React.FC<MafaldaGarciaPageProps> = ({
   }
 
   if (error) {
-    console.error('Portfolio loading error:', error);
+    console.error("Portfolio loading error:", error);
   }
 
   const hasImages = images && images.length > 0;

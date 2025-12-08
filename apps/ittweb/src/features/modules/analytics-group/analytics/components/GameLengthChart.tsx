@@ -1,6 +1,6 @@
-import React, { Suspense, lazy } from 'react';
-import { Card } from '@/features/infrastructure/components';
-import type { GameLengthDataPoint } from '../types';
+import React, { Suspense, lazy } from "react";
+import { Card } from "@/features/infrastructure/components";
+import type { GameLengthDataPoint } from "../types";
 
 interface GameLengthChartProps {
   data: GameLengthDataPoint[];
@@ -9,11 +9,12 @@ interface GameLengthChartProps {
 
 // Lazy load Recharts to reduce initial bundle size
 const ChartContent = lazy(async () => {
-  const recharts = await import('recharts');
+  const recharts = await import("recharts");
   return {
     default: ({ data, title }: GameLengthChartProps) => {
-      const { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } = recharts;
-      
+      const { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } =
+        recharts;
+
       return (
         <Card variant="medieval" className="p-6">
           <h3 className="text-xl font-semibold text-amber-400 mb-4">{title}</h3>
@@ -23,23 +24,28 @@ const ChartContent = lazy(async () => {
               <XAxis
                 dataKey="date"
                 stroke="#d97706"
-                tick={{ fill: '#d97706' }}
-                style={{ fontSize: '12px' }}
+                tick={{ fill: "#d97706" }}
+                style={{ fontSize: "12px" }}
               />
               <YAxis
                 stroke="#d97706"
-                tick={{ fill: '#d97706' }}
-                style={{ fontSize: '12px' }}
-                label={{ value: 'Minutes', angle: -90, position: 'insideLeft', style: { fill: '#d97706' } }}
+                tick={{ fill: "#d97706" }}
+                style={{ fontSize: "12px" }}
+                label={{
+                  value: "Minutes",
+                  angle: -90,
+                  position: "insideLeft",
+                  style: { fill: "#d97706" },
+                }}
               />
               <Tooltip
                 contentStyle={{
-                  backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                  border: '1px solid rgba(217, 119, 6, 0.3)',
-                  borderRadius: '4px',
-                  color: '#d97706',
+                  backgroundColor: "rgba(0, 0, 0, 0.8)",
+                  border: "1px solid rgba(217, 119, 6, 0.3)",
+                  borderRadius: "4px",
+                  color: "#d97706",
                 }}
-                formatter={(value: number) => [`${value.toFixed(1)} min`, 'Average Duration']}
+                formatter={(value: number) => [`${value.toFixed(1)} min`, "Average Duration"]}
               />
               <Area
                 type="monotone"
@@ -65,8 +71,8 @@ const ChartLoadingPlaceholder = () => (
   </Card>
 );
 
-function GameLengthChartComponent({ data, title = 'Average Game Length' }: GameLengthChartProps) {
-  if (!data || data.length === 0 || data.every(d => d.averageDuration === 0)) {
+function GameLengthChartComponent({ data, title = "Average Game Length" }: GameLengthChartProps) {
+  if (!data || data.length === 0 || data.every((d) => d.averageDuration === 0)) {
     return (
       <Card variant="medieval" className="p-8 text-center">
         <p className="text-gray-400">No game length data available</p>
@@ -83,4 +89,3 @@ function GameLengthChartComponent({ data, title = 'Average Game Length' }: GameL
 
 // Memoize component to prevent unnecessary re-renders when props haven't changed
 export const GameLengthChart = React.memo(GameLengthChartComponent);
-

@@ -1,5 +1,1 @@
-export { default as MusicPage } from './components/MusicPage';
-
-
-
-
+export { default as MusicPage } from "./components/MusicPage";

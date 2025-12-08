@@ -1,11 +1,11 @@
-import { getStaticPropsWithTranslations } from '@websites/infrastructure/i18n/getStaticProps';
-import { UnitPlanGeneratorPage } from '@/features/modules/edtech/unitPlanGenerator';
-import type { GetStaticProps } from 'next';
-import type { ExtendedPageProps } from '@websites/infrastructure/app';
+import { getStaticPropsWithTranslations } from "@websites/infrastructure/i18n/getStaticProps";
+import { UnitPlanGeneratorPage } from "@/features/modules/edtech/unitPlanGenerator";
+import type { GetStaticProps } from "next";
+import type { ExtendedPageProps } from "@websites/infrastructure/app";
 
 const pageNamespaces = [
   "edtech-common",
-  "edtech-guide", 
+  "edtech-guide",
   "edtech-basic-info",
   "edtech-inquiry",
   "edtech-planning",
@@ -16,25 +16,22 @@ const pageNamespaces = [
   "edtech-objectives",
   "edtech-resources",
   "links",
-  "common"
+  "common",
 ];
 export const getStaticProps: GetStaticProps<ExtendedPageProps> = async (context) => {
-    const baseProps = await getStaticPropsWithTranslations(pageNamespaces)(context);
-    return {
-        ...baseProps,
-        props: {
-            ...baseProps.props,
-            translationNamespaces: pageNamespaces,
-            layoutGoBackTarget: "/",
-            layoutTitleKey: "unit_plan_generator",
-            layoutMode: "top",
-        },
-    };
+  const baseProps = await getStaticPropsWithTranslations(pageNamespaces)(context);
+  return {
+    ...baseProps,
+    props: {
+      ...baseProps.props,
+      translationNamespaces: pageNamespaces,
+      layoutGoBackTarget: "/",
+      layoutTitleKey: "unit_plan_generator",
+      layoutMode: "top",
+    },
+  };
 };
 
 export default function UnitPlanGeneratorPageWrapper() {
-    return <UnitPlanGeneratorPage />;
+  return <UnitPlanGeneratorPage />;
 }
-
-
-

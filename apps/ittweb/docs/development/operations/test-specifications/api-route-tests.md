@@ -3,6 +3,7 @@
 Test specifications for API route handlers.
 
 ### Games API
+
 - [ ] `src/pages/api/games/index.ts`
   - Test GET returns list of games
   - Test GET with query filters (category, date, player)
@@ -21,6 +22,7 @@ Test specifications for API route handlers.
   - Test DELETE requires authentication
 
 ### Players API
+
 - [ ] `src/pages/api/players/index.ts`
   - Test GET returns list of players
   - Test GET with pagination
@@ -43,6 +45,7 @@ Test specifications for API route handlers.
   - Test comparison data structure
 
 ### Posts API
+
 - [ ] `src/pages/api/posts/index.ts`
   - Test GET returns list of posts
   - Test GET filters published posts
@@ -58,6 +61,7 @@ Test specifications for API route handlers.
   - Test DELETE soft deletes post
 
 ### Scheduled Games API
+
 - [ ] `src/pages/api/scheduled-games/index.ts`
   - Test GET returns list of scheduled games
   - Test POST creates new scheduled game
@@ -88,6 +92,7 @@ Test specifications for API route handlers.
   - Test DELETE requires authentication
 
 ### Archives API
+
 - [ ] `src/pages/api/entries/index.ts`
   - Test GET returns list of archives
   - Test POST creates new archive
@@ -99,6 +104,7 @@ Test specifications for API route handlers.
   - Test DELETE deletes archive
 
 ### Standings API
+
 - [ ] `src/pages/api/standings/index.ts`
   - Test GET returns standings/leaderboard
   - Test GET with category filter
@@ -108,6 +114,7 @@ Test specifications for API route handlers.
   - Test ELO sorting
 
 ### Analytics API
+
 - [ ] `src/pages/api/analytics/activity.ts`
   - Test GET returns activity data
   - Test GET with date range
@@ -127,6 +134,7 @@ Test specifications for API route handlers.
   - Test GET with filters
 
 ### Classes API
+
 - [ ] `src/pages/api/classes/index.ts`
   - Test GET returns list of classes
 
@@ -135,16 +143,19 @@ Test specifications for API route handlers.
   - Test GET returns 404 for non-existent class
 
 ### Items API
+
 - [ ] `src/pages/api/items/index.ts`
   - Test GET returns list of items
   - Test item data structure
 
 ### Icons API
+
 - [ ] `src/pages/api/icons/list.ts`
   - Test GET returns list of icons
   - Test icon path formatting
 
 ### User API
+
 - [ ] `src/pages/api/user/accept-data-notice.ts`
   - Test POST accepts data notice
   - Test POST requires authentication
@@ -158,6 +169,7 @@ Test specifications for API route handlers.
   - Test DELETE requires authentication
 
 ### Auth API
+
 - [ ] `src/pages/api/auth/[...nextauth].ts`
   - Test NextAuth configuration
   - Test OAuth providers
@@ -165,12 +177,14 @@ Test specifications for API route handlers.
   - Test callback handling
 
 ### Admin API
+
 - [ ] `src/pages/api/admin/wipe-test-data.ts`
   - Test DELETE wipes test data
   - Test DELETE requires admin authentication
   - Test DELETE validates environment (dev only)
 
 ### Revalidate API
+
 - [ ] `src/pages/api/revalidate.ts`
   - Test POST revalidates pages
   - Test POST validates secret token

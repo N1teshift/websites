@@ -1,2 +1,1 @@
-export { default as DataCollectionNotice } from './DataCollectionNotice';
-
+export { default as DataCollectionNotice } from "./DataCollectionNotice";

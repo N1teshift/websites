@@ -1,15 +1,15 @@
-import { act, renderHook, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { useNewPostForm } from '../useNewPostForm';
+import { act, renderHook, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { useNewPostForm } from "../useNewPostForm";
 
 // Mock NextAuth
-jest.mock('next-auth/react', () => ({
+jest.mock("next-auth/react", () => ({
   useSession: jest.fn(),
   signIn: jest.fn(),
 }));
 
 // Mock logger
-jest.mock('@websites/infrastructure/logging', () => ({
+jest.mock("@websites/infrastructure/logging", () => ({
   createComponentLogger: jest.fn(() => ({
     info: jest.fn(),
     warn: jest.fn(),
@@ -17,17 +17,17 @@ jest.mock('@websites/infrastructure/logging', () => ({
   })),
 }));
 
-const { useSession, signIn } = jest.requireMock('next-auth/react');
+const { useSession, signIn } = jest.requireMock("next-auth/react");
 
-describe('useNewPostForm', () => {
+describe("useNewPostForm", () => {
   const mockSignIn = signIn as jest.MockedFunction<typeof signIn>;
 
   beforeEach(() => {
     jest.clearAllMocks();
     global.fetch = jest.fn();
     (useSession as jest.Mock).mockReturnValue({
-      status: 'authenticated',
-      data: { user: { name: 'Test User' } },
+      status: "authenticated",
+      data: { user: { name: "Test User" } },
     });
   });
 
@@ -35,24 +35,24 @@ describe('useNewPostForm', () => {
     jest.restoreAllMocks();
   });
 
-  describe('initializes form state', () => {
-    it('should initialize with default values', () => {
+  describe("initializes form state", () => {
+    it("should initialize with default values", () => {
       // Act
       const { result } = renderHook(() => useNewPostForm());
 
       // Assert
-      expect(result.current.formState.title).toBe('');
-      expect(result.current.formState.slug).toBe('');
+      expect(result.current.formState.title).toBe("");
+      expect(result.current.formState.slug).toBe("");
       expect(result.current.formState.date).toBeTruthy(); // Should be today's date
-      expect(result.current.formState.excerpt).toBe('');
-      expect(result.current.formState.content).toBe('');
+      expect(result.current.formState.excerpt).toBe("");
+      expect(result.current.formState.content).toBe("");
       expect(result.current.formState.published).toBe(true);
       expect(result.current.isSubmitting).toBe(false);
       expect(result.current.errorMessage).toBeNull();
       expect(result.current.successMessage).toBeNull();
     });
 
-    it('should initialize with canSubmit as false when fields are empty', () => {
+    it("should initialize with canSubmit as false when fields are empty", () => {
       // Act
       const { result } = renderHook(() => useNewPostForm());
 
@@ -61,12 +61,12 @@ describe('useNewPostForm', () => {
     });
   });
 
-  describe('handles field updates', () => {
-    it('should update title field', () => {
+  describe("handles field updates", () => {
+    it("should update title field", () => {
       // Arrange
       const { result } = renderHook(() => useNewPostForm());
       const event = {
-        target: { name: 'title', value: 'Test Post Title' },
+        target: { name: "title", value: "Test Post Title" },
       } as React.ChangeEvent<HTMLInputElement>;
 
       // Act
@@ -75,14 +75,14 @@ describe('useNewPostForm', () => {
       });
 
       // Assert
-      expect(result.current.formState.title).toBe('Test Post Title');
+      expect(result.current.formState.title).toBe("Test Post Title");
     });
 
-    it('should auto-generate slug from title', () => {
+    it("should auto-generate slug from title", () => {
       // Arrange
       const { result } = renderHook(() => useNewPostForm());
       const event = {
-        target: { name: 'title', value: 'Test Post Title' },
+        target: { name: "title", value: "Test Post Title" },
       } as React.ChangeEvent<HTMLInputElement>;
 
       // Act
@@ -91,25 +91,25 @@ describe('useNewPostForm', () => {
       });
 
       // Assert
-      expect(result.current.formState.slug).toBe('test-post-title');
+      expect(result.current.formState.slug).toBe("test-post-title");
     });
 
-    it('should not auto-generate slug if manually edited', () => {
+    it("should not auto-generate slug if manually edited", () => {
       // Arrange
       const { result } = renderHook(() => useNewPostForm());
-      
+
       // First, manually edit slug
       const slugEvent = {
-        target: { name: 'slug', value: 'custom-slug' },
+        target: { name: "slug", value: "custom-slug" },
       } as React.ChangeEvent<HTMLInputElement>;
-      
+
       act(() => {
         result.current.handleFieldChange(slugEvent);
       });
 
       // Then change title
       const titleEvent = {
-        target: { name: 'title', value: 'New Title' },
+        target: { name: "title", value: "New Title" },
       } as React.ChangeEvent<HTMLInputElement>;
 
       // Act
@@ -118,14 +118,14 @@ describe('useNewPostForm', () => {
       });
 
       // Assert
-      expect(result.current.formState.slug).toBe('custom-slug'); // Should not change
+      expect(result.current.formState.slug).toBe("custom-slug"); // Should not change
     });
 
-    it('should update content field', () => {
+    it("should update content field", () => {
       // Arrange
       const { result } = renderHook(() => useNewPostForm());
       const event = {
-        target: { name: 'content', value: 'Test content here' },
+        target: { name: "content", value: "Test content here" },
       } as React.ChangeEvent<HTMLTextAreaElement>;
 
       // Act
@@ -134,14 +134,14 @@ describe('useNewPostForm', () => {
       });
 
       // Assert
-      expect(result.current.formState.content).toBe('Test content here');
+      expect(result.current.formState.content).toBe("Test content here");
     });
 
-    it('should update published checkbox', () => {
+    it("should update published checkbox", () => {
       // Arrange
       const { result } = renderHook(() => useNewPostForm());
       const event = {
-        target: { name: 'published', type: 'checkbox', checked: false },
+        target: { name: "published", type: "checkbox", checked: false },
       } as React.ChangeEvent<HTMLInputElement>;
 
       // Act
@@ -153,20 +153,20 @@ describe('useNewPostForm', () => {
       expect(result.current.formState.published).toBe(false);
     });
 
-    it('should update canSubmit when required fields are filled', () => {
+    it("should update canSubmit when required fields are filled", () => {
       // Arrange
       const { result } = renderHook(() => useNewPostForm());
 
       // Act
       act(() => {
         result.current.handleFieldChange({
-          target: { name: 'title', value: 'Test Title' },
+          target: { name: "title", value: "Test Title" },
         } as React.ChangeEvent<HTMLInputElement>);
       });
 
       act(() => {
         result.current.handleFieldChange({
-          target: { name: 'content', value: 'Test content' },
+          target: { name: "content", value: "Test content" },
         } as React.ChangeEvent<HTMLTextAreaElement>);
       });
 
@@ -175,14 +175,14 @@ describe('useNewPostForm', () => {
     });
   });
 
-  describe('validates form', () => {
-    it('should not allow submission with empty title', () => {
+  describe("validates form", () => {
+    it("should not allow submission with empty title", () => {
       // Arrange
       const { result } = renderHook(() => useNewPostForm());
 
       act(() => {
         result.current.handleFieldChange({
-          target: { name: 'content', value: 'Test content' },
+          target: { name: "content", value: "Test content" },
         } as React.ChangeEvent<HTMLTextAreaElement>);
       });
 
@@ -190,13 +190,13 @@ describe('useNewPostForm', () => {
       expect(result.current.canSubmit).toBeFalsy();
     });
 
-    it('should not allow submission with empty content', () => {
+    it("should not allow submission with empty content", () => {
       // Arrange
       const { result } = renderHook(() => useNewPostForm());
 
       act(() => {
         result.current.handleFieldChange({
-          target: { name: 'title', value: 'Test Title' },
+          target: { name: "title", value: "Test Title" },
         } as React.ChangeEvent<HTMLInputElement>);
       });
 
@@ -205,7 +205,7 @@ describe('useNewPostForm', () => {
       expect(result.current.canSubmit).toBeFalsy();
     });
 
-    it('should not allow submission while submitting', async () => {
+    it("should not allow submission while submitting", async () => {
       // Arrange
       const { result } = renderHook(() => useNewPostForm());
       const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
@@ -217,10 +217,10 @@ describe('useNewPostForm', () => {
       // Fill form
       act(() => {
         result.current.handleFieldChange({
-          target: { name: 'title', value: 'Test Title' },
+          target: { name: "title", value: "Test Title" },
         } as React.ChangeEvent<HTMLInputElement>);
         result.current.handleFieldChange({
-          target: { name: 'content', value: 'Test content' },
+          target: { name: "content", value: "Test content" },
         } as React.ChangeEvent<HTMLTextAreaElement>);
       });
 
@@ -239,11 +239,11 @@ describe('useNewPostForm', () => {
     });
   });
 
-  describe('handles submission', () => {
-    it('should redirect to sign in if not authenticated', () => {
+  describe("handles submission", () => {
+    it("should redirect to sign in if not authenticated", () => {
       // Arrange
       (useSession as jest.Mock).mockReturnValue({
-        status: 'unauthenticated',
+        status: "unauthenticated",
         data: null,
       });
       const { result } = renderHook(() => useNewPostForm());
@@ -257,14 +257,14 @@ describe('useNewPostForm', () => {
       });
 
       // Assert
-      expect(mockSignIn).toHaveBeenCalledWith('discord');
+      expect(mockSignIn).toHaveBeenCalledWith("discord");
     });
 
-    it('should create post when authenticated', async () => {
+    it("should create post when authenticated", async () => {
       // Arrange
       (useSession as jest.Mock).mockReturnValue({
-        status: 'authenticated',
-        data: { user: { name: 'Test User' } },
+        status: "authenticated",
+        data: { user: { name: "Test User" } },
       });
       const { result } = renderHook(() => useNewPostForm());
       const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
@@ -280,10 +280,10 @@ describe('useNewPostForm', () => {
       // Fill form
       act(() => {
         result.current.handleFieldChange({
-          target: { name: 'title', value: 'Test Title' },
+          target: { name: "title", value: "Test Title" },
         } as React.ChangeEvent<HTMLInputElement>);
         result.current.handleFieldChange({
-          target: { name: 'content', value: 'Test content' },
+          target: { name: "content", value: "Test content" },
         } as React.ChangeEvent<HTMLTextAreaElement>);
       });
 
@@ -299,35 +299,35 @@ describe('useNewPostForm', () => {
       // Assert
       await waitFor(() => expect(result.current.isSubmitting).toBe(false));
       expect(mockFetch).toHaveBeenCalledWith(
-        '/api/posts',
+        "/api/posts",
         expect.objectContaining({
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
         })
       );
     });
 
-    it('should handle submission errors', async () => {
+    it("should handle submission errors", async () => {
       // Arrange
       (useSession as jest.Mock).mockReturnValue({
-        status: 'authenticated',
-        data: { user: { name: 'Test User' } },
+        status: "authenticated",
+        data: { user: { name: "Test User" } },
       });
       const { result } = renderHook(() => useNewPostForm());
       const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
       mockFetch.mockResolvedValueOnce({
         ok: false,
         status: 500,
-        json: async () => ({ error: 'Server error' }),
+        json: async () => ({ error: "Server error" }),
       } as Response);
 
       // Fill form
       act(() => {
         result.current.handleFieldChange({
-          target: { name: 'title', value: 'Test Title' },
+          target: { name: "title", value: "Test Title" },
         } as React.ChangeEvent<HTMLInputElement>);
         result.current.handleFieldChange({
-          target: { name: 'content', value: 'Test content' },
+          target: { name: "content", value: "Test content" },
         } as React.ChangeEvent<HTMLTextAreaElement>);
       });
 
@@ -342,15 +342,15 @@ describe('useNewPostForm', () => {
 
       // Assert
       await waitFor(() => expect(result.current.isSubmitting).toBe(false));
-      expect(result.current.errorMessage).toBe('Server error');
+      expect(result.current.errorMessage).toBe("Server error");
     });
 
-    it('should call onSuccess callback if provided', async () => {
+    it("should call onSuccess callback if provided", async () => {
       // Arrange
       const onSuccess = jest.fn();
       (useSession as jest.Mock).mockReturnValue({
-        status: 'authenticated',
-        data: { user: { name: 'Test User' } },
+        status: "authenticated",
+        data: { user: { name: "Test User" } },
       });
       const { result } = renderHook(() => useNewPostForm(onSuccess));
       const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
@@ -366,10 +366,10 @@ describe('useNewPostForm', () => {
       // Fill form
       act(() => {
         result.current.handleFieldChange({
-          target: { name: 'title', value: 'Test Title' },
+          target: { name: "title", value: "Test Title" },
         } as React.ChangeEvent<HTMLInputElement>);
         result.current.handleFieldChange({
-          target: { name: 'content', value: 'Test content' },
+          target: { name: "content", value: "Test content" },
         } as React.ChangeEvent<HTMLTextAreaElement>);
       });
 
@@ -387,18 +387,18 @@ describe('useNewPostForm', () => {
     });
   });
 
-  describe('handles reset', () => {
-    it('should reset form to initial state', () => {
+  describe("handles reset", () => {
+    it("should reset form to initial state", () => {
       // Arrange
       const { result } = renderHook(() => useNewPostForm());
 
       // Fill form
       act(() => {
         result.current.handleFieldChange({
-          target: { name: 'title', value: 'Test Title' },
+          target: { name: "title", value: "Test Title" },
         } as React.ChangeEvent<HTMLInputElement>);
         result.current.handleFieldChange({
-          target: { name: 'content', value: 'Test content' },
+          target: { name: "content", value: "Test content" },
         } as React.ChangeEvent<HTMLTextAreaElement>);
       });
 
@@ -408,12 +408,10 @@ describe('useNewPostForm', () => {
       });
 
       // Assert
-      expect(result.current.formState.title).toBe('');
-      expect(result.current.formState.content).toBe('');
+      expect(result.current.formState.title).toBe("");
+      expect(result.current.formState.content).toBe("");
       expect(result.current.errorMessage).toBeNull();
       expect(result.current.successMessage).toBeNull();
     });
   });
 });
-
-

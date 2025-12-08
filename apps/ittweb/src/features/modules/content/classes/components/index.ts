@@ -1,4 +1,2 @@
-export * from './ClassesPage';
-export * from './ClassDetailPage';
-
-
+export * from "./ClassesPage";
+export * from "./ClassDetailPage";

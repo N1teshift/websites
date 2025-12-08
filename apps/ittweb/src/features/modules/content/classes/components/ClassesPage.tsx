@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
-import Link from 'next/link';
-import { PageHero } from '@/features/infrastructure/components';
-import { Card } from '@/features/infrastructure/components';
-import { useClassesData } from '../hooks/useClassesData';
+import React, { useState } from "react";
+import Link from "next/link";
+import { PageHero } from "@/features/infrastructure/components";
+import { Card } from "@/features/infrastructure/components";
+import { useClassesData } from "../hooks/useClassesData";
 
 interface ClassesPageProps {
   pageNamespaces: string[];
 }
 
 export function ClassesPage({ pageNamespaces: _pageNamespaces }: ClassesPageProps) {
-  const [category, setCategory] = useState<string>('');
+  const [category, setCategory] = useState<string>("");
   const { classes: classStats, isLoading: loading, error } = useClassesData(category || undefined);
 
   if (loading) {
@@ -34,7 +34,9 @@ export function ClassesPage({ pageNamespaces: _pageNamespaces }: ClassesPageProp
         <PageHero title="Class Statistics" description="View statistics for each troll class" />
         <div className="container mx-auto px-4 py-8">
           <Card variant="medieval" className="p-8">
-            <p className="text-red-400">Error: {error instanceof Error ? error.message : String(error)}</p>
+            <p className="text-red-400">
+              Error: {error instanceof Error ? error.message : String(error)}
+            </p>
           </Card>
         </div>
       </div>
@@ -44,7 +46,7 @@ export function ClassesPage({ pageNamespaces: _pageNamespaces }: ClassesPageProp
   return (
     <div className="min-h-[calc(100vh-8rem)]">
       <PageHero title="Class Statistics" description="View statistics for each troll class" />
-      
+
       <div className="container mx-auto px-4 py-8">
         {/* Category Filter */}
         <div className="mb-6">
@@ -77,11 +79,14 @@ export function ClassesPage({ pageNamespaces: _pageNamespaces }: ClassesPageProp
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {classStats.map((classStat) => (
               <Link key={classStat.id} href={`/classes/${encodeURIComponent(classStat.id)}`}>
-                <Card variant="medieval" className="p-6 hover:border-amber-500/50 transition-colors cursor-pointer h-full">
+                <Card
+                  variant="medieval"
+                  className="p-6 hover:border-amber-500/50 transition-colors cursor-pointer h-full"
+                >
                   <h3 className="text-xl font-semibold text-amber-400 mb-3 capitalize">
                     {classStat.id}
                   </h3>
-                  
+
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
                       <span className="text-gray-500">Total Games:</span>
@@ -89,9 +94,7 @@ export function ClassesPage({ pageNamespaces: _pageNamespaces }: ClassesPageProp
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-500">Win Rate:</span>
-                      <span className="text-green-400">
-                        {classStat.winRate.toFixed(1)}%
-                      </span>
+                      <span className="text-green-400">{classStat.winRate.toFixed(1)}%</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-500">Record:</span>
@@ -106,8 +109,8 @@ export function ClassesPage({ pageNamespaces: _pageNamespaces }: ClassesPageProp
                           {classStat.topPlayers[0].playerName}
                         </p>
                         <p className="text-xs text-gray-400">
-                          {classStat.topPlayers[0].wins}W - {classStat.topPlayers[0].losses}L 
-                          ({classStat.topPlayers[0].winRate.toFixed(1)}%)
+                          {classStat.topPlayers[0].wins}W - {classStat.topPlayers[0].losses}L (
+                          {classStat.topPlayers[0].winRate.toFixed(1)}%)
                         </p>
                       </div>
                     )}
@@ -121,5 +124,3 @@ export function ClassesPage({ pageNamespaces: _pageNamespaces }: ClassesPageProp
     </div>
   );
 }
-
-

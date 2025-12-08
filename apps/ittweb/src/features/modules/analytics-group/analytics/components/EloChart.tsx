@@ -1,6 +1,6 @@
-import React, { Suspense, lazy } from 'react';
-import { Card } from '@/features/infrastructure/components';
-import type { EloHistoryDataPoint } from '../../analytics/types';
+import React, { Suspense, lazy } from "react";
+import { Card } from "@/features/infrastructure/components";
+import type { EloHistoryDataPoint } from "../../analytics/types";
 
 interface EloChartProps {
   data: EloHistoryDataPoint[];
@@ -9,11 +9,12 @@ interface EloChartProps {
 
 // Lazy load Recharts to reduce initial bundle size
 const ChartContent = lazy(async () => {
-  const recharts = await import('recharts');
+  const recharts = await import("recharts");
   return {
     default: ({ data, title }: EloChartProps) => {
-      const { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } = recharts;
-      
+      const { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } =
+        recharts;
+
       return (
         <Card variant="medieval" className="p-6">
           <h3 className="text-xl font-semibold text-amber-400 mb-4">{title}</h3>
@@ -23,29 +24,25 @@ const ChartContent = lazy(async () => {
               <XAxis
                 dataKey="date"
                 stroke="#d97706"
-                tick={{ fill: '#d97706' }}
-                style={{ fontSize: '12px' }}
+                tick={{ fill: "#d97706" }}
+                style={{ fontSize: "12px" }}
               />
-              <YAxis
-                stroke="#d97706"
-                tick={{ fill: '#d97706' }}
-                style={{ fontSize: '12px' }}
-              />
+              <YAxis stroke="#d97706" tick={{ fill: "#d97706" }} style={{ fontSize: "12px" }} />
               <Tooltip
                 contentStyle={{
-                  backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                  border: '1px solid rgba(217, 119, 6, 0.3)',
-                  borderRadius: '4px',
-                  color: '#d97706',
+                  backgroundColor: "rgba(0, 0, 0, 0.8)",
+                  border: "1px solid rgba(217, 119, 6, 0.3)",
+                  borderRadius: "4px",
+                  color: "#d97706",
                 }}
               />
-              <Legend wrapperStyle={{ color: '#d97706' }} />
+              <Legend wrapperStyle={{ color: "#d97706" }} />
               <Line
                 type="monotone"
                 dataKey="elo"
                 stroke="#d97706"
                 strokeWidth={2}
-                dot={{ fill: '#d97706', r: 3 }}
+                dot={{ fill: "#d97706", r: 3 }}
                 activeDot={{ r: 5 }}
               />
             </LineChart>
@@ -65,7 +62,7 @@ const ChartLoadingPlaceholder = () => (
   </Card>
 );
 
-function EloChartComponent({ data, title = 'ELO History' }: EloChartProps) {
+function EloChartComponent({ data, title = "ELO History" }: EloChartProps) {
   if (!data || data.length === 0) {
     return (
       <Card variant="medieval" className="p-8 text-center">
@@ -83,4 +80,3 @@ function EloChartComponent({ data, title = 'ELO History' }: EloChartProps) {
 
 // Memoize component to prevent unnecessary re-renders when props haven't changed
 export const EloChart = React.memo(EloChartComponent);
-

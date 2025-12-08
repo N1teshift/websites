@@ -15,45 +15,45 @@
  *   npm run test:validate:ci       # CI mode with strict checks
  */
 
-import { execSync } from 'child_process';
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import { execSync } from "child_process";
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const VALIDATION_STEPS = {
   coverage: {
-    name: 'Code Coverage Analysis',
-    command: 'npm run test:coverage',
+    name: "Code Coverage Analysis",
+    command: "npm run test:coverage",
     required: true,
-    ciOnly: false
+    ciOnly: false,
   },
   coverageAnalysis: {
-    name: 'Coverage Quality Analysis',
-    command: 'npm run analyze:coverage',
+    name: "Coverage Quality Analysis",
+    command: "npm run analyze:coverage",
     required: true,
-    ciOnly: false
+    ciOnly: false,
   },
   testLint: {
-    name: 'Test Quality Linting',
-    command: 'npm run lint:test',
+    name: "Test Quality Linting",
+    command: "npm run lint:test",
     required: true,
-    ciOnly: false
+    ciOnly: false,
   },
   mutation: {
-    name: 'Mutation Testing',
-    command: 'npm run test:mutation:ci',
+    name: "Mutation Testing",
+    command: "npm run test:mutation:ci",
     required: false, // Optional due to slowness
-    ciOnly: false
+    ciOnly: false,
   },
   e2e: {
-    name: 'End-to-End Tests',
-    command: 'npm run test:e2e',
+    name: "End-to-End Tests",
+    command: "npm run test:e2e",
     required: false, // Can be slow in CI
-    ciOnly: true
-  }
+    ciOnly: true,
+  },
 };
 
 function runCommand(command, options = {}) {
@@ -65,9 +65,9 @@ function runCommand(command, options = {}) {
     }
 
     const result = execSync(command, {
-      stdio: silent ? 'pipe' : 'inherit',
-      encoding: 'utf8',
-      timeout: options.timeout || 300000 // 5 minutes default
+      stdio: silent ? "pipe" : "inherit",
+      encoding: "utf8",
+      timeout: options.timeout || 300000, // 5 minutes default
     });
 
     if (!silent) {
@@ -85,30 +85,30 @@ function runCommand(command, options = {}) {
 }
 
 function validateCoverageThresholds() {
-  const coverageSummaryPath = path.join('coverage', 'coverage-summary.json');
+  const coverageSummaryPath = path.join("coverage", "coverage-summary.json");
 
   if (!fs.existsSync(coverageSummaryPath)) {
-    console.log('⚠️  Coverage summary not found, skipping threshold validation');
+    console.log("⚠️  Coverage summary not found, skipping threshold validation");
     return true;
   }
 
   try {
-    const coverage = JSON.parse(fs.readFileSync(coverageSummaryPath, 'utf8'));
+    const coverage = JSON.parse(fs.readFileSync(coverageSummaryPath, "utf8"));
     const total = coverage.total;
 
     const thresholds = {
       statements: 50,
       branches: 50,
       functions: 50,
-      lines: 50
+      lines: 50,
     };
 
     let passed = true;
-    console.log('\n📊 Coverage Threshold Validation:');
+    console.log("\n📊 Coverage Threshold Validation:");
 
     for (const [metric, threshold] of Object.entries(thresholds)) {
       const actual = total[metric].pct;
-      const status = actual >= threshold ? '✅' : '❌';
+      const status = actual >= threshold ? "✅" : "❌";
 
       console.log(`   ${status} ${metric}: ${actual}% (threshold: ${threshold}%)`);
 
@@ -119,31 +119,35 @@ function validateCoverageThresholds() {
 
     return passed;
   } catch (error) {
-    console.error('❌ Error validating coverage thresholds:', error.message);
+    console.error("❌ Error validating coverage thresholds:", error.message);
     return false;
   }
 }
 
 function validateTestFiles() {
-  console.log('\n🔍 Test File Validation:');
+  console.log("\n🔍 Test File Validation:");
 
   // Check for test files
-  const testFiles = execSync('find . -name "*.test.*" -o -name "*.spec.*" -o -name "__tests__" -type f', { encoding: 'utf8' })
-    .split('\n')
-    .filter(line => line.trim() && !line.includes('node_modules'));
+  const testFiles = execSync(
+    'find . -name "*.test.*" -o -name "*.spec.*" -o -name "__tests__" -type f',
+    { encoding: "utf8" }
+  )
+    .split("\n")
+    .filter((line) => line.trim() && !line.includes("node_modules"));
 
   if (testFiles.length === 0) {
-    console.log('❌ No test files found');
+    console.log("❌ No test files found");
     return false;
   }
 
   console.log(`✅ Found ${testFiles.length} test files`);
 
   // Check for test categorization
-  const categorizedTests = testFiles.filter(file =>
-    fs.readFileSync(file, 'utf8').includes('describe(') ||
-    fs.readFileSync(file, 'utf8').includes('it(') ||
-    fs.readFileSync(file, 'utf8').includes('test(')
+  const categorizedTests = testFiles.filter(
+    (file) =>
+      fs.readFileSync(file, "utf8").includes("describe(") ||
+      fs.readFileSync(file, "utf8").includes("it(") ||
+      fs.readFileSync(file, "utf8").includes("test(")
   );
 
   console.log(`✅ ${categorizedTests.length} test files have proper test structure`);
@@ -154,22 +158,22 @@ function validateTestFiles() {
 function generateReport(results, options = {}) {
   const { ci = false } = options;
 
-  console.log('\n' + '='.repeat(80));
-  console.log('📋 TEST VALIDATION REPORT');
-  console.log('='.repeat(80));
+  console.log("\n" + "=".repeat(80));
+  console.log("📋 TEST VALIDATION REPORT");
+  console.log("=".repeat(80));
 
-  const passed = results.filter(r => r.success).length;
-  const failed = results.filter(r => r.success === false && !r.ignored).length;
-  const skipped = results.filter(r => r.ignored).length;
+  const passed = results.filter((r) => r.success).length;
+  const failed = results.filter((r) => r.success === false && !r.ignored).length;
+  const skipped = results.filter((r) => r.ignored).length;
 
   console.log(`\n📊 Summary:`);
   console.log(`   ✅ Passed: ${passed}`);
   console.log(`   ❌ Failed: ${failed}`);
   console.log(`   ⏭️  Skipped: ${skipped}`);
 
-  console.log('\n📋 Detailed Results:');
-  results.forEach(result => {
-    const icon = result.success ? '✅' : (result.ignored ? '⏭️' : '❌');
+  console.log("\n📋 Detailed Results:");
+  results.forEach((result) => {
+    const icon = result.success ? "✅" : result.ignored ? "⏭️" : "❌";
     console.log(`   ${icon} ${result.name}`);
     if (!result.success && !result.ignored && result.error) {
       console.log(`      Error: ${result.error}`);
@@ -177,13 +181,13 @@ function generateReport(results, options = {}) {
   });
 
   if (ci && failed > 0) {
-    console.log('\n❌ CI Validation failed - check the errors above');
+    console.log("\n❌ CI Validation failed - check the errors above");
     process.exit(1);
   } else if (failed > 0) {
-    console.log('\n⚠️  Some validations failed - review the errors above');
+    console.log("\n⚠️  Some validations failed - review the errors above");
     return false;
   } else {
-    console.log('\n🎉 All validations passed!');
+    console.log("\n🎉 All validations passed!");
     return true;
   }
 }
@@ -191,13 +195,13 @@ function generateReport(results, options = {}) {
 async function main() {
   const args = process.argv.slice(2);
   const options = {
-    ci: args.includes('--ci'),
-    quick: args.includes('--quick'),
-    mutation: args.includes('--mutation')
+    ci: args.includes("--ci"),
+    quick: args.includes("--quick"),
+    mutation: args.includes("--mutation"),
   };
 
-  console.log('🧪 Starting Test Validation...');
-  console.log(`Mode: ${options.ci ? 'CI' : options.quick ? 'Quick' : 'Full'}`);
+  console.log("🧪 Starting Test Validation...");
+  console.log(`Mode: ${options.ci ? "CI" : options.quick ? "Quick" : "Full"}`);
 
   const results = [];
   const stepsToRun = { ...VALIDATION_STEPS };
@@ -225,26 +229,26 @@ async function main() {
 
     const result = runCommand(step.command, {
       ignoreErrors: !step.required,
-      timeout: key === 'mutation' ? 600000 : 120000 // 10 min for mutation, 2 min for others
+      timeout: key === "mutation" ? 600000 : 120000, // 10 min for mutation, 2 min for others
     });
 
     results.push({
       name: step.name,
       success: result.success,
       ignored: result.ignored,
-      error: result.error
+      error: result.error,
     });
   }
 
   // Additional validations
   results.push({
-    name: 'Coverage Thresholds',
-    success: validateCoverageThresholds()
+    name: "Coverage Thresholds",
+    success: validateCoverageThresholds(),
   });
 
   results.push({
-    name: 'Test File Structure',
-    success: validateTestFiles()
+    name: "Test File Structure",
+    success: validateTestFiles(),
   });
 
   // Generate final report
@@ -253,8 +257,8 @@ async function main() {
 
 // Run if called directly
 if (import.meta.url === `file://${process.argv[1]}`) {
-  main().catch(error => {
-    console.error('❌ Test validation failed:', error);
+  main().catch((error) => {
+    console.error("❌ Test validation failed:", error);
     process.exit(1);
   });
 }

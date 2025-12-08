@@ -12,6 +12,7 @@ This report identified code that was exported but never imported/used within the
 ## 🔴 CLEANUP COMPLETED
 
 ### 1. **useUnitPlan Hook** ✅ DELETED
+
 - **File:** `src/features/modules/edtech/unitPlanGenerator/hooks/useUnitPlan.ts`
 - **Status:** ✅ File deleted
 - **Reason:** Replaced by `useMultipleUnitPlans` hook which provides all the same functionality plus multi-plan support
@@ -20,6 +21,7 @@ This report identified code that was exported but never imported/used within the
   - ✅ Export removed from `hooks/index.ts`
 
 ### 2. **PreviewCard Component** ✅ DELETED
+
 - **File:** `src/features/modules/edtech/unitPlanGenerator/components/shared/PreviewCard.tsx`
 - **Status:** ✅ File deleted
 - **Reason:** No imports found anywhere in the codebase
@@ -28,6 +30,7 @@ This report identified code that was exported but never imported/used within the
   - ✅ Export removed from `components/shared/index.ts`
 
 ### 3. **ObjectiveDetailsModal Component** ✅ DELETED
+
 - **File:** `src/features/modules/edtech/unitPlanGenerator/components/shared/ObjectiveDetailsModal.tsx`
 - **Status:** ✅ File deleted
 - **Reason:** No imports found anywhere in the codebase
@@ -36,6 +39,7 @@ This report identified code that was exported but never imported/used within the
   - ✅ Export removed from `components/shared/index.ts`
 
 ### 4. **Duplicate Export in utils/index.ts** ✅ FIXED
+
 - **File:** `src/features/modules/edtech/unitPlanGenerator/utils/index.ts`
 - **Status:** ✅ Duplicate removed
 - **Issue:** Lines 7 and 14 both exported `wordExport`
@@ -43,6 +47,7 @@ This report identified code that was exported but never imported/used within the
   - ✅ Duplicate export removed
 
 ### 5. **YearPlanViewPlaceholder Export** ✅ FIXED
+
 - **File:** `src/features/modules/edtech/unitPlanGenerator/components/ui/YearPlanViewPlaceholder.tsx`
 - **Status:** ✅ Added to exports
 - **Cleanup completed:**
@@ -55,9 +60,10 @@ This report identified code that was exported but never imported/used within the
 The following components are properly used and should be kept:
 
 ### Shared Components (All Used)
+
 - ✅ **EditableListSection** - Used in 4 content subsections
 - ✅ **AssessmentTaskManager** - Used in PlanningSection
-- ✅ **ATLCardManager** - Used in ATLSection  
+- ✅ **ATLCardManager** - Used in ATLSection
 - ✅ **ConceptSelector** - Used in multiple sections
 - ✅ **ContextAwareAIButton** - Used throughout
 - ✅ **CurriculumContentSelector** - Used in ContentDisplaySection
@@ -71,6 +77,7 @@ The following components are properly used and should be kept:
 - ✅ **SubunitCard** - Used in EnhancedContentSection
 
 ### UI Components (All Used)
+
 - ✅ **FieldCompletionIndicator** - Used in FormField and QuestionManager
 - ✅ **MultiSelector** - Used in multiple sections
 - ✅ **Navigation** - Used in UnitPlanGeneratorPage
@@ -79,7 +86,9 @@ The following components are properly used and should be kept:
 - ✅ **YearPlanViewPlaceholder** - Used in SectionContent
 
 ### Preview Subsections (All Used)
+
 All preview subsections are used in `PreviewSection.tsx` and `generateHTMLExport.tsx`:
+
 - ✅ PreviewActionSection
 - ✅ PreviewAssessmentSection
 - ✅ PreviewATLSection
@@ -91,24 +100,30 @@ All preview subsections are used in `PreviewSection.tsx` and `generateHTMLExport
 - ✅ PreviewResourcesSection
 
 ### Content Display Components (All Used)
+
 All content display components are used:
+
 - ✅ **CambridgeBookView** - Used in ContentDisplaySection
 - ✅ **CurriculumTimeline** - Used in UnifiedCurriculumTimeline
 - ✅ **TimelineCell** - Used in CurriculumTimeline
 - ✅ **UnifiedCurriculumTimeline** - Used in ContentDisplaySection
 
 ### Hooks (All Used Except One)
+
 - ✅ **useMultipleUnitPlans** - Primary state hook
 - ✅ **useListManager** - Used in content sections
 - ❌ **useUnitPlan** - UNUSED (see above)
 
 ### Utils (All Used)
+
 - ✅ **progressTracker** - Used in ProgressBar and FieldCompletionIndicator
 - ✅ **wordExport** - Used in dataManagement section
 - ✅ All other utils are properly used
 
 ### Data Files (All Used)
+
 All data files are imported and used:
+
 - ✅ **cambridgeLearnerBook** - Used in ContentDisplaySection and CurriculumContentSelector
 
 ---
@@ -141,4 +156,3 @@ All cleanup tasks have been successfully completed:
 - The architecture is clean overall with minimal dead code
 - Most exports are properly utilized
 - The unused components appear to be legacy/experimental code that was never fully integrated
-

@@ -7,6 +7,7 @@
 ## Exports
 
 ### Components
+
 - `ActivityChart` - Games played over time
 - `EloChart` - ELO rating history
 - `WinRateChart` - Win rate pie chart
@@ -16,6 +17,7 @@
 - `ClassWinRateChart` - Win rate by class
 
 ### Services
+
 - `analyticsService` - Analytics data aggregation
   - `getActivityData()` - Games per day/week/month
   - `getEloHistory()` - ELO changes over time
@@ -23,6 +25,7 @@
   - `getClassStats()` - Class-based statistics
 
 ### Types
+
 - `ActivityDataPoint` - Activity chart data point
 - `EloHistoryDataPoint` - ELO history data point
 - `WinRateData` - Win rate statistics
@@ -63,5 +66,3 @@ const activityData = await getActivityData({
 
 - [Meta Dashboard](../../../../src/pages/meta.tsx)
 - [Game Stats Implementation](../../../../docs/systems/game-stats/implementation-plan.md)
-
-

@@ -2,15 +2,15 @@
  * Custom hook for persisting map data to localStorage
  */
 
-import { useState, useEffect } from 'react';
-import type { SimpleMapData } from '../types/map';
+import { useState, useEffect } from "react";
+import type { SimpleMapData } from "../types/map";
 
-const STORAGE_KEY = 'itt_map_analyzer_last_v1';
+const STORAGE_KEY = "itt_map_analyzer_last_v1";
 
 export function useMapPersistence(): [
   SimpleMapData | null,
   (map: SimpleMapData | null) => void,
-  () => void
+  () => void,
 ] {
   const [map, setMap] = useState<SimpleMapData | null>(null);
 
@@ -50,5 +50,3 @@ export function useMapPersistence(): [
 
   return [map, setMap, clearPersisted];
 }
-
-

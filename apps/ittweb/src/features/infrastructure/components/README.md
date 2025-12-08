@@ -46,21 +46,21 @@ All components are exported from the main `index.ts` file, so you can import the
 
 ```typescript
 // Import from main index (recommended)
-import { 
-  Layout, 
-  Header, 
-  PageHero, 
+import {
+  Layout,
+  Header,
+  PageHero,
   Button,
   Card,
   LoadingScreen,
-  ErrorBoundary 
-} from '@/features/infrastructure/components';
+  ErrorBoundary,
+} from "@/features/infrastructure/components";
 
 // Or import from specific subfolder
-import { Layout, Header } from '@/features/infrastructure/components/layout';
-import { Button, GitHubButton } from '@/features/infrastructure/components/buttons';
-import { Card } from '@/features/infrastructure/components/containers';
-import { ErrorBoundary } from '@/features/infrastructure/components/error';
+import { Layout, Header } from "@/features/infrastructure/components/layout";
+import { Button, GitHubButton } from "@/features/infrastructure/components/buttons";
+import { Card } from "@/features/infrastructure/components/containers";
+import { ErrorBoundary } from "@/features/infrastructure/components/error";
 ```
 
 ## Component Categories

@@ -1,15 +1,15 @@
 /// <reference types="@testing-library/jest-dom" />
-import React from 'react';
-import { render } from '@testing-library/react';
-import { ActivityChart } from '@/features/modules/analytics-group/analytics/components/ActivityChart';
-import { EloChart } from '@/features/modules/analytics-group/analytics/components/EloChart';
+import React from "react";
+import { render } from "@testing-library/react";
+import { ActivityChart } from "@/features/modules/analytics-group/analytics/components/ActivityChart";
+import { EloChart } from "@/features/modules/analytics-group/analytics/components/EloChart";
 import type {
   ActivityDataPoint,
   EloHistoryDataPoint,
-} from '@/features/modules/analytics-group/analytics/types';
+} from "@/features/modules/analytics-group/analytics/types";
 
 // Mock recharts
-jest.mock('recharts', () => ({
+jest.mock("recharts", () => ({
   ResponsiveContainer: ({ children }: { children: React.ReactNode }) => (
     <div data-testid="responsive-container">{children}</div>
   ),
@@ -28,10 +28,8 @@ jest.mock('recharts', () => ({
   Legend: () => <div data-testid="legend" />,
 }));
 
-jest.mock('@/features/infrastructure/components/ui/Card', () => ({
-  Card: ({ children }: { children: React.ReactNode }) => (
-    <div data-testid="card">{children}</div>
-  ),
+jest.mock("@/features/infrastructure/components/ui/Card", () => ({
+  Card: ({ children }: { children: React.ReactNode }) => <div data-testid="card">{children}</div>,
 }));
 
 // Performance thresholds (in milliseconds)
@@ -51,12 +49,12 @@ function measureRenderTime(component: React.ReactElement): number {
   return end - start;
 }
 
-describe('Component Rendering Performance', () => {
-  describe('Large List Rendering', () => {
-    it('should render large lists efficiently', () => {
+describe("Component Rendering Performance", () => {
+  describe("Large List Rendering", () => {
+    it("should render large lists efficiently", () => {
       // Arrange
       const largeData: ActivityDataPoint[] = Array.from({ length: 1000 }, (_, i) => ({
-        date: `2024-01-${String(i + 1).padStart(2, '0')}`,
+        date: `2024-01-${String(i + 1).padStart(2, "0")}`,
         games: i,
       }));
 
@@ -67,10 +65,10 @@ describe('Component Rendering Performance', () => {
       expect(renderTime).toBeLessThan(PERFORMANCE_THRESHOLDS.LARGE_LIST_RENDER);
     });
 
-    it('should handle very large lists without lag', () => {
+    it("should handle very large lists without lag", () => {
       // Arrange
       const veryLargeData: ActivityDataPoint[] = Array.from({ length: 5000 }, (_, i) => ({
-        date: `2024-01-${String((i % 31) + 1).padStart(2, '0')}`,
+        date: `2024-01-${String((i % 31) + 1).padStart(2, "0")}`,
         games: i % 100,
       }));
 
@@ -82,15 +80,15 @@ describe('Component Rendering Performance', () => {
       expect(renderTime).toBeLessThan(PERFORMANCE_THRESHOLDS.LARGE_LIST_RENDER * 3);
     });
 
-    it('should handle rapid updates efficiently', () => {
+    it("should handle rapid updates efficiently", () => {
       // Arrange
       const data1: ActivityDataPoint[] = Array.from({ length: 100 }, (_, i) => ({
-        date: `2024-01-${String(i + 1).padStart(2, '0')}`,
+        date: `2024-01-${String(i + 1).padStart(2, "0")}`,
         games: i,
       }));
 
       const data2: ActivityDataPoint[] = Array.from({ length: 100 }, (_, i) => ({
-        date: `2024-01-${String(i + 1).padStart(2, '0')}`,
+        date: `2024-01-${String(i + 1).padStart(2, "0")}`,
         games: i + 10,
       }));
 
@@ -106,11 +104,11 @@ describe('Component Rendering Performance', () => {
     });
   });
 
-  describe('Chart Rendering Performance', () => {
-    it('should render charts quickly', () => {
+  describe("Chart Rendering Performance", () => {
+    it("should render charts quickly", () => {
       // Arrange
       const data: ActivityDataPoint[] = Array.from({ length: 100 }, (_, i) => ({
-        date: `2024-01-${String(i + 1).padStart(2, '0')}`,
+        date: `2024-01-${String(i + 1).padStart(2, "0")}`,
         games: i,
       }));
 
@@ -121,10 +119,10 @@ describe('Component Rendering Performance', () => {
       expect(renderTime).toBeLessThan(PERFORMANCE_THRESHOLDS.CHART_RENDER);
     });
 
-    it('should handle many data points efficiently', () => {
+    it("should handle many data points efficiently", () => {
       // Arrange
       const manyDataPoints: EloHistoryDataPoint[] = Array.from({ length: 1000 }, (_, i) => ({
-        date: `2024-01-${String((i % 31) + 1).padStart(2, '0')}`,
+        date: `2024-01-${String((i % 31) + 1).padStart(2, "0")}`,
         elo: 1000 + i,
       }));
 
@@ -135,10 +133,10 @@ describe('Component Rendering Performance', () => {
       expect(renderTime).toBeLessThan(PERFORMANCE_THRESHOLDS.CHART_RENDER * 2);
     });
 
-    it('should handle complex charts efficiently', () => {
+    it("should handle complex charts efficiently", () => {
       // Arrange
       const complexData: ActivityDataPoint[] = Array.from({ length: 500 }, (_, i) => ({
-        date: `2024-${String((i % 12) + 1).padStart(2, '0')}-${String((i % 28) + 1).padStart(2, '0')}`,
+        date: `2024-${String((i % 12) + 1).padStart(2, "0")}-${String((i % 28) + 1).padStart(2, "0")}`,
         games: Math.sin(i) * 50 + 50,
       }));
 
@@ -149,10 +147,10 @@ describe('Component Rendering Performance', () => {
       expect(renderTime).toBeLessThan(PERFORMANCE_THRESHOLDS.CHART_RENDER * 1.5);
     });
 
-    it('should handle rapid chart updates smoothly', () => {
+    it("should handle rapid chart updates smoothly", () => {
       // Arrange
       const baseData: EloHistoryDataPoint[] = Array.from({ length: 100 }, (_, i) => ({
-        date: `2024-01-${String(i + 1).padStart(2, '0')}`,
+        date: `2024-01-${String(i + 1).padStart(2, "0")}`,
         elo: 1000 + i,
       }));
 
@@ -177,8 +175,8 @@ describe('Component Rendering Performance', () => {
     });
   });
 
-  describe('Image Loading Performance', () => {
-    it('should handle image loading efficiently', () => {
+  describe("Image Loading Performance", () => {
+    it("should handle image loading efficiently", () => {
       // Arrange
       const ImageComponent = () => {
         const [loaded, setLoaded] = React.useState(false);
@@ -206,10 +204,10 @@ describe('Component Rendering Performance', () => {
 
       // Assert
       expect(renderTime).toBeLessThan(PERFORMANCE_THRESHOLDS.IMAGE_LOAD);
-      expect(getByTestId('loading')).toBeInTheDocument();
+      expect(getByTestId("loading")).toBeInTheDocument();
     });
 
-    it('should handle many images efficiently', () => {
+    it("should handle many images efficiently", () => {
       // Arrange
       const ImageList = () => {
         return (
@@ -236,5 +234,3 @@ describe('Component Rendering Performance', () => {
     });
   });
 });
-
-

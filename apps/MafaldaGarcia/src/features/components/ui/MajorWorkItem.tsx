@@ -1,6 +1,6 @@
-import React from 'react';
-import Image from 'next/image';
-import { useFallbackTranslation } from '@websites/infrastructure/i18n';
+import React from "react";
+import Image from "next/image";
+import { useFallbackTranslation } from "@websites/infrastructure/i18n";
 
 interface MajorWorkItemProps {
   title: string;
@@ -21,7 +21,7 @@ export const MajorWorkItem: React.FC<MajorWorkItemProps> = ({
   description,
   credits,
   location,
-  images
+  images,
 }) => {
   const { t } = useFallbackTranslation();
 
@@ -33,19 +33,20 @@ export const MajorWorkItem: React.FC<MajorWorkItemProps> = ({
           {images.slice(0, 6).map((image, index) => (
             <div key={index} className="relative overflow-hidden rounded-lg hover-lift">
               <div className="aspect-[4/3] relative">
-                <Image 
-                  src={image} 
-                  alt={`${title} - Image ${index + 1}`} 
-                  fill 
+                <Image
+                  src={image}
+                  alt={`${title} - Image ${index + 1}`}
+                  fill
                   className="object-cover"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   onError={(e) => {
                     // Fallback to placeholder on error
                     const target = e.target as HTMLImageElement;
-                    target.style.display = 'none';
+                    target.style.display = "none";
                     const parent = target.parentElement;
                     if (parent) {
-                      parent.innerHTML = '<div class="w-full h-full bg-gray-200 flex items-center justify-center"><span class="text-gray-500">Work Image</span></div>';
+                      parent.innerHTML =
+                        '<div class="w-full h-full bg-gray-200 flex items-center justify-center"><span class="text-gray-500">Work Image</span></div>';
                     }
                   }}
                 />
@@ -59,15 +60,13 @@ export const MajorWorkItem: React.FC<MajorWorkItemProps> = ({
       <div className="space-y-8">
         {/* Title and Basic Info */}
         <div className="space-y-4">
-          <h3 className="font-playfair text-4xl lg:text-5xl text-gray-900">
-            "{title}"
-          </h3>
+          <h3 className="font-playfair text-4xl lg:text-5xl text-gray-900">"{title}"</h3>
           <div className="flex flex-wrap gap-6 text-lg text-gray-700">
             <div>
-              <span className="font-medium">{t('ui.yearOfCreation')}</span> {year}
+              <span className="font-medium">{t("ui.yearOfCreation")}</span> {year}
             </div>
             <div>
-              <span className="font-medium">{t('ui.duration')}</span> {duration}
+              <span className="font-medium">{t("ui.duration")}</span> {duration}
             </div>
           </div>
         </div>
@@ -76,13 +75,12 @@ export const MajorWorkItem: React.FC<MajorWorkItemProps> = ({
         {concept && (
           <div className="space-y-4">
             <h4 className="text-2xl lg:text-3xl font-playfair text-gray-900">
-              {t('ui.conceptDescription')}
+              {t("ui.conceptDescription")}
             </h4>
             <div className="space-y-4 text-lg leading-relaxed text-gray-700">
               <p>{concept}</p>
-              {description && description.split('\n\n').map((paragraph, index) => (
-                <p key={index}>{paragraph}</p>
-              ))}
+              {description &&
+                description.split("\n\n").map((paragraph, index) => <p key={index}>{paragraph}</p>)}
             </div>
           </div>
         )}
@@ -91,13 +89,13 @@ export const MajorWorkItem: React.FC<MajorWorkItemProps> = ({
         <div className="space-y-4 pt-6 border-t border-gray-200">
           {credits && (
             <div>
-              <h4 className="text-xl font-playfair text-gray-900 mb-2">{t('ui.credits')}</h4>
+              <h4 className="text-xl font-playfair text-gray-900 mb-2">{t("ui.credits")}</h4>
               <p className="text-lg leading-relaxed text-gray-700 whitespace-pre-line">{credits}</p>
             </div>
           )}
           {location && (
             <div>
-              <h4 className="text-xl font-playfair text-gray-900 mb-2">{t('ui.location')}</h4>
+              <h4 className="text-xl font-playfair text-gray-900 mb-2">{t("ui.location")}</h4>
               <p className="text-lg leading-relaxed text-gray-700">{location}</p>
             </div>
           )}

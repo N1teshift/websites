@@ -6,11 +6,12 @@ Copy and paste this prompt to Codex agents when assigning test creation tasks:
 
 ## Task: Create Jest Tests for ITT Web Project
 
-I need you to create comprehensive Jest tests based on the test plan files located in `docs/operations/test-plans/`. 
+I need you to create comprehensive Jest tests based on the test plan files located in `docs/operations/test-plans/`.
 
 ### Context
 
 This is a Next.js/React project (ITT Web) that uses:
+
 - **Firebase/Firestore** for database
 - **NextAuth** for authentication
 - **TypeScript** throughout
@@ -29,6 +30,7 @@ This is a Next.js/React project (ITT Web) that uses:
 ### Test Plan Structure
 
 Each test plan file contains tests organized by:
+
 - **Service Layer Tests** → Unit tests in `src/features/modules/[module]/lib/__tests__/` (preferred) or next to source file
 - **API Route Tests** → Integration tests in `src/pages/api/[route]/__tests__/`
 - **Component Tests** → Component tests in `src/features/modules/[module]/components/__tests__/`
@@ -41,6 +43,7 @@ Each test plan file contains tests organized by:
 ### Test Format from Plans
 
 Each test item in the plan follows this format:
+
 ```markdown
 - [ ] Test name
   - **What**: What to test
@@ -51,8 +54,9 @@ Each test item in the plan follows this format:
 ### Critical Requirements
 
 1. **Error Handling**: All error handling MUST use the infrastructure logging system. Import and use:
+
    ```typescript
-   import { logError, logAndThrow, createComponentLogger } from '@/features/infrastructure/logging';
+   import { logError, logAndThrow, createComponentLogger } from "@/features/infrastructure/logging";
    ```
 
 2. **File Size**: Keep test files under 200 lines when possible. Split large test suites into multiple files if needed.
@@ -65,18 +69,19 @@ Each test item in the plan follows this format:
    - Use MSW (Mock Service Worker) for API mocking in integration tests
 
 4. **Test Structure**: Follow AAA pattern (Arrange, Act, Assert):
+
    ```typescript
-   describe('FeatureName', () => {
-     describe('functionName', () => {
-       it('should do something', () => {
+   describe("FeatureName", () => {
+     describe("functionName", () => {
+       it("should do something", () => {
          // Arrange
-         const input = 'test';
-         
+         const input = "test";
+
          // Act
          const result = functionName(input);
-         
+
          // Assert
-         expect(result).toBe('expected');
+         expect(result).toBe("expected");
        });
      });
    });
@@ -97,31 +102,31 @@ Each test item in the plan follows this format:
 ### Example Test File Structure
 
 ```typescript
-import { describe, it, expect, beforeEach, jest } from '@jest/globals';
-import { functionToTest } from '../path/to/module';
-import { logError } from '@/features/infrastructure/logging';
+import { describe, it, expect, beforeEach, jest } from "@jest/globals";
+import { functionToTest } from "../path/to/module";
+import { logError } from "@/features/infrastructure/logging";
 
 // Mock dependencies
-jest.mock('@/features/infrastructure/logging');
+jest.mock("@/features/infrastructure/logging");
 
-describe('ModuleName', () => {
+describe("ModuleName", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  describe('functionToTest', () => {
-    it('should handle normal case', () => {
+  describe("functionToTest", () => {
+    it("should handle normal case", () => {
       // Arrange
-      const input = 'test';
-      
+      const input = "test";
+
       // Act
       const result = functionToTest(input);
-      
+
       // Assert
-      expect(result).toBe('expected');
+      expect(result).toBe("expected");
     });
 
-    it('should handle edge case', () => {
+    it("should handle edge case", () => {
       // Test edge case from plan
     });
   });
@@ -144,7 +149,7 @@ describe('ComponentName', () => {
   it('should handle user interaction', async () => {
     const user = userEvent.setup();
     render(<ComponentName />);
-    
+
     await user.click(screen.getByRole('button'));
     await waitFor(() => {
       expect(screen.getByText('Result')).toBeInTheDocument();
@@ -156,19 +161,21 @@ describe('ComponentName', () => {
 ### API Route Test Example
 
 ```typescript
-import { createMocks } from 'node-mocks-http';
-import handler from '../api/route';
+import { createMocks } from "node-mocks-http";
+import handler from "../api/route";
 
-describe('API Route', () => {
-  it('should handle GET request', async () => {
+describe("API Route", () => {
+  it("should handle GET request", async () => {
     const { req, res } = createMocks({
-      method: 'GET',
+      method: "GET",
     });
 
     await handler(req, res);
 
     expect(res._getStatusCode()).toBe(200);
-    expect(JSON.parse(res._getData())).toEqual({ /* expected */ });
+    expect(JSON.parse(res._getData())).toEqual({
+      /* expected */
+    });
   });
 });
 ```
@@ -189,6 +196,7 @@ describe('API Route', () => {
 ### What I Will Provide
 
 I will specify which test plan file you should work on, for example:
+
 - "Create tests from `infrastructure-tests.md`"
 - "Create tests from `games-tests.md`"
 - etc.
@@ -196,6 +204,7 @@ I will specify which test plan file you should work on, for example:
 ### Deliverables
 
 For each test plan file, create:
+
 1. All test files in appropriate directories
 2. Test files that cover all test items in the plan
 3. Tests that follow the "What", "Expected", and "Edge cases" from the plan
@@ -205,6 +214,7 @@ For each test plan file, create:
 ### Questions to Ask
 
 If you encounter:
+
 - Unclear requirements in the test plan
 - Missing dependencies or imports
 - Ambiguous file paths
@@ -215,4 +225,3 @@ Please ask for clarification before proceeding.
 ---
 
 **Ready to start?** I will now specify which test plan file to work on.
-

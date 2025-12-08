@@ -7,16 +7,19 @@ Player statistics and profile endpoints.
 List all players with cursor-based pagination.
 
 **Query Parameters**:
+
 - `limit` (number, optional) - Maximum number of players to return (default: 50)
 - `lastPlayerName` (string, optional) - Cursor for pagination (player name to start after)
 
 **Example Request**:
+
 ```
 GET /api/players?limit=50
 GET /api/players?limit=50&lastPlayerName=Player50
 ```
 
 **Response**:
+
 ```typescript
 {
   success: true;
@@ -31,22 +34,26 @@ GET /api/players?limit=50&lastPlayerName=Player50
 Get player statistics by name.
 
 **Query Parameters**:
+
 - `category` (string, optional) - Filter by category
 - `startDate` (string, optional) - ISO date string
 - `endDate` (string, optional) - ISO date string
 - `includeGames` (boolean, optional) - Include game list
 
 **Example Request**:
+
 ```
 GET /api/players/Player1?category=3v3&includeGames=true
 ```
 
 **Response**:
+
 ```typescript
-PlayerStats
+PlayerStats;
 ```
 
 Example response:
+
 ```json
 {
   "id": "player1",
@@ -72,6 +79,7 @@ Example response:
 ```
 
 **Error Response** (404 Not Found):
+
 ```json
 {
   "success": false,
@@ -84,14 +92,17 @@ Example response:
 Search players by name.
 
 **Query Parameters**:
+
 - `q` (string, required) - Search query
 
 **Example Request**:
+
 ```
 GET /api/players/search?q=Player
 ```
 
 **Response**:
+
 ```typescript
 {
   success: true;
@@ -100,6 +111,7 @@ GET /api/players/search?q=Player
 ```
 
 Example response:
+
 ```json
 {
   "success": true,
@@ -135,6 +147,7 @@ Example response:
 ```
 
 **Error Response** (400 Bad Request):
+
 ```json
 {
   "success": false,
@@ -147,14 +160,17 @@ Example response:
 Compare multiple players.
 
 **Query Parameters**:
+
 - `players` (string, required) - Comma-separated player names
 
 **Example Request**:
+
 ```
 GET /api/players/compare?players=Player1,Player2,Player3
 ```
 
 **Response**:
+
 ```typescript
 {
   success: true;
@@ -163,6 +179,7 @@ GET /api/players/compare?players=Player1,Player2,Player3
 ```
 
 Example response:
+
 ```json
 {
   "success": true,
@@ -220,11 +237,10 @@ Example response:
 ```
 
 **Error Response** (400 Bad Request):
+
 ```json
 {
   "success": false,
   "error": "At least two players required for comparison"
 }
 ```
-
-

@@ -111,6 +111,7 @@ This document outlines all tests needed for the scheduled games module including
 ## Scheduled Games Components
 
 **Note**: These components are still used in the application but in different contexts:
+
 - `ScheduleGameForm` is used on the homepage (`src/pages/index.tsx`)
 - `EditGameForm` and `GameDeleteDialog` are used on game detail pages (`src/pages/games/[id].tsx`)
 - Other components may be used elsewhere or are legacy
@@ -266,4 +267,3 @@ This document outlines all tests needed for the scheduled games module including
   - **What**: Verify submit behavior
   - **Expected**: Game created/archived, modal closes on success
   - **Edge cases**: Creation errors, archive errors, modal state
-

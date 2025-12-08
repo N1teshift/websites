@@ -1,22 +1,22 @@
-import { FormEvent, useMemo, useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
-import { signIn, useSession } from 'next-auth/react';
-import { createComponentLogger } from '@websites/infrastructure/logging';
-import type { PostFormState } from './useNewPostForm';
+import { FormEvent, useMemo, useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import { signIn, useSession } from "next-auth/react";
+import { createComponentLogger } from "@websites/infrastructure/logging";
+import type { PostFormState } from "./useNewPostForm";
 
-const logger = createComponentLogger('useEditPostForm');
+const logger = createComponentLogger("useEditPostForm");
 
 export function useEditPostForm(postId: string, initialPost: PostFormState | null) {
   const router = useRouter();
   const { status } = useSession();
-  const isAuthenticated = status === 'authenticated';
+  const isAuthenticated = status === "authenticated";
   const [formState, setFormState] = useState<PostFormState>(
     initialPost || {
-      title: '',
-      slug: '',
+      title: "",
+      slug: "",
       date: new Date().toISOString().slice(0, 10),
-      excerpt: '',
-      content: '',
+      excerpt: "",
+      content: "",
       published: true,
     }
   );
@@ -34,20 +34,20 @@ export function useEditPostForm(postId: string, initialPost: PostFormState | nul
         .then((post) => {
           if (post && !post.error) {
             setFormState({
-              title: post.title || '',
-              slug: post.slug || '',
-              date: post.date ? post.date.split('T')[0] : new Date().toISOString().slice(0, 10),
-              excerpt: post.excerpt || '',
-              content: post.content || '',
+              title: post.title || "",
+              slug: post.slug || "",
+              date: post.date ? post.date.split("T")[0] : new Date().toISOString().slice(0, 10),
+              excerpt: post.excerpt || "",
+              content: post.content || "",
               published: post.published ?? true,
             });
           } else {
-            setErrorMessage('Failed to load post');
+            setErrorMessage("Failed to load post");
           }
         })
         .catch((error) => {
-          logger.error('Failed to load post', error, { postId });
-          setErrorMessage('Failed to load post');
+          logger.error("Failed to load post", error, { postId });
+          setErrorMessage("Failed to load post");
         })
         .finally(() => {
           setIsLoading(false);
@@ -65,17 +65,15 @@ export function useEditPostForm(postId: string, initialPost: PostFormState | nul
     );
   }, [formState.content, formState.slug, formState.title, isSubmitting, isLoading]);
 
-  const handleFieldChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const handleFieldChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const target = event.target;
     const name = target.name;
     const value = target.value;
-    const type = 'type' in target ? target.type : undefined;
-    const checked = 'checked' in target ? target.checked : undefined;
-    
+    const type = "type" in target ? target.type : undefined;
+    const checked = "checked" in target ? target.checked : undefined;
+
     setFormState((prev) => {
-      const nextValue = type === 'checkbox' ? checked : value;
+      const nextValue = type === "checkbox" ? checked : value;
       return {
         ...prev,
         [name]: nextValue,
@@ -87,7 +85,7 @@ export function useEditPostForm(postId: string, initialPost: PostFormState | nul
     event.preventDefault();
 
     if (!isAuthenticated) {
-      signIn('discord');
+      signIn("discord");
       return;
     }
 
@@ -97,9 +95,9 @@ export function useEditPostForm(postId: string, initialPost: PostFormState | nul
 
     try {
       const response = await fetch(`/api/posts/${postId}`, {
-        method: 'PATCH',
+        method: "PATCH",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           title: formState.title.trim(),
@@ -116,36 +114,40 @@ export function useEditPostForm(postId: string, initialPost: PostFormState | nul
         const message =
           data?.error ||
           (response.status === 401
-            ? 'You must be signed in to edit posts.'
+            ? "You must be signed in to edit posts."
             : response.status === 403
-            ? 'You do not have permission to edit this post.'
-            : 'Failed to update post.');
+              ? "You do not have permission to edit this post."
+              : "Failed to update post.");
         throw new Error(message);
       }
 
-      setSuccessMessage('Post updated successfully. Redirecting...');
-      logger.info('Post updated via UI', { postId, slug: formState.slug });
-      
+      setSuccessMessage("Post updated successfully. Redirecting...");
+      logger.info("Post updated via UI", { postId, slug: formState.slug });
+
       // Revalidate the homepage to ensure fresh data (in case title/excerpt changed)
       try {
-        await fetch('/api/revalidate', {
-          method: 'POST',
+        await fetch("/api/revalidate", {
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
-          body: JSON.stringify({ path: '/' }),
+          body: JSON.stringify({ path: "/" }),
         });
       } catch (revalidateError) {
         // Log but don't fail the update if revalidation fails
-        logger.error('Failed to revalidate homepage', revalidateError instanceof Error ? revalidateError : new Error(String(revalidateError)), { postId, slug: formState.slug });
+        logger.error(
+          "Failed to revalidate homepage",
+          revalidateError instanceof Error ? revalidateError : new Error(String(revalidateError)),
+          { postId, slug: formState.slug }
+        );
       }
-      
+
       setTimeout(() => {
         router.push(`/posts/${formState.slug}`).catch(() => undefined);
       }, 1200);
     } catch (error) {
       const err = error as Error;
-      logger.error('Failed to update post', err, { postId, slug: formState.slug });
+      logger.error("Failed to update post", err, { postId, slug: formState.slug });
       setErrorMessage(err.message);
     } finally {
       setIsSubmitting(false);
@@ -164,5 +166,3 @@ export function useEditPostForm(postId: string, initialPost: PostFormState | nul
     handleSubmit,
   };
 }
-
-

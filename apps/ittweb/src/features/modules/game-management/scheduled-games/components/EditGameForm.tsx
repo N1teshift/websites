@@ -1,7 +1,7 @@
-import React, { useState, FormEvent, useEffect } from 'react';
-import type { TeamSize, GameType, Game } from '@/features/modules/game-management/games/types';
-import { formatDateTimeInTimezone } from '../utils/timezoneUtils';
-import { timestampToIso } from '@websites/infrastructure/utils';
+import React, { useState, FormEvent, useEffect } from "react";
+import type { TeamSize, GameType, Game } from "@/features/modules/game-management/games/types";
+import { formatDateTimeInTimezone } from "../utils/timezoneUtils";
+import { timestampToIso } from "@websites/infrastructure/utils";
 
 interface EditGameFormProps {
   game: Game;
@@ -19,43 +19,48 @@ interface EditGameFormProps {
 
 // Placeholder for game modes - will be updated when user provides the list
 const GAME_MODES: string[] = [
-  'Standard',
-  'Custom Mode 1',
-  'Custom Mode 2',
+  "Standard",
+  "Custom Mode 1",
+  "Custom Mode 2",
   // Add more modes when provided
 ];
 
-export default function EditGameForm({ game, onSubmit, onCancel, isSubmitting = false }: EditGameFormProps) {
-  const [teamSize, setTeamSize] = useState<TeamSize>(game.teamSize || '1v1');
-  const [customTeamSize, setCustomTeamSize] = useState(game.customTeamSize || '');
-  const [gameType, setGameType] = useState<GameType>(game.gameType || 'normal');
-  const [gameVersion, setGameVersion] = useState<string>(game.gameVersion || 'v3.28');
+export default function EditGameForm({
+  game,
+  onSubmit,
+  onCancel,
+  isSubmitting = false,
+}: EditGameFormProps) {
+  const [teamSize, setTeamSize] = useState<TeamSize>(game.teamSize || "1v1");
+  const [customTeamSize, setCustomTeamSize] = useState(game.customTeamSize || "");
+  const [gameType, setGameType] = useState<GameType>(game.gameType || "normal");
+  const [gameVersion, setGameVersion] = useState<string>(game.gameVersion || "v3.28");
   const [gameLength, setGameLength] = useState<number>(game.gameLength || 1800);
   const [selectedModes, setSelectedModes] = useState<string[]>(game.modes || []);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    setTeamSize(game.teamSize || '1v1');
-    setCustomTeamSize(game.customTeamSize || '');
-    setGameType(game.gameType || 'normal');
-    setGameVersion(game.gameVersion || 'v3.28');
+    setTeamSize(game.teamSize || "1v1");
+    setCustomTeamSize(game.customTeamSize || "");
+    setGameType(game.gameType || "normal");
+    setGameVersion(game.gameVersion || "v3.28");
     setGameLength(game.gameLength || 1800);
     setSelectedModes(game.modes || []);
   }, [game]);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    setError('');
+    setError("");
 
     // Validation
-    if (teamSize === 'custom' && !customTeamSize.trim()) {
-      setError('Please specify custom team size');
+    if (teamSize === "custom" && !customTeamSize.trim()) {
+      setError("Please specify custom team size");
       return;
     }
 
     const updates = {
       teamSize,
-      customTeamSize: teamSize === 'custom' ? customTeamSize : undefined,
+      customTeamSize: teamSize === "custom" ? customTeamSize : undefined,
       gameType,
       gameVersion,
       gameLength,
@@ -65,30 +70,29 @@ export default function EditGameForm({ game, onSubmit, onCancel, isSubmitting = 
     try {
       await onSubmit(updates);
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to update game';
+      const errorMessage = err instanceof Error ? err.message : "Failed to update game";
       setError(errorMessage);
     }
   };
 
   const handleModeToggle = (mode: string) => {
-    setSelectedModes(prev =>
-      prev.includes(mode)
-        ? prev.filter(m => m !== mode)
-        : [...prev, mode]
+    setSelectedModes((prev) =>
+      prev.includes(mode) ? prev.filter((m) => m !== mode) : [...prev, mode]
     );
   };
 
   const gameDate = formatDateTimeInTimezone(
     game.scheduledDateTime ? timestampToIso(game.scheduledDateTime) : new Date().toISOString(),
-    game.timezone || 'UTC',
+    game.timezone || "UTC",
     {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-    timeZoneName: 'short',
-  });
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      timeZoneName: "short",
+    }
+  );
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
@@ -98,9 +102,15 @@ export default function EditGameForm({ game, onSubmit, onCancel, isSubmitting = 
         {/* Display game info that can't be edited */}
         <div className="mb-6 p-4 bg-gray-800/50 rounded border border-gray-700">
           <div className="text-sm text-gray-400 space-y-1">
-            <div><span className="text-amber-500">Scheduled Time:</span> {gameDate}</div>
-            <div><span className="text-amber-500">Scheduled By:</span> {game.creatorName}</div>
-            <div><span className="text-amber-500">Participants:</span> {game.participants?.length || 0}</div>
+            <div>
+              <span className="text-amber-500">Scheduled Time:</span> {gameDate}
+            </div>
+            <div>
+              <span className="text-amber-500">Scheduled By:</span> {game.creatorName}
+            </div>
+            <div>
+              <span className="text-amber-500">Participants:</span> {game.participants?.length || 0}
+            </div>
           </div>
         </div>
 
@@ -109,7 +119,7 @@ export default function EditGameForm({ game, onSubmit, onCancel, isSubmitting = 
           <div>
             <label className="block text-amber-500 mb-2">Team Size *</label>
             <div className="grid grid-cols-4 gap-2">
-              {(['1v1', '2v2', '3v3', '4v4', '5v5', '6v6', 'custom'] as TeamSize[]).map(size => (
+              {(["1v1", "2v2", "3v3", "4v4", "5v5", "6v6", "custom"] as TeamSize[]).map((size) => (
                 <label key={size} className="flex items-center cursor-pointer">
                   <input
                     type="radio"
@@ -119,11 +129,11 @@ export default function EditGameForm({ game, onSubmit, onCancel, isSubmitting = 
                     onChange={(e) => setTeamSize(e.target.value as TeamSize)}
                     className="mr-2"
                   />
-                  <span className="text-white">{size === 'custom' ? 'Custom' : size}</span>
+                  <span className="text-white">{size === "custom" ? "Custom" : size}</span>
                 </label>
               ))}
             </div>
-            {teamSize === 'custom' && (
+            {teamSize === "custom" && (
               <input
                 type="text"
                 value={customTeamSize}
@@ -144,7 +154,7 @@ export default function EditGameForm({ game, onSubmit, onCancel, isSubmitting = 
                   type="radio"
                   name="gameType"
                   value="normal"
-                  checked={gameType === 'normal'}
+                  checked={gameType === "normal"}
                   onChange={(e) => setGameType(e.target.value as GameType)}
                   className="mr-2"
                 />
@@ -155,7 +165,7 @@ export default function EditGameForm({ game, onSubmit, onCancel, isSubmitting = 
                   type="radio"
                   name="gameType"
                   value="elo"
-                  checked={gameType === 'elo'}
+                  checked={gameType === "elo"}
                   onChange={(e) => setGameType(e.target.value as GameType)}
                   className="mr-2"
                 />
@@ -195,10 +205,9 @@ export default function EditGameForm({ game, onSubmit, onCancel, isSubmitting = 
               </div>
               <div className="flex items-center text-gray-300 text-sm">
                 <span>
-                  {gameLength >= 60 
-                    ? `${Math.floor(gameLength / 60)} minute${Math.floor(gameLength / 60) !== 1 ? 's' : ''}`
-                    : `${gameLength} second${gameLength !== 1 ? 's' : ''}`
-                  }
+                  {gameLength >= 60
+                    ? `${Math.floor(gameLength / 60)} minute${Math.floor(gameLength / 60) !== 1 ? "s" : ""}`
+                    : `${gameLength} second${gameLength !== 1 ? "s" : ""}`}
                 </span>
               </div>
             </div>
@@ -211,7 +220,7 @@ export default function EditGameForm({ game, onSubmit, onCancel, isSubmitting = 
           <div>
             <label className="block text-amber-500 mb-2">Game Modes (Optional)</label>
             <div className="space-y-2">
-              {GAME_MODES.map(mode => (
+              {GAME_MODES.map((mode) => (
                 <label key={mode} className="flex items-center cursor-pointer">
                   <input
                     type="checkbox"
@@ -224,9 +233,7 @@ export default function EditGameForm({ game, onSubmit, onCancel, isSubmitting = 
               ))}
             </div>
             {selectedModes.length > 0 && (
-              <p className="text-sm text-gray-400 mt-2">
-                Selected: {selectedModes.join(', ')}
-              </p>
+              <p className="text-sm text-gray-400 mt-2">Selected: {selectedModes.join(", ")}</p>
             )}
           </div>
 
@@ -251,7 +258,7 @@ export default function EditGameForm({ game, onSubmit, onCancel, isSubmitting = 
               disabled={isSubmitting}
               className="px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white rounded disabled:opacity-50"
             >
-              {isSubmitting ? 'Updating...' : 'Update Game'}
+              {isSubmitting ? "Updating..." : "Update Game"}
             </button>
           </div>
         </form>
@@ -259,5 +266,3 @@ export default function EditGameForm({ game, onSubmit, onCancel, isSubmitting = 
     </div>
   );
 }
-
-

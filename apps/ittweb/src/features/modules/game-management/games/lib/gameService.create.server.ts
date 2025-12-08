@@ -1,27 +1,22 @@
 /**
  * Game Service - Create Operations (Server-Only)
- * 
+ *
  * Server-only functions for creating games.
  * These functions use Firebase Admin SDK and should only be used in API routes.
  */
 
-import { Timestamp } from 'firebase/firestore';
-import { getFirestoreAdmin, getAdminTimestamp } from '@websites/infrastructure/firebase';
-import { createComponentLogger, logError } from '@websites/infrastructure/logging';
-import { removeUndefined } from '@websites/infrastructure/utils';
-import { invalidateAnalyticsCache } from '@/features/infrastructure/lib/cache/analyticsCache.server';
-import type {
-  CreateGame,
-  CreateScheduledGame,
-  CreateCompletedGame,
-  GameState,
-} from '../types';
-import { updateEloScores } from '@/features/modules/game-management/lib/mechanics';
-import { getNextGameId } from './gameService.utils.server';
-import { getGames } from './gameService.read.server';
+import { Timestamp } from "firebase/firestore";
+import { getFirestoreAdmin, getAdminTimestamp } from "@websites/infrastructure/firebase";
+import { createComponentLogger, logError } from "@websites/infrastructure/logging";
+import { removeUndefined } from "@websites/infrastructure/utils";
+import { invalidateAnalyticsCache } from "@/features/infrastructure/lib/cache/analyticsCache.server";
+import type { CreateGame, CreateScheduledGame, CreateCompletedGame, GameState } from "../types";
+import { updateEloScores } from "@/features/modules/game-management/lib/mechanics";
+import { getNextGameId } from "./gameService.utils.server";
+import { getGames } from "./gameService.read.server";
 
-const GAMES_COLLECTION = 'games';
-const logger = createComponentLogger('gameService');
+const GAMES_COLLECTION = "games";
+const logger = createComponentLogger("gameService");
 
 /**
  * Create a new scheduled game (Server-Only)
@@ -31,64 +26,71 @@ export async function createScheduledGame(gameData: CreateScheduledGame): Promis
     // Get the next available game ID if not provided
     let gameId: number;
     try {
-      gameId = gameData.gameId || await getNextGameId();
-      logger.info('Game ID determined', { gameId, provided: !!gameData.gameId });
+      gameId = gameData.gameId || (await getNextGameId());
+      logger.info("Game ID determined", { gameId, provided: !!gameData.gameId });
     } catch (gameIdError) {
-      logError(gameIdError as Error, 'Failed to get next game ID', {
-        component: 'gameService',
-        operation: 'createScheduledGame',
-        step: 'getNextGameId',
+      logError(gameIdError as Error, "Failed to get next game ID", {
+        component: "gameService",
+        operation: "createScheduledGame",
+        step: "getNextGameId",
       });
-      throw new Error('Failed to generate game ID. Please try again.');
+      throw new Error("Failed to generate game ID. Please try again.");
     }
 
     const cleanedData = removeUndefined(gameData as unknown as Record<string, unknown>);
     const adminDb = getFirestoreAdmin();
     const adminTimestamp = getAdminTimestamp();
 
-    const scheduledDateTime = cleanedData.scheduledDateTime && typeof cleanedData.scheduledDateTime === 'string'
-      ? adminTimestamp.fromDate(new Date(cleanedData.scheduledDateTime))
-      : adminTimestamp.now();
+    const scheduledDateTime =
+      cleanedData.scheduledDateTime && typeof cleanedData.scheduledDateTime === "string"
+        ? adminTimestamp.fromDate(new Date(cleanedData.scheduledDateTime))
+        : adminTimestamp.now();
 
     try {
       const gameDoc = {
         ...cleanedData,
         gameId,
-        gameState: 'scheduled',
-        creatorName: cleanedData.creatorName || 'Unknown',
-        createdByDiscordId: cleanedData.createdByDiscordId || '',
+        gameState: "scheduled",
+        creatorName: cleanedData.creatorName || "Unknown",
+        createdByDiscordId: cleanedData.createdByDiscordId || "",
         scheduledDateTime,
         scheduledDateTimeString: cleanedData.scheduledDateTime,
-        ...(cleanedData.submittedAt ? {
-          submittedAt: cleanedData.submittedAt instanceof Timestamp
-            ? adminTimestamp.fromDate(cleanedData.submittedAt.toDate())
-            : adminTimestamp.fromDate(new Date(cleanedData.submittedAt as string))
-        } : {}),
+        ...(cleanedData.submittedAt
+          ? {
+              submittedAt:
+                cleanedData.submittedAt instanceof Timestamp
+                  ? adminTimestamp.fromDate(cleanedData.submittedAt.toDate())
+                  : adminTimestamp.fromDate(new Date(cleanedData.submittedAt as string)),
+            }
+          : {}),
         participants: cleanedData.participants || [],
         createdAt: adminTimestamp.now(),
         updatedAt: adminTimestamp.now(),
         isDeleted: false,
       };
 
-      logger.info('Creating scheduled game document', { gameId, scheduledDateTime: cleanedData.scheduledDateTime });
+      logger.info("Creating scheduled game document", {
+        gameId,
+        scheduledDateTime: cleanedData.scheduledDateTime,
+      });
       const docRef = await adminDb.collection(GAMES_COLLECTION).add(gameDoc);
-      logger.info('Scheduled game created', { id: docRef.id, gameId });
+      logger.info("Scheduled game created", { id: docRef.id, gameId });
       return docRef.id;
     } catch (writeError) {
-      logError(writeError as Error, 'Failed to write scheduled game to Firestore', {
-        component: 'gameService',
-        operation: 'createScheduledGame',
-        step: 'firestoreWrite',
+      logError(writeError as Error, "Failed to write scheduled game to Firestore", {
+        component: "gameService",
+        operation: "createScheduledGame",
+        step: "firestoreWrite",
         gameId,
         errorCode: (writeError as { code?: string }).code,
       });
-      throw new Error('Failed to create scheduled game. Please check your data and try again.');
+      throw new Error("Failed to create scheduled game. Please check your data and try again.");
     }
   } catch (error) {
     const err = error as Error;
-    logError(err, 'Failed to create scheduled game', {
-      component: 'gameService',
-      operation: 'createScheduledGame',
+    logError(err, "Failed to create scheduled game", {
+      component: "gameService",
+      operation: "createScheduledGame",
     });
     throw err;
   }
@@ -100,8 +102,13 @@ export async function createScheduledGame(gameData: CreateScheduledGame): Promis
 export async function createCompletedGame(gameData: CreateCompletedGame): Promise<string> {
   try {
     // Validate required fields
-    if (!gameData.gameId || !gameData.datetime || !gameData.players || gameData.players.length < 2) {
-      throw new Error('Invalid game data: gameId, datetime, and at least 2 players are required');
+    if (
+      !gameData.gameId ||
+      !gameData.datetime ||
+      !gameData.players ||
+      gameData.players.length < 2
+    ) {
+      throw new Error("Invalid game data: gameId, datetime, and at least 2 players are required");
     }
 
     // Check for duplicate gameId
@@ -116,13 +123,13 @@ export async function createCompletedGame(gameData: CreateCompletedGame): Promis
     const gameDatetime = adminTimestamp.fromDate(new Date(gameData.datetime));
 
     // Extract player names for quick access
-    const playerNames = gameData.players.map(p => p.name);
+    const playerNames = gameData.players.map((p) => p.name);
     const playerCount = gameData.players.length;
 
     // Create game document
     const baseGameDoc = {
       gameId: gameData.gameId,
-      gameState: 'completed' as GameState,
+      gameState: "completed" as GameState,
       datetime: gameDatetime,
       duration: gameData.duration,
       gamename: gameData.gamename,
@@ -135,11 +142,14 @@ export async function createCompletedGame(gameData: CreateCompletedGame): Promis
       ...(gameData.replayUrl ? { replayUrl: gameData.replayUrl } : {}),
       ...(gameData.replayFileName ? { replayFileName: gameData.replayFileName } : {}),
       ...(gameData.createdByDiscordId ? { createdByDiscordId: gameData.createdByDiscordId } : {}),
-      ...(gameData.submittedAt ? {
-        submittedAt: gameData.submittedAt instanceof Timestamp
-          ? adminTimestamp.fromDate(gameData.submittedAt.toDate())
-          : adminTimestamp.fromDate(new Date(gameData.submittedAt))
-      } : {}),
+      ...(gameData.submittedAt
+        ? {
+            submittedAt:
+              gameData.submittedAt instanceof Timestamp
+                ? adminTimestamp.fromDate(gameData.submittedAt.toDate())
+                : adminTimestamp.fromDate(new Date(gameData.submittedAt)),
+          }
+        : {}),
       verified: gameData.verified ?? false,
       ...(gameData.archiveContent ? { archiveContent: gameData.archiveContent } : {}),
       createdAt: adminTimestamp.now(),
@@ -149,7 +159,7 @@ export async function createCompletedGame(gameData: CreateCompletedGame): Promis
     const gameDocRef = await adminDb.collection(GAMES_COLLECTION).add(baseGameDoc);
 
     // Create player documents in subcollection
-    const playersCollection = gameDocRef.collection('players');
+    const playersCollection = gameDocRef.collection("players");
     for (const player of gameData.players) {
       const playerData = removeUndefined({
         gameId: gameDocRef.id,
@@ -186,7 +196,7 @@ export async function createCompletedGame(gameData: CreateCompletedGame): Promis
     try {
       await updateEloScores(gameDocRef.id);
     } catch (eloError) {
-      logger.warn('Failed to update ELO scores', { error: eloError });
+      logger.warn("Failed to update ELO scores", { error: eloError });
     }
 
     // Invalidate analytics cache for this category
@@ -194,13 +204,13 @@ export async function createCompletedGame(gameData: CreateCompletedGame): Promis
       // Ignore cache invalidation errors
     });
 
-    logger.info('Completed game created', { id: gameDocRef.id, gameId: gameData.gameId });
+    logger.info("Completed game created", { id: gameDocRef.id, gameId: gameData.gameId });
     return gameDocRef.id;
   } catch (error) {
     const err = error as Error;
-    logError(err, 'Failed to create completed game', {
-      component: 'gameService',
-      operation: 'createCompletedGame',
+    logError(err, "Failed to create completed game", {
+      component: "gameService",
+      operation: "createCompletedGame",
       gameId: gameData.gameId,
     });
     throw err;
@@ -214,13 +224,18 @@ export async function createCompletedGame(gameData: CreateCompletedGame): Promis
 export async function createGame(gameData: CreateGame): Promise<string> {
   try {
     // Validate required fields
-    if (!gameData.gameId || !gameData.datetime || !gameData.players || gameData.players.length < 2) {
-      throw new Error('Invalid game data: gameId, datetime, and at least 2 players are required');
+    if (
+      !gameData.gameId ||
+      !gameData.datetime ||
+      !gameData.players ||
+      gameData.players.length < 2
+    ) {
+      throw new Error("Invalid game data: gameId, datetime, and at least 2 players are required");
     }
 
     // Check for duplicate gameId
     const existingGames = await getGames({ player: gameData.players[0]?.name, limit: 1000 });
-    const duplicate = existingGames.games.find(g => g.gameId === gameData.gameId);
+    const duplicate = existingGames.games.find((g) => g.gameId === gameData.gameId);
     if (duplicate) {
       throw new Error(`Game with gameId ${gameData.gameId} already exists`);
     }
@@ -231,7 +246,7 @@ export async function createGame(gameData: CreateGame): Promise<string> {
     const gameDatetime = adminTimestamp.fromDate(new Date(gameData.datetime));
 
     // Extract player names for quick access
-    const playerNames = gameData.players.map(p => p.name);
+    const playerNames = gameData.players.map((p) => p.name);
     const playerCount = gameData.players.length;
 
     // Create game document
@@ -249,11 +264,14 @@ export async function createGame(gameData: CreateGame): Promise<string> {
       ...(gameData.replayUrl ? { replayUrl: gameData.replayUrl } : {}),
       ...(gameData.replayFileName ? { replayFileName: gameData.replayFileName } : {}),
       ...(gameData.createdByDiscordId ? { createdByDiscordId: gameData.createdByDiscordId } : {}),
-      ...(gameData.submittedAt ? {
-        submittedAt: gameData.submittedAt instanceof Timestamp
-          ? adminTimestamp.fromDate(gameData.submittedAt.toDate())
-          : adminTimestamp.fromDate(new Date(gameData.submittedAt as string))
-      } : {}),
+      ...(gameData.submittedAt
+        ? {
+            submittedAt:
+              gameData.submittedAt instanceof Timestamp
+                ? adminTimestamp.fromDate(gameData.submittedAt.toDate())
+                : adminTimestamp.fromDate(new Date(gameData.submittedAt as string)),
+          }
+        : {}),
       verified: false,
       createdAt: adminTimestamp.now(),
       updatedAt: adminTimestamp.now(),
@@ -261,7 +279,7 @@ export async function createGame(gameData: CreateGame): Promise<string> {
     const gameDocRef = await adminDb.collection(GAMES_COLLECTION).add(baseGameDoc);
 
     // Create player documents in subcollection
-    const playersCollection = gameDocRef.collection('players');
+    const playersCollection = gameDocRef.collection("players");
     for (const player of gameData.players) {
       const playerData = removeUndefined({
         gameId: gameDocRef.id,
@@ -286,18 +304,17 @@ export async function createGame(gameData: CreateGame): Promise<string> {
     await updateEloScores(gameDocRef.id);
 
     // Invalidate analytics cache
-    invalidateAnalyticsCache(gameData.category).catch(() => { });
+    invalidateAnalyticsCache(gameData.category).catch(() => {});
 
-    logger.info('Game created', { id: gameDocRef.id, gameId: gameData.gameId });
+    logger.info("Game created", { id: gameDocRef.id, gameId: gameData.gameId });
     return gameDocRef.id;
   } catch (error) {
     const err = error as Error;
-    logError(err, 'Failed to create game', {
-      component: 'gameService',
-      operation: 'createGame',
+    logError(err, "Failed to create game", {
+      component: "gameService",
+      operation: "createGame",
       gameId: gameData.gameId,
     });
     throw err;
   }
 }
-

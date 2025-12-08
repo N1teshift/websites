@@ -4,7 +4,7 @@
  *              such as category colors, number set symbols, and range type classification.
  */
 
-import { RANGE_TYPES, RangeType } from '@math/types/index';
+import { RANGE_TYPES, RangeType } from "@math/types/index";
 
 /**
  * Retrieves Tailwind CSS classes for styling elements based on a test category.
@@ -15,14 +15,14 @@ import { RANGE_TYPES, RangeType } from '@math/types/index';
  *          Returns default gray classes if the category is not recognized.
  */
 export function getTestCategoryColor(category: string): string {
-    const colors: Record<string, string> = {
-        "expression": "border-blue-200 bg-blue-50",
-        "equation": "border-green-200 bg-green-50",
-        "term": "border-yellow-200 bg-yellow-50",
-        "coefficient": "border-purple-200 bg-purple-50",
-        "function": "border-red-200 bg-red-50"
-    };
-    return colors[category] || "border-gray-200 bg-gray-50";
+  const colors: Record<string, string> = {
+    expression: "border-blue-200 bg-blue-50",
+    equation: "border-green-200 bg-green-50",
+    term: "border-yellow-200 bg-yellow-50",
+    coefficient: "border-purple-200 bg-purple-50",
+    function: "border-red-200 bg-red-50",
+  };
+  return colors[category] || "border-gray-200 bg-gray-50";
 }
 
 /**
@@ -32,14 +32,14 @@ export function getTestCategoryColor(category: string): string {
  * @returns The corresponding mathematical symbol (e.g., 'ℝ', 'ℤ') or the original name if not found.
  */
 export function getTestNumberSetSymbol(numberSet: string): string {
-    const symbols: Record<string, string> = {
-        'real': 'ℝ',
-        'rational': 'ℚ',
-        'irrational': 'I',
-        'integer': 'ℤ',
-        'natural': 'ℕ'
-    };
-    return symbols[numberSet] || numberSet;
+  const symbols: Record<string, string> = {
+    real: "ℝ",
+    rational: "ℚ",
+    irrational: "I",
+    integer: "ℤ",
+    natural: "ℕ",
+  };
+  return symbols[numberSet] || numberSet;
 }
 
 /**
@@ -56,21 +56,19 @@ export function getTestNumberSetSymbol(numberSet: string): string {
  * @returns The classified `RangeType` ('fullRange', 'negRange', 'posRange', or 'defaultRange').
  */
 export function getRangeType(range: [number, number]): RangeType {
-    const [min, max] = range;
-    if (min === RANGE_TYPES.fullRange[0] && max === RANGE_TYPES.fullRange[1]) return 'fullRange';
-    if (min === RANGE_TYPES.negRange[0] && max === RANGE_TYPES.negRange[1]) return 'negRange';
-    if (min === RANGE_TYPES.posRange[0] && max === RANGE_TYPES.posRange[1]) return 'posRange';
-    if (min === RANGE_TYPES.defaultRange[0] && max === RANGE_TYPES.defaultRange[1]) return 'defaultRange';
-    
-    // For non-standard ranges, categorize them based on their properties
-    if (min >= 0) {
-        return 'posRange';  // Any positive range
-    } else if (max <= 0) {
-        return 'negRange';  // Any negative range
-    } else {
-        return 'defaultRange';  // Any mixed range
-    }
-} 
+  const [min, max] = range;
+  if (min === RANGE_TYPES.fullRange[0] && max === RANGE_TYPES.fullRange[1]) return "fullRange";
+  if (min === RANGE_TYPES.negRange[0] && max === RANGE_TYPES.negRange[1]) return "negRange";
+  if (min === RANGE_TYPES.posRange[0] && max === RANGE_TYPES.posRange[1]) return "posRange";
+  if (min === RANGE_TYPES.defaultRange[0] && max === RANGE_TYPES.defaultRange[1])
+    return "defaultRange";
 
-
-
+  // For non-standard ranges, categorize them based on their properties
+  if (min >= 0) {
+    return "posRange"; // Any positive range
+  } else if (max <= 0) {
+    return "negRange"; // Any negative range
+  } else {
+    return "defaultRange"; // Any mixed range
+  }
+}

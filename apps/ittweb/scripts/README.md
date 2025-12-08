@@ -11,6 +11,7 @@ The `scripts/` folder hosts the end-to-end data regeneration pipeline for Island
 Checks for missing icon files by comparing iconMap.ts with actual PNG files in the icons directory.
 
 **Usage:**
+
 ```bash
 node scripts/check-missing-icons.js
 ```
@@ -18,6 +19,7 @@ node scripts/check-missing-icons.js
 **Output:** Generates `missing-icons-report.txt` in the project root with a categorized list of missing icons.
 
 **What it checks:**
+
 - Reads all icon mappings from `src/features/modules/guides/data/iconMap.ts`
 - Compares with actual PNG files in `public/icons/itt/`
 - Categorizes missing icons by type (abilities, items, units, buildings, trolls)
@@ -30,17 +32,20 @@ node scripts/check-missing-icons.js
 **Script:** `scripts/analyze-replay.mjs`
 
 Analyzes WC3 replay files (`.w3g`) to check what data is available, including:
+
 - Basic replay information (game ID, map, players, etc.)
 - W3MMD data presence and structure
 - Winning team detection sources
 - Player statistics and properties
 
 **Usage:**
+
 ```bash
 npm run analyze:replay <path-to-replay.w3g>
 ```
 
 **Example:**
+
 ```bash
 npm run analyze:replay ./replays/game.w3g
 # or
@@ -48,6 +53,7 @@ node scripts/analyze-replay.mjs ./replays/game.w3g
 ```
 
 **What it checks:**
+
 - ✅ File size and basic metadata
 - ✅ Player information and team distribution
 - ✅ W3MMD data availability (Island Troll Tribes custom stats)
@@ -55,25 +61,26 @@ node scripts/analyze-replay.mjs ./replays/game.w3g
 - ✅ Sample W3MMD structure and mission keys
 
 This is useful for:
+
 - Testing if replays contain W3MMD data before uploading
 - Debugging why winner detection might not work
 - Understanding what data sources are available in a replay file
 
 ## Pipeline at a Glance
 
-| Stage | Script | Purpose | Output |
-| --- | --- | --- | --- |
-| 1. Extract | `extract-from-w3x.mjs` | Parse `war3map.*` files from `external/Work/` | Raw JSON in `tmp/work-data/raw/` |
-| 2. Metadata | `extract-metadata.mjs` | Build derived metadata (units/buildings/recipes) straight from extracted data + `war3map.j` | JSON in `tmp/work-data/metadata/` |
-| 3. Ability Details | `extract-ability-details-from-wurst.mjs` | Extract detailed ability properties from Wurst source files | `tmp/work-data/metadata/ability-details-wurst.json` |
-| 4. Ability Relationships | `extract-ability-relationships.mjs` | Extract ability-to-class/spellbook relationships | `tmp/work-data/metadata/ability-relationships.json` |
-| 5. Item Details | `extract-item-details-from-wurst.mjs` | Extract item stat bonuses and properties from Wurst source files | `tmp/work-data/metadata/item-details-wurst.json` |
-| 5.5. Ability ID Mapping | `generate-ability-id-mapping.mjs` | Generate mapping from raw ability IDs (e.g., "AMi1") to ability slugs | `src/features/modules/guides/data/items/abilityIdMapper.ts` |
-| 5.6. Extract Ability Codes | `extract-ability-codes-from-items.mjs` | Parse ability codes from item descriptions to find missing mappings | Updated `src/features/modules/guides/data/items/abilityIdMapper.ts` |
-| 6. Convert | `convert-extracted-to-typescript.mjs` | Generate typed data consumed by the app (merges all sources) | `src/features/modules/guides/data/**` |
-| 7. Icon map | `regenerate-iconmap.mjs` | Produce `iconMap.ts` from PNG assets + generated data | `src/features/modules/guides/data/iconMap.ts` |
-| 8. Fix paths | `fix-icon-paths.mjs` | Validate and fix icon paths in generated TypeScript files | Updated `src/features/modules/guides/data/**` |
-| 9. Resolve references | `resolve-field-references.mjs` | Resolve field references in tooltips (e.g., `<AMd5,Cool1>`) | Updated `src/features/modules/guides/data/**` |
+| Stage                      | Script                                   | Purpose                                                                                     | Output                                                              |
+| -------------------------- | ---------------------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| 1. Extract                 | `extract-from-w3x.mjs`                   | Parse `war3map.*` files from `external/Work/`                                               | Raw JSON in `tmp/work-data/raw/`                                    |
+| 2. Metadata                | `extract-metadata.mjs`                   | Build derived metadata (units/buildings/recipes) straight from extracted data + `war3map.j` | JSON in `tmp/work-data/metadata/`                                   |
+| 3. Ability Details         | `extract-ability-details-from-wurst.mjs` | Extract detailed ability properties from Wurst source files                                 | `tmp/work-data/metadata/ability-details-wurst.json`                 |
+| 4. Ability Relationships   | `extract-ability-relationships.mjs`      | Extract ability-to-class/spellbook relationships                                            | `tmp/work-data/metadata/ability-relationships.json`                 |
+| 5. Item Details            | `extract-item-details-from-wurst.mjs`    | Extract item stat bonuses and properties from Wurst source files                            | `tmp/work-data/metadata/item-details-wurst.json`                    |
+| 5.5. Ability ID Mapping    | `generate-ability-id-mapping.mjs`        | Generate mapping from raw ability IDs (e.g., "AMi1") to ability slugs                       | `src/features/modules/guides/data/items/abilityIdMapper.ts`         |
+| 5.6. Extract Ability Codes | `extract-ability-codes-from-items.mjs`   | Parse ability codes from item descriptions to find missing mappings                         | Updated `src/features/modules/guides/data/items/abilityIdMapper.ts` |
+| 6. Convert                 | `convert-extracted-to-typescript.mjs`    | Generate typed data consumed by the app (merges all sources)                                | `src/features/modules/guides/data/**`                               |
+| 7. Icon map                | `regenerate-iconmap.mjs`                 | Produce `iconMap.ts` from PNG assets + generated data                                       | `src/features/modules/guides/data/iconMap.ts`                       |
+| 8. Fix paths               | `fix-icon-paths.mjs`                     | Validate and fix icon paths in generated TypeScript files                                   | Updated `src/features/modules/guides/data/**`                       |
+| 9. Resolve references      | `resolve-field-references.mjs`           | Resolve field references in tooltips (e.g., `<AMd5,Cool1>`)                                 | Updated `src/features/modules/guides/data/**`                       |
 
 All stages can be orchestrated with one command:
 
@@ -147,21 +154,27 @@ For detailed extraction instructions, see [`docs/systems/scripts/extract-w3x.md`
 After running the pipeline, verify the following:
 
 1. **Check extraction completed:**
+
    ```bash
    ls -la tmp/work-data/raw/
    ```
+
    Should contain: `items.json`, `abilities.json`, `units.json`, `buildings.json`
 
 2. **Check metadata extracted:**
+
    ```bash
    ls -la tmp/work-data/metadata/
    ```
+
    Should contain: `recipes.json`, `units.json`, `buildings.json`, plus Wurst-extracted data
 
 3. **Verify TypeScript compilation:**
+
    ```bash
    npm run type-check
    ```
+
    Should complete without errors
 
 4. **Spot-check generated files:**
@@ -171,10 +184,11 @@ After running the pipeline, verify the following:
    - `src/features/modules/guides/data/iconMap.ts` – ensures icon map was generated
 
 5. **Count generated entities:**
+
    ```bash
    # Count items
    find src/features/modules/guides/data/items -name "*.ts" -type f | wc -l
-   
+
    # Count abilities
    find src/features/modules/guides/data/abilities -name "*.ts" -type f | wc -l
    ```
@@ -186,21 +200,25 @@ For detailed validation procedures and troubleshooting, see [`docs/systems/scrip
 ### Common Issues
 
 **Work directory not found:**
+
 - Verify `external/Work/` directory exists with required `war3map.*` files
 - See [Required Inputs](#required-inputs) section above
 
 **TypeScript compilation errors:**
+
 - Run `npm run type-check` to identify errors
 - Check generated files for syntax issues
 - Review converter logic if data format is incorrect
 
 **Missing or incorrect data:**
+
 - Check intermediate JSON files in `tmp/work-data/`
 - Verify input files are not corrupted
 - Review filtering logic in converters
 
 **For detailed troubleshooting:**
 See the complete [Pipeline Troubleshooting Guide](../docs/systems/data-pipeline/troubleshooting.md) for:
+
 - Common error messages and solutions
 - Debugging procedures
 - Performance issues

@@ -22,11 +22,11 @@ How to use APIs from client-side code.
 
 ```typescript
 // GET request
-const response = await fetch('/api/games');
+const response = await fetch("/api/games");
 const data = await response.json();
 
 if (!data.success) {
-  throw new Error(data.error || 'Request failed');
+  throw new Error(data.error || "Request failed");
 }
 
 const games = data.data;
@@ -37,21 +37,21 @@ const games = data.data;
 ```typescript
 async function fetchGames() {
   try {
-    const response = await fetch('/api/games');
-    
+    const response = await fetch("/api/games");
+
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}: ${response.statusText}`);
     }
-    
+
     const data = await response.json();
-    
+
     if (!data.success) {
-      throw new Error(data.error || 'Request failed');
+      throw new Error(data.error || "Request failed");
     }
-    
+
     return data.data;
   } catch (error) {
-    console.error('Failed to fetch games:', error);
+    console.error("Failed to fetch games:", error);
     throw error;
   }
 }
@@ -62,7 +62,7 @@ async function fetchGames() {
 ### Standard Hook Structure
 
 ```typescript
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 interface UseMyDataResult {
   data: MyData[];
@@ -82,24 +82,24 @@ export function useMyData(filters?: MyFilters): UseMyDataResult {
       setError(null);
 
       const queryParams = new URLSearchParams();
-      if (filters?.search) queryParams.append('search', filters.search);
-      if (filters?.page) queryParams.append('page', filters.page.toString());
+      if (filters?.search) queryParams.append("search", filters.search);
+      if (filters?.page) queryParams.append("page", filters.page.toString());
 
       const response = await fetch(`/api/my-data?${queryParams.toString()}`);
-      
+
       if (!response.ok) {
         throw new Error(`Failed to fetch: ${response.statusText}`);
       }
 
       const result = await response.json();
-      
+
       if (!result.success) {
-        throw new Error(result.error || 'Request failed');
+        throw new Error(result.error || "Request failed");
       }
 
       setData(result.data);
     } catch (err) {
-      setError(err instanceof Error ? err : new Error('Unknown error'));
+      setError(err instanceof Error ? err : new Error("Unknown error"));
     } finally {
       setLoading(false);
     }
@@ -119,10 +119,10 @@ export function useMyData(filters?: MyFilters): UseMyDataResult {
 
 ```typescript
 async function createGame(gameData: CreateGame) {
-  const response = await fetch('/api/games', {
-    method: 'POST',
+  const response = await fetch("/api/games", {
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify(gameData),
   });
@@ -132,9 +132,9 @@ async function createGame(gameData: CreateGame) {
   }
 
   const result = await response.json();
-  
+
   if (!result.success) {
-    throw new Error(result.error || 'Failed to create game');
+    throw new Error(result.error || "Failed to create game");
   }
 
   return result.id; // or result.data
@@ -144,20 +144,20 @@ async function createGame(gameData: CreateGame) {
 ### With Authentication
 
 ```typescript
-import { useSession } from 'next-auth/react';
+import { useSession } from "next-auth/react";
 
 function MyComponent() {
   const { data: session } = useSession();
 
   const createGame = async (gameData: CreateGame) => {
     if (!session) {
-      throw new Error('Authentication required');
+      throw new Error("Authentication required");
     }
 
-    const response = await fetch('/api/games', {
-      method: 'POST',
+    const response = await fetch("/api/games", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(gameData),
     });
@@ -174,9 +174,9 @@ function MyComponent() {
 ```typescript
 async function updateGame(id: string, gameData: UpdateGame) {
   const response = await fetch(`/api/games/${id}`, {
-    method: 'PUT',
+    method: "PUT",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify(gameData),
   });
@@ -195,7 +195,7 @@ async function updateGame(id: string, gameData: UpdateGame) {
 ```typescript
 async function deleteGame(id: string) {
   const response = await fetch(`/api/games/${id}`, {
-    method: 'DELETE',
+    method: "DELETE",
   });
 
   if (!response.ok) {
@@ -213,17 +213,17 @@ async function deleteGame(id: string) {
 
 ```typescript
 const filters = {
-  category: 'ranked',
-  startDate: '2025-01-01',
+  category: "ranked",
+  startDate: "2025-01-01",
   page: 1,
   limit: 20,
 };
 
 const queryParams = new URLSearchParams();
-if (filters.category) queryParams.append('category', filters.category);
-if (filters.startDate) queryParams.append('startDate', filters.startDate);
-if (filters.page) queryParams.append('page', filters.page.toString());
-if (filters.limit) queryParams.append('limit', filters.limit.toString());
+if (filters.category) queryParams.append("category", filters.category);
+if (filters.startDate) queryParams.append("startDate", filters.startDate);
+if (filters.page) queryParams.append("page", filters.page.toString());
+if (filters.limit) queryParams.append("limit", filters.limit.toString());
 
 const url = `/api/games?${queryParams.toString()}`;
 // Result: /api/games?category=ranked&startDate=2025-01-01&page=1&limit=20
@@ -244,10 +244,10 @@ const page = req.query.page ? parseInt(req.query.page as string, 10) : undefined
 ```typescript
 async function uploadReplay(gameId: string, file: File) {
   const formData = new FormData();
-  formData.append('replay', file);
+  formData.append("replay", file);
 
   const response = await fetch(`/api/scheduled-games/${gameId}/upload-replay`, {
-    method: 'POST',
+    method: "POST",
     body: formData,
     // Don't set Content-Type header - browser sets it with boundary
   });
@@ -278,7 +278,7 @@ interface GamesApiResponse {
 }
 
 // Use in fetch
-const response = await fetch('/api/games');
+const response = await fetch("/api/games");
 const data: GamesApiResponse = await response.json();
 
 if (data.success) {
@@ -290,14 +290,11 @@ if (data.success) {
 ### Generic API Client
 
 ```typescript
-async function apiRequest<T>(
-  endpoint: string,
-  options?: RequestInit
-): Promise<T> {
+async function apiRequest<T>(endpoint: string, options?: RequestInit): Promise<T> {
   const response = await fetch(endpoint, {
     ...options,
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       ...options?.headers,
     },
   });
@@ -307,16 +304,16 @@ async function apiRequest<T>(
   }
 
   const data = await response.json();
-  
+
   if (!data.success) {
-    throw new Error(data.error || 'Request failed');
+    throw new Error(data.error || "Request failed");
   }
 
   return data.data as T;
 }
 
 // Usage
-const games = await apiRequest<Game[]>('/api/games');
+const games = await apiRequest<Game[]>("/api/games");
 const game = await apiRequest<Game>(`/api/games/${id}`);
 ```
 
@@ -335,7 +332,7 @@ function MyComponent() {
     try {
       setError(null);
       setLoading(true);
-      
+
       const response = await fetch('/api/my-endpoint', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -375,14 +372,12 @@ const [cursor, setCursor] = useState<string | undefined>();
 const [hasMore, setHasMore] = useState(false);
 
 const loadMore = async () => {
-  const url = cursor 
-    ? `/api/items?cursor=${cursor}`
-    : '/api/items';
-  
+  const url = cursor ? `/api/items?cursor=${cursor}` : "/api/items";
+
   const response = await fetch(url);
   const data = await response.json();
-  
-  setItems(prev => [...prev, ...data.data.items]);
+
+  setItems((prev) => [...prev, ...data.data.items]);
   setCursor(data.data.nextCursor);
   setHasMore(data.data.hasMore);
 };
@@ -398,13 +393,13 @@ const [hasMore, setHasMore] = useState(true);
 const loadPage = async (pageNum: number) => {
   const response = await fetch(`/api/items?page=${pageNum}`);
   const data = await response.json();
-  
+
   if (pageNum === 1) {
     setItems(data.data.items);
   } else {
-    setItems(prev => [...prev, ...data.data.items]);
+    setItems((prev) => [...prev, ...data.data.items]);
   }
-  
+
   setHasMore(data.data.hasMore);
 };
 ```
@@ -419,24 +414,22 @@ const [items, setItems] = useState([]);
 const addItem = async (newItem: CreateItem) => {
   // Optimistically add to UI
   const tempId = `temp-${Date.now()}`;
-  setItems(prev => [...prev, { ...newItem, id: tempId }]);
+  setItems((prev) => [...prev, { ...newItem, id: tempId }]);
 
   try {
-    const response = await fetch('/api/items', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    const response = await fetch("/api/items", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newItem),
     });
 
     const result = await response.json();
-    
+
     // Replace temp item with real item
-    setItems(prev => prev.map(item => 
-      item.id === tempId ? result.data : item
-    ));
+    setItems((prev) => prev.map((item) => (item.id === tempId ? result.data : item)));
   } catch (error) {
     // Rollback on error
-    setItems(prev => prev.filter(item => item.id !== tempId));
+    setItems((prev) => prev.filter((item) => item.id !== tempId));
     throw error;
   }
 };
@@ -457,10 +450,10 @@ async function fetchWithRetry(
       throw new Error(`HTTP ${response.status}`);
     } catch (error) {
       if (i === maxRetries - 1) throw error;
-      await new Promise(resolve => setTimeout(resolve, 1000 * (i + 1)));
+      await new Promise((resolve) => setTimeout(resolve, 1000 * (i + 1)));
     }
   }
-  throw new Error('Max retries exceeded');
+  throw new Error("Max retries exceeded");
 }
 ```
 
@@ -469,5 +462,3 @@ async function fetchWithRetry(
 - [API Reference](./api/README.md)
 - [Code Patterns](./code-patterns.md)
 - [Development Guide](./development-guide.md)
-
-

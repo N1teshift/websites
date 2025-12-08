@@ -5,11 +5,13 @@
 ## Exports
 
 ### Components
+
 - `MetaPage` - Main analytics dashboard page component
 - `MetaCharts` - Chart container component displaying various analytics
 - `MetaFilters` - Filter controls for the meta dashboard
 
 ### Hooks
+
 - `useMetaData` - Hook for fetching meta dashboard data
 - `useMetaFilters` - Hook for managing meta dashboard filters and state
 
@@ -27,7 +29,7 @@ import { MetaPage } from '@/features/modules/meta/components';
 ### Using Meta Hooks
 
 ```typescript
-import { useMetaData, useMetaFilters } from '@/features/modules/meta/components';
+import { useMetaData, useMetaFilters } from "@/features/modules/meta/components";
 
 // Fetch meta dashboard data
 const { data, loading, error } = useMetaData();
@@ -39,6 +41,7 @@ const { filters, setFilters, resetFilters } = useMetaFilters();
 ## Features
 
 The meta dashboard displays comprehensive system statistics including:
+
 - **Activity Charts**: Games played over time
 - **ELO Statistics**: Rating distribution and trends
 - **Win Rate Data**: Overall win/loss statistics
@@ -53,6 +56,3 @@ The meta dashboard displays comprehensive system statistics including:
 
 - [Analytics Module](./analytics/README.md) - Individual chart components and analytics services
 - [Game Stats Implementation](../../../../docs/systems/game-stats/implementation-plan.md)
-
-
-

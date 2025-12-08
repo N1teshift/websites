@@ -1,12 +1,9 @@
-import EmwNavbar from './EmwNavbar';
+import EmwNavbar from "./EmwNavbar";
 
 export default function VotingPrecinctsPage() {
-    return (
-        <>
-            <EmwNavbar />
-        </>
-    );
+  return (
+    <>
+      <EmwNavbar />
+    </>
+  );
 }
-
-
-

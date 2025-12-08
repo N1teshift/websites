@@ -11,17 +11,17 @@ import { ObjectType } from "@math/types/mathTypes";
  * If an object type does not inherently require sub-objects (like 'coefficient'), it maps to `null`.
  */
 export const SUB_OBJECT_TYPE: Record<ObjectType, ObjectType | null> = {
-  'coefficients': 'coefficient',
-  'equation': 'expression',
-  'function': 'expression',
-  'inequality': 'expression',
-  'coefficient': null,
-  'term': 'coefficients',
-  'terms': 'term',
-  'expression': 'terms',
-  'point': 'coefficients',
-  'set': 'coefficients',
-  'interval': 'coefficients'
+  coefficients: "coefficient",
+  equation: "expression",
+  function: "expression",
+  inequality: "expression",
+  coefficient: null,
+  term: "coefficients",
+  terms: "term",
+  expression: "terms",
+  point: "coefficients",
+  set: "coefficients",
+  interval: "coefficients",
 };
 
 /**
@@ -36,7 +36,7 @@ export const NODE_NAMES = [
   "process_next_sub_object",
   "collect_sub_setting",
   "finalize_object",
-  "handle_error"
+  "handle_error",
 ] as const;
 
 /**
@@ -51,17 +51,14 @@ export const NODE_NAMES = [
  * expression: 'terms'
  */
 export const subObjectsSettingsKeyMap: Partial<Record<ObjectType, string>> = {
-  term: 'coefficients',
-  terms: 'terms',
-  coefficients: 'coefficients', // Storing array of CoefficientSettings
-  equation: 'terms', // Assuming equation uses terms; adjust if needed (e.g., expressions)
-  inequality: 'terms', // Assuming inequality uses terms; adjust if needed
-  expression: 'terms', // Assuming expression uses terms; adjust if needed
-  point: 'coefficients',
-  set: 'coefficients',
-  interval: 'coefficients',
-  function: 'expression', // A function might contain a single expression
+  term: "coefficients",
+  terms: "terms",
+  coefficients: "coefficients", // Storing array of CoefficientSettings
+  equation: "terms", // Assuming equation uses terms; adjust if needed (e.g., expressions)
+  inequality: "terms", // Assuming inequality uses terms; adjust if needed
+  expression: "terms", // Assuming expression uses terms; adjust if needed
+  point: "coefficients",
+  set: "coefficients",
+  interval: "coefficients",
+  function: "expression", // A function might contain a single expression
 };
-
-
-

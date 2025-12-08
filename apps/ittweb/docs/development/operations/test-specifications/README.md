@@ -21,6 +21,7 @@ This directory contains detailed test specifications organized by category. Thes
 ## Test Organization
 
 ### File Structure
+
 ```
 src/
 ├── __tests__/
@@ -44,6 +45,7 @@ src/
 ```
 
 ### Test Naming Conventions
+
 - Unit tests: `[module].test.ts` or `[module].spec.ts`
 - Component tests: `[ComponentName].test.tsx`
 - Integration tests: `[feature].integration.test.ts`
@@ -73,4 +75,3 @@ src/
 - [Testing Guide](../testing-guide.md) - How to run and write tests
 - [Test Plans](../test-plans/) - Feature-specific test plans
 - [Comprehensive Test Plan](../comprehensive-test-plan.md) - Original comprehensive plan (now split)
-

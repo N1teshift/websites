@@ -35,4 +35,3 @@ This document outlines all tests needed for the map analyzer module.
   - **What**: Verify visualization data is generated correctly
   - **Expected**: Data formatted for visualization (charts, graphs, etc.)
   - **Edge cases**: Empty data, large datasets, missing visualization data
-

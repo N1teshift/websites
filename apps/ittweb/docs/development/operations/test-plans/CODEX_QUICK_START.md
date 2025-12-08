@@ -11,10 +11,12 @@ After pasting the main prompt, add one of these lines:
 ### Available Test Plans:
 
 **Core Infrastructure:**
+
 - `Create tests from infrastructure-tests.md`
 - `Create tests from utilities-tests.md`
 
 **Feature Modules:**
+
 - `Create tests from games-tests.md`
 - `Create tests from players-tests.md`
 - `Create tests from blog-tests.md`
@@ -25,14 +27,17 @@ After pasting the main prompt, add one of these lines:
 - `Create tests from guides-tests.md`
 
 **Tools & Utilities:**
+
 - `Create tests from map-analyzer-tests.md`
 - `Create tests from tools-tests.md`
 
 **Integration & E2E:**
+
 - `Create tests from integration-tests.md`
 - `Create tests from e2e-tests.md`
 
 **Quality & Performance:**
+
 - `Create tests from performance-tests.md`
 - `Create tests from edge-cases-tests.md`
 - ~~`Create tests from security-tests.md`~~ - ✅ Complete
@@ -56,4 +61,3 @@ Create tests from games-tests.md
 2. **Work on one file at a time** - each test plan file is self-contained
 3. **Review generated tests** before moving to the next file
 4. **Check for existing test patterns** in the codebase first
-

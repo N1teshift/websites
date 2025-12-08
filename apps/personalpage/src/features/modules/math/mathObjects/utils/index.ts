@@ -4,9 +4,6 @@
  *              including dependency graph utilities, formatting utilities, and general number utilities.
  *              This provides a single entry point for accessing common utility functions.
  */
-export * from './dependencyUtils';
-export * from './formattingUtils';
-export * from '../../shared/numberUtils'; 
-
-
-
+export * from "./dependencyUtils";
+export * from "./formattingUtils";
+export * from "../../shared/numberUtils";

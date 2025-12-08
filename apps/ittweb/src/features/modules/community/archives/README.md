@@ -5,6 +5,7 @@
 ## Exports
 
 ### Components
+
 - `ArchivesContent` - Main archives page content with timeline view
 - `ArchiveForm` - Create new archive entry form (wraps ArchiveFormBase)
 - `ArchiveEditForm` - Edit existing archive entry form (wraps ArchiveFormBase)
@@ -21,6 +22,7 @@
 - `YouTubeEmbed` - YouTube video embed component
 
 ### Hooks
+
 - `useArchivesPage` - Main archives page state management and CRUD operations
 - `useArchiveHandlers` - Form event handlers for archive entry forms (input changes, file uploads, reordering)
 - `useArchiveBaseState` - Form state management for archive entry forms (form data, files, section order)
@@ -28,6 +30,7 @@
 - `useArchiveFormSubmit` - Form submission logic with validation and media upload (internal hook)
 
 ### Utils
+
 - `archiveFormUtils` - Form validation and utilities
 - `archiveValidation` - Archive entry validation logic
 - `ArchiveEntryUtils` - Utility functions for archive entry operations (extracted from ArchiveEntry)
@@ -37,25 +40,18 @@
 ### Basic Archives Page
 
 ```typescript
-import { useArchivesPage } from '@/features/modules/community/archives/shared/hooks/useArchivesPage';
+import { useArchivesPage } from "@/features/modules/community/archives/shared/hooks/useArchivesPage";
 
 // Use archives page hook
-const {
-  archives,
-  loading,
-  error,
-  handleCreate,
-  handleUpdate,
-  handleDelete
-} = useArchivesPage();
+const { archives, loading, error, handleCreate, handleUpdate, handleDelete } = useArchivesPage();
 ```
 
 ### Archive Form with Custom Hooks
 
 ```typescript
-import { useArchiveBaseState } from '@/features/modules/archives/hooks/useArchiveBaseState';
-import { useArchiveHandlers } from '@/features/modules/archives/hooks/useArchiveHandlers';
-import { useArchiveMedia } from '@/features/modules/archives/hooks/useArchiveMedia';
+import { useArchiveBaseState } from "@/features/modules/archives/hooks/useArchiveBaseState";
+import { useArchiveHandlers } from "@/features/modules/archives/hooks/useArchiveHandlers";
+import { useArchiveMedia } from "@/features/modules/archives/hooks/useArchiveMedia";
 
 // In a form component
 function MyArchiveForm({ mode, initialEntry }) {
@@ -68,7 +64,7 @@ function MyArchiveForm({ mode, initialEntry }) {
     replayFile,
     currentImages,
     sectionOrder,
-    setSectionOrder
+    setSectionOrder,
   } = useArchiveBaseState(mode, initialEntry);
 
   // Get image preview URLs
@@ -80,7 +76,7 @@ function MyArchiveForm({ mode, initialEntry }) {
     handleCombinedFileUpload,
     handleReorderImages,
     handleReorderSections,
-    handleVideoUrlChange
+    handleVideoUrlChange,
   } = useArchiveHandlers({
     setFormData,
     imageFile,
@@ -91,7 +87,7 @@ function MyArchiveForm({ mode, initialEntry }) {
     setCurrentImages,
     setSectionOrder,
     setError,
-    setExistingReplayUrl
+    setExistingReplayUrl,
   });
 
   // Use formData, handlers, and preview URLs in your form
@@ -104,16 +100,16 @@ function MyArchiveForm({ mode, initialEntry }) {
 import { ArchiveForm, ArchiveEditForm, ArchiveDeleteDialog } from '@/features/modules/archives/components';
 
 // Create form
-<ArchiveForm 
-  onSuccess={() => console.log('Created!')} 
-  onCancel={() => setShowForm(false)} 
+<ArchiveForm
+  onSuccess={() => console.log('Created!')}
+  onCancel={() => setShowForm(false)}
 />
 
 // Edit form
-<ArchiveEditForm 
+<ArchiveEditForm
   entry={archiveEntry}
-  onSuccess={() => console.log('Updated!')} 
-  onCancel={() => setShowEdit(false)} 
+  onSuccess={() => console.log('Updated!')}
+  onCancel={() => setShowEdit(false)}
 />
 
 // Delete dialog
@@ -138,4 +134,3 @@ import { ArchiveForm, ArchiveEditForm, ArchiveDeleteDialog } from '@/features/mo
 
 - [Firestore Collections Schema](../../../../docs/schemas/firestore-collections.md#archiveentries-collection)
 - [Archive Service](../../../infrastructure/lib/archiveService.ts)
-

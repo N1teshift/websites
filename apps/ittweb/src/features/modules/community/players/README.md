@@ -7,6 +7,7 @@
 ## Exports
 
 ### Components
+
 - `PlayersPage` - Player search and listing page (main component, ~172 lines)
 - `PlayerCard` - Individual player card component (extracted from PlayersPage)
 - `PlayersActionBar` - Action bar with search and comparison controls (extracted from PlayersPage)
@@ -15,10 +16,12 @@
 - `PlayerComparison` - Compare multiple players side-by-side
 
 ### Hooks
+
 - `usePlayerStats` - Fetch player statistics by name (in `hooks/usePlayerStats.ts`)
 - `usePlayerComparison` - Player comparison state management hook (in `components/usePlayerComparison.ts`)
 
 ### Services
+
 - `playerService` - Player statistics operations
   - `getPlayerStats()` - Get comprehensive player stats
   - `searchPlayers()` - Search players by name
@@ -27,6 +30,7 @@
   - `getPlayersPaginated()` - Get paginated list of players (cursor-based pagination using player name)
 
 ### Types
+
 - `PlayerStats` - Complete player statistics
 - `PlayerProfile` - Player profile data
 - `CategoryStats` - Statistics per game category
@@ -35,17 +39,20 @@
 ## Usage
 
 ```typescript
-import { usePlayerStats } from '@/features/modules/community/players/hooks/usePlayerStats';
-import { searchPlayers, comparePlayers } from '@/features/modules/community/players/lib/playerService';
+import { usePlayerStats } from "@/features/modules/community/players/hooks/usePlayerStats";
+import {
+  searchPlayers,
+  comparePlayers,
+} from "@/features/modules/community/players/lib/playerService";
 
 // Fetch player stats
-const { stats, loading, error } = usePlayerStats('PlayerName');
+const { stats, loading, error } = usePlayerStats("PlayerName");
 
 // Search players
-const results = await searchPlayers('Player');
+const results = await searchPlayers("Player");
 
 // Compare players
-const comparison = await comparePlayers(['Player1', 'Player2']);
+const comparison = await comparePlayers(["Player1", "Player2"]);
 ```
 
 ## API Routes
@@ -56,6 +63,7 @@ const comparison = await comparePlayers(['Player1', 'Player2']);
 - `GET /api/players/compare?players=name1,name2` - Compare players
 
 **Pagination**: The `/api/players` endpoint supports cursor-based pagination:
+
 - `limit` (number, optional) - Number of players to return (default: 50)
 - `lastPlayerName` (string, optional) - Cursor for pagination (player name to start after)
 
@@ -63,5 +71,3 @@ const comparison = await comparePlayers(['Player1', 'Player2']);
 
 - [Firestore Collections Schema](../../../../docs/schemas/firestore-collections.md#playerstats-collection)
 - [Game Stats Implementation](../../../../docs/systems/game-stats/implementation-plan.md)
-
-

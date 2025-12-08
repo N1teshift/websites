@@ -4,8 +4,8 @@ import { fetchData, saveData } from "@/lib/api-client";
 export type UpdatedData = Partial<ExerciseDocumentData>;
 
 interface FetchResponse<T> {
-    data: T | null;
-    error: string | null;
+  data: T | null;
+  error: string | null;
 }
 
 /**
@@ -13,8 +13,12 @@ interface FetchResponse<T> {
  * @param dbName The name of the database to fetch metadata from.
  * @returns A promise that resolves to the fetch response containing the metadata.
  */
-export const fetchMetadata = async (dbName: string): Promise<FetchResponse<{ metadata: BookDocumentData[] }>> => {
-    return fetchData<{ metadata: BookDocumentData[] }>(`/api/fetchDatabase?dbName=${dbName}&type=metadata`);
+export const fetchMetadata = async (
+  dbName: string
+): Promise<FetchResponse<{ metadata: BookDocumentData[] }>> => {
+  return fetchData<{ metadata: BookDocumentData[] }>(
+    `/api/fetchDatabase?dbName=${dbName}&type=metadata`
+  );
 };
 
 /**
@@ -25,16 +29,16 @@ export const fetchMetadata = async (dbName: string): Promise<FetchResponse<{ met
  * @returns A promise that resolves to the fetch response containing the exercises. Returns an error if book or section is missing.
  */
 export const fetchExercises = async (
-    dbName: string,
-    selectedBook: BookDocumentData,
-    selectedSection: string
+  dbName: string,
+  selectedBook: BookDocumentData,
+  selectedSection: string
 ): Promise<FetchResponse<{ exercises: ExerciseDocumentData[] }>> => {
-    if (!selectedBook || !selectedSection) {
-        return { data: null, error: "Missing book or section" };
-    }
-    return fetchData<{ exercises: ExerciseDocumentData[] }>(
-        `/api/fetchDatabase?dbName=${dbName}&type=exercises&bookId=${selectedBook.id}&sectionId=${selectedSection}`
-    );
+  if (!selectedBook || !selectedSection) {
+    return { data: null, error: "Missing book or section" };
+  }
+  return fetchData<{ exercises: ExerciseDocumentData[] }>(
+    `/api/fetchDatabase?dbName=${dbName}&type=exercises&bookId=${selectedBook.id}&sectionId=${selectedSection}`
+  );
 };
 
 /**
@@ -47,22 +51,22 @@ export const fetchExercises = async (
  * @returns A promise that resolves to the fetch response containing the fetched exercises. Skips fetch if all requested indices are cached.
  */
 export const fetchExerciseBatch = async (
-    dbName: string,
-    selectedBook: BookDocumentData,
-    selectedSection: string,
-    indices: number[],
-    cache: Record<number, ExerciseDocumentData>
+  dbName: string,
+  selectedBook: BookDocumentData,
+  selectedSection: string,
+  indices: number[],
+  cache: Record<number, ExerciseDocumentData>
 ): Promise<FetchResponse<{ exercises: ExerciseDocumentData[] }>> => {
-    if (!selectedBook || !selectedSection) {
-        return { data: null, error: "Missing book or section" };
-    }
-    const indicesToFetch = indices.filter((index) => !cache[index]);
-    if (indicesToFetch.length === 0) {
-        return { data: null, error: null };
-    }
-    return fetchData<{ exercises: ExerciseDocumentData[] }>(
-        `/api/fetchDatabase?dbName=${dbName}&type=exercises&bookId=${selectedBook.id}&sectionId=${selectedSection}&indices=${indicesToFetch.join(",")}`
-    );
+  if (!selectedBook || !selectedSection) {
+    return { data: null, error: "Missing book or section" };
+  }
+  const indicesToFetch = indices.filter((index) => !cache[index]);
+  if (indicesToFetch.length === 0) {
+    return { data: null, error: null };
+  }
+  return fetchData<{ exercises: ExerciseDocumentData[] }>(
+    `/api/fetchDatabase?dbName=${dbName}&type=exercises&bookId=${selectedBook.id}&sectionId=${selectedSection}&indices=${indicesToFetch.join(",")}`
+  );
 };
 
 /**
@@ -75,16 +79,13 @@ export const fetchExerciseBatch = async (
  * @returns A promise that resolves to the save response (void on success).
  */
 export const saveExerciseData = async (
-    exerciseId: string,
-    updatedData: UpdatedData,
-    dbName: string,
-    bookId: string,
-    sectionId: string
+  exerciseId: string,
+  updatedData: UpdatedData,
+  dbName: string,
+  bookId: string,
+  sectionId: string
 ): Promise<{ success: boolean; error: string | null }> => {
-    const payload = { dbName, bookId, sectionId, exerciseId, updatedData };
-    const result = await saveData<void>('/api/saveExercise', payload);
-    return { success: result.success, error: result.error };
+  const payload = { dbName, bookId, sectionId, exerciseId, updatedData };
+  const result = await saveData<void>("/api/saveExercise", payload);
+  return { success: result.success, error: result.error };
 };
-
-
-

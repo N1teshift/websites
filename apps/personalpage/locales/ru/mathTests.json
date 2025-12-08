@@ -1,7 +1,5 @@
 {
-
   "category": "Категория",
-
 
   "visible_columns": "Видимые колонки",
   "test_id": "ID теста",
@@ -10,9 +8,6 @@
   "expected_values": "Ожидаемые значения",
   "success_rate": "Коэффициент успеха",
   "last_run": "Последний запуск",
-
-
-
 
   "passed": "Пройден",
   "failed": "Не пройден",
@@ -38,15 +33,12 @@
   "total_input_tokens": "Всего input токенов",
   "total_output_tokens": "Всего output токенов",
 
-
   "run_selected_tests": "Выполнить выбранные тесты",
   "running_tests": "Выполняются тесты",
-
 
   "reset_test_stats": "Сбросить статистику тестирования",
   "reset_test_stats_confirmation": "Это действие сбросит вашу статистику тестирования и историю. Вы уверены, что хотите это сделать?",
   "resetting_test_stats": "Сброс статистики тестирования...",
-
 
   "db_fetching": "DB fetching",
   "database_fetching": "Database fetching",
@@ -59,7 +51,6 @@
   "off": "Выключено",
   "no_cache_available": "Нет кэша",
 
-
   "total": "Всего",
   "execution_time": "Время выполнения",
   "cost": "Стоимость",
@@ -67,8 +58,6 @@
   "input": "Ввод",
   "output": "Вывод",
   "no_data": "Нет данных",
-
-
 
   "not_run": "Не выполнен",
   "results_saved_successfully": "Результаты успешно сохранены!"

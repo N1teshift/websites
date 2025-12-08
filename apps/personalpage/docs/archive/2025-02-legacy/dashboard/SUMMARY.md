@@ -3,6 +3,7 @@
 ## 🎯 What We Built
 
 A comprehensive student data visualization dashboard for educational assessment tracking, featuring:
+
 - **Student View**: Individual student analysis with smart timeline
 - **Class View**: Class-level metrics with distribution charts
 - **Data Management**: JSON upload/export with localStorage persistence
@@ -12,6 +13,7 @@ A comprehensive student data visualization dashboard for educational assessment 
 ## ✨ Key Features
 
 ### Class View
+
 - 📊 **Dynamic Statistics**: Metrics update based on chart selection
 - 📈 **5 Chart Options**: KD1, KD, ND1, ND2, ND4
 - 📋 **Individual Assessment Columns**: See exact scores per test
@@ -22,6 +24,7 @@ A comprehensive student data visualization dashboard for educational assessment 
 - ✅ **Binary Completion**: Clear 0%/100% for homework
 
 ### Student View
+
 - 🎨 **Dual-Mode Timeline**:
   - **Activity Mode**: GitHub-pulse style (no filters or 2+ types)
   - **Score Mode**: Score progression (1 type selected)
@@ -59,13 +62,13 @@ locales/[lang]/progress-report.json    # Translations (EN/LT/RU)
 
 ## 🎨 Assessment Columns
 
-| Column | Type | Scale | Description |
-|--------|------|-------|-------------|
-| **KD1** | Summative | 1-10 | Unit 1 Test |
-| **KD** | Summative | 1-10 | Unit 2 Test (Cambridge) |
-| **ND1** | Homework | 0/1 | Binary completion |
-| **ND2** | Homework | 0/1 | Binary completion |
-| **ND4** | Homework | 1-10 | Scored homework |
+| Column  | Type      | Scale | Description             |
+| ------- | --------- | ----- | ----------------------- |
+| **KD1** | Summative | 1-10  | Unit 1 Test             |
+| **KD**  | Summative | 1-10  | Unit 2 Test (Cambridge) |
+| **ND1** | Homework  | 0/1   | Binary completion       |
+| **ND2** | Homework  | 0/1   | Binary completion       |
+| **ND4** | Homework  | 1-10  | Scored homework         |
 
 ---
 
@@ -80,16 +83,19 @@ locales/[lang]/progress-report.json    # Translations (EN/LT/RU)
 ## 💡 Smart Features
 
 ### Timeline Intelligence
+
 - **No filters?** → Shows ALL activities (line chart with activity count)
 - **1 type selected?** → Shows SCORES for that type (line with score values)
 - **2+ types?** → Back to activity mode (combined view)
 
 ### Dynamic Class Stats
+
 - Stats card automatically updates to show metrics for selected chart
 - Example: Select "KD1" → Shows "Average Score" for Unit 1 test
 - Example: Select "ND1" → Shows "Completion Rate" for homework
 
 ### Enhanced Tooltips
+
 - **Activity Mode**: Lists all activities on that date with full details
 - **Score Mode**: Shows assessment details, score, column, and comments
 
@@ -98,6 +104,7 @@ locales/[lang]/progress-report.json    # Translations (EN/LT/RU)
 ## 🎨 Visual Design
 
 ### Color Coding (Performance)
+
 - 🔴 1-2: Needs improvement
 - 🟠 3-4: Below average
 - 🟡 5-6: Average
@@ -105,6 +112,7 @@ locales/[lang]/progress-report.json    # Translations (EN/LT/RU)
 - 🟢 9-10: Excellent
 
 ### Assessment Types
+
 - 🔵 Homework
 - 🟢 Classwork
 - 🟠 Summative
@@ -117,10 +125,12 @@ locales/[lang]/progress-report.json    # Translations (EN/LT/RU)
 ## 📊 Chart Types
 
 ### Class Distribution
+
 - **KD1, KD, ND4**: 10 bars (scores 1-10)
 - **ND1, ND2**: 2 bars (0% done / 100% done)
 
 ### Student Timeline
+
 - **Activity Mode**: Line with points (activity count)
 - **Score Mode**: Line with points (score values)
 
@@ -171,6 +181,7 @@ locales/[lang]/progress-report.json    # Translations (EN/LT/RU)
 ## 🔮 Future Ready
 
 Architecture supports:
+
 - ✨ Data editing capabilities
 - 📊 More chart types
 - 📤 PDF/Excel export
@@ -200,7 +211,7 @@ Architecture supports:
 ✅ Consultation tracking  
 ✅ Cambridge test integration  
 ✅ Profile information display  
-✅ Material completion tracking  
+✅ Material completion tracking
 
 ---
 
@@ -209,4 +220,3 @@ Architecture supports:
 **Last Updated**: October 2025
 
 See `PROGRESS_REPORT_DASHBOARD_DOCUMENTATION.md` for full documentation.
-

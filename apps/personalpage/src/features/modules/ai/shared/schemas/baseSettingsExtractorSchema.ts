@@ -10,25 +10,23 @@
  *             and `src/features/infrastructure/ai/schemas/mathObjects/`.
  */
 export const baseSettingsExtractorSchema = {
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "SettingsExtractor",
-  "type": "object",
-  "properties": {
-    "settings": {
-      "type": "object",
-      "description": "Settings for the mathematical object"
+  $schema: "http://json-schema.org/draft-07/schema#",
+  title: "SettingsExtractor",
+  type: "object",
+  properties: {
+    settings: {
+      type: "object",
+      description: "Settings for the mathematical object",
     },
-    "subObjectPromptParts": {
-      "type": "array",
-      "description": "Specific parts of the original user prompt that describe the sub-objects. Empty if no sub-object details were specified.",
-      "items": {
-        "type": "string",
-        "description": "A phrase or sentence from the user prompt pertaining to a sub-object."
-      }
-    }
+    subObjectPromptParts: {
+      type: "array",
+      description:
+        "Specific parts of the original user prompt that describe the sub-objects. Empty if no sub-object details were specified.",
+      items: {
+        type: "string",
+        description: "A phrase or sentence from the user prompt pertaining to a sub-object.",
+      },
+    },
   },
-  "required": ["settings", "subObjectPromptParts"]
+  required: ["settings", "subObjectPromptParts"],
 };
-
-
-

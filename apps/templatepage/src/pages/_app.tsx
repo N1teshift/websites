@@ -6,22 +6,22 @@ import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
 function App({ Component, pageProps }: AppProps) {
-    return (
+  return (
+    <>
+      <AppWrapper
+        Component={Component}
+        pageProps={pageProps}
+        layoutType="page"
+        appName="Template Page"
+      />
+      {process.env.NODE_ENV === "production" && (
         <>
-            <AppWrapper 
-                Component={Component}
-                pageProps={pageProps}
-                layoutType="page"
-                appName="Template Page"
-            />
-            {process.env.NODE_ENV === 'production' && (
-                <>
-                    <Analytics />
-                    <SpeedInsights />
-                </>
-            )}
+          <Analytics />
+          <SpeedInsights />
         </>
-    );
+      )}
+    </>
+  );
 }
 
 export default appWithTranslation(App);

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 interface MediaSelectorProps {
   videoUrl: string; // YouTube or Twitch URL
@@ -17,9 +17,7 @@ export default function MediaSelector({
 }: MediaSelectorProps) {
   return (
     <div>
-      {showHeader && (
-        <label className="block text-amber-500 mb-2">Media (Optional)</label>
-      )}
+      {showHeader && <label className="block text-amber-500 mb-2">Media (Optional)</label>}
 
       {/* Combined File Upload (Images and Replays) */}
       <div className="mt-3">
@@ -52,5 +50,3 @@ export default function MediaSelector({
     </div>
   );
 }
-
-

@@ -1,2 +1,2 @@
 // Classes hooks
-export { useClassesData } from './useClassesData';
+export { useClassesData } from "./useClassesData";

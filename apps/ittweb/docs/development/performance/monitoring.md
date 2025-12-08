@@ -5,6 +5,7 @@ Tools and guidelines for monitoring application performance.
 ## Web Vitals
 
 Monitor Core Web Vitals:
+
 - **LCP** (Largest Contentful Paint) - < 2.5s
 - **FID** (First Input Delay) - < 100ms
 - **CLS** (Cumulative Layout Shift) - < 0.1
@@ -26,7 +27,7 @@ console.log(`API call took ${duration}ms`);
 Enable Firebase Performance Monitoring:
 
 ```typescript
-import { getPerformance } from 'firebase/performance';
+import { getPerformance } from "firebase/performance";
 
 const perf = getPerformance();
 // Automatically tracks network requests
@@ -37,6 +38,7 @@ const perf = getPerformance();
 ### Before Deployment
 
 Ensure the following performance checks are completed:
+
 - Bundle size analyzed using `ANALYZE=true npm run build`
 - Firestore indexes created for all complex queries
 - Images optimized (using Next.js Image component, WebP format when possible)
@@ -48,6 +50,7 @@ Ensure the following performance checks are completed:
 ### Ongoing Monitoring
 
 Regular performance maintenance should include:
+
 - Monitor Firestore read/write counts to identify expensive operations
 - Check API response times and optimize slow endpoints
 - Review bundle size regularly and remove unused dependencies
@@ -60,4 +63,3 @@ Regular performance maintenance should include:
 - [Query Optimization](./query-optimization.md)
 - [Caching Strategies](./caching.md)
 - [Bundle Optimization](./bundle-optimization.md)
-

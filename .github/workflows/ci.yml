@@ -148,6 +148,52 @@ jobs:
             apps/*/.next
           retention-days: 1
 
+  # Analyze bundle sizes
+  bundle-size:
+    name: Bundle Size Analysis
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.24.0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Analyze bundle sizes
+        run: |
+          echo "## Bundle Size Analysis" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| App | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-----|--------|" >> $GITHUB_STEP_SUMMARY
+          
+          for app in apps/*/; do
+            app_name=$(basename "$app")
+            if [ -f "$app/package.json" ] && grep -q "@next/bundle-analyzer" "$app/package.json"; then
+              echo "| $app_name | ✅ Analyzer available |" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "| $app_name | ⚠️ No analyzer configured |" >> $GITHUB_STEP_SUMMARY
+            fi
+          done
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Note:** To analyze bundle sizes locally, run:" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`bash" >> $GITHUB_STEP_SUMMARY
+          echo "pnpm --filter <app-name> analyze" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+
   # Validate changesets (only on PRs)
   changeset:
     name: Changeset Validation
@@ -199,4 +245,4 @@ jobs:
             echo "❌ One or more CI jobs failed"
             exit 1
           fi
-          echo "✅ All CI checks passed"
+          echo "✅ All required CI checks passed"

@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import Image from "next/image";
 
 type Props = {
   slug: string;
@@ -8,9 +8,17 @@ type Props = {
   className?: string;
 };
 
-export default function ClassModel({ slug, name, width = 512, height = 512, className = '' }: Props) {
+export default function ClassModel({
+  slug,
+  name,
+  width = 512,
+  height = 512,
+  className = "",
+}: Props) {
   return (
-    <div className={`relative w-full rounded-lg border border-amber-500/30 bg-black/30 overflow-hidden ${className}`}>
+    <div
+      className={`relative w-full rounded-lg border border-amber-500/30 bg-black/30 overflow-hidden ${className}`}
+    >
       <div className="relative mx-auto" style={{ width, height }}>
         <Image
           src={`/class-models/${slug}.png`}
@@ -23,6 +31,3 @@ export default function ClassModel({ slug, name, width = 512, height = 512, clas
     </div>
   );
 }
-
-
-

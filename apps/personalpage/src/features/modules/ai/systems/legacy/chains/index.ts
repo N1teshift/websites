@@ -4,9 +4,6 @@
  * @deprecated This chain system is considered legacy and may be replaced by a newer implementation using Langchain/LangGraph.
  */
 
-export { BaseChain } from './BaseChain';
-export { TypeIdentifierChain } from './TypeIdentifierChain';
-export { SettingsExtractorChain } from './SettingsExtractorChain';
-
-
-
+export { BaseChain } from "./BaseChain";
+export { TypeIdentifierChain } from "./TypeIdentifierChain";
+export { SettingsExtractorChain } from "./SettingsExtractorChain";

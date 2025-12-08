@@ -45,14 +45,14 @@ npx tsx scripts/mergeStudentDuplicates.ts
 
 ### From `_S` Sheets (Summative Assessment Sheets)
 
-| Column Type | Columns | Description |
-|------------|---------|-------------|
-| **Classwork** | EXT1-5 | Exercise completion (e.g., "26B", "39A") |
-| **Participation** | LNT1-5 | Board solving points |
-| **Summative** | SD1-3 (P/MYP/C) | Combined assessments with sub-scores:<br>• **P**: Percentage points earned<br>• **MYP**: MYP criteria points (0-8)<br>• **C**: Cambridge points (0-1) |
-| **Homework** | ND, ND K | Homework completion + comment |
-| **Consultations** | KONS1-5 | Consultation tracking |
-| **Social Hours** | SOC | Social hours in minutes |
+| Column Type       | Columns         | Description                                                                                                                                           |
+| ----------------- | --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Classwork**     | EXT1-5          | Exercise completion (e.g., "26B", "39A")                                                                                                              |
+| **Participation** | LNT1-5          | Board solving points                                                                                                                                  |
+| **Summative**     | SD1-3 (P/MYP/C) | Combined assessments with sub-scores:<br>• **P**: Percentage points earned<br>• **MYP**: MYP criteria points (0-8)<br>• **C**: Cambridge points (0-1) |
+| **Homework**      | ND, ND K        | Homework completion + comment                                                                                                                         |
+| **Consultations** | KONS1-5         | Consultation tracking                                                                                                                                 |
+| **Social Hours**  | SOC             | Social hours in minutes                                                                                                                               |
 
 ### Summative Assessment Structure
 
@@ -77,17 +77,18 @@ SD assessments are stored as a single assessment with sub-scores:
 ## 🏫 Class Mappings
 
 | Sheet Name | Class Display Name |
-|-----------|-------------------|
-| `Vyd_S` | 8 Vydūnas |
-| `Grei_S` | 8 A. J. Greimas |
-| `Gim_S` | 8 M. A. Gimbutienė |
-| `Vei_S` | 8 I. Veisaitė |
+| ---------- | ------------------ |
+| `Vyd_S`    | 8 Vydūnas          |
+| `Grei_S`   | 8 A. J. Greimas    |
+| `Gim_S`    | 8 M. A. Gimbutienė |
+| `Vei_S`    | 8 I. Veisaitė      |
 
 ## 👤 Name Alias System
 
 Handles students with shortened names in Excel (missing middle names).
 
 **Example:**
+
 - Excel: `Ažuolas Vainilka`
 - Database: `Ažuolas Jonas Vainilka`
 - **Result**: System correctly updates existing student instead of creating duplicate
@@ -99,31 +100,37 @@ See [NAME_ALIAS_SYSTEM.md](/docs/NAME_ALIAS_SYSTEM.md) for complete documentatio
 ## 📝 Excel File Structure
 
 **Required format:**
+
 - **Row 1**: Dates for each assessment column
 - **Row 2**: Column names (headers)
 - **Row 3+**: Student data
 
 **Required columns:**
+
 - `Vardas` (First Name)
 - `Pavardė` (Last Name)
 
 ## 🔄 Processing Logic
 
 ### Duplicate Detection
+
 - Assessments are uniquely identified by **date + column name**
 - If a duplicate is found, the existing assessment is **updated** instead of creating a new one
 - This prevents duplicate entries when re-processing the same Excel file
 
 ### Name Resolution
+
 - System checks for name aliases before finding/creating students
 - Resolves shortened names to full names automatically
 - Logs all name resolutions for transparency
 
 ### New Student Creation
+
 - If a student is found in Excel but not in the data folder, a new student file is automatically created
 - The student receives a minimal profile structure that can be filled in later
 
 ### Data Preservation
+
 - Existing student data (profile, communication log, etc.) is preserved
 - Only assessment data is updated/added based on the Excel file
 
@@ -132,18 +139,18 @@ See [NAME_ALIAS_SYSTEM.md](/docs/NAME_ALIAS_SYSTEM.md) for complete documentatio
 ### StudentDataManager
 
 ```typescript
-import { StudentDataManager } from '@progressReport/student-data/utils/studentDataManager';
+import { StudentDataManager } from "@progressReport/student-data/utils/studentDataManager";
 
 const manager = new StudentDataManager();
 
 // Process from file path
-const result = await manager.processExcelFile('path/to/excel.xlsx');
+const result = await manager.processExcelFile("path/to/excel.xlsx");
 
 // Process from buffer (for browser/API)
 const result = await manager.processExcelBuffer(arrayBuffer);
 
 // Export collection
-await manager.exportCollection('output.json');
+await manager.exportCollection("output.json");
 ```
 
 ### ProcessingResult
@@ -163,12 +170,14 @@ interface ProcessingResult {
 The system integrates with the Progress Report Dashboard at `/projects/edtech/progressReport`.
 
 ### Data Flow
+
 1. User uploads `raw_data.xlsx` via dashboard
 2. System processes Excel and updates individual student JSON files
 3. User can export updated master collection JSON
 4. Dashboard loads data from localStorage or uploaded JSON
 
 ### Backup Strategy
+
 - **No automatic backups** in production (serverless environment)
 - User should **export current data** before processing new data
 - Exported files serve as backups
@@ -177,6 +186,7 @@ The system integrates with the Progress Report Dashboard at `/projects/edtech/pr
 ## 📚 Type Definitions
 
 See `types/StudentDataTypes.ts` for complete type definitions including:
+
 - `StudentData` - Complete student record
 - `Assessment` - Assessment with optional summative_details
 - `ProcessingResult` - Processing operation result
@@ -213,11 +223,11 @@ Edit `config/columnMapping.ts`:
 
 ```typescript
 export const SUMMATIVE_SHEET_COLUMNS: ColumnMapping = {
-    "NEW_COL": {
-        type: "classwork",
-        task_name: "New Assessment",
-        description: "Description"
-    }
+  NEW_COL: {
+    type: "classwork",
+    task_name: "New Assessment",
+    description: "Description",
+  },
 };
 ```
 
@@ -241,6 +251,7 @@ export const SUMMATIVE_SHEET_COLUMNS: ColumnMapping = {
 ---
 
 **Current Status:**
+
 - ✅ 75 students
 - ✅ 5 name aliases configured
 - ✅ CLI and dashboard integration complete

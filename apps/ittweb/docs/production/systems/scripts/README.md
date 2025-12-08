@@ -31,4 +31,3 @@ All data pipeline documentation has been moved to a dedicated location:
 ---
 
 _This redirect will remain for backwards compatibility. All new references should point to `docs/systems/data-pipeline/`._
-

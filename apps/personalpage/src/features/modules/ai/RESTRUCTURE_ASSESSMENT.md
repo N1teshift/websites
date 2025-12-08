@@ -5,15 +5,18 @@
 ### Two Existing Systems
 
 #### System 1: Legacy Chain System
+
 **Location**: `chains/` + `core/MathObjectGenerator.ts`
 
 **Components**:
+
 - `chains/BaseChain.ts` - Base chain class
 - `chains/TypeIdentifierChain.ts` - Type identification chain
 - `chains/SettingsExtractorChain.ts` - Settings extraction chain
 - `core/MathObjectGenerator.ts` - Main orchestrator class (636 lines)
 
 **Characteristics**:
+
 - Custom chain-based architecture
 - Uses `BaseChain` pattern
 - Orchestrated by `MathObjectGenerator` class
@@ -24,9 +27,11 @@
 ---
 
 #### System 2: LangGraph System
+
 **Location**: `lang/` folder
 
 **Components**:
+
 - `lang/graph.ts` - StateGraph configuration
 - `lang/invokeGraph.ts` - Entry point function
 - `lang/state.ts` - State management
@@ -40,6 +45,7 @@
 - `lang/tokenHandler.ts` - Token tracking
 
 **Characteristics**:
+
 - LangGraph StateGraph workflow
 - Uses LangChain runnables
 - Node-based processing
@@ -52,6 +58,7 @@
 ### Shared Resources (Used by Both Systems)
 
 #### Schemas (`schemas/`)
+
 - `mathInput.ts` - Core MathInput schema
 - `objectType.ts` - ObjectType definitions
 - `baseSettingsExtractorSchema.ts` - Base schema
@@ -62,6 +69,7 @@
 ---
 
 #### Prompts (`prompts/`)
+
 - `systemPrompts/` - System prompts for each object type
 - `typeIdentifier/prompt.ts` - Type identification prompt
 
@@ -70,6 +78,7 @@
 ---
 
 #### Validation (`validation/`)
+
 - `settingsValidator.ts` - Settings validation
 - `structureValidator.ts` - Structure validation
 - `typeGuards.ts` - Type guards
@@ -80,6 +89,7 @@
 ---
 
 #### Services (`services/`)
+
 - `openaiResponsesClient.ts` - OpenAI API client (used by LangGraph runnables)
 - `unitPlanAI.ts` - Unit plan generation service
 
@@ -88,6 +98,7 @@
 ---
 
 #### Utils (`utils/`)
+
 - `promptUtils.ts` - Prompt utilities (used by both)
 - `tokenUtils.ts` - Token tracking utilities (shared)
 
@@ -96,12 +107,14 @@
 ---
 
 #### Types (`types.ts`)
+
 - Central type definitions
 - Used across all systems
 
 ---
 
 #### Constants (`constants/`)
+
 - Shared configuration constants
 
 ---
@@ -109,6 +122,7 @@
 ### Current Orchestration
 
 **File**: `core/objectGeneration.ts`
+
 - Acts as facade/router
 - Contains `USE_LANGGRAPH` flag (currently `true`)
 - Routes to either:
@@ -172,18 +186,21 @@ src/features/infrastructure/ai/
 ## Migration Plan
 
 ### Phase 1: Create New Structure
+
 1. Create `shared/` folder and move shared resources
 2. Create `systems/legacy/` and move legacy system
 3. Create `systems/langgraph/` and move LangGraph system
 4. Create `systems/modern/` placeholder for new system
 
 ### Phase 2: Update Imports
+
 1. Update `core/objectGeneration.ts` imports
 2. Update all internal imports within moved files
 3. Update `index.ts` exports
 4. Update any external imports (e.g., from `@ai`)
 
 ### Phase 3: Documentation
+
 1. Add README.md to each system folder explaining:
    - Architecture
    - When it was used
@@ -192,6 +209,7 @@ src/features/infrastructure/ai/
 2. Update main README.md
 
 ### Phase 4: Testing
+
 1. Verify both systems still work
 2. Test `mathObjectsGeneratorTests` page
 3. Ensure no breaking changes
@@ -214,6 +232,7 @@ src/features/infrastructure/ai/
 ### Import Path Updates Required
 
 #### Internal Imports (within `@ai` folder)
+
 - All files importing from `@ai/chains/*` → `@ai/systems/legacy/chains/*`
 - All files importing from `@ai/lang/*` → `@ai/systems/langgraph/*`
 - All files importing from `@ai/schemas/*` → `@ai/shared/schemas/*`
@@ -223,6 +242,7 @@ src/features/infrastructure/ai/
 - All files importing from `@ai/utils/*` → `@ai/shared/utils/*`
 
 #### External Imports (found in codebase)
+
 Files that import from `@ai` that will need updates:
 
 1. **`src/features/modules/math/tests/core/TestRunner.ts`**
@@ -238,11 +258,13 @@ Files that import from `@ai` that will need updates:
    - `@/features/infrastructure/ai/core/objectGeneration` → (no change, core stays)
 
 ### Breaking Changes
+
 - External imports using `@ai/utils/*` will need to change to `@ai/shared/utils/*`
 - The `@ai/core/objectGeneration` path remains unchanged (good for backward compatibility)
 - Need to update 3 external files that import from `@ai/utils/*`
 
 ### Testing Strategy
+
 - Run `mathObjectsGeneratorTests` page after migration
 - Test both systems (toggle `USE_LANGGRAPH` flag)
 - Verify no runtime errors
@@ -256,4 +278,3 @@ Files that import from `@ai` that will need updates:
 3. **Execute migration** - Move files and update imports
 4. **Test thoroughly** - Ensure everything works
 5. **Document** - Add README files to each system
-

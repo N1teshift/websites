@@ -3,7 +3,6 @@
 
   "go_back": "Вернуться",
 
-
   "yes": "Да",
   "no": "Нет",
   "delete": "Удалить",
@@ -33,7 +32,7 @@
   "enter_your_prompt": "Введите ваш запрос",
   "type_your_prompt_here": "Введите ваш запрос здесь...",
   "processing_voice_prompt": "Обрабатываю голосовой запрос...",
-  
+
   "voice_error_unsupported_browser": "Распознавание речи не поддерживается в вашем браузере. Используйте Chrome, Edge или Safari.",
   "voice_error_permission": "Требуется доступ к микрофону. Разрешите доступ к микрофону и попробуйте снова.",
   "voice_error_no_speech": "Речь не обнаружена. Говорите четко и попробуйте снова.",
@@ -46,7 +45,6 @@
 
   "simple": "Простой",
   "complex": "Сложный",
-  
 
   "duration": "Длительность",
   "your_name": "Ваше имя",
@@ -79,7 +77,6 @@
   "has_passed": "был пропущен",
   "no_events": "Нет событий",
 
-
   "years_short": "m.",
   "months_short": "m.",
   "days_short": "d.",
@@ -87,7 +84,6 @@
   "minutes_short": "мин.",
   "seconds_short": "с.",
   "timer_left": "осталось {{years}}{{years_short}} {{months}}{{months_short}} {{days}}{{days_short}} {{hours}}{{hours_short}} {{minutes}}{{minutes_short}} {{seconds}}{{seconds_short}}",
-
 
   "coming_soon_message": "Эта часть проекта еще не выпущена",
   "status": "Статус"

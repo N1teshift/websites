@@ -17,26 +17,26 @@ import { applyPowerFormatting } from "../utils/formattingUtils";
  * 2. Then, it applies the overall power/root formatting to this base string using `applyPowerFormatting`.
  */
 export function formatTerm(
-    coefficients: string[],
-    power: number[],
-    termIds: string[],
-    powerOrder: boolean,
-    variableName: VariableName
+  coefficients: string[],
+  power: number[],
+  termIds: string[],
+  powerOrder: boolean,
+  variableName: VariableName
 ): string | null {
-    if (coefficients.length === 0) {
-        console.error("No coefficients provided. Term generation aborted.");
-        return null;
-    }
+  if (coefficients.length === 0) {
+    console.error("No coefficients provided. Term generation aborted.");
+    return null;
+  }
 
-    if (coefficients.length !== termIds.length) {
-        console.error("Mismatched lengths: coefficients and termIds must have the same length.");
-        return null;
-    }
+  if (coefficients.length !== termIds.length) {
+    console.error("Mismatched lengths: coefficients and termIds must have the same length.");
+    return null;
+  }
 
-    const baseTerm = generatePolynomial(coefficients, termIds, variableName);
-    if (!baseTerm) return null;
+  const baseTerm = generatePolynomial(coefficients, termIds, variableName);
+  if (!baseTerm) return null;
 
-    return applyPowerFormatting(baseTerm, power, powerOrder);
+  return applyPowerFormatting(baseTerm, power, powerOrder);
 }
 
 /**
@@ -49,11 +49,17 @@ export function formatTerm(
  * @returns {string} The formatted polynomial string, with terms joined by " + " and then simplified (e.g., "+ -" becomes "- ").
  * @private
  */
-function generatePolynomial(coefficients: string[], termIds: string[], variableName: VariableName): string {
-    return coefficients
-        .map((coefficient, index) => formatMonomial(coefficient, parseInt(termIds[index], 10), variableName))
-        .join(" + ")
-        .replace(/\+\s-/g, "- ");
+function generatePolynomial(
+  coefficients: string[],
+  termIds: string[],
+  variableName: VariableName
+): string {
+  return coefficients
+    .map((coefficient, index) =>
+      formatMonomial(coefficient, parseInt(termIds[index], 10), variableName)
+    )
+    .join(" + ")
+    .replace(/\+\s-/g, "- ");
 }
 
 /**
@@ -67,16 +73,22 @@ function generatePolynomial(coefficients: string[], termIds: string[], variableN
  * @private
  */
 function formatMonomial(coefficient: string, order: number, variableName: VariableName): string {
-    const numericCoefficient = parseInt(coefficient, 10);
+  const numericCoefficient = parseInt(coefficient, 10);
 
-    if (order === 0) return numericCoefficient === 1 ? "1" : numericCoefficient === -1 ? "-1" : coefficient;
-    if (order === 1) return numericCoefficient === 1 ? `${variableName}` : numericCoefficient === -1 ? `-${variableName}` : `${coefficient} ${variableName}`;
-
+  if (order === 0)
+    return numericCoefficient === 1 ? "1" : numericCoefficient === -1 ? "-1" : coefficient;
+  if (order === 1)
     return numericCoefficient === 1
-        ? `${variableName}^{${order}}`
-        : numericCoefficient === -1
-            ? `-${variableName}^{${order}}`
-            : `${coefficient} ${variableName}^{${order}}`;
+      ? `${variableName}`
+      : numericCoefficient === -1
+        ? `-${variableName}`
+        : `${coefficient} ${variableName}`;
+
+  return numericCoefficient === 1
+    ? `${variableName}^{${order}}`
+    : numericCoefficient === -1
+      ? `-${variableName}^{${order}}`
+      : `${coefficient} ${variableName}^{${order}}`;
 }
 
 /**
@@ -94,21 +106,21 @@ function formatMonomial(coefficient: string, order: number, variableName: Variab
  * 2. Then, it applies the overall power/root formatting to this base string using `applyPowerFormatting`.
  */
 export function formatCombinationTerm(
-    combinationType: CombinationType,
-    terms: string[],
-    power: number[],
-    powerOrder: boolean
+  combinationType: CombinationType,
+  terms: string[],
+  power: number[],
+  powerOrder: boolean
 ): string {
-    if (terms.length === 0) {
-        console.warn("No terms provided. Returning empty string.");
-        return "";
-    }
+  if (terms.length === 0) {
+    console.warn("No terms provided. Returning empty string.");
+    return "";
+  }
 
-    // Step 1: Generate base combination term
-    const baseCombinationTerm = generateBaseCombinationTerm(combinationType, terms);
+  // Step 1: Generate base combination term
+  const baseCombinationTerm = generateBaseCombinationTerm(combinationType, terms);
 
-    // Step 2: Apply power formatting
-    return applyPowerFormatting(baseCombinationTerm, power, powerOrder);
+  // Step 2: Apply power formatting
+  return applyPowerFormatting(baseCombinationTerm, power, powerOrder);
 }
 
 /**
@@ -127,32 +139,29 @@ export function formatCombinationTerm(
  * @private
  */
 function generateBaseCombinationTerm(combinationType: CombinationType, terms: string[]): string {
-    switch (combinationType) {
-        case "addition":
-            return terms.join(" + ");
-        case "multiplication":
-            return terms.map(term => `\\left(${term}\\right)`).join(" \\cdot ");
-        case "subtraction":
-            return terms.join(" - ");
-        case "division":
-            return terms.length > 1
-                ? `\\frac{${terms[0]}}{${terms.slice(1).join(" ")}}`
-                : terms[0];
-        case "power":
-            if (terms.length !== 2) {
-                console.warn("Power operation requires exactly two terms. Returning terms joined by multiplication.");
-                return terms.map(term => `(${term})`).join(" \\cdot ");
-            }
-            return `\\left(${terms[0]} \\right)^{${terms[1]}}`;
-        case "root_sq_div":
-            return `\\frac{\\sqrt{(${terms[0]})^2}}{${terms[0]}}`;
-        case "none":
-            return `${terms[0]}`;
-        default:
-            console.warn(`Unknown combination type: ${combinationType}, using default addition.`);
-            return terms.join(" + ");
-    }
+  switch (combinationType) {
+    case "addition":
+      return terms.join(" + ");
+    case "multiplication":
+      return terms.map((term) => `\\left(${term}\\right)`).join(" \\cdot ");
+    case "subtraction":
+      return terms.join(" - ");
+    case "division":
+      return terms.length > 1 ? `\\frac{${terms[0]}}{${terms.slice(1).join(" ")}}` : terms[0];
+    case "power":
+      if (terms.length !== 2) {
+        console.warn(
+          "Power operation requires exactly two terms. Returning terms joined by multiplication."
+        );
+        return terms.map((term) => `(${term})`).join(" \\cdot ");
+      }
+      return `\\left(${terms[0]} \\right)^{${terms[1]}}`;
+    case "root_sq_div":
+      return `\\frac{\\sqrt{(${terms[0]})^2}}{${terms[0]}}`;
+    case "none":
+      return `${terms[0]}`;
+    default:
+      console.warn(`Unknown combination type: ${combinationType}, using default addition.`);
+      return terms.join(" + ");
+  }
 }
-
-
-

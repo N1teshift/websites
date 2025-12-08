@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
-import Image from 'next/image';
-import YouTubeEmbed from '../../../media/components/YouTubeEmbed';
-import TwitchClipEmbed from '../../../media/components/TwitchClipEmbed';
+import React, { useState } from "react";
+import Image from "next/image";
+import YouTubeEmbed from "../../../media/components/YouTubeEmbed";
+import TwitchClipEmbed from "../../../media/components/TwitchClipEmbed";
 
-interface ImageItem { key: string; url: string }
+interface ImageItem {
+  key: string;
+  url: string;
+}
 
-type SectionKey = 'images' | 'video' | 'twitch' | 'replay' | 'game' | 'text';
+type SectionKey = "images" | "video" | "twitch" | "replay" | "game" | "text";
 
 interface MediaPreviewProps {
   images: ImageItem[];
@@ -39,8 +42,8 @@ export default function MediaPreview({
 
   const handleSectionDragStart = (index: number, e: React.DragEvent<HTMLDivElement>) => {
     setDraggingSectionIdx(index);
-    e.dataTransfer.effectAllowed = 'move';
-    e.dataTransfer.setData('text/plain', 'section');
+    e.dataTransfer.effectAllowed = "move";
+    e.dataTransfer.setData("text/plain", "section");
   };
   const handleSectionDragOver = (index: number, e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -61,8 +64,8 @@ export default function MediaPreview({
 
   const handleImageDragStart = (index: number, e: React.DragEvent<HTMLDivElement>) => {
     setDraggingImageIdx(index);
-    e.dataTransfer.effectAllowed = 'move';
-    e.dataTransfer.setData('text/plain', 'image');
+    e.dataTransfer.effectAllowed = "move";
+    e.dataTransfer.setData("text/plain", "image");
   };
   const handleImageDragOver = (index: number, e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -81,7 +84,8 @@ export default function MediaPreview({
     setDragOverImageIdx(null);
   };
 
-  const hasAnyMedia = images.length > 0 || !!videoUrl || !!twitchUrl || !!replayName || !!textPreview;
+  const hasAnyMedia =
+    images.length > 0 || !!videoUrl || !!twitchUrl || !!replayName || !!textPreview;
   if (!hasAnyMedia) return null;
 
   return (
@@ -91,77 +95,82 @@ export default function MediaPreview({
       <div className="space-y-6">
         {sectionOrder.map((section, idx) => {
           const hasContent =
-            (section === 'images' && images.length > 0) ||
-            (section === 'video' && !!videoUrl) ||
-            (section === 'twitch' && !!twitchUrl) ||
-            (section === 'replay' && !!replayName) ||
-            (section === 'text' && !!textPreview);
+            (section === "images" && images.length > 0) ||
+            (section === "video" && !!videoUrl) ||
+            (section === "twitch" && !!twitchUrl) ||
+            (section === "replay" && !!replayName) ||
+            (section === "text" && !!textPreview);
 
           if (!hasContent) return null;
 
           return (
             <div
               key={section + idx}
-              className={`relative rounded-lg ${dragOverSectionIdx === idx ? 'ring-2 ring-amber-400' : ''}`}
+              className={`relative rounded-lg ${dragOverSectionIdx === idx ? "ring-2 ring-amber-400" : ""}`}
               draggable
               onDragStart={(e) => handleSectionDragStart(idx, e)}
               onDragOver={(e) => handleSectionDragOver(idx, e)}
               onDrop={(e) => handleSectionDrop(idx, e)}
               onDragEnd={handleSectionDragEnd}
             >
-
-              {section === 'images' && images.length > 0 && (
+              {section === "images" && images.length > 0 && (
                 <div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {images.map((img, i) => (
-                    <div key={img.key} className="relative group border border-amber-500/30 rounded-lg overflow-hidden">
                       <div
-                        className={`absolute inset-0 ${images.length > 1 ? 'cursor-move' : ''}`}
-                        draggable={images.length > 1}
-                        onDragStart={(e) => handleImageDragStart(i, e)}
-                        onDragOver={(e) => handleImageDragOver(i, e)}
-                        onDrop={(e) => handleImageDrop(i, e)}
-                        onDragEnd={handleImageDragEnd}
-                      />
-                      <Image 
-                        src={img.url} 
-                        alt={`preview-${i}`} 
-                        width={800} 
-                        height={600} 
-                        className={`w-full h-auto max-h-96 object-contain ${dragOverImageIdx === i ? 'ring-2 ring-indigo-400' : ''}`}
-                        // Unoptimized for Firebase Storage URLs: Next.js cannot optimize authenticated external URLs
-                        unoptimized={img.url.includes('firebasestorage.googleapis.com')}
-                      />
-                      <div className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                        {onRemoveImage && (
-                          <button
-                            type="button"
-                            onClick={(e) => { e.stopPropagation(); onRemoveImage(i); }}
-                            className="bg-red-700/80 hover:bg-red-600 text-white text-xs px-2 py-1 rounded border border-red-400/50"
-                          >
-                            Remove
-                          </button>
-                        )}
-                      </div>
+                        key={img.key}
+                        className="relative group border border-amber-500/30 rounded-lg overflow-hidden"
+                      >
+                        <div
+                          className={`absolute inset-0 ${images.length > 1 ? "cursor-move" : ""}`}
+                          draggable={images.length > 1}
+                          onDragStart={(e) => handleImageDragStart(i, e)}
+                          onDragOver={(e) => handleImageDragOver(i, e)}
+                          onDrop={(e) => handleImageDrop(i, e)}
+                          onDragEnd={handleImageDragEnd}
+                        />
+                        <Image
+                          src={img.url}
+                          alt={`preview-${i}`}
+                          width={800}
+                          height={600}
+                          className={`w-full h-auto max-h-96 object-contain ${dragOverImageIdx === i ? "ring-2 ring-indigo-400" : ""}`}
+                          // Unoptimized for Firebase Storage URLs: Next.js cannot optimize authenticated external URLs
+                          unoptimized={img.url.includes("firebasestorage.googleapis.com")}
+                        />
+                        <div className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                          {onRemoveImage && (
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                onRemoveImage(i);
+                              }}
+                              className="bg-red-700/80 hover:bg-red-600 text-white text-xs px-2 py-1 rounded border border-red-400/50"
+                            >
+                              Remove
+                            </button>
+                          )}
+                        </div>
                       </div>
                     ))}
                   </div>
                 </div>
               )}
 
-              {section === 'video' && videoUrl && (
+              {section === "video" && videoUrl && (
                 <div className="relative bg-black/30 backdrop-blur-sm border border-amber-500/30 rounded-lg p-2">
                   <YouTubeEmbed url={videoUrl} title="Preview Video" />
                 </div>
               )}
 
-              {section === 'twitch' && twitchUrl && (
+              {section === "twitch" && twitchUrl && (
                 <div className="relative bg-black/30 backdrop-blur-sm border border-amber-500/30 rounded-lg p-2">
                   <TwitchClipEmbed url={twitchUrl} title="Preview Twitch Clip" />
                 </div>
               )}
 
-              {section === 'replay' && replayName && (
+              {section === "replay" && replayName && (
                 <div className="bg-black/30 backdrop-blur-sm border border-amber-500/30 rounded-lg p-4 text-gray-300 flex items-center justify-between">
                   <div>
                     Replay selected: <span className="text-amber-400">{replayName}</span>
@@ -178,7 +187,7 @@ export default function MediaPreview({
                 </div>
               )}
 
-              {section === 'text' && textPreview && (
+              {section === "text" && textPreview && (
                 <div className="prose prose-invert max-w-none">
                   <div className="bg-black/30 backdrop-blur-sm border border-amber-500/30 rounded-lg p-4">
                     <p className="text-gray-300 whitespace-pre-wrap">{textPreview}</p>
@@ -192,7 +201,3 @@ export default function MediaPreview({
     </div>
   );
 }
-
-
-
-

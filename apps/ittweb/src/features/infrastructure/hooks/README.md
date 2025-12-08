@@ -9,18 +9,18 @@ All hooks have been migrated to the shared package. This directory now only re-e
 Import hooks from the shared package:
 
 ```typescript
-import { 
+import {
   useDataFetch,
   createUrlDataFetchHook,
   useFallbackTranslation,
-  useModalAccessibility
-} from '@websites/infrastructure/hooks';
+  useModalAccessibility,
+} from "@websites/infrastructure/hooks";
 ```
 
 Or use the re-exported index:
 
 ```typescript
-import { useDataFetch, useFallbackTranslation } from '@/features/infrastructure/hooks';
+import { useDataFetch, useFallbackTranslation } from "@/features/infrastructure/hooks";
 ```
 
 ## Available Hooks (from shared package)

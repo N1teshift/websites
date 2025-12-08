@@ -18,11 +18,13 @@ Common issues, errors, and debugging procedures for the data generation pipeline
 ### Error: "Work directory not found"
 
 **Symptoms:**
+
 ```
 ❌ Work directory not found: external/Work/
 ```
 
 **Solution:**
+
 1. Verify `external/Work/` directory exists in project root
 2. Ensure you have required files:
    - `war3map.w3t` (items)
@@ -32,6 +34,7 @@ Common issues, errors, and debugging procedures for the data generation pipeline
    - `war3map.j` (JASS code for recipes)
 
 **How to prepare input files:**
+
 - See [Input File Preparation](./../README.md#required-inputs) in main README
 - Or use `docs/systems/scripts/extract-w3x.md` for detailed extraction instructions
 
@@ -40,11 +43,13 @@ Common issues, errors, and debugging procedures for the data generation pipeline
 ### Error: "Missing required files in Work directory"
 
 **Symptoms:**
+
 ```
 ❌ Missing required files in Work directory: war3map.w3t, war3map.w3a
 ```
 
 **Solution:**
+
 1. Extract missing files from the `.w3x` map file using MPQ Editor
 2. Place extracted files directly in `external/Work/` directory
 3. Verify file names match exactly (case-sensitive on Linux/Mac)
@@ -54,19 +59,24 @@ Common issues, errors, and debugging procedures for the data generation pipeline
 ### Error: "No items/abilities/units data found"
 
 **Symptoms:**
+
 ```
 ❌ No items data found
 ❌ No abilities data found
 ```
 
 **Solutions:**
+
 1. **Check extraction stage completed:**
+
    ```bash
    ls -la tmp/work-data/raw/
    ```
+
    Should contain: `items.json`, `abilities.json`, `units.json`, `buildings.json`
 
 2. **Re-run extraction:**
+
    ```bash
    node scripts/data/extract/extract-from-w3x.mjs
    ```
@@ -81,13 +91,16 @@ Common issues, errors, and debugging procedures for the data generation pipeline
 ### Error: TypeScript compilation failures
 
 **Symptoms:**
+
 ```
 Type errors in generated files
 Build fails after running pipeline
 ```
 
 **Solutions:**
+
 1. **Check for syntax errors in generated files:**
+
    ```bash
    npm run type-check
    ```
@@ -98,6 +111,7 @@ Build fails after running pipeline
    - Type mismatches (string vs number)
 
 3. **Debug specific file:**
+
    ```bash
    npx tsc --noEmit src/features/modules/guides/data/[problem-file].ts
    ```
@@ -111,17 +125,21 @@ Build fails after running pipeline
 ### Error: "No ability data found. Please run extraction first"
 
 **Symptoms:**
+
 ```
 ❌ No ability data found. Please run extraction first
 ```
 
 **Solution:**
+
 1. Run full extraction pipeline:
+
    ```bash
    node scripts/data/extract/extract-from-w3x.mjs
    ```
 
 2. Verify ability data exists:
+
    ```bash
    cat tmp/work-data/raw/abilities.json | head -20
    ```
@@ -135,11 +153,13 @@ Build fails after running pipeline
 ### Warning: "Error parsing [object type]"
 
 **Symptoms:**
+
 ```
 ⚠️  Error parsing abilities: [error message]
 ```
 
 **Solutions:**
+
 1. **Check specific object causing issue:**
    - Review console output for object ID
    - Check if object exists in input files
@@ -159,16 +179,19 @@ Build fails after running pipeline
 ### Issue: Missing or incorrect data in output
 
 **Symptoms:**
+
 - Items/abilities missing from generated files
 - Incorrect values in generated data
 - Missing fields
 
 **Debugging Steps:**
+
 1. **Check intermediate JSON files:**
+
    ```bash
    # Check raw extraction
    cat tmp/work-data/raw/items.json | jq '.items | length'
-   
+
    # Check metadata
    cat tmp/work-data/metadata/recipes.json | jq 'keys'
    ```
@@ -193,22 +216,27 @@ Build fails after running pipeline
 ### Issue: Icon paths are incorrect
 
 **Symptoms:**
+
 - Icons not displaying in application
 - Icon paths pointing to wrong locations
 
 **Solutions:**
+
 1. **Run icon path fixer:**
+
    ```bash
    node scripts/data/generate/fix-icon-paths.mjs
    ```
 
 2. **Check icon mapping:**
+
    ```bash
    # View icon map
    cat src/features/modules/guides/data/iconMap.ts | grep "your-icon-name"
    ```
 
 3. **Verify icon files exist:**
+
    ```bash
    ls -la public/icons/itt/items/
    ```
@@ -223,15 +251,18 @@ Build fails after running pipeline
 ### Issue: Field references not resolved
 
 **Symptoms:**
+
 - Tooltips show `<AMd5,Cool1>` instead of actual values
 - Placeholders remain in generated data
 
 **Solutions:**
+
 1. **Check ability data is loaded:**
    - Verify `tmp/work-data/raw/abilities.json` exists
    - Check ability ID mapper exists: `src/features/modules/guides/data/items/abilityIdMapper.ts`
 
 2. **Re-run field reference resolver:**
+
    ```bash
    node scripts/data/generate/resolve-field-references.mjs
    ```
@@ -251,9 +282,11 @@ Build fails after running pipeline
 ### Pipeline runs very slowly
 
 **Symptoms:**
+
 - Pipeline takes more than 5-10 minutes to complete
 
 **Solutions:**
+
 1. **Run only needed stages:**
    - If you only changed items, run from item extraction stage onwards
    - Skip earlier stages if data hasn't changed
@@ -273,12 +306,15 @@ Build fails after running pipeline
 ### Out of memory errors
 
 **Symptoms:**
+
 ```
 FATAL ERROR: Reached heap limit
 ```
 
 **Solutions:**
+
 1. **Increase Node.js memory:**
+
    ```bash
    node --max-old-space-size=4096 scripts/data/main.mjs
    ```
@@ -298,33 +334,37 @@ FATAL ERROR: Reached heap limit
 ### How to Verify Pipeline Output
 
 1. **Check file counts:**
+
    ```bash
    # Count generated items
    find src/features/modules/guides/data/items -name "*.ts" -type f | wc -l
-   
+
    # Count generated abilities
    find src/features/modules/guides/data/abilities -name "*.ts" -type f | wc -l
    ```
 
 2. **Verify TypeScript compilation:**
+
    ```bash
    npm run type-check
    ```
 
 3. **Spot-check specific files:**
+
    ```bash
    # Check a specific item
    cat src/features/modules/guides/data/items/weapons.ts | grep -A 10 "sword"
-   
+
    # Check recipe data
    cat tmp/work-data/metadata/recipes.json | jq '.["sword-of-power"]'
    ```
 
 4. **Verify icon mapping:**
+
    ```bash
    # Check icon map was generated
    test -f src/features/modules/guides/data/iconMap.ts && echo "Icon map exists"
-   
+
    # Count mapped icons
    cat src/features/modules/guides/data/iconMap.ts | grep -c ":" | head -1
    ```
@@ -382,4 +422,3 @@ node scripts/data/extract-from-w3x.mjs 2>&1 | tee debug.log
 - [Main Pipeline README](../../../scripts/README.md) - Operational guide
 - [Field References](./guides/field-references.md) - Understanding field references
 - [Refactoring Plan](../../../scripts/data/docs/REFACTORING_PLAN.md) - Known issues and improvements
-

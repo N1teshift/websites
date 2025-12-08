@@ -13,16 +13,19 @@ This report investigates the six performance optimization tasks outlined in `COM
 ## 1. Bundle Analysis
 
 ### Current State
+
 - ❌ **No bundle analyzer configured**
 - ✅ Next.js 15.0.3 with webpack configuration present
 - ✅ Production source maps disabled (good for performance)
 
 ### Findings
+
 - No `@next/bundle-analyzer` package in dependencies
 - No bundle analysis scripts in `package.json`
 - No webpack bundle size analysis configured
 
 ### Recommendations
+
 1. Install `@next/bundle-analyzer` as dev dependency
 2. Add bundle analysis scripts to `package.json`
 3. Configure `next.config.ts` to support bundle analysis
@@ -33,18 +36,21 @@ This report investigates the six performance optimization tasks outlined in `COM
    - Unused code/tree-shaking opportunities
 
 ### Implementation Steps
+
 ```bash
 npm install --save-dev @next/bundle-analyzer
 ```
 
 Add to `next.config.ts`:
+
 ```typescript
-const withBundleAnalyzer = require('@next/bundle-analyzer')({
-  enabled: process.env.ANALYZE === 'true',
+const withBundleAnalyzer = require("@next/bundle-analyzer")({
+  enabled: process.env.ANALYZE === "true",
 });
 ```
 
 Add to `package.json` scripts:
+
 ```json
 "analyze": "ANALYZE=true next build",
 "analyze:server": "BUNDLE_ANALYZE=server ANALYZE=true next build",
@@ -52,6 +58,7 @@ Add to `package.json` scripts:
 ```
 
 ### Estimated Impact
+
 - **Time:** 2-4 hours
 - **Bundle Size Reduction:** Potentially 20-30% with optimizations
 - **Priority:** HIGH (foundation for other optimizations)
@@ -61,12 +68,14 @@ Add to `package.json` scripts:
 ## 2. Image Optimization
 
 ### Current State
+
 - ✅ **All images use `next/image`** (no `<img>` tags found)
 - ✅ `ImageCarousel` component uses `next/image` with proper `fill` prop
 - ✅ `ProjectImage` component uses `next/image` with width/height
 - ✅ Image configuration in `next.config.ts` for remote patterns
 
 ### Findings
+
 - ✅ No native `<img>` tags found in codebase
 - ✅ Images in `ImageCarousel` use `fill` with proper container sizing
 - ✅ `ProjectImage` uses fixed dimensions (800x600)
@@ -74,6 +83,7 @@ Add to `package.json` scripts:
 - ⚠️ Consider adding `sizes` prop for responsive images
 
 ### Recommendations
+
 1. ✅ **Already optimized** - All images use `next/image`
 2. Review and optimize:
    - Add `priority` flag to above-the-fold images
@@ -82,6 +92,7 @@ Add to `package.json` scripts:
    - Review image dimensions (800x600 may be too large for some use cases)
 
 ### Implementation Steps
+
 1. Audit all `Image` components for:
    - Above-the-fold images should have `priority={true}`
    - Responsive images should have `sizes` prop
@@ -90,6 +101,7 @@ Add to `package.json` scripts:
 3. Consider adding image optimization service (e.g., Cloudinary, Imgix)
 
 ### Estimated Impact
+
 - **Time:** 1-2 hours
 - **Performance Gain:** Moderate (images already optimized)
 - **Priority:** LOW (already well-optimized)
@@ -99,12 +111,14 @@ Add to `package.json` scripts:
 ## 3. SEO Audit
 
 ### Current State
+
 - ❌ **No meta tags found in pages**
 - ❌ No `next/head` usage
 - ✅ `_document.tsx` has basic HTML structure
 - ✅ `lang="en"` attribute set (but should be dynamic based on locale)
 
 ### Findings
+
 - No `<Head>` component usage in any pages
 - No Open Graph tags
 - No Twitter Card tags
@@ -113,6 +127,7 @@ Add to `package.json` scripts:
 - Language attribute is hardcoded to "en" (should support lt, en, ru)
 
 ### Recommendations
+
 1. Create SEO component or hook for meta tags
 2. Add meta tags to all pages:
    - Title (with locale support)
@@ -124,11 +139,13 @@ Add to `package.json` scripts:
 4. Add structured data (JSON-LD) for better search visibility
 
 ### Implementation Steps
+
 1. Create `SEO` component or `useSEO` hook
 2. Add meta tags to each page:
+
    ```typescript
    import Head from 'next/head';
-   
+
    <Head>
      <title>{t('page_title')}</title>
      <meta name="description" content={t('page_description')} />
@@ -138,10 +155,12 @@ Add to `package.json` scripts:
      <link rel="canonical" href={canonicalUrl} />
    </Head>
    ```
+
 3. Support i18n in meta tags
 4. Add structured data for key pages
 
 ### Estimated Impact
+
 - **Time:** 4-6 hours
 - **SEO Improvement:** Significant
 - **Priority:** MEDIUM (important for discoverability)
@@ -151,6 +170,7 @@ Add to `package.json` scripts:
 ## 4. Accessibility (a11y) Audit
 
 ### Current State
+
 - ⚠️ **Limited accessibility attributes found**
 - ✅ Some components use semantic HTML (`<label>`, `<button>`)
 - ❌ No `aria-label` attributes found
@@ -159,6 +179,7 @@ Add to `package.json` scripts:
 - ⚠️ Color contrast not verified
 
 ### Findings
+
 - Components like `BooleanToggle`, `Dropdown`, `NumberInput` use semantic HTML
 - Missing accessibility attributes:
   - `aria-label` for icon buttons
@@ -170,6 +191,7 @@ Add to `package.json` scripts:
 - Keyboard navigation not fully tested
 
 ### Recommendations
+
 1. Add accessibility attributes to all interactive elements
 2. Implement keyboard navigation
 3. Add focus management for modals and dynamic content
@@ -178,6 +200,7 @@ Add to `package.json` scripts:
 6. Verify color contrast (WCAG AA minimum)
 
 ### Implementation Steps
+
 1. Install accessibility testing tools:
    ```bash
    npm install --save-dev @axe-core/react eslint-plugin-jsx-a11y
@@ -191,6 +214,7 @@ Add to `package.json` scripts:
 8. Run Lighthouse accessibility audit
 
 ### Estimated Impact
+
 - **Time:** 6-8 hours
 - **Accessibility Improvement:** Significant
 - **Priority:** MEDIUM-HIGH (legal compliance, user experience)
@@ -202,32 +226,34 @@ Add to `package.json` scripts:
 ### Current State
 
 #### TranslationNamespaceContext
+
 - ✅ Simple context structure
 - ⚠️ **Potential re-render issue**: Context value object recreated on every render in `Layout.tsx`
 - Location: `src/features/infrastructure/i18n/TranslationNamespaceContext.tsx`
 - Used in: `Layout.tsx` (provides context to all pages)
 
 **Issue Found:**
+
 ```typescript
 // In Layout.tsx (line 62-69)
 const contextValue = {
-    translationNs: pageTranslationNamespaces,
-    defaultNS: Array.isArray(pageTranslationNamespaces) 
-        ? pageTranslationNamespaces[0] 
-        : pageTranslationNamespaces,
-    fallbackNS: Array.isArray(pageTranslationNamespaces) 
-        ? pageTranslationNamespaces.slice(1) 
-        : [],
+  translationNs: pageTranslationNamespaces,
+  defaultNS: Array.isArray(pageTranslationNamespaces)
+    ? pageTranslationNamespaces[0]
+    : pageTranslationNamespaces,
+  fallbackNS: Array.isArray(pageTranslationNamespaces) ? pageTranslationNamespaces.slice(1) : [],
 };
 // This object is recreated on every render!
 ```
 
 #### InterfaceContext
+
 - ⚠️ **Potential re-render issue**: Context value object recreated on every render
 - Location: `src/features/modules/math/mathObjectSettings/components/InterfaceContext.ts`
 - Used in: `MathObjectSettingsListContainer.tsx`
 
 **Issue Found:**
+
 ```typescript
 // In MathObjectSettingsListContainer.tsx (line 82)
 <InterfaceContext.Provider value={{ interfaceMap, setInterfaceMap }}>
@@ -237,10 +263,12 @@ const contextValue = {
 ### Recommendations
 
 #### For TranslationNamespaceContext:
+
 1. Memoize the context value using `useMemo`
 2. Only recreate when `pageTranslationNamespaces` changes
 
 #### For InterfaceContext:
+
 1. Memoize the context value using `useMemo`
 2. Only recreate when `interfaceMap` or `setInterfaceMap` changes
 3. Consider splitting into separate contexts if needed
@@ -248,29 +276,36 @@ const contextValue = {
 ### Implementation Steps
 
 **TranslationNamespaceContext fix:**
+
 ```typescript
 // In Layout.tsx
-const contextValue = useMemo(() => ({
+const contextValue = useMemo(
+  () => ({
     translationNs: pageTranslationNamespaces,
-    defaultNS: Array.isArray(pageTranslationNamespaces) 
-        ? pageTranslationNamespaces[0] 
-        : pageTranslationNamespaces,
-    fallbackNS: Array.isArray(pageTranslationNamespaces) 
-        ? pageTranslationNamespaces.slice(1) 
-        : [],
-}), [pageTranslationNamespaces]);
+    defaultNS: Array.isArray(pageTranslationNamespaces)
+      ? pageTranslationNamespaces[0]
+      : pageTranslationNamespaces,
+    fallbackNS: Array.isArray(pageTranslationNamespaces) ? pageTranslationNamespaces.slice(1) : [],
+  }),
+  [pageTranslationNamespaces]
+);
 ```
 
 **InterfaceContext fix:**
+
 ```typescript
 // In MathObjectSettingsListContainer.tsx
-const contextValue = useMemo(() => ({
+const contextValue = useMemo(
+  () => ({
     interfaceMap,
-    setInterfaceMap
-}), [interfaceMap, setInterfaceMap]);
+    setInterfaceMap,
+  }),
+  [interfaceMap, setInterfaceMap]
+);
 ```
 
 ### Estimated Impact
+
 - **Time:** 1-2 hours
 - **Performance Gain:** Moderate (reduces unnecessary re-renders)
 - **Priority:** MEDIUM (can improve perceived performance)
@@ -282,17 +317,20 @@ const contextValue = useMemo(() => ({
 ### Current State
 
 #### MathObjectGeneratorPage
+
 - ⚠️ **Complex logic in component** (116 lines)
 - Multiple state variables (6 useState calls)
 - Complex async logic in `handlePromptResult`
 - Business logic mixed with UI logic
 
 **Current Structure:**
+
 - State management: `mathObjectSettingsList`, `mathItems`, `errorMessage`, `isGenerating`, `loadingMessage`, `lastPrompt`
 - Complex handlers: `handlePromptResult`, `generateMathItems`
 - Ref management: `presetInterfaceTypesRef`
 
 ### Recommendations
+
 1. Extract state management to `useMathObjectGenerator` hook
 2. Extract prompt handling to `usePromptHandler` hook
 3. Extract generation logic to `useMathGeneration` hook
@@ -300,53 +338,58 @@ const contextValue = useMemo(() => ({
 ### Implementation Steps
 
 **Create `useMathObjectGenerator` hook:**
+
 ```typescript
 // src/features/modules/math/hooks/useMathObjectGenerator.ts
 export function useMathObjectGenerator() {
-    const [mathObjectSettingsList, setMathObjectSettingsList] = useState<MathObjectSettings[]>([DEFAULT_MATH_OBJECT_SETTINGS]);
-    const [mathItems, setMathItems] = useState<string[]>([]);
-    const [errorMessage, setErrorMessage] = useState<string>("");
-    const [isGenerating, setIsGenerating] = useState(false);
-    const [loadingMessage, setLoadingMessage] = useState<string>("");
-    const [lastPrompt, setLastPrompt] = useState("");
-    
-    // ... logic extracted from component
-    
-    return {
-        mathObjectSettingsList,
-        setMathObjectSettingsList,
-        mathItems,
-        errorMessage,
-        isGenerating,
-        loadingMessage,
-        lastPrompt,
-        handlePromptResult,
-        generateMathItems,
-        // ... other handlers
-    };
+  const [mathObjectSettingsList, setMathObjectSettingsList] = useState<MathObjectSettings[]>([
+    DEFAULT_MATH_OBJECT_SETTINGS,
+  ]);
+  const [mathItems, setMathItems] = useState<string[]>([]);
+  const [errorMessage, setErrorMessage] = useState<string>("");
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [loadingMessage, setLoadingMessage] = useState<string>("");
+  const [lastPrompt, setLastPrompt] = useState("");
+
+  // ... logic extracted from component
+
+  return {
+    mathObjectSettingsList,
+    setMathObjectSettingsList,
+    mathItems,
+    errorMessage,
+    isGenerating,
+    loadingMessage,
+    lastPrompt,
+    handlePromptResult,
+    generateMathItems,
+    // ... other handlers
+  };
 }
 ```
 
 **Refactor MathObjectGeneratorPage:**
+
 ```typescript
 export default function MathObjectGeneratorPage() {
-    const {
-        mathObjectSettingsList,
-        setMathObjectSettingsList,
-        mathItems,
-        errorMessage,
-        isGenerating,
-        loadingMessage,
-        lastPrompt,
-        handlePromptResult,
-        generateMathItems,
-    } = useMathObjectGenerator();
-    
-    // ... simplified component
+  const {
+    mathObjectSettingsList,
+    setMathObjectSettingsList,
+    mathItems,
+    errorMessage,
+    isGenerating,
+    loadingMessage,
+    lastPrompt,
+    handlePromptResult,
+    generateMathItems,
+  } = useMathObjectGenerator();
+
+  // ... simplified component
 }
 ```
 
 ### Estimated Impact
+
 - **Time:** 3-4 hours
 - **Code Quality:** Significant improvement
 - **Maintainability:** Much better
@@ -368,15 +411,18 @@ export default function MathObjectGeneratorPage() {
 ## Implementation Plan
 
 ### Phase 1: Quick Wins (2-3 hours)
+
 1. ✅ Context Audit fixes (useMemo for context values)
 2. ✅ Bundle analyzer setup
 
 ### Phase 2: SEO & Accessibility (8-10 hours)
+
 3. ✅ SEO component/hook creation
 4. ✅ Meta tags for all pages
 5. ✅ Accessibility attributes and testing
 
 ### Phase 3: Code Quality (3-4 hours)
+
 6. ✅ Custom hooks extraction
 7. ✅ Image optimization review
 
@@ -400,4 +446,3 @@ export default function MathObjectGeneratorPage() {
 - Runtime performance testing recommended after implementation
 - Consider using React DevTools Profiler to verify re-render improvements
 - Bundle analysis should be run after each major dependency addition
-

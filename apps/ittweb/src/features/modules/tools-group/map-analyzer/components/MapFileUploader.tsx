@@ -1,6 +1,10 @@
-import React from 'react';
+import React from "react";
 
-export default function MapFileUploader({ onJsonLoaded }: { onJsonLoaded?: (data: unknown) => void }) {
+export default function MapFileUploader({
+  onJsonLoaded,
+}: {
+  onJsonLoaded?: (data: unknown) => void;
+}) {
   const inputRef = React.useRef<HTMLInputElement>(null);
   const [fileName, setFileName] = React.useState<string>("");
   const [isProcessing, setIsProcessing] = React.useState<boolean>(false);
@@ -8,14 +12,16 @@ export default function MapFileUploader({ onJsonLoaded }: { onJsonLoaded?: (data
 
   React.useEffect(() => {
     try {
-      const raw = localStorage.getItem('itt_saved_maps');
+      const raw = localStorage.getItem("itt_saved_maps");
       if (raw) setSaved(JSON.parse(raw));
     } catch {}
   }, []);
 
   const persistList = (list: Array<{ id: string; name: string }>) => {
     setSaved(list);
-    try { localStorage.setItem('itt_saved_maps', JSON.stringify(list)); } catch {}
+    try {
+      localStorage.setItem("itt_saved_maps", JSON.stringify(list));
+    } catch {}
   };
 
   const openDialog = () => {
@@ -29,33 +35,36 @@ export default function MapFileUploader({ onJsonLoaded }: { onJsonLoaded?: (data
     const lower = file.name.toLowerCase();
     try {
       setIsProcessing(true);
-      if (lower.endsWith('.json')) {
+      if (lower.endsWith(".json")) {
         const text = await file.text();
         const parsed = JSON.parse(text);
-        const id = `${file.name.replace(/\.[^/.]+$/, '')}_${Date.now().toString(36)}`;
-        try { localStorage.setItem(`itt_map_data_${id}`, JSON.stringify(parsed)); } catch {}
-        persistList([{ id, name: file.name }, ...saved.filter(s => s.id !== id)].slice(0, 50));
+        const id = `${file.name.replace(/\.[^/.]+$/, "")}_${Date.now().toString(36)}`;
+        try {
+          localStorage.setItem(`itt_map_data_${id}`, JSON.stringify(parsed));
+        } catch {}
+        persistList([{ id, name: file.name }, ...saved.filter((s) => s.id !== id)].slice(0, 50));
         onJsonLoaded?.(parsed);
-      } else if (lower.endsWith('.w3e')) {
+      } else if (lower.endsWith(".w3e")) {
         const arrayBuf = await file.arrayBuffer();
-        const [{ Buffer }, wc3] = await Promise.all([
-          import('buffer'),
-          import('wc3maptranslator'),
-        ]);
-        const { TerrainTranslator } = wc3 as unknown as { TerrainTranslator: { warToJson: (buf: Buffer) => { json: unknown } } };
+        const [{ Buffer }, wc3] = await Promise.all([import("buffer"), import("wc3maptranslator")]);
+        const { TerrainTranslator } = wc3 as unknown as {
+          TerrainTranslator: { warToJson: (buf: Buffer) => { json: unknown } };
+        };
         const buf = Buffer.from(arrayBuf);
         const result = TerrainTranslator.warToJson(buf);
-        if (!result || !('json' in result)) throw new Error('Translator returned no JSON');
+        if (!result || !("json" in result)) throw new Error("Translator returned no JSON");
         const parsed = result.json;
-        const id = `${file.name.replace(/\.[^/.]+$/, '')}_${Date.now().toString(36)}`;
-        try { localStorage.setItem(`itt_map_data_${id}`, JSON.stringify(parsed)); } catch {}
-        persistList([{ id, name: file.name }, ...saved.filter(s => s.id !== id)].slice(0, 50));
+        const id = `${file.name.replace(/\.[^/.]+$/, "")}_${Date.now().toString(36)}`;
+        try {
+          localStorage.setItem(`itt_map_data_${id}`, JSON.stringify(parsed));
+        } catch {}
+        persistList([{ id, name: file.name }, ...saved.filter((s) => s.id !== id)].slice(0, 50));
         onJsonLoaded?.(parsed);
       } else {
-        console.warn('Unsupported file type:', file.name);
+        console.warn("Unsupported file type:", file.name);
       }
     } catch (err) {
-      console.error('Failed to process file:', err);
+      console.error("Failed to process file:", err);
     } finally {
       setIsProcessing(false);
     }
@@ -72,11 +81,19 @@ export default function MapFileUploader({ onJsonLoaded }: { onJsonLoaded?: (data
           className="hidden"
           onChange={handleChange}
         />
-        <button className="bg-amber-600 hover:bg-amber-500 text-black px-4 py-2 rounded disabled:opacity-50" onClick={openDialog} disabled={isProcessing}>
-          {isProcessing ? 'Processing…' : 'Choose File'}
+        <button
+          className="bg-amber-600 hover:bg-amber-500 text-black px-4 py-2 rounded disabled:opacity-50"
+          onClick={openDialog}
+          disabled={isProcessing}
+        >
+          {isProcessing ? "Processing…" : "Choose File"}
         </button>
         <span className="text-sm text-gray-400">.w3e or .json</span>
-        {fileName && <span className="text-sm text-amber-300 truncate max-w-[16rem]" title={fileName}>{fileName}</span>}
+        {fileName && (
+          <span className="text-sm text-amber-300 truncate max-w-[16rem]" title={fileName}>
+            {fileName}
+          </span>
+        )}
       </div>
       <div className="mt-4">
         <div className="font-semibold mb-2">Saved Maps</div>
@@ -85,19 +102,36 @@ export default function MapFileUploader({ onJsonLoaded }: { onJsonLoaded?: (data
         ) : (
           <ul className="space-y-1 text-sm">
             {saved.map((s) => (
-              <li key={s.id} className="flex items-center justify-between bg-black/20 border border-amber-500/20 rounded px-2 py-1">
-                <span className="truncate mr-2" title={s.name}>{s.name}</span>
+              <li
+                key={s.id}
+                className="flex items-center justify-between bg-black/20 border border-amber-500/20 rounded px-2 py-1"
+              >
+                <span className="truncate mr-2" title={s.name}>
+                  {s.name}
+                </span>
                 <div className="flex items-center gap-2">
-                  <button className="px-2 py-0.5 bg-gray-700 text-white rounded" onClick={() => {
-                    try {
-                      const raw = localStorage.getItem(`itt_map_data_${s.id}`);
-                      if (raw) onJsonLoaded?.(JSON.parse(raw));
-                    } catch {}
-                  }}>Load</button>
-                  <button className="px-2 py-0.5 bg-red-700 text-white rounded" onClick={() => {
-                    try { localStorage.removeItem(`itt_map_data_${s.id}`); } catch {}
-                    persistList(saved.filter(x => x.id !== s.id));
-                  }}>Delete</button>
+                  <button
+                    className="px-2 py-0.5 bg-gray-700 text-white rounded"
+                    onClick={() => {
+                      try {
+                        const raw = localStorage.getItem(`itt_map_data_${s.id}`);
+                        if (raw) onJsonLoaded?.(JSON.parse(raw));
+                      } catch {}
+                    }}
+                  >
+                    Load
+                  </button>
+                  <button
+                    className="px-2 py-0.5 bg-red-700 text-white rounded"
+                    onClick={() => {
+                      try {
+                        localStorage.removeItem(`itt_map_data_${s.id}`);
+                      } catch {}
+                      persistList(saved.filter((x) => x.id !== s.id));
+                    }}
+                  >
+                    Delete
+                  </button>
                 </div>
               </li>
             ))}
@@ -107,6 +141,3 @@ export default function MapFileUploader({ onJsonLoaded }: { onJsonLoaded?: (data
     </div>
   );
 }
-
-
-

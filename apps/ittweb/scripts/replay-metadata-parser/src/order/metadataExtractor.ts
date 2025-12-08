@@ -3,7 +3,7 @@ import type { MatchMetadataSpec, ReplayOrderEvent } from "../types.js";
 
 /**
  * Extract metadata order IDs from replay events.
- * 
+ *
  * The metadata encoder issues orders rapidly at the end of the match.
  * We detect the metadata stream by finding a sequence of known order IDs
  * issued in quick succession (within the encoding interval).
@@ -43,7 +43,7 @@ export const extractMetadataOrderIds = (
   // Find the longest consecutive sequence of matching orders
   // (metadata encoding happens in rapid succession at ~50ms intervals)
   const sequences = findOrderSequences(matchingEvents, 200); // 200ms max gap
-  
+
   if (debug) {
     console.error("[DEBUG] Found sequences:", sequences.length);
     sequences.forEach((seq, i) => {
@@ -78,10 +78,7 @@ export const extractMetadataOrderIds = (
  * Group events into sequences based on time gaps.
  * Events within maxGapMs of each other are considered part of the same sequence.
  */
-function findOrderSequences(
-  events: ReplayOrderEvent[],
-  maxGapMs: number
-): ReplayOrderEvent[][] {
+function findOrderSequences(events: ReplayOrderEvent[], maxGapMs: number): ReplayOrderEvent[][] {
   if (events.length === 0) return [];
 
   const sorted = [...events].sort((a, b) => a.timestampMs - b.timestampMs);
@@ -101,4 +98,3 @@ function findOrderSequences(
   sequences.push(currentSequence);
   return sequences;
 }
-

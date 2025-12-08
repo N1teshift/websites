@@ -21,16 +21,19 @@ Guidelines for managing documentation throughout its lifecycle.
 ## When Documentation Becomes Obsolete
 
 **Delete if**:
+
 - All content is outdated and no longer useful
 - Historical record is not needed
 - Information is better captured elsewhere
 
 **Archive to `docs/archive/` if**:
+
 - Document contains analysis or exploration that might be referenced
 - Completed plans/audits that document what was done
 - One-time investigations that provide context
 
 **Update/Refactor if**:
+
 - Partially outdated but contains useful information
 - Delete outdated parts, keep useful parts
 - Consider merging useful parts from multiple partially outdated docs into one useful document
@@ -38,6 +41,7 @@ Guidelines for managing documentation throughout its lifecycle.
 ## Usefulness Test
 
 When reviewing documentation, ask:
+
 - **"Does this help someone follow a standard/pattern?"**
 - **"Does this explain how the system works?"**
 - **"Would I reference this while working on a task?"**
@@ -48,6 +52,7 @@ If the answer is "no" to all questions, the documentation should be deleted or a
 ## When to Consolidate
 
 Look for consolidation opportunities when:
+
 - **Duplicate content**: Same information appears in multiple files
 - **Overlapping topics**: Multiple files cover similar subjects
 - **Scattered information**: Related content is spread across many files
@@ -68,6 +73,7 @@ Look for consolidation opportunities when:
 7. **Verify**: Ensure no information was lost and all links work
 
 **Consolidation Guidelines**:
+
 - Preserve all unique information
 - Maintain clear structure and navigation
 - Keep consolidated files focused and maintainable
@@ -78,4 +84,3 @@ Look for consolidation opportunities when:
 
 - [Documentation Style Guide](./DOCUMENTATION_STYLE.md)
 - [Documentation Index](./README.md)
-

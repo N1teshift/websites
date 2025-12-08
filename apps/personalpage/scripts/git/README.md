@@ -5,6 +5,7 @@ This directory contains git hook scripts that run automatically during git opera
 ## Pre-Push Hook
 
 The pre-push hook runs **before** pushing to remote. It verifies that:
+
 - ✅ Code passes linting checks
 - ✅ Project builds successfully
 
@@ -54,4 +55,3 @@ git push --no-verify
 ```
 
 **Warning**: Only use this if you're sure the code will build, or if you're pushing to a feature branch for testing.
-

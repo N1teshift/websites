@@ -1,5 +1,13 @@
 type Props = {
-  level1: { str: number; agi: number; int: number; hp: number; mana: number; ms: number; atkSpd: number };
+  level1: {
+    str: number;
+    agi: number;
+    int: number;
+    hp: number;
+    mana: number;
+    ms: number;
+    atkSpd: number;
+  };
   growth: { str: number; agi: number; int: number };
   msOffset: number;
   perLevelMsBonus?: number;
@@ -23,15 +31,14 @@ export default function StatsCard({ level1, growth, msOffset, perLevelMsBonus = 
         </div>
       </div>
       <h3 className="mt-4 font-medieval-brand text-xl">Growth per Level</h3>
-      <div className="text-gray-300">+{growth.str} Str, +{growth.agi} Agi, +{growth.int} Int</div>
+      <div className="text-gray-300">
+        +{growth.str} Str, +{growth.agi} Agi, +{growth.int} Int
+      </div>
       <h3 className="mt-4 font-medieval-brand text-xl">Movement Speed Scaling</h3>
       <div className="text-gray-300">
-        Per level bonus: +{perLevelMsBonus} move speed. Effective bonus at level L: {perLevelMsBonus} × (L + {msOffset}). At level 1: +
-        {perLevelMsBonus * (1 + msOffset)}.
+        Per level bonus: +{perLevelMsBonus} move speed. Effective bonus at level L:{" "}
+        {perLevelMsBonus} × (L + {msOffset}). At level 1: +{perLevelMsBonus * (1 + msOffset)}.
       </div>
     </section>
   );
 }
-
-
-

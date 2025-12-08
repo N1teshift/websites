@@ -72,4 +72,3 @@ export interface ReplayDecodeResult {
   orders: string[];
   spec: MatchMetadataSpec;
 }
-

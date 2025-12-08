@@ -7,17 +7,20 @@ Configuration for CI/CD pipelines and production deployments.
 **Good News**: CI builds automatically skip environment variable validation! The `validate-env.js` script detects when running in CI (`CI=true`) and skips validation, allowing CI builds to pass without requiring all environment variables in GitHub Secrets.
 
 **When you DO need GitHub Secrets**:
+
 - If a workflow needs to actually build and deploy (not just verify compilation)
 - If a workflow needs to test with real Firebase/Discord connections
 - If a workflow needs to run integration tests that require environment variables
 
 **To configure GitHub Secrets** (if needed):
+
 1. Go to **GitHub Repository** → **Settings** → **Secrets and variables** → **Actions**
 2. Click **New repository secret**
 3. Add each required environment variable (see list below)
 4. Secrets are encrypted and only available to workflows
 
 **Required Secrets** (if needed for workflows):
+
 - `NEXT_PUBLIC_FIREBASE_API_KEY`
 - `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN`
 - `NEXT_PUBLIC_FIREBASE_PROJECT_ID`
@@ -56,6 +59,7 @@ Set these in your hosting platform (Vercel, Netlify, etc.):
 5. **Redeploy after adding variables** (changes don't take effect until redeploy)
 
 **Vercel Secrets**:
+
 - You can create secrets in Vercel and reference them in environment variables
 - Go to **Settings** → **Secrets** to create reusable secrets
 - Then reference them in environment variables (e.g., `${{ secrets.firebase_api_key }}`)
@@ -66,4 +70,3 @@ Set these in your hosting platform (Vercel, Netlify, etc.):
 
 - [Environment Setup](./setup.md)
 - [CI/CD Guide](../operations/ci-cd.md)
-

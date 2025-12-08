@@ -1,9 +1,9 @@
-import React, { useMemo } from 'react';
-import Link from 'next/link';
-import { Card } from '@/features/infrastructure/components';
-import { formatDuration } from '../../../shared/utils';
-import { timestampToIso } from '@websites/infrastructure/utils';
-import type { Game } from '../types';
+import React, { useMemo } from "react";
+import Link from "next/link";
+import { Card } from "@/features/infrastructure/components";
+import { formatDuration } from "../../../shared/utils";
+import { timestampToIso } from "@websites/infrastructure/utils";
+import type { Game } from "../types";
 
 interface GameCardProps {
   game: Game;
@@ -14,41 +14,41 @@ interface GameCardProps {
  */
 function parseDate(value: string | undefined): Date | null {
   if (!value) return null;
-  
+
   const date = new Date(value);
   // Check if the date is valid
   if (!isNaN(date.getTime())) {
     return date;
   }
-  
+
   return null;
 }
 
 function GameCardComponent({ game }: GameCardProps) {
   // Memoize date calculations
   const { formattedDate, formattedTime } = useMemo(() => {
-    const isScheduled = game.gameState === 'scheduled';
-    
+    const isScheduled = game.gameState === "scheduled";
+
     // Parse scheduled date - prefer scheduledDateTimeString, fallback to converting scheduledDateTime
-    const scheduledDate = isScheduled && game.scheduledDateTime
-      ? parseDate(game.scheduledDateTimeString || timestampToIso(game.scheduledDateTime))
-      : null;
-    
+    const scheduledDate =
+      isScheduled && game.scheduledDateTime
+        ? parseDate(game.scheduledDateTimeString || timestampToIso(game.scheduledDateTime))
+        : null;
+
     // Parse completed game date
-    const completedDate = !isScheduled && game.datetime
-      ? parseDate(timestampToIso(game.datetime))
-      : null;
-    
+    const completedDate =
+      !isScheduled && game.datetime ? parseDate(timestampToIso(game.datetime)) : null;
+
     const gameDate = scheduledDate || completedDate;
     return {
-      formattedDate: gameDate ? gameDate.toLocaleDateString() : 'TBD',
-      formattedTime: gameDate ? gameDate.toLocaleTimeString() : '',
+      formattedDate: gameDate ? gameDate.toLocaleDateString() : "TBD",
+      formattedTime: gameDate ? gameDate.toLocaleTimeString() : "",
     };
   }, [game.gameState, game.scheduledDateTime, game.scheduledDateTimeString, game.datetime]);
 
   // Memoize formatted map name
   const mapName = useMemo(() => {
-    return game.map ? (game.map.split('\\').pop() || game.map) : null;
+    return game.map ? game.map.split("\\").pop() || game.map : null;
   }, [game.map]);
 
   return (
@@ -56,9 +56,7 @@ function GameCardComponent({ game }: GameCardProps) {
       <Link href={`/games/${game.id}`} className="block">
         <div className="flex justify-between items-start mb-2">
           <div>
-            <h3 className="text-xl font-semibold text-amber-400 mb-1">
-              Game #{game.gameId}
-            </h3>
+            <h3 className="text-xl font-semibold text-amber-400 mb-1">Game #{game.gameId}</h3>
             <p className="text-sm text-gray-400">
               {formattedDate} {formattedTime && formattedTime}
             </p>
@@ -73,21 +71,19 @@ function GameCardComponent({ game }: GameCardProps) {
         <div className="grid grid-cols-2 gap-2 text-sm text-gray-300 mt-3">
           {game.duration && (
             <div>
-              <span className="text-gray-500">Duration:</span>{' '}
+              <span className="text-gray-500">Duration:</span>{" "}
               <span className="text-amber-300">{formatDuration(game.duration)}</span>
             </div>
           )}
           {mapName && (
             <div>
-              <span className="text-gray-500">Map:</span>{' '}
+              <span className="text-gray-500">Map:</span>{" "}
               <span className="text-amber-300">{mapName}</span>
             </div>
           )}
         </div>
 
-        {game.verified && (
-          <div className="mt-2 text-xs text-green-400">✓ Verified</div>
-        )}
+        {game.verified && <div className="mt-2 text-xs text-green-400">✓ Verified</div>}
       </Link>
     </Card>
   );
@@ -95,5 +91,3 @@ function GameCardComponent({ game }: GameCardProps) {
 
 // Memoize component to prevent unnecessary re-renders when props haven't changed
 export const GameCard = React.memo(GameCardComponent);
-
-

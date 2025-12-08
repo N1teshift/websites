@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 interface GameDeleteDialogProps {
   isOpen: boolean;
@@ -19,8 +19,8 @@ export default function GameDeleteDialog({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
-      <div 
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm" 
+      <div
+        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
         aria-hidden="true"
         onClick={onCancel}
       />
@@ -30,7 +30,7 @@ export default function GameDeleteDialog({
           <p className="mt-2 text-sm text-gray-300">
             {gameTitle
               ? `Are you sure you want to delete "${gameTitle}"? This action cannot be undone.`
-              : 'Are you sure you want to delete this game? This action cannot be undone.'}
+              : "Are you sure you want to delete this game? This action cannot be undone."}
           </p>
         </div>
         <div className="flex justify-end gap-4">
@@ -48,13 +48,10 @@ export default function GameDeleteDialog({
             disabled={isLoading}
             className="rounded-md border border-red-600 bg-red-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-red-500 disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {isLoading ? 'Deleting…' : 'Delete'}
+            {isLoading ? "Deleting…" : "Delete"}
           </button>
         </div>
       </div>
     </div>
   );
 }
-
-
-

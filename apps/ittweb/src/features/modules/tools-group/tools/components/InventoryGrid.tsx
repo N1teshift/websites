@@ -1,7 +1,7 @@
-import React from 'react';
-import GuideIcon from '@/features/modules/content/guides/components/GuideIcon';
-import type { DragPayload, TrollSide } from '@/features/modules/tools-group/tools/types';
-import type { ItemData } from '@/types/items';
+import React from "react";
+import GuideIcon from "@/features/modules/content/guides/components/GuideIcon";
+import type { DragPayload, TrollSide } from "@/features/modules/tools-group/tools/types";
+import type { ItemData } from "@/types/items";
 
 export default function InventoryGrid({
   side,
@@ -26,26 +26,26 @@ export default function InventoryGrid({
           <div
             key={idx}
             className={`group relative aspect-square rounded-md border ${
-              isSelected ? 'border-amber-400 ring-2 ring-amber-400/40' : 'border-amber-500/30'
+              isSelected ? "border-amber-400 ring-2 ring-amber-400/40" : "border-amber-500/30"
             } bg-black/40 flex items-center justify-center text-center text-sm text-gray-200 hover:border-amber-400 transition cursor-pointer`}
             onClick={() => onSelectSlot(idx)}
             role="button"
             tabIndex={0}
             aria-pressed={isSelected}
             onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
+              if (e.key === "Enter" || e.key === " ") {
                 e.preventDefault();
                 onSelectSlot(idx);
               }
             }}
             onDragOver={(e) => {
               e.preventDefault();
-              let dropEffect: DataTransfer['dropEffect'] = 'move';
+              let dropEffect: DataTransfer["dropEffect"] = "move";
               try {
-                const raw = e.dataTransfer.getData('text/plain');
+                const raw = e.dataTransfer.getData("text/plain");
                 if (raw) {
                   const payload = JSON.parse(raw) as DragPayload;
-                  dropEffect = payload.kind === 'paletteItem' ? 'copy' : 'move';
+                  dropEffect = payload.kind === "paletteItem" ? "copy" : "move";
                 }
               } catch {
                 // ignore
@@ -55,7 +55,7 @@ export default function InventoryGrid({
             onDrop={(e) => {
               e.preventDefault();
               try {
-                const raw = e.dataTransfer.getData('text/plain');
+                const raw = e.dataTransfer.getData("text/plain");
                 if (!raw) return;
                 const payload = JSON.parse(raw) as DragPayload;
                 onDropToSlot(side, idx, payload);
@@ -70,16 +70,16 @@ export default function InventoryGrid({
                   className="absolute inset-0 w-full h-full rounded-md overflow-hidden flex items-center justify-center"
                   draggable
                   onDragStart={(e) => {
-                    e.dataTransfer.effectAllowed = 'move';
+                    e.dataTransfer.effectAllowed = "move";
                     e.dataTransfer.setData(
-                      'text/plain',
-                      JSON.stringify({ kind: 'inventoryItem', side, index: idx })
+                      "text/plain",
+                      JSON.stringify({ kind: "inventoryItem", side, index: idx })
                     );
                   }}
                   title={item.name}
                 >
                   <GuideIcon
-                    category={item.category === 'buildings' ? 'buildings' : 'items'}
+                    category={item.category === "buildings" ? "buildings" : "items"}
                     name={item.name}
                     size={64}
                     className="object-cover rounded-md"
@@ -108,6 +108,3 @@ export default function InventoryGrid({
     </div>
   );
 }
-
-
-

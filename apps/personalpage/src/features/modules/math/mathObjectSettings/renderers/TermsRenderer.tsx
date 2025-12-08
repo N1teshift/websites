@@ -19,50 +19,47 @@ import { generateTermsDescription } from "../../shared/descriptionGenerators";
  * - Uses `generateTermsDescription` primarily to calculate the correct `startIndex` for variable naming within each child `TermRenderer`.
  */
 const TermsRenderer: React.FC<MathObjectContainerProps<TermsSettings>> = ({
-    containerId,
-    settings,
-    updateSettings,
-    startIndex = 1,
-    showDescription = false,
-    objectType = null,
+  containerId,
+  settings,
+  updateSettings,
+  startIndex = 1,
+  showDescription = false,
+  objectType = null,
 }) => {
-    const renderChildren = () => {
-        const termsDescResult = generateTermsDescription(settings, startIndex);
-        return termsDescResult.terms.map((termInfo, index) => (
-            <div key={index} className="mt-1">
-                <TermRenderer
-                    containerId={`${containerId}-term-${index}`}
-                    settings={settings.terms[index]}
-                    updateSettings={(newTermSettings: TermSettings) =>
-                        updateSettings({
-                            ...settings,
-                            terms: settings.terms.map((term, ci) => (ci === index ? newTermSettings : term)),
-                        })
-                    }
-                    startIndex={termInfo.startIndex}
-                    showDescription={true}
-                    objectType="term"
-                />
-            </div>
-        ));
-    };
-
-    return (
-        <BaseMathObjectRenderer
-            containerId={containerId}
-            settings={settings}
-            updateSettings={updateSettings}
-            startIndex={startIndex}
-            showDescription={showDescription}
-            objectType={objectType}
-            settingsContainer={TermsSettingsContainer}
-            supportsInterfaceToggle={false}
-            childrenRenderer={() => renderChildren()}
+  const renderChildren = () => {
+    const termsDescResult = generateTermsDescription(settings, startIndex);
+    return termsDescResult.terms.map((termInfo, index) => (
+      <div key={index} className="mt-1">
+        <TermRenderer
+          containerId={`${containerId}-term-${index}`}
+          settings={settings.terms[index]}
+          updateSettings={(newTermSettings: TermSettings) =>
+            updateSettings({
+              ...settings,
+              terms: settings.terms.map((term, ci) => (ci === index ? newTermSettings : term)),
+            })
+          }
+          startIndex={termInfo.startIndex}
+          showDescription={true}
+          objectType="term"
         />
-    );
+      </div>
+    ));
+  };
+
+  return (
+    <BaseMathObjectRenderer
+      containerId={containerId}
+      settings={settings}
+      updateSettings={updateSettings}
+      startIndex={startIndex}
+      showDescription={showDescription}
+      objectType={objectType}
+      settingsContainer={TermsSettingsContainer}
+      supportsInterfaceToggle={false}
+      childrenRenderer={() => renderChildren()}
+    />
+  );
 };
 
 export default TermsRenderer;
-
-
-

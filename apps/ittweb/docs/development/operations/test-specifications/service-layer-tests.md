@@ -3,6 +3,7 @@
 Test specifications for service layer functions.
 
 ### Game Service
+
 - [ ] `src/features/modules/games/lib/gameService.ts`
   - Test `getAllGames` retrieves all games
   - Test `getGameById` retrieves game by ID
@@ -21,6 +22,7 @@ Test specifications for service layer functions.
   - Test game filtering by player
 
 ### Player Service
+
 - [ ] `src/features/modules/players/lib/playerService.ts`
   - Test `normalizePlayerName` lowercases and trims
   - Test `normalizePlayerName` handles special characters
@@ -36,6 +38,7 @@ Test specifications for service layer functions.
   - Test peak ELO tracking
 
 ### Post Service
+
 - [ ] `src/features/modules/blog/lib/postService.ts`
   - Test `getAllPosts` retrieves all posts
   - Test `getAllPosts` filters deleted posts
@@ -50,6 +53,7 @@ Test specifications for service layer functions.
   - Test post slug uniqueness validation
 
 ### Archive Service
+
 - [ ] `src/shared/lib/archiveService.ts` (client)
   - Test `getAllArchives` retrieves all archives
   - Test `getArchiveById` retrieves archive by ID
@@ -63,6 +67,7 @@ Test specifications for service layer functions.
   - Test admin SDK usage
 
 ### Scheduled Game Service
+
 - [ ] `src/features/modules/scheduled-games/lib/scheduledGameService.ts`
   - Test `getAllScheduledGames` retrieves all games
   - Test `getScheduledGameById` retrieves game by ID
@@ -75,6 +80,7 @@ Test specifications for service layer functions.
   - Test timezone conversion
 
 ### Entry Service
+
 - [ ] `src/features/modules/entries/lib/entryService.ts`
   - Test `getEntryById` retrieves entry
   - Test `createEntry` creates new entry
@@ -84,6 +90,7 @@ Test specifications for service layer functions.
   - Test server-side entry operations
 
 ### User Data Service
+
 - [ ] `src/shared/lib/userDataService.ts`
   - Test `getUserData` retrieves user data
   - Test `updateUserData` updates user data
@@ -92,6 +99,7 @@ Test specifications for service layer functions.
   - Test user role updates
 
 ### Analytics Service
+
 - [ ] `src/features/modules/analytics/lib/analyticsService.ts`
   - Test activity calculation
   - Test ELO history aggregation

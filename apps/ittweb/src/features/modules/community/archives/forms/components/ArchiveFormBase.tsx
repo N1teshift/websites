@@ -1,17 +1,17 @@
-import React, { useMemo } from 'react';
-import { ArchiveEntry, CreateArchiveEntry } from '@/types/archive';
-import MediaSelector from '../../shared/components/sections/MediaSelector';
-import DateSelector from '../../shared/components/sections/DateSelector';
-import MediaPreview from '../../shared/components/sections/MediaPreview';
-import FormHeader from '../../shared/components/sections/FormHeader';
-import { type SectionKey } from '../../shared/utils/archiveFormUtils';
-import { useArchiveBaseState } from '../../shared/hooks/useArchiveBaseState';
-import { useArchiveMedia } from '../../shared/hooks/useArchiveMedia';
-import { useArchiveHandlers } from '../../shared/hooks/useArchiveHandlers';
-import { useArchiveFormSubmit } from '../../shared/hooks/useArchiveFormSubmit';
+import React, { useMemo } from "react";
+import { ArchiveEntry, CreateArchiveEntry } from "@/types/archive";
+import MediaSelector from "../../shared/components/sections/MediaSelector";
+import DateSelector from "../../shared/components/sections/DateSelector";
+import MediaPreview from "../../shared/components/sections/MediaPreview";
+import FormHeader from "../../shared/components/sections/FormHeader";
+import { type SectionKey } from "../../shared/utils/archiveFormUtils";
+import { useArchiveBaseState } from "../../shared/hooks/useArchiveBaseState";
+import { useArchiveMedia } from "../../shared/hooks/useArchiveMedia";
+import { useArchiveHandlers } from "../../shared/hooks/useArchiveHandlers";
+import { useArchiveFormSubmit } from "../../shared/hooks/useArchiveFormSubmit";
 
 interface ArchiveFormBaseProps {
-  mode: 'create' | 'edit';
+  mode: "create" | "edit";
   initialEntry?: ArchiveEntry;
   onSubmit: (payload: CreateArchiveEntry | Partial<CreateArchiveEntry>) => Promise<void>;
   onCancel: () => void;
@@ -19,14 +19,34 @@ interface ArchiveFormBaseProps {
   defaultAuthor?: string;
 }
 
-export default function ArchiveFormBase({ mode, initialEntry, onSubmit, onCancel, onSuccess, defaultAuthor }: ArchiveFormBaseProps) {
+export default function ArchiveFormBase({
+  mode,
+  initialEntry,
+  onSubmit,
+  onCancel,
+  onSuccess,
+  defaultAuthor,
+}: ArchiveFormBaseProps) {
   const {
-    formData, setFormData, imageFile, setImageFile, imageFiles, setImageFiles, replayFile, setReplayFile,
-    currentImages, setCurrentImages, sectionOrder, setSectionOrder, existingReplayUrl, existingReplayName, setExistingReplayUrl,
+    formData,
+    setFormData,
+    imageFile,
+    setImageFile,
+    imageFiles,
+    setImageFiles,
+    replayFile,
+    setReplayFile,
+    currentImages,
+    setCurrentImages,
+    sectionOrder,
+    setSectionOrder,
+    existingReplayUrl,
+    existingReplayName,
+    setExistingReplayUrl,
   } = useArchiveBaseState(mode, initialEntry);
 
   const { imagePreviewUrls } = useArchiveMedia(imageFile, imageFiles);
-  
+
   // Combine video URLs for the new MediaSelector (only one should be set at a time)
   const combinedVideoUrl = formData.mediaUrl || formData.twitchClipUrl;
 
@@ -45,7 +65,7 @@ export default function ArchiveFormBase({ mode, initialEntry, onSubmit, onCancel
     onSuccess,
   });
 
-  const { 
+  const {
     handleInputChange,
     handleImageUpload: _handleImageUpload,
     handleReorderImages,
@@ -58,10 +78,22 @@ export default function ArchiveFormBase({ mode, initialEntry, onSubmit, onCancel
     handleRemoveExistingImage,
     handleRemoveReplay,
   } = useArchiveHandlers({
-    setFormData, imageFile, imageFiles, setImageFile, setImageFiles, setReplayFile, setCurrentImages, setSectionOrder, setError, setExistingReplayUrl,
+    setFormData,
+    imageFile,
+    imageFiles,
+    setImageFile,
+    setImageFiles,
+    setReplayFile,
+    setCurrentImages,
+    setSectionOrder,
+    setError,
+    setExistingReplayUrl,
   });
 
-  const replayName = useMemo(() => (replayFile ? replayFile.name : existingReplayName), [replayFile, existingReplayName]);
+  const replayName = useMemo(
+    () => (replayFile ? replayFile.name : existingReplayName),
+    [replayFile, existingReplayName]
+  );
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
@@ -122,20 +154,20 @@ export default function ArchiveFormBase({ mode, initialEntry, onSubmit, onCancel
           {/* Author is inherited from Discord on create and preserved on edit. No manual input. */}
 
           {/* Media */}
-          <MediaSelector 
+          <MediaSelector
             videoUrl={combinedVideoUrl}
             onVideoUrlChange={handleVideoUrlChange}
             onFileUpload={handleCombinedFileUpload}
-            videoError={error && combinedVideoUrl ? error : ''}
+            videoError={error && combinedVideoUrl ? error : ""}
             showHeader={false}
           />
 
           <MediaPreview
-            images={(imageFiles.length || imageFile) ? (
-              imagePreviewUrls.map((u, i) => ({ key: u + i, url: u }))
-            ) : (
-              currentImages.map((u, i) => ({ key: u + i, url: u }))
-            )}
+            images={
+              imageFiles.length || imageFile
+                ? imagePreviewUrls.map((u, i) => ({ key: u + i, url: u }))
+                : currentImages.map((u, i) => ({ key: u + i, url: u }))
+            }
             onReorderImages={handleReorderImages}
             videoUrl={formData.mediaUrl}
             twitchUrl={formData.twitchClipUrl}
@@ -143,8 +175,8 @@ export default function ArchiveFormBase({ mode, initialEntry, onSubmit, onCancel
             textPreview={formData.content}
             sectionOrder={sectionOrder as SectionKey[]}
             onReorderSections={handleReorderSections}
-            onRemoveImage={mode === 'edit' ? handleRemoveExistingImage : undefined}
-            onRemoveReplay={mode === 'edit' ? handleRemoveReplay : undefined}
+            onRemoveImage={mode === "edit" ? handleRemoveExistingImage : undefined}
+            onRemoveReplay={mode === "edit" ? handleRemoveReplay : undefined}
           />
 
           {/* Error */}
@@ -168,7 +200,13 @@ export default function ArchiveFormBase({ mode, initialEntry, onSubmit, onCancel
               disabled={isSubmitting}
               className="flex-1 bg-amber-600 hover:bg-amber-500 disabled:bg-amber-800 text-white py-2 px-4 rounded border border-amber-500 transition-colors"
             >
-              {isSubmitting ? (mode === 'create' ? 'Adding...' : 'Updating...') : (mode === 'create' ? 'Add to Archives' : 'Update Entry')}
+              {isSubmitting
+                ? mode === "create"
+                  ? "Adding..."
+                  : "Updating..."
+                : mode === "create"
+                  ? "Add to Archives"
+                  : "Update Entry"}
             </button>
           </div>
         </form>
@@ -176,5 +214,3 @@ export default function ArchiveFormBase({ mode, initialEntry, onSubmit, onCancel
     </div>
   );
 }
-
-

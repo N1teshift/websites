@@ -10,6 +10,7 @@
 ## 📊 Current Setup
 
 You're currently using:
+
 - ✅ **Next.js 15.0.3** (latest version - supports both routers)
 - ✅ **Pages Router** (`src/pages/`)
 - ✅ **next-i18next** for internationalization (3 languages: lt, en, ru)
@@ -57,11 +58,13 @@ You're currently using:
 **Biggest Issue:** `next-i18next` is **NOT compatible** with App Router.
 
 You'd need to:
+
 - ❌ Migrate to `next-intl` (recommended)
 - ❌ Or use custom i18n solution
 - ❌ Or use Next.js built-in i18n (limited)
 
 **Impact:** This is a **MAJOR change** affecting:
+
 - All 20+ pages
 - All translation usage
 - Translation context system
@@ -74,38 +77,42 @@ You'd need to:
 **What Needs to Change:**
 
 1. **i18n System** (3-5 days)
+
    ```typescript
    // Before (next-i18next):
    export const getStaticProps = getStaticPropsWithTranslations(namespaces);
-   
+
    // After (next-intl):
-   import { getTranslations } from 'next-intl/server';
+   import { getTranslations } from "next-intl/server";
    // Completely different API
    ```
 
 2. **Page Structure** (2-3 days)
+
    ```
    // Before:
    src/pages/projects/edtech/progressReport.tsx
-   
+
    // After:
    src/app/[locale]/projects/edtech/progressReport/page.tsx
    ```
 
 3. **Layout System** (1-2 days)
+
    ```typescript
    // Before:
    _app.tsx wraps everything
-   
+
    // After:
    app/layout.tsx with nested layouts
    ```
 
 4. **Data Fetching** (1-2 days)
+
    ```typescript
    // Before:
    export async function getStaticProps() { ... }
-   
+
    // After:
    async function Page() {
      const data = await fetch(...);
@@ -145,13 +152,13 @@ You'd need to:
 
 ### **App Router Migration**
 
-| Factor | Rating | Notes |
-|--------|--------|-------|
-| **Time Investment** | 🔴 High | 1.5-2.5 weeks |
-| **Risk** | 🟡 Medium | Breaking changes, i18n migration |
-| **Benefits** | 🟡 Medium | Better performance, future-proofing |
-| **Urgency** | 🟢 Low | Pages Router still works |
-| **ROI** | ⚠️ **Questionable** | Medium benefit for high effort |
+| Factor              | Rating              | Notes                               |
+| ------------------- | ------------------- | ----------------------------------- |
+| **Time Investment** | 🔴 High             | 1.5-2.5 weeks                       |
+| **Risk**            | 🟡 Medium           | Breaking changes, i18n migration    |
+| **Benefits**        | 🟡 Medium           | Better performance, future-proofing |
+| **Urgency**         | 🟢 Low              | Pages Router still works            |
+| **ROI**             | ⚠️ **Questionable** | Medium benefit for high effort      |
 
 ---
 
@@ -162,12 +169,14 @@ You'd need to:
 **App Router is better, but your Pages Router setup works fine.**
 
 Your current setup:
+
 - ✅ Works well
 - ✅ Has good i18n patterns
 - ✅ Is stable
 - ✅ Has no performance issues
 
 **The migration would:**
+
 - ⚠️ Take 2+ weeks
 - ⚠️ Require i18n system rewrite
 - ⚠️ Introduce risk (breaking changes)
@@ -180,12 +189,14 @@ Your current setup:
 ### **Option 1: Don't Migrate (Recommended for Now)**
 
 **Do this:**
+
 1. ✅ Keep using Pages Router
 2. ✅ Focus on real problems (large files, duplication)
 3. ✅ Build new features in Pages Router
 4. ✅ Reassess in 6-12 months
 
 **Why:**
+
 - Pages Router is still supported
 - No current problems to solve
 - Better to focus on real improvements
@@ -214,6 +225,7 @@ Your current setup:
 **Timeline:** 3-6 months (gradual)
 
 **Why:**
+
 - Lower risk
 - Can test incrementally
 - No big bang migration
@@ -223,12 +235,14 @@ Your current setup:
 ### **Option 3: Full Migration Now** (Not Recommended)
 
 **Do this if:**
+
 - You have 2+ weeks free
 - No pressing features
 - Want to future-proof
 - Team is onboard
 
 **Why not recommended:**
+
 - High risk, medium benefit
 - i18n migration is complex
 - Better things to focus on
@@ -238,6 +252,7 @@ Your current setup:
 ## 📋 Migration Checklist (If You Do It)
 
 ### **Phase 1: Setup**
+
 - [ ] Install `next-intl` (or choose i18n solution)
 - [ ] Create `src/app/[locale]/` structure
 - [ ] Set up root layout
@@ -245,23 +260,27 @@ Your current setup:
 - [ ] Test one simple page
 
 ### **Phase 2: Core Pages**
+
 - [ ] Migrate home page
 - [ ] Migrate aboutme page
 - [ ] Migrate layout system
 - [ ] Test translations
 
 ### **Phase 3: Feature Pages**
+
 - [ ] Migrate simple pages first
 - [ ] Migrate complex pages
 - [ ] Update all imports
 - [ ] Test everything
 
 ### **Phase 4: API Routes**
+
 - [ ] Move API routes to `app/api/`
 - [ ] Test API endpoints
 - [ ] Update client calls if needed
 
 ### **Phase 5: Cleanup**
+
 - [ ] Remove Pages Router code
 - [ ] Update documentation
 - [ ] Clean up old files
@@ -273,6 +292,7 @@ Your current setup:
 ### **1. i18n Migration**
 
 **Current Pattern:**
+
 ```typescript
 const pageNamespaces = ["calendar", "links", "common"];
 export const getStaticProps = getStaticPropsWithTranslations(pageNamespaces);
@@ -281,16 +301,17 @@ const { t } = useFallbackTranslation();
 ```
 
 **With next-intl:**
+
 ```typescript
 // Completely different API
-import { getTranslations } from 'next-intl/server';
-import { useTranslations } from 'next-intl';
+import { getTranslations } from "next-intl/server";
+import { useTranslations } from "next-intl";
 
 // In server component:
-const t = await getTranslations('calendar');
+const t = await getTranslations("calendar");
 
 // In client component:
-const t = useTranslations('calendar');
+const t = useTranslations("calendar");
 ```
 
 **Impact:** All 20+ pages need updates
@@ -300,6 +321,7 @@ const t = useTranslations('calendar');
 ### **2. Translation Context**
 
 **Current:**
+
 ```typescript
 // TranslationNamespaceContext wraps everything
 <Layout pageTranslationNamespaces={pageNamespaces}>
@@ -308,6 +330,7 @@ const t = useTranslations('calendar');
 ```
 
 **With next-intl:**
+
 ```typescript
 // No context needed, locale in URL
 // Components access translations directly
@@ -320,6 +343,7 @@ const t = useTranslations('calendar');
 ### **3. Layout System**
 
 **Current:**
+
 ```typescript
 // _app.tsx wraps everything
 function App({ Component, pageProps }) {
@@ -328,6 +352,7 @@ function App({ Component, pageProps }) {
 ```
 
 **With App Router:**
+
 ```typescript
 // app/layout.tsx
 export default function RootLayout({ children }) {
@@ -351,12 +376,14 @@ export default function RootLayout({ children }) {
 ### **My Recommendation: Don't Migrate Yet** ❌
 
 **Reasons:**
+
 1. **Pages Router works fine** - No problems to solve
 2. **i18n migration is complex** - next-i18next → next-intl is a big change
 3. **Better things to focus on** - Fix large files, remove duplication
 4. **Low urgency** - Pages Router is still supported
 
 **When to reconsider:**
+
 - ✅ Next.js deprecates Pages Router (unlikely soon)
 - ✅ You need Server Components for performance
 - ✅ You have 2+ weeks free and want to future-proof
@@ -374,6 +401,7 @@ export default function RootLayout({ children }) {
 4. **This lets you test without risk**
 
 **Example:**
+
 ```
 src/
 ├── pages/          (existing - keep as-is)
@@ -386,6 +414,7 @@ src/
 ```
 
 **Benefits:**
+
 - ✅ No big bang migration
 - ✅ Can test App Router safely
 - ✅ Lower risk
@@ -404,4 +433,3 @@ If you decide to migrate:
 ---
 
 **Remember:** Perfect architecture is less important than a working codebase. Your Pages Router setup is good. Don't fix what isn't broken unless there's clear benefit.
-

@@ -26,6 +26,7 @@ The following files were consolidated into `docs/database/indexes.md`:
 ### Why Indexes Are Needed
 
 Firestore requires composite indexes when queries use:
+
 - Multiple `where` clauses on different fields
 - A `where` clause combined with `orderBy` on a different field
 - Multiple `orderBy` clauses
@@ -41,11 +42,13 @@ Without proper indexes, queries will fail or use inefficient fallback logic.
 ### Games Collection Indexes
 
 **Query Patterns**:
+
 - Scheduled games ordered by date
 - Completed games with date range and category filters
 - All games ordered by creation date
 
 **Indexes Required**:
+
 - `isDeleted` + `gameState` + `scheduledDateTime`
 - `isDeleted` + `gameState` + `datetime` + `category`
 - `isDeleted` + `createdAt`
@@ -53,11 +56,13 @@ Without proper indexes, queries will fail or use inefficient fallback logic.
 ### Players Collection Indexes
 
 **Query Patterns**:
+
 - Player statistics queries
 - ELO history queries
 - Activity data queries
 
 **Indexes Required**:
+
 - Various composite indexes for player queries
 - Date range filtering indexes
 - Category-based filtering indexes
@@ -65,11 +70,13 @@ Without proper indexes, queries will fail or use inefficient fallback logic.
 ### Standings Collection Indexes
 
 **Query Patterns**:
+
 - Leaderboard queries with category filters
 - Ranking calculations
 - Pagination support
 
 **Indexes Required**:
+
 - Category-based leaderboard indexes
 - ELO-based sorting indexes
 
@@ -78,11 +85,13 @@ Without proper indexes, queries will fail or use inefficient fallback logic.
 ### Missing Indexes
 
 **Symptoms**:
+
 - Queries fail with index errors
 - Fallback logic removes `orderBy` and fetches more documents
 - In-memory sorting (inefficient)
 
 **Solutions**:
+
 - Create required composite indexes
 - Monitor query performance
 - Update indexes when query patterns change
@@ -107,6 +116,7 @@ Without proper indexes, queries will fail or use inefficient fallback logic.
 ## Current State
 
 All Firestore index documentation is now in:
+
 - **Current documentation**: `docs/database/indexes.md`
 - **Database schemas**: `docs/database/schemas.md`
 
@@ -115,4 +125,3 @@ All Firestore index documentation is now in:
 - Current index documentation: `docs/database/indexes.md`
 - Performance guide: `docs/PERFORMANCE.md`
 - Database schemas: `docs/database/schemas.md`
-

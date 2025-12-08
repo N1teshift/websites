@@ -1,22 +1,22 @@
-import { GetServerSideProps } from 'next';
-import { getServerSession } from 'next-auth';
-import { authOptions } from './api/auth/[...nextauth]';
-import { getUserDataByDiscordIdServer } from '@/features/modules/community/users/services/userDataService.server';
-import { UserRole } from '@/types/userData';
-import { useSession } from 'next-auth/react';
-import { PageHero, ErrorBoundary } from '@/features/infrastructure/components';
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
-import { signOut } from 'next-auth/react';
-import { isAdmin } from '@/features/modules/community/users';
-import { logError } from '@websites/infrastructure/logging';
-import { getStaticPropsWithTranslations } from '@websites/infrastructure/i18n/getStaticProps';
-import { serializeUserData } from '@/features/modules/community/users/settings/utils/serializeUserData';
-import { UserProfile } from '@/features/modules/community/users/settings/components/UserProfile';
-import { AdminTools } from '@/features/modules/community/users/settings/components/AdminTools';
-import { DeleteAccountDialog } from '@/features/modules/community/users/settings/components/DeleteAccountDialog';
-import { WipeTestDataDialog } from '@/features/modules/community/users/settings/components/WipeTestDataDialog';
-import { WipeEntriesDialog } from '@/features/modules/community/users/settings/components/WipeEntriesDialog';
+import { GetServerSideProps } from "next";
+import { getServerSession } from "next-auth";
+import { authOptions } from "./api/auth/[...nextauth]";
+import { getUserDataByDiscordIdServer } from "@/features/modules/community/users/services/userDataService.server";
+import { UserRole } from "@/types/userData";
+import { useSession } from "next-auth/react";
+import { PageHero, ErrorBoundary } from "@/features/infrastructure/components";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import { signOut } from "next-auth/react";
+import { isAdmin } from "@/features/modules/community/users";
+import { logError } from "@websites/infrastructure/logging";
+import { getStaticPropsWithTranslations } from "@websites/infrastructure/i18n/getStaticProps";
+import { serializeUserData } from "@/features/modules/community/users/settings/utils/serializeUserData";
+import { UserProfile } from "@/features/modules/community/users/settings/components/UserProfile";
+import { AdminTools } from "@/features/modules/community/users/settings/components/AdminTools";
+import { DeleteAccountDialog } from "@/features/modules/community/users/settings/components/DeleteAccountDialog";
+import { WipeTestDataDialog } from "@/features/modules/community/users/settings/components/WipeTestDataDialog";
+import { WipeEntriesDialog } from "@/features/modules/community/users/settings/components/WipeEntriesDialog";
 
 const pageNamespaces = ["common"];
 
@@ -45,7 +45,7 @@ export default function SettingsPage({ userData }: SettingsPageProps) {
 
   // Check if user is admin
   useEffect(() => {
-    if (userData && 'role' in userData) {
+    if (userData && "role" in userData) {
       setUserIsAdmin(isAdmin(userData.role as UserRole | undefined));
     }
   }, [userData]);
@@ -55,24 +55,24 @@ export default function SettingsPage({ userData }: SettingsPageProps) {
     setDeleteError(null);
 
     try {
-      const response = await fetch('/api/user/delete', {
-        method: 'POST',
+      const response = await fetch("/api/user/delete", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       });
 
       if (!response.ok) {
         const data = await response.json();
-        throw new Error(data.message || 'Failed to delete account');
+        throw new Error(data.message || "Failed to delete account");
       }
 
       // Sign out and redirect to home
       await signOut({ redirect: false });
-      router.push('/');
+      router.push("/");
     } catch (error) {
       const err = error as Error;
-      setDeleteError(err.message || 'An error occurred while deleting your account');
+      setDeleteError(err.message || "An error occurred while deleting your account");
       setIsDeleting(false);
     }
   };
@@ -82,16 +82,16 @@ export default function SettingsPage({ userData }: SettingsPageProps) {
     setWipeError(null);
 
     try {
-      const response = await fetch('/api/admin/wipe-test-data', {
-        method: 'POST',
+      const response = await fetch("/api/admin/wipe-test-data", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       });
 
       if (!response.ok) {
         const data = await response.json();
-        throw new Error(data.error || 'Failed to wipe test data');
+        throw new Error(data.error || "Failed to wipe test data");
       }
 
       const result = await response.json();
@@ -100,13 +100,13 @@ export default function SettingsPage({ userData }: SettingsPageProps) {
       // Build deletion summary message
       const counts = result.deletedCounts || {};
       const summaryLines = Object.entries(counts)
-        .filter(([_, count]) => typeof count === 'number' && count > 0)
+        .filter(([_, count]) => typeof count === "number" && count > 0)
         .map(([key, count]) => `${key}: ${count}`)
-        .join(', ');
+        .join(", ");
 
       const message = summaryLines
         ? `All data wiped successfully! Deleted: ${summaryLines}`
-        : 'All data wiped successfully!';
+        : "All data wiped successfully!";
 
       setWipeSuccess(message);
 
@@ -116,7 +116,7 @@ export default function SettingsPage({ userData }: SettingsPageProps) {
       }, 5000);
     } catch (error) {
       const err = error as Error;
-      setWipeError(err.message || 'An error occurred while wiping test data');
+      setWipeError(err.message || "An error occurred while wiping test data");
       setIsWiping(false);
     }
   };
@@ -126,16 +126,16 @@ export default function SettingsPage({ userData }: SettingsPageProps) {
     setWipeEntriesError(null);
 
     try {
-      const response = await fetch('/api/admin/wipe-all-entries', {
-        method: 'POST',
+      const response = await fetch("/api/admin/wipe-all-entries", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       });
 
       if (!response.ok) {
         const data = await response.json();
-        throw new Error(data.error || 'Failed to wipe all entries');
+        throw new Error(data.error || "Failed to wipe all entries");
       }
 
       const result = await response.json();
@@ -144,13 +144,13 @@ export default function SettingsPage({ userData }: SettingsPageProps) {
       // Build deletion summary message
       const counts = result.deletedCounts || {};
       const summaryLines = Object.entries(counts)
-        .filter(([_, count]) => typeof count === 'number' && count > 0)
+        .filter(([_, count]) => typeof count === "number" && count > 0)
         .map(([key, count]) => `${key}: ${count}`)
-        .join(', ');
+        .join(", ");
 
       const message = summaryLines
         ? `All entries and images deleted successfully! Deleted: ${summaryLines}`
-        : 'All entries and images deleted successfully!';
+        : "All entries and images deleted successfully!";
 
       setWipeEntriesSuccess(message);
 
@@ -165,7 +165,7 @@ export default function SettingsPage({ userData }: SettingsPageProps) {
       }, 2000);
     } catch (error) {
       const err = error as Error;
-      setWipeEntriesError(err.message || 'An error occurred while wiping all entries');
+      setWipeEntriesError(err.message || "An error occurred while wiping all entries");
       setIsWipingEntries(false);
     }
   };
@@ -174,7 +174,9 @@ export default function SettingsPage({ userData }: SettingsPageProps) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-white mb-4">Please sign in to view your settings</h1>
+          <h1 className="text-2xl font-bold text-white mb-4">
+            Please sign in to view your settings
+          </h1>
         </div>
       </div>
     );
@@ -183,66 +185,60 @@ export default function SettingsPage({ userData }: SettingsPageProps) {
   return (
     <ErrorBoundary>
       <div className="min-h-[calc(100vh-8rem)]">
-        <PageHero
-          title="Settings"
-          description="View and manage your account information"
-        />
+        <PageHero title="Settings" description="View and manage your account information" />
 
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <UserProfile
-          userData={userData}
-          onDeleteAccountClick={() => setShowDeleteDialog(true)}
-        />
+          <UserProfile userData={userData} onDeleteAccountClick={() => setShowDeleteDialog(true)} />
 
-            {userIsAdmin && (
-          <div className="mt-6">
-            <AdminTools
-              onWipeTestDataClick={() => {
-                      setShowWipeDialog(true);
-                      setWipeSuccess(null);
-                    }}
-              onWipeEntriesClick={() => {
-                      setShowWipeEntriesDialog(true);
-                      setWipeEntriesSuccess(null);
-                    }}
-              wipeSuccess={wipeSuccess}
-              wipeEntriesSuccess={wipeEntriesSuccess}
-            />
-          </div>
-        )}
+          {userIsAdmin && (
+            <div className="mt-6">
+              <AdminTools
+                onWipeTestDataClick={() => {
+                  setShowWipeDialog(true);
+                  setWipeSuccess(null);
+                }}
+                onWipeEntriesClick={() => {
+                  setShowWipeEntriesDialog(true);
+                  setWipeEntriesSuccess(null);
+                }}
+                wipeSuccess={wipeSuccess}
+                wipeEntriesSuccess={wipeEntriesSuccess}
+              />
+            </div>
+          )}
 
-        <DeleteAccountDialog
-          isOpen={showDeleteDialog}
-          isDeleting={isDeleting}
-          error={deleteError}
-          onConfirm={handleDeleteAccount}
-          onCancel={() => {
-                    setShowDeleteDialog(false);
-                    setDeleteError(null);
-                  }}
-        />
+          <DeleteAccountDialog
+            isOpen={showDeleteDialog}
+            isDeleting={isDeleting}
+            error={deleteError}
+            onConfirm={handleDeleteAccount}
+            onCancel={() => {
+              setShowDeleteDialog(false);
+              setDeleteError(null);
+            }}
+          />
 
-        <WipeTestDataDialog
-          isOpen={showWipeDialog}
-          isWiping={isWiping}
-          error={wipeError}
-          onConfirm={handleWipeTestData}
-          onCancel={() => {
-                    setShowWipeDialog(false);
-                    setWipeError(null);
-                  }}
-        />
+          <WipeTestDataDialog
+            isOpen={showWipeDialog}
+            isWiping={isWiping}
+            error={wipeError}
+            onConfirm={handleWipeTestData}
+            onCancel={() => {
+              setShowWipeDialog(false);
+              setWipeError(null);
+            }}
+          />
 
-        <WipeEntriesDialog
-          isOpen={showWipeEntriesDialog}
-          isWiping={isWipingEntries}
-          error={wipeEntriesError}
-          onConfirm={handleWipeAllEntries}
-          onCancel={() => {
-                    setShowWipeEntriesDialog(false);
-                    setWipeEntriesError(null);
-                  }}
-        />
+          <WipeEntriesDialog
+            isOpen={showWipeEntriesDialog}
+            isWiping={isWipingEntries}
+            error={wipeEntriesError}
+            onConfirm={handleWipeAllEntries}
+            onCancel={() => {
+              setShowWipeEntriesDialog(false);
+              setWipeEntriesError(null);
+            }}
+          />
         </div>
       </div>
     </ErrorBoundary>
@@ -252,7 +248,7 @@ export default function SettingsPage({ userData }: SettingsPageProps) {
 export const getServerSideProps: GetServerSideProps<SettingsPageProps> = async (context) => {
   const withI18n = getStaticPropsWithTranslations(pageNamespaces);
   const i18nResult = await withI18n({ locale: context.locale as string });
-  
+
   const session = await getServerSession(context.req, context.res, authOptions);
 
   if (!session || !session.discordId) {
@@ -277,9 +273,9 @@ export const getServerSideProps: GetServerSideProps<SettingsPageProps> = async (
       },
     };
   } catch (error) {
-    logError(error as Error, 'Failed to fetch user data', {
-      component: 'SettingsPage',
-      operation: 'getServerSideProps',
+    logError(error as Error, "Failed to fetch user data", {
+      component: "SettingsPage",
+      operation: "getServerSideProps",
       discordId: session?.discordId,
     });
     return {

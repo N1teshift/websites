@@ -3,6 +3,7 @@
 Test specifications for React components.
 
 ### Shared Components
+
 - [ ] `src/features/shared/components/Header.tsx`
   - Test renders navigation links
   - Test renders user menu when authenticated
@@ -36,6 +37,7 @@ Test specifications for React components.
   - Test opens in new tab
 
 ### Game Components
+
 - [ ] `src/features/modules/games/components/GameList.tsx`
   - Test renders list of games
   - Test handles empty state
@@ -57,6 +59,7 @@ Test specifications for React components.
   - Test handles non-existent game
 
 ### Player Components
+
 - [ ] `src/features/modules/players/components/PlayersPage.tsx`
   - Test renders player list
   - Test handles search
@@ -75,6 +78,7 @@ Test specifications for React components.
   - Test handles different stat categories
 
 ### Blog Components
+
 - [ ] `src/features/modules/blog/components/BlogPost.tsx`
   - Test renders post content
   - Test renders MDX content
@@ -99,6 +103,7 @@ Test specifications for React components.
   - Test handles cancel action
 
 ### Archive Components
+
 - [ ] `src/features/modules/archives/components/ArchivesContent.tsx`
   - Test renders archive list
   - Test handles empty state
@@ -134,6 +139,7 @@ Test specifications for React components.
   - Test handles clip URL parsing
 
 ### Scheduled Games Components
+
 - [ ] `src/features/modules/scheduled-games/components/*`
   - Test scheduled game list rendering
   - Test scheduled game form
@@ -142,6 +148,7 @@ Test specifications for React components.
   - Test timezone display
 
 ### Standings Components
+
 - [ ] `src/features/modules/standings/components/*`
   - Test leaderboard rendering
   - Test ranking display
@@ -149,6 +156,7 @@ Test specifications for React components.
   - Test pagination
 
 ### Analytics Components
+
 - [ ] `src/features/modules/analytics/components/ActivityChart.tsx`
   - Test renders chart
   - Test handles empty data
@@ -179,6 +187,7 @@ Test specifications for React components.
   - Test compares classes
 
 ### Guides Components
+
 - [ ] `src/features/modules/guides/components/GuideCard.tsx`
   - Test renders guide card
   - Test renders icon
@@ -206,18 +215,21 @@ Test specifications for React components.
   - Test renders text correctly
 
 ### Map Analyzer Components
+
 - [ ] `src/features/modules/map-analyzer/components/*`
   - Test map parsing
   - Test map data display
   - Test map visualization
 
 ### Tools Components
+
 - [ ] `src/features/modules/tools/components/*`
   - Test icon mapper UI
   - Test duel simulator UI
   - Test tool interactions
 
 ### Shared Module Components
+
 - [ ] `src/features/modules/shared/components/DateRangeFilter.tsx`
   - Test renders date inputs
   - Test handles date selection
@@ -225,6 +237,7 @@ Test specifications for React components.
   - Test clears filters
 
 ### UI Components
+
 - [ ] `src/features/infrastructure/shared/components/ui/*`
   - Test button component variants
   - Test input component validation
@@ -239,4 +252,3 @@ Test specifications for React components.
 - [Hook Tests](./hook-tests.md)
 - [API Route Tests](./api-route-tests.md)
 - [Testing Guide](../testing-guide.md)
-

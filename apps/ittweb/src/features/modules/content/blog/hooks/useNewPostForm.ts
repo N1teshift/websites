@@ -1,6 +1,6 @@
-import { FormEvent, useMemo, useState } from 'react';
-import { signIn, useSession } from 'next-auth/react';
-import { createComponentLogger } from '@websites/infrastructure/logging';
+import { FormEvent, useMemo, useState } from "react";
+import { signIn, useSession } from "next-auth/react";
+import { createComponentLogger } from "@websites/infrastructure/logging";
 
 export type PostFormState = {
   title: string;
@@ -11,14 +11,14 @@ export type PostFormState = {
   published: boolean;
 };
 
-const logger = createComponentLogger('useNewPostForm');
+const logger = createComponentLogger("useNewPostForm");
 
 const initialState: PostFormState = {
-  title: '',
-  slug: '',
+  title: "",
+  slug: "",
   date: new Date().toISOString().slice(0, 10),
-  excerpt: '',
-  content: '',
+  excerpt: "",
+  content: "",
   published: true,
 };
 
@@ -26,12 +26,12 @@ const slugify = (value: string) =>
   value
     .toLowerCase()
     .trim()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '');
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
 
 export function useNewPostForm(onSuccess?: () => void) {
   const { status } = useSession();
-  const isAuthenticated = status === 'authenticated';
+  const isAuthenticated = status === "authenticated";
   const [formState, setFormState] = useState<PostFormState>(initialState);
   const [slugManuallyEdited, setSlugManuallyEdited] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -40,33 +40,28 @@ export function useNewPostForm(onSuccess?: () => void) {
 
   const canSubmit = useMemo(() => {
     return (
-      formState.title.trim() &&
-      formState.slug.trim() &&
-      formState.content.trim() &&
-      !isSubmitting
+      formState.title.trim() && formState.slug.trim() && formState.content.trim() && !isSubmitting
     );
   }, [formState.content, formState.slug, formState.title, isSubmitting]);
 
-  const handleFieldChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const handleFieldChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const target = event.target;
     const name = target.name;
     const value = target.value;
-    const type = 'type' in target ? target.type : undefined;
-    const checked = 'checked' in target ? target.checked : undefined;
-    if (name === 'slug') {
+    const type = "type" in target ? target.type : undefined;
+    const checked = "checked" in target ? target.checked : undefined;
+    if (name === "slug") {
       setSlugManuallyEdited(true);
     }
 
     setFormState((prev) => {
-      const nextValue = type === 'checkbox' ? checked : value;
+      const nextValue = type === "checkbox" ? checked : value;
       const next = {
         ...prev,
         [name]: nextValue,
       } as PostFormState;
 
-      if (name === 'title' && !slugManuallyEdited) {
+      if (name === "title" && !slugManuallyEdited) {
         next.slug = slugify(value);
       }
 
@@ -78,7 +73,7 @@ export function useNewPostForm(onSuccess?: () => void) {
     event.preventDefault();
 
     if (!isAuthenticated) {
-      signIn('discord');
+      signIn("discord");
       return;
     }
 
@@ -87,10 +82,10 @@ export function useNewPostForm(onSuccess?: () => void) {
     setSuccessMessage(null);
 
     try {
-      const response = await fetch('/api/posts', {
-        method: 'POST',
+      const response = await fetch("/api/posts", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           title: formState.title.trim(),
@@ -107,26 +102,30 @@ export function useNewPostForm(onSuccess?: () => void) {
         const message =
           data?.error ||
           (response.status === 401
-            ? 'You must be signed in to create posts.'
-            : 'Failed to create post.');
+            ? "You must be signed in to create posts."
+            : "Failed to create post.");
         throw new Error(message);
       }
 
-      setSuccessMessage('Post created successfully. Redirecting to home…');
-      logger.info('Post created via UI', { slug: formState.slug });
-      
+      setSuccessMessage("Post created successfully. Redirecting to home…");
+      logger.info("Post created via UI", { slug: formState.slug });
+
       // Revalidate the homepage to ensure fresh data
       try {
-        await fetch('/api/revalidate', {
-          method: 'POST',
+        await fetch("/api/revalidate", {
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
-          body: JSON.stringify({ path: '/' }),
+          body: JSON.stringify({ path: "/" }),
         });
       } catch (revalidateError) {
         // Log but don't fail the creation if revalidation fails
-        logger.error('Failed to revalidate homepage', revalidateError instanceof Error ? revalidateError : new Error(String(revalidateError)), { slug: formState.slug });
+        logger.error(
+          "Failed to revalidate homepage",
+          revalidateError instanceof Error ? revalidateError : new Error(String(revalidateError)),
+          { slug: formState.slug }
+        );
       }
 
       // If onSuccess callback is provided, use it instead of redirecting
@@ -135,12 +134,12 @@ export function useNewPostForm(onSuccess?: () => void) {
       } else {
         // Force a full page reload to fetch the revalidated page
         setTimeout(() => {
-          window.location.href = '/';
+          window.location.href = "/";
         }, 1200);
       }
     } catch (error) {
       const err = error as Error;
-      logger.error('Failed to create post', err, { slug: formState.slug });
+      logger.error("Failed to create post", err, { slug: formState.slug });
       setErrorMessage(err.message);
     } finally {
       setIsSubmitting(false);
@@ -166,6 +165,3 @@ export function useNewPostForm(onSuccess?: () => void) {
     handleReset,
   };
 }
-
-
-

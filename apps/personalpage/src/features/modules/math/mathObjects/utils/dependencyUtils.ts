@@ -12,16 +12,20 @@ import { MathInput, MathObjects } from "../../types/index";
  * @throws {Error} If the parent object does not have at least two generated items.
  * @private
  */
-function handleUpperMinusDependency(dependentInput: MathInput, parentObj: MathObjects): [number, number] {
-    const parts = dependentInput.dependency!.split(":");
-    const delta = parseFloat(parts[1]);
-    if (isNaN(delta)) throw new Error(`Invalid delta value in dependency: ${dependentInput.dependency}`);
-    if (parentObj.generatedItems && parentObj.generatedItems.length >= 2) {
-        const upper = Number(parentObj.generatedItems[1]);
-        const newValue = upper - delta;
-        return [newValue, newValue];
-    }
-    throw new Error("Parent object does not have enough generated items for upper_minus dependency.");
+function handleUpperMinusDependency(
+  dependentInput: MathInput,
+  parentObj: MathObjects
+): [number, number] {
+  const parts = dependentInput.dependency!.split(":");
+  const delta = parseFloat(parts[1]);
+  if (isNaN(delta))
+    throw new Error(`Invalid delta value in dependency: ${dependentInput.dependency}`);
+  if (parentObj.generatedItems && parentObj.generatedItems.length >= 2) {
+    const upper = Number(parentObj.generatedItems[1]);
+    const newValue = upper - delta;
+    return [newValue, newValue];
+  }
+  throw new Error("Parent object does not have enough generated items for upper_minus dependency.");
 }
 
 /**
@@ -36,16 +40,20 @@ function handleUpperMinusDependency(dependentInput: MathInput, parentObj: MathOb
  * @throws {Error} If the parent object does not have at least two generated items.
  * @private
  */
-function handleLowerMinusDependency(dependentInput: MathInput, parentObj: MathObjects): [number, number] {
-    const parts = dependentInput.dependency!.split(":");
-    const delta = parseFloat(parts[1]);
-    if (isNaN(delta)) throw new Error(`Invalid delta value in dependency: ${dependentInput.dependency}`);
-    if (parentObj.generatedItems && parentObj.generatedItems.length >= 2) {
-        const lower = Number(parentObj.generatedItems[0]);
-        const newValue = lower - delta;
-        return [newValue, newValue];
-    }
-    throw new Error("Parent object does not have enough generated items for lower_minus dependency.");
+function handleLowerMinusDependency(
+  dependentInput: MathInput,
+  parentObj: MathObjects
+): [number, number] {
+  const parts = dependentInput.dependency!.split(":");
+  const delta = parseFloat(parts[1]);
+  if (isNaN(delta))
+    throw new Error(`Invalid delta value in dependency: ${dependentInput.dependency}`);
+  if (parentObj.generatedItems && parentObj.generatedItems.length >= 2) {
+    const lower = Number(parentObj.generatedItems[0]);
+    const newValue = lower - delta;
+    return [newValue, newValue];
+  }
+  throw new Error("Parent object does not have enough generated items for lower_minus dependency.");
 }
 
 /**
@@ -60,11 +68,14 @@ function handleLowerMinusDependency(dependentInput: MathInput, parentObj: MathOb
  * @throws {Error} If the parent object does not have at least two generated items.
  * @private
  */
-function handleBelongsToDependency(dependentInput: MathInput, parentObj: MathObjects): [number, number] {
-    if (parentObj.generatedItems && parentObj.generatedItems.length >= 2) {
-        return [Number(parentObj.generatedItems[0]), Number(parentObj.generatedItems[1])];
-    }
-    throw new Error("Parent object does not have enough generated items for belongs_to dependency.");
+function handleBelongsToDependency(
+  dependentInput: MathInput,
+  parentObj: MathObjects
+): [number, number] {
+  if (parentObj.generatedItems && parentObj.generatedItems.length >= 2) {
+    return [Number(parentObj.generatedItems[0]), Number(parentObj.generatedItems[1])];
+  }
+  throw new Error("Parent object does not have enough generated items for belongs_to dependency.");
 }
 
 /**
@@ -85,22 +96,19 @@ function handleBelongsToDependency(dependentInput: MathInput, parentObj: MathObj
  * no changes are made.
  */
 export function updateDependentSettings(dependentInput: MathInput, parentObj: MathObjects): void {
-    if (!dependentInput.dependency || dependentInput.objectType !== "coefficient") return;
+  if (!dependentInput.dependency || dependentInput.objectType !== "coefficient") return;
 
-    let newRange: [number, number] = [0, 0];
+  let newRange: [number, number] = [0, 0];
 
-    if (dependentInput.dependency.startsWith("upper_minus:")) {
-        newRange = handleUpperMinusDependency(dependentInput, parentObj);
-    } else if (dependentInput.dependency.startsWith("lower_minus:")) {
-        newRange = handleLowerMinusDependency(dependentInput, parentObj);
-    } else if (dependentInput.dependency === "belongs_to") {
-        newRange = handleBelongsToDependency(dependentInput, parentObj);
-    }
+  if (dependentInput.dependency.startsWith("upper_minus:")) {
+    newRange = handleUpperMinusDependency(dependentInput, parentObj);
+  } else if (dependentInput.dependency.startsWith("lower_minus:")) {
+    newRange = handleLowerMinusDependency(dependentInput, parentObj);
+  } else if (dependentInput.dependency === "belongs_to") {
+    newRange = handleBelongsToDependency(dependentInput, parentObj);
+  }
 
-    if (dependentInput.objectType === "coefficient") {
-        dependentInput.coefficientSettings.range = newRange;
-    }
+  if (dependentInput.objectType === "coefficient") {
+    dependentInput.coefficientSettings.range = newRange;
+  }
 }
-
-
-

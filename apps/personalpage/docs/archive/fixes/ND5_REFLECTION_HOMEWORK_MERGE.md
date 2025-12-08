@@ -30,7 +30,7 @@ Both columns represented the same reflection homework but were stored with diffe
    - As `ND4` with `homework_reflection` type
    - As `PA` with `homework` type but "Reflection homework" title
 
-2. **Score Format Inconsistency**: 
+2. **Score Format Inconsistency**:
    - ND4 used binary scores (0/1)
    - PA used text scores ("Not completed"/"Completed")
 
@@ -50,6 +50,7 @@ Created `scripts/mergeND4ReflectionHomework.ts` to:
 - **Update metadata**: Changed assessment_id to `homework-reflection-nd5` and title to "Mathematical Skills Reflection - ND5"
 
 **Results:**
+
 - 75 ND4 entries changed to ND5
 - 75 PA duplicate entries removed
 - Generated new data file: `progress_report_data_2025-11-03_v6.json`
@@ -57,25 +58,27 @@ Created `scripts/mergeND4ReflectionHomework.ts` to:
 ### 2. Code Updates
 
 #### a. Column Builder (`columnBuilder.ts`)
+
 Updated `shortenColumnTitle()` function to handle ND5:
 
 ```typescript
 // Shorten reflection homework (e.g., "Mathematical Skills Reflection - ND5" → "ND5")
-if (shortened.includes('ND5')) {
-    return 'ND5';
+if (shortened.includes("ND5")) {
+  return "ND5";
 }
 
 // Legacy ND4 support (if any old data still exists)
-if (shortened.includes('ND4')) {
-    return 'ND4';
+if (shortened.includes("ND4")) {
+  return "ND4";
 }
 ```
 
 #### b. Type Definitions (`ProgressReportTypes.ts`)
+
 Updated `AssessmentType` to properly document homework_reflection:
 
 ```typescript
-export type AssessmentType = 
+export type AssessmentType =
     | 'summative'        // KD, KD1 columns - unit summatives
     | 'test'             // SD columns - small topic tests
     | 'homework'         // ND1, ND2, ND6 - regular homework (binary: 0/1)
@@ -85,14 +88,15 @@ export type AssessmentType =
 ```
 
 #### c. Migration Script (`migrateToV4_1.ts`)
+
 Updated assessment template mapping:
 
 ```typescript
 // HOMEWORK REFLECTION
-if (type === 'homework_reflection') {
-    if (column === 'ND5' && date === '2025-10-03') {
-        return { id: 'homework-reflection-nd5', title: 'Mathematical Skills Reflection - ND5' };
-    }
+if (type === "homework_reflection") {
+  if (column === "ND5" && date === "2025-10-03") {
+    return { id: "homework-reflection-nd5", title: "Mathematical Skills Reflection - ND5" };
+  }
 }
 ```
 
@@ -106,9 +110,9 @@ Updated `docs/fixes/ND_COLUMNS_FIX_COMPLETE.md` to reflect the merge and new ND5
 
 ### After Fix
 
-| Column | Type | Date | Count | Display | Status |
-|--------|------|------|-------|---------|--------|
-| ND5 | homework_reflection | Oct 03, 2025 | 75 | "ND5" | ✅ Single merged column |
+| Column | Type                | Date         | Count | Display | Status                  |
+| ------ | ------------------- | ------------ | ----- | ------- | ----------------------- |
+| ND5    | homework_reflection | Oct 03, 2025 | 75    | "ND5"   | ✅ Single merged column |
 
 ### Data Structure Example
 
@@ -159,9 +163,6 @@ To verify the fix:
 ✅ **Problem Solved**: Duplicate reflection homework columns merged into single ND5 column  
 ✅ **Data Migrated**: All 75 student records updated in v6 data file  
 ✅ **Code Updated**: Column builder and types properly handle ND5  
-✅ **Documentation**: All docs updated to reflect the change  
+✅ **Documentation**: All docs updated to reflect the change
 
 The reflection homework now appears as a single, properly labeled **ND5** column with consistent binary (0/1) scoring.
-
-
-

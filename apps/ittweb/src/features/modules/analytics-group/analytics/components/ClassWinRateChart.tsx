@@ -1,6 +1,6 @@
-import React, { Suspense, lazy } from 'react';
-import { Card } from '@/features/infrastructure/components';
-import type { ClassWinRateData } from '../types';
+import React, { Suspense, lazy } from "react";
+import { Card } from "@/features/infrastructure/components";
+import type { ClassWinRateData } from "../types";
 
 interface ClassWinRateChartProps {
   data: ClassWinRateData[];
@@ -9,13 +9,13 @@ interface ClassWinRateChartProps {
 
 // Lazy load Recharts to reduce initial bundle size
 const ChartContent = lazy(async () => {
-  const recharts = await import('recharts');
+  const recharts = await import("recharts");
   return {
     default: ({ data, title }: ClassWinRateChartProps) => {
       const { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } = recharts;
-      
+
       // Format data for chart
-      const chartData = data.map(item => ({
+      const chartData = data.map((item) => ({
         className: item.className.charAt(0).toUpperCase() + item.className.slice(1),
         winRate: Number(item.winRate.toFixed(1)),
       }));
@@ -30,26 +30,31 @@ const ChartContent = lazy(async () => {
                 type="number"
                 domain={[0, 100]}
                 stroke="#d97706"
-                tick={{ fill: '#d97706' }}
-                style={{ fontSize: '12px' }}
-                label={{ value: 'Win Rate (%)', position: 'insideBottom', offset: -5, style: { fill: '#d97706' } }}
+                tick={{ fill: "#d97706" }}
+                style={{ fontSize: "12px" }}
+                label={{
+                  value: "Win Rate (%)",
+                  position: "insideBottom",
+                  offset: -5,
+                  style: { fill: "#d97706" },
+                }}
               />
               <YAxis
                 type="category"
                 dataKey="className"
                 stroke="#d97706"
-                tick={{ fill: '#d97706' }}
-                style={{ fontSize: '12px' }}
+                tick={{ fill: "#d97706" }}
+                style={{ fontSize: "12px" }}
                 width={100}
               />
               <Tooltip
                 contentStyle={{
-                  backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                  border: '1px solid rgba(217, 119, 6, 0.3)',
-                  borderRadius: '4px',
-                  color: '#d97706',
+                  backgroundColor: "rgba(0, 0, 0, 0.8)",
+                  border: "1px solid rgba(217, 119, 6, 0.3)",
+                  borderRadius: "4px",
+                  color: "#d97706",
                 }}
-                formatter={(value: number) => [`${value}%`, 'Win Rate']}
+                formatter={(value: number) => [`${value}%`, "Win Rate"]}
               />
               <Bar dataKey="winRate" fill="#d97706" />
             </BarChart>
@@ -69,7 +74,7 @@ const ChartLoadingPlaceholder = () => (
   </Card>
 );
 
-function ClassWinRateChartComponent({ data, title = 'Class Win Rate' }: ClassWinRateChartProps) {
+function ClassWinRateChartComponent({ data, title = "Class Win Rate" }: ClassWinRateChartProps) {
   if (!data || data.length === 0) {
     return (
       <Card variant="medieval" className="p-8 text-center">
@@ -87,4 +92,3 @@ function ClassWinRateChartComponent({ data, title = 'Class Win Rate' }: ClassWin
 
 // Memoize component to prevent unnecessary re-renders when props haven't changed
 export const ClassWinRateChart = React.memo(ClassWinRateChartComponent);
-

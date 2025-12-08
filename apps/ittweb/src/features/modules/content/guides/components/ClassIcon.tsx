@@ -1,6 +1,6 @@
-import React from 'react';
-import GuideIcon from './GuideIcon';
-import { ITTIconCategory } from '../utils/iconUtils';
+import React from "react";
+import GuideIcon from "./GuideIcon";
+import { ITTIconCategory } from "../utils/iconUtils";
 
 type Props = {
   slug: string;
@@ -10,12 +10,15 @@ type Props = {
   className?: string;
 };
 
-export default function ClassIcon({ slug, name, iconSrc, size = 56, className = '' }: Props) {
+export default function ClassIcon({ slug, name, iconSrc, size = 56, className = "" }: Props) {
   const dimensionStyle = { width: size, height: size } as React.CSSProperties;
 
-  const mapping: Record<string, { category: ITTIconCategory; displayName: string } | { src: string }> = {
-    hunter: { src: '/icons/itt/btnforesttroll.png' },
-    scout: { src: '/icons/itt/BTNTrollScout.png' },
+  const mapping: Record<
+    string,
+    { category: ITTIconCategory; displayName: string } | { src: string }
+  > = {
+    hunter: { src: "/icons/itt/btnforesttroll.png" },
+    scout: { src: "/icons/itt/BTNTrollScout.png" },
   };
 
   const mapped = mapping[slug];
@@ -27,15 +30,14 @@ export default function ClassIcon({ slug, name, iconSrc, size = 56, className = 
       aria-label={`${name} icon`}
     >
       {mapped ? (
-        'src' in mapped
-          ? <GuideIcon category={'trolls'} name={name} size={size} src={mapped.src} />
-          : <GuideIcon category={mapped.category} name={mapped.displayName} size={size} />
+        "src" in mapped ? (
+          <GuideIcon category={"trolls"} name={name} size={size} src={mapped.src} />
+        ) : (
+          <GuideIcon category={mapped.category} name={mapped.displayName} size={size} />
+        )
       ) : (
-        <GuideIcon category={'trolls'} name={name} size={size} src={iconSrc} />
+        <GuideIcon category={"trolls"} name={name} size={size} src={iconSrc} />
       )}
     </div>
   );
 }
-
-
-

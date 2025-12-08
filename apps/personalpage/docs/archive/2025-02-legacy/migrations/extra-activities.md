@@ -1,6 +1,7 @@
 # Extra Activities Migration - v4.50 to v4.51
 
 ## Overview
+
 Migration to add mandatory consultation and special math club tracking to the student database.
 
 **Date**: 2025-10-26  
@@ -41,6 +42,7 @@ learning_attributes: {
 Created two new attendance tracking arrays at student level:
 
 #### Mandatory Consultation Attendance
+
 ```typescript
 mandatory_consultation_attendance?: Array<{
   date: string;           // YYYY-MM-DD format
@@ -50,6 +52,7 @@ mandatory_consultation_attendance?: Array<{
 ```
 
 #### Math Club Attendance
+
 ```typescript
 math_club_attendance?: Array<{
   date: string;           // YYYY-MM-DD format
@@ -68,11 +71,13 @@ math_club_attendance?: Array<{
 ### Matching Statistics
 
 **Mandatory Consultation (Kons_P)**:
+
 - Total students in Excel: 17
 - Successfully matched: 17 ✓
 - Match rate: 100%
 
 **Special Math Club (Smals)**:
+
 - Total students in Excel: 15
 - Successfully matched: 15 ✓
 - Match rate: 100%
@@ -86,14 +91,16 @@ The migration used sophisticated matching with three fallback levels:
 3. **Name Only**: Matches by name only, ignoring class (for data quality issues)
 
 #### Class Name Mapping
+
 - Excel "Gim" → JSON "M. A. Gimbutienė"
-- Excel "Vyd" → JSON "Vydūnas"  
+- Excel "Vyd" → JSON "Vydūnas"
 - Excel "Grei" → JSON "A. J. Greimas"
 - Excel "Vei" → JSON "I. Veisaitė"
 
 ## Matched Students
 
 ### Mandatory Consultation (17 students)
+
 1. Agota Akromė (GIM-AAKR-001) - Present
 2. Ona Balžekaitė (VYD-OBAL-003) - Absent
 3. Emilė Guzikauskaitė (VYD-EGUZ-004) - Present
@@ -113,6 +120,7 @@ The migration used sophisticated matching with three fallback levels:
 17. Kristupas Vinča (GIM-KVIN-015) - Present
 
 ### Special Math Club (15 students)
+
 1. Dovydas Rimas (GRE-DRIM-014) - Absent
 2. Lukas Šegžda (GRE-LŠEG-018) - Absent
 3. Jokūbas Rusinas (VEI-JRUS-017) - Absent
@@ -140,11 +148,13 @@ The migration used sophisticated matching with three fallback levels:
 ## Technical Details
 
 ### Normalization
+
 - Removes diacritics (ė→e, ū→u, etc.)
 - Converts to lowercase
 - Trims whitespace
 
 ### Levenshtein Distance
+
 Used for fuzzy last name matching to handle typos and spelling variations.
 
 ## Database Schema Update
@@ -160,6 +170,7 @@ npx tsx scripts/addExtraActivities.ts
 ```
 
 The script:
+
 1. Reads `master_student_data_main_v4_50.json`
 2. Reads `stud_data.xlsx` (Kons_P and Smals sheets)
 3. Matches students using intelligent fuzzy matching
@@ -173,4 +184,3 @@ The script:
 - Can be extended to track additional extracurricular activities
 - May want to add reasons for absences (authorized vs unauthorized)
 - Could add notification system for mandatory consultation absences
-

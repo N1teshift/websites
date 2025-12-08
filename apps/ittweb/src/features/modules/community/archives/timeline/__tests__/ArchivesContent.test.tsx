@@ -1,10 +1,10 @@
-import { render, screen } from '@testing-library/react';
-import ArchivesContent from '../components/ArchivesContent';
-import type { ArchiveEntry } from '@/types/archive';
-import type { Game } from '@/features/modules/game-management/games/types';
+import { render, screen } from "@testing-library/react";
+import ArchivesContent from "../components/ArchivesContent";
+import type { ArchiveEntry } from "@/types/archive";
+import type { Game } from "@/features/modules/game-management/games/types";
 
 // Mock TimelineSection
-jest.mock('../../shared/components/sections/TimelineSection', () => ({
+jest.mock("../../shared/components/sections/TimelineSection", () => ({
   __esModule: true,
   default: ({ title, entries, onEdit, onDelete, canDeleteEntry, onImageClick }: any) => (
     <div data-testid={`timeline-section-${title}`}>
@@ -16,7 +16,9 @@ jest.mock('../../shared/components/sections/TimelineSection', () => ({
           {canDeleteEntry && canDeleteEntry(entry) && onDelete && (
             <button onClick={() => onDelete(entry)}>Delete</button>
           )}
-          {onImageClick && <button onClick={() => onImageClick('image.jpg', entry.title)}>View Image</button>}
+          {onImageClick && (
+            <button onClick={() => onImageClick("image.jpg", entry.title)}>View Image</button>
+          )}
         </div>
       ))}
     </div>
@@ -24,7 +26,7 @@ jest.mock('../../shared/components/sections/TimelineSection', () => ({
 }));
 
 // Mock state components
-jest.mock('../index', () => ({
+jest.mock("../index", () => ({
   ArchivesEmptyState: ({ isAuthenticated, onAddClick, onSignInClick }: any) => (
     <div data-testid="empty-state">
       {isAuthenticated ? (
@@ -35,10 +37,12 @@ jest.mock('../index', () => ({
     </div>
   ),
   ArchivesLoadingState: () => <div data-testid="loading-state">Loading...</div>,
-  ArchivesErrorState: ({ error }: { error: string }) => <div data-testid="error-state">{error}</div>,
+  ArchivesErrorState: ({ error }: { error: string }) => (
+    <div data-testid="error-state">{error}</div>
+  ),
 }));
 
-describe('ArchivesContent', () => {
+describe("ArchivesContent", () => {
   const mockOnEdit = jest.fn();
   const mockOnRequestDelete = jest.fn();
   const mockOnImageClick = jest.fn();
@@ -47,16 +51,16 @@ describe('ArchivesContent', () => {
   const mockCanDeleteEntry = jest.fn();
 
   const baseEntry: ArchiveEntry = {
-    id: 'entry1',
-    title: 'Test Entry',
-    content: 'Test content',
-    creatorName: 'Test Creator',
+    id: "entry1",
+    title: "Test Entry",
+    content: "Test content",
+    creatorName: "Test Creator",
     dateInfo: {
-      type: 'single',
-      singleDate: '2024-01-15',
+      type: "single",
+      singleDate: "2024-01-15",
     },
-    createdAt: '2024-01-15T00:00:00Z',
-    updatedAt: '2024-01-15T00:00:00Z',
+    createdAt: "2024-01-15T00:00:00Z",
+    updatedAt: "2024-01-15T00:00:00Z",
   };
 
   beforeEach(() => {
@@ -64,8 +68,8 @@ describe('ArchivesContent', () => {
     mockCanDeleteEntry.mockReturnValue(false);
   });
 
-  describe('renders loading state', () => {
-    it('should render loading state when loading is true', () => {
+  describe("renders loading state", () => {
+    it("should render loading state when loading is true", () => {
       // Act
       render(
         <ArchivesContent
@@ -85,10 +89,10 @@ describe('ArchivesContent', () => {
       );
 
       // Assert
-      expect(screen.getByTestId('loading-state')).toBeInTheDocument();
+      expect(screen.getByTestId("loading-state")).toBeInTheDocument();
     });
 
-    it('should not render timeline when loading', () => {
+    it("should not render timeline when loading", () => {
       // Act
       render(
         <ArchivesContent
@@ -108,12 +112,12 @@ describe('ArchivesContent', () => {
       );
 
       // Assert
-      expect(screen.queryByTestId('timeline-section-Timeline')).not.toBeInTheDocument();
+      expect(screen.queryByTestId("timeline-section-Timeline")).not.toBeInTheDocument();
     });
   });
 
-  describe('renders error state', () => {
-    it('should render error message when error is provided', () => {
+  describe("renders error state", () => {
+    it("should render error message when error is provided", () => {
       // Act
       render(
         <ArchivesContent
@@ -133,18 +137,18 @@ describe('ArchivesContent', () => {
       );
 
       // Assert
-      expect(screen.getByTestId('error-state')).toBeInTheDocument();
-      expect(screen.getByText('Failed to load archives')).toBeInTheDocument();
+      expect(screen.getByTestId("error-state")).toBeInTheDocument();
+      expect(screen.getByText("Failed to load archives")).toBeInTheDocument();
     });
   });
 
-  describe('renders timeline sections', () => {
-    it('should render Timeline section with dated entries', () => {
+  describe("renders timeline sections", () => {
+    it("should render Timeline section with dated entries", () => {
       // Arrange
       const datedEntry = {
         ...baseEntry,
-        id: 'dated1',
-        title: 'Dated Entry',
+        id: "dated1",
+        title: "Dated Entry",
       };
 
       // Act
@@ -166,19 +170,19 @@ describe('ArchivesContent', () => {
       );
 
       // Assert
-      expect(screen.getByTestId('timeline-section-Timeline')).toBeInTheDocument();
-      expect(screen.getByText('Dated Entry')).toBeInTheDocument();
+      expect(screen.getByTestId("timeline-section-Timeline")).toBeInTheDocument();
+      expect(screen.getByText("Dated Entry")).toBeInTheDocument();
     });
 
-    it('should render Undated Archives section with undated entries', () => {
+    it("should render Undated Archives section with undated entries", () => {
       // Arrange
       const undatedEntry = {
         ...baseEntry,
-        id: 'undated1',
-        title: 'Undated Entry',
+        id: "undated1",
+        title: "Undated Entry",
         dateInfo: {
-          type: 'undated' as const,
-          approximateText: 'Early 2024',
+          type: "undated" as const,
+          approximateText: "Early 2024",
         },
       };
 
@@ -201,17 +205,17 @@ describe('ArchivesContent', () => {
       );
 
       // Assert
-      expect(screen.getByTestId('timeline-section-Undated Archives')).toBeInTheDocument();
-      expect(screen.getByText('Undated Entry')).toBeInTheDocument();
+      expect(screen.getByTestId("timeline-section-Undated Archives")).toBeInTheDocument();
+      expect(screen.getByText("Undated Entry")).toBeInTheDocument();
     });
   });
 
-  describe('handles authentication', () => {
-    it('should pass onEdit to TimelineSection when authenticated', () => {
+  describe("handles authentication", () => {
+    it("should pass onEdit to TimelineSection when authenticated", () => {
       // Arrange
       const datedEntry = {
         ...baseEntry,
-        id: 'dated1',
+        id: "dated1",
       };
 
       // Act
@@ -233,14 +237,14 @@ describe('ArchivesContent', () => {
       );
 
       // Assert
-      expect(screen.getByText('Edit')).toBeInTheDocument();
+      expect(screen.getByText("Edit")).toBeInTheDocument();
     });
 
-    it('should not pass onEdit to TimelineSection when not authenticated', () => {
+    it("should not pass onEdit to TimelineSection when not authenticated", () => {
       // Arrange
       const datedEntry = {
         ...baseEntry,
-        id: 'dated1',
+        id: "dated1",
       };
 
       // Act
@@ -262,16 +266,16 @@ describe('ArchivesContent', () => {
       );
 
       // Assert
-      expect(screen.queryByText('Edit')).not.toBeInTheDocument();
+      expect(screen.queryByText("Edit")).not.toBeInTheDocument();
     });
   });
 
-  describe('handles delete permissions', () => {
-    it('should allow delete when canManageEntries is true', () => {
+  describe("handles delete permissions", () => {
+    it("should allow delete when canManageEntries is true", () => {
       // Arrange
       const datedEntry = {
         ...baseEntry,
-        id: 'dated1',
+        id: "dated1",
       };
       mockCanDeleteEntry.mockReturnValue(true);
 
@@ -294,14 +298,14 @@ describe('ArchivesContent', () => {
       );
 
       // Assert
-      expect(screen.getByText('Delete')).toBeInTheDocument();
+      expect(screen.getByText("Delete")).toBeInTheDocument();
     });
 
-    it('should use canDeleteEntry function when provided', () => {
+    it("should use canDeleteEntry function when provided", () => {
       // Arrange
       const datedEntry = {
         ...baseEntry,
-        id: 'dated1',
+        id: "dated1",
       };
       mockCanDeleteEntry.mockReturnValue(true);
 
@@ -326,12 +330,12 @@ describe('ArchivesContent', () => {
 
       // Assert
       expect(mockCanDeleteEntry).toHaveBeenCalledWith(datedEntry);
-      expect(screen.getByText('Delete')).toBeInTheDocument();
+      expect(screen.getByText("Delete")).toBeInTheDocument();
     });
   });
 
-  describe('renders empty state', () => {
-    it('should render empty state when no entries and no games', () => {
+  describe("renders empty state", () => {
+    it("should render empty state when no entries and no games", () => {
       // Act
       render(
         <ArchivesContent
@@ -352,10 +356,10 @@ describe('ArchivesContent', () => {
       );
 
       // Assert
-      expect(screen.getByTestId('empty-state')).toBeInTheDocument();
+      expect(screen.getByTestId("empty-state")).toBeInTheDocument();
     });
 
-    it('should show sign in button when not authenticated', () => {
+    it("should show sign in button when not authenticated", () => {
       // Act
       render(
         <ArchivesContent
@@ -376,10 +380,10 @@ describe('ArchivesContent', () => {
       );
 
       // Assert
-      expect(screen.getByText('Sign In')).toBeInTheDocument();
+      expect(screen.getByText("Sign In")).toBeInTheDocument();
     });
 
-    it('should show add entry button when authenticated', () => {
+    it("should show add entry button when authenticated", () => {
       // Act
       render(
         <ArchivesContent
@@ -400,21 +404,21 @@ describe('ArchivesContent', () => {
       );
 
       // Assert
-      expect(screen.getByText('Add Entry')).toBeInTheDocument();
+      expect(screen.getByText("Add Entry")).toBeInTheDocument();
     });
   });
 
-  describe('handles games without archives', () => {
-    it('should merge games without archive entries into timeline', () => {
+  describe("handles games without archives", () => {
+    it("should merge games without archive entries into timeline", () => {
       // Arrange
       const game: Game = {
-        id: 'game1',
+        id: "game1",
         gameId: 1,
-        gameState: 'completed',
-        creatorName: 'Test Creator',
-        datetime: '2024-01-20T00:00:00Z',
-        createdAt: '2024-01-20T00:00:00Z',
-        updatedAt: '2024-01-20T00:00:00Z',
+        gameState: "completed",
+        creatorName: "Test Creator",
+        datetime: "2024-01-20T00:00:00Z",
+        createdAt: "2024-01-20T00:00:00Z",
+        updatedAt: "2024-01-20T00:00:00Z",
       };
 
       // Act
@@ -438,24 +442,24 @@ describe('ArchivesContent', () => {
 
       // Assert
       // Games without archives should be added to the timeline
-      expect(screen.getByTestId('timeline-section-Timeline')).toBeInTheDocument();
+      expect(screen.getByTestId("timeline-section-Timeline")).toBeInTheDocument();
     });
 
-    it('should not include games that already have archive entries', () => {
+    it("should not include games that already have archive entries", () => {
       // Arrange
       const game: Game = {
-        id: 'game1',
+        id: "game1",
         gameId: 1,
-        gameState: 'completed',
-        creatorName: 'Test Creator',
-        datetime: '2024-01-20T00:00:00Z',
-        createdAt: '2024-01-20T00:00:00Z',
-        updatedAt: '2024-01-20T00:00:00Z',
+        gameState: "completed",
+        creatorName: "Test Creator",
+        datetime: "2024-01-20T00:00:00Z",
+        createdAt: "2024-01-20T00:00:00Z",
+        updatedAt: "2024-01-20T00:00:00Z",
       };
       const entryWithLinkedGame = {
         ...baseEntry,
-        id: 'entry1',
-        linkedGameDocumentId: 'game1',
+        id: "entry1",
+        linkedGameDocumentId: "game1",
       };
 
       // Act
@@ -484,6 +488,3 @@ describe('ArchivesContent', () => {
     });
   });
 });
-
-
-

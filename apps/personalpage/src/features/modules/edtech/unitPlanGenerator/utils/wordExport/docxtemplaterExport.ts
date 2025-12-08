@@ -1,7 +1,12 @@
-import PizZip from 'pizzip';
-import Docxtemplater from 'docxtemplater';
-import { UnitPlanData, AssessmentTask, ATLCard, LearningExperienceCard } from '../../types/UnitPlanTypes';
-import { getStrandByFullId, getObjectiveById } from '../../data/objectives';
+import PizZip from "pizzip";
+import Docxtemplater from "docxtemplater";
+import {
+  UnitPlanData,
+  AssessmentTask,
+  ATLCard,
+  LearningExperienceCard,
+} from "../../types/UnitPlanTypes";
+import { getStrandByFullId, getObjectiveById } from "../../data/objectives";
 
 /**
  * Export unit plan as Word document using Docxtemplater
@@ -14,9 +19,9 @@ export async function exportUnitPlanWithDocxtemplater(
   try {
     // If no template is provided, load the default template
     if (!templateBuffer) {
-      const response = await fetch('/templates/wordTemplate.docx');
+      const response = await fetch("/templates/wordTemplate.docx");
       if (!response.ok) {
-        throw new Error('Failed to load default template');
+        throw new Error("Failed to load default template");
       }
       templateBuffer = await response.arrayBuffer();
     }
@@ -36,13 +41,13 @@ export async function exportUnitPlanWithDocxtemplater(
 
     // Generate the output
     const output = doc.getZip().generate({
-      type: 'blob',
-      mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      type: "blob",
+      mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
     });
 
     return output;
   } catch (error) {
-    console.error('Error in Docxtemplater export:', error);
+    console.error("Error in Docxtemplater export:", error);
     throw error;
   }
 }
@@ -52,13 +57,13 @@ export async function exportUnitPlanWithDocxtemplater(
  */
 function formatObjectivesForTemplate(objectives: string[]): string {
   if (!objectives || objectives.length === 0) {
-    return 'Not specified';
+    return "Not specified";
   }
 
   // Group strands by objective
   const objectiveGroups: Record<string, string[]> = {};
-  
-  objectives.forEach(strandId => {
+
+  objectives.forEach((strandId) => {
     const strand = getStrandByFullId(strandId);
     if (strand) {
       const objectiveId = strand.objectiveId;
@@ -71,26 +76,28 @@ function formatObjectivesForTemplate(objectives: string[]): string {
 
   // Format each objective group
   const formattedObjectives: string[] = [];
-  
-  Object.keys(objectiveGroups).sort().forEach(objectiveId => {
-    const objective = getObjectiveById(objectiveId);
-    if (objective) {
-      formattedObjectives.push(`${objective.name}:`);
-      
-      // Add each strand for this objective
-      objectiveGroups[objectiveId].forEach(strandId => {
-        const strand = getStrandByFullId(strandId);
-        if (strand) {
-          formattedObjectives.push(`  ${strand.id}. ${strand.description}`);
-        }
-      });
-      
-      // Add a blank line between objectives
-      formattedObjectives.push('');
-    }
-  });
 
-  return formattedObjectives.join('\n');
+  Object.keys(objectiveGroups)
+    .sort()
+    .forEach((objectiveId) => {
+      const objective = getObjectiveById(objectiveId);
+      if (objective) {
+        formattedObjectives.push(`${objective.name}:`);
+
+        // Add each strand for this objective
+        objectiveGroups[objectiveId].forEach((strandId) => {
+          const strand = getStrandByFullId(strandId);
+          if (strand) {
+            formattedObjectives.push(`  ${strand.id}. ${strand.description}`);
+          }
+        });
+
+        // Add a blank line between objectives
+        formattedObjectives.push("");
+      }
+    });
+
+  return formattedObjectives.join("\n");
 }
 
 /**
@@ -98,29 +105,33 @@ function formatObjectivesForTemplate(objectives: string[]): string {
  */
 function formatAssessmentTasksForTemplate(tasks: AssessmentTask[]): string {
   if (!tasks || tasks.length === 0) {
-    return 'No assessment tasks specified';
+    return "No assessment tasks specified";
   }
 
-  return tasks.map((task, index) => {
-    let strandDescription = task.criterionID;
-    
-    // Try to get strand description
-    const strand = getStrandByFullId(task.criterionID);
-    if (strand) {
-      strandDescription = strand.description;
-    } else {
-      // If it's a main objective ID (like "A", "B", etc.), get the objective name
-      const objective = getObjectiveById(task.criterionID);
-      if (objective) {
-        strandDescription = objective.name;
+  return tasks
+    .map((task, index) => {
+      let strandDescription = task.criterionID;
+
+      // Try to get strand description
+      const strand = getStrandByFullId(task.criterionID);
+      if (strand) {
+        strandDescription = strand.description;
+      } else {
+        // If it's a main objective ID (like "A", "B", etc.), get the objective name
+        const objective = getObjectiveById(task.criterionID);
+        if (objective) {
+          strandDescription = objective.name;
+        }
       }
-    }
-    
-    return `TASK ${index + 1}: ${task.taskTitle}\n` +
-           `${task.taskDescription}\n` +
-           `${task.criterionID}. ${strandDescription}\n` +
-           `${task.criterionDescription}`;
-  }).join('\n\n');
+
+      return (
+        `TASK ${index + 1}: ${task.taskTitle}\n` +
+        `${task.taskDescription}\n` +
+        `${task.criterionID}. ${strandDescription}\n` +
+        `${task.criterionDescription}`
+      );
+    })
+    .join("\n\n");
 }
 
 /**
@@ -142,7 +153,7 @@ function formatATLCardsForTemplate(cards: ATLCard[]): ATLCardTemplateData[] {
     categoryCluster: card.categoryCluster,
     atlSupport: card.atlSupport,
     strategy: `Strategy: ${card.atlStrategyName}\n${card.atlStrategyDescription}`,
-    index: index + 1
+    index: index + 1,
   }));
 }
 
@@ -163,21 +174,27 @@ interface ActivityCardTemplateData {
   activityFormativeAssessmentTitle: string;
 }
 
-function formatLearningExperienceCardsForTemplate(cards: LearningExperienceCard[]): LearningExperienceCardTemplateData[] {
+function formatLearningExperienceCardsForTemplate(
+  cards: LearningExperienceCard[]
+): LearningExperienceCardTemplateData[] {
   if (!cards || cards.length === 0) {
     return [];
   }
 
   return cards.map((card, _index) => {
     // Format all activities as a single string for the row
-    const activitiesText = card.activities.map((activity, activityIndex) => {
-      return `Activity ${activityIndex + 1}: ${activity.activityName}\n${activity.activityDescription}\nFormative Assessment: ${activity.activityFormativeAssessmentTitle}`;
-    }).join('\n\n');
+    const activitiesText = card.activities
+      .map((activity, activityIndex) => {
+        return `Activity ${activityIndex + 1}: ${activity.activityName}\n${activity.activityDescription}\nFormative Assessment: ${activity.activityFormativeAssessmentTitle}`;
+      })
+      .join("\n\n");
 
     // Create a formatted version for Word tables (without extra spacing)
-    const formattedActivitiesText = card.activities.map((activity, activityIndex) => {
-      return `Activity ${activityIndex + 1}: ${activity.activityName}\n${activity.activityDescription}\nFormative Assessment: ${activity.activityFormativeAssessmentTitle}`;
-    }).join('\n');
+    const formattedActivitiesText = card.activities
+      .map((activity, activityIndex) => {
+        return `Activity ${activityIndex + 1}: ${activity.activityName}\n${activity.activityDescription}\nFormative Assessment: ${activity.activityFormativeAssessmentTitle}`;
+      })
+      .join("\n");
 
     return {
       learningExperienceDayRange: card.learningExperienceDayRange,
@@ -191,9 +208,9 @@ function formatLearningExperienceCardsForTemplate(cards: LearningExperienceCard[
         activityFormativeAssessmentTitle: activity.activityFormativeAssessmentTitle,
       })),
       // New field for single-row display
-      activitiesAsText: activitiesText || 'No activities defined',
+      activitiesAsText: activitiesText || "No activities defined",
       // Compact version for Word tables
-      activitiesCompact: formattedActivitiesText || 'No activities defined',
+      activitiesCompact: formattedActivitiesText || "No activities defined",
     };
   });
 }
@@ -204,91 +221,108 @@ function formatLearningExperienceCardsForTemplate(cards: LearningExperienceCard[
 function prepareTemplateData(unitPlan: UnitPlanData) {
   return {
     // Basic Information
-    schoolName: unitPlan.schoolName || 'Not specified',
-    unitTitle: unitPlan.unitTitle || 'Not specified',
-    academicYear: unitPlan.academicYear || 'Not specified',
-    subject: unitPlan.subject || 'Not specified',
-    mypYear: unitPlan.mypYear || 'Not specified',
+    schoolName: unitPlan.schoolName || "Not specified",
+    unitTitle: unitPlan.unitTitle || "Not specified",
+    academicYear: unitPlan.academicYear || "Not specified",
+    subject: unitPlan.subject || "Not specified",
+    mypYear: unitPlan.mypYear || "Not specified",
 
     // Concepts and Understandings
-    specifiedConcepts: unitPlan.specifiedConcepts?.join(', ') || 'Not specified',
-    keyConcepts: unitPlan.keyConcepts?.join(', ') || 'Not specified',
-    relatedConcepts: unitPlan.relatedConcepts?.join(', ') || 'Not specified',
-    conceptualUnderstandings: unitPlan.conceptualUnderstandings || 'Not specified',
-    globalContext: unitPlan.globalContext || 'Not specified',
-    globalContextExplanation: unitPlan.globalContextExplanation || 'Not specified',
+    specifiedConcepts: unitPlan.specifiedConcepts?.join(", ") || "Not specified",
+    keyConcepts: unitPlan.keyConcepts?.join(", ") || "Not specified",
+    relatedConcepts: unitPlan.relatedConcepts?.join(", ") || "Not specified",
+    conceptualUnderstandings: unitPlan.conceptualUnderstandings || "Not specified",
+    globalContext: unitPlan.globalContext || "Not specified",
+    globalContextExplanation: unitPlan.globalContextExplanation || "Not specified",
 
     // Inquiry
-    inquiryStatement: unitPlan.inquiryStatement || 'Not specified',
-    factualQuestions: unitPlan.factualQuestions?.join('\n') || 'Not specified',
-    conceptualQuestions: unitPlan.conceptualQuestions?.join('\n') || 'Not specified',
-    debatableQuestions: unitPlan.debatableQuestions?.join('\n') || 'Not specified',
+    inquiryStatement: unitPlan.inquiryStatement || "Not specified",
+    factualQuestions: unitPlan.factualQuestions?.join("\n") || "Not specified",
+    conceptualQuestions: unitPlan.conceptualQuestions?.join("\n") || "Not specified",
+    debatableQuestions: unitPlan.debatableQuestions?.join("\n") || "Not specified",
 
     // Assessment - Updated to use new formatting functions
     objectives: formatObjectivesForTemplate(unitPlan.objectives),
-    assessmentTitle: unitPlan.assessmentTitle || 'Not specified',
-    assessmentType: unitPlan.assessmentType || 'Not specified',
-    summativeAssessment: unitPlan.summativeAssessment || 'Not specified',
-    summativeAssessmentRelationshipDescription: unitPlan.summativeAssessmentRelationshipDescription || 'Not specified',
+    assessmentTitle: unitPlan.assessmentTitle || "Not specified",
+    assessmentType: unitPlan.assessmentType || "Not specified",
+    summativeAssessment: unitPlan.summativeAssessment || "Not specified",
+    summativeAssessmentRelationshipDescription:
+      unitPlan.summativeAssessmentRelationshipDescription || "Not specified",
     assessmentTasks: formatAssessmentTasksForTemplate(unitPlan.assessmentTasks),
-    commandTerms: unitPlan.commandTerms?.join(', ') || 'Not specified',
+    commandTerms: unitPlan.commandTerms?.join(", ") || "Not specified",
 
     // Context
-    individualContext: unitPlan.individualContext || 'Not specified',
-    localContext: unitPlan.localContext || 'Not specified',
-    globalContextLens: unitPlan.globalContextLens || 'Not specified',
+    individualContext: unitPlan.individualContext || "Not specified",
+    localContext: unitPlan.localContext || "Not specified",
+    globalContextLens: unitPlan.globalContextLens || "Not specified",
 
     // ATL Skills
-    atlSkills: unitPlan.atlSkills?.join('\n') || 'Not specified',
-    atlStrategies: unitPlan.atlStrategies || 'Not specified',
+    atlSkills: unitPlan.atlSkills?.join("\n") || "Not specified",
+    atlStrategies: unitPlan.atlStrategies || "Not specified",
     atlCards: formatATLCardsForTemplate(unitPlan.atlCards),
-    
+
     // Learning Process (for current mode)
-    learningExperienceCards: formatLearningExperienceCardsForTemplate(unitPlan.learningExperienceCards),
+    learningExperienceCards: formatLearningExperienceCardsForTemplate(
+      unitPlan.learningExperienceCards
+    ),
 
     // Subunits
-    subunits: unitPlan.subunits?.map((subunit, index) => ({
-      number: subunit.subunitNumber || index + 1,
-      title: `Subunit ${subunit.subunitNumber || index + 1}`,
-      description: subunit.content || 'Not specified',
-      lessonsPerSubunit: subunit.lessonsPerSubunit || 0,
-      interimAssessment: subunit.interimAssessment || 'Not specified',
-      formativeAssessment: subunit.formativeAssessment || 'Not specified',
-      successCriteria: subunit.successCriteria || 'Not specified',
-      activities: subunit.activities || 'Not specified',
-      learningExperiences: subunit.learningExperiences || 'Not specified',
-      differentiation: subunit.differentiation || 'Not specified',
-      summativeAssessment: subunit.summativeAssessment || 'Not specified',
-    })) || [],
+    subunits:
+      unitPlan.subunits?.map((subunit, index) => ({
+        number: subunit.subunitNumber || index + 1,
+        title: `Subunit ${subunit.subunitNumber || index + 1}`,
+        description: subunit.content || "Not specified",
+        lessonsPerSubunit: subunit.lessonsPerSubunit || 0,
+        interimAssessment: subunit.interimAssessment || "Not specified",
+        formativeAssessment: subunit.formativeAssessment || "Not specified",
+        successCriteria: subunit.successCriteria || "Not specified",
+        activities: subunit.activities || "Not specified",
+        learningExperiences: subunit.learningExperiences || "Not specified",
+        differentiation: subunit.differentiation || "Not specified",
+        summativeAssessment: subunit.summativeAssessment || "Not specified",
+      })) || [],
 
     // Prior Knowledge (for current mode)
-    priorKnowledgeSubjectSpecific: unitPlan.priorKnowledgeSubjectSpecific?.map(item => `• ${item}`).join('\n') || 'Not specified',
-    priorKnowledgeLearningSkills: unitPlan.priorKnowledgeLearningSkills?.map(item => `• ${item}`).join('\n') || 'Not specified',
-    
+    priorKnowledgeSubjectSpecific:
+      unitPlan.priorKnowledgeSubjectSpecific?.map((item) => `• ${item}`).join("\n") ||
+      "Not specified",
+    priorKnowledgeLearningSkills:
+      unitPlan.priorKnowledgeLearningSkills?.map((item) => `• ${item}`).join("\n") ||
+      "Not specified",
+
     // New Knowledge (for current mode)
-    topicsTerminology: unitPlan.topicsTerminology?.map(item => `• ${item}`).join('\n') || 'Not specified',
-    conceptualKnowledge: unitPlan.conceptualKnowledge?.map(item => `• ${item}`).join('\n') || 'Not specified',
-    proceduralKnowledge: unitPlan.proceduralKnowledge?.map(item => `• ${item}`).join('\n') || 'Not specified',
-    
+    topicsTerminology:
+      unitPlan.topicsTerminology?.map((item) => `• ${item}`).join("\n") || "Not specified",
+    conceptualKnowledge:
+      unitPlan.conceptualKnowledge?.map((item) => `• ${item}`).join("\n") || "Not specified",
+    proceduralKnowledge:
+      unitPlan.proceduralKnowledge?.map((item) => `• ${item}`).join("\n") || "Not specified",
+
     // Formative Assessment (for current mode)
-    informalFormativeAssessment: unitPlan.informalFormativeAssessment?.map(item => `• ${item}`).join('\n') || 'Not specified',
-    formalFormativeAssessment: unitPlan.formalFormativeAssessment?.map(item => `• ${item}`).join('\n') || 'Not specified',
+    informalFormativeAssessment:
+      unitPlan.informalFormativeAssessment?.map((item) => `• ${item}`).join("\n") ||
+      "Not specified",
+    formalFormativeAssessment:
+      unitPlan.formalFormativeAssessment?.map((item) => `• ${item}`).join("\n") || "Not specified",
 
     // Resources and Community
-    resources: unitPlan.resources || 'Not specified',
-    printedResources: unitPlan.printedResources?.map(item => `• ${item}`).join('\n') || 'Not specified',
-    digitalResources: unitPlan.digitalResources?.map(item => `• ${item}`).join('\n') || 'Not specified',
-    guestsResources: unitPlan.guestsResources?.map(item => `• ${item}`).join('\n') || 'Not specified',
-    communityEngagement: unitPlan.communityEngagement || 'Not specified',
+    resources: unitPlan.resources || "Not specified",
+    printedResources:
+      unitPlan.printedResources?.map((item) => `• ${item}`).join("\n") || "Not specified",
+    digitalResources:
+      unitPlan.digitalResources?.map((item) => `• ${item}`).join("\n") || "Not specified",
+    guestsResources:
+      unitPlan.guestsResources?.map((item) => `• ${item}`).join("\n") || "Not specified",
+    communityEngagement: unitPlan.communityEngagement || "Not specified",
 
     // Reflection
-    reflectionPriorToTeaching: unitPlan.reflectionPriorToTeaching || 'Not specified',
-    reflectionDuringTeaching: unitPlan.reflectionDuringTeaching || 'Not specified',
-    reflectionAfterTeaching: unitPlan.reflectionAfterTeaching || 'Not specified',
-    reflectionFuturePlanning: unitPlan.reflectionFuturePlanning || 'Not specified',
+    reflectionPriorToTeaching: unitPlan.reflectionPriorToTeaching || "Not specified",
+    reflectionDuringTeaching: unitPlan.reflectionDuringTeaching || "Not specified",
+    reflectionAfterTeaching: unitPlan.reflectionAfterTeaching || "Not specified",
+    reflectionFuturePlanning: unitPlan.reflectionFuturePlanning || "Not specified",
 
     // Teachers
-    contributingTeachers: unitPlan.contributingTeachers?.join(', ') || 'Not specified',
+    contributingTeachers: unitPlan.contributingTeachers?.join(", ") || "Not specified",
     lessonCount: unitPlan.lessonCount || 0,
 
     // Helper functions for template
@@ -296,7 +330,8 @@ function prepareTemplateData(unitPlan: UnitPlanData) {
     hasFactualQuestions: unitPlan.factualQuestions && unitPlan.factualQuestions.length > 0,
     hasConceptualQuestions: unitPlan.conceptualQuestions && unitPlan.conceptualQuestions.length > 0,
     hasDebatableQuestions: unitPlan.debatableQuestions && unitPlan.debatableQuestions.length > 0,
-    hasContributingTeachers: unitPlan.contributingTeachers && unitPlan.contributingTeachers.length > 0,
+    hasContributingTeachers:
+      unitPlan.contributingTeachers && unitPlan.contributingTeachers.length > 0,
   };
 }
 
@@ -393,6 +428,3 @@ Future Planning: {reflectionFuturePlanning}
 Total Lessons: {lessonCount}
   `;
 }
-
-
-

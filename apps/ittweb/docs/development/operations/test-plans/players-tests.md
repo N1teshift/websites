@@ -288,4 +288,3 @@ This document outlines all tests needed for the players module including service
   - **What**: Verify stats are aggregated correctly from multiple games
   - **Expected**: Totals and averages calculated correctly
   - **Edge cases**: Many games, concurrent updates, missing game data
-

@@ -9,18 +9,12 @@ import type {
 
 const parseSchemaVersion = (line: string): number => {
   if (!line.startsWith("v")) {
-    throw new ReplayMetaError(
-      "Missing schema version header",
-      ReplayMetaErrorCode.PAYLOAD_INVALID
-    );
+    throw new ReplayMetaError("Missing schema version header", ReplayMetaErrorCode.PAYLOAD_INVALID);
   }
 
   const version = Number(line.slice(1));
   if (Number.isNaN(version)) {
-    throw new ReplayMetaError(
-      "Invalid schema version header",
-      ReplayMetaErrorCode.PAYLOAD_INVALID
-    );
+    throw new ReplayMetaError("Invalid schema version header", ReplayMetaErrorCode.PAYLOAD_INVALID);
   }
 
   return version;
@@ -29,16 +23,13 @@ const parseSchemaVersion = (line: string): number => {
 const parsePlayerLine = (line: string, schemaVersion: number): MatchPlayerMetadata => {
   const parts = line.slice("player:".length).split("|");
   if (parts.length < 5) {
-    throw new ReplayMetaError(
-      `Invalid player line: ${line}`,
-      ReplayMetaErrorCode.PAYLOAD_INVALID
-    );
+    throw new ReplayMetaError(`Invalid player line: ${line}`, ReplayMetaErrorCode.PAYLOAD_INVALID);
   }
 
   // Schema v3+ format: slot|name|race|class|team|result|dmg|selfHeal|allyHeal|gold|meat|elk|hawk|snake|wolf|bear|panther
   // Schema v2 format: slot|name|race|team|result|dmg|selfHeal|allyHeal|gold|meat|elk|hawk|snake|wolf|bear|panther
   const hasClass = schemaVersion >= 3;
-  
+
   let slot: string;
   let name: string;
   let race: string;
@@ -123,10 +114,7 @@ export const parsePayload = (
   const normalized = payload.replace(/\r\n/g, "\n");
   const lines = normalized.split("\n");
   if (lines.length === 0) {
-    throw new ReplayMetaError(
-      "Empty payload",
-      ReplayMetaErrorCode.PAYLOAD_INVALID
-    );
+    throw new ReplayMetaError("Empty payload", ReplayMetaErrorCode.PAYLOAD_INVALID);
   }
 
   const headerLine = lines.shift() ?? "";
@@ -179,10 +167,7 @@ export const parsePayload = (
   }
 
   if (!checksumEncountered || checksumValue === null) {
-    throw new ReplayMetaError(
-      "Payload missing checksum line",
-      ReplayMetaErrorCode.PAYLOAD_INVALID
-    );
+    throw new ReplayMetaError("Payload missing checksum line", ReplayMetaErrorCode.PAYLOAD_INVALID);
   }
 
   if (!endSeen) {
@@ -200,10 +185,7 @@ export const parsePayload = (
   const requireField = (key: string): string => {
     const value = keyValues.get(key);
     if (value === undefined) {
-      throw new ReplayMetaError(
-        `Missing field ${key}`,
-        ReplayMetaErrorCode.PAYLOAD_INVALID
-      );
+      throw new ReplayMetaError(`Missing field ${key}`, ReplayMetaErrorCode.PAYLOAD_INVALID);
     }
     return value;
   };
@@ -217,11 +199,10 @@ export const parsePayload = (
   const playerCount = coerceNumber(requireField("playerCount"), "playerCount");
 
   if (playerCount !== players.length) {
-    throw new ReplayMetaError(
-      "Player count mismatch",
-      ReplayMetaErrorCode.PAYLOAD_INVALID,
-      { expected: playerCount, actual: players.length }
-    );
+    throw new ReplayMetaError("Player count mismatch", ReplayMetaErrorCode.PAYLOAD_INVALID, {
+      expected: playerCount,
+      actual: players.length,
+    });
   }
 
   keyValues.forEach((value, key) => {
@@ -254,4 +235,3 @@ export const parsePayload = (
     extras,
   };
 };
-

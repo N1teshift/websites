@@ -5,6 +5,7 @@ Common patterns for API route handlers.
 ## Authentication & Authorization
 
 **Public Endpoint:**
+
 ```typescript
 export default createGetHandler(
   async (req: NextApiRequest) => {
@@ -19,6 +20,7 @@ export default createGetHandler(
 ```
 
 **Authenticated Endpoint:**
+
 ```typescript
 export default createPostHandler(
   async (req: NextApiRequest, res, context) => {
@@ -33,6 +35,7 @@ export default createPostHandler(
 ```
 
 **Admin-Only Endpoint:**
+
 ```typescript
 export default createPostHandler(
   async (req: NextApiRequest, res, context) => {
@@ -48,17 +51,19 @@ export default createPostHandler(
 ## Query Parameter Parsing
 
 ```typescript
-import { parseQueryString, parseQueryInt, parsePagination } from '@/features/infrastructure/api/queryParser';
+import {
+  parseQueryString,
+  parseQueryInt,
+  parsePagination,
+} from "@/features/infrastructure/api/queryParser";
 
-export default createGetHandler(
-  async (req: NextApiRequest) => {
-    const search = parseQueryString(req, 'q');
-    const page = parseQueryInt(req, 'page', 1) || 1;
-    const { limit, offset } = parsePagination(req, 20, 100);
-    
-    return await searchData(search, { limit, offset });
-  }
-);
+export default createGetHandler(async (req: NextApiRequest) => {
+  const search = parseQueryString(req, "q");
+  const page = parseQueryInt(req, "page", 1) || 1;
+  const { limit, offset } = parsePagination(req, 20, 100);
+
+  return await searchData(search, { limit, offset });
+});
 ```
 
 ## Request Validation
@@ -66,13 +71,13 @@ export default createGetHandler(
 **📘 See [Zod Validation Migration Guide](../../operations/zod-validation-migration.md) for comprehensive validation patterns.**
 
 ```typescript
-import { zodValidator } from '@/features/infrastructure/api/zodValidation';
-import { z } from 'zod';
+import { zodValidator } from "@/features/infrastructure/api/zodValidation";
+import { z } from "zod";
 
 // Define schema in src/features/infrastructure/api/schemas.ts
 const CreateDataSchema = z.object({
-  name: z.string().min(1).max(100, 'name must be at most 100 characters'),
-  email: z.string().email('email must be a valid email address'),
+  name: z.string().min(1).max(100, "name must be at most 100 characters"),
+  email: z.string().email("email must be a valid email address"),
 });
 
 export default createPostHandler(
@@ -91,24 +96,24 @@ export default createPostHandler(
 ## Resource Ownership Check
 
 ```typescript
-import { checkResourceOwnership } from '@/features/infrastructure/api/routeHandlers';
+import { checkResourceOwnership } from "@/features/infrastructure/api/routeHandlers";
 
 export default createPostHandler(
   async (req: NextApiRequest, res, context) => {
     const session = requireSession(context);
-    const resourceId = parseRequiredQueryString(req, 'id');
-    
+    const resourceId = parseRequiredQueryString(req, "id");
+
     const resource = await getResource(resourceId);
     if (!resource) {
-      throw new Error('Resource not found');
+      throw new Error("Resource not found");
     }
-    
+
     // Check if user owns the resource or is admin
     const hasAccess = await checkResourceOwnership(resource, session);
     if (!hasAccess) {
-      throw new Error('You do not have permission to modify this resource');
+      throw new Error("You do not have permission to modify this resource");
     }
-    
+
     return await updateResource(resourceId, req.body);
   },
   {
@@ -123,4 +128,3 @@ export default createPostHandler(
 - [Adding API Routes](../adding-api-routes.md)
 - [Authentication & Authorization](../../security/authentication-authorization.md)
 - [Input Validation](../../security/input-validation.md)
-

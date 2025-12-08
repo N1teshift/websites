@@ -318,4 +318,3 @@ This document outlines all tests needed for the blog module including services, 
   - **What**: Verify content is validated
   - **Expected**: Invalid content rejected, valid content accepted
   - **Edge cases**: Empty content, too long, invalid characters, XSS attempts
-

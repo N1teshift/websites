@@ -26,12 +26,15 @@ The extracted `.w3x` file only contains **modifications** to base game objects, 
 ## Solutions
 
 ### Option 1: Manual Mapping
+
 Create a mapping file with common field values based on game knowledge or testing.
 
 ### Option 2: Extract Base Object Data
+
 If you have access to base Warcraft 3 object data files, we could extract those and resolve references.
 
 ### Option 3: Leave as Placeholders
+
 Keep the references visible so users know what data is missing. They can be manually filled in later.
 
 ## Field Identifier Meanings
@@ -54,6 +57,7 @@ Keep the references visible so users know what data is missing. They can be manu
 ## Current Status
 
 The resolver script (`scripts/data/generate/resolve-field-references.mjs`) is part of the data generation pipeline (Stage 9). It resolves field references by:
+
 1. Loading the ability ID mapper to convert raw ability IDs to ability slugs
 2. Looking up cooldown/duration values from the same object's definition
 3. Replacing field references with actual values when found
@@ -64,8 +68,8 @@ The script runs automatically as part of the full pipeline (`node scripts/data/m
 ## Source of Field Identifier Information
 
 The field identifier meanings were extracted from the Wurst source code:
+
 - `external/island-troll-tribes/wurst/utils/ToolTipsUtils.wurst` - Core tooltip utility functions
 - `external/island-troll-tribes/wurst/objects/items/*.wurst` - Item definitions showing field usage
 
 This information shows how the game developers used these field references in tooltips.
-

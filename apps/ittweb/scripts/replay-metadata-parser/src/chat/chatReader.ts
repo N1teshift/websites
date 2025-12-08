@@ -131,9 +131,5 @@ function createParser(): ReplayParserInstance {
     return new moduleRef.default();
   }
 
-  throw new ReplayMetaError(
-    "Unable to instantiate ReplayParser",
-    ReplayMetaErrorCode.IO_ERROR
-  );
+  throw new ReplayMetaError("Unable to instantiate ReplayParser", ReplayMetaErrorCode.IO_ERROR);
 }
-

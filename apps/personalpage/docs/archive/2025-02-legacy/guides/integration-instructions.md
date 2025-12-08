@@ -7,6 +7,7 @@
 ## Current Status
 
 ✅ **All Components Built:**
+
 - Mission Creator UI
 - Mission types and utilities
 - Tab container with both old and new systems
@@ -21,6 +22,7 @@ The `ObjectivesTabContainer` needs to be imported into your main Progress Report
 ### Find Your Progress Report Main Component
 
 The main page is likely in:
+
 - `src/features/modules/edtech/progressReport/ProgressReportPage.tsx` or
 - `src/pages/progress-report.tsx` or similar
 
@@ -47,6 +49,7 @@ import { ObjectivesTabContainer } from './components/sections/ObjectivesTabConta
 ### That's It!
 
 The `ObjectivesTabContainer` includes both:
+
 1. **Mission Creator Tab** (new Cambridge objectives system)
 2. **Test Completion Tab** (your existing ObjectivesSection)
 
@@ -57,12 +60,14 @@ So all existing functionality is preserved!
 ## What You'll See
 
 ### Tab 1: Mission Creator (Default)
+
 - Priority-grouped students (Critical, Moderate, Minor)
 - Filter by class and strand
 - Select objectives per student
 - Create missions with deadlines
 
 ### Tab 2: Test Completion
+
 - Your existing SD/KD test completion tracker
 - All current missions and grade inputs
 - Completely unchanged
@@ -72,11 +77,13 @@ So all existing functionality is preserved!
 ## Testing Checklist
 
 Before making the change:
+
 1. ✅ Backup your Progress Report page file
 2. ✅ Make sure dev server is running
 3. ✅ Note current Objectives tab functionality
 
 After making the change:
+
 1. ✅ Objectives tab should have two sub-tabs now
 2. ✅ "Test Completion" tab should work exactly as before
 3. ✅ "Mission Creator" tab should show new UI
@@ -99,7 +106,8 @@ import ObjectivesSection from './components/sections/ObjectivesSection';
 
 ## Data Persistence Note
 
-⚠️ **Important:** 
+⚠️ **Important:**
+
 - Missions created now will be stored in the React state
 - They will NOT persist to JSON yet (Phase 5 needed)
 - This is expected for testing Phase 3!
@@ -110,12 +118,14 @@ import ObjectivesSection from './components/sections/ObjectivesSection';
 ## Need Help?
 
 If you can't find your main Progress Report component, share the file structure:
+
 ```bash
 ls src/features/modules/edtech/progressReport/
 ls src/pages/ | grep progress
 ```
 
 Or search for where `ObjectivesSection` is currently imported:
+
 ```bash
 grep -r "ObjectivesSection" src/
 ```
@@ -124,4 +134,3 @@ grep -r "ObjectivesSection" src/
 
 **Quick Start:**  
 Just replace the import and component usage in your Progress Report page!
-

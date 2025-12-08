@@ -64,8 +64,7 @@ export class W3GReplayOrderReader implements ReplayOrderReader {
   private readonly fileLoader: FileLoader;
 
   constructor(options?: ReaderOptions) {
-    this.parserFactory =
-      options?.parserFactory ?? this.createDefaultParserFactory();
+    this.parserFactory = options?.parserFactory ?? this.createDefaultParserFactory();
     this.fileLoader = options?.fileLoader ?? readFile;
   }
 
@@ -97,11 +96,9 @@ export class W3GReplayOrderReader implements ReplayOrderReader {
     try {
       await parser.parse(buffer);
     } catch (error) {
-      throw new ReplayMetaError(
-        "Failed to parse replay data",
-        ReplayMetaErrorCode.IO_ERROR,
-        { error }
-      );
+      throw new ReplayMetaError("Failed to parse replay data", ReplayMetaErrorCode.IO_ERROR, {
+        error,
+      });
     }
     return events;
   }
@@ -129,11 +126,7 @@ export class W3GReplayOrderReader implements ReplayOrderReader {
         return new moduleRef.default();
       }
 
-      throw new ReplayMetaError(
-        "Unable to instantiate ReplayParser",
-        ReplayMetaErrorCode.IO_ERROR
-      );
+      throw new ReplayMetaError("Unable to instantiate ReplayParser", ReplayMetaErrorCode.IO_ERROR);
     };
   }
 }
-

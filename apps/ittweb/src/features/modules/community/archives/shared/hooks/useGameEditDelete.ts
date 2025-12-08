@@ -1,10 +1,10 @@
-import { useState, useCallback } from 'react';
-import { signIn } from 'next-auth/react';
-import type { GameWithPlayers } from '@/features/modules/game-management/games/types';
-import { createComponentLogger } from '@websites/infrastructure/logging';
-import { submitGameEdit } from '@/features/modules/community/archives/shared/utils/gameEditUtils';
+import { useState, useCallback } from "react";
+import { signIn } from "next-auth/react";
+import type { GameWithPlayers } from "@/features/modules/game-management/games/types";
+import { createComponentLogger } from "@websites/infrastructure/logging";
+import { submitGameEdit } from "@/features/modules/community/archives/shared/utils/gameEditUtils";
 
-const logger = createComponentLogger('useGameEditDelete');
+const logger = createComponentLogger("useGameEditDelete");
 
 interface UseGameEditDeleteProps {
   localGames: GameWithPlayers[];
@@ -61,11 +61,11 @@ export function useGameEditDelete({
   const handleGameEdit = useCallback(
     (game: GameWithPlayers) => {
       if (!isAuthenticated) {
-        signIn('discord');
+        signIn("discord");
         return;
       }
-      if (game.gameState !== 'scheduled') {
-        setError('Only scheduled games can be edited');
+      if (game.gameState !== "scheduled") {
+        setError("Only scheduled games can be edited");
         return;
       }
       setEditingGame(game);
@@ -94,8 +94,8 @@ export function useGameEditDelete({
         );
         setEditingGame(null);
       } catch (err) {
-        const error = err instanceof Error ? err : new Error('Unknown error');
-        logger.error('Failed to update game', error);
+        const error = err instanceof Error ? err : new Error("Unknown error");
+        logger.error("Failed to update game", error);
         setError(error.message);
       }
     },
@@ -109,18 +109,18 @@ export function useGameEditDelete({
   const handleGameDelete = useCallback(
     (game: GameWithPlayers) => {
       if (!isAuthenticated) {
-        signIn('discord');
+        signIn("discord");
         return;
       }
-      if (game.gameState !== 'scheduled') {
-        setError('Only scheduled games can be deleted');
+      if (game.gameState !== "scheduled") {
+        setError("Only scheduled games can be deleted");
         return;
       }
 
       const canDelete =
         canManageEntries || (!!currentDiscordId && game.createdByDiscordId === currentDiscordId);
       if (!canDelete) {
-        setError('You do not have permission to delete this game');
+        setError("You do not have permission to delete this game");
         return;
       }
 
@@ -143,20 +143,20 @@ export function useGameEditDelete({
 
     try {
       const response = await fetch(`/api/games/${gameIdToDelete}`, {
-        method: 'DELETE',
+        method: "DELETE",
       });
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.error || 'Failed to delete game');
+        throw new Error(errorData.error || "Failed to delete game");
       }
     } catch (err) {
       const refetchResult = refetchGames();
       if (refetchResult instanceof Promise) {
         await refetchResult;
       }
-      const error = err instanceof Error ? err : new Error('Unknown error');
-      logger.error('Failed to delete game', error);
+      const error = err instanceof Error ? err : new Error("Unknown error");
+      logger.error("Failed to delete game", error);
       setDeleteError(error.message);
     } finally {
       setIsDeletingGame(false);
@@ -183,6 +183,3 @@ export function useGameEditDelete({
     setDeleteError,
   };
 }
-
-
-

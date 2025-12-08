@@ -1,10 +1,10 @@
-import React from 'react';
-import { useGames } from '../hooks/useGames';
-import { GameCard } from './GameCard';
-import { Card } from '@/features/infrastructure/components';
-import { LoadingScreen } from '@/features/infrastructure/components';
-import { EmptyState } from '@/features/infrastructure/components';
-import type { GameFilters } from '../types';
+import React from "react";
+import { useGames } from "../hooks/useGames";
+import { GameCard } from "./GameCard";
+import { Card } from "@/features/infrastructure/components";
+import { LoadingScreen } from "@/features/infrastructure/components";
+import { EmptyState } from "@/features/infrastructure/components";
+import type { GameFilters } from "../types";
 
 interface GameListProps {
   filters?: GameFilters;
@@ -40,10 +40,11 @@ export function GameList({ filters = {} }: GameListProps) {
 
   if (games.length === 0) {
     return (
-      <EmptyState 
-        message={hasActiveFilters 
-          ? "No games match your filters. Try adjusting your search criteria."
-          : "No games found"
+      <EmptyState
+        message={
+          hasActiveFilters
+            ? "No games match your filters. Try adjusting your search criteria."
+            : "No games found"
         }
       />
     );
@@ -57,6 +58,3 @@ export function GameList({ filters = {} }: GameListProps) {
     </div>
   );
 }
-
-
-

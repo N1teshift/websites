@@ -1,8 +1,8 @@
-import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
-import type { Game, GameWithPlayers } from '@/features/modules/game-management/games/types';
-import { createComponentLogger } from '@websites/infrastructure/logging';
+import { useState, useEffect, useRef, useMemo, useCallback } from "react";
+import type { Game, GameWithPlayers } from "@/features/modules/game-management/games/types";
+import { createComponentLogger } from "@websites/infrastructure/logging";
 
-const logger = createComponentLogger('useTimelineGames');
+const logger = createComponentLogger("useTimelineGames");
 
 interface UseTimelineGamesProps {
   games: Game[];
@@ -36,7 +36,7 @@ export function useTimelineGames({
     if (games && games.length > 0) {
       setLocalGames((prevLocalGames: GameWithPlayers[]) => {
         if (prevLocalGames.length === 0) {
-          logger.debug('Initializing localGames from games', { gamesCount: games.length });
+          logger.debug("Initializing localGames from games", { gamesCount: games.length });
           return games as GameWithPlayers[];
         }
 
@@ -50,7 +50,7 @@ export function useTimelineGames({
           }
 
           // If we have a local game and it's a scheduled game, check if participants differ
-          if (localGame && game.gameState === 'scheduled') {
+          if (localGame && game.gameState === "scheduled") {
             const localParticipants = localGame.participants || [];
             const serverParticipants = game.participants || [];
 
@@ -80,13 +80,13 @@ export function useTimelineGames({
   // Debug: Log games to console
   useEffect(() => {
     if (games && games.length > 0) {
-      logger.debug('Games fetched for timeline', {
+      logger.debug("Games fetched for timeline", {
         total: games.length,
-        scheduled: games.filter((g) => g.gameState === 'scheduled').length,
-        completed: games.filter((g) => g.gameState === 'completed').length,
+        scheduled: games.filter((g) => g.gameState === "scheduled").length,
+        completed: games.filter((g) => g.gameState === "completed").length,
       });
     } else if (!gamesLoading && gamesError) {
-      logger.warn('Failed to fetch games for timeline', { gamesError: gamesError.message });
+      logger.warn("Failed to fetch games for timeline", { gamesError: gamesError.message });
     }
   }, [games, gamesLoading, gamesError]);
 
@@ -111,7 +111,7 @@ export function useTimelineGames({
 
       try {
         const gameResponse = await fetch(`/api/games/${gameId}?t=${Date.now()}`, {
-          cache: 'no-store',
+          cache: "no-store",
         });
 
         if (gameResponse.ok) {
@@ -130,7 +130,7 @@ export function useTimelineGames({
           }
         }
       } catch (error) {
-        logger.warn('Failed to fetch new game after creation', { gameId, error });
+        logger.warn("Failed to fetch new game after creation", { gameId, error });
         const refetchResult = refetchGames();
         if (refetchResult instanceof Promise) {
           await refetchResult;
@@ -157,6 +157,3 @@ export function useTimelineGames({
     markGameRecentlyUpdated,
   };
 }
-
-
-

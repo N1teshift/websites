@@ -60,7 +60,7 @@ This guide shows what each feature looks like and how it works.
 ✅ **Individual Columns**: See exact scores  
 ✅ **Sortable**: Click any header  
 ✅ **Searchable**: Find students fast  
-✅ **Clickable Rows**: Jump to student detail  
+✅ **Clickable Rows**: Jump to student detail
 
 ---
 
@@ -153,6 +153,7 @@ Activity count
 ## 🎯 Chart Types Explained
 
 ### KD1 & KD (Unit Tests)
+
 ```
 10-Bar Histogram
 
@@ -170,6 +171,7 @@ Color: Red(1-2) → Orange(3-4) → Yellow(5-6) → Green(7-8) → DarkGreen(9-1
 ```
 
 ### ND1 & ND2 (Homework Completion)
+
 ```
 Binary Chart
 
@@ -190,6 +192,7 @@ Two bars only: 0% = not completed, 100% = completed
 ```
 
 ### ND4 (Scored Homework)
+
 ```
 10-Bar Histogram (same as KD)
 
@@ -201,6 +204,7 @@ Shows distribution of homework scores 1-10
 ## 🎨 Color Coding
 
 ### Performance Colors
+
 ```
 🔴 1-2   Needs Improvement
 🟠 3-4   Below Average
@@ -210,6 +214,7 @@ Shows distribution of homework scores 1-10
 ```
 
 ### Assessment Type Colors
+
 ```
 🔵 Homework         Blue
 🟢 Classwork        Green
@@ -225,6 +230,7 @@ Shows distribution of homework scores 1-10
 ## 💬 Tooltip Examples
 
 ### Activity Mode Tooltip
+
 ```
 ┌─────────────────────────────────┐
 │ Oct 9, 2025                     │
@@ -245,6 +251,7 @@ Shows distribution of homework scores 1-10
 ```
 
 ### Score Mode Tooltip
+
 ```
 ┌─────────────────────────────────┐
 │ Oct 9, 2025                     │
@@ -264,6 +271,7 @@ Shows distribution of homework scores 1-10
 ## 🔄 User Workflows
 
 ### Workflow 1: Analyze Class Performance
+
 ```
 1. Go to Class View
    ↓
@@ -279,6 +287,7 @@ Shows distribution of homework scores 1-10
 ```
 
 ### Workflow 2: Track Student Progress
+
 ```
 1. Go to Student View
    ↓
@@ -294,6 +303,7 @@ Shows distribution of homework scores 1-10
 ```
 
 ### Workflow 3: Compare Students
+
 ```
 1. Go to Class View
    ↓
@@ -313,6 +323,7 @@ Shows distribution of homework scores 1-10
 ## 📱 Responsive Design
 
 ### Desktop (1920px+)
+
 ```
 ┌────────────────────────────────────────────┐
 │  [Full width table, 3-column stats cards]  │
@@ -321,6 +332,7 @@ Shows distribution of homework scores 1-10
 ```
 
 ### Tablet (768px - 1919px)
+
 ```
 ┌──────────────────────────────┐
 │  [2-column stats cards]      │
@@ -330,6 +342,7 @@ Shows distribution of homework scores 1-10
 ```
 
 ### Mobile (< 768px)
+
 ```
 ┌──────────────┐
 │ [1-col cards]│
@@ -344,6 +357,7 @@ Shows distribution of homework scores 1-10
 ## 🎯 Interactive Elements
 
 ### Clickable
+
 ```
 ✓ Student rows in table
 ✓ Chart dropdown options
@@ -354,6 +368,7 @@ Shows distribution of homework scores 1-10
 ```
 
 ### Hoverable
+
 ```
 ✓ Chart data points (tooltips)
 ✓ Table rows (highlight)
@@ -362,6 +377,7 @@ Shows distribution of homework scores 1-10
 ```
 
 ### Sortable
+
 ```
 ✓ Student name
 ✓ KD1 score
@@ -377,6 +393,7 @@ Shows distribution of homework scores 1-10
 ## 🔍 Filter Examples
 
 ### Date Range Filter
+
 ```
 From: [2025-09-01]  To: [2025-10-31]
       └─────────────────────────┘
@@ -384,6 +401,7 @@ From: [2025-09-01]  To: [2025-10-31]
 ```
 
 ### Type Filter (Multi-Select)
+
 ```
 ☐ homework          ← Not selected
 ☐ classwork         ← Not selected
@@ -394,11 +412,12 @@ Result: Only summative assessments shown
 ```
 
 ### Combined Filters
+
 ```
 Date: Sep 1 - Oct 31
 Type: summative + homework
 
-Result: Only summative and homework 
+Result: Only summative and homework
         from Sept-Oct shown
 ```
 
@@ -407,6 +426,7 @@ Result: Only summative and homework
 ## 📊 Data Display Formats
 
 ### Scores
+
 ```
 10-point scale:  8, 9, 7.5, 10
 Binary:          0%, 100%
@@ -415,12 +435,14 @@ Missing:         - (dash)
 ```
 
 ### Dates
+
 ```
 Display:  Oct 9, 2025
 Storage:  2025-10-09
 ```
 
 ### Percentages
+
 ```
 Display:  75.5%
 Storage:  75.5 (number)
@@ -431,6 +453,7 @@ Storage:  75.5 (number)
 ## 🎨 UI States
 
 ### Loading
+
 ```
 ┌────────────────┐
 │  Loading...    │
@@ -439,6 +462,7 @@ Storage:  75.5 (number)
 ```
 
 ### Empty State
+
 ```
 ┌────────────────┐
 │  No data yet   │
@@ -447,6 +471,7 @@ Storage:  75.5 (number)
 ```
 
 ### Error State
+
 ```
 ┌────────────────┐
 │  ⚠️ Error      │
@@ -455,6 +480,7 @@ Storage:  75.5 (number)
 ```
 
 ### Success State
+
 ```
 ┌────────────────┐
 │  ✅ Success    │
@@ -467,6 +493,7 @@ Storage:  75.5 (number)
 ## 🎯 Quick Actions
 
 ### From Class View
+
 ```
 → Click student row    : Go to Student View
 → Change chart type    : Update stats & chart
@@ -476,6 +503,7 @@ Storage:  75.5 (number)
 ```
 
 ### From Student View
+
 ```
 → Select student       : Load their data
 → Change filter type   : Switch timeline mode
@@ -489,4 +517,3 @@ Storage:  75.5 (number)
 **Visual guide complete! 🎨**
 
 For full details, see the main documentation files.
-

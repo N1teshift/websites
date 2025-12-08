@@ -13,10 +13,12 @@ ITT Web uses **GitHub Actions** for CI/CD. The pipeline includes automated testi
 **Purpose**: Run tests and linting on every push and pull request.
 
 **Triggers**:
+
 - Push to `main` branch
 - Pull requests to `main` branch
 
 **Jobs**:
+
 - **Test**: Runs on Node.js 18.x and 20.x
   - Install dependencies: `npm ci`
   - Type check: `npm run type-check`
@@ -31,10 +33,12 @@ ITT Web uses **GitHub Actions** for CI/CD. The pipeline includes automated testi
 **Purpose**: Verify production builds succeed.
 
 **Triggers**:
+
 - Push to `main` branch
 - Pull requests to `main` branch
 
 **Jobs**:
+
 - **Build**: Runs on Node.js 20.x
   - Install dependencies: `npm ci`
   - Build check: `npm run build:check` (type-check + build)
@@ -48,11 +52,13 @@ ITT Web uses **GitHub Actions** for CI/CD. The pipeline includes automated testi
 **Purpose**: Deploy application to Vercel.
 
 **Triggers**:
+
 - Push to `main` branch (staging)
 - Release/tag creation (production)
 - Manual trigger via GitHub Actions UI
 
 **Jobs**:
+
 - **Deploy**: Runs on Node.js 20.x
   - Install dependencies: `npm ci`
   - Run tests: `npm run test`
@@ -61,12 +67,14 @@ ITT Web uses **GitHub Actions** for CI/CD. The pipeline includes automated testi
   - Verify deployment: Checks deployment URL
 
 **Environments**:
+
 - **Staging**: Deploys on push to `main`
 - **Production**: Deploys on release/tag or manual trigger
 
 **Duration**: ~8-12 minutes
 
 **Required Secrets**:
+
 - `VERCEL_TOKEN`: Vercel authentication token
 - `VERCEL_ORG_ID`: Vercel organization ID
 - `VERCEL_PROJECT_ID`: Vercel project ID
@@ -78,9 +86,11 @@ ITT Web uses **GitHub Actions** for CI/CD. The pipeline includes automated testi
 **Purpose**: Monitor bundle size on pull requests.
 
 **Triggers**:
+
 - Pull requests to `main` branch
 
 **Jobs**:
+
 - **Bundle Size**: Runs on Node.js 20.x
   - Install dependencies: `npm ci`
   - Build with analyzer: `ANALYZE=true npm run build`
@@ -95,6 +105,7 @@ ITT Web uses **GitHub Actions** for CI/CD. The pipeline includes automated testi
 **Purpose**: Scan for security vulnerabilities and secrets.
 
 **Triggers**:
+
 - Push to `main` branch
 - Pull requests to `main` branch
 - Weekly schedule (Monday 9 AM UTC)
@@ -102,6 +113,7 @@ ITT Web uses **GitHub Actions** for CI/CD. The pipeline includes automated testi
 **Jobs**:
 
 #### Dependency Scan
+
 - **Dependency Scan**: Runs on Node.js 20.x
   - Install dependencies: `npm ci`
   - Run audit: `npm audit --audit-level=moderate`
@@ -110,6 +122,7 @@ ITT Web uses **GitHub Actions** for CI/CD. The pipeline includes automated testi
   - Upload results: Uploads audit results
 
 #### Secrets Scan
+
 - **Secrets Scan**: Runs on Ubuntu latest
   - Checkout code: Full history for scanning
   - Run Gitleaks: Scans for accidentally committed secrets
@@ -122,11 +135,13 @@ ITT Web uses **GitHub Actions** for CI/CD. The pipeline includes automated testi
 **Purpose**: Automatically monitor all workflows and provide feedback on status and failures.
 
 **Triggers**:
+
 - After any workflow completes (Test, Build, Deploy, Security, Bundle Size)
 - Daily schedule (9 AM UTC)
 - Manual trigger via GitHub Actions UI
 
 **Jobs**:
+
 - **Monitor Workflows**: Runs on Ubuntu latest
   - Monitors workflow completion events
   - Creates GitHub issues for failures
@@ -134,6 +149,7 @@ ITT Web uses **GitHub Actions** for CI/CD. The pipeline includes automated testi
   - Prevents duplicate issues for recurring failures
 
 **Features**:
+
 - **Automatic Issue Creation**: Creates GitHub issues when workflows fail (labeled `workflow-failure`, `ci/cd`, `devops`)
 - **Duplicate Prevention**: Checks for existing issues before creating new ones
 - **Daily Health Check**: Runs daily to ensure workflows are active
@@ -141,6 +157,7 @@ ITT Web uses **GitHub Actions** for CI/CD. The pipeline includes automated testi
 **Duration**: ~1-2 minutes
 
 **Feedback Methods**:
+
 - GitHub Issues (automatic on failures)
 
 ## Workflow Status
@@ -148,10 +165,12 @@ ITT Web uses **GitHub Actions** for CI/CD. The pipeline includes automated testi
 ### Viewing Workflow Status
 
 **Manual Methods**:
+
 - **GitHub Repository**: Actions tab
 - **Badge**: Add to README: `![CI](https://github.com/owner/repo/workflows/Test/badge.svg)`
 
 **Automated Feedback**:
+
 - **Workflow Monitor**: Automatically monitors all workflows and creates GitHub issues on failures
 
 ### Workflow Monitoring
@@ -164,6 +183,7 @@ The **Workflow Monitor** workflow (`.github/workflows/workflow-monitor.yml`) pro
 4. **Daily Health Check**: Runs daily to ensure workflows are active
 
 **Feedback Methods**:
+
 - ✅ **GitHub Issues**: Automatic issue creation for failures (labeled `workflow-failure`, `ci/cd`, `devops`)
 
 ## Adding New Workflows
@@ -219,6 +239,7 @@ git push
 ### Workflow Not Running
 
 **Issue**: Workflow doesn't trigger
+
 - **Check**: Verify workflow file is in `.github/workflows/`
 - **Check**: Verify trigger conditions (branch, event)
 - **Check**: Verify YAML syntax is correct
@@ -226,6 +247,7 @@ git push
 ### Workflow Fails
 
 **Issue**: Workflow fails with error
+
 - **Check**: View workflow logs in GitHub Actions tab
 - **Check**: Verify all required secrets are set
 - **Check**: Verify environment variables are available
@@ -233,6 +255,7 @@ git push
 ### Slow Workflows
 
 **Issue**: Workflows take too long
+
 - **Solution**: Add caching for dependencies
 - **Solution**: Run jobs in parallel
 - **Solution**: Use matrix strategy efficiently
@@ -240,6 +263,7 @@ git push
 ### Secrets Not Available
 
 **Issue**: Secrets not found in workflow
+
 - **Check**: Verify secrets are set in GitHub repository settings
 - **Check**: Verify secret names match exactly
 - **Check**: Verify secrets are available for the workflow
@@ -251,6 +275,7 @@ git push
 The build workflow automatically skips environment variable validation when running in CI (GitHub Actions). This allows CI builds to pass without requiring all environment variables to be configured in GitHub Secrets, since CI builds only need to verify that the code compiles and builds successfully.
 
 **How it works**:
+
 - The `scripts/validate-env.js` script checks for `CI=true` environment variable
 - If `CI=true`, validation is skipped and the script exits successfully
 - This allows type-checking and build verification to proceed without real environment variables
@@ -290,6 +315,7 @@ For deployments to Vercel, configure environment variables in the Vercel Dashboa
    - Reference Vercel Secrets (create secret first, then reference it)
 
 **Required Variables**:
+
 - All `NEXT_PUBLIC_FIREBASE_*` variables
 - `FIREBASE_SERVICE_ACCOUNT_KEY` (JSON string)
 - `NEXTAUTH_SECRET`
@@ -319,16 +345,14 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '20.x'
-          cache: 'npm'
+          node-version: "20.x"
+          cache: "npm"
       - run: npm ci
       - run: npm run test:custom
 ```
-
 
 ## Related Documentation
 
 - [Deployment Guide](./deployment.md) - Deployment process
 - [Environment Setup](../getting-started/setup.md) - Environment configuration
 - [Monitoring Guide](./monitoring.md) - Monitoring and observability
-

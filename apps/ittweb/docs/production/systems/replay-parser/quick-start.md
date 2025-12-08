@@ -9,18 +9,21 @@ You're right! The Archives feature already has replay upload infrastructure (see
 ## ✅ What You Already Have
 
 ### 1. File Upload Infrastructure
+
 - ✅ `uploadReplay()` function in `archiveService.ts`
 - ✅ File validation (`.w3g` extension, 50MB max)
 - ✅ Firebase Storage integration
 - ✅ File upload UI components (`MediaSelector`)
 
 ### 2. Game Statistics System
+
 - ✅ Complete game CRUD system
 - ✅ ELO calculation
 - ✅ Player stats tracking
 - ✅ API endpoints ready
 
 ### 3. Scheduled Games System
+
 - ✅ Scheduled games with status field
 - ✅ Participant tracking
 - ✅ Ready for integration
@@ -30,6 +33,7 @@ You're right! The Archives feature already has replay upload infrastructure (see
 ## 🔧 What Needs to Be Built
 
 ### 1. Replay Parser Service
+
 **Library Recommendation:** `w3gjs` (TypeScript, Node.js compatible)
 
 ```bash
@@ -37,6 +41,7 @@ npm install w3gjs
 ```
 
 **Key Features Needed:**
+
 - Parse `.w3g` files
 - Extract W3MMD data (Island Troll Tribes uses this)
 - Extract player stats (kills, deaths, class, etc.)
@@ -45,19 +50,22 @@ npm install w3gjs
 ### 2. Integration Points
 
 #### A. Update Game Creation API
+
 ```typescript
-POST /api/games
+POST / api / games;
 // Accept either:
 // 1. Replay file (multipart/form-data)
 // 2. Manual game data (JSON)
 ```
 
 #### B. Scheduled Games Integration
+
 - Add "Record Result" button to scheduled games
 - Link completed games back to scheduled games
 - Update scheduled game status automatically
 
 #### C. New UI Components
+
 - Replay upload form (reuse Archives pattern)
 - Parsed data preview/edit form
 - "Record Result" button for scheduled games
@@ -67,6 +75,7 @@ POST /api/games
 ## 📋 Implementation Phases
 
 ### Phase 1: Parser Foundation
+
 1. Install `w3gjs` library for replay parsing
 2. Create `replayParser.ts` service with parsing logic
 3. Test with sample Island Troll Tribes replay files
@@ -75,6 +84,7 @@ POST /api/games
 6. Map players to winners/losers based on game outcome
 
 ### Phase 2: API Integration
+
 1. Update `POST /api/games` to accept replay files
 2. Integrate parser with upload endpoint
 3. Handle file upload to Firebase Storage
@@ -82,6 +92,7 @@ POST /api/games
 5. Implement error handling for parsing failures
 
 ### Phase 3: UI Components
+
 1. Create `ReplayUploadForm` component for file upload
 2. Add to game creation flow
 3. Add "Record Result" functionality to scheduled games
@@ -89,6 +100,7 @@ POST /api/games
 5. Allow editing parsed data if needed
 
 ### Phase 4: Scheduled Games Link
+
 1. Update `scheduledGames` schema (add `gameId`, `gameResultId`)
 2. Update `games` schema (add `scheduledGameId`)
 3. Link games when created from scheduled game
@@ -100,17 +112,19 @@ POST /api/games
 ## 🎯 Quick Win: Start Here
 
 1. **Test Parser Library**
+
    ```bash
    npm install w3gjs
    ```
-   
+
    Create a test script:
+
    ```typescript
    // test-parser.ts
-   import { parseReplay } from 'w3gjs';
-   import fs from 'fs';
-   
-   const buffer = fs.readFileSync('test-replay.w3g');
+   import { parseReplay } from "w3gjs";
+   import fs from "fs";
+
+   const buffer = fs.readFileSync("test-replay.w3g");
    const replay = parseReplay(buffer);
    console.log(replay);
    ```
@@ -132,11 +146,13 @@ POST /api/games
 ## 🔗 Key Files to Modify
 
 ### Existing Files to Update
+
 - `src/pages/api/games/index.ts` - Add replay file handling
 - `src/features/modules/games/lib/gameService.ts` - Add parser integration
 - `src/features/modules/scheduled-games/` - Add result recording
 
 ### New Files to Create
+
 - `src/features/modules/games/lib/replayParser.ts` - Parser service (already exists)
 - `src/features/modules/games/components/ReplayUploadForm.tsx` - Upload UI
 - `src/features/modules/games/lib/w3mmdUtils.ts` - W3MMD utilities (already exists)
@@ -170,7 +186,3 @@ POST /api/games
 ---
 
 **Status:** Ready to start implementation! 🎮
-
-
-
-

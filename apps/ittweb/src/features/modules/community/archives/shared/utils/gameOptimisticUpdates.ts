@@ -1,4 +1,4 @@
-import type { GameWithPlayers } from '@/features/modules/game-management/games/types';
+import type { GameWithPlayers } from "@/features/modules/game-management/games/types";
 
 /**
  * Sync a game after server update
@@ -10,7 +10,7 @@ export async function syncGameAfterUpdate(
 ): Promise<void> {
   try {
     const gameResponse = await fetch(`/api/games/${gameId}?t=${Date.now()}`, {
-      cache: 'no-store',
+      cache: "no-store",
     });
 
     if (gameResponse.ok) {
@@ -18,9 +18,7 @@ export async function syncGameAfterUpdate(
       if (gameData.success && gameData.data) {
         markGameRecentlyUpdated(gameId);
         setLocalGames((prevGames) =>
-          prevGames.map((game) =>
-            game.id === gameId ? (gameData.data as GameWithPlayers) : game
-          )
+          prevGames.map((game) => (game.id === gameId ? (gameData.data as GameWithPlayers) : game))
         );
       }
     }
@@ -43,6 +41,3 @@ export function createOptimisticParticipant(
     joinedAt: new Date().toISOString(),
   };
 }
-
-
-

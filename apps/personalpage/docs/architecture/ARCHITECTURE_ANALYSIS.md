@@ -6,6 +6,7 @@
 ## Current Architecture
 
 Your project follows a **Feature-Based Architecture** with:
+
 - `src/features/modules/` - Feature modules (calendar, math, edtech, etc.)
 - `src/features/infrastructure/` - Shared infrastructure (api, cache, i18n, logging, shared)
 - Each feature has: `components/`, `hooks/`, `types/`, `utils/`, `api/`, `index.ts`
@@ -23,6 +24,7 @@ app → pages → widgets → features → entities → shared
 ```
 
 ### Key FSD Principles:
+
 1. **One-way dependencies**: Layers can only import from lower layers
 2. **Public API**: Each slice exports only through `index.ts`
 3. **Isolation**: Features don't import from other features directly
@@ -36,6 +38,7 @@ app → pages → widgets → features → entities → shared
 ### 1. **Missing Layer Structure**
 
 **Current:** Flat structure under `src/features/`
+
 ```
 src/features/
 ├── modules/        (features)
@@ -44,6 +47,7 @@ src/features/
 ```
 
 **FSD Should Be:**
+
 ```
 src/
 ├── app/           (app initialization, providers)
@@ -61,6 +65,7 @@ src/
 ### 2. **Feature-to-Feature Imports** ❌
 
 **Violations Found:**
+
 ```typescript
 // ❌ BAD: Feature importing another feature
 // src/features/modules/math/MathObjectGeneratorPage.tsx
@@ -68,10 +73,11 @@ import { VoicePromptButton } from "@/features/modules/voice";
 
 // ❌ BAD: Feature importing from another feature
 // src/features/modules/edtech/unitPlanGenerator/...
-import { applyKMMMYPUnitFormatting } from '@/features/modules/edtech/progressReport/components/excel';
+import { applyKMMMYPUnitFormatting } from "@/features/modules/edtech/progressReport/components/excel";
 ```
 
 **FSD Rule:** Features should NOT import from other features. They should:
+
 - Use **entities** for shared domain models
 - Use **widgets** for reusable composite UI
 - Use **shared** for utilities
@@ -81,14 +87,16 @@ import { applyKMMMYPUnitFormatting } from '@/features/modules/edtech/progressRep
 ### 3. **No Entities Layer** ❌
 
 **Current:** Domain models are mixed into features:
+
 ```typescript
 // Domain models scattered across features
-src/features/modules/edtech/progressReport/types/ProgressReportTypes.ts
-src/features/modules/math/types/mathTypes.ts
-src/features/modules/calendar/types/index.ts
+src / features / modules / edtech / progressReport / types / ProgressReportTypes.ts;
+src / features / modules / math / types / mathTypes.ts;
+src / features / modules / calendar / types / index.ts;
 ```
 
 **FSD Should Have:**
+
 ```
 src/entities/
 ├── student/
@@ -106,13 +114,15 @@ src/entities/
 
 ### 4. **Shared vs Infrastructure Confusion** ⚠️
 
-**Current:** 
+**Current:**
+
 - `src/features/infrastructure/shared/` - UI components + utils
 - `src/features/infrastructure/api/` - API clients
 - `src/features/infrastructure/i18n/` - i18n setup
 - `src/features/infrastructure/logging/` - Logging utilities
 
 **FSD Should Separate:**
+
 - **`shared/`**: Pure technical utilities (no business logic, no UI dependencies)
 - **`infrastructure/`** or **`lib/`**: Framework-specific setup (should be minimal or in `app/`)
 
@@ -123,17 +133,19 @@ src/entities/
 ### 5. **Pages Directly Reference Features** ❌
 
 **Current:**
+
 ```typescript
 // src/pages/projects/edtech/progressReport.tsx
-import { ProgressReportPage } from '@/features/modules/edtech/progressReport';
+import { ProgressReportPage } from "@/features/modules/edtech/progressReport";
 ```
 
 **FSD Rule:** Pages should compose widgets, not directly import feature components.
 
 **Should Be:**
+
 ```typescript
 // src/pages/projects/edtech/progressReport.tsx
-import { ProgressReportWidget } from '@/widgets/progress-report';
+import { ProgressReportWidget } from "@/widgets/progress-report";
 ```
 
 ---
@@ -141,6 +153,7 @@ import { ProgressReportWidget } from '@/widgets/progress-report';
 ### 6. **Inconsistent Segments** ⚠️
 
 **Current Feature Structure:**
+
 ```
 feature/
 ├── components/  (UI)
@@ -152,6 +165,7 @@ feature/
 ```
 
 **FSD Segments:**
+
 ```
 feature/
 ├── ui/          (UI components)
@@ -162,6 +176,7 @@ feature/
 ```
 
 **Issues:**
+
 - `components/` vs `ui/` - inconsistent naming
 - `hooks/` + `utils/` should be `model/`
 - No clear separation between business logic (model) and utilities (lib)
@@ -171,15 +186,17 @@ feature/
 ### 7. **No Widgets Layer** ❌
 
 **Current:** Complex composite components are mixed in features or shared:
+
 ```typescript
 // Complex composite component in shared
-src/features/infrastructure/shared/components/table/GenericTable.tsx
+src / features / infrastructure / shared / components / table / GenericTable.tsx;
 
 // Or in features themselves
-src/features/modules/edtech/progressReport/components/sections/ClassViewSection.tsx
+src / features / modules / edtech / progressReport / components / sections / ClassViewSection.tsx;
 ```
 
 **FSD Should Have:**
+
 ```
 src/widgets/
 ├── progress-report-table/
@@ -195,6 +212,7 @@ src/widgets/
 ### 8. **Collections vs Features Confusion** ⚠️
 
 **Current:** You have "Collections" (edtech, math, ai) that contain multiple sub-features:
+
 ```
 src/features/modules/edtech/
 ├── progressReport/
@@ -202,6 +220,7 @@ src/features/modules/edtech/
 ```
 
 **FSD Perspective:** These should either be:
+
 - Separate features at the same level
 - Or use **processes** layer for cross-cutting workflows
 
@@ -226,6 +245,7 @@ src/features/modules/edtech/
 **Action:** Extract shared domain logic into entities.
 
 **Example:**
+
 ```typescript
 // Before: ❌
 // math feature imports voice feature
@@ -234,11 +254,12 @@ import { VoicePromptButton } from "@/features/modules/voice";
 // After: ✅
 // Create widget that combines entities
 // src/widgets/voice-prompt/
-import { VoiceEntity } from '@/entities/voice';
-import { PromptEntity } from '@/entities/prompt';
+import { VoiceEntity } from "@/entities/voice";
+import { PromptEntity } from "@/entities/prompt";
 ```
 
 **Steps:**
+
 1. Identify cross-feature dependencies
 2. Extract shared models to `entities/`
 3. Extract shared UI to `widgets/`
@@ -251,6 +272,7 @@ import { PromptEntity } from '@/entities/prompt';
 **Action:** Create `src/entities/` for shared domain models.
 
 **Structure:**
+
 ```
 src/entities/
 ├── student/
@@ -265,6 +287,7 @@ src/entities/
 ```
 
 **Benefits:**
+
 - Features can share domain models
 - Clear domain boundaries
 - Easier testing and reuse
@@ -276,12 +299,14 @@ src/entities/
 **Action:** Rename and reorganize feature segments to FSD standard.
 
 **Current → FSD:**
+
 - `components/` → `ui/`
 - `hooks/` + `utils/` → `model/` (business logic) + `lib/` (utilities)
 - `types/` → `model/types.ts`
 - `api/` → `api/` (unchanged)
 
 **Migration Plan:**
+
 1. Update one feature as a pilot
 2. Document the pattern
 3. Gradually migrate others
@@ -291,11 +316,13 @@ src/entities/
 ### **Priority 4: Separate Shared from Infrastructure** 🟢
 
 **Action:** Split `infrastructure/` into:
+
 - **`shared/`**: Pure utilities (no React, no business logic)
 - **`app/`**: App-level setup (providers, config)
 - **Keep `infrastructure/`**: Only for framework-specific code
 
 **Structure:**
+
 ```
 src/
 ├── app/
@@ -319,11 +346,13 @@ src/
 **Action:** Create `src/widgets/` for composite components.
 
 **Candidates:**
+
 - `progress-report-table` - Complex table combining entities
 - `class-statistics-cards` - Composite statistics display
 - `calendar-view` - Complex calendar composition
 
 **Rule:** Widgets can import from:
+
 - ✅ entities
 - ✅ shared
 - ❌ NOT from features
@@ -335,15 +364,17 @@ src/
 **Action:** Ensure pages only compose widgets, not features directly.
 
 **Current Pattern (OK for now):**
+
 ```typescript
 // Pages can import from features during transition
-import { ProgressReportPage } from '@/features/.../progressReport';
+import { ProgressReportPage } from "@/features/.../progressReport";
 ```
 
 **Target Pattern:**
+
 ```typescript
 // Pages should compose widgets
-import { ProgressReportWidget } from '@/widgets/progress-report';
+import { ProgressReportWidget } from "@/widgets/progress-report";
 ```
 
 **Note:** This can be done gradually as you introduce widgets.
@@ -353,12 +384,14 @@ import { ProgressReportWidget } from '@/widgets/progress-report';
 ### **Priority 7: Handle Collections** 🔵
 
 **Option A:** Split collections into separate features:
+
 ```
 edtech-progress-report/
 edtech-unit-plan/
 ```
 
 **Option B:** Use Processes layer (FSD advanced):
+
 ```
 processes/
 └── edtech-workflow/
@@ -373,24 +406,28 @@ processes/
 ## 📋 Migration Roadmap
 
 ### **Phase 1: Foundation (2-3 weeks)**
+
 1. ✅ Create `entities/` layer
 2. ✅ Extract shared domain models
 3. ✅ Fix feature-to-feature imports
 4. ✅ Document entity contracts
 
 ### **Phase 2: Standardization (2-3 weeks)**
+
 1. ✅ Pilot segment rename (1 feature)
 2. ✅ Standardize feature segments
 3. ✅ Update documentation
 4. ✅ Create migration guide
 
 ### **Phase 3: Layer Completion (3-4 weeks)**
+
 1. ✅ Create `widgets/` layer
 2. ✅ Extract composite components
 3. ✅ Update pages to use widgets
 4. ✅ Separate `shared/` from `infrastructure/`
 
 ### **Phase 4: Cleanup (1-2 weeks)**
+
 1. ✅ Handle collections
 2. ✅ Final audit
 3. ✅ Update all documentation
@@ -401,6 +438,7 @@ processes/
 ## 🔧 Tooling Recommendations
 
 ### ESLint Rules for FSD
+
 ```json
 {
   "rules": {
@@ -424,6 +462,7 @@ processes/
 ```
 
 ### Import Path Aliases
+
 ```json
 {
   "paths": {
@@ -472,8 +511,8 @@ After migration, you should be able to:
 ---
 
 **Next Steps:**
+
 1. Review this document
 2. Choose starting point (recommend: Priority 1)
 3. Create detailed migration plan for chosen priority
 4. Execute and iterate
-

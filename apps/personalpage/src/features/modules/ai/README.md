@@ -7,12 +7,15 @@
 ## Structure
 
 ### Core Orchestration
+
 - `core/` - Main facade/router (`objectGeneration.ts`) that routes to appropriate system
 - `types.ts` - Central type definitions
 - `index.ts` - Public API exports
 
 ### Shared Resources (`shared/`)
+
 Resources used by all AI systems:
+
 - `schemas/` - Zod schemas for AI payloads and validation
 - `prompts/` - Prompt templates and builders
 - `validation/` - Guardrails for AI settings
@@ -21,19 +24,23 @@ Resources used by all AI systems:
 - `constants/` - Configuration constants
 
 ### AI Systems (`systems/`)
+
 Each system is self-contained and preserved for reference:
 
 #### `systems/legacy/` - Legacy Chain System
+
 - **Status**: 📚 Preserved as Example/Memory
 - Custom chain-based architecture
 - See `systems/legacy/README.md` for details
 
 #### `systems/langgraph/` - LangGraph System
+
 - **Status**: ✅ Active (Currently in Use)
 - LangGraph StateGraph workflow
 - See `systems/langgraph/README.md` for details
 
 #### `systems/modern/` - Modern System
+
 - **Status**: 🚧 To be implemented
 - Future system leveraging latest AI technology
 - See `systems/modern/README.md` for details
@@ -43,7 +50,7 @@ Each system is self-contained and preserved for reference:
 The main entry point is `generateSettings()` from `core/objectGeneration.ts`, which routes to the active system based on configuration.
 
 ```typescript
-import { generateSettings } from '@ai/core/objectGeneration';
+import { generateSettings } from "@ai/core/objectGeneration";
 
 const result = await generateSettings("a quadratic equation with positive coefficients");
 ```
@@ -51,6 +58,7 @@ const result = await generateSettings("a quadratic equation with positive coeffi
 ## System Selection
 
 The active system is controlled by the `USE_LANGGRAPH` flag in `core/objectGeneration.ts`:
+
 - `true` → LangGraph system (current default)
 - `false` → Legacy chain system
 
@@ -70,15 +78,15 @@ Both System 1 (Legacy) and System 2 (LangGraph) have limitations on which object
 Use the utility functions to check if a system supports a given object type:
 
 ```typescript
-import { canProcessObjectType, getObjectTypeCapability } from '@ai';
+import { canProcessObjectType, getObjectTypeCapability } from "@ai";
 
 // Simple check
-if (canProcessObjectType('legacy', 'coefficient')) {
+if (canProcessObjectType("legacy", "coefficient")) {
   // System 1 can process coefficients
 }
 
 // Detailed information
-const capability = getObjectTypeCapability('langgraph', 'inequality');
+const capability = getObjectTypeCapability("langgraph", "inequality");
 if (capability.canProcess) {
   console.log(`Support level: ${capability.supportLevel}`);
   console.log(`Reason: ${capability.reason}`);
@@ -88,15 +96,17 @@ if (capability.canProcess) {
 ### Supported Object Types
 
 **Fully Supported (Both Systems):**
+
 - `coefficient`
 - `coefficients`
 - `term`
 
 **Partially Supported:**
+
 - `expression` (incomplete validation)
 - `equation` (incomplete validation)
 - `terms` (incomplete schemas)
 
 **Not Recommended:**
-- `inequality`, `function`, `point`, `set`, `interval` (placeholder implementations)
 
+- `inequality`, `function`, `point`, `set`, `interval` (placeholder implementations)

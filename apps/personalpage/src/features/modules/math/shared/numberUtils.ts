@@ -13,7 +13,7 @@ import { CoefficientRule } from "../types/mathTypes";
  * @returns {T} A randomly selected element from the array.
  */
 export function randomChoice<T>(choices: T[]): T {
-    return choices[Math.floor(Math.random() * choices.length)];
+  return choices[Math.floor(Math.random() * choices.length)];
 }
 
 /**
@@ -24,7 +24,7 @@ export function randomChoice<T>(choices: T[]): T {
  * @returns {number} A random integer between `minVal` and `maxVal`.
  */
 export function randomInt(minVal: number, maxVal: number): number {
-    return Math.floor(Math.random() * (maxVal - minVal + 1)) + minVal;
+  return Math.floor(Math.random() * (maxVal - minVal + 1)) + minVal;
 }
 
 /**
@@ -34,13 +34,13 @@ export function randomInt(minVal: number, maxVal: number): number {
  * @returns {boolean} True if the number is prime, false otherwise.
  */
 export function isPrime(num: number): boolean {
-    if (num <= 1) return false;
-    if (num <= 3) return true;
-    if (num % 2 === 0 || num % 3 === 0) return false;
-    for (let i = 5; i * i <= num; i += 6) {
-        if (num % i === 0 || num % (i + 2) === 0) return false;
-    }
-    return true;
+  if (num <= 1) return false;
+  if (num <= 3) return true;
+  if (num % 2 === 0 || num % 3 === 0) return false;
+  for (let i = 5; i * i <= num; i += 6) {
+    if (num % i === 0 || num % (i + 2) === 0) return false;
+  }
+  return true;
 }
 
 /**
@@ -51,9 +51,7 @@ export function isPrime(num: number): boolean {
  * @returns {boolean} True if the number or its absolute value is a perfect square, false otherwise.
  */
 export function isSquare(num: number): boolean {
-    return num < 0 
-        ? Number.isInteger(Math.sqrt(Math.abs(num))) 
-        : Number.isInteger(Math.sqrt(num));
+  return num < 0 ? Number.isInteger(Math.sqrt(Math.abs(num))) : Number.isInteger(Math.sqrt(num));
 }
 
 /**
@@ -63,8 +61,8 @@ export function isSquare(num: number): boolean {
  * @returns {boolean} True if the number is a perfect cube, false otherwise.
  */
 export function isCube(num: number): boolean {
-    const cbrt = Math.cbrt(num);
-    return Number.isInteger(cbrt);
+  const cbrt = Math.cbrt(num);
+  return Number.isInteger(cbrt);
 }
 
 /**
@@ -81,42 +79,44 @@ export function isCube(num: number): boolean {
  *          incorrect results or errors if used with single numbers or arrays not representing a fraction.
  */
 export function getRuleValidator(rule: CoefficientRule): (values: [number, number]) => boolean {
-    return (values: [number, number]) => {
-        // Ensure the input is treated as [numerator, denominator]
-        if (values.length !== 2) {
-            throw new Error(`Coefficient array must contain exactly two elements [numerator, denominator], but got ${values.length}`);
-        }
+  return (values: [number, number]) => {
+    // Ensure the input is treated as [numerator, denominator]
+    if (values.length !== 2) {
+      throw new Error(
+        `Coefficient array must contain exactly two elements [numerator, denominator], but got ${values.length}`
+      );
+    }
 
-        const [a, b] = values;
-        if (b === 0) {
-            throw new Error("Division by zero is not allowed for denominator");
-        }
+    const [a, b] = values;
+    if (b === 0) {
+      throw new Error("Division by zero is not allowed for denominator");
+    }
 
-        const result = a / b;
+    const result = a / b;
 
-        switch (rule) {
-            case "unit":
-                return result === 1 || result === -1;
-            case "even":
-                return result % 2 === 0;
-            case "odd":
-                return result % 2 !== 0;
-            case "prime":
-                return isPrime(result);
-            case "positive":
-                return result > 0;
-            case "negative":
-                return result < 0;
-            case "nonzero":
-                return result !== 0;
-            case "square":
-                return isSquare(result);
-            case "cube":
-                return isCube(result);
-            default:
-                throw new Error(`Unknown rule: ${rule}`);
-        }
-    };
+    switch (rule) {
+      case "unit":
+        return result === 1 || result === -1;
+      case "even":
+        return result % 2 === 0;
+      case "odd":
+        return result % 2 !== 0;
+      case "prime":
+        return isPrime(result);
+      case "positive":
+        return result > 0;
+      case "negative":
+        return result < 0;
+      case "nonzero":
+        return result !== 0;
+      case "square":
+        return isSquare(result);
+      case "cube":
+        return isCube(result);
+      default:
+        throw new Error(`Unknown rule: ${rule}`);
+    }
+  };
 }
 
 /**
@@ -127,14 +127,14 @@ export function getRuleValidator(rule: CoefficientRule): (values: [number, numbe
  * @returns {number} The greatest common divisor of the absolute values of `a` and `b`.
  */
 export function gcd(a: number, b: number): number {
-    a = Math.abs(a);
-    b = Math.abs(b);
-    while (b !== 0) {
-        const temp = b;
-        b = a % b;
-        a = temp;
-    }
-    return a;
+  a = Math.abs(a);
+  b = Math.abs(b);
+  while (b !== 0) {
+    const temp = b;
+    b = a % b;
+    a = temp;
+  }
+  return a;
 }
 
 /**
@@ -144,10 +144,7 @@ export function gcd(a: number, b: number): number {
  * @returns {number} The count of digits after the decimal point.
  */
 export function countDecimalPlaces(num: number): number {
-    const str = num.toString();
-    const decimalIndex = str.indexOf('.');
-    return decimalIndex === -1 ? 0 : str.length - decimalIndex - 1;
+  const str = num.toString();
+  const decimalIndex = str.indexOf(".");
+  return decimalIndex === -1 ? 0 : str.length - decimalIndex - 1;
 }
-
-
-

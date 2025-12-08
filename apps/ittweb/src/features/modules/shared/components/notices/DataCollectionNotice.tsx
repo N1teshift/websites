@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { useSession } from 'next-auth/react';
-import { logError } from '@websites/infrastructure/logging';
+import React, { useState, useEffect } from "react";
+import Link from "next/link";
+import { useSession } from "next-auth/react";
+import { logError } from "@websites/infrastructure/logging";
 
-const SESSION_DISMISS_KEY = 'dataCollectionNoticeDismissed';
+const SESSION_DISMISS_KEY = "dataCollectionNoticeDismissed";
 
 /**
  * Data collection notice component that displays a non-intrusive banner
@@ -21,23 +21,23 @@ export default function DataCollectionNotice() {
 
   useEffect(() => {
     setIsMounted(true);
-    
+
     // Only check if user is authenticated
-    if (status === 'authenticated' && session?.discordId) {
+    if (status === "authenticated" && session?.discordId) {
       const checkUserData = async () => {
         try {
           setIsLoading(true);
-          
+
           // First check if dismissed in this session
           const sessionDismissed = sessionStorage.getItem(SESSION_DISMISS_KEY);
-          if (sessionDismissed === 'true') {
+          if (sessionDismissed === "true") {
             setIsLoading(false);
             return;
           }
 
           // Then check if user has permanently accepted
-          const response = await fetch('/api/user/data-notice-status');
-          
+          const response = await fetch("/api/user/data-notice-status");
+
           if (response.ok) {
             const data = await response.json();
             // Show notice if user hasn't accepted it yet, hide if they have
@@ -51,12 +51,16 @@ export default function DataCollectionNotice() {
             // Authentication errors (401/403) might be temporary while session is initializing
             const isAuthError = response.status === 401 || response.status === 403;
             if (!isAuthError) {
-              logError(new Error('Failed to fetch data notice status'), 'Failed to fetch data notice status', {
-                component: 'DataCollectionNotice',
-                operation: 'checkUserData',
-                status: response.status,
-                discordId: session?.discordId,
-              });
+              logError(
+                new Error("Failed to fetch data notice status"),
+                "Failed to fetch data notice status",
+                {
+                  component: "DataCollectionNotice",
+                  operation: "checkUserData",
+                  status: response.status,
+                  discordId: session?.discordId,
+                }
+              );
               setIsVisible(true);
             } else {
               // For auth errors, don't show notice - session might not be ready yet
@@ -67,9 +71,9 @@ export default function DataCollectionNotice() {
         } catch (error) {
           // Network errors or other exceptions - don't show notice to avoid false positives
           // The component will re-check when session is ready
-          logError(error as Error, 'Failed to fetch user data for notice', {
-            component: 'DataCollectionNotice',
-            operation: 'checkUserData',
+          logError(error as Error, "Failed to fetch user data for notice", {
+            component: "DataCollectionNotice",
+            operation: "checkUserData",
             discordId: session?.discordId,
           });
           setIsVisible(false);
@@ -88,29 +92,29 @@ export default function DataCollectionNotice() {
   const handleAccept = async () => {
     try {
       // Immediately update sessionStorage to prevent showing again in this session
-      sessionStorage.setItem(SESSION_DISMISS_KEY, 'true');
+      sessionStorage.setItem(SESSION_DISMISS_KEY, "true");
       setIsVisible(false);
 
       // Then save to backend (fire and forget - we've already hidden it)
-      const response = await fetch('/api/user/accept-data-notice', {
-        method: 'POST',
+      const response = await fetch("/api/user/accept-data-notice", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       });
 
       if (!response.ok) {
-        logError(new Error('Failed to accept data notice'), 'Failed to accept data notice', {
-          component: 'DataCollectionNotice',
-          operation: 'handleAccept',
+        logError(new Error("Failed to accept data notice"), "Failed to accept data notice", {
+          component: "DataCollectionNotice",
+          operation: "handleAccept",
           status: response.status,
           discordId: session?.discordId,
         });
       }
     } catch (error) {
-      logError(error as Error, 'Error accepting data notice', {
-        component: 'DataCollectionNotice',
-        operation: 'handleAccept',
+      logError(error as Error, "Error accepting data notice", {
+        component: "DataCollectionNotice",
+        operation: "handleAccept",
         discordId: session?.discordId,
       });
       // Already hidden, so no need to do anything else
@@ -119,12 +123,12 @@ export default function DataCollectionNotice() {
 
   const handleDismiss = () => {
     // Save dismissal to sessionStorage for this session only
-    sessionStorage.setItem(SESSION_DISMISS_KEY, 'true');
+    sessionStorage.setItem(SESSION_DISMISS_KEY, "true");
     setIsVisible(false);
   };
 
   // Don't render until mounted, loaded, or if not visible
-  if (!isMounted || isLoading || !isVisible || status !== 'authenticated') {
+  if (!isMounted || isLoading || !isVisible || status !== "authenticated") {
     return null;
   }
 
@@ -135,19 +139,12 @@ export default function DataCollectionNotice() {
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
             <div className="flex-1">
               <p className="text-sm text-gray-300">
-                We collect information when you log in to provide our services. 
-                View your data in{' '}
-                <Link 
-                  href="/settings" 
-                  className="text-amber-400 hover:text-amber-300 underline"
-                >
+                We collect information when you log in to provide our services. View your data in{" "}
+                <Link href="/settings" className="text-amber-400 hover:text-amber-300 underline">
                   Settings
-                </Link>
-                {' '}or read our{' '}
-                <Link 
-                  href="/privacy" 
-                  className="text-amber-400 hover:text-amber-300 underline"
-                >
+                </Link>{" "}
+                or read our{" "}
+                <Link href="/privacy" className="text-amber-400 hover:text-amber-300 underline">
                   Privacy Policy
                 </Link>
                 .
@@ -168,7 +165,12 @@ export default function DataCollectionNotice() {
                 aria-label="Dismiss"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 </svg>
               </button>
             </div>
@@ -178,4 +180,3 @@ export default function DataCollectionNotice() {
     </div>
   );
 }
-

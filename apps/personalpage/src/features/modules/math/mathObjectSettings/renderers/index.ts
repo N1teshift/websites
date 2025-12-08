@@ -17,6 +17,3 @@ export { default as SetRenderer } from "./SetRenderer";
 export { default as InequalityRenderer } from "./InequalityRenderer";
 export { default as ExpressionRenderer } from "./ExpressionRenderer";
 export { default as BaseMathObjectRenderer } from "./BaseMathObjectRenderer";
-
-
-

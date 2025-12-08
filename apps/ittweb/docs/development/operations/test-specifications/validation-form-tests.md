@@ -3,6 +3,7 @@
 Test specifications for form validation and form handling.
 
 ### Archive Validation
+
 - [ ] `src/features/modules/archives/utils/archiveValidation.ts`
   - Test `validateArchiveForm` requires title
   - Test `validateArchiveForm` requires creator name
@@ -21,4 +22,3 @@ Test specifications for form validation and form handling.
 - [Component Tests](./component-tests.md)
 - [Hook Tests](./hook-tests.md)
 - [Testing Guide](../testing-guide.md)
-

@@ -1,7 +1,7 @@
-import React from 'react';
-import type { ArchiveEntry } from '@/types/archive';
-import type { Game, GameWithPlayers } from '@/features/modules/game-management/games/types';
-import ArchivesContent from './ArchivesContent';
+import React from "react";
+import type { ArchiveEntry } from "@/types/archive";
+import type { Game, GameWithPlayers } from "@/features/modules/game-management/games/types";
+import ArchivesContent from "./ArchivesContent";
 
 interface HomeTimelineContentProps {
   loading: boolean;
@@ -80,12 +80,9 @@ export function HomeTimelineContent({
       onGameDelete={onGameDelete as (game: Game) => void}
       onGameJoin={onGameJoin}
       onGameLeave={onGameLeave}
-      isJoining={typeof isJoining === 'string' ? true : isJoining || false}
-      isLeaving={typeof isLeaving === 'string' ? true : isLeaving || false}
+      isJoining={typeof isJoining === "string" ? true : isJoining || false}
+      isLeaving={typeof isLeaving === "string" ? true : isLeaving || false}
       userIsAdmin={canManageEntries}
     />
   );
 }
-
-
-

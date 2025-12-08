@@ -7,6 +7,7 @@ Documentation for handling students with shortened names in the Excel data proce
 When processing Excel files, some student names are shortened (missing middle names), which causes the system to create duplicate student records instead of updating existing ones.
 
 ### Example
+
 - **Database**: Ažuolas Jonas Vainilka
 - **Excel**: Ažuolas Vainilka
 - **Result**: System creates a new student instead of updating the existing one
@@ -35,14 +36,14 @@ Edit `src/features/modules/edtech/progressReport/student-data/config/nameAliases
 
 ```typescript
 export const NAME_ALIASES: NameAlias[] = [
-    {
-        excelFirstName: 'Ažuolas',
-        excelLastName: 'Vainilka',
-        fullFirstName: 'Ažuolas Jonas',
-        fullLastName: 'Vainilka',
-        className: '8 Vydūnas'
-    },
-    // ... more aliases
+  {
+    excelFirstName: "Ažuolas",
+    excelLastName: "Vainilka",
+    fullFirstName: "Ažuolas Jonas",
+    fullLastName: "Vainilka",
+    className: "8 Vydūnas",
+  },
+  // ... more aliases
 ];
 ```
 
@@ -77,6 +78,7 @@ npx tsx scripts/mergeStudentDuplicates.ts
 ```
 
 **What it does:**
+
 1. Identifies duplicate pairs (short name vs full name)
 2. Merges assessments from short name file into full name file
 3. Removes duplicate assessments (same date + column)
@@ -84,19 +86,20 @@ npx tsx scripts/mergeStudentDuplicates.ts
 5. Keeps the full name file with all data
 
 **Results:**
+
 - ✅ 5 duplicate pairs merged
 - ✅ 34 assessments transferred
 - ✅ Student count: 80 → 75
 
 ## 📋 Current Aliases
 
-| Excel Name | Full Name | Class |
-|-----------|-----------|-------|
-| Ažuolas Vainilka | Ažuolas Jonas Vainilka | 8 Vydūnas |
-| Daumantas Van der Molen | Daumantas Jokūbas Van der Molen | 8 A. J. Greimas |
-| Paulius Šulnius | Paulius Martynas Šulnius | 8 M. A. Gimbutienė |
-| Kristupas Vinča | Kristupas Augustas Vinča | 8 M. A. Gimbutienė |
-| Bonifacijus Kiela | Bonifacijus Marijus Kiela | 8 I. Veisaitė |
+| Excel Name              | Full Name                       | Class              |
+| ----------------------- | ------------------------------- | ------------------ |
+| Ažuolas Vainilka        | Ažuolas Jonas Vainilka          | 8 Vydūnas          |
+| Daumantas Van der Molen | Daumantas Jokūbas Van der Molen | 8 A. J. Greimas    |
+| Paulius Šulnius         | Paulius Martynas Šulnius        | 8 M. A. Gimbutienė |
+| Kristupas Vinča         | Kristupas Augustas Vinča        | 8 M. A. Gimbutienė |
+| Bonifacijus Kiela       | Bonifacijus Marijus Kiela       | 8 I. Veisaitė      |
 
 ## ➕ Adding New Aliases
 
@@ -121,9 +124,9 @@ When you discover a new shortened name:
 ### Test Name Resolution
 
 ```typescript
-import { resolveNameAlias } from '@progressReport/student-data/config/nameAliases';
+import { resolveNameAlias } from "@progressReport/student-data/config/nameAliases";
 
-const result = resolveNameAlias('Ažuolas', 'Vainilka', '8 Vydūnas');
+const result = resolveNameAlias("Ažuolas", "Vainilka", "8 Vydūnas");
 console.log(result);
 // Output: { firstName: 'Ažuolas Jonas', lastName: 'Vainilka' }
 ```
@@ -144,23 +147,27 @@ npx tsx scripts/exportStudentData.ts test_export.json
 ### Problem: Duplicate still created
 
 **Check:**
+
 1. Is the alias defined in `nameAliases.ts`?
 2. Does the className match exactly?
 3. Are first/last names spelled exactly as in Excel?
 
 **Debug:**
+
 - Check logs for "Resolved name alias" messages
 - If missing, alias is not being triggered
 
 ### Problem: Wrong student updated
 
 **Check:**
+
 - Verify className in alias matches the sheet being processed
 - Ensure no typos in full names
 
 ## 📊 Statistics
 
 **Current System:**
+
 - Students: 75
 - Name aliases: 5
 - Duplicate merges performed: 5
@@ -179,4 +186,3 @@ npx tsx scripts/exportStudentData.ts test_export.json
 **Last Updated:** October 24, 2025  
 **Version:** 1.0.0  
 **Status:** ✅ Active
-

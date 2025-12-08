@@ -39,6 +39,3 @@ The final TypeScript data files are located in `src/features/modules/guides/data
 - **Pipeline documentation**: `../README.md` (how to run the pipeline)
 - **UI implementation**: `WEBSITE_ENHANCEMENT_GUIDE.md` (what's displayed in the UI)
 - **Historical refactoring notes**: Archived in `docs/archive/scripts-data/REFACTORING_PLAN.md`
-
-
-

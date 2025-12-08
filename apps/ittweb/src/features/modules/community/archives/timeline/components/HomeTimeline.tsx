@@ -1,9 +1,9 @@
-import React, { useEffect, useCallback, useImperativeHandle, forwardRef } from 'react';
-import type { GameFilters } from '@/features/modules/game-management/games/types';
-import ImageModal from '@/features/modules/community/archives/shared/components/sections/ImageModal';
-import { HomeTimelineModals } from './HomeTimelineModals';
-import { DeleteErrorDisplay } from '../../display/components';
-import { HomeTimelineContent } from './HomeTimelineContent';
+import React, { useEffect, useCallback, useImperativeHandle, forwardRef } from "react";
+import type { GameFilters } from "@/features/modules/game-management/games/types";
+import ImageModal from "@/features/modules/community/archives/shared/components/sections/ImageModal";
+import { HomeTimelineModals } from "./HomeTimelineModals";
+import { DeleteErrorDisplay } from "../../display/components";
+import { HomeTimelineContent } from "./HomeTimelineContent";
 import {
   useArchivesPage,
   useArchivesActions,
@@ -13,9 +13,9 @@ import {
   useGameJoinLeave,
   useGameEditDelete,
   useEntryOperations,
-} from '@/features/modules/community/archives/shared/hooks';
-import { useGames } from '@/features/modules/game-management/games/hooks/useGames';
-import { extractEntryId } from '@/features/modules/community/archives/shared/utils/entryUtils';
+} from "@/features/modules/community/archives/shared/hooks";
+import { useGames } from "@/features/modules/game-management/games/hooks/useGames";
+import { extractEntryId } from "@/features/modules/community/archives/shared/utils/entryUtils";
 
 export interface HomeTimelineHandle {
   addNewGame: (gameId: string) => Promise<void>;
@@ -37,11 +37,7 @@ const HomeTimeline = forwardRef<HomeTimelineHandle>((_props, ref) => {
     setModalImage,
   } = useArchivesPage();
 
-  const {
-    handleImageClick,
-    handleImageModalClose,
-    handleSignIn,
-  } = useArchivesActions({
+  const { handleImageClick, handleImageModalClose, handleSignIn } = useArchivesActions({
     setEntries,
     setLoading,
     setError,
@@ -52,28 +48,28 @@ const HomeTimeline = forwardRef<HomeTimelineHandle>((_props, ref) => {
     setModalImage,
     setSortOrder: () => {},
     entries,
-    sortOrder: 'newest',
+    sortOrder: "newest",
   });
 
   // Fetch games
-  const { games, loading: gamesLoading, error: gamesError, refetch: refetchGames } = useGames({
+  const {
+    games,
+    loading: gamesLoading,
+    error: gamesError,
+    refetch: refetchGames,
+  } = useGames({
     ...gameFilters,
     limit: 100,
   });
 
   // Game state management
-  const {
-    localGames,
-    setLocalGames,
-    gamesMap,
-    addNewGame,
-    markGameRecentlyUpdated,
-  } = useTimelineGames({
-    games,
-    gamesLoading,
-    gamesError,
-    refetchGames,
-  });
+  const { localGames, setLocalGames, gamesMap, addNewGame, markGameRecentlyUpdated } =
+    useTimelineGames({
+      games,
+      gamesLoading,
+      gamesError,
+      refetchGames,
+    });
 
   // Entry loading
   const { loadAllEntries, addNewEntry } = useTimelineEntries({
@@ -225,8 +221,6 @@ const HomeTimeline = forwardRef<HomeTimelineHandle>((_props, ref) => {
   );
 });
 
-HomeTimeline.displayName = 'HomeTimeline';
+HomeTimeline.displayName = "HomeTimeline";
 
 export default HomeTimeline;
-
-

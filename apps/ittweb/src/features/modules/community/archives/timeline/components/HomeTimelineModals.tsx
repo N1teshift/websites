@@ -1,10 +1,10 @@
-import React from 'react';
-import type { ArchiveEntry } from '@/types/archive';
-import type { GameWithPlayers } from '@/features/modules/game-management/games/types';
-import EntryEditModal from '@/features/modules/game-management/entries/components/EntryEditModal';
-import EditGameForm from '@/features/modules/game-management/scheduled-games/components/EditGameForm';
-import GameDeleteDialog from '@/features/modules/game-management/scheduled-games/components/GameDeleteDialog';
-import ArchiveDeleteDialog from '@/features/modules/community/archives/forms/components/ArchiveDeleteDialog';
+import React from "react";
+import type { ArchiveEntry } from "@/types/archive";
+import type { GameWithPlayers } from "@/features/modules/game-management/games/types";
+import EntryEditModal from "@/features/modules/game-management/entries/components/EntryEditModal";
+import EditGameForm from "@/features/modules/game-management/scheduled-games/components/EditGameForm";
+import GameDeleteDialog from "@/features/modules/game-management/scheduled-games/components/GameDeleteDialog";
+import ArchiveDeleteDialog from "@/features/modules/community/archives/forms/components/ArchiveDeleteDialog";
 
 interface HomeTimelineModalsProps {
   editingEntry: ArchiveEntry | null;
@@ -54,7 +54,7 @@ export function HomeTimelineModals({
   return (
     <>
       {/* Edit Entry Modal */}
-      {editingEntry && editingEntry.id.startsWith('entry-') && (
+      {editingEntry && editingEntry.id.startsWith("entry-") && (
         <EntryEditModal
           entry={editingEntry}
           entryId={extractEntryId(editingEntry.id)!}
@@ -64,7 +64,7 @@ export function HomeTimelineModals({
       )}
 
       {/* Edit Game Modal */}
-      {editingGame && editingGame.gameState === 'scheduled' && (
+      {editingGame && editingGame.gameState === "scheduled" && (
         <EditGameForm
           game={editingGame}
           onSubmit={onGameEditSubmit}
@@ -97,7 +97,3 @@ export function HomeTimelineModals({
     </>
   );
 }
-
-
-
-

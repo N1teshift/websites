@@ -9,17 +9,14 @@ const buildCharIndex = (spec: MatchMetadataSpec): Map<string, number> => {
   return map;
 };
 
-export const computeChecksum = (
-  payload: string,
-  spec: MatchMetadataSpec
-): number => {
+export const computeChecksum = (payload: string, spec: MatchMetadataSpec): number => {
   const modulo = spec.checksumModulo;
   const charIndex = buildCharIndex(spec);
   let sum = 0;
 
   for (const char of payload) {
     const idx = charIndex.get(char);
-    const weight = idx !== undefined ? idx + 1 : char.codePointAt(0) ?? 0;
+    const weight = idx !== undefined ? idx + 1 : (char.codePointAt(0) ?? 0);
     sum = (sum + weight) % modulo;
   }
 
@@ -40,4 +37,3 @@ export const assertChecksum = (
     );
   }
 };
-

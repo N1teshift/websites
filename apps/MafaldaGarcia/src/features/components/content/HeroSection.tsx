@@ -1,6 +1,6 @@
-import React from 'react';
-import { HeroContent } from './HeroContent';
-import { SmartImage } from '@websites/ui';
+import React from "react";
+import { HeroContent } from "./HeroContent";
+import { SmartImage } from "@websites/ui";
 
 interface HeroSectionProps {
   heroImage?: string;

@@ -59,10 +59,7 @@ function createReplayInstance(): W3GReplayInstance {
   if (moduleRef?.default) {
     return new moduleRef.default();
   }
-  throw new ReplayMetaError(
-    "Unable to instantiate W3GReplay",
-    ReplayMetaErrorCode.IO_ERROR
-  );
+  throw new ReplayMetaError("Unable to instantiate W3GReplay", ReplayMetaErrorCode.IO_ERROR);
 }
 
 export const readMMDData = async (filePath: string): Promise<MMDReaderResult> => {
@@ -85,9 +82,11 @@ export const readMMDData = async (filePath: string): Promise<MMDReaderResult> =>
     if (debug) {
       console.error("[DEBUG MMD] Raw action:", JSON.stringify(action));
     }
-    
+
     // The actual structure from w3gjs is: cache.filename, cache.missionKey, cache.key
-    const cacheData = action.cache as { filename?: string; missionKey?: string; key?: string } | undefined;
+    const cacheData = action.cache as
+      | { filename?: string; missionKey?: string; key?: string }
+      | undefined;
     const msg: MMDMessage = {
       filename: cacheData?.filename || "",
       missionKey: cacheData?.missionKey || "",
@@ -97,7 +96,9 @@ export const readMMDData = async (filePath: string): Promise<MMDReaderResult> =>
     allMessages.push(msg);
 
     if (debug) {
-      console.error(`[DEBUG MMD] Parsed: filename=${msg.filename}, missionKey=${msg.missionKey}, key=${msg.key}`);
+      console.error(
+        `[DEBUG MMD] Parsed: filename=${msg.filename}, missionKey=${msg.missionKey}, key=${msg.key}`
+      );
     }
 
     // Extract custom data - MMD custom messages use key="custom <id> <data>"
@@ -156,8 +157,8 @@ function extractITTMetadata(customData: Map<string, string>): MMDReaderResult["i
   // MMD escapes spaces and backslashes: "\ " -> " ", "\\" -> "\"
   const payload = rawPayload
     .replace(/\\\\/g, "\x00") // Temp replace escaped backslash
-    .replace(/\\ /g, " ")     // Unescape spaces
-    .replace(/\x00/g, "\\");  // Restore backslashes
+    .replace(/\\ /g, " ") // Unescape spaces
+    .replace(/\x00/g, "\\"); // Restore backslashes
 
   return {
     version,
@@ -178,4 +179,3 @@ async function loadReplay(filePath: string): Promise<Buffer> {
     );
   }
 }
-

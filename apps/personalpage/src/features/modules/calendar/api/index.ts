@@ -1,9 +1,9 @@
-import { GoogleCalendarClient } from '@websites/infrastructure/clients/google';
-import { MicrosoftCalendarClient } from '@websites/infrastructure/clients/microsoft';
-import { createComponentLogger } from '@websites/infrastructure/logging';
-import { AvailabilityCheckResult, BookingOptions } from '../types';
+import { GoogleCalendarClient } from "@websites/infrastructure/clients/google";
+import { MicrosoftCalendarClient } from "@websites/infrastructure/clients/microsoft";
+import { createComponentLogger } from "@websites/infrastructure/logging";
+import { AvailabilityCheckResult, BookingOptions } from "../types";
 
-const logger = createComponentLogger('CalendarAPI');
+const logger = createComponentLogger("CalendarAPI");
 
 /**
  * Check Google Calendar availability for a time range
@@ -11,28 +11,34 @@ const logger = createComponentLogger('CalendarAPI');
 export async function checkGoogleAvailability(
   startDateTime: string,
   endDateTime: string,
-  calendarId: string = 'primary'
+  calendarId: string = "primary"
 ): Promise<AvailabilityCheckResult> {
   try {
-    logger.debug('Checking Google Calendar availability', { startDateTime, endDateTime, calendarId });
+    logger.debug("Checking Google Calendar availability", {
+      startDateTime,
+      endDateTime,
+      calendarId,
+    });
 
     const googleClient = new GoogleCalendarClient();
     const result = await googleClient.checkAvailability(calendarId, startDateTime, endDateTime);
 
     const isAvailable = result.busy.length === 0;
 
-    logger.info('Google Calendar availability checked', {
+    logger.info("Google Calendar availability checked", {
       isAvailable,
-      busyCount: result.busy.length
+      busyCount: result.busy.length,
     });
 
     return {
       isAvailable,
-      busy: result.busy
+      busy: result.busy,
     };
   } catch (error) {
-    logger.error('Error checking Google Calendar availability',
-      error instanceof Error ? error : new Error(String(error)));
+    logger.error(
+      "Error checking Google Calendar availability",
+      error instanceof Error ? error : new Error(String(error))
+    );
     throw error;
   }
 }
@@ -43,28 +49,34 @@ export async function checkGoogleAvailability(
 export async function checkMicrosoftAvailability(
   startDateTime: string,
   endDateTime: string,
-  calendarId: string = 'default'
+  calendarId: string = "default"
 ): Promise<AvailabilityCheckResult> {
   try {
-    logger.debug('Checking Microsoft Calendar availability', { startDateTime, endDateTime, calendarId });
+    logger.debug("Checking Microsoft Calendar availability", {
+      startDateTime,
+      endDateTime,
+      calendarId,
+    });
 
     const microsoftClient = new MicrosoftCalendarClient();
     const result = await microsoftClient.checkAvailability(startDateTime, endDateTime);
 
     const isAvailable = result.length === 0;
 
-    logger.info('Microsoft Calendar availability checked', {
+    logger.info("Microsoft Calendar availability checked", {
       isAvailable,
-      busyCount: result.length
+      busyCount: result.length,
     });
 
     return {
       isAvailable,
-      busy: result
+      busy: result,
     };
   } catch (error) {
-    logger.error('Error checking Microsoft Calendar availability',
-      error instanceof Error ? error : new Error(String(error)));
+    logger.error(
+      "Error checking Microsoft Calendar availability",
+      error instanceof Error ? error : new Error(String(error))
+    );
     throw error;
   }
 }
@@ -74,41 +86,43 @@ export async function checkMicrosoftAvailability(
  */
 export async function bookGoogleCalendar(options: BookingOptions): Promise<unknown> {
   try {
-    logger.debug('Booking Google Calendar event', {
+    logger.debug("Booking Google Calendar event", {
       startDateTime: options.startDateTime,
-      summary: options.summary
+      summary: options.summary,
     });
 
     const googleClient = new GoogleCalendarClient();
-    const calendarId = options.calendarId || 'primary';
+    const calendarId = options.calendarId || "primary";
 
     const eventData = {
       summary: options.summary,
       description: options.description,
       start: {
         dateTime: options.startDateTime,
-        timeZone: process.env.NEXT_PUBLIC_CALENDAR_TIMEZONE || 'Europe/Vilnius'
+        timeZone: process.env.NEXT_PUBLIC_CALENDAR_TIMEZONE || "Europe/Vilnius",
       },
       end: {
         dateTime: options.endDateTime,
-        timeZone: process.env.NEXT_PUBLIC_CALENDAR_TIMEZONE || 'Europe/Vilnius'
+        timeZone: process.env.NEXT_PUBLIC_CALENDAR_TIMEZONE || "Europe/Vilnius",
       },
-      attendees: options.attendees?.map(attendee => ({
+      attendees: options.attendees?.map((attendee) => ({
         email: attendee.email,
-        displayName: attendee.name
-      }))
+        displayName: attendee.name,
+      })),
     };
 
     const result = await googleClient.createCalendarEvent(calendarId, eventData);
 
-    logger.info('Google Calendar event booked successfully', {
-      eventId: (result as Record<string, unknown>)?.id
+    logger.info("Google Calendar event booked successfully", {
+      eventId: (result as Record<string, unknown>)?.id,
     });
 
     return result;
   } catch (error) {
-    logger.error('Error booking Google Calendar event',
-      error instanceof Error ? error : new Error(String(error)));
+    logger.error(
+      "Error booking Google Calendar event",
+      error instanceof Error ? error : new Error(String(error))
+    );
     throw error;
   }
 }
@@ -118,9 +132,9 @@ export async function bookGoogleCalendar(options: BookingOptions): Promise<unkno
  */
 export async function bookMicrosoftCalendar(options: BookingOptions): Promise<unknown> {
   try {
-    logger.debug('Booking Microsoft Calendar event', {
+    logger.debug("Booking Microsoft Calendar event", {
       startDateTime: options.startDateTime,
-      summary: options.summary
+      summary: options.summary,
     });
 
     const microsoftClient = new MicrosoftCalendarClient();
@@ -128,41 +142,41 @@ export async function bookMicrosoftCalendar(options: BookingOptions): Promise<un
     const eventData = {
       subject: options.summary,
       body: {
-        contentType: 'HTML',
-        content: options.description || ''
+        contentType: "HTML",
+        content: options.description || "",
       },
       start: {
         dateTime: options.startDateTime,
-        timeZone: process.env.NEXT_PUBLIC_CALENDAR_TIMEZONE || 'Europe/Vilnius'
+        timeZone: process.env.NEXT_PUBLIC_CALENDAR_TIMEZONE || "Europe/Vilnius",
       },
       end: {
         dateTime: options.endDateTime,
-        timeZone: process.env.NEXT_PUBLIC_CALENDAR_TIMEZONE || 'Europe/Vilnius'
+        timeZone: process.env.NEXT_PUBLIC_CALENDAR_TIMEZONE || "Europe/Vilnius",
       },
-      attendees: options.attendees?.map(attendee => ({
+      attendees: options.attendees?.map((attendee) => ({
         emailAddress: {
           address: attendee.email,
-          name: attendee.name || ''
+          name: attendee.name || "",
         },
-        type: 'required'
+        type: "required",
       })),
       isOnlineMeeting: true,
-      onlineMeetingProvider: process.env.NEXT_PUBLIC_CALENDAR_ONLINE_MEETING_PROVIDER || 'teamsForBusiness'
+      onlineMeetingProvider:
+        process.env.NEXT_PUBLIC_CALENDAR_ONLINE_MEETING_PROVIDER || "teamsForBusiness",
     };
 
     const result = await microsoftClient.createEvent(eventData);
 
-    logger.info('Microsoft Calendar event booked successfully', {
-      eventId: (result as Record<string, unknown>)?.id
+    logger.info("Microsoft Calendar event booked successfully", {
+      eventId: (result as Record<string, unknown>)?.id,
     });
 
     return result;
   } catch (error) {
-    logger.error('Error booking Microsoft Calendar event',
-      error instanceof Error ? error : new Error(String(error)));
+    logger.error(
+      "Error booking Microsoft Calendar event",
+      error instanceof Error ? error : new Error(String(error))
+    );
     throw error;
   }
 }
-
-
-

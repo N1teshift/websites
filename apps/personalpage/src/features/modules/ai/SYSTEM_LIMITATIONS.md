@@ -5,6 +5,7 @@ This document outlines the limitations and supported features for System 1 (Lega
 ## System 1 (Legacy) - Limitations
 
 ### ✅ Fully Supported Object Types
+
 These object types have complete schema definitions, system prompts, and validation:
 
 1. **coefficient** ✅
@@ -38,6 +39,7 @@ These object types have complete schema definitions, system prompts, and validat
    - Recursive support: Can contain `term` sub-objects
 
 ### ⚠️ Partially Supported Object Types
+
 These have placeholder schemas and may not work correctly:
 
 6. **terms** ⚠️
@@ -84,17 +86,17 @@ These have placeholder schemas and may not work correctly:
 
 ### System 1 Known Issues
 
-1. **Validation Gaps**: 
+1. **Validation Gaps**:
    - Only `coefficient` and `coefficients` have complete validation
    - Other types have basic structure validation but lack detailed property validation (marked with TODO in code)
 
-2. **Placeholder Schemas**: 
+2. **Placeholder Schemas**:
    - Types with placeholder schemas will use a fallback generic object schema, which may not enforce correct structure
 
-3. **System Prompt Gaps**: 
+3. **System Prompt Gaps**:
    - `inequality`, `function`, `point`, `set`, `interval` use placeholder prompts that may not guide the LLM correctly
 
-4. **Recursive Processing**: 
+4. **Recursive Processing**:
    - Supports recursive processing for nested objects, but may fail if sub-object types are not fully supported
 
 ---
@@ -102,6 +104,7 @@ These have placeholder schemas and may not work correctly:
 ## System 2 (LangGraph) - Limitations
 
 ### ✅ Fully Supported Object Types
+
 These have complete Zod schemas and system prompts:
 
 1. **coefficient** ✅
@@ -120,6 +123,7 @@ These have complete Zod schemas and system prompts:
    - Validation: Complete (Zod + additional validation)
 
 ### ⚠️ Partially Supported Object Types
+
 These have placeholder Zod schemas (using `passthrough()`):
 
 4. **expression** ⚠️
@@ -172,16 +176,16 @@ These have placeholder Zod schemas (using `passthrough()`):
 
 ### System 2 Known Issues
 
-1. **Placeholder Schemas**: 
+1. **Placeholder Schemas**:
    - Types with `passthrough()` schemas accept any object structure, which may lead to incorrect or incomplete settings
 
-2. **System Prompt Gaps**: 
+2. **System Prompt Gaps**:
    - `inequality`, `function`, `point`, `set`, `interval` use placeholder prompts that may not guide the LLM correctly
 
-3. **Recursive Processing**: 
+3. **Recursive Processing**:
    - Supports recursive processing via context stack, but may fail if sub-object types are not fully supported
 
-4. **Validation**: 
+4. **Validation**:
    - Only `coefficient`, `coefficients`, and `term` have complete Zod validation
    - Other types rely on basic structure validation only
 
@@ -190,16 +194,19 @@ These have placeholder Zod schemas (using `passthrough()`):
 ## Summary Comparison
 
 ### Fully Supported (Both Systems)
+
 - ✅ **coefficient**
 - ✅ **coefficients**
 - ✅ **term**
 
 ### Partially Supported (Both Systems)
+
 - ⚠️ **expression** (has prompts, but incomplete schemas)
 - ⚠️ **equation** (has prompts, but incomplete schemas)
 - ⚠️ **terms** (has prompts, but incomplete schemas)
 
 ### Not Recommended (Both Systems)
+
 - ❌ **inequality** (placeholder prompts and schemas)
 - ❌ **function** (placeholder prompts and schemas)
 - ❌ **point** (placeholder prompts and schemas)
@@ -211,16 +218,19 @@ These have placeholder Zod schemas (using `passthrough()`):
 ## Recommendations for Test Filtering
 
 ### Safe to Test (Both Systems)
+
 - `coefficient`
 - `coefficients`
 - `term`
 
 ### Use with Caution (May have issues)
+
 - `expression` (incomplete validation)
 - `equation` (incomplete validation)
 - `terms` (incomplete schemas)
 
 ### Should NOT Test (Not implemented)
+
 - `inequality` (placeholder prompts)
 - `function` (placeholder prompts)
 - `point` (placeholder prompts)
@@ -232,11 +242,13 @@ These have placeholder Zod schemas (using `passthrough()`):
 ## Implementation Notes
 
 ### System 1 (Legacy)
+
 - Uses JSON schemas for validation
 - Has fallback behavior for missing schemas (returns generic object schema)
 - Recursive processing is implemented but may fail on unsupported types
 
 ### System 2 (LangGraph)
+
 - Uses Zod schemas for validation
 - Throws error if schema is missing (no fallback)
 - Recursive processing via context stack
@@ -250,4 +262,3 @@ These have placeholder Zod schemas (using `passthrough()`):
 - System 2 schemas: `src/features/infrastructure/ai/systems/langgraph/runnables.ts:185-199`
 - System prompts: `src/features/infrastructure/ai/shared/prompts/systemPrompts/index.ts:30-43`
 - Validation: `src/features/infrastructure/ai/shared/validation/settingsValidator.ts`
-

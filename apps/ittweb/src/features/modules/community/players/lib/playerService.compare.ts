@@ -1,16 +1,16 @@
 /**
  * Player Service - Compare Operations
- * 
+ *
  * Handles player comparison functionality
  */
 
-import { createComponentLogger, logError } from '@websites/infrastructure/logging';
-import type { PlayerStats, PlayerSearchFilters, PlayerComparison } from '../types';
-import { getGames, getGameById } from '../../../game-management/games/lib/gameService';
-import { getPlayerStats } from './playerService.read';
-import { normalizePlayerName } from './playerService.utils';
+import { createComponentLogger, logError } from "@websites/infrastructure/logging";
+import type { PlayerStats, PlayerSearchFilters, PlayerComparison } from "../types";
+import { getGames, getGameById } from "../../../game-management/games/lib/gameService";
+import { getPlayerStats } from "./playerService.read";
+import { normalizePlayerName } from "./playerService.utils";
 
-const logger = createComponentLogger('playerService.compare');
+const logger = createComponentLogger("playerService.compare");
 
 /**
  * Compare multiple players
@@ -20,7 +20,7 @@ export async function comparePlayers(
   filters?: PlayerSearchFilters
 ): Promise<PlayerComparison> {
   try {
-    logger.info('Comparing players', { names, filters });
+    logger.info("Comparing players", { names, filters });
 
     const players: PlayerStats[] = [];
     for (const name of names) {
@@ -31,9 +31,9 @@ export async function comparePlayers(
     }
 
     // Calculate head-to-head records
-    const headToHead: PlayerComparison['headToHead'] = {};
+    const headToHead: PlayerComparison["headToHead"] = {};
     const gamesResult = await getGames({
-      player: names.join(','),
+      player: names.join(","),
       startDate: filters?.startDate,
       endDate: filters?.endDate,
       limit: 1000, // Get more games for comparison
@@ -54,8 +54,12 @@ export async function comparePlayers(
       const gameWithPlayers = await getGameById(game.id);
       if (!gameWithPlayers?.players) continue;
 
-      const winners = gameWithPlayers.players.filter(p => p.flag === 'winner').map(p => normalizePlayerName(p.name));
-      const losers = gameWithPlayers.players.filter(p => p.flag === 'loser').map(p => normalizePlayerName(p.name));
+      const winners = gameWithPlayers.players
+        .filter((p) => p.flag === "winner")
+        .map((p) => normalizePlayerName(p.name));
+      const losers = gameWithPlayers.players
+        .filter((p) => p.flag === "loser")
+        .map((p) => normalizePlayerName(p.name));
 
       for (const winner of winners) {
         for (const loser of losers) {
@@ -73,7 +77,7 @@ export async function comparePlayers(
     }
 
     // Get ELO history for comparison chart
-    const eloComparison: PlayerComparison['eloComparison'] = [];
+    const eloComparison: PlayerComparison["eloComparison"] = [];
     // TODO: Implement ELO history aggregation
 
     return {
@@ -83,13 +87,11 @@ export async function comparePlayers(
     };
   } catch (error) {
     const err = error as Error;
-    logError(err, 'Failed to compare players', {
-      component: 'playerService.compare',
-      operation: 'comparePlayers',
+    logError(err, "Failed to compare players", {
+      component: "playerService.compare",
+      operation: "comparePlayers",
       names,
     });
     throw err;
   }
 }
-
-

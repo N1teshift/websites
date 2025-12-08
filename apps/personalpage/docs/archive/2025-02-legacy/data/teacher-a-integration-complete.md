@@ -9,12 +9,14 @@ Successfully integrated English Cambridge assessment data from `assessment_data.
 ## 📊 What Was Done
 
 ### 1. **Type System Extension**
+
 - Extended `StudentData` interface in `ProgressReportTypes.ts`
 - Added `english_tests` field (optional)
 - Made `assessments` field optional
 - Added `TestPart` and `EnglishTest` types for structured English test data
 
 ### 2. **Import Script Created**
+
 - **File**: `scripts/importAssessmentData.ts`
 - **Output**: `master_student_data_A_v4_46.json`
 - **Features**:
@@ -25,6 +27,7 @@ Successfully integrated English Cambridge assessment data from `assessment_data.
   - Calculates percentages and totals
 
 ### 3. **Dashboard Integration**
+
 - Created utility: `src/features/modules/edtech/utils/englishTestColumnUtils.ts`
 - Modified: `ClassViewSectionRefined.tsx`
 - **Display Features**:
@@ -40,6 +43,7 @@ Successfully integrated English Cambridge assessment data from `assessment_data.
 ### `master_student_data_A_v4_46.json`
 
 **Statistics:**
+
 - **Total Students**: 35
 - **Classes**: 4
   - 3 M. R. Juodasis (10 students)
@@ -48,14 +52,16 @@ Successfully integrated English Cambridge assessment data from `assessment_data.
   - 3 Kęstutis (9 students)
 
 **Tests Imported per Student:**
+
 - Diagnostic TEST 1 (3 parts)
-- Diagnostic TEST 2 (3 parts)  
+- Diagnostic TEST 2 (3 parts)
 - Diagnostic TEST 3 (3 parts)
 - Unit 4 TEST (3-4 parts)
 - Unit 5 TEST (3-4 parts)
 - Unit 6 TEST (2-3 parts)
 
 ### Sample Data Structure:
+
 ```json
 {
   "first_name": "Banga",
@@ -101,6 +107,7 @@ Successfully integrated English Cambridge assessment data from `assessment_data.
 When viewing this data in the dashboard, you'll see columns for:
 
 ### Diagnostic TEST 1:
+
 - **R&E** - Reading and use of English (raw score)
 - **%** - R&E percentage
 - **List** - Listening (raw score)
@@ -111,6 +118,7 @@ When viewing this data in the dashboard, you'll see columns for:
 - **%** - Overall percentage
 
 ### Unit 1 TEST:
+
 - **List** - Listening
 - **Read** - Reading
 - **V1** - VOC 1
@@ -120,26 +128,29 @@ When viewing this data in the dashboard, you'll see columns for:
 - **TOT** - Total
 - **%** - Percentage
 
-*Similar columns appear for all other tests*
+_Similar columns appear for all other tests_
 
 ---
 
 ## 🚀 How to Use
 
 ### 1. **Import the Data**
+
 1. Start the development server: `npm run dev`
 2. Navigate to: `/projects/edtech/progressReport`
 3. Go to **Data Management** section
-4. Click **Upload JSON** 
+4. Click **Upload JSON**
 5. Select `master_student_data_A_v4_46.json`
 
 ### 2. **View the Data**
+
 1. Go to **Class View** section
 2. Select a class from dropdown (or "All Classes")
 3. Scroll horizontally to see English test columns
 4. Columns are organized: Diagnostic tests first, then Unit tests
 
 ### 3. **Column Customization**
+
 - Click the **⚙️ Customize Columns** button
 - Show/hide specific test columns
 - English test columns are grouped with other assessment columns
@@ -169,6 +180,7 @@ When the teacher provides an updated Excel file:
 ## 🛠️ Technical Files Created/Modified
 
 ### Created:
+
 - `scripts/importAssessmentData.ts` - Import script
 - `scripts/analyzeAssessmentData.ts` - Analysis script
 - `scripts/analyzeAssessmentDataDeep.ts` - Deep analysis script
@@ -177,10 +189,12 @@ When the teacher provides an updated Excel file:
 - `src/features/modules/edtech/utils/englishTestColumnUtils.ts` - Column generation utilities
 
 ### Modified:
+
 - `src/features/modules/edtech/types/ProgressReportTypes.ts` - Extended types
 - `src/features/modules/edtech/components/sections/progressReport/ClassViewSectionRefined.tsx` - Added English test column rendering
 
 ### Output:
+
 - `master_student_data_A_v4_46.json` - Generated student data
 - `assessment_data_analysis.json` - Analysis output (reference)
 
@@ -201,4 +215,3 @@ When the teacher provides an updated Excel file:
 **Ready to use!** 🎉
 
 Load `master_student_data_A_v4_46.json` into your dashboard to view the English assessment data.
-

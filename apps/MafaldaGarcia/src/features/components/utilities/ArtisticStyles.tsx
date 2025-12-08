@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 export const ArtisticStyles: React.FC = () => {
   return (
@@ -19,11 +19,11 @@ export const ArtisticStyles: React.FC = () => {
       }
 
       .font-playfair {
-        font-family: 'Playfair Display', serif;
+        font-family: "Playfair Display", serif;
       }
 
       .font-inter {
-        font-family: 'Inter', sans-serif;
+        font-family: "Inter", sans-serif;
       }
 
       .fade-in {
@@ -45,7 +45,9 @@ export const ArtisticStyles: React.FC = () => {
       }
 
       .hover-lift {
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s ease;
       }
 
       .hover-lift:hover {
@@ -79,7 +81,7 @@ export const ArtisticStyles: React.FC = () => {
         font-size: 4rem;
         color: var(--accent-gold);
         position: absolute;
-        font-family: 'Playfair Display', serif;
+        font-family: "Playfair Display", serif;
       }
 
       .artistic-quote::before {
@@ -94,7 +96,12 @@ export const ArtisticStyles: React.FC = () => {
 
       .section-divider {
         height: 1px;
-        background: linear-gradient(90deg, transparent 0%, var(--accent-gold) 50%, transparent 100%);
+        background: linear-gradient(
+          90deg,
+          transparent 0%,
+          var(--accent-gold) 50%,
+          transparent 100%
+        );
         opacity: 0.3;
         margin: 0 auto;
         width: 80%;
@@ -115,7 +122,7 @@ export const ArtisticStyles: React.FC = () => {
         .artistic-quote::after {
           display: none;
         }
-        
+
         .section-divider {
           width: 90%;
         }

@@ -3,22 +3,19 @@
  * Extracted to reduce code duplication between server and client paths
  */
 
-import type { CategoryStats } from '../types';
-import type { GamePlayer } from '../../../game-management/games/types';
-import { STARTING_ELO } from '../../../game-management/lib/mechanics';
-import type { TimestampFactory } from '@websites/infrastructure/utils';
+import type { CategoryStats } from "../types";
+import type { GamePlayer } from "../../../game-management/games/types";
+import { STARTING_ELO } from "../../../game-management/lib/mechanics";
+import type { TimestampFactory } from "@websites/infrastructure/utils";
 
 /**
  * Calculate initial category stats for a new player
  */
-export function calculateInitialCategoryStats(
-  player: GamePlayer,
-  eloAfter: number
-): CategoryStats {
+export function calculateInitialCategoryStats(player: GamePlayer, eloAfter: number): CategoryStats {
   return {
-    wins: player.flag === 'winner' ? 1 : 0,
-    losses: player.flag === 'loser' ? 1 : 0,
-    draws: player.flag === 'drawer' ? 1 : 0,
+    wins: player.flag === "winner" ? 1 : 0,
+    losses: player.flag === "loser" ? 1 : 0,
+    draws: player.flag === "drawer" ? 1 : 0,
     score: eloAfter,
     games: 1,
   };
@@ -35,9 +32,9 @@ export function updateCategoryStats(
   const updatedStats = { ...existingStats };
 
   // Update win/loss/draw counts
-  if (player.flag === 'winner') updatedStats.wins += 1;
-  else if (player.flag === 'loser') updatedStats.losses += 1;
-  else if (player.flag === 'drawer') updatedStats.draws += 1;
+  if (player.flag === "winner") updatedStats.wins += 1;
+  else if (player.flag === "loser") updatedStats.losses += 1;
+  else if (player.flag === "drawer") updatedStats.draws += 1;
 
   // Update ELO and games count
   updatedStats.score = eloAfter;
@@ -72,7 +69,7 @@ export function calculatePlayerElo(player: GamePlayer): {
 } {
   const eloChange = player.elochange ?? 0;
   const eloBefore = player.eloBefore ?? STARTING_ELO;
-  const eloAfter = player.eloAfter ?? (eloBefore + eloChange);
+  const eloAfter = player.eloAfter ?? eloBefore + eloChange;
 
   return { eloChange, eloBefore, eloAfter };
 }
@@ -170,11 +167,12 @@ export async function processPlayerStatsUpdate(
     }
   ) => Promise<void>
 ): Promise<void> {
-  const category = player.category || gameCategory || 'default';
+  const category = player.category || gameCategory || "default";
   const { eloAfter } = calculatePlayerElo(player);
 
   const isNewPlayer = !existingData;
-  const categories = existingData?.categories as { [key: string]: CategoryStats } | undefined || {};
+  const categories =
+    (existingData?.categories as { [key: string]: CategoryStats } | undefined) || {};
 
   let categoryStats: CategoryStats;
 
@@ -226,4 +224,3 @@ export async function processPlayerStatsUpdate(
   );
   await upsertCategoryStats(normalizedName, player.name, category, denormalizedStats);
 }
-

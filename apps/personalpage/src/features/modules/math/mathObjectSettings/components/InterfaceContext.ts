@@ -10,14 +10,11 @@ import { InterfaceType } from "../../types/mathTypes";
  * @property {React.Dispatch<React.SetStateAction<Record<string, InterfaceType>>>} setInterfaceMap - Function to update the interface map.
  */
 const InterfaceContext = createContext<{
-    interfaceMap: Record<string, InterfaceType>;
-    setInterfaceMap: React.Dispatch<React.SetStateAction<Record<string, InterfaceType>>>;
+  interfaceMap: Record<string, InterfaceType>;
+  setInterfaceMap: React.Dispatch<React.SetStateAction<Record<string, InterfaceType>>>;
 }>({
-    interfaceMap: {},
-    setInterfaceMap: () => { },
+  interfaceMap: {},
+  setInterfaceMap: () => {},
 });
 
 export default InterfaceContext;
-
-
-

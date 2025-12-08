@@ -1,6 +1,6 @@
-import { Entry, CreateEntry, UpdateEntry } from '@/types/entry';
-import { createComponentLogger } from '@websites/infrastructure/logging';
-import { removeUndefined } from '@websites/infrastructure/utils';
+import { Entry, CreateEntry, UpdateEntry } from "@/types/entry";
+import { createComponentLogger } from "@websites/infrastructure/logging";
+import { removeUndefined } from "@websites/infrastructure/utils";
 import {
   transformEntryDoc,
   prepareEntryDataForFirestore,
@@ -8,16 +8,16 @@ import {
   prepareDeleteData,
   transformEntryDocs,
   sortEntriesByDate,
-} from './entryService.helpers';
-import { createFirestoreCrudService } from '@/features/infrastructure/api/firebase/firestoreCrudService';
+} from "./entryService.helpers";
+import { createFirestoreCrudService } from "@/features/infrastructure/api/firebase/firestoreCrudService";
 
-const ENTRIES_COLLECTION = 'entries';
-const logger = createComponentLogger('entryService');
+const ENTRIES_COLLECTION = "entries";
+const logger = createComponentLogger("entryService");
 
 // Create base CRUD service with soft delete support
 const baseService = createFirestoreCrudService<Entry, CreateEntry, UpdateEntry>({
   collectionName: ENTRIES_COLLECTION,
-  componentName: 'entryService',
+  componentName: "entryService",
   transformDoc: transformEntryDoc,
   prepareForFirestore: prepareEntryDataForFirestore,
   prepareUpdate: (updates: UpdateEntry, timestampFactory) => {
@@ -25,7 +25,7 @@ const baseService = createFirestoreCrudService<Entry, CreateEntry, UpdateEntry>(
   },
   prepareDelete: prepareDeleteData,
   transformDocs: (docs, filters?: unknown) => {
-    const contentType = filters as 'post' | 'memory' | undefined;
+    const contentType = filters as "post" | "memory" | undefined;
     return transformEntryDocs(docs, contentType);
   },
   sortEntities: sortEntriesByDate,
@@ -36,7 +36,7 @@ const baseService = createFirestoreCrudService<Entry, CreateEntry, UpdateEntry>(
  * Uses Admin SDK on server-side, Client SDK on client-side
  */
 export async function createEntry(entryData: CreateEntry): Promise<string> {
-  logger.info('Creating entry', { contentType: entryData.contentType, title: entryData.title });
+  logger.info("Creating entry", { contentType: entryData.contentType, title: entryData.title });
   return baseService.create(entryData);
 }
 
@@ -51,16 +51,16 @@ export async function getEntryById(id: string): Promise<Entry | null> {
  * Get all entries, sorted by date (newest first)
  * @throws Error - This function is server-only. Use API routes instead.
  */
-export async function getAllEntries(_contentType?: 'post' | 'memory'): Promise<Entry[]> {
-  throw new Error('getAllEntries is server-only. Use /api/entries API endpoint instead.');
+export async function getAllEntries(_contentType?: "post" | "memory"): Promise<Entry[]> {
+  throw new Error("getAllEntries is server-only. Use /api/entries API endpoint instead.");
 }
 
 /**
  * Get the latest entry
  * @throws Error - This function is server-only. Use API routes instead.
  */
-export async function getLatestEntry(_contentType?: 'post' | 'memory'): Promise<Entry | null> {
-  throw new Error('getLatestEntry is server-only. Use /api/entries/latest API endpoint instead.');
+export async function getLatestEntry(_contentType?: "post" | "memory"): Promise<Entry | null> {
+  throw new Error("getLatestEntry is server-only. Use /api/entries/latest API endpoint instead.");
 }
 
 /**
@@ -68,10 +68,12 @@ export async function getLatestEntry(_contentType?: 'post' | 'memory'): Promise<
  * Uses Admin SDK on server-side, Client SDK on client-side
  */
 export async function updateEntry(id: string, updates: UpdateEntry): Promise<void> {
-  logger.info('Updating entry', { id });
+  logger.info("Updating entry", { id });
 
   // Remove undefined values before updating
-  const cleanedUpdates = removeUndefined(updates as unknown as Record<string, unknown>) as UpdateEntry;
+  const cleanedUpdates = removeUndefined(
+    updates as unknown as Record<string, unknown>
+  ) as UpdateEntry;
 
   return baseService.update(id, cleanedUpdates);
 }
@@ -82,9 +84,7 @@ export async function updateEntry(id: string, updates: UpdateEntry): Promise<voi
  */
 export async function deleteEntry(id: string): Promise<void> {
   if (!baseService.softDelete) {
-    throw new Error('Soft delete not configured for entryService');
+    throw new Error("Soft delete not configured for entryService");
   }
   return baseService.softDelete(id);
 }
-
-

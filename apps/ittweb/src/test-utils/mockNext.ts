@@ -1,4 +1,4 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiRequest, NextApiResponse } from "next";
 
 export interface MockResponse<T = unknown> {
   res: NextApiResponse<T>;
@@ -10,7 +10,7 @@ export interface MockResponse<T = unknown> {
 
 export const createMockRequest = (partial: Partial<NextApiRequest> = {}): NextApiRequest => {
   return {
-    method: 'GET',
+    method: "GET",
     headers: {},
     query: {},
     body: undefined,
@@ -33,4 +33,3 @@ export const createMockResponse = <T = unknown>(): MockResponse<T> => {
 
   return { res, json, status, setHeader, revalidate };
 };
-

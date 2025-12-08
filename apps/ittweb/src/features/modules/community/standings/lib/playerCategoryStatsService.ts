@@ -1,14 +1,14 @@
 /**
  * Player Category Stats Service (Client Stub)
- * 
+ *
  * This file is a client-side stub. The actual server-only implementation
  * is in playerCategoryStatsService.server.ts
- * 
+ *
  * These functions should only be called from API routes (server-side).
  * Client code should use API endpoints instead.
  */
 
-import type { GameCategory } from '../../../game-management/games/types';
+import type { GameCategory } from "../../../game-management/games/types";
 
 /**
  * Generate document ID for player category stats
@@ -33,7 +33,7 @@ export async function upsertPlayerCategoryStats(
     lastPlayed?: Date;
   }
 ): Promise<void> {
-  throw new Error('upsertPlayerCategoryStats is server-only. Use API routes instead.');
+  throw new Error("upsertPlayerCategoryStats is server-only. Use API routes instead.");
 }
 
 /**
@@ -44,5 +44,5 @@ export async function deletePlayerCategoryStats(
   _playerId: string,
   _category: GameCategory
 ): Promise<void> {
-  throw new Error('deletePlayerCategoryStats is server-only. Use API routes instead.');
+  throw new Error("deletePlayerCategoryStats is server-only. Use API routes instead.");
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 interface DeleteErrorDisplayProps {
   error: string | null;
@@ -33,6 +33,3 @@ export function DeleteErrorDisplay({ error, onDismiss }: DeleteErrorDisplayProps
     </div>
   );
 }
-
-
-

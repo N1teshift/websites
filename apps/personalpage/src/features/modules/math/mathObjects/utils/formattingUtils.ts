@@ -5,13 +5,13 @@
  * @returns {string} The formatted LaTeX string, enclosed in `$`. Example: `item` -> `$item$`, `+item` -> `$item$`.
  */
 export function generalLatexFormat(item: string): string {
-    // Wrap the item in dollar signs to indicate LaTeX format.
-    let formattedItem = `$${item.toString()}$`;
+  // Wrap the item in dollar signs to indicate LaTeX format.
+  let formattedItem = `$${item.toString()}$`;
 
-    // Remove extra "+" sign after the dollar sign, which can happen with certain items.
-    formattedItem = formattedItem.replace('$+', '$');
+  // Remove extra "+" sign after the dollar sign, which can happen with certain items.
+  formattedItem = formattedItem.replace("$+", "$");
 
-    return formattedItem;
+  return formattedItem;
 }
 
 /**
@@ -29,30 +29,30 @@ export function generalLatexFormat(item: string): string {
  * - `\cdot` -> `\cdot ` (adds space)
  */
 export function normalizeExpression(expression: string): string {
-    // Remove redundant spaces
-    // expression = expression.replace(/  /g, " ").replace(/ /g, "");
+  // Remove redundant spaces
+  // expression = expression.replace(/  /g, " ").replace(/ /g, "");
 
-    // Fix signs
-    expression = expression.replace(/\+-/g, "-");
-    expression = expression.replace(/-\+/g, "-");
-    expression = expression.replace(/\+\+/g, "+");
-    expression = expression.replace(/--/g, "+");
+  // Fix signs
+  expression = expression.replace(/\+-/g, "-");
+  expression = expression.replace(/-\+/g, "-");
+  expression = expression.replace(/\+\+/g, "+");
+  expression = expression.replace(/--/g, "+");
 
-    // Fix signs with space
-    expression = expression.replace(/\+ -/g, "-");
-    expression = expression.replace(/- \+/g, "-");
-    expression = expression.replace(/\+ \+/g, "+");
-    expression = expression.replace(/- -/g, "+");
+  // Fix signs with space
+  expression = expression.replace(/\+ -/g, "-");
+  expression = expression.replace(/- \+/g, "-");
+  expression = expression.replace(/\+ \+/g, "+");
+  expression = expression.replace(/- -/g, "+");
 
-    // Fix specific cases
-    expression = expression.replace(/\$\+/g, "$");
-    expression = expression.replace(/\(\+/g, "(");
-    expression = expression.replace(/\{\+/g, "{");
-    expression = expression.replace(/=\+/g, "=");
+  // Fix specific cases
+  expression = expression.replace(/\$\+/g, "$");
+  expression = expression.replace(/\(\+/g, "(");
+  expression = expression.replace(/\{\+/g, "{");
+  expression = expression.replace(/=\+/g, "=");
 
-    // Add space after \cdot
-    expression = expression.replace(/\\cdot/g, "\\cdot ");
-    return expression;
+  // Add space after \cdot
+  expression = expression.replace(/\\cdot/g, "\\cdot ");
+  return expression;
 }
 
 /**
@@ -69,38 +69,40 @@ export function normalizeExpression(expression: string): string {
  *   unless the base `term` is a simple positive number when `powerOrder` is true.
  */
 export function applyPowerFormatting(term: string, power: number[], powerOrder: boolean): string {
-    const [order, root] = power;
+  const [order, root] = power;
 
-    // Check if term is a pure number (only digits, an optional decimal point, and optional whitespace)
-    const isPureNumber = /^\s*-?\d+(\.\d+)?\s*$/.test(term);
-    // Only parse if it's a pure number; otherwise, leave as NaN.
-    const parsedTerm = isPureNumber ? parseFloat(term) : NaN;
-    const isPositiveNumber = isPureNumber && parsedTerm > 0;
+  // Check if term is a pure number (only digits, an optional decimal point, and optional whitespace)
+  const isPureNumber = /^\s*-?\d+(\.\d+)?\s*$/.test(term);
+  // Only parse if it's a pure number; otherwise, leave as NaN.
+  const parsedTerm = isPureNumber ? parseFloat(term) : NaN;
+  const isPositiveNumber = isPureNumber && parsedTerm > 0;
 
-    if (powerOrder) {
-        if (root === 1) {
-            if (order === 1) {
-                return term; // e.g., "2" remains "2"
-            }
-            // If the term is not a pure number, always add parentheses.
-            if (!isPureNumber) {
-                return `\\left( ${term} \\right)^{${order}}`;
-            }
-            // For pure numbers: if positive, skip parentheses; else include them.
-            return isPositiveNumber ? `${term}^{${order}}` : `\\left( ${term} \\right)^{${order}}`;
-        }
-        // For roots: handle root === 2 separately
-        const innerTerm = order === 1 ? term : isPositiveNumber ? `${term}^{${order}}` : `\\left( ${term} \\right)^{${order}}`;
-        return root === 2 ? `\\sqrt{${innerTerm}}` : `\\sqrt[${root}]{${innerTerm}}`;
-    } else {
-        // powerOrder: false (root first)
-        if (root === 1) {
-            return order === 1 ? term : `(${term})^{${order}}`;
-        }
-        const rootTerm = root === 2 ? `\\sqrt{${term}}` : `\\sqrt[${root}]{${term}}`;
-        return order === 1 ? rootTerm : `\\left( ${rootTerm} \\right)^{${order}}`;
+  if (powerOrder) {
+    if (root === 1) {
+      if (order === 1) {
+        return term; // e.g., "2" remains "2"
+      }
+      // If the term is not a pure number, always add parentheses.
+      if (!isPureNumber) {
+        return `\\left( ${term} \\right)^{${order}}`;
+      }
+      // For pure numbers: if positive, skip parentheses; else include them.
+      return isPositiveNumber ? `${term}^{${order}}` : `\\left( ${term} \\right)^{${order}}`;
     }
+    // For roots: handle root === 2 separately
+    const innerTerm =
+      order === 1
+        ? term
+        : isPositiveNumber
+          ? `${term}^{${order}}`
+          : `\\left( ${term} \\right)^{${order}}`;
+    return root === 2 ? `\\sqrt{${innerTerm}}` : `\\sqrt[${root}]{${innerTerm}}`;
+  } else {
+    // powerOrder: false (root first)
+    if (root === 1) {
+      return order === 1 ? term : `(${term})^{${order}}`;
+    }
+    const rootTerm = root === 2 ? `\\sqrt{${term}}` : `\\sqrt[${root}]{${term}}`;
+    return order === 1 ? rootTerm : `\\left( ${rootTerm} \\right)^{${order}}`;
+  }
 }
-
-
-

@@ -1,11 +1,29 @@
-import React from 'react';
-import ClassIcon from '@/features/modules/content/guides/components/ClassIcon';
-import InventoryGrid from '@/features/modules/tools-group/tools/components/InventoryGrid';
-import type { DragPayload, TrollSide, TrollLoadout } from '@/features/modules/tools-group/tools/types';
-import { BASE_TROLL_CLASSES, getClassBySlug, TrollClassData } from '@/features/modules/content/guides/data/units/classes';
-import { ATTR_START_MULTIPLIER, MOVESPEED_PER_LEVEL, getMoveSpeedOffset, HP_PER_STRENGTH, MANA_PER_INTELLIGENCE, ARMOR_PER_AGILITY, getArmorDamageReductionPercent } from '@/features/modules/content/guides/config/balance';
-import type { ItemData } from '@/types/items';
-import StatsPanel, { TrollComputedStats } from '@/features/modules/tools-group/tools/components/StatsPanel';
+import React from "react";
+import ClassIcon from "@/features/modules/content/guides/components/ClassIcon";
+import InventoryGrid from "@/features/modules/tools-group/tools/components/InventoryGrid";
+import type {
+  DragPayload,
+  TrollSide,
+  TrollLoadout,
+} from "@/features/modules/tools-group/tools/types";
+import {
+  BASE_TROLL_CLASSES,
+  getClassBySlug,
+  TrollClassData,
+} from "@/features/modules/content/guides/data/units/classes";
+import {
+  ATTR_START_MULTIPLIER,
+  MOVESPEED_PER_LEVEL,
+  getMoveSpeedOffset,
+  HP_PER_STRENGTH,
+  MANA_PER_INTELLIGENCE,
+  ARMOR_PER_AGILITY,
+  getArmorDamageReductionPercent,
+} from "@/features/modules/content/guides/config/balance";
+import type { ItemData } from "@/types/items";
+import StatsPanel, {
+  TrollComputedStats,
+} from "@/features/modules/tools-group/tools/components/StatsPanel";
 
 export default function TrollPanel({
   title,
@@ -58,7 +76,7 @@ export default function TrollPanel({
     const agi = baseAgi + levelGainAgi;
     const int = baseInt + levelGainInt;
 
-    const msOffset = getMoveSpeedOffset('base');
+    const msOffset = getMoveSpeedOffset("base");
     const moveSpeed = clazz.baseMoveSpeed + MOVESPEED_PER_LEVEL * (loadout.level + msOffset);
     const hp = clazz.baseHp + itemSums.health + str * HP_PER_STRENGTH;
     const mana = clazz.baseMana + itemSums.mana + int * MANA_PER_INTELLIGENCE;
@@ -114,14 +132,8 @@ export default function TrollPanel({
             onDropToSlot={onDropToSlot}
           />
         </div>
-        <div>
-          {clazz && computed && <StatsPanel stats={computed} />}
-        </div>
+        <div>{clazz && computed && <StatsPanel stats={computed} />}</div>
       </div>
     </div>
   );
 }
-
-
-
-

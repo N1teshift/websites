@@ -1,10 +1,10 @@
-import React from 'react';
-import MapFileUploader from './MapFileUploader';
-import TerrainVisualizer from './TerrainVisualizer';
-import { MapPersistenceHeader } from './MapPersistenceHeader';
-import { useMapPersistence } from './useMapPersistence';
-import { useMapUIState } from './useMapUIState';
-import type { SimpleMapData } from '../types/map';
+import React from "react";
+import MapFileUploader from "./MapFileUploader";
+import TerrainVisualizer from "./TerrainVisualizer";
+import { MapPersistenceHeader } from "./MapPersistenceHeader";
+import { useMapPersistence } from "./useMapPersistence";
+import { useMapUIState } from "./useMapUIState";
+import type { SimpleMapData } from "../types/map";
 
 export default function TerrainVisualizerContainer() {
   const [map, setMap, clearPersisted] = useMapPersistence();
@@ -40,4 +40,3 @@ export default function TerrainVisualizerContainer() {
     </div>
   );
 }
-

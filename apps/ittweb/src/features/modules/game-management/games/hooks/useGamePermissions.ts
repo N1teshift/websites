@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
-import { useSession } from 'next-auth/react';
-import { Logger } from '@websites/infrastructure/logging';
-import { isAdmin } from '@/features/modules/community/users';
-import type { GameWithPlayers } from '@/features/modules/game-management/games/types';
-import type { UserRole } from '@/types/userData';
+import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
+import { Logger } from "@websites/infrastructure/logging";
+import { isAdmin } from "@/features/modules/community/users";
+import type { GameWithPlayers } from "@/features/modules/game-management/games/types";
+import type { UserRole } from "@/types/userData";
 
 interface UseGamePermissionsResult {
   userIsAdmin: boolean;
@@ -20,7 +20,7 @@ export function useGamePermissions(): UseGamePermissionsResult {
     let isMounted = true;
 
     const fetchUserRole = async () => {
-      if (status !== 'authenticated' || !session?.discordId) {
+      if (status !== "authenticated" || !session?.discordId) {
         if (isMounted) {
           setUserIsAdmin(false);
         }
@@ -28,9 +28,9 @@ export function useGamePermissions(): UseGamePermissionsResult {
       }
 
       try {
-        const response = await fetch('/api/user/me');
+        const response = await fetch("/api/user/me");
         if (!response.ok) {
-          throw new Error('Failed to fetch user data');
+          throw new Error("Failed to fetch user data");
         }
         const result = await response.json();
         const userData = result.data;
@@ -38,7 +38,7 @@ export function useGamePermissions(): UseGamePermissionsResult {
           setUserIsAdmin(isAdmin(userData?.role as UserRole | undefined));
         }
       } catch (error) {
-        Logger.warn('Failed to fetch user role for game detail page', {
+        Logger.warn("Failed to fetch user role for game detail page", {
           error: error instanceof Error ? error.message : String(error),
         });
         if (isMounted) {
@@ -61,7 +61,7 @@ export function useGamePermissions(): UseGamePermissionsResult {
 
   const isUserParticipant = (game: GameWithPlayers): boolean => {
     if (!session?.discordId || !game.participants) return false;
-    return game.participants.some(p => p.discordId === session.discordId);
+    return game.participants.some((p) => p.discordId === session.discordId);
   };
 
   return {
@@ -70,4 +70,3 @@ export function useGamePermissions(): UseGamePermissionsResult {
     isUserParticipant,
   };
 }
-

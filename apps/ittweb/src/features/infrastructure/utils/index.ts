@@ -3,4 +3,4 @@
 // Import utils from: @websites/infrastructure/utils
 
 // Project-specific service operation wrapper
-export * from './service/serviceOperationWrapper';
+export * from "./service/serviceOperationWrapper";

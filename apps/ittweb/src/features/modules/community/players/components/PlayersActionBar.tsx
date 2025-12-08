@@ -1,6 +1,6 @@
-import React from 'react';
-import { Card } from '@/features/infrastructure/components';
-import type { PlayerComparison } from '../types';
+import React from "react";
+import { Card } from "@/features/infrastructure/components";
+import type { PlayerComparison } from "../types";
 
 interface PlayersActionBarProps {
   searchQuery: string;
@@ -39,7 +39,7 @@ export function PlayersActionBar({
             className="w-full max-w-md bg-gray-800 border border-gray-600 rounded px-4 py-2 text-white focus:border-amber-500 focus:outline-none"
           />
         </div>
-        
+
         <div className="flex gap-2">
           {!compareMode ? (
             <button
@@ -56,14 +56,14 @@ export function PlayersActionBar({
                   disabled={comparisonLoading}
                   className="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {comparisonLoading ? 'Loading...' : `Compare Selected (${selectedCount})`}
+                  {comparisonLoading ? "Loading..." : `Compare Selected (${selectedCount})`}
                 </button>
               )}
               <button
                 onClick={onExitCompareMode}
                 className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded transition-colors"
               >
-                {comparison ? 'Back to Players' : 'Cancel'}
+                {comparison ? "Back to Players" : "Cancel"}
               </button>
             </>
           )}
@@ -90,5 +90,3 @@ export function PlayersActionBar({
     </>
   );
 }
-
-

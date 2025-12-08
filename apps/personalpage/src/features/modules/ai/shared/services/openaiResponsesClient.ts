@@ -16,7 +16,7 @@ import { openaiService } from "@websites/infrastructure/clients/openai/openaiSer
 const AI_SETTINGS = {
   temperature: 0,
   maxTokens: 5000,
-  model: "gpt-4o-mini"
+  model: "gpt-4o-mini",
 };
 
 /**
@@ -46,9 +46,9 @@ export async function getModelResponse(
     maxTokens = AI_SETTINGS.maxTokens,
     model = AI_SETTINGS.model,
     systemPrompt,
-    textFormat = 'json_object',
+    textFormat = "json_object",
     schema,
-    messages
+    messages,
   } = config;
 
   try {
@@ -56,7 +56,7 @@ export async function getModelResponse(
     const payload: Record<string, unknown> = {
       temperature,
       maxTokens,
-      model
+      model,
     };
 
     // Include messages if provided, otherwise use userPrompt
@@ -78,11 +78,11 @@ export async function getModelResponse(
     }
 
     // Make API request
-    const data = await apiRequest<ResponsesResult>('/api/openai/responses-proxy', 'POST', payload);
+    const data = await apiRequest<ResponsesResult>("/api/openai/responses-proxy", "POST", payload);
 
     // Validate response
     if (data === undefined || data === null) {
-      throw new Error('Empty response from API');
+      throw new Error("Empty response from API");
     }
 
     // Track token usage with the utility function
@@ -90,14 +90,14 @@ export async function getModelResponse(
       updateTokenUsage({
         input_tokens: data.usage.input_tokens ?? data.usage.prompt_tokens ?? 0,
         output_tokens: data.usage.output_tokens ?? data.usage.completion_tokens ?? 0,
-        total_tokens: data.usage.total_tokens ?? 0
+        total_tokens: data.usage.total_tokens ?? 0,
       });
     }
 
     return data;
   } catch (error) {
     console.error(`Error calling OpenAI API:`, error);
-    throw new Error('Error calling OpenAI API');
+    throw new Error("Error calling OpenAI API");
   }
 }
 
@@ -126,7 +126,7 @@ export async function getModelResponseWithSchema(
 
   try {
     // Check if we're on the server side (where we can call the service directly)
-    const isServerSide = typeof window === 'undefined';
+    const isServerSide = typeof window === "undefined";
 
     if (isServerSide) {
       // On server side, call the service directly (avoids HTTP overhead and URL issues)
@@ -136,16 +136,22 @@ export async function getModelResponseWithSchema(
         model,
         temperature,
         maxTokens,
-        textFormat: 'json_object'
+        textFormat: "json_object",
       });
 
       // Track token usage with the utility function
       if (response.usage) {
-        const usage = response.usage as { prompt_tokens?: number; completion_tokens?: number; total_tokens?: number; input_tokens?: number; output_tokens?: number };
+        const usage = response.usage as {
+          prompt_tokens?: number;
+          completion_tokens?: number;
+          total_tokens?: number;
+          input_tokens?: number;
+          output_tokens?: number;
+        };
         updateTokenUsage({
           input_tokens: usage.input_tokens ?? usage.prompt_tokens ?? 0,
           output_tokens: usage.output_tokens ?? usage.completion_tokens ?? 0,
-          total_tokens: usage.total_tokens ?? 0
+          total_tokens: usage.total_tokens ?? 0,
         });
       }
 
@@ -158,15 +164,19 @@ export async function getModelResponseWithSchema(
         schema,
         model,
         temperature,
-        maxTokens
+        maxTokens,
       };
 
       // Make API request
-      const data = await apiRequest<ResponsesResult>('/api/openai/responses-proxy', 'POST', payload);
+      const data = await apiRequest<ResponsesResult>(
+        "/api/openai/responses-proxy",
+        "POST",
+        payload
+      );
 
       // Validate response
       if (data === undefined || data === null) {
-        throw new Error('Empty response from API in getModelResponseWithSchema');
+        throw new Error("Empty response from API in getModelResponseWithSchema");
       }
 
       // Track token usage with the utility function
@@ -174,7 +184,7 @@ export async function getModelResponseWithSchema(
         updateTokenUsage({
           input_tokens: data.usage.input_tokens ?? data.usage.prompt_tokens ?? 0,
           output_tokens: data.usage.output_tokens ?? data.usage.completion_tokens ?? 0,
-          total_tokens: data.usage.total_tokens ?? 0
+          total_tokens: data.usage.total_tokens ?? 0,
         });
       }
 
@@ -189,6 +199,3 @@ export async function getModelResponseWithSchema(
     }
   }
 }
-
-
-

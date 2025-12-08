@@ -28,6 +28,7 @@
 This plan outlines the implementation of a comprehensive game statistics tracking system for Island Troll Tribes, inspired by the `twgb-website` project. The system will track games, calculate ELO ratings, display leaderboards, and provide detailed player analytics.
 
 **Key Deliverables:**
+
 - Game tracking and storage system
 - ELO rating calculation engine
 - Player statistics and profiles
@@ -41,6 +42,7 @@ This plan outlines the implementation of a comprehensive game statistics trackin
 ## Project Goals & Scope
 
 ### Primary Goals
+
 1. ✅ Track all Island Troll Tribes game results
 2. ✅ Calculate and maintain ELO ratings per category
 3. ✅ Display comprehensive player statistics
@@ -50,6 +52,7 @@ This plan outlines the implementation of a comprehensive game statistics trackin
 7. ✅ Integrate with existing ittweb features
 
 ### Out of Scope (Phase 1)
+
 - Replay file parsing (manual entry first)
 - Real-time game tracking
 - Automated game result submission
@@ -57,6 +60,7 @@ This plan outlines the implementation of a comprehensive game statistics trackin
 - Historical data import from twgb-website (future phase)
 
 ### Success Criteria
+
 - Users can view their game history and statistics
 - ELO ratings are calculated correctly
 - Leaderboards display accurate rankings
@@ -69,6 +73,7 @@ This plan outlines the implementation of a comprehensive game statistics trackin
 ## Technical Architecture
 
 ### Technology Stack
+
 - **Frontend:** Next.js 15, React, TypeScript, Tailwind CSS
 - **Backend:** Next.js API Routes, Firebase Admin SDK
 - **Database:** Firestore
@@ -78,6 +83,7 @@ This plan outlines the implementation of a comprehensive game statistics trackin
 - **Validation:** Zod (recommended)
 
 ### Architecture Principles
+
 1. **Feature-based structure** - Follow existing `src/features/modules/` pattern
 2. **Service layer** - Business logic in `lib/` directories
 3. **Type safety** - Full TypeScript coverage
@@ -86,6 +92,7 @@ This plan outlines the implementation of a comprehensive game statistics trackin
 6. **Component reusability** - Shared UI components in infrastructure
 
 ### File Structure
+
 ```
 src/features/modules/
 ├── games/
@@ -127,22 +134,23 @@ src/features/modules/
 ### Firestore Collections
 
 #### 1. `games` Collection
+
 ```typescript
 interface Game {
-  id: string;                    // Firestore document ID
-  gameId: number;               // Original game ID from replay (unique)
-  datetime: Timestamp;           // When the game was played
-  duration: number;              // Game duration in seconds
-  gamename: string;              // Game name
-  map: string;                   // Map name
-  creatorName: string;           // Game creator (standardized field)
-  createdByDiscordId: string;   // Creator Discord ID (standardized field)
-  category?: string;             // Game mode/category (e.g., "1v1", "2v2", "ffa")
-  replayUrl?: string;            // URL to replay file (future)
-  replayFileName?: string;       // Original replay filename
-  submittedBy?: string;          // Discord ID of submitter
-  submittedAt?: Timestamp;       // When game was submitted
-  verified: boolean;             // Whether game result is verified
+  id: string; // Firestore document ID
+  gameId: number; // Original game ID from replay (unique)
+  datetime: Timestamp; // When the game was played
+  duration: number; // Game duration in seconds
+  gamename: string; // Game name
+  map: string; // Map name
+  creatorName: string; // Game creator (standardized field)
+  createdByDiscordId: string; // Creator Discord ID (standardized field)
+  category?: string; // Game mode/category (e.g., "1v1", "2v2", "ffa")
+  replayUrl?: string; // URL to replay file (future)
+  replayFileName?: string; // Original replay filename
+  submittedBy?: string; // Discord ID of submitter
+  submittedAt?: Timestamp; // When game was submitted
+  verified: boolean; // Whether game result is verified
   createdAt: Timestamp;
   updatedAt: Timestamp;
 }
@@ -155,19 +163,20 @@ interface Game {
 ```
 
 #### 2. `gamePlayers` Subcollection (games/{gameId}/players)
+
 ```typescript
 interface GamePlayer {
-  id: string;                    // Firestore document ID
-  gameId: string;                // Reference to parent game
-  name: string;                  // Player name (case-insensitive normalized)
-  pid: number;                   // Player ID in game (0-11)
-  flag: 'winner' | 'loser' | 'drawer';
-  category?: string;              // Game category
-  elochange?: number;            // ELO change for this game
-  eloBefore?: number;            // ELO before this game
-  eloAfter?: number;             // ELO after this game
-  class?: string;                // Class played (e.g., "hunter", "mage")
-  randomClass?: boolean;         // Whether class was random
+  id: string; // Firestore document ID
+  gameId: string; // Reference to parent game
+  name: string; // Player name (case-insensitive normalized)
+  pid: number; // Player ID in game (0-11)
+  flag: "winner" | "loser" | "drawer";
+  category?: string; // Game category
+  elochange?: number; // ELO change for this game
+  eloBefore?: number; // ELO before this game
+  eloAfter?: number; // ELO after this game
+  class?: string; // Class played (e.g., "hunter", "mage")
+  randomClass?: boolean; // Whether class was random
   kills?: number;
   deaths?: number;
   assists?: number;
@@ -185,25 +194,26 @@ interface GamePlayer {
 ```
 
 #### 3. `playerStats` Collection
+
 ```typescript
 interface PlayerStats {
-  id: string;                    // Player name (normalized, lowercase)
-  name: string;                  // Display name (original casing)
+  id: string; // Player name (normalized, lowercase)
+  name: string; // Display name (original casing)
   categories: {
     [category: string]: {
       wins: number;
       losses: number;
       draws: number;
-      score: number;              // Current ELO
-      games: number;              // Total games
-      rank?: number;              // Current rank (calculated on-demand)
-      peakElo?: number;           // Highest ELO achieved
-      peakEloDate?: Timestamp;    // When peak ELO was achieved
+      score: number; // Current ELO
+      games: number; // Total games
+      rank?: number; // Current rank (calculated on-demand)
+      peakElo?: number; // Highest ELO achieved
+      peakEloDate?: Timestamp; // When peak ELO was achieved
     };
   };
-  totalGames: number;             // Across all categories
-  lastPlayed?: Timestamp;        // Most recent game
-  firstPlayed?: Timestamp;       // First game
+  totalGames: number; // Across all categories
+  lastPlayed?: Timestamp; // Most recent game
+  firstPlayed?: Timestamp; // First game
   createdAt: Timestamp;
   updatedAt: Timestamp;
 }
@@ -215,16 +225,17 @@ interface PlayerStats {
 ```
 
 #### 4. `eloHistory` Collection (Optional - for detailed history)
+
 ```typescript
 interface EloHistory {
-  id: string;                     // Auto-generated
-  playerName: string;            // Normalized player name
+  id: string; // Auto-generated
+  playerName: string; // Normalized player name
   category: string;
   gameId: string;
   eloBefore: number;
   eloAfter: number;
   eloChange: number;
-  datetime: Timestamp;           // Game datetime
+  datetime: Timestamp; // Game datetime
   createdAt: Timestamp;
 }
 
@@ -233,14 +244,15 @@ interface EloHistory {
 ```
 
 #### 5. `classStats` Collection (Aggregated class statistics)
+
 ```typescript
 interface ClassStats {
-  id: string;                     // Class name (e.g., "hunter")
-  category?: string;              // Optional category filter
+  id: string; // Class name (e.g., "hunter")
+  category?: string; // Optional category filter
   totalGames: number;
   totalWins: number;
   totalLosses: number;
-  winRate: number;                // Calculated: wins / (wins + losses)
+  winRate: number; // Calculated: wins / (wins + losses)
   topPlayers: Array<{
     playerName: string;
     wins: number;
@@ -259,7 +271,7 @@ interface ClassStats {
 match /games/{gameId} {
   allow read: if true;
   allow write: if request.auth != null; // Authenticated users only
-  
+
   match /players/{playerId} {
     allow read: if true;
     allow write: if request.auth != null;
@@ -287,9 +299,11 @@ match /classStats/{classId} {
 ## Feature Breakdown
 
 ### Feature 1: Game Management
+
 **Priority:** P0 (Critical)
 
 #### 1.1 Game Creation
+
 - **API:** `POST /api/games`
 - **Service:** `gameService.createGame()`
 - **Validation:**
@@ -303,6 +317,7 @@ match /classStats/{classId} {
   - Create gamePlayers subcollection
 
 #### 1.2 Game Listing
+
 - **API:** `GET /api/games`
 - **Service:** `gameService.getGames()`
 - **Filters:**
@@ -314,11 +329,13 @@ match /classStats/{classId} {
 - **Sorting:** Default by datetime (descending)
 
 #### 1.3 Game Detail
+
 - **API:** `GET /api/games/[id]`
 - **Service:** `gameService.getGameById()`
 - **Returns:** Game + all players with stats
 
 #### 1.4 Game Update/Delete
+
 - **API:** `PUT /api/games/[id]`, `DELETE /api/games/[id]`
 - **Service:** `gameService.updateGame()`, `gameService.deleteGame()`
 - **Business Logic:**
@@ -329,20 +346,22 @@ match /classStats/{classId} {
 ---
 
 ### Feature 2: ELO Rating System
+
 **Priority:** P0 (Critical)
 
 #### 2.1 ELO Calculation
+
 - **Service:** `eloCalculator.ts`
 - **Algorithm:**
   ```typescript
   function calculateEloChange(
     playerElo: number,
     opponentElo: number,
-    result: 'win' | 'loss' | 'draw',
+    result: "win" | "loss" | "draw",
     kFactor: number = 32
   ): number {
     const expectedScore = 1 / (1 + Math.pow(10, (opponentElo - playerElo) / 400));
-    const actualScore = result === 'win' ? 1 : result === 'loss' ? 0 : 0.5;
+    const actualScore = result === "win" ? 1 : result === "loss" ? 0 : 0.5;
     return Math.round(kFactor * (actualScore - expectedScore) * 100) / 100;
   }
   ```
@@ -350,6 +369,7 @@ match /classStats/{classId} {
 - **Starting ELO:** 1000
 
 #### 2.2 ELO Update Process
+
 - **Service:** `eloCalculator.updateEloScores()`
 - **Steps:**
   1. Get all players in game
@@ -359,6 +379,7 @@ match /classStats/{classId} {
   5. Store ELO history (optional)
 
 #### 2.3 ELO Recalculation
+
 - **Service:** `eloCalculator.recalculateFromGame()`
 - **Use Case:** Fix incorrect games, recalculate after game update
 - **Process:**
@@ -369,9 +390,11 @@ match /classStats/{classId} {
 ---
 
 ### Feature 3: Player Statistics
+
 **Priority:** P0 (Critical)
 
 #### 3.1 Player Profile
+
 - **Page:** `/players/[name]`
 - **API:** `GET /api/players/[name]`
 - **Service:** `playerService.getPlayerStats()`
@@ -385,6 +408,7 @@ match /classStats/{classId} {
   - Activity chart
 
 #### 3.2 Player Search
+
 - **Page:** `/players`
 - **API:** `GET /api/players?search=...`
 - **Service:** `playerService.searchPlayers()`
@@ -394,6 +418,7 @@ match /classStats/{classId} {
   - Recent players
 
 #### 3.3 Player Comparison
+
 - **Page:** `/players/compare?names=player1,player2`
 - **API:** `GET /api/players/compare?names=...`
 - **Service:** `playerService.comparePlayers()`
@@ -406,9 +431,11 @@ match /classStats/{classId} {
 ---
 
 ### Feature 4: Leaderboards/Standings
+
 **Priority:** P0 (Critical)
 
 #### 4.1 Standings List
+
 - **Page:** `/standings`
 - **API:** `GET /api/standings?category=...&page=...`
 - **Service:** `standingsService.getStandings()`
@@ -419,10 +446,12 @@ match /classStats/{classId} {
   - Rank, name, ELO, wins, losses, win rate
 
 #### 4.2 Category Standings
+
 - **Page:** `/standings/[category]`
 - **Same as above, filtered by category**
 
 #### 4.3 Rank Calculation
+
 - **Service:** `standingsService.calculateRank()`
 - **Process:**
   1. Get all ranked players (min games threshold)
@@ -433,9 +462,11 @@ match /classStats/{classId} {
 ---
 
 ### Feature 5: Advanced Filtering
+
 **Priority:** P1 (High)
 
 #### 5.1 Date Range Filter
+
 - **Component:** `DateRangeFilter.tsx`
 - **Features:**
   - Date picker (from/to)
@@ -443,6 +474,7 @@ match /classStats/{classId} {
   - Default: Last year
 
 #### 5.2 Category Filter
+
 - **Component:** `CategoryFilter.tsx`
 - **Options:**
   - All categories
@@ -455,6 +487,7 @@ match /classStats/{classId} {
   - FFA
 
 #### 5.3 Player Filter
+
 - **Component:** `PlayerFilter.tsx`
 - **Features:**
   - Ally filter (games with these players)
@@ -462,10 +495,12 @@ match /classStats/{classId} {
   - Multiple player selection
 
 #### 5.4 Team Format Filter
+
 - **Component:** `TeamFormatFilter.tsx`
 - **Filter by:** 1v1, 2v2, 3v3, etc.
 
 #### 5.5 Filter State Management
+
 - **Hook:** `useGameFilters.ts`
 - **Features:**
   - URL query parameter sync
@@ -476,26 +511,31 @@ match /classStats/{classId} {
 ---
 
 ### Feature 6: Analytics & Charts
+
 **Priority:** P1 (High)
 
 #### 6.1 Activity Chart
+
 - **Component:** `ActivityChart.tsx`
 - **Data:** Games played per day
 - **Chart Type:** Area chart
 - **Features:** Zoom, tooltips
 
 #### 6.2 ELO History Chart
+
 - **Component:** `EloChart.tsx`
 - **Data:** ELO over time
 - **Chart Type:** Line chart
 - **Features:** Multiple players, zoom, tooltips
 
 #### 6.3 Win Rate Charts
+
 - **Component:** `WinRateChart.tsx`
 - **Data:** Win/loss/draw distribution
 - **Chart Type:** Pie chart
 
 #### 6.4 Class Statistics Charts
+
 - **Component:** `ClassStatsChart.tsx`
 - **Data:** Class selection frequency, win rates
 - **Chart Types:** Pie chart, bar chart
@@ -503,9 +543,11 @@ match /classStats/{classId} {
 ---
 
 ### Feature 7: Class Statistics
+
 **Priority:** P2 (Medium)
 
 #### 7.1 Class Overview
+
 - **Page:** `/classes`
 - **API:** `GET /api/classes`
 - **Service:** `classService.getClassStats()`
@@ -515,6 +557,7 @@ match /classStats/{classId} {
   - Class popularity
 
 #### 7.2 Class Detail
+
 - **Page:** `/classes/[className]`
 - **API:** `GET /api/classes/[className]`
 - **Service:** `classService.getClassDetail()`
@@ -529,10 +572,12 @@ match /classStats/{classId} {
 ## Implementation Phases
 
 ### Phase 0: Foundation & Setup
+
 **Duration:** 1-2 days  
 **Priority:** P0
 
 #### Tasks:
+
 1. ✅ Create feature directory structure
 2. ✅ Set up TypeScript types
 3. ✅ Create Firestore collections (manually or via script)
@@ -542,6 +587,7 @@ match /classStats/{classId} {
 7. ✅ Create base service files (empty implementations)
 
 #### Deliverables:
+
 - Directory structure created
 - Types defined
 - Firestore setup complete
@@ -550,10 +596,12 @@ match /classStats/{classId} {
 ---
 
 ### Phase 1: Core Data Layer
+
 **Duration:** 3-5 days  
 **Priority:** P0
 
 #### Tasks:
+
 1. **Game Service**
    - ✅ `createGame()` - Create game with validation
    - ✅ `getGameById()` - Get single game
@@ -581,11 +629,13 @@ match /classStats/{classId} {
    - ✅ `DELETE /api/games/[id]` - Delete game
 
 #### Testing:
+
 - Unit tests for ELO calculation
 - Integration tests for game creation
 - Test ELO recalculation
 
 #### Deliverables:
+
 - Working game creation API
 - ELO calculation working
 - Player stats updating correctly
@@ -593,10 +643,12 @@ match /classStats/{classId} {
 ---
 
 ### Phase 2: Basic UI - Games
+
 **Duration:** 3-4 days  
 **Priority:** P0
 
 #### Tasks:
+
 1. **Game List Page**
    - ✅ `/games` page
    - ✅ `GameList` component
@@ -623,6 +675,7 @@ match /classStats/{classId} {
    - ✅ `useCreateGame()` - Create game mutation
 
 #### Deliverables:
+
 - Working game list page
 - Working game detail page
 - Game creation form (admin only)
@@ -630,10 +683,12 @@ match /classStats/{classId} {
 ---
 
 ### Phase 3: Player Profiles & Stats
+
 **Duration:** 4-5 days  
 **Priority:** P0
 
 #### Tasks:
+
 1. **Player Profile Page**
    - ✅ `/players/[name]` page
    - ✅ `PlayerProfile` component
@@ -656,16 +711,19 @@ match /classStats/{classId} {
    - ✅ `usePlayerSearch()` - Search players
 
 #### Deliverables:
+
 - Working player profile pages
 - Player search functionality
 
 ---
 
 ### Phase 4: Leaderboards
+
 **Duration:** 2-3 days  
 **Priority:** P0
 
 #### Tasks:
+
 1. **Standings Page**
    - ✅ `/standings` page
    - ✅ `Leaderboard` component
@@ -685,6 +743,7 @@ match /classStats/{classId} {
    - ✅ `useStandings()` - Fetch standings
 
 #### Deliverables:
+
 - Working leaderboards
 - Category filtering
 - Rank calculation
@@ -692,10 +751,12 @@ match /classStats/{classId} {
 ---
 
 ### Phase 5: Advanced Filtering
+
 **Duration:** 3-4 days  
 **Priority:** P1
 
 #### Tasks:
+
 1. **Filter Components**
    - ✅ `DateRangeFilter` - Date picker with presets
    - ✅ `CategoryFilter` - Category dropdown
@@ -717,6 +778,7 @@ match /classStats/{classId} {
    - ✅ Add filters to player profile games
 
 #### Deliverables:
+
 - All filter components working
 - Filters integrated into game list
 - URL state management
@@ -724,10 +786,12 @@ match /classStats/{classId} {
 ---
 
 ### Phase 6: Analytics & Charts
+
 **Duration:** 4-5 days  
 **Priority:** P1
 
 #### Tasks:
+
 1. **Chart Components**
    - ✅ `ActivityChart` - Games per day
    - ✅ `EloChart` - ELO over time
@@ -750,6 +814,7 @@ match /classStats/{classId} {
    - ✅ Create chart theme (match site design)
 
 #### Deliverables:
+
 - All chart components working
 - Charts integrated into player profiles
 - Interactive chart features
@@ -757,10 +822,12 @@ match /classStats/{classId} {
 ---
 
 ### Phase 7: Player Comparison
+
 **Duration:** 2-3 days  
 **Priority:** P1
 
 #### Tasks:
+
 1. **Comparison Page**
    - ✅ `/players/compare?names=...` page
    - ✅ `PlayerComparison` component
@@ -779,16 +846,19 @@ match /classStats/{classId} {
    - ✅ `usePlayerComparison()` - Fetch comparison data
 
 #### Deliverables:
+
 - Working player comparison page
 - Head-to-head statistics
 
 ---
 
 ### Phase 8: Class Statistics
+
 **Duration:** 3-4 days  
 **Priority:** P2
 
 #### Tasks:
+
 1. **Class Overview Page**
    - ✅ `/classes` page
    - ✅ `ClassOverview` component
@@ -815,16 +885,19 @@ match /classStats/{classId} {
    - ✅ Link from guides/classes page
 
 #### Deliverables:
+
 - Class statistics pages
 - Integration with existing class data
 
 ---
 
 ### Phase 9: Polish & Optimization
+
 **Duration:** 2-3 days  
 **Priority:** P2
 
 #### Tasks:
+
 1. **Performance**
    - ✅ Optimize Firestore queries
    - ✅ Add caching where appropriate
@@ -849,6 +922,7 @@ match /classStats/{classId} {
    - ✅ Load testing
 
 #### Deliverables:
+
 - Optimized performance
 - Polished UI
 - Documentation complete
@@ -860,9 +934,11 @@ match /classStats/{classId} {
 ### Game APIs
 
 #### `POST /api/games`
+
 **Description:** Create a new game  
 **Auth:** Required  
 **Body:**
+
 ```typescript
 {
   gameId: number;
@@ -884,21 +960,25 @@ match /classStats/{classId} {
   }>;
 }
 ```
+
 **Response:**
+
 ```typescript
 {
   success: true;
   data: {
     id: string;
     gameId: number;
-  };
+  }
 }
 ```
 
 #### `GET /api/games`
+
 **Description:** List games with filters  
 **Auth:** Optional  
 **Query Params:**
+
 - `startDate?: string` - ISO date string
 - `endDate?: string` - ISO date string
 - `category?: string`
@@ -911,6 +991,7 @@ match /classStats/{classId} {
 - `cursor?: string` - Cursor for pagination
 
 **Response:**
+
 ```typescript
 {
   success: true;
@@ -923,9 +1004,11 @@ match /classStats/{classId} {
 ```
 
 #### `GET /api/games/[id]`
+
 **Description:** Get single game  
 **Auth:** Optional  
 **Response:**
+
 ```typescript
 {
   success: true;
@@ -938,15 +1021,18 @@ match /classStats/{classId} {
 ### Player APIs
 
 #### `GET /api/players/[name]`
+
 **Description:** Get player statistics  
 **Auth:** Optional  
 **Query Params:**
+
 - `category?: string`
 - `startDate?: string`
 - `endDate?: string`
 - `includeGames?: boolean` - Include recent games
 
 **Response:**
+
 ```typescript
 {
   success: true;
@@ -963,15 +1049,18 @@ match /classStats/{classId} {
 ```
 
 #### `GET /api/players/compare`
+
 **Description:** Compare players  
 **Auth:** Optional  
 **Query Params:**
+
 - `names: string` - Comma-separated player names
 - `category?: string`
 - `startDate?: string`
 - `endDate?: string`
 
 **Response:**
+
 ```typescript
 {
   success: true;
@@ -996,15 +1085,18 @@ match /classStats/{classId} {
 ### Standings APIs
 
 #### `GET /api/standings`
+
 **Description:** Get leaderboard  
 **Auth:** Optional  
 **Query Params:**
+
 - `category?: string`
 - `minGames?: number` - Minimum games threshold (default: 10)
 - `page?: number`
 - `limit?: number`
 
 **Response:**
+
 ```typescript
 {
   success: true;
@@ -1021,7 +1113,7 @@ match /classStats/{classId} {
     total: number;
     page: number;
     hasMore: boolean;
-  };
+  }
 }
 ```
 
@@ -1032,6 +1124,7 @@ match /classStats/{classId} {
 ### Shared Components
 
 #### `DateRangeFilter`
+
 ```typescript
 interface DateRangeFilterProps {
   startDate?: Date;
@@ -1042,6 +1135,7 @@ interface DateRangeFilterProps {
 ```
 
 #### `CategoryFilter`
+
 ```typescript
 interface CategoryFilterProps {
   value?: string;
@@ -1051,6 +1145,7 @@ interface CategoryFilterProps {
 ```
 
 #### `PlayerFilter`
+
 ```typescript
 interface PlayerFilterProps {
   allies?: string[];
@@ -1063,16 +1158,19 @@ interface PlayerFilterProps {
 ### Game Components
 
 #### `GameList`
+
 - Displays paginated list of games
 - Handles loading/error states
 - Integrates filters
 
 #### `GameCard`
+
 - Displays game summary
 - Shows winners/losers
 - Links to game detail
 
 #### `GameDetail`
+
 - Full game information
 - Player list with stats
 - ELO changes
@@ -1080,15 +1178,18 @@ interface PlayerFilterProps {
 ### Player Components
 
 #### `PlayerProfile`
+
 - Main player profile container
 - Integrates stats, charts, games
 
 #### `PlayerStats`
+
 - Displays player statistics
 - Category breakdown
 - Win/loss records
 
 #### `PlayerCharts`
+
 - Activity chart
 - ELO history chart
 - Win rate chart
@@ -1098,6 +1199,7 @@ interface PlayerFilterProps {
 ## Dependencies & Integration
 
 ### New Dependencies
+
 ```json
 {
   "recharts": "^2.10.0",
@@ -1110,21 +1212,25 @@ interface PlayerFilterProps {
 ### Integration Points
 
 #### 1. Scheduled Games
+
 - Link scheduled games to actual game results
 - Update scheduled game status when game is recorded
 - Show "Record Result" button on scheduled games
 
 #### 2. Guides/Classes
+
 - Link from class guides to class statistics
 - Show class performance in class guide pages
 - Use existing class data from `guides/data/units/`
 
 #### 3. User Data
+
 - Link player stats to user accounts (via Discord ID)
 - Show player stats in user profile (future)
 - Allow users to claim player names
 
 #### 4. Blog
+
 - Announce tournaments and events
 - Link to standings/leaderboards
 - Highlight top players
@@ -1134,24 +1240,28 @@ interface PlayerFilterProps {
 ## Testing Strategy
 
 ### Unit Tests
+
 - ELO calculation functions
 - Name normalization
 - Date range utilities
 - Query builders
 
 ### Integration Tests
+
 - Game creation flow
 - ELO update flow
 - Player stats update
 - Filter combinations
 
 ### E2E Tests
+
 - Create game → View in list → View detail
 - Search player → View profile → View games
 - Filter games → Verify results
 - View leaderboard → Click player → View profile
 
 ### Performance Tests
+
 - Load 1000+ games
 - Complex filter queries
 - Chart rendering with large datasets
@@ -1161,17 +1271,20 @@ interface PlayerFilterProps {
 ## Data Migration Strategy
 
 ### Phase 1: Manual Entry
+
 - Start with manual game entry
 - Test system with sample games
 - Validate ELO calculations
 
 ### Phase 2: Import Script (Future)
+
 - Create script to import from twgb-website database
 - Map MySQL schema to Firestore
 - Validate imported data
 - Recalculate ELOs if needed
 
 ### Phase 3: Replay Parser (Future)
+
 - Parse Warcraft 3 replay files
 - Extract game data automatically
 - Validate extracted data
@@ -1182,18 +1295,22 @@ interface PlayerFilterProps {
 ## Risk Assessment & Mitigation
 
 ### Risk 1: ELO Calculation Errors
+
 **Impact:** High  
 **Probability:** Medium  
 **Mitigation:**
+
 - Thorough unit tests
 - Compare with twgb-website calculations
 - Manual verification of sample games
 - ELO recalculation feature
 
 ### Risk 2: Performance with Large Dataset
+
 **Impact:** High  
 **Probability:** Medium  
 **Mitigation:**
+
 - Proper Firestore indexes
 - Pagination everywhere
 - Lazy loading
@@ -1201,27 +1318,33 @@ interface PlayerFilterProps {
 - Performance testing
 
 ### Risk 3: Data Integrity
+
 **Impact:** High  
 **Probability:** Low  
 **Mitigation:**
+
 - Validation on all inputs
 - Unique constraints (gameId)
 - Transaction support for ELO updates
 - Audit logging
 
 ### Risk 4: Player Name Variations
+
 **Impact:** Medium  
 **Probability:** High  
 **Mitigation:**
+
 - Name normalization
 - Case-insensitive matching
 - Player name aliases (future)
 - Manual name merging (admin)
 
 ### Risk 5: Firestore Costs
+
 **Impact:** Medium  
 **Probability:** Low  
 **Mitigation:**
+
 - Monitor read/write counts
 - Optimize queries
 - Use caching where appropriate
@@ -1232,6 +1355,7 @@ interface PlayerFilterProps {
 ## Success Metrics
 
 ### Functional Metrics
+
 - ✅ Games can be created and viewed
 - ✅ ELO calculations are accurate
 - ✅ Player stats update correctly
@@ -1240,12 +1364,14 @@ interface PlayerFilterProps {
 - ✅ Charts render properly
 
 ### Performance Metrics
+
 - Game list loads in < 2 seconds
 - Player profile loads in < 3 seconds
 - Leaderboard loads in < 2 seconds
 - Charts render in < 1 second
 
 ### User Metrics
+
 - Users can find their games
 - Users can view their stats
 - Users can compare with others
@@ -1256,6 +1382,7 @@ interface PlayerFilterProps {
 ## Timeline Estimates
 
 ### Optimistic Timeline
+
 - Phase 0: 1 day
 - Phase 1: 3 days
 - Phase 2: 3 days
@@ -1266,15 +1393,17 @@ interface PlayerFilterProps {
 - Phase 7: 2 days
 - Phase 8: 3 days
 - Phase 9: 2 days
-**Total: ~27 days (5-6 weeks)**
+  **Total: ~27 days (5-6 weeks)**
 
 ### Realistic Timeline
+
 - Add 20% buffer for each phase
 - Account for testing and bug fixes
 - Account for review and feedback
-**Total: ~35-40 days (7-8 weeks)**
+  **Total: ~35-40 days (7-8 weeks)**
 
 ### Phased Release Strategy
+
 1. **MVP (Phases 0-4):** Core functionality - 2-3 weeks
 2. **Enhanced (Phases 5-7):** Filters, charts, comparison - 2-3 weeks
 3. **Complete (Phases 8-9):** Class stats, polish - 1-2 weeks
@@ -1304,7 +1433,3 @@ interface PlayerFilterProps {
 ---
 
 **Document Status:** ✅ Complete - Ready for Review
-
-
-
-

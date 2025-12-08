@@ -30,7 +30,14 @@ const exitCodeByError: Record<ReplayMetaErrorCode, number> = {
 const parseArgs = (argv: string[]): CLIOptions => {
   const [command = "help", ...rest] = argv;
   const options: CLIOptions = {
-    command: command === "decode" ? "decode" : command === "chat" ? "chat" : command === "mmd" ? "mmd" : "help",
+    command:
+      command === "decode"
+        ? "decode"
+        : command === "chat"
+          ? "chat"
+          : command === "mmd"
+            ? "mmd"
+            : "help",
     json: false,
     pretty: false,
     raw: false,
@@ -142,10 +149,7 @@ const handleSuccess = (
 
 const handleMMDDecode = async (options: CLIOptions): Promise<void> => {
   if (!options.input) {
-    throw new ReplayMetaError(
-      "Missing input replay path",
-      ReplayMetaErrorCode.PAYLOAD_INVALID
-    );
+    throw new ReplayMetaError("Missing input replay path", ReplayMetaErrorCode.PAYLOAD_INVALID);
   }
 
   console.error("[INFO] Reading w3mmd data from replay...");
@@ -165,9 +169,9 @@ const handleMMDDecode = async (options: CLIOptions): Promise<void> => {
     throw new ReplayMetaError(
       "No ITT metadata found in w3mmd data",
       ReplayMetaErrorCode.STREAM_NOT_FOUND,
-      { 
+      {
         totalMessages: mmdResult.allMessages.length,
-        customDataKeys: [...mmdResult.customData.keys()]
+        customDataKeys: [...mmdResult.customData.keys()],
       }
     );
   }
@@ -183,8 +187,8 @@ const handleMMDDecode = async (options: CLIOptions): Promise<void> => {
 
   // Parse the payload - skip checksum validation for MMD as escaping can cause mismatches
   const spec = await loadMatchMetadataSpec(options.specPath);
-  const metadata = parsePayload(mmdResult.ittMetadata.payload, spec, { 
-    skipChecksumValidation: true 
+  const metadata = parsePayload(mmdResult.ittMetadata.payload, spec, {
+    skipChecksumValidation: true,
   });
 
   if (options.json || options.pretty) {
@@ -218,10 +222,7 @@ const handleMMDDecode = async (options: CLIOptions): Promise<void> => {
 
 const handleChatDecode = async (options: CLIOptions): Promise<void> => {
   if (!options.input) {
-    throw new ReplayMetaError(
-      "Missing input replay path",
-      ReplayMetaErrorCode.PAYLOAD_INVALID
-    );
+    throw new ReplayMetaError("Missing input replay path", ReplayMetaErrorCode.PAYLOAD_INVALID);
   }
 
   console.error("[INFO] Reading chat messages from replay...");
@@ -300,7 +301,7 @@ const handleError = (reason: unknown): void => {
 const main = async (): Promise<void> => {
   try {
     const options = parseArgs(process.argv.slice(2));
-    
+
     if (options.command === "help") {
       printUsage();
       return;
@@ -317,10 +318,7 @@ const main = async (): Promise<void> => {
     }
 
     if (!options.input) {
-      throw new ReplayMetaError(
-        "Missing input replay path",
-        ReplayMetaErrorCode.PAYLOAD_INVALID
-      );
+      throw new ReplayMetaError("Missing input replay path", ReplayMetaErrorCode.PAYLOAD_INVALID);
     }
 
     const result = await decodeReplay(options.input, {

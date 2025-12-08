@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { PageHero } from '@/features/infrastructure/components';
-import { Card } from '@/features/infrastructure/components';
-import type { ClassStats } from '@/features/modules/analytics-group/analytics/types';
+import React, { useEffect, useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { PageHero } from "@/features/infrastructure/components";
+import { Card } from "@/features/infrastructure/components";
+import type { ClassStats } from "@/features/modules/analytics-group/analytics/types";
 
 interface ClassDetailPageProps {
   pageNamespaces: string[];
@@ -15,26 +15,26 @@ export function ClassDetailPage({ pageNamespaces: _pageNamespaces }: ClassDetail
   const [classStat, setClassStat] = useState<ClassStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [category, setCategory] = useState<string>('');
+  const [category, setCategory] = useState<string>("");
 
   const fetchClassDetail = async () => {
     if (!className) return;
-    
+
     try {
       setLoading(true);
       setError(null);
-      const url = category 
+      const url = category
         ? `/api/classes/${encodeURIComponent(className)}?category=${encodeURIComponent(category)}`
         : `/api/classes/${encodeURIComponent(className)}`;
       const response = await fetch(url);
       if (!response.ok) {
-        throw new Error('Failed to load class statistics');
+        throw new Error("Failed to load class statistics");
       }
       const result = await response.json();
       const statsData = result.data || result;
       setClassStat(statsData);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load class statistics');
+      setError(err instanceof Error ? err.message : "Failed to load class statistics");
     } finally {
       setLoading(false);
     }
@@ -68,9 +68,7 @@ export function ClassDetailPage({ pageNamespaces: _pageNamespaces }: ClassDetail
         <PageHero title="Class Statistics" description="View detailed statistics for this class" />
         <div className="container mx-auto px-4 py-8">
           <Card variant="medieval" className="p-8">
-            <p className="text-red-400">
-              {error || 'Class not found'}
-            </p>
+            <p className="text-red-400">{error || "Class not found"}</p>
           </Card>
         </div>
       </div>
@@ -79,11 +77,11 @@ export function ClassDetailPage({ pageNamespaces: _pageNamespaces }: ClassDetail
 
   return (
     <div className="min-h-[calc(100vh-8rem)]">
-      <PageHero 
-        title={`${classStat.id.charAt(0).toUpperCase() + classStat.id.slice(1)} Statistics`} 
-        description="View detailed statistics for this class" 
+      <PageHero
+        title={`${classStat.id.charAt(0).toUpperCase() + classStat.id.slice(1)} Statistics`}
+        description="View detailed statistics for this class"
       />
-      
+
       <div className="container mx-auto px-4 py-8 space-y-6">
         {/* Category Filter */}
         <div>
@@ -149,10 +147,13 @@ export function ClassDetailPage({ pageNamespaces: _pageNamespaces }: ClassDetail
                 </thead>
                 <tbody>
                   {classStat.topPlayers.map((player, index) => (
-                    <tr key={player.playerName} className="border-b border-amber-500/10 hover:bg-amber-500/5">
+                    <tr
+                      key={player.playerName}
+                      className="border-b border-amber-500/10 hover:bg-amber-500/5"
+                    >
                       <td className="py-2 px-4 text-gray-300">#{index + 1}</td>
                       <td className="py-2 px-4">
-                        <Link 
+                        <Link
                           href={`/players/${encodeURIComponent(player.playerName)}`}
                           className="text-amber-300 hover:text-amber-400 hover:underline"
                         >
@@ -166,7 +167,8 @@ export function ClassDetailPage({ pageNamespaces: _pageNamespaces }: ClassDetail
                         {player.winRate.toFixed(1)}%
                       </td>
                       <td className="py-2 px-4 text-right text-amber-400">
-                        {player.elo > 0 ? '+' : ''}{player.elo.toFixed(1)}
+                        {player.elo > 0 ? "+" : ""}
+                        {player.elo.toFixed(1)}
                       </td>
                     </tr>
                   ))}
@@ -185,5 +187,3 @@ export function ClassDetailPage({ pageNamespaces: _pageNamespaces }: ClassDetail
     </div>
   );
 }
-
-

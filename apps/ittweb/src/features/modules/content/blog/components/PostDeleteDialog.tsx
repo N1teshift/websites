@@ -1,5 +1,5 @@
-import React from 'react';
-import { useModalAccessibility } from '@websites/infrastructure/hooks';
+import React from "react";
+import { useModalAccessibility } from "@websites/infrastructure/hooks";
 
 interface PostDeleteDialogProps {
   isOpen: boolean;
@@ -28,11 +28,11 @@ export default function PostDeleteDialog({
   if (!isOpen) return null;
 
   return (
-    <div 
+    <div
       ref={modalRef}
-      className="fixed inset-0 z-50 flex items-center justify-center px-4" 
-      role="dialog" 
-      aria-modal="true" 
+      className="fixed inset-0 z-50 flex items-center justify-center px-4"
+      role="dialog"
+      aria-modal="true"
       aria-labelledby="delete-dialog-title"
     >
       <div
@@ -43,11 +43,13 @@ export default function PostDeleteDialog({
       />
       <div className="relative w-full max-w-md rounded-lg border border-amber-500/40 bg-gray-900/95 backdrop-blur-md p-6 shadow-2xl animate-scale-in">
         <div className="mb-4">
-          <h3 id="delete-dialog-title" className="text-2xl font-semibold text-white font-medieval">Delete Post?</h3>
+          <h3 id="delete-dialog-title" className="text-2xl font-semibold text-white font-medieval">
+            Delete Post?
+          </h3>
           <p className="mt-2 text-sm text-gray-300">
             {postTitle
               ? `"${postTitle}" will be permanently deleted. This action cannot be undone.`
-              : 'This post will be permanently deleted. This action cannot be undone.'}
+              : "This post will be permanently deleted. This action cannot be undone."}
           </p>
           {error && (
             <div className="mt-3 rounded-md border border-red-500/40 bg-red-900/20 px-3 py-2 text-sm text-red-200">
@@ -70,12 +72,10 @@ export default function PostDeleteDialog({
             disabled={isLoading}
             className="rounded-md border border-red-600 bg-red-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-red-500 disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {isLoading ? 'Deleting…' : 'Delete'}
+            {isLoading ? "Deleting…" : "Delete"}
           </button>
         </div>
       </div>
     </div>
   );
 }
-
-

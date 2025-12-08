@@ -1,4 +1,4 @@
-import { Subject } from '../types/UnitPlanTypes';
+import { Subject } from "../types/UnitPlanTypes";
 
 /**
  * Get the translated display name for a subject
@@ -7,16 +7,16 @@ import { Subject } from '../types/UnitPlanTypes';
  * @returns The translated subject name for display
  */
 export const getTranslatedSubjectName = (subjectId: string, t: (key: string) => string): string => {
-    const translationKey = `subject_${subjectId}`;
-    const translatedName = t(translationKey);
-    
-    // If translation exists and is not the same as the key, use it
-    if (translatedName && translatedName !== translationKey) {
-        return translatedName;
-    }
-    
-    // Fallback to English name from subjects data
-    return getEnglishSubjectName(subjectId);
+  const translationKey = `subject_${subjectId}`;
+  const translatedName = t(translationKey);
+
+  // If translation exists and is not the same as the key, use it
+  if (translatedName && translatedName !== translationKey) {
+    return translatedName;
+  }
+
+  // Fallback to English name from subjects data
+  return getEnglishSubjectName(subjectId);
 };
 
 /**
@@ -25,18 +25,18 @@ export const getTranslatedSubjectName = (subjectId: string, t: (key: string) => 
  * @returns The English subject name
  */
 export const getEnglishSubjectName = (subjectId: string): string => {
-    const subjectMap: Record<string, string> = {
-        'arts': 'Arts',
-        'design': 'Design',
-        'individuals_societies': 'Individuals and Societies',
-        'language_acquisition': 'Language Acquisition',
-        'language_literature': 'Language and Literature',
-        'mathematics': 'Mathematics',
-        'physical_health_education': 'Physical and Health Education',
-        'sciences': 'Sciences'
-    };
-    
-    return subjectMap[subjectId] || subjectId;
+  const subjectMap: Record<string, string> = {
+    arts: "Arts",
+    design: "Design",
+    individuals_societies: "Individuals and Societies",
+    language_acquisition: "Language Acquisition",
+    language_literature: "Language and Literature",
+    mathematics: "Mathematics",
+    physical_health_education: "Physical and Health Education",
+    sciences: "Sciences",
+  };
+
+  return subjectMap[subjectId] || subjectId;
 };
 
 /**
@@ -45,12 +45,12 @@ export const getEnglishSubjectName = (subjectId: string): string => {
  * @param t - Translation function
  * @returns Array of subjects with translated display names
  */
-export const getSubjectsWithTranslations = (subjects: Subject[], t: (key: string) => string): Subject[] => {
-    return subjects.map(subject => ({
-        ...subject,
-        displayName: getTranslatedSubjectName(subject.id, t)
-    }));
+export const getSubjectsWithTranslations = (
+  subjects: Subject[],
+  t: (key: string) => string
+): Subject[] => {
+  return subjects.map((subject) => ({
+    ...subject,
+    displayName: getTranslatedSubjectName(subject.id, t),
+  }));
 };
-
-
-

@@ -1,5 +1,5 @@
-import React from 'react';
-import { parseAndRenderMath } from './MathParser';
+import React from "react";
+import { parseAndRenderMath } from "./MathParser";
 
 export interface MathItemsDisplayProps {
   mathItems: unknown[];
@@ -10,9 +10,9 @@ export interface MathItemsDisplayProps {
  * Component to display math items
  * This is a local component for personalpage
  */
-const MathItemsDisplay: React.FC<MathItemsDisplayProps> = ({ 
-  mathItems, 
-  fallbackMessage = 'No math items available' 
+const MathItemsDisplay: React.FC<MathItemsDisplayProps> = ({
+  mathItems,
+  fallbackMessage = "No math items available",
 }) => {
   if (!mathItems || mathItems.length === 0) {
     return <span className="text-gray-400">{fallbackMessage}</span>;
@@ -21,11 +21,11 @@ const MathItemsDisplay: React.FC<MathItemsDisplayProps> = ({
   return (
     <div className="math-items-display">
       {mathItems.map((item, index) => {
-        const content = typeof item === 'string' ? item : JSON.stringify(item);
+        const content = typeof item === "string" ? item : JSON.stringify(item);
         return (
-        <div key={index} className="math-item">
+          <div key={index} className="math-item">
             {parseAndRenderMath(content)}
-        </div>
+          </div>
         );
       })}
     </div>

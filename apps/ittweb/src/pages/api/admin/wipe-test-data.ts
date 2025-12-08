@@ -1,31 +1,39 @@
-import type { NextApiRequest } from 'next';
-import { createPostHandler } from '@websites/infrastructure/api';
-import { createComponentLogger } from '@websites/infrastructure/logging';
-import { getFirestoreAdmin, getStorageAdmin, getStorageBucketName } from '@websites/infrastructure/firebase';
+import type { NextApiRequest } from "next";
+import { createPostHandler } from "@websites/infrastructure/api";
+import { createComponentLogger } from "@websites/infrastructure/logging";
+import {
+  getFirestoreAdmin,
+  getStorageAdmin,
+  getStorageBucketName,
+} from "@websites/infrastructure/firebase";
 
-const logger = createComponentLogger('api/admin/wipe-test-data');
+const logger = createComponentLogger("api/admin/wipe-test-data");
 
 /**
  * POST /api/admin/wipe-test-data - Wipe all test data (requires admin authentication)
  */
-export default createPostHandler<{ success: boolean; message: string; deletedCounts: Record<string, number> }>(
+export default createPostHandler<{
+  success: boolean;
+  message: string;
+  deletedCounts: Record<string, number>;
+}>(
   async (req: NextApiRequest, res, context) => {
     // Session is guaranteed to be available and user is admin due to requireAdmin option
     if (!context?.session) {
-      throw new Error('Session required');
+      throw new Error("Session required");
     }
     const session = context.session;
 
     const adminDb = getFirestoreAdmin();
     const deletedCounts: Record<string, number> = {};
 
-    logger.info('Starting test data wipe', { discordId: session.discordId });
+    logger.info("Starting test data wipe", { discordId: session.discordId });
 
     // Explicitly define which collections to delete
-    const COLLECTIONS_TO_DELETE = ['games', 'playerStats', 'playerCategoryStats'] as const;
-    
-    logger.info('Collections to delete', { 
-      collections: COLLECTIONS_TO_DELETE
+    const COLLECTIONS_TO_DELETE = ["games", "playerStats", "playerCategoryStats"] as const;
+
+    logger.info("Collections to delete", {
+      collections: COLLECTIONS_TO_DELETE,
     });
 
     // 1. Delete specified Firestore collections
@@ -35,10 +43,10 @@ export default createPostHandler<{ success: boolean; message: string; deletedCou
       try {
         const collection = adminDb.collection(collectionName);
         const snapshot = await collection.get();
-        
+
         // Handle collections with subcollections (like games with players)
         const deletionPromises: Promise<void>[] = [];
-        
+
         snapshot.forEach((doc) => {
           const deletion = async () => {
             try {
@@ -46,20 +54,18 @@ export default createPostHandler<{ success: boolean; message: string; deletedCou
               const subcollections = await doc.ref.listCollections();
               for (const subcollection of subcollections) {
                 const subSnapshot = await subcollection.get();
-                const subDeletionPromises = subSnapshot.docs.map((subDoc) => 
-                  subDoc.ref.delete()
-                );
+                const subDeletionPromises = subSnapshot.docs.map((subDoc) => subDoc.ref.delete());
                 await Promise.all(subDeletionPromises);
                 const subCount = subSnapshot.docs.length;
-                deletedCounts[`${collectionName}.${subcollection.id}`] = 
+                deletedCounts[`${collectionName}.${subcollection.id}`] =
                   (deletedCounts[`${collectionName}.${subcollection.id}`] || 0) + subCount;
               }
-              
+
               // Delete the document
               await doc.ref.delete();
               collectionCount += 1;
             } catch (error) {
-              logger.warn('Failed to delete document', {
+              logger.warn("Failed to delete document", {
                 collection: collectionName,
                 docId: doc.id,
                 error: error instanceof Error ? error.message : String(error),
@@ -71,9 +77,9 @@ export default createPostHandler<{ success: boolean; message: string; deletedCou
 
         await Promise.all(deletionPromises);
         deletedCounts[collectionName] = collectionCount;
-        logger.info('Deleted collection', { collection: collectionName, count: collectionCount });
+        logger.info("Deleted collection", { collection: collectionName, count: collectionCount });
       } catch (error) {
-        logger.warn('Failed to delete collection', {
+        logger.warn("Failed to delete collection", {
           collection: collectionName,
           error: error instanceof Error ? error.message : String(error),
         });
@@ -84,19 +90,19 @@ export default createPostHandler<{ success: boolean; message: string; deletedCou
     const storage = getStorageAdmin();
     const bucketName = getStorageBucketName();
     const bucket = bucketName ? storage.bucket(bucketName) : storage.bucket();
-    
+
     let storageFileCount = 0;
     try {
       // Only get files in the games/ folder
-      const [files] = await bucket.getFiles({ prefix: 'games/' });
-      logger.info('Found files in games/ folder to delete', { count: files.length });
-      
+      const [files] = await bucket.getFiles({ prefix: "games/" });
+      logger.info("Found files in games/ folder to delete", { count: files.length });
+
       const fileDeletionPromises = files.map(async (file) => {
         try {
           await file.delete();
           storageFileCount += 1;
         } catch (error) {
-          logger.warn('Failed to delete storage file', {
+          logger.warn("Failed to delete storage file", {
             fileName: file.name,
             error: error instanceof Error ? error.message : String(error),
           });
@@ -105,23 +111,23 @@ export default createPostHandler<{ success: boolean; message: string; deletedCou
 
       await Promise.all(fileDeletionPromises);
       deletedCounts.storageFiles = storageFileCount;
-      logger.info('Deleted storage files from games/ folder', { count: storageFileCount });
+      logger.info("Deleted storage files from games/ folder", { count: storageFileCount });
     } catch (error) {
-      logger.warn('Failed to delete storage files', {
+      logger.warn("Failed to delete storage files", {
         error: error instanceof Error ? error.message : String(error),
       });
     }
 
-    logger.info('Test data wipe completed', {
+    logger.info("Test data wipe completed", {
       discordId: session.discordId,
       deletedCounts,
       collectionsDeleted: COLLECTIONS_TO_DELETE,
-      storageFolderDeleted: 'games/'
+      storageFolderDeleted: "games/",
     });
 
     return {
       success: true,
-      message: 'Test data wiped successfully',
+      message: "Test data wiped successfully",
       deletedCounts,
     };
   },
@@ -130,5 +136,3 @@ export default createPostHandler<{ success: boolean; message: string; deletedCou
     logRequests: true,
   }
 );
-
-

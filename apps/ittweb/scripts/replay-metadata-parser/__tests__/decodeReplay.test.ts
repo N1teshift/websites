@@ -1,11 +1,6 @@
 /** @jest-environment node */
 import { decodeOrders, decodeReplay } from "../src/decodeReplay";
-import {
-  sampleOrders,
-  samplePayload,
-  sampleSpec,
-  StubReplayReader,
-} from "./helpers/sampleData";
+import { sampleOrders, samplePayload, sampleSpec, StubReplayReader } from "./helpers/sampleData";
 
 describe("replay metadata decoding", () => {
   it("decodes raw order streams", async () => {
@@ -26,4 +21,3 @@ describe("replay metadata decoding", () => {
     expect(result.orders.length).toBe(sampleOrders.length);
   });
 });
-

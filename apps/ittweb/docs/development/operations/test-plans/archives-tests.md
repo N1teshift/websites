@@ -406,4 +406,3 @@ This document outlines all tests needed for the archives module including servic
   - **What**: Verify YouTube URLs are parsed correctly
   - **Expected**: Video IDs extracted from various YouTube URL formats
   - **Edge cases**: Short URLs, embed URLs, playlist URLs, invalid URLs
-

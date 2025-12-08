@@ -2,16 +2,16 @@
  * Meta Charts Component - Wrapper for lazy-loaded chart components
  */
 
-import React, { Suspense } from 'react';
-import dynamic from 'next/dynamic';
-import { Card } from '@/features/infrastructure/components';
+import React, { Suspense } from "react";
+import dynamic from "next/dynamic";
+import { Card } from "@/features/infrastructure/components";
 import type {
   ActivityDataPoint,
   GameLengthDataPoint,
   PlayerActivityDataPoint,
   ClassSelectionData,
   ClassWinRateData,
-} from '../../analytics/types';
+} from "../../analytics/types";
 
 interface MetaChartsProps {
   activity: ActivityDataPoint[];
@@ -33,7 +33,10 @@ const ChartLoadingPlaceholder = () => (
 
 // Lazy load chart components to reduce initial bundle size (~300KB)
 const ActivityChart = dynamic(
-  () => import('../../analytics/components/ActivityChart').then(mod => ({ default: mod.ActivityChart })),
+  () =>
+    import("../../analytics/components/ActivityChart").then((mod) => ({
+      default: mod.ActivityChart,
+    })),
   {
     loading: ChartLoadingPlaceholder,
     ssr: false,
@@ -41,7 +44,10 @@ const ActivityChart = dynamic(
 );
 
 const GameLengthChart = dynamic(
-  () => import('../../analytics/components/GameLengthChart').then(mod => ({ default: mod.GameLengthChart })),
+  () =>
+    import("../../analytics/components/GameLengthChart").then((mod) => ({
+      default: mod.GameLengthChart,
+    })),
   {
     loading: ChartLoadingPlaceholder,
     ssr: false,
@@ -49,7 +55,10 @@ const GameLengthChart = dynamic(
 );
 
 const PlayerActivityChart = dynamic(
-  () => import('../../analytics/components/PlayerActivityChart').then(mod => ({ default: mod.PlayerActivityChart })),
+  () =>
+    import("../../analytics/components/PlayerActivityChart").then((mod) => ({
+      default: mod.PlayerActivityChart,
+    })),
   {
     loading: ChartLoadingPlaceholder,
     ssr: false,
@@ -57,7 +66,10 @@ const PlayerActivityChart = dynamic(
 );
 
 const ClassSelectionChart = dynamic(
-  () => import('../../analytics/components/ClassSelectionChart').then(mod => ({ default: mod.ClassSelectionChart })),
+  () =>
+    import("../../analytics/components/ClassSelectionChart").then((mod) => ({
+      default: mod.ClassSelectionChart,
+    })),
   {
     loading: ChartLoadingPlaceholder,
     ssr: false,
@@ -65,7 +77,10 @@ const ClassSelectionChart = dynamic(
 );
 
 const ClassWinRateChart = dynamic(
-  () => import('../../analytics/components/ClassWinRateChart').then(mod => ({ default: mod.ClassWinRateChart })),
+  () =>
+    import("../../analytics/components/ClassWinRateChart").then((mod) => ({
+      default: mod.ClassWinRateChart,
+    })),
   {
     loading: ChartLoadingPlaceholder,
     ssr: false,
@@ -101,5 +116,3 @@ export function MetaCharts({
     </>
   );
 }
-
-

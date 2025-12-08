@@ -8,12 +8,15 @@ This directory contains comprehensive documentation for the project, organized b
 ## 📁 Directory Structure
 
 ### 🧱 Top-Level Layout
+
 The `docs/` root now contains only three curated collections for easier navigation:
+
 - `architecture/` – platform-wide patterns, setup references, and investigations
 - `archive/` – historical snapshots, reports, and retired plans
 - `features/` – active feature docs plus project planning artifacts
 
 ### 🏗️ **architecture/**
+
 System architecture and core infrastructure documentation.
 
 > **📦 Infrastructure Documentation Migration**: Many infrastructure patterns have been moved to `@websites/infrastructure` package. See [Infrastructure Documentation](../../../../packages/infrastructure/docs/README.md) for consolidated guides.
@@ -30,24 +33,30 @@ System architecture and core infrastructure documentation.
 - `migrations/LOGGING_MIGRATION.md` - Cross-cutting migration reference
 
 ### 🎯 **features/**
+
 Feature-specific documentation plus active project management artifacts.
+
 - `COMPREHENSIVE_TODO.md` - Master backlog grouped for agent assignment
 - `ROADMAP.md` - Upcoming feature milestones
 - `TODO.md` - Day-to-day execution tracker
 
 #### **features/progress-report/**
+
 Progress Report Dashboard - All documentation for the student progress tracking system.
 
 **⭐ Quick Start:**
+
 - `reference/current-status.md` - **Current database schema (v5.2)** ⭐ **START HERE**
 - `reference/pd-kd-mappings.md` - Quick reference for Cambridge mappings
 - `guides/workflow-guide.md` - Data management workflow
 
 **Reference:**
+
 - `reference/current-status.md` - Current database schema and status (v5.2)
 - `reference/pd-kd-mappings.md` - PD/KD mappings quick reference
 
 **Guides:**
+
 - `guides/database-validation.md` - Database validation system
 - `guides/integration-instructions.md` - Cambridge Missions integration guide
 - `guides/testing-guide.md` - Cambridge Missions testing guide
@@ -55,6 +64,7 @@ Progress Report Dashboard - All documentation for the student progress tracking 
 - `guides/ASSESSMENT_TEMPLATE_QUESTIONNAIRE.md` - Assessment metadata intake template
 
 **Data:**
+
 - `data/json-structure-analysis.md` - JSON data structure analysis
 - `data/cambridge-book-structure.md` - Cambridge book structure
 - `data/curriculum-connections.md` - Curriculum connections
@@ -65,22 +75,26 @@ Progress Report Dashboard - All documentation for the student progress tracking 
 - `data/teacher-j-fix-algirdas-column-shift.md` - Teacher J column shift fix
 
 **Refactoring:**
+
 - `refactoring/chart-component.md` - Chart component refactoring (current architecture)
 - `refactoring/history.md` - Complete refactoring history (78% code reduction!)
 - `refactoring/index.md` - Index of refactoring work
 
 **Fixes:**
+
 - `fixes/name-alias.md` - Name alias bug fix
 - `fixes/nd-columns.md` - ND columns fix
 - `fixes/objectives-calculation.md` - Objectives calculation fix
 - `fixes/multiple-cell-edit.md` - Multiple cell edit bug fix
 
 **Migrations:**
+
 - `migrations/v3-migration.md` - Complete V3 migration documentation
 - `migrations/weekly-assessment.md` - Weekly assessment migration
 - `migrations/extra-activities.md` - Extra activities migration
 
 **Features:**
+
 - `features/chart-scale-upgrade.md` - Chart scale upgrade
 - `features/multi-score-display.md` - Multi-score display feature
 - `features/objectives-inline-grading.md` - Objectives inline grading
@@ -92,6 +106,7 @@ Progress Report Dashboard - All documentation for the student progress tracking 
 - `features/guide-section-update.md` - Guide section update
 
 **Dashboard:**
+
 - `dashboard/` - Detailed progress report dashboard documentation
   - `INDEX.md` - Dashboard index
   - `DOCUMENTATION.md` - Full dashboard documentation
@@ -100,29 +115,37 @@ Progress Report Dashboard - All documentation for the student progress tracking 
   - `SUMMARY.md` - Dashboard summary
   - `VISUAL_GUIDE.md` - Visual guide and screenshots
 
-
 #### **features/comments-generator/**
+
 Comments Generator - AI-powered student comment generation.
 
 **Refactoring:**
+
 - `refactoring/refactor.md` - Comments generator refactoring (current architecture)
 
 **Fixes:**
+
 - `fixes/template-filtering.md` - Template filtering implementation
 
 **Features:**
+
 - `features/english-templates.md` - English comment templates
 
 #### **features/edtech/**
+
 Educational technology features (general).
+
 - `EDTECH_INDEX_FILES_SUMMARY.md` - EdTech index files summary
 - `EDTECH_REORGANIZATION_SUMMARY.md` - EdTech reorganization summary
 
 ### 📦 **archive/**
+
 Historical documentation - completed work and old versions.
 
 #### **archive/cambridge/**
+
 Completed Cambridge Missions implementation documentation (Nov 2025).
+
 - `IMPLEMENTATION_COMPLETE.md` - Full implementation summary
 - `CAMBRIDGE_MISSIONS_PROGRESS.md` - Progress tracking
 - `CAMBRIDGE_MISSIONS_SUMMARY.md` - Phase 1 summary
@@ -133,7 +156,9 @@ Completed Cambridge Missions implementation documentation (Nov 2025).
 - `CAMBRIDGE_FIX_SUMMARY.md` - Bug fixes
 
 #### **archive/cleanup/**
+
 Data cleanup history (Nov 2025).
+
 - `ASSESSMENT_DELETION_SUMMARY_V9.md` - V9 assessment cleanup
 - `DATA_CLEANUP_COMPLETE_V8.md` - V8 data cleanup
 - `DUPLICATE_FIX_SUMMARY.md` - Duplicate student fix
@@ -141,16 +166,22 @@ Data cleanup history (Nov 2025).
 - `DYNAMIC_IMPORT_PROGRESS.md` - Dynamic import implementation
 
 #### **archive/versions/**
+
 Historical version migration documentation.
+
 - `V4_MIGRATION_SUMMARY.md` - V4 migration summary
 - `V5_UPGRADE_COMPLETE.md` - V5.0 upgrade (superseded by V5.2)
 
 #### **archive/fixes/**
+
 Historical bug fixes.
+
 - `PREVIEW_API_FIX.md` - Preview API column selection fix
 
 #### **archive/refactoring/**
+
 Historical refactoring documentation (consolidated into REFACTORING_HISTORY.md).
+
 - `REFACTORING_FINAL_REPORT.md` - Detailed refactoring report
 - `REFACTORING_COMPLETE.md` - Complete refactoring documentation
 - `REFACTORING_SUMMARY.md` - Refactoring summary
@@ -159,7 +190,9 @@ Historical refactoring documentation (consolidated into REFACTORING_HISTORY.md).
 ## 🔍 Quick Reference
 
 ### For New Developers
+
 Start here:
+
 1. **`features/progress-report/reference/current-status.md`** - Understand current database schema
 2. `architecture/NEW_PAGE_SETUP.md` - Learn how to add new pages
 3. [Infrastructure i18n Guide](../../../../packages/infrastructure/docs/guides/i18n.md) - Understand i18n patterns
@@ -167,6 +200,7 @@ Start here:
 5. `architecture/SCRIPTS.md` - Write scripts correctly
 
 ### For Feature Development
+
 1. Check `features/[feature-name]/reference/` for feature-specific references
 2. Review `features/[feature-name]/` for related documentation
 3. Check `architecture/` for system patterns
@@ -174,6 +208,7 @@ Start here:
 5. Use [Infrastructure Caching Guide](../../../../packages/infrastructure/docs/guides/caching.md) for caching needs
 
 ### For Progress Report Data Work
+
 1. **Start with `features/progress-report/reference/current-status.md`** - Current schema reference
 2. Review `features/progress-report/reference/pd-kd-mappings.md` for Cambridge mappings
 3. Check `features/progress-report/data/student-data-processing.md` for processing patterns
@@ -181,11 +216,13 @@ Start here:
 5. See `features/progress-report/migrations/` for migration examples
 
 ### For Bug Fixes
+
 1. Check `features/[feature-name]/fixes/` for similar issues
 2. Review [Infrastructure Error Handling Guide](../../../../packages/infrastructure/docs/guides/error-handling.md) for error handling
 3. Document your fix in `features/[feature-name]/fixes/`
 
 ### For Cambridge Missions
+
 1. Read `features/progress-report/reference/current-status.md` - Schema requirements
 2. Check `features/progress-report/reference/pd-kd-mappings.md` - Mapping details
 3. Review `features/progress-report/guides/integration-instructions.md` - Integration guide
@@ -194,6 +231,7 @@ Start here:
 ## 📊 Documentation Statistics
 
 **After February 2025 Restructure:**
+
 - **Root level files:** 0 (directories only: architecture, archive, features)
 - **Active documentation:** ~45 files (useful for AI agents)
 - **Archived documentation:** ~25 files (historical, preserved)
@@ -203,6 +241,7 @@ Start here:
 ## 📝 Documentation Standards
 
 When creating new documentation:
+
 - **Feature-specific docs**: Place in `features/[feature-name]/[category]/` (refactoring, fixes, migrations, features)
 - **Cross-cutting docs**: Place in `architecture/` (add subfolders like `investigations/` or `migrations/` as needed)
 - Use lowercase with hyphens for filenames: `chart-component.md` (not `CHART_COMPONENT.md`)
@@ -214,28 +253,30 @@ When creating new documentation:
 ## 🔗 Related Resources
 
 - **Source Code**: `src/` directory
-- **Scripts**: `scripts/` directory  
+- **Scripts**: `scripts/` directory
 - **Tests**: Test files throughout `src/`
 - **Translations**: `locales/` directory
 
 ## 🗂️ Archive Policy
 
 Historical documentation is preserved in `archive/` to:
+
 - Keep root level clean and focused
 - Preserve implementation history
 - Separate active from completed work
 - Maintain audit trail
 
 **What gets archived:**
+
 - Completion summaries ("COMPLETE", "SUCCESS", "DONE" status)
 - Historical migration docs (superseded by newer versions)
 - Consolidated/redundant documentation
 - Old bug fix summaries
 
 **What stays active:**
+
 - Current schema documentation (V5.2)
 - System architecture docs
 - Active guides and references
 - Ongoing migration docs
 - Recent bug fixes (current quarter)
-

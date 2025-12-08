@@ -5,29 +5,29 @@
  *              of coefficient settings, such as NumberSet, RepresentationType, and CoefficientRule.
  *              These are used by validators and UI components to ensure consistency and guide user choices.
  */
-import { NumberSet, RepresentationType, CoefficientRule } from '@math/types/index';
+import { NumberSet, RepresentationType, CoefficientRule } from "@math/types/index";
 
 /**
  * Maps each `NumberSet` to an array of `RepresentationType`s that are mathematically compatible with it.
  * For example, "natural" numbers can be represented as decimals, fractions, roots, or logarithms (in some contexts).
  */
 export const NUMBER_SET_REPRESENTATION_CONSTRAINTS: Record<NumberSet, RepresentationType[]> = {
-  real: ['decimal', 'root', 'logarithm'],
-  rational: ['decimal', 'fraction', 'mixed', 'root', 'logarithm'],
-  irrational: ['decimal', 'root', 'logarithm'],
-  integer: ['decimal', 'fraction', 'root', 'logarithm'],
-  natural: ['decimal', 'fraction', 'root', 'logarithm']
+  real: ["decimal", "root", "logarithm"],
+  rational: ["decimal", "fraction", "mixed", "root", "logarithm"],
+  irrational: ["decimal", "root", "logarithm"],
+  integer: ["decimal", "fraction", "root", "logarithm"],
+  natural: ["decimal", "fraction", "root", "logarithm"],
 };
 
 /**
  * Defines the default `RepresentationType` for each `NumberSet` when presented in a simplified UI context.
  */
 export const DEFAULT_NUMBER_SET_REPRESENTATIONS: Record<NumberSet, RepresentationType> = {
-  real: 'decimal',
-  rational: 'mixed',
-  irrational: 'root',
-  integer: 'decimal',
-  natural: 'decimal'
+  real: "decimal",
+  rational: "mixed",
+  irrational: "root",
+  integer: "decimal",
+  natural: "decimal",
 };
 
 /**
@@ -39,17 +39,29 @@ export const COEFFICIENT_RULE_CONSTRAINTS = {
   // Mutual exclusivity rules
   signRules: new Set<CoefficientRule>(["positive", "negative"]),
   parityRules: new Set<CoefficientRule>(["odd", "even"]),
-  
+
   // Rule groups for specific checks
   zeroRules: new Set<CoefficientRule>(["nonzero"]), // Keep this one
 
   // Incompatibility rules (using definitions from validator)
-  primeIncompatibleRules: new Set<CoefficientRule>(["square", "cube", "unit", "positive", "negative", "nonzero"]), 
-  unitIncompatibleRules: new Set<CoefficientRule>(["even", "square", "cube", "odd", "prime"]), 
+  primeIncompatibleRules: new Set<CoefficientRule>([
+    "square",
+    "cube",
+    "unit",
+    "positive",
+    "negative",
+    "nonzero",
+  ]),
+  unitIncompatibleRules: new Set<CoefficientRule>(["even", "square", "cube", "odd", "prime"]),
 
   // Rules incompatible with 'mixed' representation (from validator)
   mixedRepresentationIncompatibleRules: new Set<CoefficientRule>([
-    'prime', 'even', 'odd', 'square', 'cube', 'unit'
+    "prime",
+    "even",
+    "odd",
+    "square",
+    "cube",
+    "unit",
   ]),
 };
 
@@ -62,7 +74,7 @@ export const NUMBER_SET_RULE_CONSTRAINTS: Partial<Record<NumberSet, CoefficientR
   natural: ["positive", "negative", "nonzero"],
   real: ["even", "odd", "prime", "square", "cube", "unit"],
   rational: ["even", "odd", "prime", "square", "cube", "unit"],
-  irrational: ["even", "odd", "prime", "square", "cube", "unit"]
+  irrational: ["even", "odd", "prime", "square", "cube", "unit"],
 };
 
 /**
@@ -82,7 +94,7 @@ export function getAllowedRepresentationTypes(numberSet: NumberSet): Representat
  * @returns {RepresentationType} The default representation type, or "decimal" if the number set is unknown.
  */
 export function getDefaultRepresentationType(numberSet: NumberSet): RepresentationType {
-  return DEFAULT_NUMBER_SET_REPRESENTATIONS[numberSet] || 'decimal';
+  return DEFAULT_NUMBER_SET_REPRESENTATIONS[numberSet] || "decimal";
 }
 
 /**
@@ -96,7 +108,4 @@ export function getDefaultRepresentationType(numberSet: NumberSet): Representati
 export function isRuleValidForNumberSet(rule: CoefficientRule, numberSet: NumberSet): boolean {
   const invalidRules = NUMBER_SET_RULE_CONSTRAINTS[numberSet] || [];
   return !invalidRules.includes(rule);
-} 
-
-
-
+}

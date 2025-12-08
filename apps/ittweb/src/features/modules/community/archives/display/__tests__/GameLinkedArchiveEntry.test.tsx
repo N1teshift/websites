@@ -1,92 +1,94 @@
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { GameLinkedArchiveEntry } from '../components/GameLinkedArchiveEntry';
-import type { ArchiveEntry } from '@/types/archive';
-import type { GameWithPlayers } from '@/features/modules/game-management/games/types';
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { GameLinkedArchiveEntry } from "../components/GameLinkedArchiveEntry";
+import type { ArchiveEntry } from "@/types/archive";
+import type { GameWithPlayers } from "@/features/modules/game-management/games/types";
 
 // Mock next/router
 const mockPush = jest.fn();
-jest.mock('next/router', () => ({
+jest.mock("next/router", () => ({
   useRouter: () => ({
     push: mockPush,
   }),
 }));
 
 // Mock next/link
-jest.mock('next/link', () => ({
+jest.mock("next/link", () => ({
   __esModule: true,
   default: ({ children, href }: any) => <a href={href}>{children}</a>,
 }));
 
 // Mock Card component
-jest.mock('@/features/infrastructure/components/containers/Card', () => ({
+jest.mock("@/features/infrastructure/components/containers/Card", () => ({
   Card: ({ children, className, variant }: any) => (
-    <div className={className} data-variant={variant}>{children}</div>
+    <div className={className} data-variant={variant}>
+      {children}
+    </div>
   ),
 }));
 
 // Mock GameDetailsSection and GamePlayersSection
-jest.mock('../GameDetailsSection', () => ({
+jest.mock("../GameDetailsSection", () => ({
   GameDetailsSection: ({ game }: any) => <div data-testid="game-details">Game #{game.gameId}</div>,
 }));
 
-jest.mock('../GamePlayersSection', () => ({
+jest.mock("../GamePlayersSection", () => ({
   GamePlayersSection: ({ game }: any) => <div data-testid="game-players">Players</div>,
 }));
 
 // Mock ArchiveMediaSections
-jest.mock('../ArchiveMediaSections', () => ({
+jest.mock("../ArchiveMediaSections", () => ({
   ArchiveMediaSections: ({ entry, displayText, onTextExpand, shouldTruncate, isExpanded }: any) => (
     <div data-testid="archive-media-sections">
       {displayText && <div>{displayText}</div>}
       {shouldTruncate && onTextExpand && (
-        <button onClick={onTextExpand}>{isExpanded ? 'Show Less' : 'Show More'}</button>
+        <button onClick={onTextExpand}>{isExpanded ? "Show Less" : "Show More"}</button>
       )}
     </div>
   ),
 }));
 
 // Mock YouTubeEmbed and TwitchClipEmbed
-jest.mock('../YouTubeEmbed', () => ({
+jest.mock("../YouTubeEmbed", () => ({
   __esModule: true,
   default: ({ url }: { url: string }) => <div data-testid="youtube-embed">{url}</div>,
 }));
 
-jest.mock('../TwitchClipEmbed', () => ({
+jest.mock("../TwitchClipEmbed", () => ({
   __esModule: true,
   default: ({ url }: { url: string }) => <div data-testid="twitch-embed">{url}</div>,
 }));
 
-describe('GameLinkedArchiveEntry', () => {
+describe("GameLinkedArchiveEntry", () => {
   const mockOnEdit = jest.fn();
   const mockOnDelete = jest.fn();
   const mockOnImageClick = jest.fn();
   const mockOnTextExpand = jest.fn();
 
   const baseEntry: ArchiveEntry = {
-    id: 'entry1',
-    title: 'Game #1',
-    content: 'Test content',
-    creatorName: 'Test Creator',
+    id: "entry1",
+    title: "Game #1",
+    content: "Test content",
+    creatorName: "Test Creator",
     dateInfo: {
-      type: 'single',
-      singleDate: '2024-01-15',
+      type: "single",
+      singleDate: "2024-01-15",
     },
-    createdAt: '2024-01-15T00:00:00Z',
-    updatedAt: '2024-01-15T00:00:00Z',
+    createdAt: "2024-01-15T00:00:00Z",
+    updatedAt: "2024-01-15T00:00:00Z",
   };
 
   const mockGame: GameWithPlayers = {
-    id: 'game1',
+    id: "game1",
     gameId: 1,
-    gameState: 'completed',
-    datetime: '2024-01-15T10:30:00Z',
+    gameState: "completed",
+    datetime: "2024-01-15T10:30:00Z",
     players: [],
-    category: 'test',
-    creatorName: 'Test Creator',
-    createdAt: '2024-01-15T10:30:00Z',
-    updatedAt: '2024-01-15T10:30:00Z',
-    ownername: 'Test Owner',
+    category: "test",
+    creatorName: "Test Creator",
+    createdAt: "2024-01-15T10:30:00Z",
+    updatedAt: "2024-01-15T10:30:00Z",
+    ownername: "Test Owner",
   };
 
   beforeEach(() => {
@@ -94,12 +96,12 @@ describe('GameLinkedArchiveEntry', () => {
     mockPush.mockClear();
   });
 
-  describe('renders loading state', () => {
-    it('should render loading state when gameLoading is true and linkedGameDocumentId exists', () => {
+  describe("renders loading state", () => {
+    it("should render loading state when gameLoading is true and linkedGameDocumentId exists", () => {
       // Arrange
       const entryWithLinkedGame = {
         ...baseEntry,
-        linkedGameDocumentId: 'game1',
+        linkedGameDocumentId: "game1",
       };
 
       // Act
@@ -124,8 +126,8 @@ describe('GameLinkedArchiveEntry', () => {
     });
   });
 
-  describe('renders game-linked entry', () => {
-    it('should render entry title', () => {
+  describe("renders game-linked entry", () => {
+    it("should render entry title", () => {
       // Act
       render(
         <GameLinkedArchiveEntry
@@ -143,10 +145,10 @@ describe('GameLinkedArchiveEntry', () => {
       );
 
       // Assert
-      expect(screen.getByText('Game #1')).toBeInTheDocument();
+      expect(screen.getByText("Game #1")).toBeInTheDocument();
     });
 
-    it('should render game details when game is provided', () => {
+    it("should render game details when game is provided", () => {
       // Act
       render(
         <GameLinkedArchiveEntry
@@ -165,10 +167,10 @@ describe('GameLinkedArchiveEntry', () => {
 
       // Assert - GameDetailsSection is rendered when game exists
       // The component shows game info inline, not via GameDetailsSection in this view
-      expect(screen.getByText('Game #1')).toBeInTheDocument();
+      expect(screen.getByText("Game #1")).toBeInTheDocument();
     });
 
-    it('should render game players section when game is provided', () => {
+    it("should render game players section when game is provided", () => {
       // Act
       render(
         <GameLinkedArchiveEntry
@@ -186,10 +188,10 @@ describe('GameLinkedArchiveEntry', () => {
       );
 
       // Assert
-      expect(screen.getByTestId('game-players')).toBeInTheDocument();
+      expect(screen.getByTestId("game-players")).toBeInTheDocument();
     });
 
-    it('should render text content when provided', () => {
+    it("should render text content when provided", () => {
       // Act
       render(
         <GameLinkedArchiveEntry
@@ -207,12 +209,12 @@ describe('GameLinkedArchiveEntry', () => {
       );
 
       // Assert
-      expect(screen.getByText('Test content')).toBeInTheDocument();
+      expect(screen.getByText("Test content")).toBeInTheDocument();
     });
   });
 
-  describe('handles card click navigation', () => {
-    it('should navigate to game page when card is clicked and game has id', async () => {
+  describe("handles card click navigation", () => {
+    it("should navigate to game page when card is clicked and game has id", async () => {
       // Arrange
       const user = userEvent.setup();
 
@@ -232,16 +234,16 @@ describe('GameLinkedArchiveEntry', () => {
         />
       );
 
-      const card = screen.getByText('Game #1').closest('div');
+      const card = screen.getByText("Game #1").closest("div");
       if (card) {
         await user.click(card);
       }
 
       // Assert
-      expect(mockPush).toHaveBeenCalledWith('/games/game1');
+      expect(mockPush).toHaveBeenCalledWith("/games/game1");
     });
 
-    it('should not navigate when game has no id', async () => {
+    it("should not navigate when game has no id", async () => {
       // Arrange
       const user = userEvent.setup();
       const gameWithoutId = { ...mockGame, id: undefined };
@@ -262,7 +264,7 @@ describe('GameLinkedArchiveEntry', () => {
         />
       );
 
-      const card = screen.getByText('Game #1').closest('div');
+      const card = screen.getByText("Game #1").closest("div");
       if (card) {
         await user.click(card);
       }
@@ -272,8 +274,8 @@ describe('GameLinkedArchiveEntry', () => {
     });
   });
 
-  describe('handles edit action', () => {
-    it('should render edit button when onEdit is provided', () => {
+  describe("handles edit action", () => {
+    it("should render edit button when onEdit is provided", () => {
       // Act
       render(
         <GameLinkedArchiveEntry
@@ -292,10 +294,10 @@ describe('GameLinkedArchiveEntry', () => {
       );
 
       // Assert
-      expect(screen.getByText('Edit')).toBeInTheDocument();
+      expect(screen.getByText("Edit")).toBeInTheDocument();
     });
 
-    it('should call onEdit when edit button is clicked', async () => {
+    it("should call onEdit when edit button is clicked", async () => {
       // Arrange
       const user = userEvent.setup();
 
@@ -316,7 +318,7 @@ describe('GameLinkedArchiveEntry', () => {
         />
       );
 
-      const editButton = screen.getByText('Edit');
+      const editButton = screen.getByText("Edit");
       await user.click(editButton);
 
       // Assert
@@ -324,8 +326,8 @@ describe('GameLinkedArchiveEntry', () => {
     });
   });
 
-  describe('handles delete action', () => {
-    it('should render delete button when canDelete is true and onDelete is provided', () => {
+  describe("handles delete action", () => {
+    it("should render delete button when canDelete is true and onDelete is provided", () => {
       // Act
       render(
         <GameLinkedArchiveEntry
@@ -345,10 +347,10 @@ describe('GameLinkedArchiveEntry', () => {
       );
 
       // Assert
-      expect(screen.getByText('Delete')).toBeInTheDocument();
+      expect(screen.getByText("Delete")).toBeInTheDocument();
     });
 
-    it('should call onDelete when delete button is clicked', async () => {
+    it("should call onDelete when delete button is clicked", async () => {
       // Arrange
       const user = userEvent.setup();
 
@@ -370,7 +372,7 @@ describe('GameLinkedArchiveEntry', () => {
         />
       );
 
-      const deleteButton = screen.getByText('Delete');
+      const deleteButton = screen.getByText("Delete");
       await user.click(deleteButton);
 
       // Assert
@@ -378,8 +380,8 @@ describe('GameLinkedArchiveEntry', () => {
     });
   });
 
-  describe('handles text expansion', () => {
-    it('should show expand button when shouldTruncate is true', () => {
+  describe("handles text expansion", () => {
+    it("should show expand button when shouldTruncate is true", () => {
       // Act
       render(
         <GameLinkedArchiveEntry
@@ -397,10 +399,10 @@ describe('GameLinkedArchiveEntry', () => {
       );
 
       // Assert
-      expect(screen.getByText('Show More')).toBeInTheDocument();
+      expect(screen.getByText("Show More")).toBeInTheDocument();
     });
 
-    it('should call onTextExpand when expand button is clicked', async () => {
+    it("should call onTextExpand when expand button is clicked", async () => {
       // Arrange
       const user = userEvent.setup();
 
@@ -420,7 +422,7 @@ describe('GameLinkedArchiveEntry', () => {
         />
       );
 
-      const expandButton = screen.getByText('Show More');
+      const expandButton = screen.getByText("Show More");
       await user.click(expandButton);
 
       // Assert
@@ -428,8 +430,8 @@ describe('GameLinkedArchiveEntry', () => {
     });
   });
 
-  describe('handles error state', () => {
-    it('should render error message when gameError is provided', () => {
+  describe("handles error state", () => {
+    it("should render error message when gameError is provided", () => {
       // Act
       const { container } = render(
         <GameLinkedArchiveEntry
@@ -452,6 +454,3 @@ describe('GameLinkedArchiveEntry', () => {
     });
   });
 });
-
-
-

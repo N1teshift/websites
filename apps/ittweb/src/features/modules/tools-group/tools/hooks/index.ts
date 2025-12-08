@@ -1,3 +1,2 @@
 // Tools hooks
-export * from './useIconMapperData';
-
+export * from "./useIconMapperData";

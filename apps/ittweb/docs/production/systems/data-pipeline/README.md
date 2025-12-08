@@ -5,6 +5,7 @@ Complete documentation for the Island Troll Tribes data generation pipeline. Thi
 ## Quick Start
 
 **To run the pipeline:**
+
 ```bash
 node scripts/data/main.mjs
 ```
@@ -37,8 +38,8 @@ The pipeline consists of 11 stages:
 3. **Ability Details** - Extract from Wurst source
 4. **Relationships** - Extract ability-to-class mappings
 5. **Item Details** - Extract item properties
-5.5. **Ability ID Mapping** - Generate ability ID mappings
-5.6. **Extract Ability Codes** - Parse ability codes from items
+   5.5. **Ability ID Mapping** - Generate ability ID mappings
+   5.6. **Extract Ability Codes** - Parse ability codes from items
 6. **Convert** - Generate TypeScript data files
 7. **Icon Map** - Generate icon mapping
 8. **Fix Paths** - Validate and fix icon paths
@@ -47,10 +48,12 @@ The pipeline consists of 11 stages:
 ## Key Resources
 
 ### Operational
+
 - **Main README:** [`scripts/README.md`](../../../scripts/README.md) - Commands and quick reference
 - **Refactoring Status:** [`scripts/data/REFACTORING_PLAN.md`](../../../scripts/data/REFACTORING_PLAN.md)
 
 ### Reference
+
 - **System Overview:** [`docs/systems/README.md`](../README.md)
 
 ## Folder Structure
@@ -78,4 +81,3 @@ docs/systems/data-pipeline/
 - [Pipeline Architecture](./architecture.md) - Understanding the pipeline flow
 - [Data Schemas](./schemas.md) - Expected data structures
 - [Troubleshooting](./troubleshooting.md) - Common issues and solutions
-

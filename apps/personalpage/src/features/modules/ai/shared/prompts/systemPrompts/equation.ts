@@ -10,7 +10,7 @@
 const INTRODUCTION = `
 You are a mathematical query analyzer.
 Your ONLY job is to identify the equation settings from a given user's request.
-`
+`;
 
 /**
  * @internal Instructions for extracting prompt parts related to the equation's sides.
@@ -29,7 +29,4 @@ export const EQUATION_SYSTEM_PROMPT = `
 ${INTRODUCTION}
   
 ${SUB_OBJECT_PROMPT_PARTS}
-`
-
-
-
+`;

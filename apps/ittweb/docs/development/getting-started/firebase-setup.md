@@ -41,10 +41,11 @@ NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID=your-measurement-id  # Optional
 2. Click "Generate new private key"
 3. Download JSON file
 4. Convert JSON to string and set as `FIREBASE_SERVICE_ACCOUNT_KEY`:
+
    ```bash
    # On Linux/Mac
    FIREBASE_SERVICE_ACCOUNT_KEY=$(cat path/to/serviceAccountKey.json | jq -c)
-   
+
    # Or manually copy JSON content as single-line string
    ```
 
@@ -71,13 +72,13 @@ service cloud.firestore {
         allow write: if request.auth != null;
       }
     }
-    
+
     // Player stats
     match /playerStats/{playerId} {
       allow read: if true;
       allow write: if false;  // Server-only writes
     }
-    
+
     // Add other collection rules as needed
   }
 }
@@ -146,4 +147,3 @@ npm run dev
 - [Environment Setup](./setup.md)
 - [Infrastructure README](../../src/features/infrastructure/README.md)
 - [Firebase Admin Setup](../../src/features/infrastructure/api/firebase/admin.ts)
-

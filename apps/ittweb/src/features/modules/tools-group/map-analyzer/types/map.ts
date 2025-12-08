@@ -13,6 +13,3 @@ export type SimpleMapData = {
   height: number;
   tiles: SimpleTile[]; // flat array length = width*height
 };
-
-
-

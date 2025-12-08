@@ -27,14 +27,14 @@ export const equationSettingsSchemaDefinition = {
   properties: {
     leftSide: {
       type: "string",
-      description: "Left side of the equation"
+      description: "Left side of the equation",
     },
     rightSide: {
       type: "string",
-      description: "Right side of the equation"
-    }
+      description: "Right side of the equation",
+    },
   },
-  required: ["leftSide", "rightSide"]
+  required: ["leftSide", "rightSide"],
 };
 
 /**
@@ -45,8 +45,5 @@ export const equationSettingsSchemaDefinition = {
 export const equationSettingsSchema = {
   schema: equationSettingsSchemaDefinition,
   defaultRequiresSubObjects: true,
-  defaultSubObjectTypes: "expression" as ObjectType
+  defaultSubObjectTypes: "expression" as ObjectType,
 };
-
-
-

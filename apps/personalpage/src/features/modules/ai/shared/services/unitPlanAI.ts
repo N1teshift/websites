@@ -3,10 +3,10 @@
  * Leverages the existing LangGraph infrastructure for intelligent field generation
  */
 
-import { UnitPlanData } from '@/features/modules/edtech/unitPlanGenerator/types/UnitPlanTypes';
-import { getModelResponse } from './openaiResponsesClient';
-import { ResponsesResult } from '@ai/types';
-import { createComponentLogger } from '@websites/infrastructure/logging';
+import { UnitPlanData } from "@/features/modules/edtech/unitPlanGenerator/types/UnitPlanTypes";
+import { getModelResponse } from "./openaiResponsesClient";
+import { ResponsesResult } from "@ai/types";
+import { createComponentLogger } from "@websites/infrastructure/logging";
 
 /**
  * Configuration options for UnitPlan AI generation
@@ -21,7 +21,7 @@ export interface UnitPlanGenerationOptions {
   /** Whether to include detailed reasoning in output */
   includeReasoning?: boolean;
   /** Educational level considerations */
-  educationalLevel?: 'primary' | 'middle' | 'secondary' | 'post-secondary';
+  educationalLevel?: "primary" | "middle" | "secondary" | "post-secondary";
 }
 
 /**
@@ -42,12 +42,12 @@ interface GenerationContext {
 
 /**
  * UnitPlan AI Service
- * 
+ *
  * Provides context-aware AI generation for educational unit plan fields.
  * Leverages existing AI infrastructure while specializing in educational content.
  */
 export class UnitPlanAIService {
-  private logger = createComponentLogger('UnitPlanAI');
+  private logger = createComponentLogger("UnitPlanAI");
 
   /**
    * Generate content for a specific UnitPlan field using context from the entire unit plan
@@ -60,7 +60,7 @@ export class UnitPlanAIService {
     this.logger.info(`Generating content for field: ${String(fieldName)}`, {
       fieldName,
       hasContext: !!unitPlanContext,
-      contextKeys: Object.keys(unitPlanContext)
+      contextKeys: Object.keys(unitPlanContext),
     });
 
     try {
@@ -84,46 +84,45 @@ export class UnitPlanAIService {
           subject: unitPlanContext.subject,
           unitTitle: unitPlanContext.unitTitle,
           specifiedConcepts: unitPlanContext.specifiedConcepts?.slice(0, 3), // Show first 3
-          conceptualUnderstandings: unitPlanContext.conceptualUnderstandings?.substring(0, 100)
-        }
+          conceptualUnderstandings: unitPlanContext.conceptualUnderstandings?.substring(0, 100),
+        },
       });
 
       this.logger.debug(`[UnitPlanAI] Prompt for ${String(fieldName)}:`, {
-        prompt: prompt.substring(0, 500) + (prompt.length > 500 ? '...' : ''),
+        prompt: prompt.substring(0, 500) + (prompt.length > 500 ? "..." : ""),
         promptLength: prompt.length,
-        systemPrompt: systemPrompt.substring(0, 200) + (systemPrompt.length > 200 ? '...' : ''),
-        schema
+        systemPrompt: systemPrompt.substring(0, 200) + (systemPrompt.length > 200 ? "..." : ""),
+        schema,
       });
 
       this.logger.debug(`Generated prompt for ${String(fieldName)}`, {
         promptLength: prompt.length,
-        hasSchema: !!schema
+        hasSchema: !!schema,
       });
 
       // Use the exact same pattern as the working AIGenerateButton
-      const response: ResponsesResult = await getModelResponse(
-        prompt,
-        {
-          systemPrompt,
-          temperature: 0.7,
-          maxTokens: 500,
-          model: 'gpt-4o-mini',
-          textFormat: 'text' // Use simple text instead of schema for now
-        }
-      );
+      const response: ResponsesResult = await getModelResponse(prompt, {
+        systemPrompt,
+        temperature: 0.7,
+        maxTokens: 500,
+        model: "gpt-4o-mini",
+        textFormat: "text", // Use simple text instead of schema for now
+      });
 
       // Extract and format the response for the specific field
       const fieldValue = this.extractFieldValue(response, fieldName);
 
       this.logger.info(`Successfully generated content for ${String(fieldName)}`, {
-        responseLength: typeof fieldValue === 'string' ? fieldValue.length : 'array/object'
+        responseLength: typeof fieldValue === "string" ? fieldValue.length : "array/object",
       });
 
       return fieldValue;
-
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : String(error);
-      this.logger.error(`Failed to generate content for ${String(fieldName)}`, error instanceof Error ? error : new Error(errorMessage));
+      this.logger.error(
+        `Failed to generate content for ${String(fieldName)}`,
+        error instanceof Error ? error : new Error(errorMessage)
+      );
       throw new Error(`Failed to generate content for ${String(fieldName)}: ${errorMessage}`);
     }
   }
@@ -138,7 +137,7 @@ export class UnitPlanAIService {
   ): Promise<Partial<UnitPlanData>> {
     this.logger.info(`Generating multiple fields`, {
       fieldNames: fieldNames.map(String),
-      fieldCount: fieldNames.length
+      fieldCount: fieldNames.length,
     });
 
     const results: Partial<UnitPlanData> = {};
@@ -149,10 +148,13 @@ export class UnitPlanAIService {
         const content = await this.generateFieldContent(fieldName, unitPlanContext, _options);
         if (content !== undefined) {
           // TypeScript workaround for dynamic key assignment
-          (results as Record<string, UnitPlanData[keyof UnitPlanData]>)[String(fieldName)] = content;
+          (results as Record<string, UnitPlanData[keyof UnitPlanData]>)[String(fieldName)] =
+            content;
         }
       } catch (error) {
-        this.logger.warn(`Failed to generate ${String(fieldName)}, continuing with other fields`, { error: error instanceof Error ? error.message : String(error) });
+        this.logger.warn(`Failed to generate ${String(fieldName)}, continuing with other fields`, {
+          error: error instanceof Error ? error.message : String(error),
+        });
       }
     }
 
@@ -168,39 +170,39 @@ export class UnitPlanAIService {
   ): GenerationContext {
     // Define field dependencies - what other fields are relevant for generating this field
     const fieldDependencies: Record<string, (keyof UnitPlanData)[]> = {
-      conceptualUnderstandings: ['subject', 'specifiedConcepts', 'unitTitle'],
-      globalContext: ['subject', 'specifiedConcepts', 'conceptualUnderstandings'],
-      inquiryStatement: ['conceptualUnderstandings', 'globalContext', 'specifiedConcepts'],
-      factualQuestions: ['inquiryStatement', 'specifiedConcepts', 'conceptualUnderstandings'],
-      conceptualQuestions: ['conceptualUnderstandings', 'inquiryStatement', 'specifiedConcepts'],
-      debatableQuestions: ['conceptualUnderstandings', 'inquiryStatement', 'globalContext'],
-      objectives: ['subject', 'specifiedConcepts', 'conceptualUnderstandings', 'inquiryStatement'],
-      assessmentTitle: ['unitTitle', 'objectives', 'conceptualUnderstandings'],
-      summativeAssessment: ['objectives', 'assessmentTitle', 'conceptualUnderstandings'],
-      commandTerms: ['objectives', 'assessmentTitle', 'summativeAssessment'],
-      individualContext: ['globalContext', 'subject', 'specifiedConcepts'],
-      localContext: ['globalContext', 'individualContext', 'subject'],
-      globalContextLens: ['globalContext', 'localContext', 'individualContext'],
-      atlSkills: ['subject', 'objectives', 'conceptualUnderstandings'],
-      atlStrategies: ['atlSkills', 'objectives', 'subject'],
+      conceptualUnderstandings: ["subject", "specifiedConcepts", "unitTitle"],
+      globalContext: ["subject", "specifiedConcepts", "conceptualUnderstandings"],
+      inquiryStatement: ["conceptualUnderstandings", "globalContext", "specifiedConcepts"],
+      factualQuestions: ["inquiryStatement", "specifiedConcepts", "conceptualUnderstandings"],
+      conceptualQuestions: ["conceptualUnderstandings", "inquiryStatement", "specifiedConcepts"],
+      debatableQuestions: ["conceptualUnderstandings", "inquiryStatement", "globalContext"],
+      objectives: ["subject", "specifiedConcepts", "conceptualUnderstandings", "inquiryStatement"],
+      assessmentTitle: ["unitTitle", "objectives", "conceptualUnderstandings"],
+      summativeAssessment: ["objectives", "assessmentTitle", "conceptualUnderstandings"],
+      commandTerms: ["objectives", "assessmentTitle", "summativeAssessment"],
+      individualContext: ["globalContext", "subject", "specifiedConcepts"],
+      localContext: ["globalContext", "individualContext", "subject"],
+      globalContextLens: ["globalContext", "localContext", "individualContext"],
+      atlSkills: ["subject", "objectives", "conceptualUnderstandings"],
+      atlStrategies: ["atlSkills", "objectives", "subject"],
       // Lesson-specific fields would need the broader unit context
     };
 
-    const relevantFields = fieldDependencies[String(fieldName)] || ['subject', 'unitTitle'];
+    const relevantFields = fieldDependencies[String(fieldName)] || ["subject", "unitTitle"];
 
     const relatedContent: Record<string, unknown> = {};
-    relevantFields.forEach(field => {
+    relevantFields.forEach((field) => {
       if (unitPlan[field] !== undefined) {
         relatedContent[String(field)] = unitPlan[field];
       }
     });
 
     return {
-      subject: unitPlan.subject || '',
-      academicYear: unitPlan.academicYear || '',
+      subject: unitPlan.subject || "",
+      academicYear: unitPlan.academicYear || "",
       specifiedConcepts: unitPlan.specifiedConcepts || [],
       relatedContent,
-      requirements: this.getEducationalRequirements(String(fieldName), unitPlan.subject)
+      requirements: this.getEducationalRequirements(String(fieldName), unitPlan.subject),
     };
   }
 
@@ -220,7 +222,7 @@ ${JSON.stringify(context.relatedContent, null, 2)}
 FIELD TO GENERATE: ${String(fieldName)}
 
 EDUCATIONAL REQUIREMENTS:
-${context.requirements.join('\n')}
+${context.requirements.join("\n")}
 
 INSTRUCTIONS:
 Generate appropriate content for the "${String(fieldName)}" field that:
@@ -228,7 +230,7 @@ Generate appropriate content for the "${String(fieldName)}" field that:
 2. Builds upon the existing context provided above
 3. Meets educational standards and best practices
 4. Is age-appropriate for the academic year (${context.academicYear})
-5. Connects meaningfully with the specified concepts: ${context.specifiedConcepts.join(', ')}
+5. Connects meaningfully with the specified concepts: ${context.specifiedConcepts.join(", ")}
 
 Please provide content that is clear, educationally sound, and directly relevant to the unit plan context.`;
 
@@ -259,7 +261,10 @@ Please provide content that is clear, educationally sound, and directly relevant
       atlStrategies: `You are an expert in learning strategies. Generate specific, actionable strategies that help students develop the selected ATL skills within the context of the unit.`,
     };
 
-    return systemPrompts[String(fieldName)] || `You are an expert educational content designer. Generate appropriate content for the ${String(fieldName)} field of a unit plan.`;
+    return (
+      systemPrompts[String(fieldName)] ||
+      `You are an expert educational content designer. Generate appropriate content for the ${String(fieldName)} field of a unit plan.`
+    );
   }
 
   /**
@@ -272,10 +277,10 @@ Please provide content that is clear, educationally sound, and directly relevant
       properties: {
         content: {
           type: "string",
-          description: `Generated content for ${String(fieldName)}`
-        }
+          description: `Generated content for ${String(fieldName)}`,
+        },
       },
-      required: ["content"]
+      required: ["content"],
     };
 
     const arrayFieldSchema = {
@@ -284,19 +289,26 @@ Please provide content that is clear, educationally sound, and directly relevant
         items: {
           type: "array",
           items: {
-            type: "string"
+            type: "string",
           },
-          description: `Generated list items for ${String(fieldName)}`
-        }
+          description: `Generated list items for ${String(fieldName)}`,
+        },
       },
-      required: ["items"]
+      required: ["items"],
     };
 
     // Map fields to their expected types
     const arrayFields = [
-      'specifiedConcepts', 'keyConcepts', 'relatedConcepts', 'factualQuestions', 'conceptualQuestions',
-      'debatableQuestions', 'objectives', 'commandTerms', 'atlSkills',
-      'contributingTeachers'
+      "specifiedConcepts",
+      "keyConcepts",
+      "relatedConcepts",
+      "factualQuestions",
+      "conceptualQuestions",
+      "debatableQuestions",
+      "objectives",
+      "commandTerms",
+      "atlSkills",
+      "contributingTeachers",
     ];
 
     return arrayFields.includes(String(fieldName)) ? arrayFieldSchema : stringFieldSchema;
@@ -311,21 +323,28 @@ Please provide content that is clear, educationally sound, and directly relevant
   ): UnitPlanData[K] {
     // For now, just return the raw text response
     // This matches how the working AIGenerateButton handles responses
-    const content = response.output_text || '';
+    const content = response.output_text || "";
 
     // Handle array fields by splitting on common delimiters
     const arrayFields = [
-      'specifiedConcepts', 'keyConcepts', 'relatedConcepts', 'factualQuestions', 'conceptualQuestions',
-      'debatableQuestions', 'objectives', 'commandTerms', 'atlSkills',
-      'contributingTeachers'
+      "specifiedConcepts",
+      "keyConcepts",
+      "relatedConcepts",
+      "factualQuestions",
+      "conceptualQuestions",
+      "debatableQuestions",
+      "objectives",
+      "commandTerms",
+      "atlSkills",
+      "contributingTeachers",
     ];
 
     if (arrayFields.includes(String(fieldName))) {
       // Split on newlines or numbered lists and clean up
       const items = content
         .split(/\n|[0-9]+\./)
-        .map(item => item.trim())
-        .filter(item => item.length > 0 && !item.match(/^[0-9]+$/))
+        .map((item) => item.trim())
+        .filter((item) => item.length > 0 && !item.match(/^[0-9]+$/))
         .slice(0, 10); // Limit to reasonable number
 
       return items as UnitPlanData[K];
@@ -343,25 +362,25 @@ Please provide content that is clear, educationally sound, and directly relevant
       "Content must be age-appropriate and developmentally suitable",
       "Must align with international educational standards",
       "Should promote critical thinking and student engagement",
-      "Must be inclusive and culturally sensitive"
+      "Must be inclusive and culturally sensitive",
     ];
 
     const fieldSpecificRequirements: Record<string, string[]> = {
       conceptualUnderstandings: [
         "Must articulate transferable big ideas",
         "Should connect to real-world applications",
-        "Must go beyond factual knowledge to principles"
+        "Must go beyond factual knowledge to principles",
       ],
       inquiryStatement: [
         "Must be open-ended and investigable",
         "Should promote student-driven learning",
-        "Must be relevant to student interests and experiences"
+        "Must be relevant to student interests and experiences",
       ],
       objectives: [
         "Must be specific, measurable, and observable",
         "Should align with curriculum standards",
-        "Must include appropriate action verbs for the cognitive level"
-      ]
+        "Must include appropriate action verbs for the cognitive level",
+      ],
     };
 
     return [...baseRequirements, ...(fieldSpecificRequirements[fieldName] || [])];
@@ -370,6 +389,3 @@ Please provide content that is clear, educationally sound, and directly relevant
 
 // Export singleton instance
 export const unitPlanAI = new UnitPlanAIService();
-
-
-

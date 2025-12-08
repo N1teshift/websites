@@ -1,6 +1,7 @@
 # Objectives Tab - Teacher Type Restriction
 
 ## Overview
+
 **Date**: November 10, 2025  
 **Status**: ✅ Complete
 
@@ -11,6 +12,7 @@ Added teacher type detection to the Objectives tab to restrict access for Englis
 ## Problem Statement
 
 The Objectives feature is designed specifically for Cambridge Learning Objectives tracking in the Math curriculum. When English teacher data (Teacher A/J) is loaded, the Objectives tab should not be accessible as:
+
 - English curriculum uses different objective tracking
 - The Cambridge objectives are Math-specific
 - Displaying the tab for English data would be confusing/misleading
@@ -28,13 +30,13 @@ case 'objectives':
     if (!data) {
         return <NoDataMessage />;
     }
-    
+
     // Check if this is main teacher data
     const objectivesTeacherType = data.metadata?.teacher_type || 'main';
     if (objectivesTeacherType !== 'main') {
         return <ObjectivesNotAvailableMessage />;
     }
-    
+
     return <ObjectivesTabContainer />;
 ```
 
@@ -47,7 +49,7 @@ case 'objectives':
 
 Objectives Not Available
 
-The Objectives feature is currently only available for 
+The Objectives feature is currently only available for
 the main teacher's data (Math assessments).
 
 ┌─────────────────────────────────────────────┐
@@ -67,6 +69,7 @@ the main teacher's data (Math assessments).
 ## Behavior
 
 ### Tab Navigation
+
 - ✅ **Tab is still visible** in navigation
 - ✅ **Tab can be clicked** (no disabled state)
 - ✅ **Shows helpful message** instead of component
@@ -74,18 +77,21 @@ the main teacher's data (Math assessments).
 - ✅ **Shows current teacher info**
 
 ### Consistency
+
 This matches the existing behavior of the **Grade Generator** tab:
+
 - Both tabs use the same detection logic
 - Both show similar informative messages
 - Both are visible but restricted for English teachers
 
 ### Teacher Type Detection
+
 ```typescript
-const teacherType = data?.metadata?.teacher_type || 'main';
-const isEnglishTeacher = teacherType === 'J' || teacherType === 'A';
+const teacherType = data?.metadata?.teacher_type || "main";
+const isEnglishTeacher = teacherType === "J" || teacherType === "A";
 
 // Objectives accessible only when:
-teacherType === 'main'  // Main teacher (Math)
+teacherType === "main"; // Main teacher (Math)
 ```
 
 ---
@@ -93,6 +99,7 @@ teacherType === 'main'  // Main teacher (Math)
 ## Files Modified
 
 ### Updated
+
 1. **`ProgressReportPage.tsx`** (lines 186-233)
    - Added teacher type check for objectives case
    - Added informative message component
@@ -115,12 +122,14 @@ teacherType === 'main'  // Main teacher (Math)
 ## Related Features
 
 ### Currently Restricted for English Teachers:
+
 1. ✅ **Grade Generator** - Math-specific SD test calculations
 2. ✅ **Objectives** - Cambridge Learning Objectives (Math)
 3. ✅ **Learning Journey Timeline** (in Class View) - Math progress tracking
 4. ✅ **Cambridge Objectives Mastery** (in Class View) - Math objectives
 
 ### Available for English Teachers:
+
 1. ✅ **Class View** - Full table with all English test data
 2. ✅ **Student View** - Individual student assessments
 3. ✅ **Class Performance Distribution** - Charts with English test scales
@@ -132,6 +141,7 @@ teacherType === 'main'  // Main teacher (Math)
 ## Future Considerations
 
 ### Potential Enhancements:
+
 1. **English-specific Objectives Tab**: Create a separate objectives system for English curriculum
 2. **Tab Hiding Option**: Add ability to completely hide restricted tabs
 3. **Visual Indicators**: Add icon/badge to show tab restrictions before clicking
@@ -140,6 +150,7 @@ teacherType === 'main'  // Main teacher (Math)
 ---
 
 ## Related Documentation
+
 - [Grade Generator Restriction](../features/GRADE_GENERATOR_RESTRICTION.md) (similar pattern)
 - [Teacher Type Detection](../data/teacher-j-integration-complete.md)
 - [Conditional UI Rendering](../features/CONDITIONAL_UI_RENDERING.md)
@@ -149,4 +160,3 @@ teacherType === 'main'  // Main teacher (Math)
 **Implemented by**: AI Assistant  
 **Date**: November 10, 2025  
 **Status**: ✅ Complete and Verified
-

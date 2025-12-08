@@ -66,11 +66,7 @@
     }
   ],
   "experienceTitle": "Профессиональный опыт",
-  "interests": [
-    "Волонтерство в сообществе",
-    "Шахматы",
-    "Путешествия"
-  ],
+  "interests": ["Волонтерство в сообществе", "Шахматы", "Путешествия"],
   "interestsTitle": "Интересы",
   "languages": [
     {
@@ -106,11 +102,7 @@
     }
   ],
   "projectsTitle": "Ключевые проекты",
-  "softSkills": [
-    "Аналитическое мышление",
-    "Совместное решение проблем",
-    "Проактивное любопытство"
-  ],
+  "softSkills": ["Аналитическое мышление", "Совместное решение проблем", "Проактивное любопытство"],
   "softSkillsTitle": "Личностные качества",
   "summaryContent": "Аналитический педагог-инженер с 4-летним опытом преподавания математики в средней школе и более чем 2-летним опытом разработки полностековых AI-инструментов. Разработал и внедрил генератор математического контента на базе AI, который автоматизирует создание учебных материалов и ускоряет время подготовки учителей. Умеет превращать сложные проблемы классной комнаты в масштабируемые, ориентированные на пользователя программные решения.",
   "summaryTitle": "Профессиональное резюме",
@@ -144,30 +136,15 @@
       "title": "Интеграции Enterprise"
     },
     "frontend": {
-      "items": [
-        "React",
-        "Next.js",
-        "TypeScript",
-        "Tailwind CSS",
-        "i18next"
-      ],
+      "items": ["React", "Next.js", "TypeScript", "Tailwind CSS", "i18next"],
       "title": "Front-End"
     },
     "fullstack": {
-      "items": [
-        "LangChain & LangGraph",
-        "OpenAI API",
-        "Firebase Admin SDK & Firestore",
-        "Vercel"
-      ],
+      "items": ["LangChain & LangGraph", "OpenAI API", "Firebase Admin SDK & Firestore", "Vercel"],
       "title": "Full-Stack & Cloud"
     },
     "tooling": {
-      "items": [
-        "Git/GitHub",
-        "ESLint",
-        "Базовый CI/CD"
-      ],
+      "items": ["Git/GitHub", "ESLint", "Базовый CI/CD"],
       "title": "Инструменты и рабочий процесс"
     }
   },

@@ -1,12 +1,37 @@
-import React from 'react';
-import { useFallbackTranslation } from '@websites/infrastructure/i18n/client';
-import { UnitPlanData, SubunitData, AssessmentTask, ATLCard, ActivityCard, LearningExperienceCard, CurriculumConnection } from '../../types/UnitPlanTypes';
-import CurriculumLinksSection from './content/CurriculumLinksSection';
-import EnhancedContentSection from './content/EnhancedContentSection';
-import CurrentContentSection from './content/CurrentContentSection';
+import React from "react";
+import { useFallbackTranslation } from "@websites/infrastructure/i18n/client";
+import {
+  UnitPlanData,
+  SubunitData,
+  AssessmentTask,
+  ATLCard,
+  ActivityCard,
+  LearningExperienceCard,
+  CurriculumConnection,
+} from "../../types/UnitPlanTypes";
+import CurriculumLinksSection from "./content/CurriculumLinksSection";
+import EnhancedContentSection from "./content/EnhancedContentSection";
+import CurrentContentSection from "./content/CurrentContentSection";
 
-type UpdateUnitPlanFn = (field: keyof UnitPlanData, value: string | string[] | number | SubunitData[] | AssessmentTask[] | ATLCard[] | ActivityCard[] | LearningExperienceCard[] | CurriculumConnection[] | undefined) => void;
-type UpdateSubunitFn = (subunitIndex: number, field: keyof SubunitData, value: string | number | string[]) => void;
+type UpdateUnitPlanFn = (
+  field: keyof UnitPlanData,
+  value:
+    | string
+    | string[]
+    | number
+    | SubunitData[]
+    | AssessmentTask[]
+    | ATLCard[]
+    | ActivityCard[]
+    | LearningExperienceCard[]
+    | CurriculumConnection[]
+    | undefined
+) => void;
+type UpdateSubunitFn = (
+  subunitIndex: number,
+  field: keyof SubunitData,
+  value: string | number | string[]
+) => void;
 
 interface ContentSectionProps {
   unitPlan: UnitPlanData;
@@ -21,7 +46,7 @@ const ContentSection: React.FC<ContentSectionProps> = ({
   updateUnitPlan,
   updateSubunit,
   addSubunit,
-  removeSubunit
+  removeSubunit,
 }) => {
   const { t } = useFallbackTranslation();
 
@@ -31,14 +56,12 @@ const ContentSection: React.FC<ContentSectionProps> = ({
         <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-secondary-500 to-secondary-600 flex items-center justify-center shadow-medium">
           <span className="text-white text-xl font-bold">📚</span>
         </div>
-        <h2 className="text-3xl font-bold text-text-primary">
-          {t('content')}
-        </h2>
+        <h2 className="text-3xl font-bold text-text-primary">{t("content")}</h2>
       </div>
 
       <CurriculumLinksSection mypYear={unitPlan.mypYear} />
 
-      {unitPlan.outputMapping !== 'current' && (
+      {unitPlan.outputMapping !== "current" && (
         <EnhancedContentSection
           unitPlan={unitPlan}
           updateUnitPlan={updateUnitPlan}
@@ -48,17 +71,11 @@ const ContentSection: React.FC<ContentSectionProps> = ({
         />
       )}
 
-      {unitPlan.outputMapping === 'current' && (
-        <CurrentContentSection
-          unitPlan={unitPlan}
-          updateUnitPlan={updateUnitPlan}
-        />
+      {unitPlan.outputMapping === "current" && (
+        <CurrentContentSection unitPlan={unitPlan} updateUnitPlan={updateUnitPlan} />
       )}
     </div>
   );
 };
 
 export default ContentSection;
-
-
-

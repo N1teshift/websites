@@ -1,8 +1,8 @@
-import React, { useMemo, useCallback } from 'react';
-import Link from 'next/link';
-import { Timestamp } from 'firebase/firestore';
-import { Card } from '@/features/infrastructure/components';
-import type { PlayerStats, CategoryStats } from '../types';
+import React, { useMemo, useCallback } from "react";
+import Link from "next/link";
+import { Timestamp } from "firebase/firestore";
+import { Card } from "@/features/infrastructure/components";
+import type { PlayerStats, CategoryStats } from "../types";
 
 interface PlayerCardProps {
   player: PlayerStats;
@@ -15,7 +15,7 @@ interface PlayerCardProps {
 function getBestCategory(player: PlayerStats): [string, CategoryStats] | null {
   const categories = Object.entries(player.categories || {});
   if (categories.length === 0) return null;
-  
+
   // Find category with highest ELO
   return categories.reduce<[string, CategoryStats] | null>((best, [name, stats]) => {
     const bestScore = best ? best[1].score : 0;
@@ -38,7 +38,7 @@ function PlayerCardComponent({
   const formattedLastPlayed = useMemo(() => {
     if (!player.lastPlayed) return null;
     const date =
-      typeof player.lastPlayed === 'string'
+      typeof player.lastPlayed === "string"
         ? new Date(player.lastPlayed)
         : (player.lastPlayed as Timestamp)?.toDate?.() || new Date(String(player.lastPlayed));
     return date.toLocaleDateString();
@@ -49,9 +49,9 @@ function PlayerCardComponent({
     return `p-6 transition-colors h-full ${
       compareMode
         ? isSelected
-          ? 'border-amber-500 bg-amber-500/10 cursor-pointer'
-          : 'hover:border-amber-500/50 cursor-pointer'
-        : 'hover:border-amber-500/50 cursor-pointer'
+          ? "border-amber-500 bg-amber-500/10 cursor-pointer"
+          : "hover:border-amber-500/50 cursor-pointer"
+        : "hover:border-amber-500/50 cursor-pointer"
     }`;
   }, [compareMode, isSelected]);
 
@@ -67,15 +67,19 @@ function PlayerCardComponent({
   );
 
   const cardContent = (
-    <Card variant="medieval" className={cardClassName} onClick={onClick ? handleCardClick : undefined}>
+    <Card
+      variant="medieval"
+      className={cardClassName}
+      onClick={onClick ? handleCardClick : undefined}
+    >
       <h3 className="text-xl font-semibold text-amber-400 mb-3">{player.name}</h3>
-      
+
       <div className="space-y-2 text-sm">
         <div className="flex justify-between">
           <span className="text-gray-500">Total Games:</span>
           <span className="text-amber-300 font-semibold">{player.totalGames}</span>
         </div>
-        
+
         {bestStats && bestCategory && (
           <>
             <div className="flex justify-between">
@@ -91,19 +95,19 @@ function PlayerCardComponent({
               <span className="text-green-400">
                 {bestStats.games > 0
                   ? `${((bestStats.wins / bestStats.games) * 100).toFixed(1)}%`
-                  : '0%'}
+                  : "0%"}
               </span>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-500">Record:</span>
               <span className="text-white">
                 {bestStats.wins}W - {bestStats.losses}L
-                {bestStats.draws > 0 ? ` - ${bestStats.draws}D` : ''}
+                {bestStats.draws > 0 ? ` - ${bestStats.draws}D` : ""}
               </span>
             </div>
           </>
         )}
-        
+
         {formattedLastPlayed && (
           <div className="flex justify-between text-xs text-gray-400 mt-3 pt-3 border-t border-amber-500/20">
             <span>Last Played:</span>
@@ -115,11 +119,7 @@ function PlayerCardComponent({
   );
 
   if (showLink && !compareMode) {
-    return (
-      <Link href={`/players/${encodeURIComponent(player.name)}`}>
-        {cardContent}
-      </Link>
-    );
+    return <Link href={`/players/${encodeURIComponent(player.name)}`}>{cardContent}</Link>;
   }
 
   return cardContent;
@@ -127,4 +127,3 @@ function PlayerCardComponent({
 
 // Memoize component to prevent unnecessary re-renders when props haven't changed
 export const PlayerCard = React.memo(PlayerCardComponent);
-

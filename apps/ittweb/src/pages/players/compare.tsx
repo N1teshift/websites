@@ -1,6 +1,6 @@
-import { getStaticPropsWithTranslations } from '@websites/infrastructure/i18n/getStaticProps';
-import { PlayerComparison } from '@/features/modules/community/players/components/PlayerComparison';
-import { ErrorBoundary } from '@/features/infrastructure/components';
+import { getStaticPropsWithTranslations } from "@websites/infrastructure/i18n/getStaticProps";
+import { PlayerComparison } from "@/features/modules/community/players/components/PlayerComparison";
+import { ErrorBoundary } from "@/features/infrastructure/components";
 
 const pageNamespaces = ["common"];
 export const getStaticProps = getStaticPropsWithTranslations(pageNamespaces);
@@ -12,9 +12,3 @@ export default function ComparePlayers() {
     </ErrorBoundary>
   );
 }
-
-
-
-
-
-

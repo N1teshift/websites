@@ -5,19 +5,21 @@
 
 /* Make NProgress bar thicker */
 #nprogress .bar {
-    height: 16px;
-    /* Default is 2px, you can make it thicker */
-    background: #29d;
-    /* You can also change the color if you want */
+  height: 16px;
+  /* Default is 2px, you can make it thicker */
+  background: #29d;
+  /* You can also change the color if you want */
 }
 
 /* Optionally adjust spinner size (or remove it entirely) */
 #nprogress .spinner {
-    display: none;
-    /* Hide the spinner if you don't want it */
+  display: none;
+  /* Hide the spinner if you don't want it */
 }
 
 /* Optionally adjust NProgress parent container */
 #nprogress .peg {
-    box-shadow: 0 0 10px #29d, 0 0 5px #29d;
+  box-shadow:
+    0 0 10px #29d,
+    0 0 5px #29d;
 }

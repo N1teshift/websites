@@ -28,18 +28,18 @@ export const expressionSettingsSchemaDefinition = {
     terms: {
       type: "array",
       description: "Array of terms in the expression",
-      items: { type: "string" }
+      items: { type: "string" },
     },
     operations: {
       type: "array",
       description: "Operations between terms (+, -, *, /)",
-      items: { 
+      items: {
         type: "string",
-        enum: ["+", "-", "*", "/", "^"] 
-      }
-    }
+        enum: ["+", "-", "*", "/", "^"],
+      },
+    },
   },
-  required: ["terms", "operations"]
+  required: ["terms", "operations"],
 };
 
 /**
@@ -50,8 +50,5 @@ export const expressionSettingsSchemaDefinition = {
 export const expressionSettingsSchema = {
   schema: expressionSettingsSchemaDefinition,
   defaultRequiresSubObjects: true, // Example: Default might require terms
-  defaultSubObjectTypes: "term" as ObjectType
+  defaultSubObjectTypes: "term" as ObjectType,
 };
-
-
-

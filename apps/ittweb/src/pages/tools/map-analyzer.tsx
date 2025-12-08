@@ -1,13 +1,13 @@
-import React, { Suspense } from 'react';
-import dynamic from 'next/dynamic';
-import { getStaticPropsWithTranslations } from '@websites/infrastructure/i18n/getStaticProps';
-import { Logger } from '@websites/infrastructure/logging';
-import { LoadingScreen, ErrorBoundary } from '@/features/infrastructure/components';
+import React, { Suspense } from "react";
+import dynamic from "next/dynamic";
+import { getStaticPropsWithTranslations } from "@websites/infrastructure/i18n/getStaticProps";
+import { Logger } from "@websites/infrastructure/logging";
+import { LoadingScreen, ErrorBoundary } from "@/features/infrastructure/components";
 
 // Lazy load TerrainVisualizerContainer to reduce initial bundle size
 // This component uses w3gjs which is ~200KB
 const TerrainVisualizerContainer = dynamic(
-  () => import('@/features/modules/tools-group/map-analyzer/components/TerrainVisualizerContainer'),
+  () => import("@/features/modules/tools-group/map-analyzer/components/TerrainVisualizerContainer"),
   {
     loading: () => <LoadingScreen message="Loading map analyzer..." />,
     ssr: false, // Map analyzer requires client-side only
@@ -19,8 +19,8 @@ export const getStaticProps = getStaticPropsWithTranslations(pageNamespaces);
 
 export default function MapAnalyzer() {
   React.useEffect(() => {
-    if (typeof window !== 'undefined') {
-      Logger.info('Map Analyzer page visited', {
+    if (typeof window !== "undefined") {
+      Logger.info("Map Analyzer page visited", {
         path: window.location.pathname,
         timestamp: new Date().toISOString(),
       });
@@ -40,6 +40,3 @@ export default function MapAnalyzer() {
     </ErrorBoundary>
   );
 }
-
-
-

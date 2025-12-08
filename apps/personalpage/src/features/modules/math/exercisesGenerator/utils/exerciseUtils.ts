@@ -4,18 +4,15 @@
  * @param {string[]} generatedInputs - The array of generated input values to substitute.
  * @returns {string[]} A new array with placeholders substituted.
  */
-export const substituteInputs = (
-    targetArray: string[],
-    generatedInputs: string[]
-): string[] => {
-    console.log("generatedInputs at substitute function:", generatedInputs);
-    return targetArray.map(line =>
-        line.replace(/{input(\d+)}/g, (match, mainIndexStr) => {
-            const mainIndex = parseInt(mainIndexStr, 10) - 1;
-            const replacement = generatedInputs[mainIndex];
-            return replacement !== undefined ? replacement : match;
-        })
-    );
+export const substituteInputs = (targetArray: string[], generatedInputs: string[]): string[] => {
+  console.log("generatedInputs at substitute function:", generatedInputs);
+  return targetArray.map((line) =>
+    line.replace(/{input(\d+)}/g, (match, mainIndexStr) => {
+      const mainIndex = parseInt(mainIndexStr, 10) - 1;
+      const replacement = generatedInputs[mainIndex];
+      return replacement !== undefined ? replacement : match;
+    })
+  );
 };
 
 /**
@@ -26,7 +23,4 @@ export const substituteInputs = (
  * @returns {string[]} The combined array representing the full exercise text structure.
  */
 export const constructExerciseArray = (question: string[], options: string[]): string[] =>
-    [...question, ...options.flatMap(option => [option, ""])].slice(0, -1);
-
-
-
+  [...question, ...options.flatMap((option) => [option, ""])].slice(0, -1);

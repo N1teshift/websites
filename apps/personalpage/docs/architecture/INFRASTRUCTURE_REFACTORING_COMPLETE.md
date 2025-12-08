@@ -7,6 +7,7 @@ Successfully refactored the infrastructure folder to be minimal, with everything
 ## Completed Actions
 
 ### ✅ Phase 1: Math Components Migration
+
 - **Moved** `infrastructure/shared/components/mathParser.tsx` → `modules/math/shared/components/MathParser.tsx`
 - **Moved** `infrastructure/shared/components/ui/MathItemsDisplay.tsx` → `modules/math/shared/components/MathItemsDisplay.tsx`
 - **Moved** `infrastructure/shared/components/table/MathDisplay.tsx` → `modules/math/shared/components/MathDisplay.tsx`
@@ -16,17 +17,20 @@ Successfully refactored the infrastructure folder to be minimal, with everything
 - **Updated** `infrastructure/shared/components/table/index.ts` to remove math-specific exports
 
 ### ✅ Phase 2: Utilities Migration
+
 - **Moved** `debounce` function from `infrastructure/shared/utils/functionUtils.ts` → `@websites/infrastructure/utils/function/functionUtils.ts`
 - **Updated** packages exports to include function utilities
 - **Deleted** local `functionUtils.ts`
 
 ### ✅ Phase 3: Cache Migration
+
 - **Moved** `infrastructure/cache/cacheUtils.ts` → `@websites/infrastructure/cache/cacheUtils.ts`
 - **Updated** packages cache index to export cacheUtils
 - **Verified** all files already using `@websites/infrastructure/cache`
 - **Deleted** local cache folder
 
 ### ✅ Phase 4: Auth Migration
+
 - **Verified** all API routes already using `@websites/infrastructure/auth`
 - **Removed** local `infrastructure/auth/` folder (userService.ts was project-specific but unused)
 - **Updated** all AuthContext imports to use `@websites/infrastructure/auth/providers`
@@ -62,6 +66,7 @@ src/features/infrastructure/
 ## Remaining Infrastructure
 
 The infrastructure folder is now **minimal** and contains only:
+
 1. **`api/apiRequest.ts`** - Project-specific axios wrapper (uses `NEXT_PUBLIC_API_BASE_URL`)
 2. **`api/routeHandlers.ts`** - Thin wrapper around packages route handlers with personalpage auth config
 3. **`shared/components/table/index.ts`** - Re-exports from `@websites/ui` (can be removed if nothing uses it)
@@ -69,6 +74,7 @@ The infrastructure folder is now **minimal** and contains only:
 ## Import Updates
 
 All imports have been updated to use:
+
 - `@websites/infrastructure/*` for shared infrastructure
 - `@math/shared/components` for math-specific components
 - `@ai/*` for AI functionality (already in modules)

@@ -1,5 +1,5 @@
-import { ITTIconCategory } from './iconUtils';
-import { ICON_MAP, type IconMap } from '../data/iconMap';
+import { ITTIconCategory } from "./iconUtils";
+import { ICON_MAP, type IconMap } from "../data/iconMap";
 
 // Re-export the type and data for convenience
 export type { IconMap };
@@ -16,7 +16,7 @@ export function resolveExplicitIcon(category: ITTIconCategory, key: string): str
 
   if (!filename) {
     // If not found in requested category, search all categories
-    const allCategories: ITTIconCategory[] = ['abilities', 'items', 'buildings', 'trolls', 'units'];
+    const allCategories: ITTIconCategory[] = ["abilities", "items", "buildings", "trolls", "units"];
     for (const cat of allCategories) {
       const catTable = ICON_MAP[cat];
       const foundFilename = catTable?.[key];
@@ -39,4 +39,3 @@ export function resolveExplicitIcon(category: ITTIconCategory, key: string): str
 function findIconPath(filename: string): string {
   return `/icons/itt/${filename}`;
 }
-

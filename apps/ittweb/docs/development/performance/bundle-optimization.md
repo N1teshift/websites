@@ -16,10 +16,10 @@ Import only what you need:
 
 ```typescript
 // Good
-import { Button } from '@/features/infrastructure/shared/components/ui';
+import { Button } from "@/features/infrastructure/shared/components/ui";
 
 // Bad - imports entire library
-import * as UI from '@/features/infrastructure/shared/components/ui';
+import * as UI from "@/features/infrastructure/shared/components/ui";
 ```
 
 ## Dynamic Imports
@@ -28,7 +28,7 @@ Use dynamic imports for large dependencies:
 
 ```typescript
 // Load only when needed
-const Chart = dynamic(() => import('recharts').then(mod => mod.LineChart));
+const Chart = dynamic(() => import("recharts").then((mod) => mod.LineChart));
 ```
 
 ## Code Splitting
@@ -58,11 +58,13 @@ export const ExpensiveComponent = React.memo(({ data }: Props) => {
 ```
 
 **Implemented Optimizations**:
+
 - ✅ **Chart Components**: All analytics chart components wrapped with `React.memo`
 - ✅ **Impact**: Reduced unnecessary chart re-renders when parent components update
 - ✅ **Pattern**: Use `React.memo` for components that receive stable props but have expensive rendering
 
 **Example**:
+
 ```typescript
 // Chart component with React.memo
 export const EloChart = React.memo(({ data, category }: EloChartProps) => {
@@ -86,17 +88,17 @@ const handleClick = useCallback(() => {
 ```
 
 **Implemented Optimizations**:
+
 - ✅ **Filtered Lists**: PlayersPage uses `useMemo` for filtered player list computation
 - ✅ **Impact**: Prevents unnecessary re-filtering when unrelated state changes
 - ✅ **Pattern**: Use `useMemo` for filtered/transformed data, `useCallback` for event handlers passed to child components
 
 **Example**:
+
 ```typescript
 // Memoize filtered list
 const filteredPlayers = useMemo(() => {
-  return players.filter(player => 
-    player.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  return players.filter((player) => player.name.toLowerCase().includes(searchTerm.toLowerCase()));
 }, [players, searchTerm]);
 ```
 
@@ -120,11 +122,13 @@ function MyPage() {
 ```
 
 **Implemented Optimizations**:
+
 - ✅ **Recharts Chart Components**: All chart components (ActivityChart, EloChart, WinRateChart, etc.) are lazy loaded
 - ✅ **Impact**: Reduced initial bundle size by ~300KB on pages with charts
 - ✅ **Pattern**: Use dynamic imports with Suspense fallbacks for all chart components
 
 **Example**:
+
 ```typescript
 // Lazy load chart component
 const EloChart = lazy(() => import('@/features/modules/analytics-group/analytics/components/EloChart'));
@@ -176,7 +180,7 @@ Batch state updates:
 
 ```typescript
 // Good - single re-render
-setState(prev => ({
+setState((prev) => ({
   ...prev,
   field1: value1,
   field2: value2,
@@ -191,4 +195,3 @@ setField2(value2);
 
 - [Performance Guide](../../shared/PERFORMANCE.md)
 - [Component Library](./components.md)
-

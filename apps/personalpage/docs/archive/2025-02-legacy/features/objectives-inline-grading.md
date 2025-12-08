@@ -26,12 +26,14 @@ Each student card in a mission now displays input boxes for the specific assessm
 ### 3. **Save/Discard Actions**
 
 Action buttons appear in the header when grades are entered:
+
 - **Discard Button**: Clears all pending inputs without saving
 - **Save All Grades Button**: Commits all entered grades to student records
 
 ### 4. **Automatic Mission Updates**
 
 After saving:
+
 - Student assessment records are updated
 - Missions dynamically recalculate
 - Students with newly added data automatically disappear from the mission list
@@ -80,9 +82,9 @@ const [gradeInputs, setGradeInputs] = useState<Map<string, GradeInput>>(new Map(
 const [isSaving, setIsSaving] = useState(false);
 
 interface GradeInput {
-    studentId: string;
-    assessmentType: 'KD' | 'SD1' | 'SD2' | 'SD3';
-    value: string;
+  studentId: string;
+  assessmentType: "KD" | "SD1" | "SD2" | "SD3";
+  value: string;
 }
 ```
 
@@ -90,13 +92,13 @@ interface GradeInput {
 
 ```typescript
 // Update input state when user types
-handleGradeInput(studentId, assessmentType, value)
+handleGradeInput(studentId, assessmentType, value);
 
 // Save all inputs to student records
-handleSaveGrades()
+handleSaveGrades();
 
 // Clear all inputs without saving
-handleDiscardGrades()
+handleDiscardGrades();
 ```
 
 ### Assessment Creation/Update
@@ -112,12 +114,12 @@ When saving grades:
 
 ### Assessment IDs Used
 
-| Assessment | ID | Type | Column |
-|------------|---|------|--------|
-| KD2 | `summative-cambridge-unit2` | summative | KD |
-| SD1 | `test-u1s1-irrational-numbers` | test | SD1 |
-| SD2 | `test-u1s2-standard-form` | test | SD2 |
-| SD3 | `test-u1s3-indices` | test | SD3 |
+| Assessment | ID                             | Type      | Column |
+| ---------- | ------------------------------ | --------- | ------ |
+| KD2        | `summative-cambridge-unit2`    | summative | KD     |
+| SD1        | `test-u1s1-irrational-numbers` | test      | SD1    |
+| SD2        | `test-u1s2-standard-form`      | test      | SD2    |
+| SD3        | `test-u1s3-indices`            | test      | SD3    |
 
 ## Usage Workflow
 
@@ -177,9 +179,9 @@ When saving grades:
 
 ```typescript
 interface ObjectivesSectionProps {
-    students: StudentData[];
-    missions?: Mission[];
-    onDataChange?: (updatedStudents: StudentData[]) => void;  // NEW
+  students: StudentData[];
+  missions?: Mission[];
+  onDataChange?: (updatedStudents: StudentData[]) => void; // NEW
 }
 ```
 
@@ -197,11 +199,13 @@ The `onDataChange` callback is passed from `ProgressReportPage` to enable data p
 ## Limitations & Future Enhancements
 
 ### Current Limitations
+
 - Only supports percentage scores (not MYP or Cambridge scores yet)
 - No comment field (can be added in Class View if needed)
 - No undo after save (use data export backups)
 
 ### Potential Enhancements
+
 1. Add MYP and Cambridge score inputs
 2. Add comment fields for each assessment
 3. Add date pickers for custom assessment dates
@@ -250,6 +254,7 @@ The `onDataChange` callback is passed from `ProgressReportPage` to enable data p
 ## Integration with Existing Features
 
 This feature integrates seamlessly with:
+
 - **Dynamic Mission Calculation**: Missions update automatically based on current data
 - **Class View**: Grades entered here appear in Class View tables
 - **Data Management**: Saved data included in JSON exports
@@ -259,10 +264,3 @@ This feature integrates seamlessly with:
 
 **Status**: ✅ Ready for production use
 **Last Updated**: 2025-11-02
-
-
-
-
-
-
-

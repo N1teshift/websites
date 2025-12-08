@@ -7,6 +7,7 @@ This document maps the field identifiers used in Warcraft 3 ability tooltip refe
 ## Format
 
 Field references follow the pattern: `<AbilityID,FieldIdentifier>` where:
+
 - `AbilityID`: 4-character raw ability code (e.g., `AMd5`, `AM2w`, `AIs6`)
 - `FieldIdentifier`: Field name indicating what data to retrieve (e.g., `Cool1`, `DataA1`, `HeroDur1`)
 
@@ -17,18 +18,21 @@ Based on analysis of `ToolTipsUtils.wurst` and item definition files:
 ### Common Field Identifiers
 
 #### `Cool1` - Cooldown (Level 1)
+
 - **Meaning**: Cooldown time in seconds for the ability at level 1
 - **Example**: `<AMd5,Cool1>` → cooldown value for ability `AMd5`
 - **Source**: `ToolTipsUtils.wurst` line 100: `"<{0},Cool1>"` used in `formatCooldown()`
 - **Usage**: "Has X seconds cooldown"
 
 #### `Dur1` - Duration (Level 1)
+
 - **Meaning**: Duration in seconds for the ability at level 1
 - **Example**: `<A0ED,Dur1>` → duration value for ability `A0ED`
 - **Source**: `ToolTipsUtils.wurst` line 103: `"<{0},Dur1>"` used in `formatDuration()`
 - **Usage**: "Last X seconds"
 
 #### `HeroDur1` - Hero Duration (Level 1)
+
 - **Meaning**: Hero-specific duration in seconds at level 1
 - **Example**: `<ABILITY_HYDRA_CLAWS_POISON,HeroDur1>` → hero duration value
 - **Source**: Used in item definitions for abilities with different hero/normal durations
@@ -152,24 +156,26 @@ getAbilityDataField(ABILITY_HYDRA_CLAWS_POISON, "Dur1")           // Normal dura
 ```
 
 This indicates that:
+
 - The format is `<{abilId},{fieldId}>`
 - `DataA1` can represent "Level 1 - Data - Damage" (in the Storm Bolt example)
 - The exact field meaning depends on the ability type
 
 ## Field Identifier Reference Table
 
-| Field Identifier | Common Meaning | Context Dependency |
-|-----------------|----------------|-------------------|
-| `Cool1` | Cooldown (Level 1) | Low - always cooldown |
-| `Dur1` | Duration (Level 1) | Low - always duration |
-| `HeroDur1` | Hero Duration (Level 1) | Low - always hero duration |
-| `DataA1` | Primary data field | **High** - varies by ability type |
-| `DataB1` | Secondary data field | **High** - varies by ability type |
-| `DataC1` | Tertiary data field | **High** - varies by ability type |
+| Field Identifier | Common Meaning          | Context Dependency                |
+| ---------------- | ----------------------- | --------------------------------- |
+| `Cool1`          | Cooldown (Level 1)      | Low - always cooldown             |
+| `Dur1`           | Duration (Level 1)      | Low - always duration             |
+| `HeroDur1`       | Hero Duration (Level 1) | Low - always hero duration        |
+| `DataA1`         | Primary data field      | **High** - varies by ability type |
+| `DataB1`         | Secondary data field    | **High** - varies by ability type |
+| `DataC1`         | Tertiary data field     | **High** - varies by ability type |
 
 ## Context-Dependent Examples
 
 ### DataA1 Usage Examples:
+
 - **Movement Speed Ability**: `DataA1` = movement speed bonus
 - **Attack Speed Ability**: `DataA1` = attack speed % (when used with Percent formatter)
 - **Damage Bonus Ability**: `DataA1` = damage bonus value
@@ -177,10 +183,12 @@ This indicates that:
 - **Agility Bonus Ability**: `DataA1` = agility bonus value
 
 ### DataB1 Usage Examples:
+
 - **Intelligence Bonus Ability**: `DataB1` = intelligence bonus value
 - **Poison Ability**: `DataB1` = poison percentage
 
 ### DataC1 Usage Examples:
+
 - **Strength Bonus Ability**: `DataC1` = strength bonus value
 - **Complex Ability**: `DataC1` = tertiary effect value
 
@@ -198,10 +206,9 @@ The challenge is that these references point to **base Warcraft 3 object data**,
 ## Related Files
 
 - **Source Documentation**: `external/island-troll-tribes/wurst/utils/ToolTipsUtils.wurst`
-- **Item Definitions**: 
+- **Item Definitions**:
   - `external/island-troll-tribes/wurst/objects/items/BootsDefinition.wurst`
   - `external/island-troll-tribes/wurst/objects/items/GlovesDefinition.wurst`
   - `external/island-troll-tribes/wurst/objects/items/CoatDefinition.wurst`
 - **Field References Doc**: `docs/systems/scripts/field-references.md`
 - **Ability ID Mapper**: `src/features/modules/guides/data/items/abilityIdMapper.ts`
-

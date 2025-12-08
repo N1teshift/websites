@@ -1,6 +1,6 @@
-import type { NextApiRequest } from 'next';
-import { createApiHandler } from '@websites/infrastructure/api';
-import { getWinRateData } from '@/features/modules/analytics-group/analytics/lib/analyticsService';
+import type { NextApiRequest } from "next";
+import { createApiHandler } from "@websites/infrastructure/api";
+import { getWinRateData } from "@/features/modules/analytics-group/analytics/lib/analyticsService";
 
 /**
  * GET /api/analytics/win-rate - Get win rate data
@@ -15,7 +15,7 @@ export default createApiHandler(
     return await getWinRateData(playerName, category, startDate, endDate);
   },
   {
-    methods: ['GET'],
+    methods: ["GET"],
     requireAuth: false,
     logRequests: true,
     // Cache for 5 minutes - Firestore cache handles freshness, HTTP cache reduces API calls
@@ -26,10 +26,3 @@ export default createApiHandler(
     },
   }
 );
-
-
-
-
-
-
-

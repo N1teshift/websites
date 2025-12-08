@@ -1,8 +1,13 @@
-import type { NextApiRequest } from 'next';
-import { createPostHandler, requireSession, zodValidator, RevalidateSchema } from '@websites/infrastructure/api';
-import { createComponentLogger } from '@websites/infrastructure/logging';
+import type { NextApiRequest } from "next";
+import {
+  createPostHandler,
+  requireSession,
+  zodValidator,
+  RevalidateSchema,
+} from "@websites/infrastructure/api";
+import { createComponentLogger } from "@websites/infrastructure/logging";
 
-const logger = createComponentLogger('api/revalidate');
+const logger = createComponentLogger("api/revalidate");
 
 /**
  * POST /api/revalidate - Revalidate a Next.js static path (requires authentication)
@@ -10,15 +15,15 @@ const logger = createComponentLogger('api/revalidate');
 export default createPostHandler<{ revalidated: boolean; path: string }>(
   async (req: NextApiRequest, res, context) => {
     const session = requireSession(context);
-    
+
     // Get the path to revalidate from the request body
     // Body is already validated by validateBody option
     const { path } = req.body as { path: string };
 
     // Revalidate the path
     await res.revalidate(path);
-    logger.info('Path revalidated', { path, userId: session.discordId });
-    
+    logger.info("Path revalidated", { path, userId: session.discordId });
+
     return { revalidated: true, path };
   },
   {
@@ -27,5 +32,3 @@ export default createPostHandler<{ revalidated: boolean; path: string }>(
     logRequests: true,
   }
 );
-
-

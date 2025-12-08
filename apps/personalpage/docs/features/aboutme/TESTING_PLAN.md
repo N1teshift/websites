@@ -23,6 +23,7 @@ aboutme/
 **Location**: `src/features/modules/aboutme/utils/index.ts`
 
 **Functions to test**:
+
 1. ⭐ `isSkillCategory` - Validates SkillCategory object
 2. ⭐ `isSkillCategories` - Validates object of SkillCategories
 3. ⭐ `isExperienceItem` - Validates ExperienceItem object
@@ -31,7 +32,8 @@ aboutme/
 6. ⭐ `isLanguageItem` - Validates LanguageItem object
 7. ⭐ `isStringArray` - Validates string array
 
-**Why start here**: 
+**Why start here**:
+
 - Pure functions, no dependencies
 - Easy to test
 - High value (data validation is critical)
@@ -46,13 +48,15 @@ aboutme/
 **Location**: `src/features/modules/aboutme/components/AboutMePage.tsx`
 
 **What to test**:
+
 - Renders all sections (header, skills, experience, etc.)
 - Displays translated content correctly
 - Renders links (email, LinkedIn) with correct attributes
 - Handles empty data gracefully
 - Renders lists correctly
 
-**Why this matters**: 
+**Why this matters**:
+
 - User-facing component
 - Catches rendering bugs
 - Validates structure
@@ -66,12 +70,14 @@ aboutme/
 **Location**: `src/features/modules/aboutme/hooks/index.ts`
 
 **What to test**:
+
 - `useAboutMeData` hook returns correct structure
 - `useTranslatedObject` hook validates and returns correct data
 - Fallback values work when translations are missing
 - Error handling for invalid translation data
 
 **Why this matters**:
+
 - Business logic for data fetching
 - Type safety validation
 
@@ -90,6 +96,7 @@ aboutme/
 **Test File**: `utils/__tests__/index.test.ts`
 
 **Example tests needed**:
+
 - Valid objects pass validation
 - Invalid objects fail validation
 - Edge cases (null, undefined, wrong types)
@@ -108,6 +115,7 @@ aboutme/
 **Requires**: React Testing Library setup
 
 **Tests needed**:
+
 - Component renders without crashing
 - All sections are displayed
 - Links have correct href attributes
@@ -127,6 +135,7 @@ aboutme/
 **Requires**: React Testing Library hooks setup + mocks
 
 **Tests needed**:
+
 - Hook returns expected structure
 - Translation integration works
 - Fallback values used when translations missing
@@ -157,7 +166,7 @@ aboutme/
 
 **After Phase 1 (Type Guards)**: ~40%  
 **After Phase 2 (Component)**: ~70%  
-**After Phase 3 (Hooks)**: ~95%  
+**After Phase 3 (Hooks)**: ~95%
 
 **Total Time**: 3-5 hours for complete coverage
 
@@ -180,6 +189,3 @@ aboutme/
     └── __tests__/
         └── index.test.ts          ← Phase 3
 ```
-
-
-

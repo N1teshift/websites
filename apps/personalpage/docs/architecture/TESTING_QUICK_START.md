@@ -5,25 +5,30 @@
 Here's a practical approach used by many developers:
 
 ### 1. **Start Small** - Test Pure Functions First
+
 - **Why**: Easiest to test, highest confidence gains
 - **What**: Utility functions, data transformations, calculations
 - **Example**: `eventTransformer.ts`, `dateUtils.ts`
 
 ### 2. **Test as You Build** (or Right After)
+
 - Don't wait until the end to add tests
 - Add tests when you write new features or refactor
 - **For AI assistance**: Run tests before and after AI changes
 
 ### 3. **Focus on Behavior, Not Implementation**
+
 - Test **what** the code does, not **how** it does it
 - Example: "Should calculate end time correctly" ✅ vs "Should call addMinutes" ❌
 
 ### 4. **Test Critical Paths First**
+
 - Functions that handle business logic
 - Functions that transform data
 - Functions that make decisions
 
 ### 5. **Cover Edge Cases**
+
 - Empty arrays/null values
 - Boundary conditions
 - Error conditions
@@ -47,10 +52,12 @@ Here's a practical approach used by many developers:
 ### TDD vs Writing Tests After
 
 **TDD (Test-Driven Development)**: Write tests first, then code
+
 - Pros: Ensures code is testable, clarifies requirements
 - Cons: Can slow down initial development
 
 **Write Tests After**: Write code first, then tests
+
 - Pros: Faster initial development
 - Cons: May write code that's hard to test
 
@@ -59,6 +66,7 @@ Here's a practical approach used by many developers:
 ## What Makes Good Tests?
 
 ✅ **Good Tests:**
+
 - Test one thing at a time
 - Have clear, descriptive names
 - Are independent (can run in any order)
@@ -66,6 +74,7 @@ Here's a practical approach used by many developers:
 - Test behavior, not implementation
 
 ❌ **Bad Tests:**
+
 - Test multiple things
 - Have vague names like "test1"
 - Depend on other tests
@@ -75,6 +84,7 @@ Here's a practical approach used by many developers:
 ## Your Current Setup
 
 ✅ **What's Already Set Up:**
+
 - Jest configured and working
 - React Testing Library installed
 - Sample tests created (see `src/features/modules/calendar/utils/*.test.ts`)
@@ -113,6 +123,7 @@ npm run test:windows -- --coverage
 5. **Verify**: Run tests again to confirm fixes
 
 This workflow helps you:
+
 - Catch bugs early
 - Ensure AI changes don't break existing functionality
 - Build confidence in your codebase
@@ -120,12 +131,13 @@ This workflow helps you:
 ## Examples in This Project
 
 See these files for examples:
+
 - `src/features/modules/calendar/utils/eventTransformer.test.ts`
 - `src/features/modules/calendar/utils/dateUtils.test.ts`
 
 These show how to:
+
 - Test pure functions
 - Test edge cases
 - Use Jest matchers effectively
 - Handle timezone-sensitive tests
-

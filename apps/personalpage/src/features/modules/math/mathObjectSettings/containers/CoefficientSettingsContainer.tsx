@@ -3,7 +3,11 @@ import BaseMathObjectSettingsContainer from "./BaseMathObjectSettingsContainer";
 import { Dropdown, CheckboxGroup } from "@websites/ui";
 import RangeInput from "../ui/RangeInput";
 import {
-    numberSetOptions, coeficientRuleOptions, RepresentationType, CoefficientSettings, MathObjectContainerProps
+  numberSetOptions,
+  coeficientRuleOptions,
+  RepresentationType,
+  CoefficientSettings,
+  MathObjectContainerProps,
 } from "../../types/index";
 import useInterfaceType from "../hooks/useInterfaceType";
 import { useCoefficientSettings } from "../hooks/coefficientHooks";
@@ -24,100 +28,87 @@ import { useCoefficientSettings } from "../hooks/coefficientHooks";
  *   and a custom `RangeInput` component.
  */
 const CoefficientSettingsContainer: React.FC<MathObjectContainerProps<CoefficientSettings>> = ({
-    containerId,
-    settings,
-    updateSettings,
-    startIndex = 1,
-    showDescription = false,
+  containerId,
+  settings,
+  updateSettings,
+  startIndex = 1,
+  showDescription = false,
 }) => {
-    const { interfaceType } = useInterfaceType(containerId);
-    
-    // Use the combined coefficient settings hook
-    const {
-        representationTypeOptions,
-        disabledOptions,
-        handleRulesChange,
-        handleNumberSetChange,
-        handleRangeChange
-    } = useCoefficientSettings(settings, updateSettings, interfaceType);
+  const { interfaceType } = useInterfaceType(containerId);
 
-    /**
-     * Renders the simple interface mode UI for coefficient settings
-     */
-    const renderSimpleMode = () => (
-        <div className="flex flex-row items-center gap-4">
-            <Dropdown
-                label="number_set"
-                value={settings.numberSet}
-                options={[...numberSetOptions].map(opt => ({ value: opt, label: opt }))}
-                onChange={handleNumberSetChange}
-            />
-            <RangeInput
-                label="range"
-                range={settings.range}
-                setRange={handleRangeChange}
-            />
-        </div>
-    );
+  // Use the combined coefficient settings hook
+  const {
+    representationTypeOptions,
+    disabledOptions,
+    handleRulesChange,
+    handleNumberSetChange,
+    handleRangeChange,
+  } = useCoefficientSettings(settings, updateSettings, interfaceType);
 
-    /**
-     * Renders the complex interface mode UI for coefficient settings
-     */
-    const renderComplexMode = () => (
-        <div className="flex flex-row items-center gap-4">
-            <div className="flex flex-row items-center gap-4 flex-grow">
-                <Dropdown
-                    label="number_set"
-                    value={settings.numberSet}
-                    options={[...numberSetOptions].map(opt => ({ value: opt, label: opt }))}
-                    onChange={handleNumberSetChange}
-                />
-                {representationTypeOptions.length > 0 && (
-                    <Dropdown
-                        label="representation_type"
-                        value={settings.representationType}
-                        options={representationTypeOptions}
-                        onChange={(value) => updateSettings({ 
-                            ...settings, 
-                            representationType: value as RepresentationType 
-                        })}
-                    />
-                )}
-                <CheckboxGroup
-                    label="coefficient_constraints"
-                    options={[...coeficientRuleOptions]}
-                    selectedOptions={settings.rules}
-                    onChange={handleRulesChange}
-                    disabledOptions={disabledOptions}
-                />
-            </div>
-            <RangeInput
-                label="range"
-                range={settings.range}
-                setRange={handleRangeChange}
-            />
-        </div>
-    );
+  /**
+   * Renders the simple interface mode UI for coefficient settings
+   */
+  const renderSimpleMode = () => (
+    <div className="flex flex-row items-center gap-4">
+      <Dropdown
+        label="number_set"
+        value={settings.numberSet}
+        options={[...numberSetOptions].map((opt) => ({ value: opt, label: opt }))}
+        onChange={handleNumberSetChange}
+      />
+      <RangeInput label="range" range={settings.range} setRange={handleRangeChange} />
+    </div>
+  );
 
-    return (
-        <BaseMathObjectSettingsContainer
-            containerId={containerId}
-            settings={settings}
-            updateSettings={updateSettings}
-            startIndex={startIndex}
-            showDescription={showDescription}
-            objectType="coefficient"
-        >
-            {() => (
-                <div>
-                    {interfaceType === "simple" ? renderSimpleMode() : renderComplexMode()}
-                </div>
-            )}
-        </BaseMathObjectSettingsContainer>
-    );
+  /**
+   * Renders the complex interface mode UI for coefficient settings
+   */
+  const renderComplexMode = () => (
+    <div className="flex flex-row items-center gap-4">
+      <div className="flex flex-row items-center gap-4 flex-grow">
+        <Dropdown
+          label="number_set"
+          value={settings.numberSet}
+          options={[...numberSetOptions].map((opt) => ({ value: opt, label: opt }))}
+          onChange={handleNumberSetChange}
+        />
+        {representationTypeOptions.length > 0 && (
+          <Dropdown
+            label="representation_type"
+            value={settings.representationType}
+            options={representationTypeOptions}
+            onChange={(value) =>
+              updateSettings({
+                ...settings,
+                representationType: value as RepresentationType,
+              })
+            }
+          />
+        )}
+        <CheckboxGroup
+          label="coefficient_constraints"
+          options={[...coeficientRuleOptions]}
+          selectedOptions={settings.rules}
+          onChange={handleRulesChange}
+          disabledOptions={disabledOptions}
+        />
+      </div>
+      <RangeInput label="range" range={settings.range} setRange={handleRangeChange} />
+    </div>
+  );
+
+  return (
+    <BaseMathObjectSettingsContainer
+      containerId={containerId}
+      settings={settings}
+      updateSettings={updateSettings}
+      startIndex={startIndex}
+      showDescription={showDescription}
+      objectType="coefficient"
+    >
+      {() => <div>{interfaceType === "simple" ? renderSimpleMode() : renderComplexMode()}</div>}
+    </BaseMathObjectSettingsContainer>
+  );
 };
 
 export default CoefficientSettingsContainer;
-
-
-

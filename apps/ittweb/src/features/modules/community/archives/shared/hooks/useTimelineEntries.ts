@@ -1,11 +1,11 @@
-import { useCallback } from 'react';
-import type { ArchiveEntry } from '@/types/archive';
-import type { Entry } from '@/types/entry';
-import { convertEntryToArchiveEntry } from '@/features/modules/community/archives/shared/utils/entryToArchiveEntry';
-import { timestampToIso } from '@websites/infrastructure/utils';
-import { createComponentLogger } from '@websites/infrastructure/logging';
+import { useCallback } from "react";
+import type { ArchiveEntry } from "@/types/archive";
+import type { Entry } from "@/types/entry";
+import { convertEntryToArchiveEntry } from "@/features/modules/community/archives/shared/utils/entryToArchiveEntry";
+import { timestampToIso } from "@websites/infrastructure/utils";
+import { createComponentLogger } from "@websites/infrastructure/logging";
 
-const logger = createComponentLogger('useTimelineEntries');
+const logger = createComponentLogger("useTimelineEntries");
 
 interface UseTimelineEntriesProps {
   setEntries: (entries: ArchiveEntry[]) => void;
@@ -16,11 +16,7 @@ interface UseTimelineEntriesProps {
 /**
  * Hook for loading and managing timeline entries
  */
-export function useTimelineEntries({
-  setEntries,
-  setLoading,
-  setError,
-}: UseTimelineEntriesProps) {
+export function useTimelineEntries({ setEntries, setLoading, setError }: UseTimelineEntriesProps) {
   const loadAllEntries = useCallback(async () => {
     try {
       setLoading(true);
@@ -29,11 +25,17 @@ export function useTimelineEntries({
       const cacheBuster = `?t=${Date.now()}`;
       const [archiveEntriesResponse, regularEntriesResponse] = await Promise.all([
         fetch(`/api/archives${cacheBuster}`).catch((err) => {
-          logger.error('Failed to fetch archive entries', err instanceof Error ? err : new Error(String(err)));
+          logger.error(
+            "Failed to fetch archive entries",
+            err instanceof Error ? err : new Error(String(err))
+          );
           return null;
         }),
         fetch(`/api/entries${cacheBuster}`).catch((err) => {
-          logger.error('Failed to fetch regular entries', err instanceof Error ? err : new Error(String(err)));
+          logger.error(
+            "Failed to fetch regular entries",
+            err instanceof Error ? err : new Error(String(err))
+          );
           return null;
         }),
       ]);
@@ -42,7 +44,7 @@ export function useTimelineEntries({
       let archiveEntries: ArchiveEntry[] = [];
       if (archiveEntriesResponse && archiveEntriesResponse.ok) {
         const archiveData = await archiveEntriesResponse.json();
-        const rawArchiveEntries = Array.isArray(archiveData) ? archiveData : (archiveData.data || []);
+        const rawArchiveEntries = Array.isArray(archiveData) ? archiveData : archiveData.data || [];
         archiveEntries = rawArchiveEntries.filter((entry: ArchiveEntry) => !entry.isDeleted);
       }
 
@@ -50,7 +52,7 @@ export function useTimelineEntries({
       let regularEntries: Entry[] = [];
       if (regularEntriesResponse && regularEntriesResponse.ok) {
         const entriesData = await regularEntriesResponse.json();
-        regularEntries = Array.isArray(entriesData) ? entriesData : (entriesData.data || []);
+        regularEntries = Array.isArray(entriesData) ? entriesData : entriesData.data || [];
       }
 
       // Filter out deleted entries and convert to ArchiveEntry format
@@ -67,9 +69,9 @@ export function useTimelineEntries({
 
       setEntries(sortedEntries);
     } catch (err) {
-      const error = err instanceof Error ? err : new Error('Unknown error loading entries');
-      logger.error('Failed to load entries', error);
-      setError('Failed to load timeline. Please try again later.');
+      const error = err instanceof Error ? err : new Error("Unknown error loading entries");
+      logger.error("Failed to load entries", error);
+      setError("Failed to load timeline. Please try again later.");
     } finally {
       setLoading(false);
     }
@@ -84,7 +86,7 @@ export function useTimelineEntries({
 
       try {
         const entryResponse = await fetch(`/api/entries/${entryId}?t=${Date.now()}`, {
-          cache: 'no-store',
+          cache: "no-store",
         });
 
         if (entryResponse.ok) {
@@ -111,7 +113,7 @@ export function useTimelineEntries({
           }
         }
       } catch (error) {
-        logger.warn('Failed to fetch new entry after creation', { entryId, error });
+        logger.warn("Failed to fetch new entry after creation", { entryId, error });
         await loadAllEntries();
       }
     },
@@ -123,6 +125,3 @@ export function useTimelineEntries({
     addNewEntry,
   };
 }
-
-
-

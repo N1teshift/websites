@@ -62,7 +62,6 @@ Key routes currently exposed via the Next.js `pages/` directory:
 
 The application supports multiple languages using `next-i18next`. Refer to the auto-generated [Documentation](#documentation) for details on how internationalization might be implemented within specific components or features.
 
-
 ## Documentation
 
 Documentation is curated manually as Markdown and organized inside `docs/`:

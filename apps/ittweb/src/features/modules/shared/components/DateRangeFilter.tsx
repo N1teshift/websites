@@ -1,9 +1,9 @@
-import React from 'react';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import { Button } from '@/features/infrastructure/components';
-import { Card } from '@/features/infrastructure/components';
-import type { DateRangePreset } from '../types';
+import React from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { Button } from "@/features/infrastructure/components";
+import { Card } from "@/features/infrastructure/components";
+import type { DateRangePreset } from "../types";
 
 interface DateRangeFilterProps {
   startDate?: Date | null;
@@ -14,22 +14,22 @@ interface DateRangeFilterProps {
 
 const DEFAULT_PRESETS: DateRangePreset[] = [
   {
-    label: 'Last Week',
+    label: "Last Week",
     start: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
     end: new Date(),
   },
   {
-    label: 'Last Month',
+    label: "Last Month",
     start: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
     end: new Date(),
   },
   {
-    label: 'Last Year',
+    label: "Last Year",
     start: new Date(Date.now() - 365 * 24 * 60 * 60 * 1000),
     end: new Date(),
   },
   {
-    label: 'All Time',
+    label: "All Time",
     start: new Date(0),
     end: new Date(),
   },
@@ -93,6 +93,3 @@ export function DateRangeFilter({
     </Card>
   );
 }
-
-
-

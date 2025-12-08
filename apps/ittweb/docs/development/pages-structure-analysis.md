@@ -9,6 +9,7 @@ This document provides a comprehensive analysis of the `src/pages/` directory st
 ## Current Structure Overview
 
 ### Root Level Pages
+
 - **Infrastructure**: `_app.tsx`, `_document.tsx`, `meta.tsx`
 - **Static/Info**: `privacy.tsx`, `download.tsx`, `development.tsx`
 - **Feature Pages**: `index.tsx`, `settings.tsx`, `archives.tsx`
@@ -19,9 +20,11 @@ This document provides a comprehensive analysis of the `src/pages/` directory st
 ## 1. Page Implementation Patterns
 
 ### Pattern A: Thin Wrappers (5-15 lines)
+
 **Purpose**: Minimal page components that delegate to feature components
 
 **Examples**:
+
 - `meta.tsx` (14 lines)
 - `archives.tsx` (16 lines)
 - `players/index.tsx` (20 lines)
@@ -29,6 +32,7 @@ This document provides a comprehensive analysis of the `src/pages/` directory st
 - `classes/[className].tsx` (16 lines)
 
 **Characteristics**:
+
 - Import feature component
 - Wrap with `ErrorBoundary`
 - Pass `pageNamespaces` prop
@@ -37,15 +41,18 @@ This document provides a comprehensive analysis of the `src/pages/` directory st
 **Assessment**: ✅ Good pattern - pages act as routing layer
 
 ### Pattern B: Medium Pages (30-100 lines)
+
 **Purpose**: Pages with some page-level logic but mostly feature components
 
 **Examples**:
+
 - `games/index.tsx` (30 lines) - Filter state management
 - `standings/index.tsx` (31 lines) - Category state
 - `tools/index.tsx` (73 lines) - Navigation/listing page
 - `guides/index.tsx` (77 lines) - Navigation/listing page
 
 **Characteristics**:
+
 - Some local state management
 - Feature component composition
 - Basic routing/navigation logic
@@ -53,9 +60,11 @@ This document provides a comprehensive analysis of the `src/pages/` directory st
 **Assessment**: ✅ Acceptable - appropriate level of page logic
 
 ### Pattern C: Heavy Pages (200+ lines)
+
 **Purpose**: Pages with significant business logic and state management
 
 **Examples**:
+
 - `settings.tsx` (582 lines) ⚠️ **TOO LARGE**
 - `games/[id].tsx` (367 lines) ⚠️ **Complex**
 - `entries/[id].tsx` (327 lines) ⚠️ **Complex**
@@ -64,6 +73,7 @@ This document provides a comprehensive analysis of the `src/pages/` directory st
 - `analytics/classes/index.tsx` (175 lines) ⚠️ **Complex**
 
 **Characteristics**:
+
 - Extensive state management
 - Multiple API calls
 - Complex form handling
@@ -76,16 +86,17 @@ This document provides a comprehensive analysis of the `src/pages/` directory st
 
 ### Mismatched Locations
 
-| Page Location | Feature Location | Issue | Recommendation |
-|--------------|------------------|-------|----------------|
-| `meta.tsx` (root) | `analytics-group/meta` | Page at root, feature in analytics | Move to `analytics/meta.tsx` |
-| `archives.tsx` (root) | `community/archives` | Page at root, feature in community | Move to `community/archives.tsx` |
-| `scheduled-games/[id]/` | `game-management/scheduled-games` | Empty directory | Create page or remove directory |
-| `test/create-game.tsx` | N/A | Legacy redirect in pages | Remove or move outside pages |
+| Page Location           | Feature Location                  | Issue                              | Recommendation                   |
+| ----------------------- | --------------------------------- | ---------------------------------- | -------------------------------- |
+| `meta.tsx` (root)       | `analytics-group/meta`            | Page at root, feature in analytics | Move to `analytics/meta.tsx`     |
+| `archives.tsx` (root)   | `community/archives`              | Page at root, feature in community | Move to `community/archives.tsx` |
+| `scheduled-games/[id]/` | `game-management/scheduled-games` | Empty directory                    | Create page or remove directory  |
+| `test/create-game.tsx`  | N/A                               | Legacy redirect in pages           | Remove or move outside pages     |
 
 ### Confusing Separation
 
 **Problem**: Two different `classes/` directories with different purposes:
+
 - `analytics/classes/` - Analytics/statistics pages
 - `classes/` - Content/guide pages
 
@@ -98,18 +109,21 @@ This document provides a comprehensive analysis of the `src/pages/` directory st
 ### getStaticProps Usage
 
 **Correct Usage** (Static content):
+
 - `guides/` - Static guide content
 - `download.tsx` - Static download page
 - `development.tsx` - Static info page
 - `privacy.tsx` - Static policy page
 
 **Questionable Usage**:
+
 - `tools/` - May need dynamic data
 - `players/compare.tsx` - Uses getStaticProps but may need dynamic data
 
 ### getServerSideProps Usage
 
 **Correct Usage** (Auth-required or dynamic):
+
 - `settings.tsx` - User data, requires auth
 - `posts/[slug].tsx` - Dynamic post content, permissions
 - `posts/edit/[id].tsx` - Requires auth, permissions
@@ -122,6 +136,7 @@ This document provides a comprehensive analysis of the `src/pages/` directory st
 **Issue**: `analytics/classes/index.tsx` uses `useEffect` for data fetching
 
 **Problems**:
+
 - No SSR benefits
 - Slower initial load
 - No error handling during SSR
@@ -134,12 +149,14 @@ This document provides a comprehensive analysis of the `src/pages/` directory st
 ### Missing Patterns
 
 **Inconsistent ErrorBoundary Usage**:
+
 - Some pages use it: `meta.tsx`, `archives.tsx`, `players/index.tsx`
 - Others don't: `settings.tsx`, `download.tsx`, `development.tsx`
 
 **Recommendation**: Standardize - all pages should wrap content in `ErrorBoundary`
 
 **Inconsistent i18n Setup**:
+
 - Some pages define `pageNamespaces` and use `getStaticPropsWithTranslations`
 - Others don't set up i18n at all
 - Pattern varies even within same feature area
@@ -151,6 +168,7 @@ This document provides a comprehensive analysis of the `src/pages/` directory st
 #### `settings.tsx` (582 lines)
 
 **Current Structure**:
+
 - User profile display
 - Account deletion dialog
 - Admin tools (3 separate dialogs)
@@ -158,6 +176,7 @@ This document provides a comprehensive analysis of the `src/pages/` directory st
 - Permission checks
 
 **Proposed Split**:
+
 ```
 user/settings/
 ├── index.tsx                    # Main page (100-150 lines)
@@ -174,11 +193,13 @@ user/settings/
 #### `games/[id].tsx` (367 lines)
 
 **Issues**:
+
 - Join/leave/edit/delete logic in page component
 - Multiple state variables
 - Complex permission checks
 
 **Recommendation**: Extract to custom hooks:
+
 - `useGameActions.ts` - Join/leave/edit/delete
 - `useGamePermissions.ts` - Permission checks
 - `useGameState.ts` - State management
@@ -186,6 +207,7 @@ user/settings/
 #### `entries/[id].tsx` (327 lines)
 
 **Issues**:
+
 - MDX rendering logic mixed with page logic
 - Delete dialog inline
 - Complex serialization
@@ -195,6 +217,7 @@ user/settings/
 #### `index.tsx` (218 lines)
 
 **Issues**:
+
 - Entry form modal handling
 - Schedule form modal handling
 - Timeline ref management
@@ -206,15 +229,18 @@ user/settings/
 ### Empty/Broken Routes
 
 **`scheduled-games/[id]/` Directory**:
+
 - Directory exists but no page file
 - Feature exists: `game-management/scheduled-games`
 - Other pages reference scheduled games functionality
 
-**Action Required**: 
+**Action Required**:
+
 - Create `scheduled-games/[id].tsx` page, OR
 - Remove empty directory if not needed
 
 **`test/create-game.tsx`**:
+
 - Legacy redirect page
 - Redirects to `/scheduled-games` (but no page exists there)
 - Should not be in `pages/` directory
@@ -224,11 +250,13 @@ user/settings/
 ### Inconsistent Organization
 
 **Well-Organized**:
+
 - `players/` - Dedicated directory with index and dynamic routes
 - `games/` - Dedicated directory with index and dynamic routes
 - `posts/` - Dedicated directory with nested routes
 
 **Poorly-Organized**:
+
 - `archives.tsx` - Single file at root, should be in `community/`
 - `meta.tsx` - Single file at root, should be in `analytics/`
 - `settings.tsx` - Single file at root, should be in `user/`
@@ -388,18 +416,21 @@ pages/
 ## 9. Migration Strategy
 
 ### Phase 1: Critical Fixes (Week 1)
+
 1. Split `settings.tsx`
 2. Remove `test/create-game.tsx`
 3. Fix `scheduled-games/[id]/` issue
 4. Move `archives.tsx` and `meta.tsx`
 
 ### Phase 2: Refactoring (Week 2)
+
 5. Extract logic from `games/[id].tsx`
 6. Standardize ErrorBoundary usage
 7. Standardize i18n setup
 8. Fix analytics data fetching
 
 ### Phase 3: Organization (Week 3)
+
 9. Group static pages
 10. Rename analytics classes directory
 11. Extract modals from index.tsx
@@ -421,4 +452,3 @@ pages/
 - [Code Patterns](./patterns/)
 - [API Route Patterns](./patterns/api-route-patterns.md)
 - [Architecture](./architecture.md)
-

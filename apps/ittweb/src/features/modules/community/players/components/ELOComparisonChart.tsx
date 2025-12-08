@@ -1,6 +1,6 @@
-import React, { Suspense, lazy } from 'react';
-import { Card } from '@/features/infrastructure/components';
-import type { PlayerStats } from '../types';
+import React, { Suspense, lazy } from "react";
+import { Card } from "@/features/infrastructure/components";
+import type { PlayerStats } from "../types";
 
 interface ELOComparisonChartProps {
   eloComparison: Array<Record<string, string | number>>;
@@ -9,11 +9,12 @@ interface ELOComparisonChartProps {
 
 // Lazy load Recharts to reduce initial bundle size
 const ChartContent = lazy(async () => {
-  const recharts = await import('recharts');
+  const recharts = await import("recharts");
   return {
     default: ({ eloComparison, players }: ELOComparisonChartProps) => {
-      const { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } = recharts;
-      
+      const { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } =
+        recharts;
+
       return (
         <Card variant="medieval" className="p-6">
           <h2 className="text-2xl font-semibold text-amber-400 mb-4">ELO Comparison</h2>
@@ -23,25 +24,21 @@ const ChartContent = lazy(async () => {
               <XAxis
                 dataKey="date"
                 stroke="#d97706"
-                tick={{ fill: '#d97706' }}
-                style={{ fontSize: '12px' }}
+                tick={{ fill: "#d97706" }}
+                style={{ fontSize: "12px" }}
               />
-              <YAxis
-                stroke="#d97706"
-                tick={{ fill: '#d97706' }}
-                style={{ fontSize: '12px' }}
-              />
+              <YAxis stroke="#d97706" tick={{ fill: "#d97706" }} style={{ fontSize: "12px" }} />
               <Tooltip
                 contentStyle={{
-                  backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                  border: '1px solid rgba(217, 119, 6, 0.3)',
-                  borderRadius: '4px',
-                  color: '#d97706',
+                  backgroundColor: "rgba(0, 0, 0, 0.8)",
+                  border: "1px solid rgba(217, 119, 6, 0.3)",
+                  borderRadius: "4px",
+                  color: "#d97706",
                 }}
               />
-              <Legend wrapperStyle={{ color: '#d97706' }} />
+              <Legend wrapperStyle={{ color: "#d97706" }} />
               {players.map((player, index) => {
-                const colors = ['#d97706', '#10b981', '#3b82f6', '#f59e0b', '#ef4444', '#8b5cf6'];
+                const colors = ["#d97706", "#10b981", "#3b82f6", "#f59e0b", "#ef4444", "#8b5cf6"];
                 return (
                   <Line
                     key={player.name}
@@ -91,5 +88,3 @@ function ELOComparisonChartComponent({ eloComparison, players }: ELOComparisonCh
 const ELOComparisonChart = React.memo(ELOComparisonChartComponent);
 
 export default ELOComparisonChart;
-
-

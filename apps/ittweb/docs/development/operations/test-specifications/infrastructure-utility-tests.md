@@ -5,6 +5,7 @@ Test specifications for infrastructure components and utility functions.
 ## Infrastructure Tests
 
 ### Firebase Configuration
+
 - [ ] `src/features/infrastructure/api/firebase/config.ts`
   - Test Firebase client configuration initialization
   - Test environment variable validation
@@ -12,6 +13,7 @@ Test specifications for infrastructure components and utility functions.
   - Test Firebase app singleton behavior
 
 ### Firebase Admin
+
 - [ ] `src/features/infrastructure/api/firebase/admin.ts`
   - Test admin SDK initialization
   - Test `getFirestoreAdmin()` returns singleton instance
@@ -19,12 +21,14 @@ Test specifications for infrastructure components and utility functions.
   - Test admin initialization error handling
 
 ### Firebase Client
+
 - [ ] `src/features/infrastructure/api/firebase/firebaseClient.ts`
   - Test client SDK initialization
   - Test `getFirestoreInstance()` returns singleton
   - Test client initialization error handling
 
 ### API Route Handlers
+
 - [ ] `src/features/infrastructure/api/routeHandlers.ts`
   - Test `createApiHandler` with GET method
   - Test `createApiHandler` with POST method
@@ -38,12 +42,14 @@ Test specifications for infrastructure components and utility functions.
   - Test timing metrics
 
 ### Authentication
+
 - [ ] `src/features/infrastructure/auth/index.ts`
   - Test session retrieval
   - Test authentication status checking
   - Test user data extraction from session
 
 ### Logging System
+
 - [ ] `src/features/infrastructure/logging/logger.ts`
   - Test logger initialization
   - Test log levels (debug, info, warn, error)
@@ -61,6 +67,7 @@ Test specifications for infrastructure components and utility functions.
 ## Utility Functions Tests
 
 ### Object Utils
+
 - [ ] `src/features/infrastructure/utils/objectUtils.ts`
   - Test `removeUndefined` removes undefined values
   - Test `removeUndefined` preserves null values
@@ -70,6 +77,7 @@ Test specifications for infrastructure components and utility functions.
   - Test `removeUndefined` maintains type safety
 
 ### Timestamp Utils
+
 - [ ] `src/features/infrastructure/utils/timestampUtils.ts`
   - Test `timestampToIso` with Firestore Timestamp
   - Test `timestampToIso` with Admin SDK Timestamp
@@ -80,6 +88,7 @@ Test specifications for infrastructure components and utility functions.
   - Test ISO string format validation
 
 ### User Role Utils
+
 - [ ] `src/features/infrastructure/utils/userRoleUtils.ts`
   - Test `hasRole` with all role combinations
   - Test `hasRole` role hierarchy (developer > admin > moderator > premium > user)
@@ -92,6 +101,7 @@ Test specifications for infrastructure components and utility functions.
   - Test DEFAULT_USER_ROLE constant
 
 ### Timezone Utils
+
 - [ ] `src/features/modules/scheduled-games/utils/timezoneUtils.ts`
   - Test `getUserTimezone` in browser environment
   - Test `getUserTimezone` in server environment (returns UTC)
@@ -106,6 +116,7 @@ Test specifications for infrastructure components and utility functions.
   - Test `getTimezoneAbbreviation` handles invalid timezone gracefully
 
 ### Icon Mapper Utils
+
 - [ ] `src/features/modules/tools/icon-mapper.utils.ts`
   - Test `formatCategoryForExport` formats category correctly
   - Test `formatCategoryForExport` sorts entries alphabetically
@@ -118,6 +129,7 @@ Test specifications for infrastructure components and utility functions.
   - Test export functions with special characters in keys/values
 
 ### Archive Form Utils
+
 - [ ] `src/features/modules/archives/utils/archiveFormUtils.ts`
   - Test date formatting utilities
   - Test form data transformation
@@ -128,4 +140,3 @@ Test specifications for infrastructure components and utility functions.
 - [Service Layer Tests](./service-layer-tests.md)
 - [API Route Tests](./api-route-tests.md)
 - [Testing Guide](../testing-guide.md)
-

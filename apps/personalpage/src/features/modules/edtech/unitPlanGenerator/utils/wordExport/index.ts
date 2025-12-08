@@ -1,5 +1,5 @@
 // Export Docxtemplater functionality
-export { exportUnitPlanWithDocxtemplater, getDefaultTemplateStructure } from './docxtemplaterExport';
-
-
-
+export {
+  exportUnitPlanWithDocxtemplater,
+  getDefaultTemplateStructure,
+} from "./docxtemplaterExport";

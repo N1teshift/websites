@@ -7,6 +7,7 @@ CRUD (Create, Read, Update, Delete) operations for games.
 List games with optional filters.
 
 **Query Parameters**:
+
 - `gameState` (string, optional) - `'scheduled' | 'completed'`
 - `startDate` (string, optional) - ISO date string
 - `endDate` (string, optional) - ISO date string
@@ -21,11 +22,13 @@ List games with optional filters.
 - `cursor` (string, optional) - Pagination cursor
 
 **Example Request**:
+
 ```
 GET /api/games?gameState=completed&category=3v3&startDate=2025-01-01&limit=10
 ```
 
 **Response**:
+
 ```typescript
 {
   success: true;
@@ -38,6 +41,7 @@ GET /api/games?gameState=completed&category=3v3&startDate=2025-01-01&limit=10
 ```
 
 Example response:
+
 ```json
 {
   "success": true,
@@ -69,11 +73,13 @@ Example response:
 Get single game by ID.
 
 **Example Request**:
+
 ```
 GET /api/games/abc123def456
 ```
 
 **Response**:
+
 ```typescript
 {
   success: true;
@@ -82,6 +88,7 @@ GET /api/games/abc123def456
 ```
 
 Example response:
+
 ```json
 {
   "success": true,
@@ -115,6 +122,7 @@ Example response:
 ```
 
 **Error Response** (404 Not Found):
+
 ```json
 {
   "success": false,
@@ -131,6 +139,7 @@ Create a new game. **Requires authentication.**
 **Request Body**:
 
 For scheduled games:
+
 ```typescript
 {
   gameState: 'scheduled';
@@ -147,6 +156,7 @@ For scheduled games:
 ```
 
 Example request:
+
 ```json
 {
   "gameState": "scheduled",
@@ -161,6 +171,7 @@ Example request:
 ```
 
 For completed games:
+
 ```typescript
 {
   gameState: 'completed';
@@ -194,6 +205,7 @@ For completed games:
 ```
 
 Example request:
+
 ```json
 {
   "gameState": "completed",
@@ -222,6 +234,7 @@ Example request:
 ```
 
 **Response**:
+
 ```typescript
 {
   success: true;
@@ -230,6 +243,7 @@ Example request:
 ```
 
 Example response:
+
 ```json
 {
   "success": true,
@@ -238,6 +252,7 @@ Example response:
 ```
 
 **Error Responses**:
+
 ```typescript
 // 401 Unauthorized
 {
@@ -259,11 +274,12 @@ Update game. **Requires authentication.**
 **Authentication**: Session cookie required (Discord OAuth)
 
 **Request Body**:
+
 ```typescript
 {
   // Common fields
   creatorName?: string;
-  
+
   // Scheduled game updates
   scheduledDateTime?: string;
   timezone?: string;
@@ -273,7 +289,7 @@ Update game. **Requires authentication.**
   gameVersion?: string;
   gameLength?: number;
   modes?: string[];
-  
+
   // Completed game updates
   datetime?: string;
   duration?: number;
@@ -286,6 +302,7 @@ Update game. **Requires authentication.**
 ```
 
 Example request:
+
 ```json
 {
   "gamename": "Updated Game Name",
@@ -295,6 +312,7 @@ Example request:
 ```
 
 **Response**:
+
 ```typescript
 {
   success: true;
@@ -303,6 +321,7 @@ Example request:
 ```
 
 **Error Responses**:
+
 ```json
 // 401 Unauthorized
 {
@@ -324,11 +343,13 @@ Delete game. **Requires authentication (admin only).**
 **Authentication**: Session cookie required, admin role only
 
 **Example Request**:
+
 ```
 DELETE /api/games/abc123def456
 ```
 
 **Response**:
+
 ```typescript
 {
   success: true;
@@ -336,6 +357,7 @@ DELETE /api/games/abc123def456
 ```
 
 Example response:
+
 ```json
 {
   "success": true
@@ -343,6 +365,7 @@ Example response:
 ```
 
 **Error Responses**:
+
 ```json
 // 401 Unauthorized
 {
@@ -368,4 +391,3 @@ Example response:
 - [Games API Overview](../games.md)
 - [Replay Operations](./replay-operations.md)
 - [API Reference](../README.md)
-

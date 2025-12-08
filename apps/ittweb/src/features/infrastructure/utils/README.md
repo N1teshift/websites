@@ -9,19 +9,19 @@ All utility functions have been migrated to the shared package. This directory n
 Import utilities from the shared package:
 
 ```typescript
-import { 
-  timestampToIso, 
+import {
+  timestampToIso,
   removeUndefined,
   cn,
   getElementsWithAriaLabels,
   // ... other utilities
-} from '@websites/infrastructure/utils';
+} from "@websites/infrastructure/utils";
 ```
 
 Or use the re-exported index:
 
 ```typescript
-import { timestampToIso } from '@/features/infrastructure/utils';
+import { timestampToIso } from "@/features/infrastructure/utils";
 ```
 
 ## Project-Specific Utilities

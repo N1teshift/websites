@@ -1,40 +1,42 @@
-import { act, renderHook } from '@testing-library/react';
-import { useArchivesPage } from '../useArchivesPage';
-import type { ArchiveEntry } from '@/types/archive';
+import { act, renderHook } from "@testing-library/react";
+import { useArchivesPage } from "../useArchivesPage";
+import type { ArchiveEntry } from "@/types/archive";
 
 // Mock archiveService
-const mockSortArchiveEntries = jest.fn((entries: ArchiveEntry[], order: 'newest' | 'oldest') => entries);
+const mockSortArchiveEntries = jest.fn(
+  (entries: ArchiveEntry[], order: "newest" | "oldest") => entries
+);
 
-jest.mock('@/features/infrastructure/lib/archiveService', () => ({
-  sortArchiveEntries: jest.fn((entries: ArchiveEntry[], order: 'newest' | 'oldest') => 
+jest.mock("@/features/infrastructure/lib/archiveService", () => ({
+  sortArchiveEntries: jest.fn((entries: ArchiveEntry[], order: "newest" | "oldest") =>
     mockSortArchiveEntries(entries, order)
   ),
 }));
 
-describe('useArchivesPage', () => {
+describe("useArchivesPage", () => {
   const mockDatedEntry: ArchiveEntry = {
-    id: 'archive1',
-    title: 'Dated Archive',
-    content: 'Content',
-    creatorName: 'Author',
+    id: "archive1",
+    title: "Dated Archive",
+    content: "Content",
+    creatorName: "Author",
     dateInfo: {
-      type: 'single',
-      singleDate: '2024-01-15',
+      type: "single",
+      singleDate: "2024-01-15",
     },
-    createdAt: '2024-01-15T00:00:00Z',
-    updatedAt: '2024-01-15T00:00:00Z',
+    createdAt: "2024-01-15T00:00:00Z",
+    updatedAt: "2024-01-15T00:00:00Z",
   };
 
   const mockUndatedEntry: ArchiveEntry = {
-    id: 'archive2',
-    title: 'Undated Archive',
-    content: 'Content',
-    creatorName: 'Author',
+    id: "archive2",
+    title: "Undated Archive",
+    content: "Content",
+    creatorName: "Author",
     dateInfo: {
-      type: 'undated',
+      type: "undated",
     },
-    createdAt: '2024-01-15T00:00:00Z',
-    updatedAt: '2024-01-15T00:00:00Z',
+    createdAt: "2024-01-15T00:00:00Z",
+    updatedAt: "2024-01-15T00:00:00Z",
   };
 
   beforeEach(() => {
@@ -42,8 +44,8 @@ describe('useArchivesPage', () => {
     mockSortArchiveEntries.mockImplementation((entries) => entries);
   });
 
-  describe('initializes state correctly', () => {
-    it('should initialize with default values', () => {
+  describe("initializes state correctly", () => {
+    it("should initialize with default values", () => {
       // Act
       const { result } = renderHook(() => useArchivesPage());
 
@@ -57,12 +59,12 @@ describe('useArchivesPage', () => {
       expect(result.current.state.editingEntry).toBeNull();
       expect(result.current.state.showImageModal).toBe(false);
       expect(result.current.state.modalImage).toBeNull();
-      expect(result.current.state.sortOrder).toBe('newest');
+      expect(result.current.state.sortOrder).toBe("newest");
     });
   });
 
-  describe('handles state updates', () => {
-    it('should update entries', () => {
+  describe("handles state updates", () => {
+    it("should update entries", () => {
       // Arrange
       const { result } = renderHook(() => useArchivesPage());
 
@@ -76,7 +78,7 @@ describe('useArchivesPage', () => {
       expect(mockSortArchiveEntries).toHaveBeenCalled();
     });
 
-    it('should update loading state', () => {
+    it("should update loading state", () => {
       // Arrange
       const { result } = renderHook(() => useArchivesPage());
 
@@ -89,20 +91,20 @@ describe('useArchivesPage', () => {
       expect(result.current.state.loading).toBe(false);
     });
 
-    it('should update error state', () => {
+    it("should update error state", () => {
       // Arrange
       const { result } = renderHook(() => useArchivesPage());
 
       // Act
       act(() => {
-        result.current.setError('Test error');
+        result.current.setError("Test error");
       });
 
       // Assert
-      expect(result.current.state.error).toBe('Test error');
+      expect(result.current.state.error).toBe("Test error");
     });
 
-    it('should update showForm state', () => {
+    it("should update showForm state", () => {
       // Arrange
       const { result } = renderHook(() => useArchivesPage());
 
@@ -115,7 +117,7 @@ describe('useArchivesPage', () => {
       expect(result.current.state.showForm).toBe(true);
     });
 
-    it('should update showEditForm state', () => {
+    it("should update showEditForm state", () => {
       // Arrange
       const { result } = renderHook(() => useArchivesPage());
 
@@ -128,7 +130,7 @@ describe('useArchivesPage', () => {
       expect(result.current.state.showEditForm).toBe(true);
     });
 
-    it('should update editingEntry state', () => {
+    it("should update editingEntry state", () => {
       // Arrange
       const { result } = renderHook(() => useArchivesPage());
 
@@ -141,7 +143,7 @@ describe('useArchivesPage', () => {
       expect(result.current.state.editingEntry).toBe(mockDatedEntry);
     });
 
-    it('should update showImageModal state', () => {
+    it("should update showImageModal state", () => {
       // Arrange
       const { result } = renderHook(() => useArchivesPage());
 
@@ -154,10 +156,10 @@ describe('useArchivesPage', () => {
       expect(result.current.state.showImageModal).toBe(true);
     });
 
-    it('should update modalImage state', () => {
+    it("should update modalImage state", () => {
       // Arrange
       const { result } = renderHook(() => useArchivesPage());
-      const modalImage = { url: 'https://example.com/image.jpg', title: 'Test Image' };
+      const modalImage = { url: "https://example.com/image.jpg", title: "Test Image" };
 
       // Act
       act(() => {
@@ -168,22 +170,22 @@ describe('useArchivesPage', () => {
       expect(result.current.state.modalImage).toEqual(modalImage);
     });
 
-    it('should update sortOrder state', () => {
+    it("should update sortOrder state", () => {
       // Arrange
       const { result } = renderHook(() => useArchivesPage());
 
       // Act
       act(() => {
-        result.current.setSortOrder('oldest');
+        result.current.setSortOrder("oldest");
       });
 
       // Assert
-      expect(result.current.state.sortOrder).toBe('oldest');
+      expect(result.current.state.sortOrder).toBe("oldest");
     });
   });
 
-  describe('computes sorted entries', () => {
-    it('should sort entries when unsortedEntries change', () => {
+  describe("computes sorted entries", () => {
+    it("should sort entries when unsortedEntries change", () => {
       // Arrange
       const { result } = renderHook(() => useArchivesPage());
 
@@ -196,7 +198,7 @@ describe('useArchivesPage', () => {
       expect(mockSortArchiveEntries).toHaveBeenCalled();
     });
 
-    it('should re-sort when sortOrder changes', () => {
+    it("should re-sort when sortOrder changes", () => {
       // Arrange
       const { result } = renderHook(() => useArchivesPage());
 
@@ -206,7 +208,7 @@ describe('useArchivesPage', () => {
 
       // Act
       act(() => {
-        result.current.setSortOrder('oldest');
+        result.current.setSortOrder("oldest");
       });
 
       // Assert
@@ -214,8 +216,8 @@ describe('useArchivesPage', () => {
     });
   });
 
-  describe('computes dated and undated entries', () => {
-    it('should filter dated entries', () => {
+  describe("computes dated and undated entries", () => {
+    it("should filter dated entries", () => {
       // Arrange
       const { result } = renderHook(() => useArchivesPage());
 
@@ -228,7 +230,7 @@ describe('useArchivesPage', () => {
       expect(result.current.datedEntries.length).toBe(1);
     });
 
-    it('should filter undated entries', () => {
+    it("should filter undated entries", () => {
       // Arrange
       const { result } = renderHook(() => useArchivesPage());
 
@@ -241,7 +243,7 @@ describe('useArchivesPage', () => {
       expect(result.current.undatedEntries.length).toBe(1);
     });
 
-    it('should return empty arrays when no entries', () => {
+    it("should return empty arrays when no entries", () => {
       // Arrange
       const { result } = renderHook(() => useArchivesPage());
 
@@ -251,13 +253,13 @@ describe('useArchivesPage', () => {
     });
   });
 
-  describe('utility functions', () => {
-    it('should reset error', () => {
+  describe("utility functions", () => {
+    it("should reset error", () => {
       // Arrange
       const { result } = renderHook(() => useArchivesPage());
 
       act(() => {
-        result.current.setError('Test error');
+        result.current.setError("Test error");
       });
 
       // Act
@@ -269,7 +271,7 @@ describe('useArchivesPage', () => {
       expect(result.current.state.error).toBeNull();
     });
 
-    it('should reset all form states', () => {
+    it("should reset all form states", () => {
       // Arrange
       const { result } = renderHook(() => useArchivesPage());
 
@@ -278,7 +280,7 @@ describe('useArchivesPage', () => {
         result.current.setShowEditForm(true);
         result.current.setEditingEntry(mockDatedEntry);
         result.current.setShowImageModal(true);
-        result.current.setModalImage({ url: 'test.jpg', title: 'Test' });
+        result.current.setModalImage({ url: "test.jpg", title: "Test" });
       });
 
       // Act
@@ -295,6 +297,3 @@ describe('useArchivesPage', () => {
     });
   });
 });
-
-
-

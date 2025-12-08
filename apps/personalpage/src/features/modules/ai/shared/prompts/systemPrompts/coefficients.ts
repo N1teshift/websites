@@ -55,19 +55,16 @@ Identify the specific phrases or sentences from the original user prompt that de
 const INTRODUCTION = `
 You are a mathematical query analyzer.
 Your ONLY job is to identify the coefficients settings from a given user's request.
-`
+`;
 
 /**
  * The complete system prompt string for the Coefficients settings extractor.
  * Combines introduction, collection properties, and instructions for extracting sub-prompts.
  */
-export const COEFFICIENTS_SYSTEM_PROMPT =`
+export const COEFFICIENTS_SYSTEM_PROMPT = `
 ${INTRODUCTION}
 
 ${PROPERTIES}
   
 ${SUB_OBJECT_PROMPT_PARTS}
-`
-
-
-
+`;

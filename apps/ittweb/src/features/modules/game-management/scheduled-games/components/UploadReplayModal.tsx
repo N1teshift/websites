@@ -1,6 +1,6 @@
-import React, { useState, FormEvent } from 'react';
-import type { Game } from '@/features/modules/game-management/games/types';
-import { useModalAccessibility } from '@websites/infrastructure/hooks';
+import React, { useState, FormEvent } from "react";
+import type { Game } from "@/features/modules/game-management/games/types";
+import { useModalAccessibility } from "@websites/infrastructure/hooks";
 
 interface ApiResponse {
   success?: boolean;
@@ -19,7 +19,7 @@ interface UploadReplayModalProps {
 export default function UploadReplayModal({ game, onClose, onSuccess }: UploadReplayModalProps) {
   const [file, setFile] = useState<File | null>(null);
   const [submitting, setSubmitting] = useState(false);
-  const [status, setStatus] = useState<'idle' | 'uploading' | 'parsing' | 'processing'>('idle');
+  const [status, setStatus] = useState<"idle" | "uploading" | "parsing" | "processing">("idle");
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
@@ -33,7 +33,7 @@ export default function UploadReplayModal({ game, onClose, onSuccess }: UploadRe
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!file) {
-      setError('Please select a replay file');
+      setError("Please select a replay file");
       return;
     }
 
@@ -41,32 +41,32 @@ export default function UploadReplayModal({ game, onClose, onSuccess }: UploadRe
       setSubmitting(true);
       setError(null);
       setSuccessMessage(null);
-      setStatus('uploading');
+      setStatus("uploading");
 
       const formData = new FormData();
-      formData.append('replay', file);
+      formData.append("replay", file);
 
       // Show parsing status after a short delay (upload starts immediately)
       const parsingTimeout = setTimeout(() => {
-        setStatus('parsing');
+        setStatus("parsing");
       }, 1000);
 
       const response = await fetch(`/api/games/${game.id}/upload-replay`, {
-        method: 'POST',
+        method: "POST",
         body: formData,
       });
 
       clearTimeout(parsingTimeout);
-      setStatus('processing');
+      setStatus("processing");
 
       const data = (await response.json()) as ApiResponse;
 
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to upload replay');
+        throw new Error(data.error || "Failed to upload replay");
       }
 
-      setStatus('idle');
-      setSuccessMessage(data.message || 'Replay uploaded successfully!');
+      setStatus("idle");
+      setSuccessMessage(data.message || "Replay uploaded successfully!");
       setFile(null);
 
       // Close modal and refresh after a short delay
@@ -77,15 +77,15 @@ export default function UploadReplayModal({ game, onClose, onSuccess }: UploadRe
         onClose();
       }, 1500);
     } catch (err) {
-      setStatus('idle');
-      setError(err instanceof Error ? err.message : 'Failed to upload replay');
+      setStatus("idle");
+      setError(err instanceof Error ? err.message : "Failed to upload replay");
     } finally {
       setSubmitting(false);
     }
   };
 
   return (
-    <div 
+    <div
       ref={modalRef}
       className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50"
       role="dialog"
@@ -95,9 +95,12 @@ export default function UploadReplayModal({ game, onClose, onSuccess }: UploadRe
       <div className="bg-gray-900 border border-amber-500/30 rounded-lg p-6 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto animate-scale-in">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 id="upload-replay-title" className="text-2xl font-medieval-brand text-amber-400">Upload Replay</h2>
+            <h2 id="upload-replay-title" className="text-2xl font-medieval-brand text-amber-400">
+              Upload Replay
+            </h2>
             <p className="text-sm text-gray-400 mt-1">
-              Upload a .w3g replay file to automatically extract game data. The replay will be parsed to extract players, stats, and results.
+              Upload a .w3g replay file to automatically extract game data. The replay will be
+              parsed to extract players, stats, and results.
             </p>
           </div>
           <button
@@ -107,7 +110,12 @@ export default function UploadReplayModal({ game, onClose, onSuccess }: UploadRe
             className="text-gray-400 hover:text-white transition-colors disabled:opacity-50"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
             </svg>
           </button>
         </div>
@@ -123,7 +131,8 @@ export default function UploadReplayModal({ game, onClose, onSuccess }: UploadRe
               required
             />
             <p className="text-sm text-gray-400 mt-2">
-              The replay file will be parsed automatically to extract game data including players, stats, and match results.
+              The replay file will be parsed automatically to extract game data including players,
+              stats, and match results.
             </p>
           </div>
 
@@ -136,14 +145,15 @@ export default function UploadReplayModal({ game, onClose, onSuccess }: UploadRe
                 </div>
                 <div className="flex-1">
                   <p className="text-blue-300 font-medium">
-                    {status === 'uploading' && 'Uploading replay file...'}
-                    {status === 'parsing' && 'Parsing replay and extracting game data...'}
-                    {status === 'processing' && 'Processing and saving game data...'}
+                    {status === "uploading" && "Uploading replay file..."}
+                    {status === "parsing" && "Parsing replay and extracting game data..."}
+                    {status === "processing" && "Processing and saving game data..."}
                   </p>
                   <p className="text-blue-400 text-sm mt-1">
-                    {status === 'uploading' && 'Please wait while we upload your file'}
-                    {status === 'parsing' && 'Analyzing replay structure, players, and match results'}
-                    {status === 'processing' && 'Creating game record and updating archive'}
+                    {status === "uploading" && "Please wait while we upload your file"}
+                    {status === "parsing" &&
+                      "Analyzing replay structure, players, and match results"}
+                    {status === "processing" && "Creating game record and updating archive"}
                   </p>
                 </div>
               </div>
@@ -177,7 +187,7 @@ export default function UploadReplayModal({ game, onClose, onSuccess }: UploadRe
               disabled={submitting}
               className="px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white rounded disabled:opacity-50"
             >
-              {submitting ? 'Uploading...' : 'Upload Replay'}
+              {submitting ? "Uploading..." : "Upload Replay"}
             </button>
           </div>
         </form>
@@ -185,5 +195,3 @@ export default function UploadReplayModal({ game, onClose, onSuccess }: UploadRe
     </div>
   );
 }
-
-

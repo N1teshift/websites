@@ -5,18 +5,22 @@
 ## Sub-modules
 
 ### map-analyzer/
+
 Map terrain analysis and visualization tools.
 
 **Exports**:
+
 - Components for map visualization, terrain legends, and analysis
 - Hooks: `useMapPersistence`, `useMapUIState`
 - Utilities for map data processing
 - Types for map data structures
 
 ### tools/
+
 Icon mapper and other development tools.
 
 **Exports**:
+
 - Components for icon mapping and inventory simulation
 - Hooks: `useIconMapperData`
 - Utilities for icon mapping
@@ -25,8 +29,8 @@ Icon mapper and other development tools.
 ## Usage
 
 ```typescript
-import { MapContainer, TerrainVisualizer } from '@/features/modules/tools-group/map-analyzer';
-import { IconMapperStats } from '@/features/modules/tools-group/tools';
+import { MapContainer, TerrainVisualizer } from "@/features/modules/tools-group/map-analyzer";
+import { IconMapperStats } from "@/features/modules/tools-group/tools";
 ```
 
 ## Related Documentation

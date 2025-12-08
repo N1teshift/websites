@@ -1,10 +1,10 @@
 /**
  * Player Service Utilities
- * 
+ *
  * Helper functions used across player service operations
  */
 
-import type { CategoryStats } from '../types';
+import type { CategoryStats } from "../types";
 
 /**
  * Calculate total games from categories
@@ -22,5 +22,3 @@ export function calculateTotalGames(categories: { [key: string]: CategoryStats }
 export function normalizePlayerName(name: string): string {
   return name.toLowerCase().trim();
 }
-
-

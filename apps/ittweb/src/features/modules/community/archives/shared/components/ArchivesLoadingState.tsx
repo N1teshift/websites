@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo } from "react";
 
 const ArchivesLoadingState: React.FC = memo(() => {
   return (
@@ -9,8 +9,6 @@ const ArchivesLoadingState: React.FC = memo(() => {
   );
 });
 
-ArchivesLoadingState.displayName = 'ArchivesLoadingState';
+ArchivesLoadingState.displayName = "ArchivesLoadingState";
 
 export default ArchivesLoadingState;
-
-

@@ -1,11 +1,14 @@
-import { Html, Head, Main, NextScript } from 'next/document'
+import { Html, Head, Main, NextScript } from "next/document";
 
 export default function Document() {
   return (
     <Html lang="en">
       <Head>
         <meta charSet="utf-8" />
-        <meta name="description" content="Island Troll Tribes - Official website for the Island Troll Tribes game community" />
+        <meta
+          name="description"
+          content="Island Troll Tribes - Official website for the Island Troll Tribes game community"
+        />
         <meta name="robots" content="max-image-preview:large" />
         <meta name="vercel-live-disabled" content="true" />
         <link rel="icon" href="/icons/logo.png" />
@@ -17,6 +20,5 @@ export default function Document() {
         <NextScript />
       </body>
     </Html>
-  )
+  );
 }
-

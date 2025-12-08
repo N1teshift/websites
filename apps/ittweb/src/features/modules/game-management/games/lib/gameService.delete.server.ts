@@ -1,15 +1,15 @@
 /**
  * Game Service - Delete Operations (Server-Only)
- * 
+ *
  * Server-only functions for deleting games.
  * These functions use Firebase Admin SDK and should only be used in API routes.
  */
 
-import { getFirestoreAdmin } from '@websites/infrastructure/firebase';
-import { logError } from '@websites/infrastructure/logging';
-import { invalidateAnalyticsCache } from '@/features/infrastructure/lib/cache/analyticsCache.server';
+import { getFirestoreAdmin } from "@websites/infrastructure/firebase";
+import { logError } from "@websites/infrastructure/logging";
+import { invalidateAnalyticsCache } from "@/features/infrastructure/lib/cache/analyticsCache.server";
 
-const GAMES_COLLECTION = 'games';
+const GAMES_COLLECTION = "games";
 
 /**
  * Delete a game (Server-Only)
@@ -20,7 +20,7 @@ export async function deleteGame(id: string): Promise<void> {
     const gameRef = adminDb.collection(GAMES_COLLECTION).doc(id);
 
     // Delete all players in subcollection
-    const playersSnapshot = await gameRef.collection('players').get();
+    const playersSnapshot = await gameRef.collection("players").get();
     const deletePromises = playersSnapshot.docs.map((playerDoc) => playerDoc.ref.delete());
     await Promise.all(deletePromises);
 
@@ -30,15 +30,14 @@ export async function deleteGame(id: string): Promise<void> {
     // TODO: Rollback ELO changes
 
     // Invalidate analytics cache
-    invalidateAnalyticsCache().catch(() => { });
+    invalidateAnalyticsCache().catch(() => {});
   } catch (error) {
     const err = error as Error;
-    logError(err, 'Failed to delete game', {
-      component: 'gameService',
-      operation: 'deleteGame',
+    logError(err, "Failed to delete game", {
+      component: "gameService",
+      operation: "deleteGame",
       id,
     });
     throw err;
   }
 }
-

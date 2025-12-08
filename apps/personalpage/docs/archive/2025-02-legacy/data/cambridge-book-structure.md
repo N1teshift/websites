@@ -1,6 +1,7 @@
 # Cambridge Learner's Book Structure Integration
 
 ## Overview
+
 The Content Display tab now shows the Cambridge curriculum organized by the **Learner's Book structure** instead of the official curriculum objectives structure. This makes it easier to align unit planning with the actual textbook students use.
 
 ## Implementation Summary
@@ -39,6 +40,7 @@ The Content Display tab now shows the Cambridge curriculum organized by the **Le
 ## Data Structure
 
 ### Book Structure Hierarchy
+
 ```
 BookStage (Stage 7, 8, 9)
 ├── BookUnit (15 units in Stage 9)
@@ -57,23 +59,23 @@ BookStage (Stage 7, 8, 9)
 
 **15 Content Units + 5 Project Units**
 
-| Unit | Title | Pages | Strand | Subsections |
-|------|-------|-------|--------|-------------|
-| 1 | Number and calculation | 9–20 | Number | 3 (Irrational numbers, Standard form, Indices) |
-| 2 | Expressions and formulae | 21–54 | Algebra | 6 (Substitution, Construction, Expansion, etc.) |
-| 3 | Decimals, percentages and rounding | 55–81 | Number | 4 (Powers of 10, Decimals, Percentages, Bounds) |
-| 4 | Equations and inequalities | 83–102 | Algebra | 3 (Equations, Simultaneous, Inequalities) |
-| 5 | Angles | 103–126 | Geometry | 5 (Calculating, Interior, Exterior, Constructions, Pythagoras) |
-| 6 | Statistical investigations | 128–137 | Statistics | 2 (Data collection, Bias) |
-| 7 | Shapes and measurements | 138–160 | Geometry | 3 (Circle, Compound shapes, Units) |
-| 8 | Fractions | 161–189 | Number | 5 (Recurring decimals, Order, Multiply, Divide, Simplify) |
-| 9 | Sequences and functions | 191–211 | Algebra | 3 (Generating, nth term, Representing) |
-| 10 | Graphs | 212–233 | Algebra | 4 (Functions, Plotting, Gradient, Interpreting) |
-| 11 | Ratio and proportion | 235–249 | Number | 2 (Using ratios, Direct/inverse) |
-| 12 | Probability | 250–269 | Statistics | 4 (Mutually exclusive, Independent, Combined, Experiments) |
-| 13 | Position and transformation | 270–299 | Geometry | 4 (Bearings, Line segments, Transformations, Enlargement) |
-| 14 | Volume, surface area and symmetry | 301–316 | Geometry | 3 (Volume, Surface area, Symmetry) |
-| 15 | Interpreting and discussing results | 317–347 | Statistics | 5 (Frequency polygons, Scatter, Stem-and-leaf, Grouped data, Representing) |
+| Unit | Title                               | Pages   | Strand     | Subsections                                                                |
+| ---- | ----------------------------------- | ------- | ---------- | -------------------------------------------------------------------------- |
+| 1    | Number and calculation              | 9–20    | Number     | 3 (Irrational numbers, Standard form, Indices)                             |
+| 2    | Expressions and formulae            | 21–54   | Algebra    | 6 (Substitution, Construction, Expansion, etc.)                            |
+| 3    | Decimals, percentages and rounding  | 55–81   | Number     | 4 (Powers of 10, Decimals, Percentages, Bounds)                            |
+| 4    | Equations and inequalities          | 83–102  | Algebra    | 3 (Equations, Simultaneous, Inequalities)                                  |
+| 5    | Angles                              | 103–126 | Geometry   | 5 (Calculating, Interior, Exterior, Constructions, Pythagoras)             |
+| 6    | Statistical investigations          | 128–137 | Statistics | 2 (Data collection, Bias)                                                  |
+| 7    | Shapes and measurements             | 138–160 | Geometry   | 3 (Circle, Compound shapes, Units)                                         |
+| 8    | Fractions                           | 161–189 | Number     | 5 (Recurring decimals, Order, Multiply, Divide, Simplify)                  |
+| 9    | Sequences and functions             | 191–211 | Algebra    | 3 (Generating, nth term, Representing)                                     |
+| 10   | Graphs                              | 212–233 | Algebra    | 4 (Functions, Plotting, Gradient, Interpreting)                            |
+| 11   | Ratio and proportion                | 235–249 | Number     | 2 (Using ratios, Direct/inverse)                                           |
+| 12   | Probability                         | 250–269 | Statistics | 4 (Mutually exclusive, Independent, Combined, Experiments)                 |
+| 13   | Position and transformation         | 270–299 | Geometry   | 4 (Bearings, Line segments, Transformations, Enlargement)                  |
+| 14   | Volume, surface area and symmetry   | 301–316 | Geometry   | 3 (Volume, Surface area, Symmetry)                                         |
+| 15   | Interpreting and discussing results | 317–347 | Statistics | 5 (Frequency polygons, Scatter, Stem-and-leaf, Grouped data, Representing) |
 
 **Projects**: 5 projects interspersed throughout the book (pp. 82, 127, 190, 234, 300)
 
@@ -86,6 +88,7 @@ The book subsections link to curriculum objectives:
 - **5.5 Pythagoras' theorem** → `9Gg.10` (Know and use Pythagoras)
 
 This allows teachers to:
+
 1. Plan lessons using textbook units
 2. See which official objectives are covered
 3. Track curriculum compliance
@@ -94,6 +97,7 @@ This allows teachers to:
 ## UI Features
 
 ### Color Coding by Strand
+
 - 🔢 **Number**: Blue (bg-blue-50, border-blue-300)
 - 📐 **Algebra**: Purple (bg-purple-50, border-purple-300)
 - 📏 **Geometry and measure**: Green (bg-green-50, border-green-300)
@@ -101,12 +105,14 @@ This allows teachers to:
 - 🎯 **Project**: Pink (bg-pink-50, border-pink-300)
 
 ### Interactive Elements
+
 - **Expandable units**: Click to show/hide subsections
 - **Page ranges**: Shows where to find content in the textbook
 - **Objective tags**: Each subsection shows linked curriculum codes
 - **Metadata**: Unit count, subsection count
 
 ### Responsive Design
+
 - Adapts to screen size
 - Maintains readability on mobile/tablet
 - Smooth expand/collapse animations
@@ -114,16 +120,19 @@ This allows teachers to:
 ## Status
 
 ### ✅ Complete
+
 - Stage 9 (Grade 8 / MYP Year 3) - **100% mapped** (15 units, 55 subsections)
 - All 9Ni, 9Ae, 9Gg, 9Gp, 9Ss, 9Sp objectives mapped to book sections
 - UI components built and styled
 - Translations added (EN, LT, RU)
 
 ### 🚧 Pending
+
 - **Stage 8** (Grade 7 / MYP Year 2) - Empty placeholder
 - **Stage 7** (Grade 6 / MYP Year 1) - Empty placeholder
 
 ### 📋 Future Enhancements
+
 1. Complete Stage 8 and Stage 7 mappings
 2. Add search/filter by strand
 3. Add "Show only selected strands" toggle
@@ -134,6 +143,7 @@ This allows teachers to:
 ## Usage in Unit Planning
 
 When creating a unit plan:
+
 1. Navigate to **Content Display** tab (visible only for Mathematics MYP Years 2-3)
 2. Browse BUP curriculum (left side) and Cambridge book structure (right side)
 3. Expand units to see subsections and their objectives
@@ -143,6 +153,7 @@ When creating a unit plan:
 ## Connection to Previous Work
 
 This complements the existing curriculum comparison system:
+
 - **BUP data**: Structured by modules → units → subunits (already complete)
 - **Cambridge objectives**: Official curriculum goals (already complete)
 - **Cambridge book**: NEW - Textbook structure for practical planning
@@ -152,9 +163,6 @@ The book structure provides a **practical teaching perspective**, while the obje
 
 ---
 
-*Last Updated: October 22, 2025*
-*Status: Stage 9 complete, Stages 7-8 pending*
-*Related: CURRICULUM_CONNECTIONS.md*
-
-
-
+_Last Updated: October 22, 2025_
+_Status: Stage 9 complete, Stages 7-8 pending_
+_Related: CURRICULUM_CONNECTIONS.md_

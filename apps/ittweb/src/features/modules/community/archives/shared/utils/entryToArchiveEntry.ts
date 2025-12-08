@@ -1,6 +1,6 @@
-import type { Entry } from '@/types/entry';
-import type { ArchiveEntry } from '@/types/archive';
-import { timestampToIso } from '@websites/infrastructure/utils';
+import type { Entry } from "@/types/entry";
+import type { ArchiveEntry } from "@/types/archive";
+import { timestampToIso } from "@websites/infrastructure/utils";
 
 /**
  * Convert an Entry (post/memory) to ArchiveEntry format for display in timeline
@@ -12,7 +12,7 @@ export function convertEntryToArchiveEntry(entry: Entry): ArchiveEntry {
     content: entry.content,
     creatorName: entry.creatorName,
     createdByDiscordId: entry.createdByDiscordId ?? null,
-    entryType: entry.contentType === 'post' ? 'story' : undefined, // Map post to story, memory has no entryType
+    entryType: entry.contentType === "post" ? "story" : undefined, // Map post to story, memory has no entryType
     images: entry.images,
     videoUrl: entry.videoUrl,
     twitchClipUrl: entry.twitchClipUrl,
@@ -20,7 +20,7 @@ export function convertEntryToArchiveEntry(entry: Entry): ArchiveEntry {
     linkedGameDocumentId: undefined, // Entries don't link to games
     sectionOrder: entry.sectionOrder,
     dateInfo: {
-      type: 'single',
+      type: "single",
       singleDate: entry.date, // Use the entry's date field
     },
     createdAt: timestampToIso(entry.createdAt),
@@ -30,6 +30,3 @@ export function convertEntryToArchiveEntry(entry: Entry): ArchiveEntry {
     deletedAt: entry.deletedAt ? timestampToIso(entry.deletedAt) : null,
   };
 }
-
-
-

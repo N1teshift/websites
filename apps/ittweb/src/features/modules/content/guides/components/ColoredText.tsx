@@ -1,19 +1,19 @@
-import React from 'react';
+import React from "react";
 
 /**
  * Parses Warcraft 3 color codes and renders colored text
- * 
+ *
  * Color codes:
  * - |cffRRGGBB - Start color (RR = red, GG = green, BB = blue in hex, format is cff + 6 hex digits)
  * - |cAARRGGBB - Start color with alpha (AA = alpha, RRGGBB = color, format is c + 8 hex digits)
  * - |r - Reset to default color
  * - |n - Newline
- * 
+ *
  * Format examples:
  * - "for |cffFE890D2|r/|cffFE890D8|r seconds" - uses |cff format
  * - "|cFFFFFFC9Tip text|r" - uses |cAARRGGBB format (alpha channel is ignored, only RGB is used)
  */
-export function ColoredText({ text, className = '' }: { text: string; className?: string }) {
+export function ColoredText({ text, className = "" }: { text: string; className?: string }) {
   if (!text) return null;
 
   const parts: React.ReactNode[] = [];
@@ -57,19 +57,19 @@ export function ColoredText({ text, className = '' }: { text: string; className?
     }
 
     // Process the code
-    if (code === 'r') {
+    if (code === "r") {
       // Reset color
       currentColor = null;
-    } else if (code === 'n') {
+    } else if (code === "n") {
       // Newline
       parts.push(<br key={key++} />);
-    } else if (code.startsWith('c')) {
+    } else if (code.startsWith("c")) {
       // Color code: either |cAARRGGBB (8 hex digits) or |cffRRGGBB (6 hex digits)
-      if (code.startsWith('cff') && code.length === 9) {
+      if (code.startsWith("cff") && code.length === 9) {
         // Format: cff + 6 hex digits (RRGGBB)
         const hexColor = code.substring(3); // Skip 'cff' and get RRGGBB
         currentColor = `#${hexColor}`;
-      } else if (code.length === 9 && code.startsWith('c') && !code.startsWith('cff')) {
+      } else if (code.length === 9 && code.startsWith("c") && !code.startsWith("cff")) {
         // Format: c + 8 hex digits (AARRGGBB) - extract RRGGBB (skip AA alpha channel)
         // Example: cFFFFFFC9 -> skip 'c' + 'FF' (alpha), get 'FFFFC9' (RGB)
         const hexColor = code.substring(3); // Skip 'c' + 2 alpha digits, get RRGGBB
@@ -99,5 +99,3 @@ export function ColoredText({ text, className = '' }: { text: string; className?
 
   return <span className={className}>{parts}</span>;
 }
-
-

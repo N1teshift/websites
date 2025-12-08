@@ -1,15 +1,11 @@
 // Main component
-export { default as SectionContent } from './SectionContent';
+export { default as SectionContent } from "./SectionContent";
 
 // Section components
-export * from './sections';
+export * from "./sections";
 
 // Shared components
-export * from './shared';
+export * from "./shared";
 
 // UI components
-export * from './ui';
-
-
-
-
+export * from "./ui";

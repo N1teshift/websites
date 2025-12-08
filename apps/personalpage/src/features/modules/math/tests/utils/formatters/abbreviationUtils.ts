@@ -11,69 +11,69 @@
  * (like 'positive') might have different meanings or standard short forms.
  */
 export type AbbreviationContext =
-    | 'numberSet'       // e.g., integer, rational
-    | 'rule'            // e.g., positive, nonzero, even
-    | 'reprType'        // e.g., decimal, fraction
-    | 'range'           // e.g., fullRange, negRange
-    | 'collectionRule'  // e.g., increasing, decreasing
-    | 'ineqType'        // e.g., less, geq
-    | 'combType';       // e.g., addition, multiplication
+  | "numberSet" // e.g., integer, rational
+  | "rule" // e.g., positive, nonzero, even
+  | "reprType" // e.g., decimal, fraction
+  | "range" // e.g., fullRange, negRange
+  | "collectionRule" // e.g., increasing, decreasing
+  | "ineqType" // e.g., less, geq
+  | "combType"; // e.g., addition, multiplication
 
 /**
  * A comprehensive mapping of terms to their abbreviations, organized by context.
  * @internal
  */
 const ABBREVIATIONS: Record<AbbreviationContext, Record<string, string>> = {
-    numberSet: {
-        'integer': 'int',
-        'rational': 'rat',
-        'irrational': 'irr',
-        'real': 'real',
-        'natural': 'nat',
-    },
-    rule: {
-        'positive': 'pos',
-        'negative': 'neg',
-        'nonzero': 'nz',
-        'even': 'even',
-        'odd': 'odd',
-        'square': 'sq',
-        'cube': 'cube',
-        'prime': 'prime',
-        'unit': 'unit',
-    },
-    reprType: {
-        'decimal': 'dec',
-        'fraction': 'frac',
-        'mixed': 'mix',
-        'irrational': 'irr', // Note: Could clash with numberSet if context is omitted
-        'logarithm': 'log',
-    },
-    range: {
-        'fullRange': 'fullR',
-        'negRange': 'negR',
-        'posRange': 'posR',
-    },
-    collectionRule: {
-        'increasing': 'incr',
-        'decreasing': 'decr',
-        'neq': 'neq',       // Not equal
-    },
-    ineqType: {
-        'less': 'lt',
-        'greater': 'gt',
-        'leq': 'leq',
-        'geq': 'geq',
-    },
-    combType: {
-        'none': 'none',
-        'addition': 'add',
-        'subtraction': 'sub',
-        'multiplication': 'mult',
-        'division': 'div',
-        'power': 'pow',
-        'root_sq_div': 'rsqd',
-    },
+  numberSet: {
+    integer: "int",
+    rational: "rat",
+    irrational: "irr",
+    real: "real",
+    natural: "nat",
+  },
+  rule: {
+    positive: "pos",
+    negative: "neg",
+    nonzero: "nz",
+    even: "even",
+    odd: "odd",
+    square: "sq",
+    cube: "cube",
+    prime: "prime",
+    unit: "unit",
+  },
+  reprType: {
+    decimal: "dec",
+    fraction: "frac",
+    mixed: "mix",
+    irrational: "irr", // Note: Could clash with numberSet if context is omitted
+    logarithm: "log",
+  },
+  range: {
+    fullRange: "fullR",
+    negRange: "negR",
+    posRange: "posR",
+  },
+  collectionRule: {
+    increasing: "incr",
+    decreasing: "decr",
+    neq: "neq", // Not equal
+  },
+  ineqType: {
+    less: "lt",
+    greater: "gt",
+    leq: "leq",
+    geq: "geq",
+  },
+  combType: {
+    none: "none",
+    addition: "add",
+    subtraction: "sub",
+    multiplication: "mult",
+    division: "div",
+    power: "pow",
+    root_sq_div: "rsqd",
+  },
 };
 
 /**
@@ -83,24 +83,24 @@ const ABBREVIATIONS: Record<AbbreviationContext, Record<string, string>> = {
  * @internal
  */
 const GENERAL_ABBREVIATIONS: Record<string, string> = {
-  'decimal': 'dec',
-  'fraction': 'frac',
-  'mixed': 'mix',
-  'positive': 'pos',
-  'negative': 'neg',
-  'nonzero': 'nz',
-  'logarithm': 'log',
-  'even': 'even',
-  'odd': 'odd',
-  'square': 'sq',
-  'cube': 'cube',
-  'prime': 'prime',
-  'unit': 'unit',
-  'integer': 'int',
-  'rational': 'rat',
-  'irrational': 'irr',
-  'real': 'real',
-  'natural': 'nat',
+  decimal: "dec",
+  fraction: "frac",
+  mixed: "mix",
+  positive: "pos",
+  negative: "neg",
+  nonzero: "nz",
+  logarithm: "log",
+  even: "even",
+  odd: "odd",
+  square: "sq",
+  cube: "cube",
+  prime: "prime",
+  unit: "unit",
+  integer: "int",
+  rational: "rat",
+  irrational: "irr",
+  real: "real",
+  natural: "nat",
   // Add general abbreviations for other contexts if needed, e.g.:
   // 'increasing': 'incr',
   // 'less': 'lt',
@@ -128,17 +128,14 @@ const GENERAL_ABBREVIATIONS: Record<string, string> = {
  * getAbbreviation('unknownTerm');         // => 'unk'
  */
 export function getAbbreviation(term: string, context?: AbbreviationContext): string {
-    // 1. Check context-specific abbreviations
-    if (context && ABBREVIATIONS[context] && ABBREVIATIONS[context][term]) {
-        return ABBREVIATIONS[context][term];
-    }
-    // 2. Check general abbreviations
-    if (GENERAL_ABBREVIATIONS[term]) {
-        return GENERAL_ABBREVIATIONS[term];
-    }
-    // 3. Fallback to first 3 letters
-    return term.substring(0, 3);
-} 
-
-
-
+  // 1. Check context-specific abbreviations
+  if (context && ABBREVIATIONS[context] && ABBREVIATIONS[context][term]) {
+    return ABBREVIATIONS[context][term];
+  }
+  // 2. Check general abbreviations
+  if (GENERAL_ABBREVIATIONS[term]) {
+    return GENERAL_ABBREVIATIONS[term];
+  }
+  // 3. Fallback to first 3 letters
+  return term.substring(0, 3);
+}

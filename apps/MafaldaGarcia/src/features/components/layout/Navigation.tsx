@@ -1,5 +1,5 @@
-import React from 'react';
-import { useFallbackTranslation } from '@websites/infrastructure/i18n';
+import React from "react";
+import { useFallbackTranslation } from "@websites/infrastructure/i18n";
 
 export const Navigation: React.FC = () => {
   const { t } = useFallbackTranslation();
@@ -7,7 +7,7 @@ export const Navigation: React.FC = () => {
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      element.scrollIntoView({ behavior: "smooth" });
     }
   };
 
@@ -15,51 +15,49 @@ export const Navigation: React.FC = () => {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-sm border-b border-gray-200">
       <div className="max-w-7xl mx-auto px-8">
         <div className="flex justify-between items-center h-16">
-          <div className="font-playfair text-xl text-gray-900">
-            {t('hero.title')}
-          </div>
+          <div className="font-playfair text-xl text-gray-900">{t("hero.title")}</div>
           <div className="hidden md:flex space-x-8">
             <button
-              onClick={() => scrollToSection('philosophy')}
+              onClick={() => scrollToSection("philosophy")}
               className="text-gray-700 hover:text-artistic-gold transition-colors duration-300"
             >
-              {t('navigation.philosophy')}
+              {t("navigation.philosophy")}
             </button>
             <button
-              onClick={() => scrollToSection('education')}
+              onClick={() => scrollToSection("education")}
               className="text-gray-700 hover:text-artistic-gold transition-colors duration-300"
             >
-              {t('navigation.education')}
+              {t("navigation.education")}
             </button>
             <button
-              onClick={() => scrollToSection('works')}
+              onClick={() => scrollToSection("works")}
               className="text-gray-700 hover:text-artistic-gold transition-colors duration-300"
             >
-              {t('navigation.works')}
+              {t("navigation.works")}
             </button>
             <button
-              onClick={() => scrollToSection('major-works')}
+              onClick={() => scrollToSection("major-works")}
               className="text-gray-700 hover:text-artistic-gold transition-colors duration-300"
             >
-              {t('navigation.majorWorks')}
+              {t("navigation.majorWorks")}
             </button>
             <button
-              onClick={() => scrollToSection('publications')}
+              onClick={() => scrollToSection("publications")}
               className="text-gray-700 hover:text-artistic-gold transition-colors duration-300"
             >
-              {t('navigation.publications')}
+              {t("navigation.publications")}
             </button>
             <button
-              onClick={() => scrollToSection('gallery')}
+              onClick={() => scrollToSection("gallery")}
               className="text-gray-700 hover:text-artistic-gold transition-colors duration-300"
             >
-              {t('navigation.gallery')}
+              {t("navigation.gallery")}
             </button>
             <button
-              onClick={() => scrollToSection('contact')}
+              onClick={() => scrollToSection("contact")}
               className="text-gray-700 hover:text-artistic-gold transition-colors duration-300"
             >
-              {t('navigation.contact')}
+              {t("navigation.contact")}
             </button>
           </div>
         </div>

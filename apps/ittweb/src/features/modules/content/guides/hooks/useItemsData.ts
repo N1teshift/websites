@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import type { ItemData } from '@/types/items';
+import { useEffect, useState } from "react";
+import type { ItemData } from "@/types/items";
 
 type ItemsMeta = {
   total: number;
@@ -20,13 +20,13 @@ let cachedError: Error | null = null;
 let inFlightPromise: Promise<void> | null = null;
 
 async function fetchItems(): Promise<void> {
-  const response = await fetch('/api/items');
+  const response = await fetch("/api/items");
   if (!response.ok) {
     throw new Error(`Failed to load items (status ${response.status})`);
   }
-  const apiResponse = await response.json() as { success: boolean; data: ItemsApiResult };
+  const apiResponse = (await response.json()) as { success: boolean; data: ItemsApiResult };
   if (!apiResponse.success || !apiResponse.data) {
-    throw new Error('Invalid API response format');
+    throw new Error("Invalid API response format");
   }
   cachedItems = apiResponse.data.items;
   cachedMeta = apiResponse.data.meta;
@@ -34,7 +34,14 @@ async function fetchItems(): Promise<void> {
 
 export function useItemsData() {
   const [items, setItems] = useState<ItemData[]>(() => cachedItems ?? []);
-  const [meta, setMeta] = useState<ItemsMeta>(() => cachedMeta ?? { total: cachedItems?.length ?? 0, buildingsTotal: 0, count: cachedItems?.length ?? 0 });
+  const [meta, setMeta] = useState<ItemsMeta>(
+    () =>
+      cachedMeta ?? {
+        total: cachedItems?.length ?? 0,
+        buildingsTotal: 0,
+        count: cachedItems?.length ?? 0,
+      }
+  );
   const [isLoading, setIsLoading] = useState<boolean>(() => !cachedItems && !cachedError);
   const [error, setError] = useState<Error | null>(() => cachedError);
 
@@ -110,8 +117,3 @@ export function useItemsData() {
     refetch,
   };
 }
-
-
-
-
-

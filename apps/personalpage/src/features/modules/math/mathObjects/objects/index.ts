@@ -14,9 +14,6 @@ export { Function } from "./Function";
 export { Exercise } from "./Exercise";
 export { Point } from "./Point";
 export { Interval } from "./Interval";
-export { Set } from "./Set"; 
+export { Set } from "./Set";
 export { Inequality } from "./Inequality";
 export { MathObject } from "./MathObject";
-
-
-

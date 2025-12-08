@@ -1,6 +1,6 @@
-import type Player from 'w3gjs/dist/types/Player';
-import type { W3MMDAction } from 'w3gjs/dist/types/parsers/ActionParser';
-import type { CreateGame } from '@/features/modules/game-management/games/types';
+import type Player from "w3gjs/dist/types/Player";
+import type { W3MMDAction } from "w3gjs/dist/types/parsers/ActionParser";
+import type { CreateGame } from "@/features/modules/game-management/games/types";
 
 export interface ParsedW3MMDEntry {
   missionKey: string;
@@ -9,7 +9,7 @@ export interface ParsedW3MMDEntry {
   filename: string;
 }
 
-export type PlayerStatPatch = Partial<CreateGame['players'][number]>;
+export type PlayerStatPatch = Partial<CreateGame["players"][number]>;
 
 export function buildW3MMDLookup(actions: W3MMDAction[]) {
   const rawEntries: ParsedW3MMDEntry[] = [];
@@ -42,7 +42,7 @@ export function buildW3MMDLookup(actions: W3MMDAction[]) {
 
 export function mapMissionStatsToPlayers(
   players: Player[],
-  w3mmdLookup: Record<string, Record<string, number>>,
+  w3mmdLookup: Record<string, Record<string, number>>
 ): Map<number, PlayerStatPatch> {
   const stats = new Map<number, PlayerStatPatch>();
   if (!Object.keys(w3mmdLookup).length) {
@@ -69,7 +69,7 @@ export function mapMissionStatsToPlayers(
 }
 
 function buildMissionCandidates(player: Player): string[] {
-  const base = normalize(player.name || '');
+  const base = normalize(player.name || "");
   const pid = String(player.id);
   const candidates = [
     base,
@@ -89,77 +89,77 @@ function deriveStatsFromMission(entry: Record<string, number>): PlayerStatPatch 
     const normalizedKey = key.toLowerCase();
 
     // Generic kills (not animal-specific)
-    if (normalizedKey === 'kills' || normalizedKey === 'kill') {
+    if (normalizedKey === "kills" || normalizedKey === "kill") {
       stats.kills = value;
       return;
     }
-    if (normalizedKey.includes('death')) {
+    if (normalizedKey.includes("death")) {
       stats.deaths = value;
       return;
     }
-    if (normalizedKey.includes('assist')) {
+    if (normalizedKey.includes("assist")) {
       stats.assists = value;
       return;
     }
     // Gold - handle both 'gold' and 'goldacquired'
-    if (normalizedKey === 'gold' || normalizedKey === 'goldacquired') {
+    if (normalizedKey === "gold" || normalizedKey === "goldacquired") {
       stats.gold = value;
       stats.goldAcquired = value;
       return;
     }
-    if (normalizedKey.includes('damage') && normalizedKey.includes('taken')) {
+    if (normalizedKey.includes("damage") && normalizedKey.includes("taken")) {
       stats.damageTaken = value;
       return;
     }
-    if (normalizedKey.includes('damage')) {
+    if (normalizedKey.includes("damage")) {
       stats.damageDealt = value;
       return;
     }
-    if (normalizedKey.includes('random')) {
+    if (normalizedKey.includes("random")) {
       stats.randomClass = value > 0;
       return;
     }
-    if (normalizedKey.includes('class')) {
+    if (normalizedKey.includes("class")) {
       stats.class = decodeMaybeString(value);
       return;
     }
 
     // ITT-specific stats
-    if (normalizedKey === 'selfhealing' || normalizedKey === 'selfheal') {
+    if (normalizedKey === "selfhealing" || normalizedKey === "selfheal") {
       stats.selfHealing = value;
       return;
     }
-    if (normalizedKey === 'allyhealing' || normalizedKey === 'allyheal') {
+    if (normalizedKey === "allyhealing" || normalizedKey === "allyheal") {
       stats.allyHealing = value;
       return;
     }
-    if (normalizedKey === 'meateaten' || normalizedKey === 'meat') {
+    if (normalizedKey === "meateaten" || normalizedKey === "meat") {
       stats.meatEaten = value;
       return;
     }
 
     // Animal kill counts
-    if (normalizedKey === 'killselk' || normalizedKey === 'elk') {
+    if (normalizedKey === "killselk" || normalizedKey === "elk") {
       stats.killsElk = value;
       return;
     }
-    if (normalizedKey === 'killshawk' || normalizedKey === 'hawk') {
+    if (normalizedKey === "killshawk" || normalizedKey === "hawk") {
       stats.killsHawk = value;
       return;
     }
-    if (normalizedKey === 'killssnake' || normalizedKey === 'snake') {
+    if (normalizedKey === "killssnake" || normalizedKey === "snake") {
       stats.killsSnake = value;
       return;
     }
-    if (normalizedKey === 'killswolf' || normalizedKey === 'wolf') {
+    if (normalizedKey === "killswolf" || normalizedKey === "wolf") {
       stats.killsWolf = value;
       return;
     }
-    if (normalizedKey === 'killsbear' || normalizedKey === 'bear') {
+    if (normalizedKey === "killsbear" || normalizedKey === "bear") {
       stats.killsBear = value;
       return;
     }
-    if (normalizedKey === 'killspanther' || normalizedKey === 'panther') {
+    if (normalizedKey === "killspanther" || normalizedKey === "panther") {
       stats.killsPanther = value;
       return;
     }
@@ -169,17 +169,22 @@ function deriveStatsFromMission(entry: Record<string, number>): PlayerStatPatch 
 }
 
 function normalize(value: string): string {
-  return value.trim().toLowerCase().replace(/[^a-z0-9]/g, '');
+  return value
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, "");
 }
 
 function decodeMaybeString(value: number): string {
   const safeValue = Number.isFinite(value) ? value >>> 0 : 0;
   const buffer = Buffer.allocUnsafe(4);
   buffer.writeUInt32BE(safeValue);
-  const ascii = buffer.toString('utf8').replace(/\u0000/g, '').trim();
+  const ascii = buffer
+    .toString("utf8")
+    .replace(/\u0000/g, "")
+    .trim();
   if (ascii && /^[\x20-\x7E]+$/.test(ascii)) {
     return ascii;
   }
   return value.toString();
 }
-

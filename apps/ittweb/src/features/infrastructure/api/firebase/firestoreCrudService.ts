@@ -1,24 +1,22 @@
 /**
  * Generic Firestore CRUD Service Factory
- * 
+ *
  * Provides a reusable abstraction for creating Firestore CRUD services that work
  * seamlessly with both Admin SDK (server-side) and Client SDK (client-side).
- * 
+ *
  * This eliminates the boilerplate code duplicated across service files like
  * postService.ts and entryService.ts.
  */
 
+import { collection, addDoc, getDocs, updateDoc, deleteDoc, doc } from "firebase/firestore";
 import {
-  collection,
-  addDoc,
-  getDocs,
-  updateDoc,
-  deleteDoc,
-  doc,
-} from 'firebase/firestore';
-import { getFirestoreInstance, getFirestoreAdmin, isServerSide, getDocument } from '@websites/infrastructure/firebase';
-import { createComponentLogger, logError } from '@websites/infrastructure/logging';
-import { createTimestampFactoryAsync, type TimestampFactory } from '@websites/infrastructure/utils';
+  getFirestoreInstance,
+  getFirestoreAdmin,
+  isServerSide,
+  getDocument,
+} from "@websites/infrastructure/firebase";
+import { createComponentLogger, logError } from "@websites/infrastructure/logging";
+import { createTimestampFactoryAsync, type TimestampFactory } from "@websites/infrastructure/utils";
 
 /**
  * Configuration for creating a Firestore CRUD service
@@ -31,7 +29,10 @@ export interface FirestoreCrudServiceConfig<TEntity, TCreate, TUpdate> {
   /** Transform Firestore document to entity type */
   transformDoc: (data: Record<string, unknown>, docId: string) => TEntity;
   /** Prepare create data for Firestore */
-  prepareForFirestore: (data: TCreate, timestampFactory: TimestampFactory) => Record<string, unknown>;
+  prepareForFirestore: (
+    data: TCreate,
+    timestampFactory: TimestampFactory
+  ) => Record<string, unknown>;
   /** Prepare update data for Firestore */
   prepareUpdate: (updates: TUpdate, timestampFactory: TimestampFactory) => Record<string, unknown>;
   /** Optional: Prepare soft delete data (for soft deletes) */
@@ -50,7 +51,9 @@ export interface FirestoreCrudServiceConfig<TEntity, TCreate, TUpdate> {
  */
 export interface GetAllOptions {
   /** Optional filter function for in-memory filtering (used in index fallback) */
-  fallbackFilter?: (docs: Array<{ data: () => Record<string, unknown>; id: string }>) => Array<{ data: () => Record<string, unknown>; id: string }>;
+  fallbackFilter?: (
+    docs: Array<{ data: () => Record<string, unknown>; id: string }>
+  ) => Array<{ data: () => Record<string, unknown>; id: string }>;
 }
 
 /**
@@ -71,10 +74,9 @@ export interface FirestoreCrudService<TEntity, TCreate, TUpdate> {
   softDelete?: (id: string) => Promise<void>;
 }
 
-
 /**
  * Create a Firestore CRUD service
- * 
+ *
  * @example
  * ```typescript
  * const postService = createFirestoreCrudService({
@@ -90,12 +92,20 @@ export function createFirestoreCrudService<TEntity, TCreate, TUpdate>(
   config: FirestoreCrudServiceConfig<TEntity, TCreate, TUpdate>
 ): FirestoreCrudService<TEntity, TCreate, TUpdate> {
   const logger = createComponentLogger(config.componentName);
-  const { collectionName, transformDoc, prepareForFirestore, prepareUpdate, prepareDelete, transformDocs, sortEntities } = config;
+  const {
+    collectionName,
+    transformDoc,
+    prepareForFirestore,
+    prepareUpdate,
+    prepareDelete,
+    transformDocs,
+    sortEntities,
+  } = config;
 
   return {
     async create(data: TCreate): Promise<string> {
       try {
-        logger.info('Creating document', { collectionName });
+        logger.info("Creating document", { collectionName });
 
         const timestampFactory = await createTimestampFactoryAsync();
         const firestoreData = prepareForFirestore(data, timestampFactory);
@@ -103,19 +113,19 @@ export function createFirestoreCrudService<TEntity, TCreate, TUpdate>(
         if (isServerSide()) {
           const adminDb = getFirestoreAdmin();
           const docRef = await adminDb.collection(collectionName).add(firestoreData);
-          logger.info('Document created', { id: docRef.id, collectionName });
+          logger.info("Document created", { id: docRef.id, collectionName });
           return docRef.id;
         } else {
           const db = getFirestoreInstance();
           const docRef = await addDoc(collection(db, collectionName), firestoreData);
-          logger.info('Document created', { id: docRef.id, collectionName });
+          logger.info("Document created", { id: docRef.id, collectionName });
           return docRef.id;
         }
       } catch (error) {
         const err = error as Error;
-        logError(err, 'Failed to create document', {
+        logError(err, "Failed to create document", {
           component: config.componentName,
-          operation: 'create',
+          operation: "create",
           collectionName,
         });
         throw err;
@@ -124,27 +134,27 @@ export function createFirestoreCrudService<TEntity, TCreate, TUpdate>(
 
     async getById(id: string): Promise<TEntity | null> {
       try {
-        logger.debug('Fetching document by ID', { id, collectionName });
+        logger.debug("Fetching document by ID", { id, collectionName });
 
         const docSnap = await getDocument(collectionName, id);
 
         if (!docSnap || !docSnap.exists) {
-          logger.debug('Document not found', { id, collectionName });
+          logger.debug("Document not found", { id, collectionName });
           return null;
         }
 
         const data = docSnap.data();
         if (!data) {
-          logger.debug('Document data is undefined', { id, collectionName });
+          logger.debug("Document data is undefined", { id, collectionName });
           return null;
         }
 
         return transformDoc(data, docSnap.id);
       } catch (error) {
         const err = error as Error;
-        logError(err, 'Failed to fetch document by ID', {
+        logError(err, "Failed to fetch document by ID", {
           component: config.componentName,
-          operation: 'getById',
+          operation: "getById",
           id,
           collectionName,
         });
@@ -154,7 +164,7 @@ export function createFirestoreCrudService<TEntity, TCreate, TUpdate>(
 
     async getAll(options?: GetAllOptions): Promise<TEntity[]> {
       try {
-        logger.debug('Fetching all documents', { collectionName });
+        logger.debug("Fetching all documents", { collectionName });
 
         let entities: TEntity[] = [];
 
@@ -200,13 +210,13 @@ export function createFirestoreCrudService<TEntity, TCreate, TUpdate>(
           }
         }
 
-        logger.debug('Documents fetched', { count: entities.length, collectionName });
+        logger.debug("Documents fetched", { count: entities.length, collectionName });
         return entities;
       } catch (error) {
         const err = error as Error;
-        logError(err, 'Failed to fetch documents', {
+        logError(err, "Failed to fetch documents", {
           component: config.componentName,
-          operation: 'getAll',
+          operation: "getAll",
           collectionName,
         });
         throw err;
@@ -215,7 +225,7 @@ export function createFirestoreCrudService<TEntity, TCreate, TUpdate>(
 
     async update(id: string, updates: TUpdate): Promise<void> {
       try {
-        logger.info('Updating document', { id, collectionName });
+        logger.info("Updating document", { id, collectionName });
 
         const timestampFactory = await createTimestampFactoryAsync();
         const updateData = prepareUpdate(updates, timestampFactory);
@@ -229,12 +239,12 @@ export function createFirestoreCrudService<TEntity, TCreate, TUpdate>(
           await updateDoc(docRef, updateData);
         }
 
-        logger.info('Document updated', { id, collectionName });
+        logger.info("Document updated", { id, collectionName });
       } catch (error) {
         const err = error as Error;
-        logError(err, 'Failed to update document', {
+        logError(err, "Failed to update document", {
           component: config.componentName,
-          operation: 'update',
+          operation: "update",
           id,
           collectionName,
         });
@@ -244,7 +254,7 @@ export function createFirestoreCrudService<TEntity, TCreate, TUpdate>(
 
     async delete(id: string): Promise<void> {
       try {
-        logger.info('Deleting document', { id, collectionName });
+        logger.info("Deleting document", { id, collectionName });
 
         if (isServerSide()) {
           const adminDb = getFirestoreAdmin();
@@ -255,12 +265,12 @@ export function createFirestoreCrudService<TEntity, TCreate, TUpdate>(
           await deleteDoc(docRef);
         }
 
-        logger.info('Document deleted', { id, collectionName });
+        logger.info("Document deleted", { id, collectionName });
       } catch (error) {
         const err = error as Error;
-        logError(err, 'Failed to delete document', {
+        logError(err, "Failed to delete document", {
           component: config.componentName,
-          operation: 'delete',
+          operation: "delete",
           id,
           collectionName,
         });
@@ -271,7 +281,7 @@ export function createFirestoreCrudService<TEntity, TCreate, TUpdate>(
     ...(prepareDelete && {
       async softDelete(id: string): Promise<void> {
         try {
-          logger.info('Soft deleting document', { id, collectionName });
+          logger.info("Soft deleting document", { id, collectionName });
 
           const timestampFactory = await createTimestampFactoryAsync();
           const deleteData = prepareDelete(timestampFactory);
@@ -285,12 +295,12 @@ export function createFirestoreCrudService<TEntity, TCreate, TUpdate>(
             await updateDoc(docRef, deleteData);
           }
 
-          logger.info('Document soft deleted', { id, collectionName });
+          logger.info("Document soft deleted", { id, collectionName });
         } catch (error) {
           const err = error as Error;
-          logError(err, 'Failed to soft delete document', {
+          logError(err, "Failed to soft delete document", {
             component: config.componentName,
-            operation: 'softDelete',
+            operation: "softDelete",
             id,
             collectionName,
           });
@@ -300,5 +310,3 @@ export function createFirestoreCrudService<TEntity, TCreate, TUpdate>(
     }),
   };
 }
-
-

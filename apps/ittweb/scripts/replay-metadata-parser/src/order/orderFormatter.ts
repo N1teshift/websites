@@ -12,5 +12,3 @@ export const toOrderString = (raw?: number[]): string | null => {
 
   return reversed.map((code) => code.toString(16).padStart(2, "0")).join("");
 };
-
-

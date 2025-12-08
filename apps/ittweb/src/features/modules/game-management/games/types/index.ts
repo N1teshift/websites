@@ -1,29 +1,29 @@
-import { Timestamp } from 'firebase/firestore';
+import { Timestamp } from "firebase/firestore";
 
 /**
  * Game result flag for players
  */
-export type GamePlayerFlag = 'winner' | 'loser' | 'drawer';
+export type GamePlayerFlag = "winner" | "loser" | "drawer";
 
 /**
  * Game category/mode
  */
-export type GameCategory = '1v1' | '2v2' | '3v3' | '4v4' | '5v5' | '6v6' | 'ffa' | string;
+export type GameCategory = "1v1" | "2v2" | "3v3" | "4v4" | "5v5" | "6v6" | "ffa" | string;
 
 /**
  * Game type - scheduled or completed
  */
-export type GameState = 'scheduled' | 'completed';
+export type GameState = "scheduled" | "completed";
 
 /**
  * Team size for scheduled games
  */
-export type TeamSize = '1v1' | '2v2' | '3v3' | '4v4' | '5v5' | '6v6' | 'custom';
+export type TeamSize = "1v1" | "2v2" | "3v3" | "4v4" | "5v5" | "6v6" | "custom";
 
 /**
  * Game type (ELO or normal)
  */
-export type GameType = 'elo' | 'normal';
+export type GameType = "elo" | "normal";
 
 /**
  * Game mode
@@ -33,7 +33,7 @@ export type GameMode = string;
 /**
  * Participant result
  */
-export type ParticipantResult = 'winner' | 'loser' | 'draw';
+export type ParticipantResult = "winner" | "loser" | "draw";
 
 /**
  * Game participant (for scheduled games)
@@ -55,7 +55,7 @@ export interface GameArchiveContent {
   videoUrl?: string;
   twitchClipUrl?: string;
   replayUrl?: string;
-  sectionOrder?: Array<'images' | 'video' | 'twitch' | 'replay' | 'game' | 'text'>;
+  sectionOrder?: Array<"images" | "video" | "twitch" | "replay" | "game" | "text">;
 }
 
 /**
@@ -102,14 +102,14 @@ export interface Game {
   id: string; // Firestore document ID
   gameId: number; // Single numeric identifier (same for scheduled and completed)
   gameState: GameState; // 'scheduled' | 'completed'
-  
+
   // Common fields
   creatorName: string;
   createdByDiscordId?: string | null;
   createdAt: Timestamp | string;
   updatedAt: Timestamp | string;
   submittedAt?: Timestamp | string;
-  
+
   // Scheduled game fields (only when gameState === 'scheduled')
   scheduledDateTime?: Timestamp | string; // ISO 8601 string in UTC or Timestamp
   scheduledDateTimeString?: string; // ISO 8601 string (for querying)
@@ -121,9 +121,9 @@ export interface Game {
   gameLength?: number; // Game length in seconds
   modes?: GameMode[];
   participants?: GameParticipant[]; // Discord/website users who joined
-  status?: 'scheduled' | 'ongoing' | 'awaiting_replay' | 'archived' | 'cancelled'; // Status for scheduled games
+  status?: "scheduled" | "ongoing" | "awaiting_replay" | "archived" | "cancelled"; // Status for scheduled games
   scheduledGameId?: number; // Unique numeric ID for scheduled games (when gameState === 'scheduled')
-  
+
   // Completed game fields (only when gameState === 'completed')
   datetime?: Timestamp | string; // When the game was played
   duration?: number; // seconds
@@ -136,10 +136,10 @@ export interface Game {
   playerNames?: string[]; // Array of player names for quick access
   playerCount?: number; // Number of players in the game
   verified?: boolean;
-  
+
   // Archive content (only when gameState === 'completed' and game has been archived)
   archiveContent?: GameArchiveContent;
-  
+
   // Soft delete
   isDeleted?: boolean;
   deletedAt?: Timestamp | string | null;
@@ -228,7 +228,7 @@ export interface UpdateGame {
   creatorName?: string;
   createdByDiscordId?: string | null;
   updatedAt?: Timestamp | string;
-  
+
   // Scheduled game updates
   scheduledDateTime?: Timestamp | string;
   scheduledDateTimeString?: string;
@@ -240,7 +240,7 @@ export interface UpdateGame {
   gameLength?: number;
   modes?: GameMode[];
   participants?: GameParticipant[];
-  
+
   // Completed game updates
   datetime?: Timestamp | string;
   duration?: number;
@@ -253,7 +253,7 @@ export interface UpdateGame {
   playerNames?: string[];
   playerCount?: number;
   verified?: boolean;
-  
+
   // Archive content updates
   archiveContent?: GameArchiveContent;
 }
@@ -290,5 +290,3 @@ export interface GameListResponse {
  * @deprecated Use CreateCompletedGame instead
  */
 export type CreateGame = CreateCompletedGame;
-
-

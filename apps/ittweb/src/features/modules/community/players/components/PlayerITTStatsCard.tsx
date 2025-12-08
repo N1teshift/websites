@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import Image from 'next/image';
-import { Card } from '@/features/infrastructure/components';
-import { AnimalKillsDisplay } from '@/features/modules/shared/components';
-import type { GamePlayer } from '@/features/modules/game-management/games/types';
+import React, { useState, useEffect } from "react";
+import Image from "next/image";
+import { Card } from "@/features/infrastructure/components";
+import { AnimalKillsDisplay } from "@/features/modules/shared/components";
+import type { GamePlayer } from "@/features/modules/game-management/games/types";
 
 interface PlayerITTStatsCardProps {
   playerName: string;
@@ -39,14 +39,15 @@ const EMPTY_STATS: AggregatedITTStats = {
 
 function aggregatePlayerStats(players: GamePlayer[]): AggregatedITTStats {
   const stats = { ...EMPTY_STATS, animalKills: { ...EMPTY_STATS.animalKills } };
-  
+
   for (const player of players) {
     // Check if this player has any ITT stats
-    const hasStats = player.damageDealt !== undefined ||
-                     player.selfHealing !== undefined ||
-                     player.meatEaten !== undefined ||
-                     player.killsElk !== undefined;
-    
+    const hasStats =
+      player.damageDealt !== undefined ||
+      player.selfHealing !== undefined ||
+      player.meatEaten !== undefined ||
+      player.killsElk !== undefined;
+
     if (hasStats) {
       stats.gamesWithStats++;
       stats.totalDamageDealt += player.damageDealt || 0;
@@ -62,26 +63,30 @@ function aggregatePlayerStats(players: GamePlayer[]): AggregatedITTStats {
       stats.animalKills.panther += player.killsPanther || 0;
     }
   }
-  
-  stats.animalKills.total = 
-    stats.animalKills.elk + stats.animalKills.hawk + stats.animalKills.snake +
-    stats.animalKills.wolf + stats.animalKills.bear + stats.animalKills.panther;
-  
+
+  stats.animalKills.total =
+    stats.animalKills.elk +
+    stats.animalKills.hawk +
+    stats.animalKills.snake +
+    stats.animalKills.wolf +
+    stats.animalKills.bear +
+    stats.animalKills.panther;
+
   return stats;
 }
 
-function StatBlock({ 
-  icon, 
+function StatBlock({
+  icon,
   iconImage,
-  label, 
-  value, 
-  average, 
-  colorClass 
-}: { 
-  icon?: string; 
+  label,
+  value,
+  average,
+  colorClass,
+}: {
+  icon?: string;
   iconImage?: string;
-  label: string; 
-  value: number; 
+  label: string;
+  value: number;
   average: number;
   colorClass: string;
 }) {
@@ -102,12 +107,8 @@ function StatBlock({
         ) : null}
         <span className="text-gray-400 text-xs">{label}</span>
       </div>
-      <div className={`text-lg font-bold ${colorClass}`}>
-        {value.toLocaleString()}
-      </div>
-      <div className="text-xs text-gray-500">
-        ~{average.toFixed(1)}/game
-      </div>
+      <div className={`text-lg font-bold ${colorClass}`}>{value.toLocaleString()}</div>
+      <div className="text-xs text-gray-500">~{average.toFixed(1)}/game</div>
     </div>
   );
 }
@@ -127,29 +128,29 @@ export function PlayerITTStatsCard({ playerName, lastPlayed }: PlayerITTStatsCar
         const response = await fetch(
           `/api/games?player=${encodeURIComponent(playerName)}&limit=100&gameState=completed`
         );
-        
+
         if (!response.ok) {
-          throw new Error('Failed to fetch games');
+          throw new Error("Failed to fetch games");
         }
 
         const data = await response.json();
         const games = data.data?.games || data.games || [];
-        
+
         // Collect all player entries for this player across all games
         const playerEntries: GamePlayer[] = [];
-        
+
         for (const game of games) {
           // Need to fetch full game with players
           const gameResponse = await fetch(`/api/games/${game.id}`);
           if (gameResponse.ok) {
             const gameData = await gameResponse.json();
             const fullGame = gameData.data || gameData;
-            
+
             // Find this player in the game
             const playerEntry = fullGame.players?.find(
               (p: GamePlayer) => p.name.toLowerCase() === playerName.toLowerCase()
             );
-            
+
             if (playerEntry) {
               playerEntries.push(playerEntry);
             }
@@ -159,7 +160,7 @@ export function PlayerITTStatsCard({ playerName, lastPlayed }: PlayerITTStatsCar
         const aggregated = aggregatePlayerStats(playerEntries);
         setStats(aggregated);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Unknown error');
+        setError(err instanceof Error ? err.message : "Unknown error");
       } finally {
         setLoading(false);
       }
@@ -175,7 +176,7 @@ export function PlayerITTStatsCard({ playerName, lastPlayed }: PlayerITTStatsCar
       <Card variant="medieval" className="p-6 animate-pulse">
         <div className="h-6 bg-amber-500/20 rounded w-1/3 mb-4"></div>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-          {[1, 2, 3, 4, 5, 6].map(i => (
+          {[1, 2, 3, 4, 5, 6].map((i) => (
             <div key={i} className="h-20 bg-amber-500/10 rounded"></div>
           ))}
         </div>
@@ -191,17 +192,13 @@ export function PlayerITTStatsCard({ playerName, lastPlayed }: PlayerITTStatsCar
     return null; // No ITT stats available
   }
 
-  const avg = (val: number) => stats.gamesWithStats > 0 ? val / stats.gamesWithStats : 0;
+  const avg = (val: number) => (stats.gamesWithStats > 0 ? val / stats.gamesWithStats : 0);
 
   return (
     <Card variant="medieval" className="p-4">
       <div className="flex justify-between items-center mb-3">
         <h2 className="text-lg font-semibold text-amber-400">Lifetime Statistics</h2>
-        {lastPlayed && (
-          <span className="text-xs text-gray-500">
-            Last Played: {lastPlayed}
-          </span>
-        )}
+        {lastPlayed && <span className="text-xs text-gray-500">Last Played: {lastPlayed}</span>}
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2">
@@ -262,4 +259,3 @@ export function PlayerITTStatsCard({ playerName, lastPlayed }: PlayerITTStatsCar
     </Card>
   );
 }
-

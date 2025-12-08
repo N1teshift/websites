@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 export default function TerrainLegendCard() {
   return (
@@ -7,6 +7,3 @@ export default function TerrainLegendCard() {
     </div>
   );
 }
-
-
-

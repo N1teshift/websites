@@ -1,6 +1,14 @@
-import React from 'react';
+import React from "react";
 
-export default function WaterLegend({ visible = true, min = 0, max = 255 }: { visible?: boolean; min?: number; max?: number }) {
+export default function WaterLegend({
+  visible = true,
+  min = 0,
+  max = 255,
+}: {
+  visible?: boolean;
+  min?: number;
+  max?: number;
+}) {
   if (!visible) return null;
   const minVal = Math.round(min);
   const maxVal = Math.round(max);
@@ -11,13 +19,13 @@ export default function WaterLegend({ visible = true, min = 0, max = 255 }: { vi
         <span className="text-xs text-gray-400">{minVal}</span>
         <div
           className="flex-1 h-3 rounded"
-          style={{ background: 'linear-gradient(90deg, rgb(160,200,255) 0%, rgb(100,150,220) 50%, rgb(30,80,160) 100%)' }}
+          style={{
+            background:
+              "linear-gradient(90deg, rgb(160,200,255) 0%, rgb(100,150,220) 50%, rgb(30,80,160) 100%)",
+          }}
         />
         <span className="text-xs text-gray-400">{maxVal}</span>
       </div>
     </div>
   );
 }
-
-
-

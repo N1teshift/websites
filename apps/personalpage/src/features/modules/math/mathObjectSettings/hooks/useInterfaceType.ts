@@ -18,31 +18,28 @@ import { InterfaceType } from "../../types/mathTypes";
  *                                `containerId` in the context.
  */
 const useInterfaceType = (containerId: string) => {
-    const { interfaceMap, setInterfaceMap } = useContext(InterfaceContext);
+  const { interfaceMap, setInterfaceMap } = useContext(InterfaceContext);
 
-    const getInterfaceType = (): InterfaceType => {
-        // Try exact match first
-        if (containerId in interfaceMap) {
-            return interfaceMap[containerId];
-        }
+  const getInterfaceType = (): InterfaceType => {
+    // Try exact match first
+    if (containerId in interfaceMap) {
+      return interfaceMap[containerId];
+    }
 
-        // Try to find a parent key
-        const parentKey = Object.keys(interfaceMap).find(key => containerId.startsWith(key));
-        if (parentKey) {
-            return interfaceMap[parentKey];
-        }
+    // Try to find a parent key
+    const parentKey = Object.keys(interfaceMap).find((key) => containerId.startsWith(key));
+    if (parentKey) {
+      return interfaceMap[parentKey];
+    }
 
-        return "simple";
-    };
+    return "simple";
+  };
 
-    const setInterfaceTypeFor = (type: InterfaceType) => {
-        setInterfaceMap((prev) => ({ ...prev, [containerId]: type }));
-    };
+  const setInterfaceTypeFor = (type: InterfaceType) => {
+    setInterfaceMap((prev) => ({ ...prev, [containerId]: type }));
+  };
 
-    return { interfaceType: getInterfaceType(), setInterfaceType: setInterfaceTypeFor };
+  return { interfaceType: getInterfaceType(), setInterfaceType: setInterfaceTypeFor };
 };
 
 export default useInterfaceType;
-
-
-

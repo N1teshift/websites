@@ -1,16 +1,25 @@
-import type { NextApiRequest } from 'next';
-import { createPostHandler, requireSession } from '@websites/infrastructure/api';
-import { createCompletedGame, getGames, updateEloScores } from '@/features/modules/game-management/games/lib/gameService';
-import { parseReplayFile } from '@/features/modules/game-management/lib/mechanics';
-import { createComponentLogger } from '@websites/infrastructure/logging';
-import { getFirestoreAdmin, getAdminTimestamp, getStorageAdmin, getStorageBucketName } from '@websites/infrastructure/firebase';
-import type { CreateCompletedGame } from '@/features/modules/game-management/games/types';
-import { IncomingForm, Fields, Files, File as FormidableFile } from 'formidable';
-import { promises as fs } from 'fs';
-import os from 'os';
-import { randomUUID } from 'crypto';
+import type { NextApiRequest } from "next";
+import { createPostHandler, requireSession } from "@websites/infrastructure/api";
+import {
+  createCompletedGame,
+  getGames,
+  updateEloScores,
+} from "@/features/modules/game-management/games/lib/gameService";
+import { parseReplayFile } from "@/features/modules/game-management/lib/mechanics";
+import { createComponentLogger } from "@websites/infrastructure/logging";
+import {
+  getFirestoreAdmin,
+  getAdminTimestamp,
+  getStorageAdmin,
+  getStorageBucketName,
+} from "@websites/infrastructure/firebase";
+import type { CreateCompletedGame } from "@/features/modules/game-management/games/types";
+import { IncomingForm, Fields, Files, File as FormidableFile } from "formidable";
+import { promises as fs } from "fs";
+import os from "os";
+import { randomUUID } from "crypto";
 
-const logger = createComponentLogger('api/games/upload-replay');
+const logger = createComponentLogger("api/games/upload-replay");
 
 // Disable body parsing, we'll handle it with formidable
 export const config = {
@@ -35,24 +44,26 @@ export default createPostHandler<{ id: string; gameId: number; message: string }
       multiples: false,
     });
 
-    const { fields, files } = await new Promise<{ fields: Fields; files: Files }>((resolve, reject) => {
-      form.parse(req, (err, fieldsResult, filesResult) => {
-        if (err) {
-          reject(err);
-          return;
-        }
-        resolve({ fields: fieldsResult, files: filesResult });
-      });
-    });
+    const { fields, files } = await new Promise<{ fields: Fields; files: Files }>(
+      (resolve, reject) => {
+        form.parse(req, (err, fieldsResult, filesResult) => {
+          if (err) {
+            reject(err);
+            return;
+          }
+          resolve({ fields: fieldsResult, files: filesResult });
+        });
+      }
+    );
 
     const replayFileField = Array.isArray(files.replay) ? files.replay[0] : files.replay;
     if (!replayFileField) {
-      throw new Error('Replay file is required (field name: replay)');
+      throw new Error("Replay file is required (field name: replay)");
     }
 
     const replayFile = replayFileField as FormidableFile;
     const fileBuffer = await fs.readFile(replayFile.filepath);
-    const originalName = replayFile.originalFilename || 'replay.w3g';
+    const originalName = replayFile.originalFilename || "replay.w3g";
 
     // Optional: Check if a scheduled game ID was provided
     const scheduledGameIdField = Array.isArray(fields.scheduledGameId)
@@ -71,7 +82,7 @@ export default createPostHandler<{ id: string; gameId: number; message: string }
       });
     } catch (parserError) {
       const parseErr = parserError as Error;
-      logger.error('Replay parsing failed', parseErr, {
+      logger.error("Replay parsing failed", parseErr, {
         scheduledGameId,
       } as Record<string, unknown>);
 
@@ -81,7 +92,7 @@ export default createPostHandler<{ id: string; gameId: number; message: string }
         try {
           const manualData = JSON.parse(gameDataJson as string);
           if (!manualData.gameId || !manualData.datetime || !manualData.players) {
-            throw new Error('Invalid gameData: gameId, datetime, and players are required');
+            throw new Error("Invalid gameData: gameId, datetime, and players are required");
           }
 
           // Use manual data but still need to upload the file
@@ -91,19 +102,23 @@ export default createPostHandler<{ id: string; gameId: number; message: string }
               datetime: manualData.datetime,
               duration: manualData.duration || 1800,
               gamename: manualData.gamename || `Game ${manualData.gameId}`,
-              map: manualData.map || 'Unknown',
-              creatorName: manualData.creatorName || session.user?.name || 'Unknown',
-              ownername: manualData.ownername || manualData.creatorName || 'Unknown',
+              map: manualData.map || "Unknown",
+              creatorName: manualData.creatorName || session.user?.name || "Unknown",
+              ownername: manualData.ownername || manualData.creatorName || "Unknown",
               category: manualData.category,
               players: manualData.players,
             },
             w3mmd: { raw: [], lookup: {} },
           };
         } catch {
-          throw new Error('Replay parsing failed and invalid gameData JSON provided. Please provide valid JSON string.');
+          throw new Error(
+            "Replay parsing failed and invalid gameData JSON provided. Please provide valid JSON string."
+          );
         }
       } else {
-        throw new Error(`Replay parsing failed. Please supply gameData JSON or try again later.${process.env.NODE_ENV !== 'production' ? ` Details: ${parseErr.message}` : ''}`);
+        throw new Error(
+          `Replay parsing failed. Please supply gameData JSON or try again later.${process.env.NODE_ENV !== "production" ? ` Details: ${parseErr.message}` : ""}`
+        );
       }
     }
 
@@ -116,8 +131,10 @@ export default createPostHandler<{ id: string; gameId: number; message: string }
       const existingGame = existingGames.games[0];
 
       // If it's a scheduled game, tell user to use the update endpoint instead
-      if (existingGame.gameState === 'scheduled') {
-        throw new Error(`A scheduled game with gameId ${gameId} already exists. Please use /api/games/${existingGame.id}/upload-replay to upload the replay.`);
+      if (existingGame.gameState === "scheduled") {
+        throw new Error(
+          `A scheduled game with gameId ${gameId} already exists. Please use /api/games/${existingGame.id}/upload-replay to upload the replay.`
+        );
       }
 
       // If it's already a completed game, reject
@@ -154,7 +171,7 @@ export default createPostHandler<{ id: string; gameId: number; message: string }
 
     await bucket.file(filePath).save(fileBuffer, {
       metadata: {
-        contentType: replayFile.mimetype || 'application/octet-stream',
+        contentType: replayFile.mimetype || "application/octet-stream",
         metadata: {
           firebaseStorageDownloadTokens: token,
         },
@@ -162,12 +179,12 @@ export default createPostHandler<{ id: string; gameId: number; message: string }
     });
 
     // Remove temporary file
-    await fs.unlink(replayFile.filepath).catch(() => { });
+    await fs.unlink(replayFile.filepath).catch(() => {});
 
     const replayUrl = `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${encodeURIComponent(filePath)}?alt=media&token=${token}`;
 
     // Update the game document with the replayUrl and filename
-    const gameRef = adminDb.collection('games').doc(createdGameId);
+    const gameRef = adminDb.collection("games").doc(createdGameId);
     await gameRef.update({
       replayUrl,
       replayFileName: originalName,
@@ -181,25 +198,25 @@ export default createPostHandler<{ id: string; gameId: number; message: string }
     // Update ELO scores
     try {
       await updateEloScores(createdGameId);
-      logger.info('ELO scores updated', { gameId: createdGameId });
+      logger.info("ELO scores updated", { gameId: createdGameId });
     } catch (eloError) {
       // Log but don't fail the request if ELO update fails
-      logger.warn('Failed to update ELO scores', {
+      logger.warn("Failed to update ELO scores", {
         gameId: createdGameId,
         error: eloError instanceof Error ? eloError.message : String(eloError),
       });
     }
 
-    logger.info('Replay uploaded and game created', {
+    logger.info("Replay uploaded and game created", {
       gameId: createdGameId,
       gameIdNum: gameId,
-      discordId: session.discordId
+      discordId: session.discordId,
     });
 
     return {
       id: createdGameId,
       gameId: gameId,
-      message: 'Replay uploaded and game created successfully'
+      message: "Replay uploaded and game created successfully",
     };
   },
   {
@@ -207,5 +224,3 @@ export default createPostHandler<{ id: string; gameId: number; message: string }
     logRequests: true,
   }
 );
-
-

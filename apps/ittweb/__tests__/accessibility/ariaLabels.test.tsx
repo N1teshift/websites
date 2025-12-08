@@ -1,29 +1,28 @@
 /// <reference types="@testing-library/jest-dom" />
-import React from 'react';
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { describe, it, expect, beforeEach } from '@jest/globals';
-import {
-  getElementsWithAriaLabels,
-  hasProperAriaLabel,
-} from '@websites/infrastructure/utils';
-import { logError } from '@/features/infrastructure/logging';
+import React from "react";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { describe, it, expect, beforeEach } from "@jest/globals";
+import { getElementsWithAriaLabels, hasProperAriaLabel } from "@websites/infrastructure/utils";
+import { logError } from "@/features/infrastructure/logging";
 
 // Mock logger
-jest.mock('@/features/infrastructure/logging');
+jest.mock("@/features/infrastructure/logging");
 
-describe('ARIA Labels', () => {
+describe("ARIA Labels", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  describe('Basic ARIA label presence', () => {
-    it('should verify all interactive elements have appropriate ARIA labels', () => {
+  describe("Basic ARIA label presence", () => {
+    it("should verify all interactive elements have appropriate ARIA labels", () => {
       // Arrange
       const TestComponent = () => (
         <div>
           <button aria-label="Close dialog">×</button>
-          <a href="/test" aria-label="Navigate to test page">Link</a>
+          <a href="/test" aria-label="Navigate to test page">
+            Link
+          </a>
           <input type="text" aria-label="Search input" />
         </div>
       );
@@ -34,29 +33,29 @@ describe('ARIA Labels', () => {
 
       // Assert
       expect(elementsWithLabels.length).toBeGreaterThan(0);
-      elementsWithLabels.forEach(({ element, label }: { element: HTMLElement; label: string | null }) => {
-        expect(label).toBeTruthy();
-        expect(element).toBeInTheDocument();
-      });
+      elementsWithLabels.forEach(
+        ({ element, label }: { element: HTMLElement; label: string | null }) => {
+          expect(label).toBeTruthy();
+          expect(element).toBeInTheDocument();
+        }
+      );
     });
 
-    it('should check for aria-label attribute', () => {
+    it("should check for aria-label attribute", () => {
       // Arrange
-      const TestComponent = () => (
-        <button aria-label="Submit form">Submit</button>
-      );
+      const TestComponent = () => <button aria-label="Submit form">Submit</button>;
 
       // Act
       const { container } = render(<TestComponent />);
-      const button = container.querySelector('button')!;
+      const button = container.querySelector("button")!;
       const hasLabel = hasProperAriaLabel(button);
 
       // Assert
       expect(hasLabel).toBe(true);
-      expect(button.getAttribute('aria-label')).toBe('Submit form');
+      expect(button.getAttribute("aria-label")).toBe("Submit form");
     });
 
-    it('should check for aria-labelledby attribute', () => {
+    it("should check for aria-labelledby attribute", () => {
       // Arrange
       const TestComponent = () => (
         <div>
@@ -67,17 +66,17 @@ describe('ARIA Labels', () => {
 
       // Act
       const { container } = render(<TestComponent />);
-      const button = container.querySelector('button')!;
+      const button = container.querySelector("button")!;
       const hasLabel = hasProperAriaLabel(button);
 
       // Assert
       expect(hasLabel).toBe(true);
-      expect(button.getAttribute('aria-labelledby')).toBe('button-label');
+      expect(button.getAttribute("aria-labelledby")).toBe("button-label");
     });
   });
 
-  describe('Form input labeling', () => {
-    it('should verify labels are associated with inputs via htmlFor', () => {
+  describe("Form input labeling", () => {
+    it("should verify labels are associated with inputs via htmlFor", () => {
       // Arrange
       const TestComponent = () => (
         <form>
@@ -88,14 +87,14 @@ describe('ARIA Labels', () => {
 
       // Act
       render(<TestComponent />);
-      const input = screen.getByLabelText('Username');
+      const input = screen.getByLabelText("Username");
 
       // Assert
       expect(input).toBeInTheDocument();
       expect(hasProperAriaLabel(input as HTMLElement)).toBe(true);
     });
 
-    it('should verify labels wrapping inputs', () => {
+    it("should verify labels wrapping inputs", () => {
       // Arrange
       const TestComponent = () => (
         <label>
@@ -106,22 +105,20 @@ describe('ARIA Labels', () => {
 
       // Act
       render(<TestComponent />);
-      const input = screen.getByLabelText('Email Address');
+      const input = screen.getByLabelText("Email Address");
 
       // Assert
       expect(input).toBeInTheDocument();
       expect(hasProperAriaLabel(input as HTMLElement)).toBe(true);
     });
 
-    it('should handle missing labels for inputs', () => {
+    it("should handle missing labels for inputs", () => {
       // Arrange
-      const TestComponent = () => (
-        <input type="text" />
-      );
+      const TestComponent = () => <input type="text" />;
 
       // Act
       const { container } = render(<TestComponent />);
-      const input = container.querySelector('input')!;
+      const input = container.querySelector("input")!;
       const hasLabel = hasProperAriaLabel(input);
 
       // Assert
@@ -129,58 +126,52 @@ describe('ARIA Labels', () => {
     });
   });
 
-  describe('Button labeling', () => {
-    it('should accept text content as label for buttons', () => {
+  describe("Button labeling", () => {
+    it("should accept text content as label for buttons", () => {
       // Arrange
-      const TestComponent = () => (
-        <button>Click Me</button>
-      );
+      const TestComponent = () => <button>Click Me</button>;
 
       // Act
       const { container } = render(<TestComponent />);
-      const button = container.querySelector('button')!;
+      const button = container.querySelector("button")!;
       const hasLabel = hasProperAriaLabel(button);
 
       // Assert
       expect(hasLabel).toBe(true);
     });
 
-    it('should require aria-label for icon-only buttons', () => {
+    it("should require aria-label for icon-only buttons", () => {
       // Arrange
-      const TestComponent = () => (
-        <button aria-label="Close">×</button>
-      );
+      const TestComponent = () => <button aria-label="Close">×</button>;
 
       // Act
       const { container } = render(<TestComponent />);
-      const button = container.querySelector('button')!;
+      const button = container.querySelector("button")!;
       const hasLabel = hasProperAriaLabel(button);
 
       // Assert
       expect(hasLabel).toBe(true);
-      expect(button.getAttribute('aria-label')).toBe('Close');
+      expect(button.getAttribute("aria-label")).toBe("Close");
     });
 
-    it('should handle missing labels for icon-only buttons', () => {
+    it("should handle missing labels for icon-only buttons", () => {
       // Arrange
-      const TestComponent = () => (
-        <button>×</button>
-      );
+      const TestComponent = () => <button>×</button>;
 
       // Act
       const { container } = render(<TestComponent />);
-      const button = container.querySelector('button')!;
+      const button = container.querySelector("button")!;
       const hasLabel = hasProperAriaLabel(button);
 
       // Assert
       // Single character might be considered insufficient
       // This test documents the expectation
-      expect(button.textContent?.trim()).toBe('×');
+      expect(button.textContent?.trim()).toBe("×");
     });
   });
 
-  describe('Edge cases for ARIA labels', () => {
-    it('should handle missing labels', () => {
+  describe("Edge cases for ARIA labels", () => {
+    it("should handle missing labels", () => {
       // Arrange
       const TestComponent = () => (
         <div>
@@ -191,9 +182,9 @@ describe('ARIA Labels', () => {
 
       // Act
       const { container } = render(<TestComponent />);
-      const buttonWithText = container.querySelector('button')!;
+      const buttonWithText = container.querySelector("button")!;
       const divButton = container.querySelector('[role="button"]')!;
-      
+
       const buttonHasLabel = hasProperAriaLabel(buttonWithText);
       const divHasLabel = hasProperAriaLabel(divButton as HTMLElement);
 
@@ -202,15 +193,13 @@ describe('ARIA Labels', () => {
       expect(divHasLabel).toBe(false);
     });
 
-    it('should handle incorrect labels', () => {
+    it("should handle incorrect labels", () => {
       // Arrange
-      const TestComponent = () => (
-        <button aria-label="">Empty Label</button>
-      );
+      const TestComponent = () => <button aria-label="">Empty Label</button>;
 
       // Act
       const { container } = render(<TestComponent />);
-      const button = container.querySelector('button')!;
+      const button = container.querySelector("button")!;
       const hasLabel = hasProperAriaLabel(button);
 
       // Assert
@@ -218,14 +207,14 @@ describe('ARIA Labels', () => {
       expect(hasLabel).toBe(true);
     });
 
-    it('should handle label updates dynamically', async () => {
+    it("should handle label updates dynamically", async () => {
       // Arrange
       const user = userEvent.setup();
       const TestComponent = () => {
-        const [label, setLabel] = React.useState('Initial Label');
+        const [label, setLabel] = React.useState("Initial Label");
         return (
           <div>
-            <button aria-label={label} onClick={() => setLabel('Updated Label')}>
+            <button aria-label={label} onClick={() => setLabel("Updated Label")}>
               Button
             </button>
           </div>
@@ -234,18 +223,18 @@ describe('ARIA Labels', () => {
 
       // Act
       const { container } = render(<TestComponent />);
-      const button = container.querySelector('button')!;
-      const initialLabel = button.getAttribute('aria-label');
-      
+      const button = container.querySelector("button")!;
+      const initialLabel = button.getAttribute("aria-label");
+
       await user.click(button);
-      const updatedLabel = button.getAttribute('aria-label');
+      const updatedLabel = button.getAttribute("aria-label");
 
       // Assert
-      expect(initialLabel).toBe('Initial Label');
-      expect(updatedLabel).toBe('Updated Label');
+      expect(initialLabel).toBe("Initial Label");
+      expect(updatedLabel).toBe("Updated Label");
     });
 
-    it('should verify aria-labelledby references valid elements', () => {
+    it("should verify aria-labelledby references valid elements", () => {
       // Arrange
       const TestComponent = () => (
         <div>
@@ -257,13 +246,13 @@ describe('ARIA Labels', () => {
 
       // Act
       const { container } = render(<TestComponent />);
-      const buttons = container.querySelectorAll('button');
+      const buttons = container.querySelectorAll("button");
       const validButton = buttons[0];
       const invalidButton = buttons[1];
-      
+
       const validHasLabel = hasProperAriaLabel(validButton);
       // For invalid aria-labelledby, check that the reference doesn't exist
-      const invalidLabelElement = container.querySelector('#invalid-label');
+      const invalidLabelElement = container.querySelector("#invalid-label");
       const invalidHasLabel = hasProperAriaLabel(invalidButton);
 
       // Assert
@@ -271,12 +260,12 @@ describe('ARIA Labels', () => {
       expect(invalidLabelElement).toBeNull();
       // Button without text and invalid aria-labelledby should not have proper label
       // But hasProperAriaLabel might return true if button has text, so we check the reference
-      expect(invalidButton.getAttribute('aria-labelledby')).toBe('invalid-label');
+      expect(invalidButton.getAttribute("aria-labelledby")).toBe("invalid-label");
     });
   });
 
-  describe('Complex component labeling', () => {
-    it('should handle custom interactive elements', () => {
+  describe("Complex component labeling", () => {
+    it("should handle custom interactive elements", () => {
       // Arrange
       const TestComponent = () => (
         <div>
@@ -293,7 +282,7 @@ describe('ARIA Labels', () => {
       const { container } = render(<TestComponent />);
       const customButton = container.querySelector('[role="button"]')!;
       const customLink = container.querySelector('[role="link"]')!;
-      
+
       const buttonHasLabel = hasProperAriaLabel(customButton as HTMLElement);
       const linkHasLabel = hasProperAriaLabel(customLink as HTMLElement);
 
@@ -302,29 +291,24 @@ describe('ARIA Labels', () => {
       expect(linkHasLabel).toBe(true);
     });
 
-    it('should verify aria-describedby for additional context', () => {
+    it("should verify aria-describedby for additional context", () => {
       // Arrange
       const TestComponent = () => (
         <div>
           <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            aria-describedby="password-help"
-          />
+          <input type="password" id="password" aria-describedby="password-help" />
           <span id="password-help">Must be at least 8 characters</span>
         </div>
       );
 
       // Act
       render(<TestComponent />);
-      const input = screen.getByLabelText('Password');
-      const helpText = screen.getByText('Must be at least 8 characters');
+      const input = screen.getByLabelText("Password");
+      const helpText = screen.getByText("Must be at least 8 characters");
 
       // Assert
-      expect(input.getAttribute('aria-describedby')).toBe('password-help');
+      expect(input.getAttribute("aria-describedby")).toBe("password-help");
       expect(helpText).toBeInTheDocument();
     });
   });
 });
-

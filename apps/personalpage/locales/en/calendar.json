@@ -1,17 +1,17 @@
 {
-    "event_join_success": "Congratulations, You have successfully registered for a lesson",
-    "no_event_selected_or_slot_selected": "Select a timeslot",
-    "occupied": "Occupied",
-    "start_time": "Lesson starts",
-    "end_time": "Lesson ends",
-    "occupied_timeslot": "Lesson timeslot is occupied",
-    "plan_new_lesson": "Plan a new lesson",
-    "selected_lesson_start_time": "The selected lesson start time",
-    "email": {
-        "subject": "Math lesson meeting details",
-        "body": "Dear {{userName}},\n\nYour scheduled mathematics lesson meeting has been successfully created. Below are the details:\n\nDate and Time: {{startDateTime}} to {{endDateTime}}\nJoin Link: {{meetingLink}}\n\nPlease click the link at the time of your meeting to join.\n\nBest regards,\nSimonas Bernotas"
-    },
-    "minutes_kilmininkas": "minutes",
+  "event_join_success": "Congratulations, You have successfully registered for a lesson",
+  "no_event_selected_or_slot_selected": "Select a timeslot",
+  "occupied": "Occupied",
+  "start_time": "Lesson starts",
+  "end_time": "Lesson ends",
+  "occupied_timeslot": "Lesson timeslot is occupied",
+  "plan_new_lesson": "Plan a new lesson",
+  "selected_lesson_start_time": "The selected lesson start time",
+  "email": {
+    "subject": "Math lesson meeting details",
+    "body": "Dear {{userName}},\n\nYour scheduled mathematics lesson meeting has been successfully created. Below are the details:\n\nDate and Time: {{startDateTime}} to {{endDateTime}}\nJoin Link: {{meetingLink}}\n\nPlease click the link at the time of your meeting to join.\n\nBest regards,\nSimonas Bernotas"
+  },
+  "minutes_kilmininkas": "minutes",
   "identify_and_register": "Identify and register",
   "math_lesson": "Math lesson",
 

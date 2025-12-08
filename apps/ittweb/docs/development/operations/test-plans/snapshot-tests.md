@@ -23,4 +23,3 @@ This document outlines all snapshot tests needed to catch unintended UI changes.
   - **What**: Verify loading state snapshots
   - **Expected**: Loading states snapshotted correctly
   - **Edge cases**: Various loading indicators, skeleton screens, progress states
-

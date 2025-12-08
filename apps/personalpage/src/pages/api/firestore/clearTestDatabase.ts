@@ -1,9 +1,9 @@
-import { createPostHandler } from '@websites/infrastructure/api';
-import { firestoreService } from '@/features/infrastructure/api/firebase';
+import { createPostHandler } from "@websites/infrastructure/api";
+import { firestoreService } from "@/features/infrastructure/api/firebase";
 
 /**
  * API endpoint to clear all test data from the Firestore database.
- * 
+ *
  * Uses the centralized service layer pattern for clean separation of concerns.
  */
 export default createPostHandler(
@@ -12,9 +12,6 @@ export default createPostHandler(
     return result;
   },
   {
-    logRequests: true
+    logRequests: true,
   }
-); 
-
-
-
+);

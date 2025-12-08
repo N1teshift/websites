@@ -1,24 +1,24 @@
-import { act, renderHook } from '@testing-library/react';
-import { useArchiveHandlers } from '../useArchiveHandlers';
-import { SectionKey } from '../useArchiveBaseState';
+import { act, renderHook } from "@testing-library/react";
+import { useArchiveHandlers } from "../useArchiveHandlers";
+import { SectionKey } from "../useArchiveBaseState";
 
 // Mock archiveService
-jest.mock('@/features/infrastructure/lib/archiveService', () => ({
+jest.mock("@/features/infrastructure/lib/archiveService", () => ({
   extractYouTubeId: jest.fn((url: string) => {
-    if (url.includes('youtube.com') || url.includes('youtu.be')) {
-      return 'test-youtube-id';
+    if (url.includes("youtube.com") || url.includes("youtu.be")) {
+      return "test-youtube-id";
     }
     return null;
   }),
   extractTwitchClipId: jest.fn((url: string) => {
-    if (url.includes('twitch.tv/clip/')) {
-      return 'test-twitch-id';
+    if (url.includes("twitch.tv/clip/")) {
+      return "test-twitch-id";
     }
     return null;
   }),
 }));
 
-describe('useArchiveHandlers', () => {
+describe("useArchiveHandlers", () => {
   const mockSetFormData = jest.fn();
   const mockSetImageFile = jest.fn();
   const mockSetImageFiles = jest.fn();
@@ -44,30 +44,30 @@ describe('useArchiveHandlers', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockSetFormData.mockImplementation((updater) => {
-      if (typeof updater === 'function') {
+      if (typeof updater === "function") {
         const prev = {
-          title: '',
-          content: '',
-          author: '',
-          entryType: '' as '' | 'story' | 'changelog',
-          mediaUrl: '',
-          twitchClipUrl: '',
-          mediaType: 'none' as 'image' | 'video' | 'replay' | 'none',
-          dateType: 'single' as 'single' | 'undated',
-          singleDate: '',
-          approximateText: '',
+          title: "",
+          content: "",
+          author: "",
+          entryType: "" as "" | "story" | "changelog",
+          mediaUrl: "",
+          twitchClipUrl: "",
+          mediaType: "none" as "image" | "video" | "replay" | "none",
+          dateType: "single" as "single" | "undated",
+          singleDate: "",
+          approximateText: "",
         };
         return updater(prev);
       }
     });
   });
 
-  describe('handles form submission', () => {
-    it('should handle input change', () => {
+  describe("handles form submission", () => {
+    it("should handle input change", () => {
       // Arrange
       const { result } = renderHook(() => useArchiveHandlers(defaultProps));
       const event = {
-        target: { name: 'title', value: 'Test Title' },
+        target: { name: "title", value: "Test Title" },
       } as React.ChangeEvent<HTMLInputElement>;
 
       // Act
@@ -79,11 +79,11 @@ describe('useArchiveHandlers', () => {
       expect(mockSetFormData).toHaveBeenCalled();
     });
 
-    it('should handle textarea change', () => {
+    it("should handle textarea change", () => {
       // Arrange
       const { result } = renderHook(() => useArchiveHandlers(defaultProps));
       const event = {
-        target: { name: 'content', value: 'Test content' },
+        target: { name: "content", value: "Test content" },
       } as React.ChangeEvent<HTMLTextAreaElement>;
 
       // Act
@@ -96,11 +96,11 @@ describe('useArchiveHandlers', () => {
     });
   });
 
-  describe('handles form validation', () => {
-    it('should validate image file types', () => {
+  describe("handles form validation", () => {
+    it("should validate image file types", () => {
       // Arrange
       const { result } = renderHook(() => useArchiveHandlers(defaultProps));
-      const invalidFile = new File(['content'], 'test.pdf', { type: 'application/pdf' });
+      const invalidFile = new File(["content"], "test.pdf", { type: "application/pdf" });
       const event = {
         target: { files: [invalidFile] },
       } as unknown as React.ChangeEvent<HTMLInputElement>;
@@ -111,13 +111,13 @@ describe('useArchiveHandlers', () => {
       });
 
       // Assert
-      expect(mockSetError).toHaveBeenCalledWith('Please select only image files');
+      expect(mockSetError).toHaveBeenCalledWith("Please select only image files");
     });
 
-    it('should accept valid image files', () => {
+    it("should accept valid image files", () => {
       // Arrange
       const { result } = renderHook(() => useArchiveHandlers(defaultProps));
-      const imageFile = new File(['content'], 'test.jpg', { type: 'image/jpeg' });
+      const imageFile = new File(["content"], "test.jpg", { type: "image/jpeg" });
       const event = {
         target: { files: [imageFile] },
       } as unknown as React.ChangeEvent<HTMLInputElement>;
@@ -128,18 +128,18 @@ describe('useArchiveHandlers', () => {
       });
 
       // Assert
-      expect(mockSetError).toHaveBeenCalledWith('');
+      expect(mockSetError).toHaveBeenCalledWith("");
       expect(mockSetImageFile).toHaveBeenCalledWith(imageFile);
       expect(mockSetFormData).toHaveBeenCalled();
     });
   });
 
-  describe('handles errors', () => {
-    it('should set error for invalid video URL', () => {
+  describe("handles errors", () => {
+    it("should set error for invalid video URL", () => {
       // Arrange
       const { result } = renderHook(() => useArchiveHandlers(defaultProps));
       const event = {
-        target: { value: 'invalid-url' },
+        target: { value: "invalid-url" },
       } as React.ChangeEvent<HTMLInputElement>;
 
       // Act
@@ -148,16 +148,14 @@ describe('useArchiveHandlers', () => {
       });
 
       // Assert
-      expect(mockSetError).toHaveBeenCalledWith(
-        'Please enter a valid YouTube or Twitch clip URL'
-      );
+      expect(mockSetError).toHaveBeenCalledWith("Please enter a valid YouTube or Twitch clip URL");
     });
 
-    it('should clear error for valid YouTube URL', () => {
+    it("should clear error for valid YouTube URL", () => {
       // Arrange
       const { result } = renderHook(() => useArchiveHandlers(defaultProps));
       const event = {
-        target: { value: 'https://www.youtube.com/watch?v=test' },
+        target: { value: "https://www.youtube.com/watch?v=test" },
       } as React.ChangeEvent<HTMLInputElement>;
 
       // Act
@@ -166,15 +164,15 @@ describe('useArchiveHandlers', () => {
       });
 
       // Assert
-      expect(mockSetError).toHaveBeenCalledWith('');
+      expect(mockSetError).toHaveBeenCalledWith("");
       expect(mockSetFormData).toHaveBeenCalled();
     });
 
-    it('should clear error for valid Twitch clip URL', () => {
+    it("should clear error for valid Twitch clip URL", () => {
       // Arrange
       const { result } = renderHook(() => useArchiveHandlers(defaultProps));
       const event = {
-        target: { value: 'https://twitch.tv/clip/test-clip' },
+        target: { value: "https://twitch.tv/clip/test-clip" },
       } as React.ChangeEvent<HTMLInputElement>;
 
       // Act
@@ -183,16 +181,16 @@ describe('useArchiveHandlers', () => {
       });
 
       // Assert
-      expect(mockSetError).toHaveBeenCalledWith('');
+      expect(mockSetError).toHaveBeenCalledWith("");
       expect(mockSetFormData).toHaveBeenCalled();
     });
   });
 
-  describe('handles image uploads', () => {
-    it('should handle single image file', () => {
+  describe("handles image uploads", () => {
+    it("should handle single image file", () => {
       // Arrange
       const { result } = renderHook(() => useArchiveHandlers(defaultProps));
-      const imageFile = new File(['content'], 'test.jpg', { type: 'image/jpeg' });
+      const imageFile = new File(["content"], "test.jpg", { type: "image/jpeg" });
       const event = {
         target: { files: [imageFile] },
       } as unknown as React.ChangeEvent<HTMLInputElement>;
@@ -208,12 +206,12 @@ describe('useArchiveHandlers', () => {
       expect(mockSetFormData).toHaveBeenCalled();
     });
 
-    it('should handle multiple image files', () => {
+    it("should handle multiple image files", () => {
       // Arrange
       const { result } = renderHook(() => useArchiveHandlers(defaultProps));
       const imageFiles = [
-        new File(['content1'], 'test1.jpg', { type: 'image/jpeg' }),
-        new File(['content2'], 'test2.jpg', { type: 'image/jpeg' }),
+        new File(["content1"], "test1.jpg", { type: "image/jpeg" }),
+        new File(["content2"], "test2.jpg", { type: "image/jpeg" }),
       ];
       const event = {
         target: { files: imageFiles },
@@ -230,7 +228,7 @@ describe('useArchiveHandlers', () => {
       expect(mockSetFormData).toHaveBeenCalled();
     });
 
-    it('should handle empty file selection', () => {
+    it("should handle empty file selection", () => {
       // Arrange
       const { result } = renderHook(() => useArchiveHandlers(defaultProps));
       const event = {
@@ -248,12 +246,12 @@ describe('useArchiveHandlers', () => {
     });
   });
 
-  describe('handles video URLs', () => {
-    it('should extract and set YouTube URL', () => {
+  describe("handles video URLs", () => {
+    it("should extract and set YouTube URL", () => {
       // Arrange
       const { result } = renderHook(() => useArchiveHandlers(defaultProps));
       const event = {
-        target: { value: 'https://www.youtube.com/watch?v=test' },
+        target: { value: "https://www.youtube.com/watch?v=test" },
       } as React.ChangeEvent<HTMLInputElement>;
 
       // Act
@@ -262,15 +260,15 @@ describe('useArchiveHandlers', () => {
       });
 
       // Assert
-      expect(mockSetError).toHaveBeenCalledWith('');
+      expect(mockSetError).toHaveBeenCalledWith("");
       expect(mockSetFormData).toHaveBeenCalled();
     });
 
-    it('should extract and set Twitch clip URL', () => {
+    it("should extract and set Twitch clip URL", () => {
       // Arrange
       const { result } = renderHook(() => useArchiveHandlers(defaultProps));
       const event = {
-        target: { value: 'https://twitch.tv/clip/test-clip' },
+        target: { value: "https://twitch.tv/clip/test-clip" },
       } as React.ChangeEvent<HTMLInputElement>;
 
       // Act
@@ -279,15 +277,15 @@ describe('useArchiveHandlers', () => {
       });
 
       // Assert
-      expect(mockSetError).toHaveBeenCalledWith('');
+      expect(mockSetError).toHaveBeenCalledWith("");
       expect(mockSetFormData).toHaveBeenCalled();
     });
 
-    it('should clear URLs when input is empty', () => {
+    it("should clear URLs when input is empty", () => {
       // Arrange
       const { result } = renderHook(() => useArchiveHandlers(defaultProps));
       const event = {
-        target: { value: '' },
+        target: { value: "" },
       } as React.ChangeEvent<HTMLInputElement>;
 
       // Act
@@ -296,17 +294,17 @@ describe('useArchiveHandlers', () => {
       });
 
       // Assert
-      expect(mockSetError).toHaveBeenCalledWith('');
+      expect(mockSetError).toHaveBeenCalledWith("");
       expect(mockSetFormData).toHaveBeenCalled();
     });
   });
 
-  describe('handles replay files', () => {
-    it('should handle replay file upload', () => {
+  describe("handles replay files", () => {
+    it("should handle replay file upload", () => {
       // Arrange
       const { result } = renderHook(() => useArchiveHandlers(defaultProps));
-      const replayFile = new File(['content'], 'replay.w3g', {
-        type: 'application/octet-stream',
+      const replayFile = new File(["content"], "replay.w3g", {
+        type: "application/octet-stream",
       });
       const event = {
         target: { files: [replayFile] },
@@ -319,14 +317,14 @@ describe('useArchiveHandlers', () => {
 
       // Assert
       expect(mockSetReplayFile).toHaveBeenCalledWith(replayFile);
-      expect(mockSetError).toHaveBeenCalledWith('');
+      expect(mockSetError).toHaveBeenCalledWith("");
       expect(mockSetFormData).toHaveBeenCalled();
     });
 
-    it('should reject non-w3g files', () => {
+    it("should reject non-w3g files", () => {
       // Arrange
       const { result } = renderHook(() => useArchiveHandlers(defaultProps));
-      const invalidFile = new File(['content'], 'replay.txt', { type: 'text/plain' });
+      const invalidFile = new File(["content"], "replay.txt", { type: "text/plain" });
       const event = {
         target: { files: [invalidFile] },
       } as unknown as React.ChangeEvent<HTMLInputElement>;
@@ -337,18 +335,18 @@ describe('useArchiveHandlers', () => {
       });
 
       // Assert
-      expect(mockSetError).toHaveBeenCalledWith('Please select a .w3g replay file');
+      expect(mockSetError).toHaveBeenCalledWith("Please select a .w3g replay file");
       expect(mockSetReplayFile).not.toHaveBeenCalled();
     });
   });
 
-  describe('handles combined file upload', () => {
-    it('should handle image files in combined upload', () => {
+  describe("handles combined file upload", () => {
+    it("should handle image files in combined upload", () => {
       // Arrange
       const { result } = renderHook(() => useArchiveHandlers(defaultProps));
       const imageFiles = [
-        new File(['content1'], 'test1.jpg', { type: 'image/jpeg' }),
-        new File(['content2'], 'test2.jpg', { type: 'image/jpeg' }),
+        new File(["content1"], "test1.jpg", { type: "image/jpeg" }),
+        new File(["content2"], "test2.jpg", { type: "image/jpeg" }),
       ];
       const event = {
         target: { files: imageFiles },
@@ -360,16 +358,16 @@ describe('useArchiveHandlers', () => {
       });
 
       // Assert
-      expect(mockSetError).toHaveBeenCalledWith('');
+      expect(mockSetError).toHaveBeenCalledWith("");
       expect(mockSetImageFiles).toHaveBeenCalled();
       expect(mockSetFormData).toHaveBeenCalled();
     });
 
-    it('should handle replay file in combined upload', () => {
+    it("should handle replay file in combined upload", () => {
       // Arrange
       const { result } = renderHook(() => useArchiveHandlers(defaultProps));
-      const replayFile = new File(['content'], 'replay.w3g', {
-        type: 'application/octet-stream',
+      const replayFile = new File(["content"], "replay.w3g", {
+        type: "application/octet-stream",
       });
       const event = {
         target: { files: [replayFile] },
@@ -381,15 +379,15 @@ describe('useArchiveHandlers', () => {
       });
 
       // Assert
-      expect(mockSetError).toHaveBeenCalledWith('');
+      expect(mockSetError).toHaveBeenCalledWith("");
       expect(mockSetReplayFile).toHaveBeenCalledWith(replayFile);
       expect(mockSetFormData).toHaveBeenCalled();
     });
 
-    it('should reject unsupported file types', () => {
+    it("should reject unsupported file types", () => {
       // Arrange
       const { result } = renderHook(() => useArchiveHandlers(defaultProps));
-      const invalidFile = new File(['content'], 'test.pdf', { type: 'application/pdf' });
+      const invalidFile = new File(["content"], "test.pdf", { type: "application/pdf" });
       const event = {
         target: { files: [invalidFile] },
       } as unknown as React.ChangeEvent<HTMLInputElement>;
@@ -400,17 +398,15 @@ describe('useArchiveHandlers', () => {
       });
 
       // Assert
-      expect(mockSetError).toHaveBeenCalledWith(
-        expect.stringContaining('Unsupported file type')
-      );
+      expect(mockSetError).toHaveBeenCalledWith(expect.stringContaining("Unsupported file type"));
     });
 
-    it('should reject multiple replay files', () => {
+    it("should reject multiple replay files", () => {
       // Arrange
       const { result } = renderHook(() => useArchiveHandlers(defaultProps));
       const replayFiles = [
-        new File(['content1'], 'replay1.w3g', { type: 'application/octet-stream' }),
-        new File(['content2'], 'replay2.w3g', { type: 'application/octet-stream' }),
+        new File(["content1"], "replay1.w3g", { type: "application/octet-stream" }),
+        new File(["content2"], "replay2.w3g", { type: "application/octet-stream" }),
       ];
       const event = {
         target: { files: replayFiles },
@@ -422,17 +418,15 @@ describe('useArchiveHandlers', () => {
       });
 
       // Assert
-      expect(mockSetError).toHaveBeenCalledWith(
-        'Please upload only one replay file at a time'
-      );
+      expect(mockSetError).toHaveBeenCalledWith("Please upload only one replay file at a time");
     });
 
-    it('should reject replay and images together', () => {
+    it("should reject replay and images together", () => {
       // Arrange
       const { result } = renderHook(() => useArchiveHandlers(defaultProps));
       const files = [
-        new File(['content1'], 'replay.w3g', { type: 'application/octet-stream' }),
-        new File(['content2'], 'image.jpg', { type: 'image/jpeg' }),
+        new File(["content1"], "replay.w3g", { type: "application/octet-stream" }),
+        new File(["content2"], "image.jpg", { type: "image/jpeg" }),
       ];
       const event = {
         target: { files: files },
@@ -445,22 +439,20 @@ describe('useArchiveHandlers', () => {
 
       // Assert
       expect(mockSetError).toHaveBeenCalledWith(
-        'Please upload either images or a replay file, not both'
+        "Please upload either images or a replay file, not both"
       );
     });
   });
 
-  describe('handles image reordering', () => {
-    it('should reorder image files', () => {
+  describe("handles image reordering", () => {
+    it("should reorder image files", () => {
       // Arrange
       const imageFiles = [
-        new File(['content1'], 'test1.jpg', { type: 'image/jpeg' }),
-        new File(['content2'], 'test2.jpg', { type: 'image/jpeg' }),
-        new File(['content3'], 'test3.jpg', { type: 'image/jpeg' }),
+        new File(["content1"], "test1.jpg", { type: "image/jpeg" }),
+        new File(["content2"], "test2.jpg", { type: "image/jpeg" }),
+        new File(["content3"], "test3.jpg", { type: "image/jpeg" }),
       ];
-      const { result } = renderHook(() =>
-        useArchiveHandlers({ ...defaultProps, imageFiles })
-      );
+      const { result } = renderHook(() => useArchiveHandlers({ ...defaultProps, imageFiles }));
 
       // Act
       act(() => {
@@ -471,14 +463,12 @@ describe('useArchiveHandlers', () => {
       expect(mockSetImageFiles).toHaveBeenCalled();
     });
 
-    it('should reorder current images', () => {
+    it("should reorder current images", () => {
       // Arrange
-      const { result } = renderHook(() =>
-        useArchiveHandlers({ ...defaultProps })
-      );
+      const { result } = renderHook(() => useArchiveHandlers({ ...defaultProps }));
       // Set up currentImages state via setCurrentImages
       act(() => {
-        mockSetCurrentImages(['image1.jpg', 'image2.jpg', 'image3.jpg']);
+        mockSetCurrentImages(["image1.jpg", "image2.jpg", "image3.jpg"]);
       });
 
       // Act
@@ -491,8 +481,8 @@ describe('useArchiveHandlers', () => {
     });
   });
 
-  describe('handles section reordering', () => {
-    it('should reorder sections', () => {
+  describe("handles section reordering", () => {
+    it("should reorder sections", () => {
       // Arrange
       const { result } = renderHook(() => useArchiveHandlers(defaultProps));
 
@@ -506,12 +496,12 @@ describe('useArchiveHandlers', () => {
     });
   });
 
-  describe('handles media field changes', () => {
-    it('should route mediaUrl changes to video handler', () => {
+  describe("handles media field changes", () => {
+    it("should route mediaUrl changes to video handler", () => {
       // Arrange
       const { result } = renderHook(() => useArchiveHandlers(defaultProps));
       const event = {
-        target: { name: 'mediaUrl', value: 'https://youtube.com/watch?v=test' },
+        target: { name: "mediaUrl", value: "https://youtube.com/watch?v=test" },
       } as React.ChangeEvent<HTMLInputElement>;
 
       // Act
@@ -523,11 +513,11 @@ describe('useArchiveHandlers', () => {
       expect(mockSetFormData).toHaveBeenCalled();
     });
 
-    it('should route twitchClipUrl changes to twitch handler', () => {
+    it("should route twitchClipUrl changes to twitch handler", () => {
       // Arrange
       const { result } = renderHook(() => useArchiveHandlers(defaultProps));
       const event = {
-        target: { name: 'twitchClipUrl', value: 'https://twitch.tv/clip/test' },
+        target: { name: "twitchClipUrl", value: "https://twitch.tv/clip/test" },
       } as React.ChangeEvent<HTMLInputElement>;
 
       // Act
@@ -540,16 +530,14 @@ describe('useArchiveHandlers', () => {
     });
   });
 
-  describe('handles image removal', () => {
-    it('should remove image from imageFiles', () => {
+  describe("handles image removal", () => {
+    it("should remove image from imageFiles", () => {
       // Arrange
       const imageFiles = [
-        new File(['content1'], 'test1.jpg', { type: 'image/jpeg' }),
-        new File(['content2'], 'test2.jpg', { type: 'image/jpeg' }),
+        new File(["content1"], "test1.jpg", { type: "image/jpeg" }),
+        new File(["content2"], "test2.jpg", { type: "image/jpeg" }),
       ];
-      const { result } = renderHook(() =>
-        useArchiveHandlers({ ...defaultProps, imageFiles })
-      );
+      const { result } = renderHook(() => useArchiveHandlers({ ...defaultProps, imageFiles }));
 
       // Act
       act(() => {
@@ -560,14 +548,12 @@ describe('useArchiveHandlers', () => {
       expect(mockSetImageFiles).toHaveBeenCalled();
     });
 
-    it('should remove image from currentImages', () => {
+    it("should remove image from currentImages", () => {
       // Arrange
-      const { result } = renderHook(() =>
-        useArchiveHandlers({ ...defaultProps })
-      );
+      const { result } = renderHook(() => useArchiveHandlers({ ...defaultProps }));
       // Set up currentImages state via setCurrentImages
       act(() => {
-        mockSetCurrentImages(['image1.jpg', 'image2.jpg']);
+        mockSetCurrentImages(["image1.jpg", "image2.jpg"]);
       });
 
       // Act
@@ -580,8 +566,8 @@ describe('useArchiveHandlers', () => {
     });
   });
 
-  describe('handles replay removal', () => {
-    it('should remove replay file and URL', () => {
+  describe("handles replay removal", () => {
+    it("should remove replay file and URL", () => {
       // Arrange
       const { result } = renderHook(() => useArchiveHandlers(defaultProps));
 
@@ -592,10 +578,7 @@ describe('useArchiveHandlers', () => {
 
       // Assert
       expect(mockSetReplayFile).toHaveBeenCalledWith(null);
-      expect(mockSetExistingReplayUrl).toHaveBeenCalledWith('');
+      expect(mockSetExistingReplayUrl).toHaveBeenCalledWith("");
     });
   });
 });
-
-
-

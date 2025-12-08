@@ -4,13 +4,13 @@
  * from @websites/infrastructure/api
  */
 
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiRequest, NextApiResponse } from "next";
 import {
   createApiHandler as createGenericApiHandler,
   type ApiHandler,
   type ApiHandlerOptions,
-} from '@websites/infrastructure/api';
-import { getSession } from '@websites/infrastructure/auth';
+} from "@websites/infrastructure/api";
+import { getSession } from "@websites/infrastructure/auth";
 
 /**
  * Create personalpage-specific auth config
@@ -51,9 +51,9 @@ export const createApiHandler = <T = unknown>(
  */
 export const createGetHandler = <T = unknown>(
   handler: ApiHandler<T>,
-  options?: Omit<ApiHandlerOptions, 'methods'>
+  options?: Omit<ApiHandlerOptions, "methods">
 ) => {
-  return createApiHandler(handler, { ...options, methods: ['GET'] });
+  return createApiHandler(handler, { ...options, methods: ["GET"] });
 };
 
 /**
@@ -61,9 +61,9 @@ export const createGetHandler = <T = unknown>(
  */
 export const createPostHandler = <T = unknown>(
   handler: ApiHandler<T>,
-  options?: Omit<ApiHandlerOptions, 'methods'>
+  options?: Omit<ApiHandlerOptions, "methods">
 ) => {
-  return createApiHandler(handler, { ...options, methods: ['POST'] });
+  return createApiHandler(handler, { ...options, methods: ["POST"] });
 };
 
 /**
@@ -71,9 +71,9 @@ export const createPostHandler = <T = unknown>(
  */
 export const createGetPostHandler = <T = unknown>(
   handler: ApiHandler<T>,
-  options?: Omit<ApiHandlerOptions, 'methods'>
+  options?: Omit<ApiHandlerOptions, "methods">
 ) => {
-  return createApiHandler(handler, { ...options, methods: ['GET', 'POST'] });
+  return createApiHandler(handler, { ...options, methods: ["GET", "POST"] });
 };
 
 // Re-export other utilities that don't need auth config
@@ -85,4 +85,4 @@ export {
   type HttpMethod,
   type CacheControlOptions,
   type ResourceOwnershipChecker,
-} from '@websites/infrastructure/api';
+} from "@websites/infrastructure/api";

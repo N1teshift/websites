@@ -1,8 +1,8 @@
-import { buildW3MMDLookup, mapMissionStatsToPlayers } from '../w3mmd';
-import type { W3MMDAction } from 'w3gjs/dist/types/parsers/ActionParser';
-import type Player from 'w3gjs/dist/types/Player';
+import { buildW3MMDLookup, mapMissionStatsToPlayers } from "../w3mmd";
+import type { W3MMDAction } from "w3gjs/dist/types/parsers/ActionParser";
+import type Player from "w3gjs/dist/types/Player";
 
-jest.mock('@websites/infrastructure/logging', () => ({
+jest.mock("@websites/infrastructure/logging", () => ({
   createComponentLogger: () => ({
     info: jest.fn(),
     warn: jest.fn(),
@@ -11,19 +11,19 @@ jest.mock('@websites/infrastructure/logging', () => ({
   }),
 }));
 
-describe('buildW3MMDLookup', () => {
-  it('normalizes mission keys and collects raw entries', () => {
+describe("buildW3MMDLookup", () => {
+  it("normalizes mission keys and collects raw entries", () => {
     const actions: W3MMDAction[] = [
       {
-        cache: { missionKey: ' Player1 ', key: 'Kills', filename: 'test.w3g' },
+        cache: { missionKey: " Player1 ", key: "Kills", filename: "test.w3g" },
         value: 5,
       },
       {
-        cache: { missionKey: 'player1', key: 'Assists', filename: 'test.w3g' },
+        cache: { missionKey: "player1", key: "Assists", filename: "test.w3g" },
         value: 3,
       },
       {
-        cache: { missionKey: '', key: 'ignored', filename: 'test.w3g' },
+        cache: { missionKey: "", key: "ignored", filename: "test.w3g" },
         value: 1,
       },
     ] as W3MMDAction[];
@@ -35,12 +35,12 @@ describe('buildW3MMDLookup', () => {
   });
 });
 
-describe('mapMissionStatsToPlayers', () => {
-  const player: Player = { id: 1, name: 'Player1', teamid: 0 } as Player;
-  const otherPlayer: Player = { id: 2, name: 'Player2', teamid: 1 } as Player;
+describe("mapMissionStatsToPlayers", () => {
+  const player: Player = { id: 1, name: "Player1", teamid: 0 } as Player;
+  const otherPlayer: Player = { id: 2, name: "Player2", teamid: 1 } as Player;
 
-  it('maps mission statistics to players using multiple candidate keys', () => {
-    const encodedClass = Buffer.from('Mage').readUInt32BE(0);
+  it("maps mission statistics to players using multiple candidate keys", () => {
+    const encodedClass = Buffer.from("Mage").readUInt32BE(0);
     const lookup = {
       player1: {
         kills: 8,
@@ -65,14 +65,13 @@ describe('mapMissionStatsToPlayers', () => {
       damageTaken: 200,
       damageDealt: 500,
       randomClass: true,
-      class: 'Mage',
+      class: "Mage",
     });
     expect(stats.get(2)).toBeUndefined();
   });
 
-  it('returns empty stats map when lookup is empty', () => {
+  it("returns empty stats map when lookup is empty", () => {
     const stats = mapMissionStatsToPlayers([player], {});
     expect(stats.size).toBe(0);
   });
 });
-

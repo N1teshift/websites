@@ -7,6 +7,7 @@ Refactored the `CommentsGeneratorSection` component from **1023 lines** down to 
 ## Files Created
 
 ### Data Extraction Utils
+
 - **`utils/comments/commentDataExtractors.ts`** (146 lines)
   - `extractAssessmentValue()` - Extract math assessment values
   - `extractEnglishTestValue()` - Extract English test values
@@ -16,6 +17,7 @@ Refactored the `CommentsGeneratorSection` component from **1023 lines** down to 
   - Interfaces: `MathTestData`, `EnglishDiagnosticData`, `EnglishUnit1Data`
 
 ### Comment Generation Logic
+
 - **`utils/comments/mathCommentGenerator.ts`** (147 lines)
   - `generateMathComment()` - Generate comments for Math (SD1, SD2, SD3) template
   - Interfaces: `WeakSectionDetail`, `GeneratedComment`
@@ -34,6 +36,7 @@ Refactored the `CommentsGeneratorSection` component from **1023 lines** down to 
     - Building personalized comments
 
 ### Custom Hooks
+
 - **`hooks/useStudentCommentData.ts`** (120 lines)
   - `useStudentCommentData()` - Extracts and processes student data
     - Returns `studentCommentData` and `studentsWithMissingData`
@@ -43,6 +46,7 @@ Refactored the `CommentsGeneratorSection` component from **1023 lines** down to 
     - Sorts results by student name
 
 ### UI Components
+
 - **`components/comments/CommentTemplateSelector.tsx`** (29 lines)
   - Dropdown for selecting comment templates
 
@@ -62,6 +66,7 @@ Refactored the `CommentsGeneratorSection` component from **1023 lines** down to 
   - Dynamic textarea fields for each section
 
 ### Main Component
+
 - **`components/sections/CommentsGeneratorSection.tsx`** (156 lines, down from 1023)
   - Orchestrates all sub-components
   - Handles filtering by class and search
@@ -71,45 +76,50 @@ Refactored the `CommentsGeneratorSection` component from **1023 lines** down to 
 ## Architecture Benefits
 
 ### 1. **Separation of Concerns**
+
 - Data extraction logic isolated from UI
 - Comment generation separated by template type
 - UI components focused on single responsibilities
 
 ### 2. **Reusability**
+
 - Data extractors can be used in other contexts
 - Comment generators can be tested independently
 - UI components can be reused in other sections
 
 ### 3. **Maintainability**
+
 - Each file is under 200 lines
 - Clear file/function naming
 - Easy to locate and modify specific functionality
 
 ### 4. **Testability**
+
 - Pure functions in utils are easily testable
 - Hooks can be tested with React Testing Library
 - Components can be tested in isolation
 
 ### 5. **Type Safety**
+
 - Explicit interfaces for all data structures
 - Strong typing throughout the chain
 - TypeScript catches issues at compile time
 
 ## File Size Comparison
 
-| File | Lines | Purpose |
-|------|-------|---------|
-| **Original** | 1023 | Monolithic component |
-| **New Main Component** | 156 | Orchestration only |
-| **Data Extractors** | 146 | Pure data extraction |
-| **Math Generator** | 147 | Math comment logic |
-| **English Generator** | 117 | English comment logic |
-| **Custom Hooks** | 120 | Data processing |
-| **Template Selector** | 29 | UI component |
-| **Missing Data Warning** | 45 | UI component |
-| **Comments List** | 91 | UI component |
-| **Template Editor** | 120 | UI component |
-| **Total** | 971 | Across 10 focused files |
+| File                     | Lines | Purpose                 |
+| ------------------------ | ----- | ----------------------- |
+| **Original**             | 1023  | Monolithic component    |
+| **New Main Component**   | 156   | Orchestration only      |
+| **Data Extractors**      | 146   | Pure data extraction    |
+| **Math Generator**       | 147   | Math comment logic      |
+| **English Generator**    | 117   | English comment logic   |
+| **Custom Hooks**         | 120   | Data processing         |
+| **Template Selector**    | 29    | UI component            |
+| **Missing Data Warning** | 45    | UI component            |
+| **Comments List**        | 91    | UI component            |
+| **Template Editor**      | 120   | UI component            |
+| **Total**                | 971   | Across 10 focused files |
 
 ## Data Flow
 
@@ -167,4 +177,3 @@ To add a new comment template type:
 4. **Bulk Editing**: Edit multiple templates at once
 5. **Preview Mode**: See template changes in real-time
 6. **Analytics**: Track which templates are used most
-

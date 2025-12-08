@@ -1,27 +1,40 @@
-import { render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { ArchiveEntry } from '../components';
-import type { ArchiveEntry as ArchiveEntryType } from '@/types/archive';
+import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { ArchiveEntry } from "../components";
+import type { ArchiveEntry as ArchiveEntryType } from "@/types/archive";
 
 // Mock useGame hook
 const mockGame = {
-  id: 'game1',
-  gameId: '1',
-  datetime: '2024-01-15T10:30:00Z',
+  id: "game1",
+  gameId: "1",
+  datetime: "2024-01-15T10:30:00Z",
   players: [],
-  category: 'test',
-  creatorName: 'Test Creator',
-  ownername: 'Test Owner',
+  category: "test",
+  creatorName: "Test Creator",
+  ownername: "Test Owner",
 };
 
 const mockUseGame = jest.fn();
-jest.mock('@/features/modules/game-management/games/hooks/useGame', () => ({
+jest.mock("@/features/modules/game-management/games/hooks/useGame", () => ({
   useGame: (...args: any[]) => mockUseGame(...args),
 }));
 
 // Mock GameLinkedArchiveEntry and NormalArchiveEntry
-jest.mock('../GameLinkedArchiveEntry', () => ({
-  GameLinkedArchiveEntry: ({ entry, game, gameLoading, gameError, onEdit, onDelete, canDelete, onImageClick, displayText, shouldTruncate, isExpanded, onTextExpand }: any) => (
+jest.mock("../GameLinkedArchiveEntry", () => ({
+  GameLinkedArchiveEntry: ({
+    entry,
+    game,
+    gameLoading,
+    gameError,
+    onEdit,
+    onDelete,
+    canDelete,
+    onImageClick,
+    displayText,
+    shouldTruncate,
+    isExpanded,
+    onTextExpand,
+  }: any) => (
     <div data-testid="game-linked-entry">
       <div>Game Entry: {entry.title}</div>
       {game && <div>Game: {game.gameId}</div>}
@@ -29,25 +42,39 @@ jest.mock('../GameLinkedArchiveEntry', () => ({
       {gameError && <div>Error: {gameError}</div>}
       {onEdit && <button onClick={() => onEdit(entry)}>Edit</button>}
       {onDelete && canDelete && <button onClick={() => onDelete(entry)}>Delete</button>}
-      {onImageClick && <button onClick={() => onImageClick('image.jpg', entry.title)}>Click Image</button>}
+      {onImageClick && (
+        <button onClick={() => onImageClick("image.jpg", entry.title)}>Click Image</button>
+      )}
       <div>{displayText}</div>
       {shouldTruncate && onTextExpand && (
-        <button onClick={onTextExpand}>{isExpanded ? 'Show Less' : 'Show More'}</button>
+        <button onClick={onTextExpand}>{isExpanded ? "Show Less" : "Show More"}</button>
       )}
     </div>
   ),
 }));
 
-jest.mock('../NormalArchiveEntry', () => ({
-  NormalArchiveEntry: ({ entry, onEdit, onDelete, canDelete, onImageClick, displayText, shouldTruncate, isExpanded, onTextExpand }: any) => (
+jest.mock("../NormalArchiveEntry", () => ({
+  NormalArchiveEntry: ({
+    entry,
+    onEdit,
+    onDelete,
+    canDelete,
+    onImageClick,
+    displayText,
+    shouldTruncate,
+    isExpanded,
+    onTextExpand,
+  }: any) => (
     <div data-testid="normal-entry">
       <div>Normal Entry: {entry.title}</div>
       {onEdit && <button onClick={() => onEdit(entry)}>Edit</button>}
       {onDelete && canDelete && <button onClick={() => onDelete(entry)}>Delete</button>}
-      {onImageClick && <button onClick={() => onImageClick('image.jpg', entry.title)}>Click Image</button>}
+      {onImageClick && (
+        <button onClick={() => onImageClick("image.jpg", entry.title)}>Click Image</button>
+      )}
       <div>{displayText}</div>
       {shouldTruncate && onTextExpand && (
-        <button onClick={onTextExpand}>{isExpanded ? 'Show Less' : 'Show More'}</button>
+        <button onClick={onTextExpand}>{isExpanded ? "Show Less" : "Show More"}</button>
       )}
     </div>
   ),
@@ -56,22 +83,22 @@ jest.mock('../NormalArchiveEntry', () => ({
 // Mock fetch for game lookup
 global.fetch = jest.fn();
 
-describe('ArchiveEntry', () => {
+describe("ArchiveEntry", () => {
   const mockOnEdit = jest.fn();
   const mockOnDelete = jest.fn();
   const mockOnImageClick = jest.fn();
 
   const baseEntry: ArchiveEntryType = {
-    id: 'entry1',
-    title: 'Test Entry',
-    content: 'Short content',
-    creatorName: 'Test Creator',
+    id: "entry1",
+    title: "Test Entry",
+    content: "Short content",
+    creatorName: "Test Creator",
     dateInfo: {
-      type: 'single',
-      singleDate: '2024-01-15',
+      type: "single",
+      singleDate: "2024-01-15",
     },
-    createdAt: '2024-01-15T00:00:00Z',
-    updatedAt: '2024-01-15T00:00:00Z',
+    createdAt: "2024-01-15T00:00:00Z",
+    updatedAt: "2024-01-15T00:00:00Z",
   };
 
   beforeEach(() => {
@@ -84,8 +111,8 @@ describe('ArchiveEntry', () => {
     (global.fetch as jest.Mock).mockClear();
   });
 
-  describe('renders normal entry', () => {
-    it('should render NormalArchiveEntry when no linked game', () => {
+  describe("renders normal entry", () => {
+    it("should render NormalArchiveEntry when no linked game", () => {
       // Act
       render(
         <ArchiveEntry
@@ -98,11 +125,11 @@ describe('ArchiveEntry', () => {
       );
 
       // Assert
-      expect(screen.getByTestId('normal-entry')).toBeInTheDocument();
-      expect(screen.getByText('Normal Entry: Test Entry')).toBeInTheDocument();
+      expect(screen.getByTestId("normal-entry")).toBeInTheDocument();
+      expect(screen.getByText("Normal Entry: Test Entry")).toBeInTheDocument();
     });
 
-    it('should not truncate short content', () => {
+    it("should not truncate short content", () => {
       // Act
       render(
         <ArchiveEntry
@@ -115,12 +142,12 @@ describe('ArchiveEntry', () => {
       );
 
       // Assert
-      expect(screen.queryByText('Show More')).not.toBeInTheDocument();
+      expect(screen.queryByText("Show More")).not.toBeInTheDocument();
     });
 
-    it('should truncate long content', () => {
+    it("should truncate long content", () => {
       // Arrange
-      const longContent = 'a'.repeat(400);
+      const longContent = "a".repeat(400);
       const entryWithLongContent = {
         ...baseEntry,
         content: longContent,
@@ -138,16 +165,16 @@ describe('ArchiveEntry', () => {
       );
 
       // Assert
-      expect(screen.getByText('Show More')).toBeInTheDocument();
+      expect(screen.getByText("Show More")).toBeInTheDocument();
     });
   });
 
-  describe('renders game-linked entry', () => {
-    it('should render GameLinkedArchiveEntry when linkedGameDocumentId exists', () => {
+  describe("renders game-linked entry", () => {
+    it("should render GameLinkedArchiveEntry when linkedGameDocumentId exists", () => {
       // Arrange
       const entryWithLinkedGame = {
         ...baseEntry,
-        linkedGameDocumentId: 'game1',
+        linkedGameDocumentId: "game1",
       };
       mockUseGame.mockReturnValue({
         game: mockGame,
@@ -167,14 +194,14 @@ describe('ArchiveEntry', () => {
       );
 
       // Assert
-      expect(screen.getByTestId('game-linked-entry')).toBeInTheDocument();
+      expect(screen.getByTestId("game-linked-entry")).toBeInTheDocument();
     });
 
-    it('should render GameLinkedArchiveEntry for scheduled game archive', () => {
+    it("should render GameLinkedArchiveEntry for scheduled game archive", () => {
       // Arrange
       const scheduledGameEntry = {
         ...baseEntry,
-        title: 'Game #123',
+        title: "Game #123",
       };
       mockUseGame.mockReturnValue({
         game: mockGame,
@@ -184,7 +211,7 @@ describe('ArchiveEntry', () => {
       (global.fetch as jest.Mock).mockResolvedValueOnce({
         json: async () => ({
           success: true,
-          data: { games: [{ id: 'game123', gameId: '123' }] },
+          data: { games: [{ id: "game123", gameId: "123" }] },
         }),
       });
 
@@ -202,16 +229,16 @@ describe('ArchiveEntry', () => {
       // Assert
       // Should eventually render game-linked entry after finding the game
       waitFor(() => {
-        expect(screen.getByTestId('game-linked-entry')).toBeInTheDocument();
+        expect(screen.getByTestId("game-linked-entry")).toBeInTheDocument();
       });
     });
   });
 
-  describe('handles text expansion', () => {
-    it('should expand text when Show More is clicked', async () => {
+  describe("handles text expansion", () => {
+    it("should expand text when Show More is clicked", async () => {
       // Arrange
       const user = userEvent.setup();
-      const longContent = 'a'.repeat(400);
+      const longContent = "a".repeat(400);
       const entryWithLongContent = {
         ...baseEntry,
         content: longContent,
@@ -228,16 +255,16 @@ describe('ArchiveEntry', () => {
         />
       );
 
-      const expandButton = screen.getByText('Show More');
+      const expandButton = screen.getByText("Show More");
       await user.click(expandButton);
 
       // Assert
-      expect(screen.getByText('Show Less')).toBeInTheDocument();
+      expect(screen.getByText("Show Less")).toBeInTheDocument();
     });
   });
 
-  describe('handles edit action', () => {
-    it('should call onEdit when edit button is clicked', async () => {
+  describe("handles edit action", () => {
+    it("should call onEdit when edit button is clicked", async () => {
       // Arrange
       const user = userEvent.setup();
 
@@ -252,7 +279,7 @@ describe('ArchiveEntry', () => {
         />
       );
 
-      const editButton = screen.getByText('Edit');
+      const editButton = screen.getByText("Edit");
       await user.click(editButton);
 
       // Assert
@@ -260,8 +287,8 @@ describe('ArchiveEntry', () => {
     });
   });
 
-  describe('handles delete action', () => {
-    it('should call onDelete when delete button is clicked', async () => {
+  describe("handles delete action", () => {
+    it("should call onDelete when delete button is clicked", async () => {
       // Arrange
       const user = userEvent.setup();
 
@@ -276,14 +303,14 @@ describe('ArchiveEntry', () => {
         />
       );
 
-      const deleteButton = screen.getByText('Delete');
+      const deleteButton = screen.getByText("Delete");
       await user.click(deleteButton);
 
       // Assert
       expect(mockOnDelete).toHaveBeenCalledWith(baseEntry);
     });
 
-    it('should not show delete button when canDelete is false', () => {
+    it("should not show delete button when canDelete is false", () => {
       // Act
       render(
         <ArchiveEntry
@@ -296,12 +323,12 @@ describe('ArchiveEntry', () => {
       );
 
       // Assert
-      expect(screen.queryByText('Delete')).not.toBeInTheDocument();
+      expect(screen.queryByText("Delete")).not.toBeInTheDocument();
     });
   });
 
-  describe('handles image clicks', () => {
-    it('should call onImageClick when image is clicked', async () => {
+  describe("handles image clicks", () => {
+    it("should call onImageClick when image is clicked", async () => {
       // Arrange
       const user = userEvent.setup();
 
@@ -316,20 +343,20 @@ describe('ArchiveEntry', () => {
         />
       );
 
-      const imageButton = screen.getByText('Click Image');
+      const imageButton = screen.getByText("Click Image");
       await user.click(imageButton);
 
       // Assert
-      expect(mockOnImageClick).toHaveBeenCalledWith('image.jpg', 'Test Entry');
+      expect(mockOnImageClick).toHaveBeenCalledWith("image.jpg", "Test Entry");
     });
   });
 
-  describe('handles game loading states', () => {
-    it('should show loading state when game is loading', () => {
+  describe("handles game loading states", () => {
+    it("should show loading state when game is loading", () => {
       // Arrange
       const entryWithLinkedGame = {
         ...baseEntry,
-        linkedGameDocumentId: 'game1',
+        linkedGameDocumentId: "game1",
       };
       mockUseGame.mockReturnValue({
         game: null,
@@ -349,19 +376,19 @@ describe('ArchiveEntry', () => {
       );
 
       // Assert
-      expect(screen.getByText('Loading...')).toBeInTheDocument();
+      expect(screen.getByText("Loading...")).toBeInTheDocument();
     });
 
-    it('should show error state when game loading fails', () => {
+    it("should show error state when game loading fails", () => {
       // Arrange
       const entryWithLinkedGame = {
         ...baseEntry,
-        linkedGameDocumentId: 'game1',
+        linkedGameDocumentId: "game1",
       };
       mockUseGame.mockReturnValue({
         game: null,
         loading: false,
-        error: { message: 'Failed to load game' },
+        error: { message: "Failed to load game" },
       });
 
       // Act
@@ -380,6 +407,3 @@ describe('ArchiveEntry', () => {
     });
   });
 });
-
-
-

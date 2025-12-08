@@ -33,6 +33,7 @@ The name alias resolver (`resolveNameAlias`) compares the className parameter ag
 ```
 
 When comparing "Vyd_S" (sheetName) to "8 Vydūnas" (className in alias), no match was found, causing the system to:
+
 1. Not resolve the alias
 2. Not find the existing student with the full name
 3. Create a new duplicate student with the shortened name
@@ -44,6 +45,7 @@ When comparing "Vyd_S" (sheetName) to "8 Vydūnas" (className in alias), no matc
 ### Changes Made
 
 **Line 105**: Updated `findStudent` call
+
 ```typescript
 // Before
 let student = this.processor.findStudent(studentsList, firstName, lastName, sheet.sheetName);
@@ -53,29 +55,31 @@ let student = this.processor.findStudent(studentsList, firstName, lastName, shee
 ```
 
 **Lines 108-112**: Updated `createNewStudent` call
+
 ```typescript
 // Before
-Logger.info('Creating new student', { firstName, lastName, class: sheet.sheetName });
+Logger.info("Creating new student", { firstName, lastName, class: sheet.sheetName });
 student = this.processor.createNewStudent(
-    firstName,
-    lastName,
-    sheet.sheetName,
-    `ST${String(nextStudentId).padStart(5, '0')}`
+  firstName,
+  lastName,
+  sheet.sheetName,
+  `ST${String(nextStudentId).padStart(5, "0")}`
 );
 
 // After
-Logger.info('Creating new student', { firstName, lastName, class: sheet.className });
+Logger.info("Creating new student", { firstName, lastName, class: sheet.className });
 student = this.processor.createNewStudent(
-    firstName,
-    lastName,
-    sheet.className,
-    `ST${String(nextStudentId).padStart(5, '0')}`
+  firstName,
+  lastName,
+  sheet.className,
+  `ST${String(nextStudentId).padStart(5, "0")}`
 );
 ```
 
 ## Testing & Verification
 
 ### Before Fix
+
 ```
 Processing: raw_data.xlsx
 - ❌ 5 new students created (duplicates with shortened names)
@@ -84,6 +88,7 @@ Processing: raw_data.xlsx
 ```
 
 ### After Fix
+
 ```
 Processing: raw_data.xlsx
 - ✅ 0 new students created
@@ -144,5 +149,5 @@ To prevent similar issues in the future:
 4. **Review logs** for "Resolved name alias" messages
 
 ## Date Fixed
-**October 24, 2025**
 
+**October 24, 2025**

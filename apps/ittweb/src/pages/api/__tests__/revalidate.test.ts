@@ -1,5 +1,5 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-import handler from '../revalidate';
+import type { NextApiRequest, NextApiResponse } from "next";
+import handler from "../revalidate";
 
 // Mock dependencies
 const mockInfo = jest.fn();
@@ -7,7 +7,7 @@ const mockError = jest.fn();
 const mockWarn = jest.fn();
 const mockDebug = jest.fn();
 
-jest.mock('@websites/infrastructure/logging', () => ({
+jest.mock("@websites/infrastructure/logging", () => ({
   createComponentLogger: jest.fn(() => ({
     info: mockInfo,
     error: mockError,
@@ -17,21 +17,22 @@ jest.mock('@websites/infrastructure/logging', () => ({
 }));
 
 const mockGetServerSession = jest.fn();
-jest.mock('next-auth/next', () => ({
+jest.mock("next-auth/next", () => ({
   getServerSession: (...args: unknown[]) => mockGetServerSession(...args),
 }));
 
-jest.mock('@/pages/api/auth/[...nextauth]', () => ({
+jest.mock("@/pages/api/auth/[...nextauth]", () => ({
   authOptions: {},
 }));
 
-describe('POST /api/revalidate', () => {
-  const createRequest = (body: unknown): NextApiRequest => ({
-    method: 'POST',
-    query: {},
-    body,
-    url: '/api/revalidate',
-  } as NextApiRequest);
+describe("POST /api/revalidate", () => {
+  const createRequest = (body: unknown): NextApiRequest =>
+    ({
+      method: "POST",
+      query: {},
+      body,
+      url: "/api/revalidate",
+    }) as NextApiRequest;
 
   const createResponse = (): NextApiResponse => {
     const res = {} as NextApiResponse;
@@ -43,9 +44,9 @@ describe('POST /api/revalidate', () => {
   };
 
   const mockSession = {
-    user: { name: 'Test User' },
-    discordId: 'discord123',
-    expires: '2024-12-31',
+    user: { name: "Test User" },
+    discordId: "discord123",
+    expires: "2024-12-31",
   };
 
   beforeEach(() => {
@@ -53,30 +54,30 @@ describe('POST /api/revalidate', () => {
     mockGetServerSession.mockResolvedValue(mockSession);
   });
 
-  it('revalidates path successfully', async () => {
+  it("revalidates path successfully", async () => {
     // Arrange
-    const req = createRequest({ path: '/games' });
+    const req = createRequest({ path: "/games" });
     const res = createResponse();
 
     // Act
     await handler(req, res);
 
     // Assert
-    expect(res.revalidate).toHaveBeenCalledWith('/games');
+    expect(res.revalidate).toHaveBeenCalledWith("/games");
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.json).toHaveBeenCalledWith({
       success: true,
       data: {
         revalidated: true,
-        path: '/games',
+        path: "/games",
       },
     });
   });
 
-  it('requires authentication', async () => {
+  it("requires authentication", async () => {
     // Arrange
     mockGetServerSession.mockResolvedValue(null);
-    const req = createRequest({ path: '/games' });
+    const req = createRequest({ path: "/games" });
     const res = createResponse();
 
     // Act
@@ -87,13 +88,13 @@ describe('POST /api/revalidate', () => {
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         success: false,
-        error: 'Authentication required',
+        error: "Authentication required",
       })
     );
     expect(res.revalidate).not.toHaveBeenCalled();
   });
 
-  it('validates path is required', async () => {
+  it("validates path is required", async () => {
     // Arrange
     const req = createRequest({});
     const res = createResponse();
@@ -106,13 +107,13 @@ describe('POST /api/revalidate', () => {
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         success: false,
-        error: expect.stringContaining('required'),
+        error: expect.stringContaining("required"),
       })
     );
     expect(res.revalidate).not.toHaveBeenCalled();
   });
 
-  it('validates path is a string', async () => {
+  it("validates path is a string", async () => {
     // Arrange
     const req = createRequest({ path: 123 });
     const res = createResponse();
@@ -125,15 +126,15 @@ describe('POST /api/revalidate', () => {
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         success: false,
-        error: expect.stringContaining('path'),
+        error: expect.stringContaining("path"),
       })
     );
     expect(res.revalidate).not.toHaveBeenCalled();
   });
 
-  it('validates path is not empty', async () => {
+  it("validates path is not empty", async () => {
     // Arrange
-    const req = createRequest({ path: '' });
+    const req = createRequest({ path: "" });
     const res = createResponse();
 
     // Act
@@ -144,17 +145,17 @@ describe('POST /api/revalidate', () => {
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         success: false,
-        error: expect.stringContaining('path'),
+        error: expect.stringContaining("path"),
       })
     );
     expect(res.revalidate).not.toHaveBeenCalled();
   });
 
-  it('handles error from res.revalidate', async () => {
+  it("handles error from res.revalidate", async () => {
     // Arrange
     const res = createResponse();
-    (res.revalidate as jest.Mock).mockRejectedValue(new Error('Revalidation failed'));
-    const req = createRequest({ path: '/games' });
+    (res.revalidate as jest.Mock).mockRejectedValue(new Error("Revalidation failed"));
+    const req = createRequest({ path: "/games" });
 
     // Act
     await handler(req, res);
@@ -164,18 +165,18 @@ describe('POST /api/revalidate', () => {
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         success: false,
-        error: expect.stringContaining('Revalidation failed'),
+        error: expect.stringContaining("Revalidation failed"),
       })
     );
   });
 
-  it('rejects GET method', async () => {
+  it("rejects GET method", async () => {
     // Arrange
     const req = {
-      method: 'GET',
+      method: "GET",
       query: {},
       body: null,
-      url: '/api/revalidate',
+      url: "/api/revalidate",
     } as NextApiRequest;
     const res = createResponse();
 
@@ -187,18 +188,18 @@ describe('POST /api/revalidate', () => {
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         success: false,
-        error: 'Method GET not allowed. Allowed methods: POST',
+        error: "Method GET not allowed. Allowed methods: POST",
       })
     );
   });
 
-  it('rejects PUT method', async () => {
+  it("rejects PUT method", async () => {
     // Arrange
     const req = {
-      method: 'PUT',
+      method: "PUT",
       query: {},
-      body: { path: '/games' },
-      url: '/api/revalidate',
+      body: { path: "/games" },
+      url: "/api/revalidate",
     } as NextApiRequest;
     const res = createResponse();
 
@@ -210,18 +211,18 @@ describe('POST /api/revalidate', () => {
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         success: false,
-        error: 'Method PUT not allowed. Allowed methods: POST',
+        error: "Method PUT not allowed. Allowed methods: POST",
       })
     );
   });
 
-  it('rejects DELETE method', async () => {
+  it("rejects DELETE method", async () => {
     // Arrange
     const req = {
-      method: 'DELETE',
+      method: "DELETE",
       query: {},
       body: null,
-      url: '/api/revalidate',
+      url: "/api/revalidate",
     } as NextApiRequest;
     const res = createResponse();
 
@@ -233,10 +234,8 @@ describe('POST /api/revalidate', () => {
     expect(res.json).toHaveBeenCalledWith(
       expect.objectContaining({
         success: false,
-        error: 'Method DELETE not allowed. Allowed methods: POST',
+        error: "Method DELETE not allowed. Allowed methods: POST",
       })
     );
   });
 });
-
-

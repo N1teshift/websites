@@ -1,6 +1,7 @@
 # Unified Timeline View - Side-by-Side Curriculum Comparison
 
 ## Overview
+
 The Content Display tab now shows **BUP and Cambridge curricula in a unified, side-by-side block-based timeline format**. Both curricula are displayed with the same visual structure: **Modules → Units → Subunits**, making it easy to compare and navigate both programs simultaneously.
 
 ## Visual Layout
@@ -35,30 +36,36 @@ The Content Display tab now shows **BUP and Cambridge curricula in a unified, si
 ## Key Features
 
 ### 1. **Parallel Display**
+
 - **Left Column**: BUP (Lithuanian) curriculum in blue
 - **Right Column**: Cambridge curriculum in green
 - Both use identical visual hierarchy and interaction patterns
 
 ### 2. **Three-Level Hierarchy**
+
 Both curricula display with consistent structure:
 
 **BUP:**
+
 - **Modules** (e.g., "Skaičiai ir skaičiavimai")
   - **Units** (e.g., "Realieji skaičiai")
     - **Subunits** (e.g., "Laipsnis su sveikuoju rodikliu")
 
 **Cambridge:**
+
 - **Modules** (e.g., "Number and Algebra Foundations")
   - **Units** (e.g., "Number and calculation")
     - **Subsections** (e.g., "1.1 Irrational numbers")
 
 ### 3. **Collapsible Blocks**
+
 - Click **module headers** to expand/collapse units
 - Click **unit headers** to expand/collapse subunits/subsections
 - Independent expansion states for each curriculum
 - Smooth animations
 
 ### 4. **Color Coding**
+
 - **BUP**: Blue theme (`bg-blue-50`, `border-blue-300`, `text-blue-900`)
 - **Cambridge**: Green theme (`bg-green-50`, `border-green-300`, `text-green-900`)
 - Consistent visual language throughout
@@ -66,11 +73,13 @@ Both curricula display with consistent structure:
 ### 5. **Metadata Display**
 
 **BUP shows:**
+
 - Module number and unit count
 - Subunit content previews (first 2 sentences)
 - Total sentence count indicator
 
 **Cambridge shows:**
+
 - Module number, name, and description
 - Unit number, strand, and page references
 - Subsection codes (1.1, 2.3, etc.) and objective IDs
@@ -79,14 +88,14 @@ Both curricula display with consistent structure:
 
 Per user request, Cambridge units are grouped into 6 logical modules:
 
-| Module # | Name | Units | Description |
-|----------|------|-------|-------------|
-| **1** | Number and Algebra Foundations | 1, 2, 3 | Numbers, expressions, decimals and percentages |
-| **2** | Equations and Geometry | 4, 5 | Solving equations and understanding angles |
-| **3** | Statistics and Measurement | 6, 7, 8 | Data analysis, shapes and fractions |
-| **4** | Functions and Graphs | 9, 10 | Sequences, functions and graphing |
-| **5** | Ratio, Probability and Transformation | 11, 12, 13 | Proportional reasoning, probability and geometric transformations |
-| **6** | 3D Geometry and Data Interpretation | 14, 15 | Volume, surface area and statistical analysis |
+| Module # | Name                                  | Units      | Description                                                       |
+| -------- | ------------------------------------- | ---------- | ----------------------------------------------------------------- |
+| **1**    | Number and Algebra Foundations        | 1, 2, 3    | Numbers, expressions, decimals and percentages                    |
+| **2**    | Equations and Geometry                | 4, 5       | Solving equations and understanding angles                        |
+| **3**    | Statistics and Measurement            | 6, 7, 8    | Data analysis, shapes and fractions                               |
+| **4**    | Functions and Graphs                  | 9, 10      | Sequences, functions and graphing                                 |
+| **5**    | Ratio, Probability and Transformation | 11, 12, 13 | Proportional reasoning, probability and geometric transformations |
+| **6**    | 3D Geometry and Data Interpretation   | 14, 15     | Volume, surface area and statistical analysis                     |
 
 This grouping creates a more balanced comparison with BUP's 4 modules.
 
@@ -95,6 +104,7 @@ This grouping creates a more balanced comparison with BUP's 4 modules.
 ### Files Created
 
 **`src/features/modules/edtech/components/sections/contentDisplay/UnifiedCurriculumTimeline.tsx`**
+
 - Main component displaying side-by-side timelines
 - Handles expansion state for both curricula independently
 - ~400 lines of React/TypeScript code
@@ -121,19 +131,19 @@ This grouping creates a more balanced comparison with BUP's 4 modules.
 
 ```typescript
 interface BookModule {
-    id: string;
-    moduleNumber: number;
-    name: string;
-    description?: string;
-    unitIds: string[]; // References to units in this module
+  id: string;
+  moduleNumber: number;
+  name: string;
+  description?: string;
+  unitIds: string[]; // References to units in this module
 }
 
 interface BookStage {
-    stage: number;
-    grade: number;
-    title: string;
-    units: BookUnit[];
-    modules: BookModule[]; // NEW
+  stage: number;
+  grade: number;
+  title: string;
+  units: BookUnit[];
+  modules: BookModule[]; // NEW
 }
 ```
 
@@ -148,6 +158,7 @@ interface BookStage {
 ## Visual Design Details
 
 ### Module Cards
+
 - **Header**: Module number badge, unit count, name
 - **Description**: For Cambridge, shows module description
 - **Background**: Light blue (BUP) or light green (Cambridge)
@@ -156,14 +167,16 @@ interface BookStage {
 - **Icon**: Down chevron that rotates 180° when expanded
 
 ### Unit Cards
+
 - **Header**: Unit label/number, metadata (pages, strand, subunit count)
 - **Background**: Nested within module, slightly lighter
 - **Border**: 1px solid, lighter than module border
 - **Badges**: Small colored pills for strand, pages, etc.
 
 ### Subunit/Subsection Cards
+
 - **Background**: White with subtle border
-- **Content**: 
+- **Content**:
   - BUP: Subunit name + content preview
   - Cambridge: Section code + title + objective IDs
 - **Hover**: Shadow effect
@@ -179,18 +192,21 @@ interface BookStage {
 ## Benefits
 
 ### For Teachers
+
 1. **Easy Comparison**: See BUP and Cambridge content aligned visually
 2. **Quick Navigation**: Collapsible structure allows rapid exploration
 3. **Context Preservation**: Both curricula visible simultaneously
 4. **Consistent UI**: Same interaction pattern for both programs
 
 ### For Curriculum Planning
+
 1. **Identify Overlaps**: Visually scan for similar topics
 2. **Plan Unit Sequences**: See logical flow in both programs
 3. **Reference Textbook**: Cambridge shows page numbers for easy lookup
 4. **Standards Alignment**: Cambridge shows objective codes for each section
 
 ### For Documentation
+
 1. **Screenshot Friendly**: Clean, professional appearance
 2. **Printable**: Can be exported/printed for offline reference
 3. **Shareable**: Easy to demonstrate curriculum alignment to stakeholders
@@ -198,6 +214,7 @@ interface BookStage {
 ## Future Enhancements
 
 ### Potential Features
+
 1. **Connection Lines**: Draw visual lines between related topics
 2. **Search/Filter**: Find specific topics across both curricula
 3. **Strand Filter**: Show only Number, Algebra, Geometry, or Statistics
@@ -208,6 +225,7 @@ interface BookStage {
 8. **Auto-Suggestions**: When selecting BUP topic, suggest related Cambridge sections
 
 ### Data Completions
+
 1. **Stage 8 modules**: Define 6 modules for Stage 8 Cambridge
 2. **Stage 7 modules**: Define 6 modules for Stage 7 Cambridge
 3. **Connection data**: Add explicit mappings between BUP and Cambridge topics
@@ -216,12 +234,14 @@ interface BookStage {
 ## Usage in Unit Planning Workflow
 
 ### Current State
+
 1. Navigate to **Content Display** tab (Mathematics MYP Years 2-3 only)
 2. See both curricula displayed side-by-side
 3. Expand modules and units to explore content
 4. Manually note connections and references
 
 ### Future Integration
+
 1. **Select Topics**: Click checkboxes to select topics for unit plan
 2. **Smart Suggestions**: System suggests complementary topics from other curriculum
 3. **Auto-Populate Content**: Selected topics automatically added to unit plan content section
@@ -234,7 +254,7 @@ interface BookStage {
 - **Memoization**: React components memoized where appropriate
 - **State Management**: Uses React hooks (useState) for local expansion state
 - **Smooth Animations**: CSS transitions for expand/collapse (200ms duration)
-- **Data Size**: 
+- **Data Size**:
   - BUP Grade 7: 4 modules, ~15 units, ~60 subunits
   - BUP Grade 8: 4 modules, ~15 units, ~60 subunits
   - Cambridge Stage 9: 6 modules, 15 units, 55 subsections
@@ -256,15 +276,13 @@ interface BookStage {
 ## Documentation Files
 
 Related documentation:
+
 - **`CAMBRIDGE_BOOK_STRUCTURE.md`**: Cambridge textbook data structure
 - **`CURRICULUM_CONNECTIONS.md`**: Connection strategies and examples
 - **`UNIFIED_TIMELINE_VIEW.md`**: This document
 
 ---
 
-*Last Updated: October 22, 2025*
-*Status: Stage 9 complete with 6 modules, Stages 7-8 pending*
-*Component: UnifiedCurriculumTimeline.tsx*
-
-
-
+_Last Updated: October 22, 2025_
+_Status: Stage 9 complete with 6 modules, Stages 7-8 pending_
+_Component: UnifiedCurriculumTimeline.tsx_

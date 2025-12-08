@@ -1,7 +1,7 @@
-import type { NextApiRequest } from 'next';
-import { createGetHandler } from '@websites/infrastructure/api';
-import { ITEMS_DATA } from '@/features/modules/content/guides/data/items';
-import type { ItemCategory, ItemData } from '@/types/items';
+import type { NextApiRequest } from "next";
+import { createGetHandler } from "@websites/infrastructure/api";
+import { ITEMS_DATA } from "@/features/modules/content/guides/data/items";
+import type { ItemCategory, ItemData } from "@/types/items";
 
 type ItemsApiResponse = {
   items: ItemData[];
@@ -15,16 +15,16 @@ type ItemsApiResponse = {
 };
 
 function normalizeCategory(value: unknown): ItemCategory | undefined {
-  if (typeof value !== 'string') return undefined;
+  if (typeof value !== "string") return undefined;
   const normalized = value.trim().toLowerCase();
   const allowed: ItemCategory[] = [
-    'raw-materials',
-    'weapons',
-    'armor',
-    'potions',
-    'scrolls',
-    'buildings',
-    'unknown',
+    "raw-materials",
+    "weapons",
+    "armor",
+    "potions",
+    "scrolls",
+    "buildings",
+    "unknown",
   ];
   return allowed.includes(normalized as ItemCategory) ? (normalized as ItemCategory) : undefined;
 }
@@ -35,7 +35,7 @@ function normalizeCategory(value: unknown): ItemCategory | undefined {
 export default createGetHandler<ItemsApiResponse>(
   async (req: NextApiRequest) => {
     const category = normalizeCategory(req.query.category);
-    const searchQuery = typeof req.query.q === 'string' ? req.query.q.trim().toLowerCase() : '';
+    const searchQuery = typeof req.query.q === "string" ? req.query.q.trim().toLowerCase() : "";
 
     let items = ITEMS_DATA;
 
@@ -45,13 +45,14 @@ export default createGetHandler<ItemsApiResponse>(
 
     if (searchQuery) {
       items = items.filter((item) => {
-        const haystack = `${item.name} ${item.description ?? ''} ${(item.recipe ?? []).join(' ')}`.toLowerCase();
+        const haystack =
+          `${item.name} ${item.description ?? ""} ${(item.recipe ?? []).join(" ")}`.toLowerCase();
         return haystack.includes(searchQuery);
       });
     }
 
     const total = ITEMS_DATA.length;
-    const buildingsTotal = ITEMS_DATA.filter((item) => item.category === 'buildings').length;
+    const buildingsTotal = ITEMS_DATA.filter((item) => item.category === "buildings").length;
 
     return {
       items,
@@ -75,7 +76,3 @@ export default createGetHandler<ItemsApiResponse>(
     },
   }
 );
-
-
-
-

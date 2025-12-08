@@ -1,20 +1,24 @@
-import { GetStaticPaths, GetStaticProps } from 'next';
-import { getStaticPropsWithTranslations } from '@websites/infrastructure/i18n/getStaticProps';
-import { ErrorBoundary, Section } from '@/features/infrastructure/components';
-import { useRouter } from 'next/router';
-import Link from 'next/link';
-import { AbilityData } from '@/features/modules/content/guides/data/abilities';
-import { ABILITIES, ABILITY_CATEGORIES, getAbilityById } from '@/features/modules/content/guides/data/abilities';
-import { getItemById } from '@/features/modules/content/guides/data/items';
-import { getClassBySlug } from '@/features/modules/content/guides/data/units/classes';
-import { ColoredText } from '@/features/modules/content/guides/components/ColoredText';
+import { GetStaticPaths, GetStaticProps } from "next";
+import { getStaticPropsWithTranslations } from "@websites/infrastructure/i18n/getStaticProps";
+import { ErrorBoundary, Section } from "@/features/infrastructure/components";
+import { useRouter } from "next/router";
+import Link from "next/link";
+import { AbilityData } from "@/features/modules/content/guides/data/abilities";
+import {
+  ABILITIES,
+  ABILITY_CATEGORIES,
+  getAbilityById,
+} from "@/features/modules/content/guides/data/abilities";
+import { getItemById } from "@/features/modules/content/guides/data/items";
+import { getClassBySlug } from "@/features/modules/content/guides/data/units/classes";
+import { ColoredText } from "@/features/modules/content/guides/components/ColoredText";
 
 type Props = { ability: AbilityData };
 
 const pageNamespaces = ["common"];
 
 export const getStaticProps: GetStaticProps<Props> = async ({ params, locale }) => {
-  const id = String(params?.id || '');
+  const id = String(params?.id || "");
   const ability = getAbilityById(id);
   if (!ability) {
     return { notFound: true };
@@ -24,19 +28,19 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params, locale }) 
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const paths = ABILITIES.map(a => ({ params: { id: a.id } }));
+  const paths = ABILITIES.map((a) => ({ params: { id: a.id } }));
   return { paths, fallback: false };
 };
 
 export default function AbilityDetail({ ability }: Props) {
   const router = useRouter();
-  const fromItem = router.query.from === 'item';
+  const fromItem = router.query.from === "item";
   const itemId = router.query.itemId as string | undefined;
   const item = itemId ? getItemById(itemId) : null;
 
   return (
     <ErrorBoundary>
-    <div className="min-h-[calc(100vh-8rem)] px-6 py-10 max-w-4xl mx-auto">
+      <div className="min-h-[calc(100vh-8rem)] px-6 py-10 max-w-4xl mx-auto">
         <div className="mb-6 space-x-4">
           {fromItem && item ? (
             <>
@@ -44,13 +48,19 @@ export default function AbilityDetail({ ability }: Props) {
                 ← Back to {item.name}
               </Link>
               <span className="text-gray-500">•</span>
-              <Link href="/guides/abilities" className="link-amber">All Abilities</Link>
+              <Link href="/guides/abilities" className="link-amber">
+                All Abilities
+              </Link>
             </>
           ) : (
-            <Link href="/guides/abilities" className="link-amber">← Abilities</Link>
+            <Link href="/guides/abilities" className="link-amber">
+              ← Abilities
+            </Link>
           )}
           <span className="text-gray-500">•</span>
-          <Link href="/guides" className="link-amber">Guides</Link>
+          <Link href="/guides" className="link-amber">
+            Guides
+          </Link>
         </div>
 
         <Section variant="medieval">
@@ -63,7 +73,9 @@ export default function AbilityDetail({ ability }: Props) {
                 {ABILITY_CATEGORIES[ability.category] || ability.category}
               </span>
               {ability.classRequirement && (
-                <span className="text-xs bg-amber-500/20 text-amber-200 px-2 py-1 rounded">{ability.classRequirement}</span>
+                <span className="text-xs bg-amber-500/20 text-amber-200 px-2 py-1 rounded">
+                  {ability.classRequirement}
+                </span>
               )}
             </div>
           </div>
@@ -80,34 +92,50 @@ export default function AbilityDetail({ ability }: Props) {
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-4 text-sm">
             {ability.manaCost !== undefined && (
-              <div className="text-blue-300"><span className="text-gray-400">Mana:</span> {ability.manaCost}</div>
+              <div className="text-blue-300">
+                <span className="text-gray-400">Mana:</span> {ability.manaCost}
+              </div>
             )}
             {ability.cooldown !== undefined && (
-              <div className="text-purple-300"><span className="text-gray-400">Cooldown:</span> {ability.cooldown}s</div>
+              <div className="text-purple-300">
+                <span className="text-gray-400">Cooldown:</span> {ability.cooldown}s
+              </div>
             )}
             {ability.range !== undefined && (
-              <div className="text-green-300"><span className="text-gray-400">Range:</span> {ability.range}</div>
+              <div className="text-green-300">
+                <span className="text-gray-400">Range:</span> {ability.range}
+              </div>
             )}
             {ability.areaOfEffect !== undefined && (
-              <div className="text-green-300"><span className="text-gray-400">AOE:</span> {ability.areaOfEffect}</div>
+              <div className="text-green-300">
+                <span className="text-gray-400">AOE:</span> {ability.areaOfEffect}
+              </div>
             )}
             {ability.maxTargets !== undefined && (
-              <div className="text-purple-300"><span className="text-gray-400">Max Targets:</span> {ability.maxTargets}</div>
+              <div className="text-purple-300">
+                <span className="text-gray-400">Max Targets:</span> {ability.maxTargets}
+              </div>
             )}
             {ability.duration !== undefined && (
-              <div className="text-orange-300"><span className="text-gray-400">Duration:</span> {ability.duration}s</div>
+              <div className="text-orange-300">
+                <span className="text-gray-400">Duration:</span> {ability.duration}s
+              </div>
             )}
-            {ability.castTime !== undefined && typeof ability.castTime === 'number' && (
-              <div className="text-cyan-300"><span className="text-gray-400">Cast Time:</span> {ability.castTime}s</div>
+            {ability.castTime !== undefined && typeof ability.castTime === "number" && (
+              <div className="text-cyan-300">
+                <span className="text-gray-400">Cast Time:</span> {ability.castTime}s
+              </div>
             )}
             {ability.hotkey && (
-              <div className="text-amber-300"><span className="text-gray-400">Hotkey:</span> [{ability.hotkey}]</div>
+              <div className="text-amber-300">
+                <span className="text-gray-400">Hotkey:</span> [{ability.hotkey}]
+              </div>
             )}
             {ability.targetsAllowed && (
               <div className="col-span-2 md:col-span-4">
                 <span className="text-gray-400 text-sm">Targets:</span>
                 <div className="flex flex-wrap gap-1.5 mt-1">
-                  {ability.targetsAllowed.split(',').map((target, idx) => (
+                  {ability.targetsAllowed.split(",").map((target, idx) => (
                     <span
                       key={idx}
                       className="inline-block bg-blue-500/20 border border-blue-500/50 rounded px-2 py-0.5 text-xs text-blue-200 capitalize"
@@ -121,7 +149,9 @@ export default function AbilityDetail({ ability }: Props) {
           </div>
 
           {ability.damage && (
-            <div className="text-red-300 text-sm mb-3"><span className="text-gray-400">Damage:</span> {ability.damage}</div>
+            <div className="text-red-300 text-sm mb-3">
+              <span className="text-gray-400">Damage:</span> {ability.damage}
+            </div>
           )}
 
           {ability.effects && ability.effects.length > 0 && (
@@ -209,7 +239,7 @@ export default function AbilityDetail({ ability }: Props) {
           {ability.spellbook && (
             <div className="mb-4">
               <span className="inline-block bg-purple-500/20 border border-purple-500/50 rounded px-3 py-1 text-sm text-purple-300">
-                {ability.spellbook === 'hero' ? 'Hero Ability' : 'Normal Ability'}
+                {ability.spellbook === "hero" ? "Hero Ability" : "Normal Ability"}
               </span>
             </div>
           )}

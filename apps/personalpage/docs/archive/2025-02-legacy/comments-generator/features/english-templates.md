@@ -1,6 +1,7 @@
 # English Comment Templates
 
 ## Overview
+
 **Date**: November 10, 2025  
 **Status**: ✅ Complete
 
@@ -11,6 +12,7 @@ Added two new comment templates for English teacher data: **Diagnostic TEST 1** 
 ## Problem Statement
 
 The Comments Generator was designed for Math assessments (SD1, SD2, SD3 tests) and couldn't generate comments for English teacher data. Teacher A needed:
+
 - Templates specific to English assessments
 - Access to diagnostic and unit test data
 - Simple but useful comment generation
@@ -22,24 +24,28 @@ The Comments Generator was designed for Math assessments (SD1, SD2, SD3 tests) a
 ### New Templates Created
 
 #### 1. English Diagnostic TEST 1
+
 **Template ID**: `english-diagnostic-1`
 
 **Data Used**:
+
 - Paper 1 (Reading & Use of English) - Percentage
-- Paper 2 (Listening) - Percentage  
+- Paper 2 (Listening) - Percentage
 - Paper 3 (Writing) - Percentage
 - Total Percentage
 
 **Sample Output**:
+
 ```
-Grade recorded for Diagnostic TEST 1. Sarah demonstrated reading and use of 
-English skills (57%), listening skills (63%), and writing skills (45%). 
-The diagnostic test assessed overall English language proficiency across 
-multiple skills. Sarah achieved 55% overall. Sarah should focus on improving 
+Grade recorded for Diagnostic TEST 1. Sarah demonstrated reading and use of
+English skills (57%), listening skills (63%), and writing skills (45%).
+The diagnostic test assessed overall English language proficiency across
+multiple skills. Sarah achieved 55% overall. Sarah should focus on improving
 writing as this area needs the most attention.
 ```
 
 **Variables Available**:
+
 - `{Name}` - Student name
 - `{Paper1_Percent}` - Paper 1 percentage
 - `{Paper2_Percent}` - Paper 2 percentage
@@ -47,9 +53,11 @@ writing as this area needs the most attention.
 - `{Total_Percent}` - Overall percentage
 
 #### 2. English Unit 1 TEST
+
 **Template ID**: `english-unit-1`
 
 **Data Used**:
+
 - Listening (lis1) - Raw score and max
 - Reading (read) - Raw score and max
 - Vocabulary (voc1 + voc2) - Combined score and max
@@ -57,15 +65,17 @@ writing as this area needs the most attention.
 - Total score and percentage
 
 **Sample Output**:
+
 ```
-Grade recorded for Unit 1 TEST. John was assessed on listening (8/10), 
-reading (7/10), vocabulary (6/10), and grammar (11/15). This unit test 
-evaluated language skills and knowledge from Unit 1. John achieved 68% 
-overall (total: 32 points). John should review vocabulary to strengthen 
+Grade recorded for Unit 1 TEST. John was assessed on listening (8/10),
+reading (7/10), vocabulary (6/10), and grammar (11/15). This unit test
+evaluated language skills and knowledge from Unit 1. John achieved 68%
+overall (total: 32 points). John should review vocabulary to strengthen
 performance in this area.
 ```
 
 **Variables Available**:
+
 - `{Name}` - Student name
 - `{Listening_Score}` - Listening raw score
 - `{Listening_Max}` - Listening max points
@@ -106,31 +116,35 @@ Both templates follow the standard `CommentTemplate` interface:
 ### Data Extraction
 
 **English Diagnostic TEST 1**:
+
 ```typescript
-const d1Paper1Percent = extractEnglishTestValue(student.assessments, 'd1', 'paper1_percent');
-const d1Paper2Percent = extractEnglishTestValue(student.assessments, 'd1', 'paper2_percent');
-const d1Paper3Percent = extractEnglishTestValue(student.assessments, 'd1', 'paper3_percent');
-const d1TotalPercent = extractEnglishTestValue(student.assessments, 'd1', 'total_percent');
+const d1Paper1Percent = extractEnglishTestValue(student.assessments, "d1", "paper1_percent");
+const d1Paper2Percent = extractEnglishTestValue(student.assessments, "d1", "paper2_percent");
+const d1Paper3Percent = extractEnglishTestValue(student.assessments, "d1", "paper3_percent");
+const d1TotalPercent = extractEnglishTestValue(student.assessments, "d1", "total_percent");
 ```
 
 **English Unit 1 TEST**:
+
 ```typescript
-const t1Lis = extractEnglishTestValue(student.assessments, 't1', 'lis1');
-const t1Read = extractEnglishTestValue(student.assessments, 't1', 'read');
-const t1Voc1 = extractEnglishTestValue(student.assessments, 't1', 'voc1');
-const t1Voc2 = extractEnglishTestValue(student.assessments, 't1', 'voc2');
-const t1Voc = (t1Voc1 + t1Voc2); // Combined
+const t1Lis = extractEnglishTestValue(student.assessments, "t1", "lis1");
+const t1Read = extractEnglishTestValue(student.assessments, "t1", "read");
+const t1Voc1 = extractEnglishTestValue(student.assessments, "t1", "voc1");
+const t1Voc2 = extractEnglishTestValue(student.assessments, "t1", "voc2");
+const t1Voc = t1Voc1 + t1Voc2; // Combined
 // ... similar for grammar
 ```
 
 ### Weak Area Detection
 
 **Diagnostic TEST 1**:
+
 - Compares Paper 1, Paper 2, Paper 3 percentages
 - Identifies lowest score
 - Adds weak section comment if < 70%
 
 **Unit 1 TEST**:
+
 - Calculates percentage for each skill (Listening, Reading, Vocabulary, Grammar)
 - Identifies lowest performing skill
 - Adds weak section comment if < 70%
@@ -170,7 +184,7 @@ const t1Voc = (t1Voc1 + t1Voc2); // Combined
 1. **Load English teacher data** (`master_student_data_J_v5.json`)
 2. **Go to Comments Generator tab**
 3. **Select template from dropdown**:
-   - "English Diagnostic TEST 1" 
+   - "English Diagnostic TEST 1"
    - "English Unit 1 TEST"
 4. **View generated comments**
    - Only students with complete data will have comments
@@ -189,6 +203,7 @@ const t1Voc = (t1Voc1 + t1Voc2); // Combined
 ## Comment Structure
 
 ### Basic Structure (Both Templates):
+
 1. **Intro**: "Grade recorded for [test name]"
 2. **Context**: Performance breakdown by skill/paper
 3. **Assessment**: What was being tested
@@ -196,6 +211,7 @@ const t1Voc = (t1Voc1 + t1Voc2); // Combined
 5. **Weak Area** (if any skill < 70%): Specific improvement suggestion
 
 ### Customization:
+
 - Teachers can edit any section via Template Editor
 - Variables automatically replaced
 - Grammar rules can be adjusted
@@ -206,12 +222,14 @@ const t1Voc = (t1Voc1 + t1Voc2); // Combined
 ## Data Requirements
 
 ### Diagnostic TEST 1 Comment Requires:
+
 - ✅ `d1.paper1_percent`
 - ✅ `d1.paper2_percent`
 - ✅ `d1.paper3_percent`
 - ✅ `d1.total_percent`
 
 ### Unit 1 TEST Comment Requires:
+
 - ✅ `t1.lis1`
 - ✅ `t1.read`
 - ✅ `t1.voc1` + `t1.voc2`
@@ -226,6 +244,7 @@ const t1Voc = (t1Voc1 + t1Voc2); // Combined
 ## Benefits
 
 ### For Teacher A:
+
 ✅ **Functional Comments Generator** - Can now use this feature
 ✅ **English-specific Templates** - Tailored to English assessments
 ✅ **Automatic Weak Area Detection** - Identifies areas needing improvement
@@ -233,6 +252,7 @@ const t1Voc = (t1Voc1 + t1Voc2); // Combined
 ✅ **Time-saving** - Generate 35 comments instantly
 
 ### For System:
+
 ✅ **Template Flexibility** - Easy to add more templates
 ✅ **Clean Separation** - Math vs English logic clearly separated
 ✅ **Reusable Pattern** - Can add templates for other subjects
@@ -243,6 +263,7 @@ const t1Voc = (t1Voc1 + t1Voc2); // Combined
 ## Future Enhancements
 
 ### Potential Additions:
+
 1. **More English Templates**: Diagnostic 2, Diagnostic 3, Units 2-9
 2. **Multi-language Support**: Lithuanian versions for English templates
 3. **Grade Calculation**: Suggest grades based on percentages
@@ -268,6 +289,7 @@ const t1Voc = (t1Voc1 + t1Voc2); // Combined
 ---
 
 ## Related Documentation
+
 - [Objectives Tab Restriction](./OBJECTIVES_TAB_RESTRICTION.md)
 - [Assessment Statistics English Test Fix](../fixes/ASSESSMENT_STATISTICS_ENGLISH_TEST_FIX.md)
 - [Teacher J Integration](../../progress-report/data/teacher-j-integration-complete.md)
@@ -277,4 +299,3 @@ const t1Voc = (t1Voc1 + t1Voc2); // Combined
 **Implemented by**: AI Assistant  
 **Date**: November 10, 2025  
 **Status**: ✅ Complete and Ready for Testing
-

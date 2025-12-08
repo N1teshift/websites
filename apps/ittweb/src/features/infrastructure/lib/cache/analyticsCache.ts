@@ -1,6 +1,6 @@
 /**
  * Analytics Cache Types and Utilities
- * 
+ *
  * Client-safe types and utilities for analytics caching.
  * Server-only functions are in analyticsCache.server.ts
  */
@@ -26,16 +26,13 @@ export interface CacheConfig {
  * Generate a cache key from analytics type and filters
  * Client-safe utility function
  */
-export function generateCacheKey(
-  analyticsType: string,
-  filters: Record<string, unknown>
-): string {
+export function generateCacheKey(analyticsType: string, filters: Record<string, unknown>): string {
   // Sort filters for consistent keys
   const sortedFilters = Object.keys(filters)
-    .filter(k => filters[k] !== undefined && filters[k] !== null)
+    .filter((k) => filters[k] !== undefined && filters[k] !== null)
     .sort()
-    .map(k => `${k}:${filters[k]}`)
-    .join('|');
-  
-  return `${analyticsType}_${sortedFilters || 'default'}`;
+    .map((k) => `${k}:${filters[k]}`)
+    .join("|");
+
+  return `${analyticsType}_${sortedFilters || "default"}`;
 }

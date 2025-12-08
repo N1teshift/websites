@@ -1,5 +1,5 @@
-import type { PlayerProfile, PlayerSearchFilters } from '../types';
-import { createDataFetchHook } from '@websites/infrastructure/hooks';
+import type { PlayerProfile, PlayerSearchFilters } from "../types";
+import { createDataFetchHook } from "@websites/infrastructure/hooks";
 
 interface UsePlayerStatsParams {
   name: string;
@@ -9,10 +9,10 @@ interface UsePlayerStatsParams {
 const usePlayerStatsHook = createDataFetchHook<PlayerProfile, UsePlayerStatsParams>({
   fetchFn: async ({ name, filters }) => {
     const queryParams = new URLSearchParams();
-    if (filters?.category) queryParams.append('category', filters.category);
-    if (filters?.startDate) queryParams.append('startDate', filters.startDate);
-    if (filters?.endDate) queryParams.append('endDate', filters.endDate);
-    if (filters?.includeGames) queryParams.append('includeGames', 'true');
+    if (filters?.category) queryParams.append("category", filters.category);
+    if (filters?.startDate) queryParams.append("startDate", filters.startDate);
+    if (filters?.endDate) queryParams.append("endDate", filters.endDate);
+    if (filters?.includeGames) queryParams.append("includeGames", "true");
 
     const response = await fetch(
       `/api/players/${encodeURIComponent(name)}?${queryParams.toString()}`
@@ -21,8 +21,8 @@ const usePlayerStatsHook = createDataFetchHook<PlayerProfile, UsePlayerStatsPara
   },
   useSWR: false,
   enabled: ({ name }) => !!name,
-  componentName: 'usePlayerStats',
-  operationName: 'fetchPlayer',
+  componentName: "usePlayerStats",
+  operationName: "fetchPlayer",
 });
 
 interface UsePlayerStatsResult {
@@ -32,12 +32,9 @@ interface UsePlayerStatsResult {
   refetch: () => void | Promise<void>;
 }
 
-export function usePlayerStats(
-  name: string,
-  filters?: PlayerSearchFilters
-): UsePlayerStatsResult {
+export function usePlayerStats(name: string, filters?: PlayerSearchFilters): UsePlayerStatsResult {
   const { data, loading, error, refetch } = usePlayerStatsHook({ name, filters });
-  
+
   return {
     player: data,
     loading,
@@ -45,6 +42,3 @@ export function usePlayerStats(
     refetch,
   };
 }
-
-
-

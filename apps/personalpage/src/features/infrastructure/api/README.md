@@ -9,6 +9,7 @@ A modular API utilities module with self-contained API clients.
 ## Overview
 
 This module provides shared utilities and individual API clients that can be copied independently:
+
 - **OpenAI** - AI/ML services (self-contained)
 - **Firebase** - Database and authentication (self-contained)
 - **Google** - Calendar and authentication services (self-contained)
@@ -51,18 +52,21 @@ src/features/infrastructure/api/
 ## Features
 
 ### 🔧 Modular Configuration
+
 - Each API client has its own configuration
 - Service-specific environment variables
 - Independent validation per service
 - No cross-dependencies between clients
 
 ### 🛡️ Decoupled Error Handling
+
 - Error handling utilities in the logging module
 - Service-specific error handlers for each API
 - Consistent error types and logging
 - Retry logic for transient failures
 
 ### 📦 Self-Contained Clients
+
 - Each client can be copied independently
 - Minimal dependencies (only utils)
 - Service-specific types and configuration
@@ -72,7 +76,7 @@ src/features/infrastructure/api/
 
 ### Using Individual API Clients
 
-```typescript
+````typescript
 // OpenAI client (self-contained)
 import { createOpenAIClient } from '@/features/infrastructure/api/openai';
 
@@ -149,11 +153,11 @@ const { createGoogleCalendarClient } = await import('@/features/infrastructure/a
 const googleCalendarClient = createGoogleCalendarClient();
 const events = await googleCalendarClient.getCalendarEvents('primary');
 
-// calendar-events-ms.ts  
+// calendar-events-ms.ts
 const { createMicrosoftCalendarClient } = await import('@/features/infrastructure/api/microsoft');
 const microsoftCalendarClient = createMicrosoftCalendarClient();
 const events = await microsoftCalendarClient.getCalendarEvents('default');
-```
+````
 
 ### How It Works
 
@@ -168,13 +172,13 @@ The API clients now make **direct external API calls** instead of calling intern
 
 ```typescript
 // OpenAI-specific error handling
-import { handleOpenAIError, ApiErrorType } from '@/features/infrastructure/api/clients/openai';
+import { handleOpenAIError, ApiErrorType } from "@/features/infrastructure/api/clients/openai";
 
 try {
   // Make OpenAI API call
 } catch (error) {
-  const apiError = handleOpenAIError(error, '/v1/chat/completions');
-  
+  const apiError = handleOpenAIError(error, "/v1/chat/completions");
+
   if (apiError.type === ApiErrorType.RATE_LIMIT) {
     // Handle rate limiting
   } else if (apiError.retryable) {
@@ -183,29 +187,29 @@ try {
 }
 
 // Firebase-specific error handling
-import { handleFirebaseError } from '@/features/infrastructure/api/clients/firebase';
+import { handleFirebaseError } from "@/features/infrastructure/api/clients/firebase";
 
 try {
   // Make Firebase call
 } catch (error) {
-  const apiError = handleFirebaseError(error, 'database-read');
+  const apiError = handleFirebaseError(error, "database-read");
 }
 ```
 
 ### Making API Requests
 
 ```typescript
-import { apiRequest } from '@/features/infrastructure/api';
+import { apiRequest } from "@/features/infrastructure/api";
 
 // Simple API call
-const data = await apiRequest<MyResponseType>('/api/endpoint', 'POST', payload);
+const data = await apiRequest<MyResponseType>("/api/endpoint", "POST", payload);
 
 // With error handling
 try {
-  const data = await apiRequest<MyResponseType>('/api/endpoint', 'POST', payload);
+  const data = await apiRequest<MyResponseType>("/api/endpoint", "POST", payload);
 } catch (error) {
   // Error is automatically logged and formatted
-  console.error('API call failed:', error.message);
+  console.error("API call failed:", error.message);
 }
 ```
 

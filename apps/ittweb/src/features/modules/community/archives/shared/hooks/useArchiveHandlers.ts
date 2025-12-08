@@ -1,20 +1,25 @@
-import { extractYouTubeId, extractTwitchClipId } from '@/features/modules/community/archives/services';
-import { SectionKey } from './useArchiveBaseState';
-import { Dispatch, SetStateAction } from 'react';
+import {
+  extractYouTubeId,
+  extractTwitchClipId,
+} from "@/features/modules/community/archives/services";
+import { SectionKey } from "./useArchiveBaseState";
+import { Dispatch, SetStateAction } from "react";
 
 interface UseArchiveHandlersParams {
-  setFormData: Dispatch<SetStateAction<{
-    title: string;
-    content: string;
-    author: string;
-    entryType: '' | 'story' | 'changelog';
-    mediaUrl: string;
-    twitchClipUrl: string;
-    mediaType: 'image' | 'video' | 'replay' | 'none';
-    dateType: 'single' | 'undated';
-    singleDate: string;
-    approximateText: string;
-  }>>;
+  setFormData: Dispatch<
+    SetStateAction<{
+      title: string;
+      content: string;
+      author: string;
+      entryType: "" | "story" | "changelog";
+      mediaUrl: string;
+      twitchClipUrl: string;
+      mediaType: "image" | "video" | "replay" | "none";
+      dateType: "single" | "undated";
+      singleDate: string;
+      approximateText: string;
+    }>
+  >;
   imageFile: File | null;
   imageFiles: File[];
   setImageFile: Dispatch<SetStateAction<File | null>>;
@@ -42,17 +47,17 @@ export function useArchiveHandlers({
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     if (!files.length) return;
-    if (files.some(f => !f.type.startsWith('image/'))) {
-      setError('Please select only image files');
+    if (files.some((f) => !f.type.startsWith("image/"))) {
+      setError("Please select only image files");
       return;
     }
-    setError('');
+    setError("");
     if (files.length === 1) {
       setImageFile(files[0]);
       setImageFiles([]);
@@ -60,12 +65,12 @@ export function useArchiveHandlers({
       setImageFiles(files);
       setImageFile(null);
     }
-    setFormData(prev => ({ ...prev, mediaType: 'image' }));
+    setFormData((prev) => ({ ...prev, mediaType: "image" }));
   };
 
   const handleReorderImages = (fromIndex: number, toIndex: number) => {
     if (imageFiles.length || imageFile) {
-      setImageFiles(prev => {
+      setImageFiles((prev) => {
         const next = [...prev];
         const [moved] = next.splice(fromIndex, 1);
         next.splice(toIndex, 0, moved);
@@ -73,7 +78,7 @@ export function useArchiveHandlers({
       });
       return;
     }
-    setCurrentImages(prev => {
+    setCurrentImages((prev) => {
       const next = [...prev];
       const [moved] = next.splice(fromIndex, 1);
       next.splice(toIndex, 0, moved);
@@ -82,7 +87,7 @@ export function useArchiveHandlers({
   };
 
   const handleReorderSections = (fromIndex: number, toIndex: number) => {
-    setSectionOrder(prev => {
+    setSectionOrder((prev) => {
       const next = [...prev];
       const [moved] = next.splice(fromIndex, 1);
       next.splice(toIndex, 0, moved);
@@ -96,20 +101,20 @@ export function useArchiveHandlers({
     const twitchId = extractTwitchClipId(url);
 
     if (url && !youtubeId && !twitchId) {
-      setError('Please enter a valid YouTube or Twitch clip URL');
-      setFormData(prev => ({ ...prev, mediaUrl: '', twitchClipUrl: '' }));
+      setError("Please enter a valid YouTube or Twitch clip URL");
+      setFormData((prev) => ({ ...prev, mediaUrl: "", twitchClipUrl: "" }));
       return;
     }
 
-    setError('');
+    setError("");
     // Set the appropriate URL and clear the other one
     if (youtubeId) {
-      setFormData(prev => ({ ...prev, mediaUrl: url, twitchClipUrl: '' }));
+      setFormData((prev) => ({ ...prev, mediaUrl: url, twitchClipUrl: "" }));
     } else if (twitchId) {
-      setFormData(prev => ({ ...prev, twitchClipUrl: url, mediaUrl: '' }));
+      setFormData((prev) => ({ ...prev, twitchClipUrl: url, mediaUrl: "" }));
     } else {
       // Empty URL - clear both
-      setFormData(prev => ({ ...prev, mediaUrl: '', twitchClipUrl: '' }));
+      setFormData((prev) => ({ ...prev, mediaUrl: "", twitchClipUrl: "" }));
     }
   };
 
@@ -125,11 +130,11 @@ export function useArchiveHandlers({
     const imageFiles: File[] = [];
     const replayFiles: File[] = [];
 
-    files.forEach(file => {
+    files.forEach((file) => {
       const nameLower = file.name.toLowerCase();
-      if (nameLower.endsWith('.w3g')) {
+      if (nameLower.endsWith(".w3g")) {
         replayFiles.push(file);
-      } else if (file.type.startsWith('image/')) {
+      } else if (file.type.startsWith("image/")) {
         imageFiles.push(file);
       } else {
         setError(`Unsupported file type: ${file.name}. Please upload images or .w3g replay files.`);
@@ -138,23 +143,23 @@ export function useArchiveHandlers({
     });
 
     if (replayFiles.length > 1) {
-      setError('Please upload only one replay file at a time');
+      setError("Please upload only one replay file at a time");
       return;
     }
 
     if (replayFiles.length > 0 && imageFiles.length > 0) {
-      setError('Please upload either images or a replay file, not both');
+      setError("Please upload either images or a replay file, not both");
       return;
     }
 
-    setError('');
+    setError("");
 
     // Handle replays
     if (replayFiles.length > 0) {
       setReplayFile(replayFiles[0]);
       setImageFile(null);
       setImageFiles([]);
-      setFormData(prev => ({ ...prev, mediaType: 'replay' }));
+      setFormData((prev) => ({ ...prev, mediaType: "replay" }));
       return;
     }
 
@@ -168,7 +173,7 @@ export function useArchiveHandlers({
         setImageFile(null);
       }
       setReplayFile(null);
-      setFormData(prev => ({ ...prev, mediaType: 'image' }));
+      setFormData((prev) => ({ ...prev, mediaType: "image" }));
     }
   };
 
@@ -177,44 +182,46 @@ export function useArchiveHandlers({
     const file = e.target.files?.[0];
     if (file) {
       const nameLower = file.name.toLowerCase();
-      if (!nameLower.endsWith('.w3g')) {
-        setError('Please select a .w3g replay file');
+      if (!nameLower.endsWith(".w3g")) {
+        setError("Please select a .w3g replay file");
         return;
       }
       setReplayFile(file);
-      setFormData(prev => ({ ...prev, mediaType: 'replay' }));
-      setError('');
+      setFormData((prev) => ({ ...prev, mediaType: "replay" }));
+      setError("");
     }
   };
 
   const handleMediaFieldChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.name === 'mediaUrl') {
+    if (e.target.name === "mediaUrl") {
       handleVideoUrlChange(e);
       return;
     }
-    if (e.target.name === 'twitchClipUrl') {
+    if (e.target.name === "twitchClipUrl") {
       handleTwitchUrlChange(e);
       return;
     }
-    handleInputChange(e as React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>);
+    handleInputChange(
+      e as React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    );
   };
 
   const handleRemoveExistingImage = (index: number) => {
     // If working with new uploads (imageFiles/imageFile), remove from those; otherwise from currentImages
     if (imageFiles.length > 0) {
-      setImageFiles(prev => prev.filter((_, i) => i !== index));
+      setImageFiles((prev) => prev.filter((_, i) => i !== index));
       return;
     }
     if (imageFile && index === 0) {
       setImageFile(null);
       return;
     }
-    setCurrentImages(prev => prev.filter((_, i) => i !== index));
+    setCurrentImages((prev) => prev.filter((_, i) => i !== index));
   };
 
   const handleRemoveReplay = () => {
     setReplayFile(null);
-    setExistingReplayUrl('');
+    setExistingReplayUrl("");
   };
 
   return {
@@ -231,5 +238,3 @@ export function useArchiveHandlers({
     handleRemoveReplay,
   };
 }
-
-

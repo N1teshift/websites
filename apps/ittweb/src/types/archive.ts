@@ -1,6 +1,6 @@
-export type ArchiveEntryType = 'story' | 'changelog';
+export type ArchiveEntryType = "story" | "changelog";
 
-import { Timestamp } from 'firebase/firestore';
+import { Timestamp } from "firebase/firestore";
 
 export interface ArchiveEntry {
   id: string;
@@ -16,7 +16,7 @@ export interface ArchiveEntry {
   replayUrl?: string;
   linkedGameDocumentId?: string; // Link to Game document when archive entry is for a game
   // Optional ordered section layout
-  sectionOrder?: Array<'images' | 'video' | 'twitch' | 'replay' | 'game' | 'text'>;
+  sectionOrder?: Array<"images" | "video" | "twitch" | "replay" | "game" | "text">;
   dateInfo: DateInfo;
   createdAt: Timestamp | string;
   updatedAt: Timestamp | string;
@@ -26,10 +26,10 @@ export interface ArchiveEntry {
 }
 
 export interface DateInfo {
-  type: 'single' | 'interval' | 'undated';
+  type: "single" | "interval" | "undated";
   singleDate?: string; // ISO date string
-  startDate?: string;  // For intervals
-  endDate?: string;    // For intervals
+  startDate?: string; // For intervals
+  endDate?: string; // For intervals
   approximateText?: string; // "Early 2016", "Circa 2015"
 }
 
@@ -46,7 +46,7 @@ export interface CreateArchiveEntry {
   replayUrl?: string;
   linkedGameDocumentId?: string; // Link to Game document when archive entry is for a game
   // Optional ordered section layout
-  sectionOrder?: Array<'images' | 'video' | 'twitch' | 'replay' | 'game' | 'text'>;
+  sectionOrder?: Array<"images" | "video" | "twitch" | "replay" | "game" | "text">;
   dateInfo: DateInfo;
   submittedAt?: Timestamp | string;
   isDeleted?: boolean;
@@ -58,7 +58,6 @@ export interface ArchiveFilters {
     start: string;
     end: string;
   };
-  mediaType?: 'image' | 'video' | 'replay' | 'none' | 'all';
+  mediaType?: "image" | "video" | "replay" | "none" | "all";
   includeUndated?: boolean;
 }
-

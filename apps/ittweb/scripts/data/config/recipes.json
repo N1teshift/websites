@@ -193,18 +193,10 @@
     {
       "itemId": "ITEM_TROLL_PROTECTOR",
       "itemName": "ITEM_TROLL_PROTECTOR",
-      "ingredients": [
-        "ITEM_IRON_SHIELD",
-        "ITEM_ELK_HIDE",
-        "ITEM_MANA_CRYSTAL"
-      ],
+      "ingredients": ["ITEM_IRON_SHIELD", "ITEM_ELK_HIDE", "ITEM_MANA_CRYSTAL"],
       "unitRequirement": "armory",
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_IRON_SHIELD",
-        "ITEM_ELK_HIDE",
-        "ITEM_MANA_CRYSTAL"
-      ]
+      "ingredientNames": ["ITEM_IRON_SHIELD", "ITEM_ELK_HIDE", "ITEM_MANA_CRYSTAL"]
     },
     {
       "itemId": "ITEM_BATTLE_SHIELD",
@@ -289,18 +281,10 @@
     {
       "itemId": "ITEM_WOLF_VORACITY_COAT",
       "itemName": "ITEM_WOLF_VORACITY_COAT ",
-      "ingredients": [
-        "ITEM_WOLF_SKIN_COAT",
-        "ITEM_SPIRIT_DARKNESS",
-        "ITEM_MANA_CRYSTAL"
-      ],
+      "ingredients": ["ITEM_WOLF_SKIN_COAT", "ITEM_SPIRIT_DARKNESS", "ITEM_MANA_CRYSTAL"],
       "unitRequirement": "armory",
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_WOLF_SKIN_COAT",
-        "ITEM_SPIRIT_DARKNESS",
-        "ITEM_MANA_CRYSTAL"
-      ]
+      "ingredientNames": ["ITEM_WOLF_SKIN_COAT", "ITEM_SPIRIT_DARKNESS", "ITEM_MANA_CRYSTAL"]
     },
     {
       "itemId": "ITEM_ROBE_OF_THE_MAGI",
@@ -389,28 +373,15 @@
     {
       "itemId": "ITEM_IRON_BOOTS",
       "itemName": "ITEM_IRON_BOOTS",
-      "ingredients": [
-        "ITEM_ELK_SKIN_BOOTS",
-        "ITEM_IRON_INGOT",
-        "ITEM_IRON_INGOT"
-      ],
+      "ingredients": ["ITEM_ELK_SKIN_BOOTS", "ITEM_IRON_INGOT", "ITEM_IRON_INGOT"],
       "unitRequirement": "forge",
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_ELK_SKIN_BOOTS",
-        "ITEM_IRON_INGOT",
-        "ITEM_IRON_INGOT"
-      ]
+      "ingredientNames": ["ITEM_ELK_SKIN_BOOTS", "ITEM_IRON_INGOT", "ITEM_IRON_INGOT"]
     },
     {
       "itemId": "ITEM_MAGE_MASHER",
       "itemName": "ITEM_MAGE_MASHER",
-      "ingredients": [
-        "ITEM_STICK",
-        "ITEM_SPIRIT_WIND",
-        "ITEM_SPIRIT_WATER",
-        "ITEM_MANA_CRYSTAL"
-      ],
+      "ingredients": ["ITEM_STICK", "ITEM_SPIRIT_WIND", "ITEM_SPIRIT_WATER", "ITEM_MANA_CRYSTAL"],
       "unitRequirement": "forge",
       "mixingPotManaRequirement": null,
       "ingredientNames": [
@@ -423,132 +394,66 @@
     {
       "itemId": "ITEM_IRON_COAT",
       "itemName": "ITEM_IRON_COAT",
-      "ingredients": [
-        "ITEM_ELK_SKIN_COAT",
-        "ITEM_IRON_INGOT",
-        "ITEM_IRON_INGOT"
-      ],
+      "ingredients": ["ITEM_ELK_SKIN_COAT", "ITEM_IRON_INGOT", "ITEM_IRON_INGOT"],
       "unitRequirement": "forge",
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_ELK_SKIN_COAT",
-        "ITEM_IRON_INGOT",
-        "ITEM_IRON_INGOT"
-      ]
+      "ingredientNames": ["ITEM_ELK_SKIN_COAT", "ITEM_IRON_INGOT", "ITEM_IRON_INGOT"]
     },
     {
       "itemId": "ITEM_IRON_GLOVES",
       "itemName": "ITEM_IRON_GLOVES",
-      "ingredients": [
-        "ITEM_ELK_SKIN_GLOVES",
-        "ITEM_IRON_INGOT",
-        "ITEM_IRON_INGOT"
-      ],
+      "ingredients": ["ITEM_ELK_SKIN_GLOVES", "ITEM_IRON_INGOT", "ITEM_IRON_INGOT"],
       "unitRequirement": "forge",
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_ELK_SKIN_GLOVES",
-        "ITEM_IRON_INGOT",
-        "ITEM_IRON_INGOT"
-      ]
+      "ingredientNames": ["ITEM_ELK_SKIN_GLOVES", "ITEM_IRON_INGOT", "ITEM_IRON_INGOT"]
     },
     {
       "itemId": "ITEM_STEEL_GLOVES",
       "itemName": "ITEM_STEEL_GLOVES",
-      "ingredients": [
-        "ITEM_ELK_SKIN_GLOVES",
-        "ITEM_STEEL_INGOT",
-        "ITEM_STEEL_INGOT"
-      ],
+      "ingredients": ["ITEM_ELK_SKIN_GLOVES", "ITEM_STEEL_INGOT", "ITEM_STEEL_INGOT"],
       "unitRequirement": "forge",
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_ELK_SKIN_GLOVES",
-        "ITEM_STEEL_INGOT",
-        "ITEM_STEEL_INGOT"
-      ]
+      "ingredientNames": ["ITEM_ELK_SKIN_GLOVES", "ITEM_STEEL_INGOT", "ITEM_STEEL_INGOT"]
     },
     {
       "itemId": "ITEM_STEEL_BOOTS",
       "itemName": "ITEM_STEEL_BOOTS",
-      "ingredients": [
-        "ITEM_ELK_SKIN_BOOTS",
-        "ITEM_STEEL_INGOT",
-        "ITEM_STEEL_INGOT"
-      ],
+      "ingredients": ["ITEM_ELK_SKIN_BOOTS", "ITEM_STEEL_INGOT", "ITEM_STEEL_INGOT"],
       "unitRequirement": "forge",
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_ELK_SKIN_BOOTS",
-        "ITEM_STEEL_INGOT",
-        "ITEM_STEEL_INGOT"
-      ]
+      "ingredientNames": ["ITEM_ELK_SKIN_BOOTS", "ITEM_STEEL_INGOT", "ITEM_STEEL_INGOT"]
     },
     {
       "itemId": "ITEM_STEEL_COAT",
       "itemName": "ITEM_STEEL_COAT",
-      "ingredients": [
-        "ITEM_ELK_SKIN_COAT",
-        "ITEM_STEEL_INGOT",
-        "ITEM_STEEL_INGOT"
-      ],
+      "ingredients": ["ITEM_ELK_SKIN_COAT", "ITEM_STEEL_INGOT", "ITEM_STEEL_INGOT"],
       "unitRequirement": "forge",
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_ELK_SKIN_COAT",
-        "ITEM_STEEL_INGOT",
-        "ITEM_STEEL_INGOT"
-      ]
+      "ingredientNames": ["ITEM_ELK_SKIN_COAT", "ITEM_STEEL_INGOT", "ITEM_STEEL_INGOT"]
     },
     {
       "itemId": "ITEM_STEEL_AXE",
       "itemName": "ITEM_STEEL_AXE",
-      "ingredients": [
-        "ITEM_STICK",
-        "ITEM_STEEL_INGOT",
-        "ITEM_STEEL_INGOT"
-      ],
+      "ingredients": ["ITEM_STICK", "ITEM_STEEL_INGOT", "ITEM_STEEL_INGOT"],
       "unitRequirement": "forge",
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_STICK",
-        "ITEM_STEEL_INGOT",
-        "ITEM_STEEL_INGOT"
-      ]
+      "ingredientNames": ["ITEM_STICK", "ITEM_STEEL_INGOT", "ITEM_STEEL_INGOT"]
     },
     {
       "itemId": "ITEM_IRON_AXE",
       "itemName": "ITEM_IRON_AXE",
-      "ingredients": [
-        "ITEM_STICK",
-        "ITEM_IRON_INGOT",
-        "ITEM_IRON_INGOT"
-      ],
+      "ingredients": ["ITEM_STICK", "ITEM_IRON_INGOT", "ITEM_IRON_INGOT"],
       "unitRequirement": "forge",
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_STICK",
-        "ITEM_IRON_INGOT",
-        "ITEM_IRON_INGOT"
-      ]
+      "ingredientNames": ["ITEM_STICK", "ITEM_IRON_INGOT", "ITEM_IRON_INGOT"]
     },
     {
       "itemId": "ITEM_IRON_STAFF",
       "itemName": "ITEM_IRON_STAFF",
-      "ingredients": [
-        "ITEM_STICK",
-        "ITEM_IRON_INGOT",
-        "ITEM_IRON_INGOT",
-        "ITEM_MANA_CRYSTAL"
-      ],
+      "ingredients": ["ITEM_STICK", "ITEM_IRON_INGOT", "ITEM_IRON_INGOT", "ITEM_MANA_CRYSTAL"],
       "unitRequirement": "forge",
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_STICK",
-        "ITEM_IRON_INGOT",
-        "ITEM_IRON_INGOT",
-        "ITEM_MANA_CRYSTAL"
-      ]
+      "ingredientNames": ["ITEM_STICK", "ITEM_IRON_INGOT", "ITEM_IRON_INGOT", "ITEM_MANA_CRYSTAL"]
     },
     {
       "itemId": "ITEM_BONE_SHIELD",
@@ -575,138 +480,74 @@
     {
       "itemId": "ITEM_SHIELD",
       "itemName": "ITEM_SHIELD",
-      "ingredients": [
-        "ITEM_ELK_HIDE",
-        "ITEM_STICK",
-        "ITEM_STICK"
-      ],
+      "ingredients": ["ITEM_ELK_HIDE", "ITEM_STICK", "ITEM_STICK"],
       "unitRequirement": "forge",
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_ELK_HIDE",
-        "ITEM_STICK",
-        "ITEM_STICK"
-      ]
+      "ingredientNames": ["ITEM_ELK_HIDE", "ITEM_STICK", "ITEM_STICK"]
     },
     {
       "itemId": "ITEM_STEEL_SHIELD",
       "itemName": "ITEM_STEEL_SHIELD",
-      "ingredients": [
-        "ITEM_SHIELD",
-        "ITEM_STEEL_INGOT",
-        "ITEM_STEEL_INGOT"
-      ],
+      "ingredients": ["ITEM_SHIELD", "ITEM_STEEL_INGOT", "ITEM_STEEL_INGOT"],
       "unitRequirement": "forge",
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_SHIELD",
-        "ITEM_STEEL_INGOT",
-        "ITEM_STEEL_INGOT"
-      ]
+      "ingredientNames": ["ITEM_SHIELD", "ITEM_STEEL_INGOT", "ITEM_STEEL_INGOT"]
     },
     {
       "itemId": "ITEM_IRON_SHIELD",
       "itemName": "ITEM_IRON_SHIELD",
-      "ingredients": [
-        "ITEM_SHIELD",
-        "ITEM_IRON_INGOT",
-        "ITEM_IRON_INGOT"
-      ],
+      "ingredients": ["ITEM_SHIELD", "ITEM_IRON_INGOT", "ITEM_IRON_INGOT"],
       "unitRequirement": "forge",
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_SHIELD",
-        "ITEM_IRON_INGOT",
-        "ITEM_IRON_INGOT"
-      ]
+      "ingredientNames": ["ITEM_SHIELD", "ITEM_IRON_INGOT", "ITEM_IRON_INGOT"]
     },
     {
       "itemId": "ITEM_STEEL_INGOT",
       "itemName": "ITEM_STEEL_INGOT",
-      "ingredients": [
-        "ITEM_IRON_INGOT",
-        "ITEM_IRON_INGOT",
-        "ITEM_FLINT",
-        "ITEM_FLINT"
-      ],
+      "ingredients": ["ITEM_IRON_INGOT", "ITEM_IRON_INGOT", "ITEM_FLINT", "ITEM_FLINT"],
       "unitRequirement": "forge",
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_IRON_INGOT",
-        "ITEM_IRON_INGOT",
-        "ITEM_FLINT",
-        "ITEM_FLINT"
-      ]
+      "ingredientNames": ["ITEM_IRON_INGOT", "ITEM_IRON_INGOT", "ITEM_FLINT", "ITEM_FLINT"]
     },
     {
       "itemId": "ITEM_IRON_INGOT",
       "itemName": "ITEM_IRON_INGOT",
-      "ingredients": [
-        "ITEM_STONE",
-        "ITEM_FLINT"
-      ],
+      "ingredients": ["ITEM_STONE", "ITEM_FLINT"],
       "unitRequirement": "forge",
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_STONE",
-        "ITEM_FLINT"
-      ]
+      "ingredientNames": ["ITEM_STONE", "ITEM_FLINT"]
     },
     {
       "itemId": "ITEM_SPEAR",
       "itemName": "ITEM_SPEAR",
-      "ingredients": [
-        "ITEM_STICK",
-        "ITEM_STONE"
-      ],
+      "ingredients": ["ITEM_STICK", "ITEM_STONE"],
       "unitRequirement": "forge",
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_STICK",
-        "ITEM_STONE"
-      ]
+      "ingredientNames": ["ITEM_STICK", "ITEM_STONE"]
     },
     {
       "itemId": "ITEM_IRON_SPEAR",
       "itemName": "ITEM_IRON_SPEAR",
-      "ingredients": [
-        "ITEM_STICK",
-        "ITEM_IRON_INGOT"
-      ],
+      "ingredients": ["ITEM_STICK", "ITEM_IRON_INGOT"],
       "unitRequirement": "forge",
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_STICK",
-        "ITEM_IRON_INGOT"
-      ]
+      "ingredientNames": ["ITEM_STICK", "ITEM_IRON_INGOT"]
     },
     {
       "itemId": "ITEM_STEEL_SPEAR",
       "itemName": "ITEM_STEEL_SPEAR",
-      "ingredients": [
-        "ITEM_STICK",
-        "ITEM_STEEL_INGOT"
-      ],
+      "ingredients": ["ITEM_STICK", "ITEM_STEEL_INGOT"],
       "unitRequirement": "forge",
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_STICK",
-        "ITEM_STEEL_INGOT"
-      ]
+      "ingredientNames": ["ITEM_STICK", "ITEM_STEEL_INGOT"]
     },
     {
       "itemId": "ITEM_DARK_SPEAR",
       "itemName": "ITEM_DARK_SPEAR",
-      "ingredients": [
-        "ITEM_STICK",
-        "ITEM_SPIRIT_DARKNESS"
-      ],
+      "ingredients": ["ITEM_STICK", "ITEM_SPIRIT_DARKNESS"],
       "unitRequirement": "forge",
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_STICK",
-        "ITEM_SPIRIT_DARKNESS"
-      ]
+      "ingredientNames": ["ITEM_STICK", "ITEM_SPIRIT_DARKNESS"]
     },
     {
       "itemId": "ITEM_CHAMELEON_HATCHET_STR",
@@ -731,222 +572,119 @@
     {
       "itemId": "ITEM_ELK_SKIN_BOOTS",
       "itemName": "ITEM_ELK_SKIN_BOOTS",
-      "ingredients": [
-        "ITEM_ELK_HIDE",
-        "ITEM_ELK_HIDE"
-      ],
+      "ingredients": ["ITEM_ELK_HIDE", "ITEM_ELK_HIDE"],
       "unitRequirement": "tannery",
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_ELK_HIDE",
-        "ITEM_ELK_HIDE"
-      ]
+      "ingredientNames": ["ITEM_ELK_HIDE", "ITEM_ELK_HIDE"]
     },
     {
       "itemId": "ITEM_ELK_SKIN_GLOVES",
       "itemName": "ITEM_ELK_SKIN_GLOVES",
-      "ingredients": [
-        "ITEM_ELK_HIDE",
-        "ITEM_ELK_HIDE"
-      ],
+      "ingredients": ["ITEM_ELK_HIDE", "ITEM_ELK_HIDE"],
       "unitRequirement": "tannery",
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_ELK_HIDE",
-        "ITEM_ELK_HIDE"
-      ]
+      "ingredientNames": ["ITEM_ELK_HIDE", "ITEM_ELK_HIDE"]
     },
     {
       "itemId": "ITEM_ELK_SKIN_COAT",
       "itemName": "ITEM_ELK_SKIN_COAT",
-      "ingredients": [
-        "ITEM_ELK_HIDE",
-        "ITEM_ELK_HIDE",
-        "ITEM_ELK_HIDE"
-      ],
+      "ingredients": ["ITEM_ELK_HIDE", "ITEM_ELK_HIDE", "ITEM_ELK_HIDE"],
       "unitRequirement": "tannery",
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_ELK_HIDE",
-        "ITEM_ELK_HIDE",
-        "ITEM_ELK_HIDE"
-      ]
+      "ingredientNames": ["ITEM_ELK_HIDE", "ITEM_ELK_HIDE", "ITEM_ELK_HIDE"]
     },
     {
       "itemId": "ITEM_WOLF_SKIN_BOOTS",
       "itemName": "ITEM_WOLF_SKIN_BOOTS",
-      "ingredients": [
-        "ITEM_JUNGLE_WOLF_HIDE",
-        "ITEM_ELK_HIDE"
-      ],
+      "ingredients": ["ITEM_JUNGLE_WOLF_HIDE", "ITEM_ELK_HIDE"],
       "unitRequirement": "tannery",
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_JUNGLE_WOLF_HIDE",
-        "ITEM_ELK_HIDE"
-      ]
+      "ingredientNames": ["ITEM_JUNGLE_WOLF_HIDE", "ITEM_ELK_HIDE"]
     },
     {
       "itemId": "ITEM_WOLF_SKIN_GLOVES",
       "itemName": "ITEM_WOLF_SKIN_GLOVES",
-      "ingredients": [
-        "ITEM_JUNGLE_WOLF_HIDE",
-        "ITEM_ELK_HIDE"
-      ],
+      "ingredients": ["ITEM_JUNGLE_WOLF_HIDE", "ITEM_ELK_HIDE"],
       "unitRequirement": "tannery",
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_JUNGLE_WOLF_HIDE",
-        "ITEM_ELK_HIDE"
-      ]
+      "ingredientNames": ["ITEM_JUNGLE_WOLF_HIDE", "ITEM_ELK_HIDE"]
     },
     {
       "itemId": "ITEM_WOLF_SKIN_COAT",
       "itemName": "ITEM_WOLF_SKIN_COAT",
-      "ingredients": [
-        "ITEM_JUNGLE_WOLF_HIDE",
-        "ITEM_ELK_HIDE",
-        "ITEM_ELK_HIDE"
-      ],
+      "ingredients": ["ITEM_JUNGLE_WOLF_HIDE", "ITEM_ELK_HIDE", "ITEM_ELK_HIDE"],
       "unitRequirement": "tannery",
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_JUNGLE_WOLF_HIDE",
-        "ITEM_ELK_HIDE",
-        "ITEM_ELK_HIDE"
-      ]
+      "ingredientNames": ["ITEM_JUNGLE_WOLF_HIDE", "ITEM_ELK_HIDE", "ITEM_ELK_HIDE"]
     },
     {
       "itemId": "ITEM_BEAR_SKIN_COAT",
       "itemName": "ITEM_BEAR_SKIN_COAT",
-      "ingredients": [
-        "ITEM_JUNGLE_BEAR_HIDE",
-        "ITEM_ELK_HIDE",
-        "ITEM_ELK_HIDE"
-      ],
+      "ingredients": ["ITEM_JUNGLE_BEAR_HIDE", "ITEM_ELK_HIDE", "ITEM_ELK_HIDE"],
       "unitRequirement": "tannery",
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_JUNGLE_BEAR_HIDE",
-        "ITEM_ELK_HIDE",
-        "ITEM_ELK_HIDE"
-      ]
+      "ingredientNames": ["ITEM_JUNGLE_BEAR_HIDE", "ITEM_ELK_HIDE", "ITEM_ELK_HIDE"]
     },
     {
       "itemId": "ITEM_BEAR_SKIN_BOOTS",
       "itemName": "ITEM_BEAR_SKIN_BOOTS",
-      "ingredients": [
-        "ITEM_JUNGLE_BEAR_HIDE",
-        "ITEM_ELK_HIDE"
-      ],
+      "ingredients": ["ITEM_JUNGLE_BEAR_HIDE", "ITEM_ELK_HIDE"],
       "unitRequirement": "tannery",
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_JUNGLE_BEAR_HIDE",
-        "ITEM_ELK_HIDE"
-      ]
+      "ingredientNames": ["ITEM_JUNGLE_BEAR_HIDE", "ITEM_ELK_HIDE"]
     },
     {
       "itemId": "ITEM_BEAR_SKIN_GLOVES",
       "itemName": "ITEM_BEAR_SKIN_GLOVES",
-      "ingredients": [
-        "ITEM_JUNGLE_BEAR_HIDE",
-        "ITEM_ELK_HIDE"
-      ],
+      "ingredients": ["ITEM_JUNGLE_BEAR_HIDE", "ITEM_ELK_HIDE"],
       "unitRequirement": "tannery",
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_JUNGLE_BEAR_HIDE",
-        "ITEM_ELK_HIDE"
-      ]
+      "ingredientNames": ["ITEM_JUNGLE_BEAR_HIDE", "ITEM_ELK_HIDE"]
     },
     {
       "itemId": "ITEM_ARMORY_KIT",
       "itemName": "ITEM_ARMORY_KIT",
-      "ingredients": [
-        "ITEM_STICK",
-        "ITEM_IRON_INGOT",
-        "ITEM_IRON_INGOT"
-      ],
+      "ingredients": ["ITEM_STICK", "ITEM_IRON_INGOT", "ITEM_IRON_INGOT"],
       "unitRequirement": null,
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_STICK",
-        "ITEM_IRON_INGOT",
-        "ITEM_IRON_INGOT"
-      ]
+      "ingredientNames": ["ITEM_STICK", "ITEM_IRON_INGOT", "ITEM_IRON_INGOT"]
     },
     {
       "itemId": "ITEM_FIRE_KIT",
       "itemName": "ITEM_FIRE_KIT",
-      "ingredients": [
-        "ITEM_TINDER",
-        "ITEM_FLINT",
-        "ITEM_STICK"
-      ],
+      "ingredients": ["ITEM_TINDER", "ITEM_FLINT", "ITEM_STICK"],
       "unitRequirement": null,
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_TINDER",
-        "ITEM_FLINT",
-        "ITEM_STICK"
-      ]
+      "ingredientNames": ["ITEM_TINDER", "ITEM_FLINT", "ITEM_STICK"]
     },
     {
       "itemId": "ITEM_MAGE_FIRE_KIT",
       "itemName": "ITEM_MAGE_FIRE_KIT",
-      "ingredients": [
-        "ITEM_FIRE_KIT",
-        "ITEM_MAGIC"
-      ],
+      "ingredients": ["ITEM_FIRE_KIT", "ITEM_MAGIC"],
       "unitRequirement": null,
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_FIRE_KIT",
-        "ITEM_MAGIC"
-      ]
+      "ingredientNames": ["ITEM_FIRE_KIT", "ITEM_MAGIC"]
     },
     {
       "itemId": "ITEM_TENT_KIT",
       "itemName": "ITEM_TENT_KIT",
-      "ingredients": [
-        "ITEM_STICK",
-        "ITEM_ELK_HIDE",
-        "ITEM_STICK"
-      ],
+      "ingredients": ["ITEM_STICK", "ITEM_ELK_HIDE", "ITEM_STICK"],
       "unitRequirement": null,
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_STICK",
-        "ITEM_ELK_HIDE",
-        "ITEM_STICK"
-      ]
+      "ingredientNames": ["ITEM_STICK", "ITEM_ELK_HIDE", "ITEM_STICK"]
     },
     {
       "itemId": "ITEM_TROLL_HUT_KIT",
       "itemName": "ITEM_TROLL_HUT_KIT",
-      "ingredients": [
-        "ITEM_TENT_KIT",
-        "ITEM_ELK_HIDE",
-        "ITEM_CLAY_BALL"
-      ],
+      "ingredients": ["ITEM_TENT_KIT", "ITEM_ELK_HIDE", "ITEM_CLAY_BALL"],
       "unitRequirement": null,
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_TENT_KIT",
-        "ITEM_ELK_HIDE",
-        "ITEM_CLAY_BALL"
-      ]
+      "ingredientNames": ["ITEM_TENT_KIT", "ITEM_ELK_HIDE", "ITEM_CLAY_BALL"]
     },
     {
       "itemId": "ITEM_SPIRIT_WARD_KIT",
       "itemName": "ITEM_SPIRIT_WARD_KIT",
-      "ingredients": [
-        "ITEM_STICK",
-        "ITEM_MANA_CRYSTAL",
-        "ITEM_MANA_CRYSTAL",
-        "ITEM_MANA_CRYSTAL"
-      ],
+      "ingredients": ["ITEM_STICK", "ITEM_MANA_CRYSTAL", "ITEM_MANA_CRYSTAL", "ITEM_MANA_CRYSTAL"],
       "unitRequirement": null,
       "mixingPotManaRequirement": null,
       "ingredientNames": [
@@ -959,92 +697,42 @@
     {
       "itemId": "ITEM_MUD_HUT_KIT",
       "itemName": "ITEM_MUD_HUT_KIT",
-      "ingredients": [
-        "ITEM_CLAY_BALL",
-        "ITEM_CLAY_BALL",
-        "ITEM_CLAY_BALL",
-        "ITEM_CLAY_BALL"
-      ],
+      "ingredients": ["ITEM_CLAY_BALL", "ITEM_CLAY_BALL", "ITEM_CLAY_BALL", "ITEM_CLAY_BALL"],
       "unitRequirement": null,
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_CLAY_BALL",
-        "ITEM_CLAY_BALL",
-        "ITEM_CLAY_BALL",
-        "ITEM_CLAY_BALL"
-      ]
+      "ingredientNames": ["ITEM_CLAY_BALL", "ITEM_CLAY_BALL", "ITEM_CLAY_BALL", "ITEM_CLAY_BALL"]
     },
     {
       "itemId": "ITEM_OMNITOWER_KIT",
       "itemName": "ITEM_OMNITOWER_KIT",
-      "ingredients": [
-        "ITEM_STICK",
-        "ITEM_STONE",
-        "ITEM_STONE",
-        "ITEM_STONE"
-      ],
+      "ingredients": ["ITEM_STICK", "ITEM_STONE", "ITEM_STONE", "ITEM_STONE"],
       "unitRequirement": null,
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_STICK",
-        "ITEM_STONE",
-        "ITEM_STONE",
-        "ITEM_STONE"
-      ]
+      "ingredientNames": ["ITEM_STICK", "ITEM_STONE", "ITEM_STONE", "ITEM_STONE"]
     },
     {
       "itemId": "ITEM_POT_KIT",
       "itemName": "ITEM_POT_KIT",
-      "ingredients": [
-        "ITEM_STICK",
-        "ITEM_CLAY_BALL",
-        "ITEM_CLAY_BALL",
-        "ITEM_CLAY_BALL"
-      ],
+      "ingredients": ["ITEM_STICK", "ITEM_CLAY_BALL", "ITEM_CLAY_BALL", "ITEM_CLAY_BALL"],
       "unitRequirement": null,
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_STICK",
-        "ITEM_CLAY_BALL",
-        "ITEM_CLAY_BALL",
-        "ITEM_CLAY_BALL"
-      ]
+      "ingredientNames": ["ITEM_STICK", "ITEM_CLAY_BALL", "ITEM_CLAY_BALL", "ITEM_CLAY_BALL"]
     },
     {
       "itemId": "ITEM_WORKSHOP_KIT",
       "itemName": "ITEM_WORKSHOP_KIT",
-      "ingredients": [
-        "ITEM_STICK",
-        "ITEM_STICK",
-        "ITEM_TINDER",
-        "ITEM_CLAY_BALL"
-      ],
+      "ingredients": ["ITEM_STICK", "ITEM_STICK", "ITEM_TINDER", "ITEM_CLAY_BALL"],
       "unitRequirement": null,
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_STICK",
-        "ITEM_STICK",
-        "ITEM_TINDER",
-        "ITEM_CLAY_BALL"
-      ]
+      "ingredientNames": ["ITEM_STICK", "ITEM_STICK", "ITEM_TINDER", "ITEM_CLAY_BALL"]
     },
     {
       "itemId": "ITEM_TELEPORT_BEACON_KIT",
       "itemName": "ITEM_TELEPORT_BEACON_KIT",
-      "ingredients": [
-        "ITEM_STONE",
-        "ITEM_STONE",
-        "ITEM_MANA_CRYSTAL",
-        "ITEM_STICK"
-      ],
+      "ingredients": ["ITEM_STONE", "ITEM_STONE", "ITEM_MANA_CRYSTAL", "ITEM_STICK"],
       "unitRequirement": null,
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_STONE",
-        "ITEM_STONE",
-        "ITEM_MANA_CRYSTAL",
-        "ITEM_STICK"
-      ]
+      "ingredientNames": ["ITEM_STONE", "ITEM_STONE", "ITEM_MANA_CRYSTAL", "ITEM_STICK"]
     },
     {
       "itemId": "ITEM_WITCH_DOCTORS_HUT_KIT",
@@ -1077,40 +765,18 @@
     {
       "itemId": "ITEM_FORGE_KIT",
       "itemName": "ITEM_FORGE_KIT",
-      "ingredients": [
-        "ITEM_FLINT",
-        "ITEM_STONE",
-        "ITEM_STONE",
-        "ITEM_STONE"
-      ],
+      "ingredients": ["ITEM_FLINT", "ITEM_STONE", "ITEM_STONE", "ITEM_STONE"],
       "unitRequirement": null,
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_FLINT",
-        "ITEM_STONE",
-        "ITEM_STONE",
-        "ITEM_STONE"
-      ]
+      "ingredientNames": ["ITEM_FLINT", "ITEM_STONE", "ITEM_STONE", "ITEM_STONE"]
     },
     {
       "itemId": "ITEM_TANNERY_KIT",
       "itemName": "ITEM_TANNERY_KIT",
-      "ingredients": [
-        "ITEM_STICK",
-        "ITEM_STICK",
-        "ITEM_STONE",
-        "ITEM_STONE",
-        "ITEM_CLAY_BALL"
-      ],
+      "ingredients": ["ITEM_STICK", "ITEM_STICK", "ITEM_STONE", "ITEM_STONE", "ITEM_CLAY_BALL"],
       "unitRequirement": null,
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_STICK",
-        "ITEM_STICK",
-        "ITEM_STONE",
-        "ITEM_STONE",
-        "ITEM_CLAY_BALL"
-      ]
+      "ingredientNames": ["ITEM_STICK", "ITEM_STICK", "ITEM_STONE", "ITEM_STONE", "ITEM_CLAY_BALL"]
     },
     {
       "itemId": "ITEM_TRANSPORT_SHIP_KIT",
@@ -1137,82 +803,42 @@
     {
       "itemId": "ITEM_CLOAK_OF_FLAMES",
       "itemName": "ITEM_CLOAK_OF_FLAMES",
-      "ingredients": [
-        "ITEM_MAGIC",
-        "ITEM_BONE_COAT",
-        "ITEM_FLINT"
-      ],
+      "ingredients": ["ITEM_MAGIC", "ITEM_BONE_COAT", "ITEM_FLINT"],
       "unitRequirement": "witch_doctors_hut",
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_MAGIC",
-        "ITEM_BONE_COAT",
-        "ITEM_FLINT"
-      ]
+      "ingredientNames": ["ITEM_MAGIC", "ITEM_BONE_COAT", "ITEM_FLINT"]
     },
     {
       "itemId": "ITEM_CLOAK_OF_MANA",
       "itemName": "ITEM_CLOAK_OF_MANA",
-      "ingredients": [
-        "ITEM_MAGIC",
-        "ITEM_BONE_COAT",
-        "ITEM_MANA_POTION"
-      ],
+      "ingredients": ["ITEM_MAGIC", "ITEM_BONE_COAT", "ITEM_MANA_POTION"],
       "unitRequirement": "witch_doctors_hut",
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_MAGIC",
-        "ITEM_BONE_COAT",
-        "ITEM_MANA_POTION"
-      ]
+      "ingredientNames": ["ITEM_MAGIC", "ITEM_BONE_COAT", "ITEM_MANA_POTION"]
     },
     {
       "itemId": "ITEM_CLOAK_OF_FROST",
       "itemName": "ITEM_CLOAK_OF_FROST",
-      "ingredients": [
-        "ITEM_MAGIC",
-        "ITEM_BONE_COAT",
-        "ITEM_SPIRIT_WATER"
-      ],
+      "ingredients": ["ITEM_MAGIC", "ITEM_BONE_COAT", "ITEM_SPIRIT_WATER"],
       "unitRequirement": "witch_doctors_hut",
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_MAGIC",
-        "ITEM_BONE_COAT",
-        "ITEM_SPIRIT_WATER"
-      ]
+      "ingredientNames": ["ITEM_MAGIC", "ITEM_BONE_COAT", "ITEM_SPIRIT_WATER"]
     },
     {
       "itemId": "ITEM_CLOAK_OF_HEALING",
       "itemName": "ITEM_CLOAK_OF_HEALING",
-      "ingredients": [
-        "ITEM_MAGIC",
-        "ITEM_BONE_COAT",
-        "ITEM_HEALING_POTION"
-      ],
+      "ingredients": ["ITEM_MAGIC", "ITEM_BONE_COAT", "ITEM_HEALING_POTION"],
       "unitRequirement": "witch_doctors_hut",
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_MAGIC",
-        "ITEM_BONE_COAT",
-        "ITEM_HEALING_POTION"
-      ]
+      "ingredientNames": ["ITEM_MAGIC", "ITEM_BONE_COAT", "ITEM_HEALING_POTION"]
     },
     {
       "itemId": "ITEM_NECROMANCERS_CLOAK",
       "itemName": "ITEM_NECROMANCERS_CLOAK",
-      "ingredients": [
-        "ITEM_MAGIC",
-        "ITEM_BONE_COAT",
-        "ITEM_SCROLL_LIVING_DEAD"
-      ],
+      "ingredients": ["ITEM_MAGIC", "ITEM_BONE_COAT", "ITEM_SCROLL_LIVING_DEAD"],
       "unitRequirement": "witch_doctors_hut",
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_MAGIC",
-        "ITEM_BONE_COAT",
-        "ITEM_SCROLL_LIVING_DEAD"
-      ]
+      "ingredientNames": ["ITEM_MAGIC", "ITEM_BONE_COAT", "ITEM_SCROLL_LIVING_DEAD"]
     },
     {
       "itemId": "ITEM_VENOM_FANG",
@@ -1239,140 +865,79 @@
     {
       "itemId": "ITEM_SCROLL_ENTANGLING_ROOTS",
       "itemName": "ITEM_SCROLL_ENTANGLING_ROOTS",
-      "ingredients": [
-        "ITEM_TINDER",
-        "ITEM_MANA_CRYSTAL"
-      ],
+      "ingredients": ["ITEM_TINDER", "ITEM_MANA_CRYSTAL"],
       "unitRequirement": "witch_doctors_hut",
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_TINDER",
-        "ITEM_MANA_CRYSTAL"
-      ]
+      "ingredientNames": ["ITEM_TINDER", "ITEM_MANA_CRYSTAL"]
     },
     {
       "itemId": "ITEM_SCROLL_STONE_ARMOR",
       "itemName": "ITEM_SCROLL_STONE_ARMOR",
-      "ingredients": [
-        "ITEM_STONE",
-        "ITEM_MANA_CRYSTAL"
-      ],
+      "ingredients": ["ITEM_STONE", "ITEM_MANA_CRYSTAL"],
       "unitRequirement": "witch_doctors_hut",
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_STONE",
-        "ITEM_MANA_CRYSTAL"
-      ]
+      "ingredientNames": ["ITEM_STONE", "ITEM_MANA_CRYSTAL"]
     },
     {
       "itemId": "ITEM_SCROLL_TSUNAMI",
       "itemName": "ITEM_SCROLL_TSUNAMI",
-      "ingredients": [
-        "ITEM_SPIRIT_WATER",
-        "ITEM_MANA_CRYSTAL"
-      ],
+      "ingredients": ["ITEM_SPIRIT_WATER", "ITEM_MANA_CRYSTAL"],
       "unitRequirement": "witch_doctors_hut",
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_SPIRIT_WATER",
-        "ITEM_MANA_CRYSTAL"
-      ]
+      "ingredientNames": ["ITEM_SPIRIT_WATER", "ITEM_MANA_CRYSTAL"]
     },
     {
       "itemId": "ITEM_SCROLL_LIVING_DEAD",
       "itemName": "ITEM_SCROLL_LIVING_DEAD",
-      "ingredients": [
-        "ITEM_BONE",
-        "ITEM_MANA_CRYSTAL"
-      ],
+      "ingredients": ["ITEM_BONE", "ITEM_MANA_CRYSTAL"],
       "unitRequirement": "witch_doctors_hut",
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_BONE",
-        "ITEM_MANA_CRYSTAL"
-      ]
+      "ingredientNames": ["ITEM_BONE", "ITEM_MANA_CRYSTAL"]
     },
     {
       "itemId": "ITEM_POISON",
       "itemName": "ITEM_POISON",
-      "ingredients": [
-        "ITEM_MUSHROOM",
-        "ITEM_MUSHROOM",
-        "ITEM_MUSHROOM"
-      ],
+      "ingredients": ["ITEM_MUSHROOM", "ITEM_MUSHROOM", "ITEM_MUSHROOM"],
       "unitRequirement": "witch_doctors_hut",
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_MUSHROOM",
-        "ITEM_MUSHROOM",
-        "ITEM_MUSHROOM"
-      ]
+      "ingredientNames": ["ITEM_MUSHROOM", "ITEM_MUSHROOM", "ITEM_MUSHROOM"]
     },
     {
       "itemId": "ITEM_SCROLL_FIREBALL",
       "itemName": "ITEM_SCROLL_FIREBALL",
-      "ingredients": [
-        "ITEM_FLINT",
-        "ITEM_MANA_CRYSTAL"
-      ],
+      "ingredients": ["ITEM_FLINT", "ITEM_MANA_CRYSTAL"],
       "unitRequirement": "witch_doctors_hut",
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_FLINT",
-        "ITEM_MANA_CRYSTAL"
-      ]
+      "ingredientNames": ["ITEM_FLINT", "ITEM_MANA_CRYSTAL"]
     },
     {
       "itemId": "ITEM_SCROLL_CYCLONE",
       "itemName": "ITEM_SCROLL_CYCLONE",
-      "ingredients": [
-        "ITEM_SPIRIT_WIND",
-        "ITEM_MANA_CRYSTAL"
-      ],
+      "ingredients": ["ITEM_SPIRIT_WIND", "ITEM_MANA_CRYSTAL"],
       "unitRequirement": "witch_doctors_hut",
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_SPIRIT_WIND",
-        "ITEM_MANA_CRYSTAL"
-      ]
+      "ingredientNames": ["ITEM_SPIRIT_WIND", "ITEM_MANA_CRYSTAL"]
     },
     {
       "itemId": "ITEM_SCROLL_HASTE",
       "itemName": "ITEM_SCROLL_HASTE",
-      "ingredients": [
-        "ITEM_ELK_SKIN_BOOTS",
-        "ITEM_MANA_CRYSTAL"
-      ],
+      "ingredients": ["ITEM_ELK_SKIN_BOOTS", "ITEM_MANA_CRYSTAL"],
       "unitRequirement": "witch_doctors_hut",
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_ELK_SKIN_BOOTS",
-        "ITEM_MANA_CRYSTAL"
-      ]
+      "ingredientNames": ["ITEM_ELK_SKIN_BOOTS", "ITEM_MANA_CRYSTAL"]
     },
     {
       "itemId": "ITEM_MAGIC_SEED",
       "itemName": "ITEM_MAGIC_SEED",
-      "ingredients": [
-        "ITEM_STICK",
-        "ITEM_MANA_CRYSTAL"
-      ],
+      "ingredients": ["ITEM_STICK", "ITEM_MANA_CRYSTAL"],
       "unitRequirement": "witch_doctors_hut",
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_STICK",
-        "ITEM_MANA_CRYSTAL"
-      ]
+      "ingredientNames": ["ITEM_STICK", "ITEM_MANA_CRYSTAL"]
     },
     {
       "itemId": "ITEM_SPIRIT_WARD_KIT",
       "itemName": "ITEM_SPIRIT_WARD_KIT",
-      "ingredients": [
-        "ITEM_MANA_CRYSTAL",
-        "ITEM_MANA_CRYSTAL",
-        "ITEM_MANA_CRYSTAL",
-        "ITEM_STICK"
-      ],
+      "ingredients": ["ITEM_MANA_CRYSTAL", "ITEM_MANA_CRYSTAL", "ITEM_MANA_CRYSTAL", "ITEM_STICK"],
       "unitRequirement": "witch_doctors_hut",
       "mixingPotManaRequirement": null,
       "ingredientNames": [
@@ -1385,176 +950,98 @@
     {
       "itemId": "ITEM_ENSNARE_TRAP_KIT",
       "itemName": "ITEM_ENSNARE_TRAP_KIT",
-      "ingredients": [
-        "ITEM_TINDER",
-        "ITEM_BONE",
-        "ITEM_STICK"
-      ],
+      "ingredients": ["ITEM_TINDER", "ITEM_BONE", "ITEM_STICK"],
       "unitRequirement": "workshop",
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_TINDER",
-        "ITEM_BONE",
-        "ITEM_STICK"
-      ]
+      "ingredientNames": ["ITEM_TINDER", "ITEM_BONE", "ITEM_STICK"]
     },
     {
       "itemId": "ITEM_BLOW_GUN",
       "itemName": "ITEM_BLOW_GUN",
-      "ingredients": [
-        "ITEM_STICK",
-        "ITEM_CLAY_BALL"
-      ],
+      "ingredients": ["ITEM_STICK", "ITEM_CLAY_BALL"],
       "unitRequirement": "workshop",
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_STICK",
-        "ITEM_CLAY_BALL"
-      ]
+      "ingredientNames": ["ITEM_STICK", "ITEM_CLAY_BALL"]
     },
     {
       "itemId": "ITEM_POISON_THISTLES",
       "itemName": "ITEM_POISON_THISTLES",
-      "ingredients": [
-        "ITEM_THISTLES",
-        "ITEM_POISON"
-      ],
+      "ingredients": ["ITEM_THISTLES", "ITEM_POISON"],
       "unitRequirement": "workshop",
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_THISTLES",
-        "ITEM_POISON"
-      ]
+      "ingredientNames": ["ITEM_THISTLES", "ITEM_POISON"]
     },
     {
       "itemId": "ITEM_MANA_CRYSTAL",
       "itemName": "ITEM_MANA_CRYSTAL",
-      "ingredients": [
-        "ITEM_SPIRIT_WIND",
-        "ITEM_SPIRIT_WATER"
-      ],
+      "ingredients": ["ITEM_SPIRIT_WIND", "ITEM_SPIRIT_WATER"],
       "unitRequirement": "workshop",
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_SPIRIT_WIND",
-        "ITEM_SPIRIT_WATER"
-      ]
+      "ingredientNames": ["ITEM_SPIRIT_WIND", "ITEM_SPIRIT_WATER"]
     },
     {
       "itemId": "ITEM_MAGIC",
       "itemName": "ITEM_MAGIC",
-      "ingredients": [
-        "ITEM_MANA_CRYSTAL",
-        "ITEM_MANA_CRYSTAL"
-      ],
+      "ingredients": ["ITEM_MANA_CRYSTAL", "ITEM_MANA_CRYSTAL"],
       "unitRequirement": "workshop",
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_MANA_CRYSTAL",
-        "ITEM_MANA_CRYSTAL"
-      ]
+      "ingredientNames": ["ITEM_MANA_CRYSTAL", "ITEM_MANA_CRYSTAL"]
     },
     {
       "itemId": "ITEM_POISON_SPEAR",
       "itemName": "ITEM_POISON_SPEAR",
-      "ingredients": [
-        "ITEM_POISON",
-        "ITEM_BONE",
-        "ITEM_STONE"
-      ],
+      "ingredients": ["ITEM_POISON", "ITEM_BONE", "ITEM_STONE"],
       "unitRequirement": "workshop",
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_POISON",
-        "ITEM_BONE",
-        "ITEM_STONE"
-      ]
+      "ingredientNames": ["ITEM_POISON", "ITEM_BONE", "ITEM_STONE"]
     },
     {
       "itemId": "ITEM_NETS",
       "itemName": "ITEM_NETS",
-      "ingredients": [
-        "ITEM_TINDER",
-        "ITEM_TINDER"
-      ],
+      "ingredients": ["ITEM_TINDER", "ITEM_TINDER"],
       "unitRequirement": "workshop",
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_TINDER",
-        "ITEM_TINDER"
-      ]
+      "ingredientNames": ["ITEM_TINDER", "ITEM_TINDER"]
     },
     {
       "itemId": "ITEM_HUNTING_NET",
       "itemName": "ITEM_HUNTING_NET",
-      "ingredients": [
-        "ITEM_NETS",
-        "ITEM_STONE"
-      ],
+      "ingredients": ["ITEM_NETS", "ITEM_STONE"],
       "unitRequirement": "workshop",
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_NETS",
-        "ITEM_STONE"
-      ]
+      "ingredientNames": ["ITEM_NETS", "ITEM_STONE"]
     },
     {
       "itemId": "ITEM_HEALING_SALVE",
       "itemName": "ITEM_HEALING_SALVE",
-      "ingredients": [
-        "ITEM_ATHELAS_SEED",
-        "ITEM_BANANA"
-      ],
+      "ingredients": ["ITEM_ATHELAS_SEED", "ITEM_BANANA"],
       "unitRequirement": "workshop",
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_ATHELAS_SEED",
-        "ITEM_BANANA"
-      ]
+      "ingredientNames": ["ITEM_ATHELAS_SEED", "ITEM_BANANA"]
     },
     {
       "itemId": "ITEM_SMOKE_BOMB",
       "itemName": "ITEM_SMOKE_BOMB",
-      "ingredients": [
-        "ITEM_BANANA",
-        "ITEM_SPIRIT_WIND"
-      ],
+      "ingredients": ["ITEM_BANANA", "ITEM_SPIRIT_WIND"],
       "unitRequirement": "workshop",
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_BANANA",
-        "ITEM_SPIRIT_WIND"
-      ]
+      "ingredientNames": ["ITEM_BANANA", "ITEM_SPIRIT_WIND"]
     },
     {
       "itemId": "ITEM_FIRE_BOMB",
       "itemName": "ITEM_FIRE_BOMB",
-      "ingredients": [
-        "ITEM_SMOKE_BOMB",
-        "ITEM_FLINT",
-        "ITEM_MANA_CRYSTAL"
-      ],
+      "ingredients": ["ITEM_SMOKE_BOMB", "ITEM_FLINT", "ITEM_MANA_CRYSTAL"],
       "unitRequirement": "workshop",
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_SMOKE_BOMB",
-        "ITEM_FLINT",
-        "ITEM_MANA_CRYSTAL"
-      ]
+      "ingredientNames": ["ITEM_SMOKE_BOMB", "ITEM_FLINT", "ITEM_MANA_CRYSTAL"]
     },
     {
       "itemId": "ITEM_DARK_THISTLES",
       "itemName": "ITEM_DARK_THISTLES",
-      "ingredients": [
-        "ITEM_THISTLES",
-        "ITEM_SPIRIT_DARKNESS"
-      ],
+      "ingredients": ["ITEM_THISTLES", "ITEM_SPIRIT_DARKNESS"],
       "unitRequirement": "workshop",
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_THISTLES",
-        "ITEM_SPIRIT_DARKNESS"
-      ]
+      "ingredientNames": ["ITEM_THISTLES", "ITEM_SPIRIT_DARKNESS"]
     },
     {
       "itemId": "ITEM_EMP",
@@ -1599,16 +1086,10 @@
     {
       "itemId": "ITEM_SPIRIT_WIND",
       "itemName": "ITEM_SPIRIT_WIND",
-      "ingredients": [
-        "ITEM_RIVER_STEM",
-        "ITEM_RIVER_STEM"
-      ],
+      "ingredients": ["ITEM_RIVER_STEM", "ITEM_RIVER_STEM"],
       "unitRequirement": "mixing_pot",
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_RIVER_STEM",
-        "ITEM_RIVER_STEM"
-      ]
+      "ingredientNames": ["ITEM_RIVER_STEM", "ITEM_RIVER_STEM"]
     },
     {
       "itemId": "ITEM_SPIRIT_DARKNESS",
@@ -1631,44 +1112,26 @@
     {
       "itemId": "ITEM_SPIRIT_WATER",
       "itemName": "ITEM_SPIRIT_WATER",
-      "ingredients": [
-        "ITEM_RIVER_ROOT",
-        "ITEM_RIVER_ROOT"
-      ],
+      "ingredients": ["ITEM_RIVER_ROOT", "ITEM_RIVER_ROOT"],
       "unitRequirement": "mixing_pot",
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_RIVER_ROOT",
-        "ITEM_RIVER_ROOT"
-      ]
+      "ingredientNames": ["ITEM_RIVER_ROOT", "ITEM_RIVER_ROOT"]
     },
     {
       "itemId": "ITEM_LESSER_ESSENCE",
       "itemName": "ITEM_LESSER_ESSENCE",
-      "ingredients": [
-        "ITEM_NATIVE_HERB",
-        "ITEM_NATIVE_HERB"
-      ],
+      "ingredients": ["ITEM_NATIVE_HERB", "ITEM_NATIVE_HERB"],
       "unitRequirement": "mixing_pot",
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_NATIVE_HERB",
-        "ITEM_NATIVE_HERB"
-      ]
+      "ingredientNames": ["ITEM_NATIVE_HERB", "ITEM_NATIVE_HERB"]
     },
     {
       "itemId": "ITEM_GREATER_ESSENCE",
       "itemName": "ITEM_GREATER_ESSENCE",
-      "ingredients": [
-        "ITEM_EXOTIC_HERB",
-        "ITEM_EXOTIC_HERB"
-      ],
+      "ingredients": ["ITEM_EXOTIC_HERB", "ITEM_EXOTIC_HERB"],
       "unitRequirement": "mixing_pot",
       "mixingPotManaRequirement": null,
-      "ingredientNames": [
-        "ITEM_EXOTIC_HERB",
-        "ITEM_EXOTIC_HERB"
-      ]
+      "ingredientNames": ["ITEM_EXOTIC_HERB", "ITEM_EXOTIC_HERB"]
     }
   ],
   "itemIds": {

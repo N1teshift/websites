@@ -1,3 +1,2 @@
-export * from './Leaderboard';
-export * from './CategorySelector';
-
+export * from "./Leaderboard";
+export * from "./CategorySelector";

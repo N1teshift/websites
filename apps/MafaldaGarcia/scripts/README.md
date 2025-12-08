@@ -9,11 +9,13 @@ This directory contains development scripts for the Mafalda Garcia portfolio web
 A development script to check the status of images in Firebase Storage.
 
 **Usage:**
+
 ```bash
 npm run check-images
 ```
 
 **What it does:**
+
 - Scans Firebase Storage for available images
 - Compares with required images for the website
 - Shows which images are missing
@@ -22,6 +24,7 @@ npm run check-images
 - Lists extra images in storage
 
 **Output example:**
+
 ```
 🔍 Checking Firebase Storage for available images...
 
@@ -52,6 +55,7 @@ npm run check-images
 ```
 
 **When to use:**
+
 - After uploading new images to Firebase Storage
 - Before deploying to check image coverage
 - During development to verify image setup

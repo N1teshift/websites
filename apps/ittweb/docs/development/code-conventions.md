@@ -23,15 +23,15 @@ Keep files under 200 lines when possible. Split large files into smaller modules
 
 ```typescript
 // Server-side (API routes, server components)
-import { getFirestoreAdmin, getAdminTimestamp } from '@/features/infrastructure/api/firebase/admin';
+import { getFirestoreAdmin, getAdminTimestamp } from "@/features/infrastructure/api/firebase/admin";
 
 const db = getFirestoreAdmin();
 const timestamp = getAdminTimestamp();
 
 // Client-side (components, hooks)
-import { db } from '@/features/infrastructure/api/firebase/firebaseClient';
+import { db } from "@/features/infrastructure/api/firebase/firebaseClient";
 
-const doc = await db.collection('games').doc('id').get();
+const doc = await db.collection("games").doc("id").get();
 ```
 
 ## Authentication
@@ -45,7 +45,7 @@ export default createPostHandler(
   async (req: NextApiRequest, res, context) => {
     // Session is guaranteed to be available when requireAuth: true
     const session = requireSession(context);
-    
+
     // Use session data
     const userId = session.discordId;
     // ... rest of handler
@@ -58,12 +58,14 @@ export default createPostHandler(
 ```
 
 **How it works**:
+
 - `requireAuth: true` automatically calls `getServerSession(req, res, authOptions)`
 - If no session exists, returns `401 Unauthorized` with `{ success: false, error: 'Authentication required' }`
 - If session exists, it's available via `requireSession(context)` helper
 - No need to manually check authentication
 
 **Admin Access**:
+
 ```typescript
 export default createPostHandler(
   async (req: NextApiRequest, res, context) => {
@@ -84,25 +86,25 @@ export default createPostHandler(
 If you're not using `createApiHandler`, check authentication manually:
 
 ```typescript
-import { getServerSession } from 'next-auth/next';
-import { authOptions } from '@/features/infrastructure/auth';
-import { isAdmin } from '@/features/infrastructure/utils/user/userRoleUtils';
-import { getUserDataByDiscordId } from '@/features/infrastructure/lib/userDataService';
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/features/infrastructure/auth";
+import { isAdmin } from "@/features/infrastructure/utils/user/userRoleUtils";
+import { getUserDataByDiscordId } from "@/features/infrastructure/lib/userDataService";
 
 const session = await getServerSession(req, res, authOptions);
 if (!session) {
-  return res.status(401).json({ 
+  return res.status(401).json({
     success: false,
-    error: 'Authentication required' 
+    error: "Authentication required",
   });
 }
 
 // Check admin role
-const userData = await getUserDataByDiscordId(session.discordId || '');
+const userData = await getUserDataByDiscordId(session.discordId || "");
 if (!isAdmin(userData?.role)) {
-  return res.status(403).json({ 
+  return res.status(403).json({
     success: false,
-    error: 'Admin access required' 
+    error: "Admin access required",
   });
 }
 ```
@@ -138,12 +140,12 @@ Place tests next to the code:
 
 ```typescript
 // lib/myEntityService.test.ts
-import { describe, it, expect } from '@jest/globals';
-import { createMyEntity } from './myEntityService';
+import { describe, it, expect } from "@jest/globals";
+import { createMyEntity } from "./myEntityService";
 
-describe('myEntityService', () => {
-  describe('createMyEntity', () => {
-    it('should create entity', async () => {
+describe("myEntityService", () => {
+  describe("createMyEntity", () => {
+    it("should create entity", async () => {
       // Test implementation
     });
   });
@@ -178,4 +180,3 @@ describe('MyEntityList', () => {
 - [Code Patterns](./code-patterns.md)
 - [Error Handling Guide](../ERROR_HANDLING.md)
 - [Authentication & Authorization](../security/authentication-authorization.md)
-

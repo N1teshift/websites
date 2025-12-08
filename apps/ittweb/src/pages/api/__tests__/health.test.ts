@@ -1,19 +1,20 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-import handler from '../health';
+import type { NextApiRequest, NextApiResponse } from "next";
+import handler from "../health";
 
-import type { NextApiRequest, NextApiResponse } from 'next';
-import handler from '../health';
+import type { NextApiRequest, NextApiResponse } from "next";
+import handler from "../health";
 
 // Create a mock for getFirestoreAdmin that we can control
 const mockGetFirestoreAdmin = jest.fn();
 
-describe('GET /api/health', () => {
-  const createRequest = (): NextApiRequest => ({
-    method: 'GET',
-    query: {},
-    body: null,
-    url: '/api/health',
-  } as NextApiRequest);
+describe("GET /api/health", () => {
+  const createRequest = (): NextApiRequest =>
+    ({
+      method: "GET",
+      query: {},
+      body: null,
+      url: "/api/health",
+    }) as NextApiRequest;
 
   const createResponse = (): NextApiResponse => {
     const res = {} as NextApiResponse;
@@ -27,11 +28,11 @@ describe('GET /api/health', () => {
     jest.clearAllMocks();
 
     // Override the global mock for this specific test
-    jest.doMock('@websites/infrastructure/firebase', () => ({
+    jest.doMock("@websites/infrastructure/firebase", () => ({
       getFirestoreAdmin: mockGetFirestoreAdmin,
       isServerSide: jest.fn(() => false),
       getAdminTimestamp: jest.fn(() => ({
-        now: jest.fn(() => ({ toDate: () => new Date('2020-01-01T00:00:00Z') })),
+        now: jest.fn(() => ({ toDate: () => new Date("2020-01-01T00:00:00Z") })),
         fromDate: jest.fn((date: Date) => ({ toDate: () => date })),
       })),
     }));
@@ -39,16 +40,16 @@ describe('GET /api/health', () => {
     // Set up default mock behavior
     const mockCollection = jest.fn().mockReturnValue({
       limit: jest.fn().mockReturnValue({
-        get: jest.fn().mockResolvedValue({})
-      })
+        get: jest.fn().mockResolvedValue({}),
+      }),
     });
 
     mockGetFirestoreAdmin.mockReturnValue({
-      collection: mockCollection
+      collection: mockCollection,
     });
   });
 
-  it('returns healthy status when database is accessible', async () => {
+  it("returns healthy status when database is accessible", async () => {
     // Arrange
     const req = createRequest();
     const res = createResponse();
@@ -58,26 +59,29 @@ describe('GET /api/health', () => {
 
     // Assert - verify the mock was called
     expect(mockGetFirestoreAdmin).toHaveBeenCalled();
-    expect(res.setHeader).toHaveBeenCalledWith('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+    expect(res.setHeader).toHaveBeenCalledWith(
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate, private"
+    );
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.json).toHaveBeenCalledWith({
-      status: 'ok',
+      status: "ok",
       timestamp: expect.any(String),
       checks: {
-        database: 'ok',
+        database: "ok",
       },
     });
   });
 
-  it('returns error status when database is not accessible', async () => {
+  it("returns error status when database is not accessible", async () => {
     // Arrange
     const mockCollection = jest.fn().mockReturnValue({
       limit: jest.fn().mockReturnValue({
-        get: jest.fn().mockRejectedValue(new Error('Database connection failed'))
-      })
+        get: jest.fn().mockRejectedValue(new Error("Database connection failed")),
+      }),
     });
     mockGetFirestoreAdmin.mockReturnValue({
-      collection: mockCollection
+      collection: mockCollection,
     });
 
     const req = createRequest();
@@ -88,18 +92,21 @@ describe('GET /api/health', () => {
 
     // Assert
     expect(mockGetFirestoreAdmin).toHaveBeenCalled();
-    expect(res.setHeader).toHaveBeenCalledWith('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+    expect(res.setHeader).toHaveBeenCalledWith(
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate, private"
+    );
     expect(res.status).toHaveBeenCalledWith(503);
     expect(res.json).toHaveBeenCalledWith({
-      status: 'error',
+      status: "error",
       timestamp: expect.any(String),
       checks: {
-        database: 'error',
+        database: "error",
       },
     });
   });
 
-  it('includes timestamp in response', async () => {
+  it("includes timestamp in response", async () => {
     // Arrange
     const req = createRequest();
     const res = createResponse();
@@ -110,18 +117,18 @@ describe('GET /api/health', () => {
     // Assert
     const responseCall = (res.json as jest.Mock).mock.calls[0][0];
     expect(responseCall.timestamp).toBeDefined();
-    expect(typeof responseCall.timestamp).toBe('string');
+    expect(typeof responseCall.timestamp).toBe("string");
     // Verify it's a valid ISO date string
     expect(() => new Date(responseCall.timestamp)).not.toThrow();
   });
 
-  it('rejects POST method', async () => {
+  it("rejects POST method", async () => {
     // Arrange
     const req = {
-      method: 'POST',
+      method: "POST",
       query: {},
       body: null,
-      url: '/api/health',
+      url: "/api/health",
     } as NextApiRequest;
     const res = createResponse();
 
@@ -131,17 +138,17 @@ describe('GET /api/health', () => {
     // Assert
     expect(res.status).toHaveBeenCalledWith(405);
     expect(res.json).toHaveBeenCalledWith({
-      error: 'Method not allowed',
+      error: "Method not allowed",
     });
   });
 
-  it('rejects PUT method', async () => {
+  it("rejects PUT method", async () => {
     // Arrange
     const req = {
-      method: 'PUT',
+      method: "PUT",
       query: {},
       body: null,
-      url: '/api/health',
+      url: "/api/health",
     } as NextApiRequest;
     const res = createResponse();
 
@@ -151,17 +158,17 @@ describe('GET /api/health', () => {
     // Assert
     expect(res.status).toHaveBeenCalledWith(405);
     expect(res.json).toHaveBeenCalledWith({
-      error: 'Method not allowed',
+      error: "Method not allowed",
     });
   });
 
-  it('rejects DELETE method', async () => {
+  it("rejects DELETE method", async () => {
     // Arrange
     const req = {
-      method: 'DELETE',
+      method: "DELETE",
       query: {},
       body: null,
-      url: '/api/health',
+      url: "/api/health",
     } as NextApiRequest;
     const res = createResponse();
 
@@ -171,8 +178,7 @@ describe('GET /api/health', () => {
     // Assert
     expect(res.status).toHaveBeenCalledWith(405);
     expect(res.json).toHaveBeenCalledWith({
-      error: 'Method not allowed',
+      error: "Method not allowed",
     });
   });
 });
-

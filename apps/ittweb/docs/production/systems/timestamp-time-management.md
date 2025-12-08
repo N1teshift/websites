@@ -51,7 +51,7 @@ This document provides a comprehensive analysis of timestamp handling across the
 ### Client SDK Timestamp (`firebase/firestore`)
 
 ```typescript
-import { Timestamp } from 'firebase/firestore';
+import { Timestamp } from "firebase/firestore";
 
 // Creation methods
 const now = Timestamp.now();
@@ -69,7 +69,7 @@ timestamp.isEqual(other); // → boolean
 ### Admin SDK Timestamp (`firebase-admin/firestore`)
 
 ```typescript
-import { Timestamp as AdminTimestamp } from 'firebase-admin/firestore';
+import { Timestamp as AdminTimestamp } from "firebase-admin/firestore";
 
 // Creation methods (identical API)
 const now = AdminTimestamp.now();
@@ -235,6 +235,7 @@ interface UserData {
 #### In Firestore (Storage Layer)
 
 All timestamps are stored as **Firestore Timestamp objects** (either client or admin SDK type). This is the native Firestore type and provides:
+
 - Automatic serialization
 - Query capabilities
 - Sort capabilities
@@ -243,6 +244,7 @@ All timestamps are stored as **Firestore Timestamp objects** (either client or a
 #### In TypeScript Types (Application Layer)
 
 Types allow `Timestamp | string` to handle:
+
 - **Timestamp**: When reading directly from Firestore
 - **string**: When converted via `timestampToIso()` for display/API responses
 
@@ -255,6 +257,7 @@ Always converted to **ISO 8601 strings** via `timestampToIso()` utility
 #### Services Using Factory Pattern
 
 1. **Entry Service** (`entryService.ts`):
+
    ```typescript
    timestampFactory: {
      fromDate: (date: Date) => Timestamp | unknown;
@@ -263,6 +266,7 @@ Always converted to **ISO 8601 strings** via `timestampToIso()` utility
    ```
 
 2. **Post Service** (`postService.ts`):
+
    ```typescript
    timestampFactory: {
      fromDate: (date: Date) => Timestamp;
@@ -297,10 +301,11 @@ Location: `src/features/infrastructure/utils/timestampUtils.ts`
 ```typescript
 export function timestampToIso(
   timestamp: Timestamp | TimestampLike | string | Date | undefined
-): string
+): string;
 ```
 
 **Capabilities**:
+
 - ✅ Handles Client SDK Timestamp
 - ✅ Handles Admin SDK Timestamp (via TimestampLike interface)
 - ✅ Handles ISO strings
@@ -318,6 +323,7 @@ export function timestampToIso(
 **Standard**: Use `Timestamp` (from `firebase/firestore`) for all type definitions
 
 **Rationale**:
+
 - Types represent the application layer, not storage layer
 - After reading from Firestore, we convert to strings for display
 - Stored values are always Timestamp objects
@@ -349,6 +355,7 @@ export function createTimestampFactory(): TimestampFactory; // Auto-detects
 **Standard**: Always store as Firestore Timestamp objects in Firestore
 
 **Rationale**:
+
 - Native Firestore type
 - Enables querying and sorting
 - Automatic serialization
@@ -377,6 +384,7 @@ export function createTimestampFactory(): TimestampFactory; // Auto-detects
 ### Step 1: Create Standardized Utilities
 
 Create unified timestamp utilities that:
+
 - Provide factory creation helpers
 - Standardize timestamp creation
 - Handle client/admin SDK differences
@@ -385,6 +393,7 @@ Create unified timestamp utilities that:
 ### Step 2: Standardize Type Definitions
 
 Update all type definitions to use consistent timestamp types:
+
 - Storage layer: `Timestamp`
 - Application layer: `Timestamp`
 - Display layer: `string`
@@ -392,6 +401,7 @@ Update all type definitions to use consistent timestamp types:
 ### Step 3: Refactor Services
 
 Refactor all services to use standardized factory pattern:
+
 - Replace direct usage with factory pattern
 - Use standardized factory utilities
 - Ensure consistency across all modules
@@ -505,4 +515,3 @@ To complete the timestamp management migration:
 ---
 
 **Next Steps**: See implementation in `src/features/infrastructure/utils/timestampUtils.ts` (standardized version)
-

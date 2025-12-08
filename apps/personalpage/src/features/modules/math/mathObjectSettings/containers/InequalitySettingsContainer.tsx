@@ -2,7 +2,10 @@ import React from "react";
 import BaseMathObjectSettingsContainer from "./BaseMathObjectSettingsContainer";
 import { Dropdown } from "@websites/ui";
 import {
-    InequalitySettings, MathObjectContainerProps, InequalityType, inequalityTypeOptions
+  InequalitySettings,
+  MathObjectContainerProps,
+  InequalityType,
+  inequalityTypeOptions,
 } from "@math/types/index";
 
 /**
@@ -16,45 +19,42 @@ import {
  * - Provides a `Dropdown` to select the inequality type from `inequalityTypeOptions`.
  */
 const InequalitySettingsContainer: React.FC<MathObjectContainerProps<InequalitySettings>> = ({
-    containerId,
-    settings,
-    updateSettings,
-    startIndex = 1,
-    showDescription = false,
-    //objectType = null,
+  containerId,
+  settings,
+  updateSettings,
+  startIndex = 1,
+  showDescription = false,
+  //objectType = null,
 }) => {
-    const handleInequalityTypeChange = (newInequalityType: InequalityType) => {
-        updateSettings({ ...settings, inequalityType: newInequalityType });
-    };
+  const handleInequalityTypeChange = (newInequalityType: InequalityType) => {
+    updateSettings({ ...settings, inequalityType: newInequalityType });
+  };
 
-    return (
-        <BaseMathObjectSettingsContainer
-            containerId={containerId}
-            settings={settings}
-            updateSettings={updateSettings}
-            startIndex={startIndex}
-            showDescription={showDescription}
-            objectType="inequality"
-        >
-            {(props) => (
-                <>
-                        <Dropdown
-                            label={"inequality_type"}
-                            options={inequalityTypeOptions.map(option => ({
-                                label: option,
-                                value: option,
-                            }))}
-                            value={props.settings.inequalityType || "less"}
-                        onChange={(value) => handleInequalityTypeChange(value as InequalityType)}
-                        labelPosition="left"
-                        />
-                </>
-            )}
-        </BaseMathObjectSettingsContainer>
-    );
+  return (
+    <BaseMathObjectSettingsContainer
+      containerId={containerId}
+      settings={settings}
+      updateSettings={updateSettings}
+      startIndex={startIndex}
+      showDescription={showDescription}
+      objectType="inequality"
+    >
+      {(props) => (
+        <>
+          <Dropdown
+            label={"inequality_type"}
+            options={inequalityTypeOptions.map((option) => ({
+              label: option,
+              value: option,
+            }))}
+            value={props.settings.inequalityType || "less"}
+            onChange={(value) => handleInequalityTypeChange(value as InequalityType)}
+            labelPosition="left"
+          />
+        </>
+      )}
+    </BaseMathObjectSettingsContainer>
+  );
 };
 
 export default InequalitySettingsContainer;
-
-
-

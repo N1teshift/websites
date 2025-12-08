@@ -7,7 +7,7 @@
   /* Base colors */
   --background: #ffffff;
   --foreground: #171717;
-  
+
   /* Medieval theme colors */
   --amber-400: #fbbf24;
   --amber-300: #fcd34d;
@@ -19,4 +19,3 @@
     --foreground: #ededed;
   }
 }
-

@@ -1,6 +1,6 @@
-import React from 'react';
-import Link from 'next/link';
-import type { StandingsEntry } from '../types';
+import React from "react";
+import Link from "next/link";
+import type { StandingsEntry } from "../types";
 
 interface LeaderboardRowProps {
   entry: StandingsEntry;
@@ -9,7 +9,9 @@ interface LeaderboardRowProps {
 function LeaderboardRowComponent({ entry }: LeaderboardRowProps) {
   return (
     <tr className="border-b border-amber-500/10 hover:bg-amber-500/5">
-      <td className="py-3 px-2 md:px-4 text-gray-300 font-semibold text-sm md:text-base">#{entry.rank}</td>
+      <td className="py-3 px-2 md:px-4 text-gray-300 font-semibold text-sm md:text-base">
+        #{entry.rank}
+      </td>
       <td className="py-3 px-2 md:px-4">
         <Link
           href={`/players/${encodeURIComponent(entry.name)}`}
@@ -40,5 +42,3 @@ function LeaderboardRowComponent({ entry }: LeaderboardRowProps) {
 
 // Memoize component to prevent unnecessary re-renders when props haven't changed
 export const LeaderboardRow = React.memo(LeaderboardRowComponent);
-
-

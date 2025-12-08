@@ -3,18 +3,18 @@ import { ObjectType } from "@math/types/mathTypes";
 import { getObjectTypeSystemPrompt } from "../../../shared/utils/promptUtils";
 import { validateObjectSettings } from "../../../shared/validation/settingsValidator";
 // Import the specific schemas directly - only for supported types
-import { 
+import {
   coefficientSettingsSchema,
   coefficientsSettingsSchema,
   termSettingsSchema,
-} from '../../../shared/schemas';
+} from "../../../shared/schemas";
 
 // Define a more specific output type for this chain
 /**
  * Represents the output of the SettingsExtractorChain, containing the extracted settings
  * and potentially prompts for processing sub-objects.
  */
-type SettingsExtractorOutput = { 
+type SettingsExtractorOutput = {
   settings: unknown; // Settings structure depends on objectType, unknown is safest here
   subObjects?: Record<string, string>; // Optional sub-objects
 };
@@ -79,7 +79,9 @@ export class SettingsExtractorChain extends BaseChain<SettingsExtractorOutput> {
    * @override
    */
   protected preparePrompt(userPrompt: string): string {
-    this.logger.debug(`No additional prompt preparation needed for math object settings extraction.`);
+    this.logger.debug(
+      `No additional prompt preparation needed for math object settings extraction.`
+    );
     return userPrompt;
   }
 
@@ -129,24 +131,24 @@ export class SettingsExtractorChain extends BaseChain<SettingsExtractorOutput> {
    * @protected
    * @override
    */
-  protected updateContext(output: SettingsExtractorOutput, context: Record<string, unknown>): Record<string, unknown> {
+  protected updateContext(
+    output: SettingsExtractorOutput,
+    context: Record<string, unknown>
+  ): Record<string, unknown> {
     const newContext: Record<string, unknown> = {
       ...context,
-      [this.name]: output.settings
+      [this.name]: output.settings,
     };
 
-    // Sub-object prompt handling remains the same logic, but the content of 
+    // Sub-object prompt handling remains the same logic, but the content of
     // output.subObjects needs to be generated correctly in processResponse
     if (output.subObjects && Object.keys(output.subObjects).length > 0) {
       newContext.subObjectPrompts = {
         ...(context.subObjectPrompts || {}),
-        ...output.subObjects
+        ...output.subObjects,
       };
     }
 
     return newContext;
   }
-} 
-
-
-
+}

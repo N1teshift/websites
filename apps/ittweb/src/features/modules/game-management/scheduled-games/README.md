@@ -7,6 +7,7 @@
 ## Exports
 
 ### Components
+
 - `ScheduledGamesPage` - Main scheduled games page
 - `ScheduledGameCard` - Card for individual scheduled game
 - `ScheduledGameForm` - Create/edit scheduled game form
@@ -15,6 +16,7 @@
 - `ScheduledGameFilters` - Filter scheduled games
 
 ### Services
+
 - `scheduledGameService` - Scheduled game CRUD operations (split into focused modules: create, read, update, delete, participation, utils)
   - `getAllScheduledGames()` - Get all scheduled games
   - `getScheduledGameById()` - Get single scheduled game
@@ -25,6 +27,7 @@
   - `leaveScheduledGame()` - Leave a scheduled game
 
 **Note**: `scheduledGameService` has been split into multiple focused modules for maintainability:
+
 - `scheduledGameService.ts` - Main entry point (re-exports all functions)
 - `scheduledGameService.create.ts` - Create operations
 - `scheduledGameService.read.ts` - Read operations
@@ -37,23 +40,27 @@
 All functions are still available via the main `scheduledGameService` import for backward compatibility.
 
 ### Utils
+
 - `timezoneUtils` - Timezone conversion utilities
 
 ## Usage
 
 ```typescript
-import { getAllScheduledGames, createScheduledGame } from '@/features/modules/game-management/scheduled-games/lib/scheduledGameService';
+import {
+  getAllScheduledGames,
+  createScheduledGame,
+} from "@/features/modules/game-management/scheduled-games/lib/scheduledGameService";
 
 // Get all scheduled games
 const games = await getAllScheduledGames(true, false); // includePast, includeArchived
 
 // Create scheduled game
 const game = await createScheduledGame({
-  scheduledDateTime: '2025-02-01T20:00:00Z',
-  timezone: 'America/New_York',
-  teamSize: '4v4',
-  gameType: 'ranked',
-  description: 'Weekly ranked game'
+  scheduledDateTime: "2025-02-01T20:00:00Z",
+  timezone: "America/New_York",
+  teamSize: "4v4",
+  gameType: "ranked",
+  description: "Weekly ranked game",
 });
 ```
 
@@ -71,5 +78,3 @@ const game = await createScheduledGame({
 ## Related Documentation
 
 - [Firestore Collections Schema](../../../../docs/schemas/firestore-collections.md#games-collection-unified---scheduled-and-completed-games) - Scheduled games are stored in the unified `games` collection with `gameState: 'scheduled'`
-
-

@@ -2,7 +2,7 @@
  * Custom hook for managing meta page filters with debouncing
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 interface MetaFilters {
   category: string;
@@ -20,22 +20,23 @@ interface DebouncedMetaFilters {
 
 const DEBOUNCE_DELAY = 300;
 
-export function useMetaFilters(): MetaFilters & DebouncedMetaFilters & {
-  setCategory: (value: string) => void;
-  setTeamFormat: (value: string) => void;
-  setStartDate: (value: string) => void;
-  setEndDate: (value: string) => void;
-  resetFilters: () => void;
-} {
-  const [category, setCategory] = useState<string>('');
-  const [teamFormat, setTeamFormat] = useState<string>('');
-  const [startDate, setStartDate] = useState<string>('');
-  const [endDate, setEndDate] = useState<string>('');
-  
-  const [debouncedCategory, setDebouncedCategory] = useState<string>('');
-  const [debouncedTeamFormat, setDebouncedTeamFormat] = useState<string>('');
-  const [debouncedStartDate, setDebouncedStartDate] = useState<string>('');
-  const [debouncedEndDate, setDebouncedEndDate] = useState<string>('');
+export function useMetaFilters(): MetaFilters &
+  DebouncedMetaFilters & {
+    setCategory: (value: string) => void;
+    setTeamFormat: (value: string) => void;
+    setStartDate: (value: string) => void;
+    setEndDate: (value: string) => void;
+    resetFilters: () => void;
+  } {
+  const [category, setCategory] = useState<string>("");
+  const [teamFormat, setTeamFormat] = useState<string>("");
+  const [startDate, setStartDate] = useState<string>("");
+  const [endDate, setEndDate] = useState<string>("");
+
+  const [debouncedCategory, setDebouncedCategory] = useState<string>("");
+  const [debouncedTeamFormat, setDebouncedTeamFormat] = useState<string>("");
+  const [debouncedStartDate, setDebouncedStartDate] = useState<string>("");
+  const [debouncedEndDate, setDebouncedEndDate] = useState<string>("");
 
   // Debounce filter inputs
   useEffect(() => {
@@ -67,10 +68,10 @@ export function useMetaFilters(): MetaFilters & DebouncedMetaFilters & {
   }, [endDate]);
 
   const resetFilters = () => {
-    setCategory('');
-    setTeamFormat('');
-    setStartDate('');
-    setEndDate('');
+    setCategory("");
+    setTeamFormat("");
+    setStartDate("");
+    setEndDate("");
   };
 
   return {
@@ -89,5 +90,3 @@ export function useMetaFilters(): MetaFilters & DebouncedMetaFilters & {
     resetFilters,
   };
 }
-
-

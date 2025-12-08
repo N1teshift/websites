@@ -1,11 +1,11 @@
-import { useState, FormEvent } from 'react';
-import { useSession } from 'next-auth/react';
-import Image from 'next/image';
-import { EntryContentType } from '@/types/entry';
-import { uploadImage } from '@/features/modules/community/archives/services';
-import { createComponentLogger, logError } from '@websites/infrastructure/logging';
+import { useState, FormEvent } from "react";
+import { useSession } from "next-auth/react";
+import Image from "next/image";
+import { EntryContentType } from "@/types/entry";
+import { uploadImage } from "@/features/modules/community/archives/services";
+import { createComponentLogger, logError } from "@websites/infrastructure/logging";
 
-const logger = createComponentLogger('EntryFormModal');
+const logger = createComponentLogger("EntryFormModal");
 
 interface EntryFormModalProps {
   onSuccess: (entryId?: string) => void;
@@ -14,38 +14,38 @@ interface EntryFormModalProps {
 
 export default function EntryFormModal({ onSuccess, onCancel }: EntryFormModalProps) {
   const { data: session } = useSession();
-  const [contentType, setContentType] = useState<EntryContentType>('post');
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
+  const [contentType, setContentType] = useState<EntryContentType>("post");
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
   const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
   const [images, setImages] = useState<File[]>([]);
   const [imagePreviewUrls, setImagePreviewUrls] = useState<string[]>([]);
-  const [videoUrl, setVideoUrl] = useState('');
-  const [twitchClipUrl, setTwitchClipUrl] = useState('');
-  const [sectionOrder] = useState<Array<'images' | 'video' | 'twitch' | 'text'>>(['text']);
+  const [videoUrl, setVideoUrl] = useState("");
+  const [twitchClipUrl, setTwitchClipUrl] = useState("");
+  const [sectionOrder] = useState<Array<"images" | "video" | "twitch" | "text">>(["text"]);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     setImages(files);
 
     // Create preview URLs
-    const urls = files.map(file => URL.createObjectURL(file));
+    const urls = files.map((file) => URL.createObjectURL(file));
     setImagePreviewUrls(urls);
   };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    setError('');
+    setError("");
 
     if (!session?.user) {
-      setError('You must be signed in to create an entry');
+      setError("You must be signed in to create an entry");
       return;
     }
 
     if (!title.trim() || !content.trim()) {
-      setError('Title and content are required');
+      setError("Title and content are required");
       return;
     }
 
@@ -54,7 +54,7 @@ export default function EntryFormModal({ onSuccess, onCancel }: EntryFormModalPr
     try {
       // Upload images if any
       const uploadedImageUrls: string[] = [];
-      if (contentType === 'memory' && images.length > 0) {
+      if (contentType === "memory" && images.length > 0) {
         for (const image of images) {
           const url = await uploadImage(image);
           uploadedImageUrls.push(url);
@@ -66,26 +66,25 @@ export default function EntryFormModal({ onSuccess, onCancel }: EntryFormModalPr
         content: content.trim(),
         contentType,
         date: new Date(date).toISOString(),
-        ...(contentType === 'memory' && {
+        ...(contentType === "memory" && {
           images: uploadedImageUrls.length > 0 ? uploadedImageUrls : undefined,
           videoUrl: videoUrl.trim() || undefined,
           twitchClipUrl: twitchClipUrl.trim() || undefined,
-          sectionOrder: uploadedImageUrls.length > 0 || videoUrl || twitchClipUrl
-            ? sectionOrder
-            : undefined,
+          sectionOrder:
+            uploadedImageUrls.length > 0 || videoUrl || twitchClipUrl ? sectionOrder : undefined,
         }),
       };
 
-      const response = await fetch('/api/entries', {
-        method: 'POST',
+      const response = await fetch("/api/entries", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(entryData),
       });
 
       if (!response.ok) {
-        let errorMessage = 'Failed to create entry';
+        let errorMessage = "Failed to create entry";
         try {
           const errorData = await response.json();
           errorMessage = errorData.error || errorMessage;
@@ -107,17 +106,17 @@ export default function EntryFormModal({ onSuccess, onCancel }: EntryFormModalPr
       // API returns { success: true, data: { id: "..." } } or { id: "..." }
       const entryId = responseData.data?.id || responseData.id;
 
-      logger.info('Entry created', { contentType, title, entryId });
+      logger.info("Entry created", { contentType, title, entryId });
 
       onSuccess(entryId);
     } catch (err) {
       const error = err as Error;
-      logError(error, 'Failed to create entry', {
-        component: 'EntryFormModal',
-        operation: 'createEntry',
+      logError(error, "Failed to create entry", {
+        component: "EntryFormModal",
+        operation: "createEntry",
         contentType,
       });
-      setError(error.message || 'Failed to create entry');
+      setError(error.message || "Failed to create entry");
     } finally {
       setIsSubmitting(false);
     }
@@ -134,7 +133,12 @@ export default function EntryFormModal({ onSuccess, onCancel }: EntryFormModalPr
             className="text-gray-400 hover:text-white transition-colors disabled:opacity-50"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
             </svg>
           </button>
         </div>
@@ -193,7 +197,7 @@ export default function EntryFormModal({ onSuccess, onCancel }: EntryFormModalPr
           </div>
 
           {/* Memory-specific fields */}
-          {contentType === 'memory' && (
+          {contentType === "memory" && (
             <>
               {/* Images */}
               <div>
@@ -270,7 +274,7 @@ export default function EntryFormModal({ onSuccess, onCancel }: EntryFormModalPr
               disabled={isSubmitting}
               className="px-4 py-2 text-sm font-medium text-white bg-amber-600 hover:bg-amber-500 rounded-md transition-colors disabled:opacity-50"
             >
-              {isSubmitting ? 'Creating...' : 'Create Entry'}
+              {isSubmitting ? "Creating..." : "Create Entry"}
             </button>
           </div>
         </form>
@@ -278,5 +282,3 @@ export default function EntryFormModal({ onSuccess, onCancel }: EntryFormModalPr
     </div>
   );
 }
-
-

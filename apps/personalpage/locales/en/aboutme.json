@@ -50,9 +50,7 @@
       "company": "Edrana Baltic",
       "dates": "2019 – 2020",
       "location": "Vilnius, Lithuania",
-      "responsibilities": [
-        "Executed black-box testing on proprietary accounting software"
-      ],
+      "responsibilities": ["Executed black-box testing on proprietary accounting software"],
       "title": "Software Tester"
     },
     {
@@ -66,11 +64,7 @@
     }
   ],
   "experienceTitle": "Professional Experience",
-  "interests": [
-    "Community volunteering",
-    "Chess",
-    "Travel"
-  ],
+  "interests": ["Community volunteering", "Chess", "Travel"],
   "interestsTitle": "Interests",
   "languages": [
     {
@@ -106,11 +100,7 @@
     }
   ],
   "projectsTitle": "Key Projects",
-  "softSkills": [
-    "Analytical thinking",
-    "Collaborative problem-solving",
-    "Proactive curiosity"
-  ],
+  "softSkills": ["Analytical thinking", "Collaborative problem-solving", "Proactive curiosity"],
   "softSkillsTitle": "Soft Skills",
   "summaryContent": "Analytical educator-engineer with 4 years of secondary-level mathematics teaching and 2+ years of full-stack AI tooling experience. Conceived and shipped an AI-driven mathematics-content generator that automates learning materials creation and speeds up teacher prep time. Adept at turning complex classroom problems into scalable, user-centric software solutions.",
   "summaryTitle": "Professional Summary",
@@ -144,30 +134,15 @@
       "title": "Enterprise Integrations"
     },
     "frontend": {
-      "items": [
-        "React",
-        "Next.js",
-        "TypeScript",
-        "Tailwind CSS",
-        "i18next"
-      ],
+      "items": ["React", "Next.js", "TypeScript", "Tailwind CSS", "i18next"],
       "title": "Front-End"
     },
     "fullstack": {
-      "items": [
-        "LangChain & LangGraph",
-        "OpenAI API",
-        "Firebase Admin SDK & Firestore",
-        "Vercel"
-      ],
+      "items": ["LangChain & LangGraph", "OpenAI API", "Firebase Admin SDK & Firestore", "Vercel"],
       "title": "Full-Stack & Cloud"
     },
     "tooling": {
-      "items": [
-        "Git/GitHub",
-        "ESLint",
-        "Basic CI/CD"
-      ],
+      "items": ["Git/GitHub", "ESLint", "Basic CI/CD"],
       "title": "Tooling & Workflow"
     }
   },

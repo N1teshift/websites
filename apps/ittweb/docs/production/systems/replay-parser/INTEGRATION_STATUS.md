@@ -12,6 +12,7 @@ The replay parser is fully integrated with the scheduled games system. All core 
 ## ✅ Completed Components
 
 ### 1. Replay Parser Service
+
 **File**: `src/features/modules/games/lib/replayParser.ts`
 
 - ✅ Fully implemented using `w3gjs` library
@@ -29,6 +30,7 @@ The replay parser is fully integrated with the scheduled games system. All core 
 ### 2. Upload Replay API Endpoints
 
 #### A. `/api/games/upload-replay` (Create New Game)
+
 **File**: `src/pages/api/games/upload-replay.ts`
 
 - ✅ Accepts replay file upload
@@ -40,6 +42,7 @@ The replay parser is fully integrated with the scheduled games system. All core 
 - ✅ Handles parsing failures with manual gameData fallback
 
 #### B. `/api/games/[id]/upload-replay` (Convert Scheduled to Completed)
+
 **File**: `src/pages/api/games/[id]/upload-replay.ts`
 
 - ✅ Accepts replay file for existing scheduled game
@@ -55,6 +58,7 @@ The replay parser is fully integrated with the scheduled games system. All core 
 ### 3. UI Components
 
 #### A. UploadReplayModal
+
 **File**: `src/features/modules/scheduled-games/components/UploadReplayModal.tsx`
 
 - ✅ Modal dialog for replay file upload
@@ -65,6 +69,7 @@ The replay parser is fully integrated with the scheduled games system. All core 
 - ✅ Calls `/api/games/[id]/upload-replay` endpoint
 
 #### B. ScheduledGamesList
+
 **File**: `src/features/modules/scheduled-games/components/ScheduledGamesList.tsx`
 
 - ✅ "Upload Replay" button when game status is 'awaiting_replay'
@@ -73,6 +78,7 @@ The replay parser is fully integrated with the scheduled games system. All core 
 - ✅ Shows game status badges
 
 #### C. GameDetail
+
 **File**: `src/features/modules/games/components/GameDetail.tsx`
 
 - ✅ "Upload Replay" button for scheduled games
@@ -155,6 +161,7 @@ This is different from the original integration plan which suggested separate co
 ### Button Visibility
 
 The "Upload Replay" button appears:
+
 - In `ScheduledGamesList`: When game status is `'awaiting_replay'`
 - In `GameDetail`: When user has `canUploadReplay` permission (typically creator, participant, or admin)
 
@@ -181,4 +188,3 @@ The "Upload Replay" button appears:
 - [Replay Parser Integration Plan](./integration-plan.md) - Original planning document
 - [Replay Parser Quick Start](./quick-start.md) - Quick start guide
 - [API Documentation](../api/README.md) - API endpoint documentation
-

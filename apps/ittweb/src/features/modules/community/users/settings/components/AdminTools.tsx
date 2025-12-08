@@ -42,12 +42,13 @@ export function AdminTools({
         </button>
       </div>
       <p className="text-xs text-gray-500">
-        <strong>Wipe Test Data:</strong> Deletes all games, player stats, and associated archive entries. Use only for development/testing.
+        <strong>Wipe Test Data:</strong> Deletes all games, player stats, and associated archive
+        entries. Use only for development/testing.
       </p>
       <p className="text-xs text-gray-500">
-        <strong>Wipe All Entries:</strong> Deletes all entries (posts and memories) from Firestore and all archived photos from Firebase Storage. This action cannot be undone.
+        <strong>Wipe All Entries:</strong> Deletes all entries (posts and memories) from Firestore
+        and all archived photos from Firebase Storage. This action cannot be undone.
       </p>
     </div>
   );
 }
-

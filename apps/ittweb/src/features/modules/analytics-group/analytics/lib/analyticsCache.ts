@@ -1,21 +1,21 @@
 /**
  * Analytics Cache Helpers
- * 
+ *
  * Provides caching utilities specific to analytics operations.
  * Uses Firestore-based caching for serverless environments.
  */
 
 import {
   getOrComputeAnalytics,
-  invalidateAnalyticsCache as invalidateCache
-} from '@/features/infrastructure/lib/cache/analyticsCache.server';
-import { createRequestCache, type RequestCache } from '@websites/infrastructure/cache';
-import { getGamesWithPlayers } from '@/features/modules/game-management/games/lib/gameService';
-import type { GameWithPlayers, GameFilters } from '@/features/modules/game-management/games/types';
-import { createComponentLogger } from '@websites/infrastructure/logging';
-import { ANALYTICS_CACHE_CONFIGS } from './analyticsCacheConfig';
+  invalidateAnalyticsCache as invalidateCache,
+} from "@/features/infrastructure/lib/cache/analyticsCache.server";
+import { createRequestCache, type RequestCache } from "@websites/infrastructure/cache";
+import { getGamesWithPlayers } from "@/features/modules/game-management/games/lib/gameService";
+import type { GameWithPlayers, GameFilters } from "@/features/modules/game-management/games/types";
+import { createComponentLogger } from "@websites/infrastructure/logging";
+import { ANALYTICS_CACHE_CONFIGS } from "./analyticsCacheConfig";
 
-const logger = createComponentLogger('analyticsCache');
+const logger = createComponentLogger("analyticsCache");
 
 /** Standard analytics filter parameters */
 export interface AnalyticsFilters {
@@ -37,7 +37,7 @@ export async function fetchGamesWithCache(
   const cacheKey = `games:${JSON.stringify(filters)}`;
 
   return requestCache.getOrFetch(cacheKey, async () => {
-    logger.debug('Fetching games with players', { filters });
+    logger.debug("Fetching games with players", { filters });
     const result = await getGamesWithPlayers(filters);
     return result.games;
   });
@@ -82,12 +82,11 @@ export function filterGamesByTeamFormat(
   games: GameWithPlayers[],
   teamFormat: string
 ): GameWithPlayers[] {
-  return games.filter(game => {
+  return games.filter((game) => {
     if (!game.players) return false;
-    const winners = game.players.filter(p => p.flag === 'winner').length;
-    const losers = game.players.filter(p => p.flag === 'loser').length;
+    const winners = game.players.filter((p) => p.flag === "winner").length;
+    const losers = game.players.filter((p) => p.flag === "loser").length;
     const formatStr = `${winners}v${losers}`;
     return formatStr === teamFormat;
   });
 }
-

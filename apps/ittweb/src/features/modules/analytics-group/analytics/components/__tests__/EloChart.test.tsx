@@ -1,10 +1,10 @@
-import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
-import { EloChart } from '../EloChart';
-import type { EloHistoryDataPoint } from '../../types';
+import React from "react";
+import { render, screen, waitFor } from "@testing-library/react";
+import { EloChart } from "../EloChart";
+import type { EloHistoryDataPoint } from "../../types";
 
 // Mock recharts
-jest.mock('recharts', () => ({
+jest.mock("recharts", () => ({
   ResponsiveContainer: ({ children }: { children: React.ReactNode }) => (
     <div data-testid="responsive-container">{children}</div>
   ),
@@ -19,7 +19,7 @@ jest.mock('recharts', () => ({
   Legend: () => <div data-testid="legend" />,
 }));
 
-jest.mock('@/features/infrastructure/components/containers/Card', () => ({
+jest.mock("@/features/infrastructure/components/containers/Card", () => ({
   Card: ({ children, title }: { children: React.ReactNode; title?: string }) => (
     <div data-testid="card">
       {title && <h3>{title}</h3>}
@@ -28,12 +28,12 @@ jest.mock('@/features/infrastructure/components/containers/Card', () => ({
   ),
 }));
 
-describe('EloChart', () => {
-  it('should render ELO history chart', async () => {
+describe("EloChart", () => {
+  it("should render ELO history chart", async () => {
     // Arrange
     const data: EloHistoryDataPoint[] = [
-      { date: '2024-01-01', elo: 1000 },
-      { date: '2024-01-02', elo: 1010 },
+      { date: "2024-01-01", elo: 1000 },
+      { date: "2024-01-02", elo: 1010 },
     ];
 
     // Act
@@ -41,12 +41,12 @@ describe('EloChart', () => {
 
     // Assert
     await waitFor(() => {
-      expect(screen.getByTestId('line-chart')).toBeInTheDocument();
+      expect(screen.getByTestId("line-chart")).toBeInTheDocument();
     });
-    expect(screen.getByTestId('responsive-container')).toBeInTheDocument();
+    expect(screen.getByTestId("responsive-container")).toBeInTheDocument();
   });
 
-  it('should handle no history', () => {
+  it("should handle no history", () => {
     // Arrange
     const data: EloHistoryDataPoint[] = [];
 
@@ -54,13 +54,13 @@ describe('EloChart', () => {
     render(<EloChart data={data} />);
 
     // Assert
-    expect(screen.getByText('No ELO history available')).toBeInTheDocument();
+    expect(screen.getByText("No ELO history available")).toBeInTheDocument();
   });
 
-  it('should handle many data points', async () => {
+  it("should handle many data points", async () => {
     // Arrange
     const data: EloHistoryDataPoint[] = Array.from({ length: 1000 }, (_, i) => ({
-      date: `2024-01-${String(i + 1).padStart(2, '0')}`,
+      date: `2024-01-${String(i + 1).padStart(2, "0")}`,
       elo: 1000 + i,
     }));
 
@@ -69,11 +69,11 @@ describe('EloChart', () => {
 
     // Assert
     await waitFor(() => {
-      expect(screen.getByTestId('line-chart')).toBeInTheDocument();
+      expect(screen.getByTestId("line-chart")).toBeInTheDocument();
     });
   });
 
-  it('should handle missing data', () => {
+  it("should handle missing data", () => {
     // Arrange
     const data = null as unknown as EloHistoryDataPoint[];
 
@@ -81,19 +81,17 @@ describe('EloChart', () => {
     render(<EloChart data={data} />);
 
     // Assert
-    expect(screen.getByText('No ELO history available')).toBeInTheDocument();
+    expect(screen.getByText("No ELO history available")).toBeInTheDocument();
   });
 
-  it('should display custom title', () => {
+  it("should display custom title", () => {
     // Arrange
-    const data: EloHistoryDataPoint[] = [{ date: '2024-01-01', elo: 1000 }];
+    const data: EloHistoryDataPoint[] = [{ date: "2024-01-01", elo: 1000 }];
 
     // Act
     render(<EloChart data={data} title="Custom ELO Title" />);
 
     // Assert
-    expect(screen.getByText('Custom ELO Title')).toBeInTheDocument();
+    expect(screen.getByText("Custom ELO Title")).toBeInTheDocument();
   });
 });
-
-

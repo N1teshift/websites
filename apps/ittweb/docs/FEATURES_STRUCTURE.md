@@ -3,6 +3,7 @@
 This document provides multiple visualizations of the `src/features` folder structure.
 
 ## Table of Contents
+
 - [Numbered Outline](#numbered-outline)
 - [Tree Diagram](#tree-diagram)
 - [Mermaid Diagram](#mermaid-diagram)
@@ -12,34 +13,36 @@ This document provides multiple visualizations of the `src/features` folder stru
 ## Numbered Outline
 
 ### 1. infrastructure
+
 - **1.1.** api
   - **1.1.1.** firebase
   - **1.1.2.** root (handlers, middleware, types, utils)
-  - **1.1.3.** __tests__
+  - **1.1.3.** **tests**
 - **1.2.** auth
   - **1.2.1.** root (components, config, hooks, lib, types, utils)
 - **1.3.** components
   - **1.3.1.** ui
   - **1.3.2.** root (layout components)
 - **1.4.** game
-  - **1.4.1.** __tests__
+  - **1.4.1.** **tests**
   - **1.4.2.** root (parsers, types, utils)
 - **1.5.** hooks
-  - **1.5.1.** __tests__
+  - **1.5.1.** **tests**
   - **1.5.2.** root (custom hooks)
 - **1.6.** lib
-  - **1.6.1.** __tests__
+  - **1.6.1.** **tests**
   - **1.6.2.** root (utilities, helpers)
 - **1.7.** logging
   - **1.7.1.** root (logging utilities)
 - **1.8.** monitoring
   - **1.8.1.** root (monitoring utilities)
 - **1.9.** utils
-  - **1.9.1.** __tests__
+  - **1.9.1.** **tests**
   - **1.9.2.** accessibility
   - **1.9.3.** root (utility functions)
 
 ### 2. modules
+
 - **2.1.** analytics-group
   - **2.1.1.** analytics
     - **2.1.1.1.** components
@@ -238,7 +241,7 @@ features/
 ```mermaid
 graph TD
     Features["features/"]
-    
+
     %% Infrastructure
     Infra["1. infrastructure"]
     InfraAPI["1.1 api"]
@@ -258,10 +261,10 @@ graph TD
     InfraUtils["1.9 utils"]
     InfraUtilsTests["1.9.1 __tests__"]
     InfraUtilsA11y["1.9.2 accessibility"]
-    
+
     %% Modules
     Modules["2. modules"]
-    
+
     %% Analytics Group
     AnalyticsGroup["2.1 analytics-group"]
     Analytics["2.1.1 analytics"]
@@ -275,7 +278,7 @@ graph TD
     MetaHooks["hooks"]
     MetaLib["lib"]
     MetaTypes["types"]
-    
+
     %% Community
     Community["2.2 community"]
     Archives["2.2.1 archives"]
@@ -293,7 +296,7 @@ graph TD
     StandingsHooks["hooks"]
     StandingsLib["lib"]
     StandingsTypes["types"]
-    
+
     %% Content
     Content["2.3 content"]
     Blog["2.3.1 blog"]
@@ -310,7 +313,7 @@ graph TD
     GuidesComp["components"]
     GuidesLib["lib"]
     GuidesTypes["types"]
-    
+
     %% Game Management
     GameMgmt["2.4 game-management"]
     Entries["2.4.1 entries"]
@@ -325,7 +328,7 @@ graph TD
     ScheduledComp["components"]
     ScheduledLib["lib"]
     ScheduledUtils["utils"]
-    
+
     %% Other Modules
     PlayersModule["2.5 players"]
     PlayersModuleHooks["hooks"]
@@ -347,11 +350,11 @@ graph TD
     ToolsGroupHooks["hooks"]
     ToolsGroupTypes["types"]
     ToolsGroupUtils["utils"]
-    
+
     %% Connections
     Features --> Infra
     Features --> Modules
-    
+
     Infra --> InfraAPI
     InfraAPI --> InfraAPIFirebase
     InfraAPI --> InfraAPITests
@@ -369,7 +372,7 @@ graph TD
     Infra --> InfraUtils
     InfraUtils --> InfraUtilsTests
     InfraUtils --> InfraUtilsA11y
-    
+
     Modules --> AnalyticsGroup
     AnalyticsGroup --> Analytics
     Analytics --> AnalyticsComp
@@ -382,7 +385,7 @@ graph TD
     Meta --> MetaHooks
     Meta --> MetaLib
     Meta --> MetaTypes
-    
+
     Modules --> Community
     Community --> Archives
     Archives --> ArchivesComp
@@ -399,7 +402,7 @@ graph TD
     Standings --> StandingsHooks
     Standings --> StandingsLib
     Standings --> StandingsTypes
-    
+
     Modules --> Content
     Content --> Blog
     Blog --> BlogComp
@@ -415,7 +418,7 @@ graph TD
     Guides --> GuidesComp
     Guides --> GuidesLib
     Guides --> GuidesTypes
-    
+
     Modules --> GameMgmt
     GameMgmt --> Entries
     Entries --> EntriesComp
@@ -429,20 +432,20 @@ graph TD
     ScheduledGames --> ScheduledComp
     ScheduledGames --> ScheduledLib
     ScheduledGames --> ScheduledUtils
-    
+
     Modules --> PlayersModule
     PlayersModule --> PlayersModuleHooks
-    
+
     Modules --> Shared
     Shared --> SharedComp
     Shared --> SharedTypes
     Shared --> SharedUtils
-    
+
     Modules --> Tools
     Tools --> ToolsHooks
     Tools --> ToolsTypes
     Tools --> ToolsUtils
-    
+
     Modules --> ToolsGroup
     ToolsGroup --> MapAnalyzer
     MapAnalyzer --> MapComp
@@ -453,12 +456,12 @@ graph TD
     ToolsGroupTools --> ToolsGroupHooks
     ToolsGroupTools --> ToolsGroupTypes
     ToolsGroupTools --> ToolsGroupUtils
-    
+
     %% Styling
     classDef infraClass fill:#e1f5ff,stroke:#01579b,stroke-width:2px
     classDef moduleClass fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
     classDef subClass fill:#fff3e0,stroke:#e65100,stroke-width:1px
-    
+
     class Infra,InfraAPI,InfraAuth,InfraComponents,InfraGame,InfraHooks,InfraLib,InfraLogging,InfraMonitoring,InfraUtils infraClass
     class Modules,AnalyticsGroup,Community,Content,GameMgmt,PlayersModule,Shared,Tools,ToolsGroup moduleClass
 ```

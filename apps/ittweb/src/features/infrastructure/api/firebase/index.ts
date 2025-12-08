@@ -23,6 +23,4 @@ export {
   db,
   storage,
   analytics,
-} from '@websites/infrastructure/firebase';
-
-
+} from "@websites/infrastructure/firebase";
