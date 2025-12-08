@@ -1,12 +1,24 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { Layout } from '@websites/ui';
 import { Button } from '@websites/ui';
 import { useAuth } from '@websites/infrastructure/auth/providers';
 import { useFallbackTranslation } from '@websites/infrastructure/i18n/client';
 import { createComponentLogger } from '@websites/infrastructure/logging';
+import type { GetServerSideProps } from 'next';
+import type { ExtendedPageProps } from '@websites/infrastructure/app';
 
 const logger = createComponentLogger('SettingsPage');
+
+export const getServerSideProps: GetServerSideProps<ExtendedPageProps> = async () => {
+    return {
+        props: {
+            translationNamespaces: ['common', 'settings'],
+            layoutTitleKey: "settings",
+            layoutMode: "top",
+            layoutGoBackTarget: "/",
+        },
+    };
+};
 
 /**
  * Settings page - only accessible when logged in
@@ -104,9 +116,9 @@ export default function SettingsPage() {
 
     if (isLoading) {
         return (
-            <Layout titleKey="settings" mode="centered">
+            <div className="min-h-screen flex items-center justify-center">
                 <div className="text-text-secondary">Loading...</div>
-            </Layout>
+            </div>
         );
     }
 
@@ -115,8 +127,7 @@ export default function SettingsPage() {
     }
 
     return (
-        <Layout titleKey="settings" mode="top" goBackTarget="/">
-            <div className="w-full max-w-4xl mx-auto p-6 space-y-6">
+        <div className="w-full max-w-4xl mx-auto p-6 space-y-6">
                 <div className="bg-surface-card rounded-lg p-6 shadow-medium">
                     <h2 className="text-2xl font-bold text-text-primary mb-4">
                         {t('user_profile', 'User Profile')}
@@ -208,7 +219,6 @@ export default function SettingsPage() {
                     </div>
                 </div>
             </div>
-        </Layout>
     );
 }
 

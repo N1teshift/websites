@@ -1,21 +1,25 @@
 import { getStaticPropsWithTranslations } from '@websites/infrastructure/i18n/getStaticProps';
-import { Layout } from "@websites/ui";
 import { VotingPrecinctsPage } from '../../../features/modules/emw';
+import type { GetStaticProps } from 'next';
+import type { ExtendedPageProps } from '@websites/infrastructure/app';
 
 const pageNamespaces = ["emw", "common", "links"];
-export const getStaticProps = getStaticPropsWithTranslations(pageNamespaces);
+export const getStaticProps: GetStaticProps<ExtendedPageProps> = async (context) => {
+    const baseProps = await getStaticPropsWithTranslations(pageNamespaces)(context);
+    return {
+        ...baseProps,
+        props: {
+            ...baseProps.props,
+            translationNamespaces: pageNamespaces,
+            layoutGoBackTarget: "/projects/emw/index",
+            layoutTitleKey: "nav_voting_precincts",
+            layoutMode: "top",
+        },
+    };
+};
 
 export default function VotingPrecincts() {
-    return (
-        <Layout
-            goBackTarget="/projects/emw/index"
-            titleKey="nav_voting_precincts"
-            mode="top"
-            pageTranslationNamespaces={pageNamespaces}
-        >
-            <VotingPrecinctsPage />
-        </Layout>
-    );
+    return <VotingPrecinctsPage />;
 } 
 
 

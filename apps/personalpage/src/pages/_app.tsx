@@ -4,6 +4,7 @@ import { appWithTranslation } from "next-i18next";
 import { AppWrapper } from "@websites/infrastructure/app";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import LoginButton from '../components/LoginButton';
 
 function App({ Component, pageProps }: AppProps) {
     return (
@@ -11,6 +12,8 @@ function App({ Component, pageProps }: AppProps) {
             <AppWrapper 
                 Component={Component}
                 pageProps={pageProps}
+                layoutType="page"
+                pageLayoutLoginButton={LoginButton}
                 appName="Personal Page"
             />
             {process.env.NODE_ENV === 'production' && (

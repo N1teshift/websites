@@ -1,26 +1,31 @@
 import { getStaticPropsWithTranslations } from '@websites/infrastructure/i18n/getStaticProps';
-import { Layout } from "@websites/ui";
 import { ConnectingVesselsPage } from '@/features/modules/connecting_vessels';
 import { isFeatureEnabled } from '@/config/features';
+import type { GetStaticProps } from 'next';
+import type { ExtendedPageProps } from '@websites/infrastructure/app';
 
 const pageNamespaces = ["connecting_vessels", "links", "common"];
-export const getStaticProps = getStaticPropsWithTranslations(pageNamespaces);
+export const getStaticProps: GetStaticProps<ExtendedPageProps> = async (context) => {
+    const baseProps = await getStaticPropsWithTranslations(pageNamespaces)(context);
+    const isDisabled = !isFeatureEnabled('connectingVessels');
+    
+    return {
+        ...baseProps,
+        props: {
+            ...baseProps.props,
+            translationNamespaces: pageNamespaces,
+            layoutGoBackTarget: "/",
+            layoutTitleKey: "connecting_vessels",
+            layoutMode: "top",
+            layoutIsUnderConstruction: isDisabled,
+            layoutConstructionMessageKey: isDisabled ? "coming_soon_message" : undefined,
+        },
+    };
+};
 
 export default function ConnectingVesselsPageWrapper() {
     const isDisabled = !isFeatureEnabled('connectingVessels');
-    
-    return (
-        <Layout 
-            goBackTarget="/" 
-            titleKey="connecting_vessels" 
-            pageTranslationNamespaces={pageNamespaces}
-            mode="top"
-            isUnderConstruction={isDisabled}
-            constructionMessageKey={isDisabled ? "coming_soon_message" : undefined}
-        >
-            {!isDisabled && <ConnectingVesselsPage />}
-        </Layout>
-    );
+    return !isDisabled ? <ConnectingVesselsPage /> : null;
 }
 
 

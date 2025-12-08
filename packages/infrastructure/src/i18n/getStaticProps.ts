@@ -1,6 +1,7 @@
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import nextI18NextConfig from './next-i18next.config';
 import { UserConfig } from 'next-i18next';
+import type { GetStaticPropsContext } from 'next';
 
 /**
  * Creates a `getStaticProps` function pre-configured with `next-i18next` translations.
@@ -13,7 +14,11 @@ export function getStaticPropsWithTranslations(
     namespaces: string[] = ["common"],
     userConfig?: Partial<UserConfig>
 ) {
-    return async function getStaticProps({ locale }: { locale: string }) {
+    return async function getStaticProps(context: GetStaticPropsContext) {
+        // Get default locale from config or use 'en' as fallback
+        const defaultLocale = userConfig?.i18n?.defaultLocale || nextI18NextConfig.i18n?.defaultLocale || 'en';
+        const resolvedLocale = context.locale || defaultLocale;
+        
         // Create a properly typed config object for serverSideTranslations
         // Merge base config with user-provided config (user config takes precedence)
         const typedConfig: UserConfig = {
@@ -27,7 +32,7 @@ export function getStaticPropsWithTranslations(
         
         return {
             props: {
-                ...(await serverSideTranslations(locale, namespaces, typedConfig)),
+                ...(await serverSideTranslations(resolvedLocale, namespaces, typedConfig)),
             },
         };
     };

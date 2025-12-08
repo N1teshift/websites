@@ -1,6 +1,7 @@
 import { getStaticPropsWithTranslations } from '@websites/infrastructure/i18n/getStaticProps';
-import { Layout } from "@websites/ui";
 import { ProgressReportPage } from '@/features/modules/edtech/progressReport';
+import type { GetStaticProps } from 'next';
+import type { ExtendedPageProps } from '@websites/infrastructure/app';
 
 const pageNamespaces = [
   "progress-report",
@@ -8,19 +9,22 @@ const pageNamespaces = [
   "common"
 ];
 
-export const getStaticProps = getStaticPropsWithTranslations(pageNamespaces);
+export const getStaticProps: GetStaticProps<ExtendedPageProps> = async (context) => {
+    const baseProps = await getStaticPropsWithTranslations(pageNamespaces)(context);
+    return {
+        ...baseProps,
+        props: {
+            ...baseProps.props,
+            translationNamespaces: pageNamespaces,
+            layoutGoBackTarget: "/",
+            layoutTitleKey: "progress_report_dashboard",
+            layoutMode: "top",
+        },
+    };
+};
 
 export default function ProgressReportPageWrapper() {
-    return (
-        <Layout
-            goBackTarget="/"
-            titleKey="progress_report_dashboard"
-            pageTranslationNamespaces={pageNamespaces}
-            mode="top"
-        >
-            <ProgressReportPage />
-        </Layout>
-    );
+    return <ProgressReportPage />;
 }
 
 

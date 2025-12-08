@@ -11,6 +11,7 @@ function App({ Component, pageProps }: AppProps) {
             <AppWrapper 
                 Component={Component}
                 pageProps={pageProps}
+                layoutType="page"
                 appName="Template Page"
             />
             {process.env.NODE_ENV === 'production' && (

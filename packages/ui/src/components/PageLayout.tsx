@@ -5,7 +5,7 @@ import ThemeSwitcher from "./ThemeSwitcher";
 import { TranslationNamespaceContext, useFallbackTranslation } from '@websites/infrastructure/i18n/client';
 import { createComponentLogger } from '@websites/infrastructure/logging';
 
-interface LayoutProps {
+interface PageLayoutProps {
     children?: React.ReactNode;
     goBackTarget?: string;
     titleKey?: string;
@@ -19,7 +19,18 @@ interface LayoutProps {
     LoginButton?: React.ComponentType<{ absolute?: boolean }>;
 }
 
-export default function Layout({
+/**
+ * PageLayout component for standard page layouts with title, navigation, and translation support.
+ * Used by Personal Page, MafaldaGarcia, and Template Page.
+ * 
+ * Features:
+ * - Translation namespace context
+ * - Optional title, go back button, theme/language switchers
+ * - Centered or top-aligned modes
+ * - Under construction state
+ * - Login button support
+ */
+export default function PageLayout({
     children,
     goBackTarget,
     titleKey,
@@ -30,11 +41,11 @@ export default function Layout({
     estimatedCompletion,
     isAuthenticated = false,
     LoginButton
-}: LayoutProps) {
+}: PageLayoutProps) {
     const { t } = useFallbackTranslation(pageTranslationNamespaces);
-    const logger = createComponentLogger('Layout');
+    const logger = createComponentLogger('PageLayout');
 
-    logger.debug('Layout title info', {
+    logger.debug('PageLayout title info', {
         titleKey,
         titleTranslation: titleKey ? t(titleKey) : 'no title key',
         namespacesFromContext: pageTranslationNamespaces
@@ -125,4 +136,3 @@ export default function Layout({
         </TranslationNamespaceContext.Provider>
     );
 }
-

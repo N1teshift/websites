@@ -1,7 +1,8 @@
 import React from 'react';
 import { getStaticPropsWithTranslations } from '@websites/infrastructure/i18n/getStaticProps';
-import { Layout, CenteredLinkGrid } from "@websites/ui";
-import LoginButton from '../components/LoginButton';
+import { CenteredLinkGrid } from "@websites/ui";
+import type { GetStaticProps } from 'next';
+import type { ExtendedPageProps } from '@websites/infrastructure/app';
 
 const links = [
     {
@@ -42,19 +43,21 @@ const links = [
 ];
 
 const pageNamespaces = ["links", "common"];
-export const getStaticProps = getStaticPropsWithTranslations(pageNamespaces);
+export const getStaticProps: GetStaticProps<ExtendedPageProps> = async (context) => {
+    const baseProps = await getStaticPropsWithTranslations(pageNamespaces)(context);
+    return {
+        ...baseProps,
+        props: {
+            ...baseProps.props,
+            translationNamespaces: pageNamespaces,
+            layoutTitleKey: "projects",
+            layoutMode: "top",
+        },
+    };
+};
 
 export default function Projects() {
-    return (
-        <Layout
-            titleKey={"projects"}
-            pageTranslationNamespaces={pageNamespaces}
-            mode="top"
-            LoginButton={LoginButton}
-        >
-            <CenteredLinkGrid links={links} />
-        </Layout>
-    );
+    return <CenteredLinkGrid links={links} />;
 } 
 
 

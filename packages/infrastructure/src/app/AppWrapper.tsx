@@ -17,7 +17,7 @@ import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { SessionProvider } from 'next-auth/react';
 import { SWRConfig } from 'swr';
-import { ProgressBar } from '@websites/ui';
+import { ProgressBar, PageLayout, AppLayout } from '@websites/ui';
 import { swrConfig } from '@websites/infrastructure/cache';
 import { initializeErrorTracking, initializePerformanceMonitoring } from '@websites/infrastructure/monitoring';
 import { Logger } from '@websites/infrastructure/logging';
@@ -26,8 +26,8 @@ import { setupConsoleFiltering } from './consoleFiltering';
 /**
  * Extended pageProps interface for pages that use infrastructure features.
  * 
- * Pages can optionally include `translationNamespaces` in their getStaticProps/getServerSideProps
- * to pass translation context to the Layout component.
+ * Pages can optionally include layout props in their getStaticProps/getServerSideProps
+ * to pass configuration to the Layout component.
  * 
  * @example
  * ```typescript
@@ -36,6 +36,10 @@ import { setupConsoleFiltering } from './consoleFiltering';
  *     props: {
  *       ...(await getStaticPropsWithTranslations(['common', 'home'])({ locale })),
  *       translationNamespaces: ['common', 'home'], // Pass to Layout
+ *       // PageLayout props (for layoutType: 'page')
+ *       layoutTitleKey: 'home_title',
+ *       layoutMode: 'top',
+ *       layoutGoBackTarget: '/',
  *     },
  *   };
  * };
@@ -48,6 +52,16 @@ export interface ExtendedPageProps {
      * Should match the namespaces passed to getStaticPropsWithTranslations.
      */
     translationNamespaces?: string[];
+    
+    // PageLayout props (used when layoutType is 'page')
+    layoutTitleKey?: string;
+    layoutMode?: "centered" | "top";
+    layoutGoBackTarget?: string;
+    layoutLoginButton?: React.ComponentType<{ absolute?: boolean }>;
+    layoutIsUnderConstruction?: boolean;
+    layoutConstructionMessageKey?: string;
+    layoutEstimatedCompletion?: string;
+    layoutIsAuthenticated?: boolean;
 }
 
 /** Props for AppWrapper component */
@@ -57,12 +71,24 @@ export interface AppWrapperProps {
     pageProps: AppProps['pageProps'];
     router?: AppProps['router'];
     
-    /** Optional custom layout component to wrap pages If provided, pages will be wrapped with this layout */
+    /** Layout type: 'app' uses AppLayout, 'page' uses PageLayout, 'custom' uses Layout prop, undefined = no layout */
+    layoutType?: 'app' | 'page' | 'custom';
+    
+    /** Optional custom layout component (used when layoutType is 'custom') */
     Layout?: React.ComponentType<{ 
         children: React.ReactNode; 
-        pageTranslationNamespaces?: string[];
+        pageTranslationNamespaces?: string | string[];
         [key: string]: any;
     }>;
+    
+    /** AppLayout props (used when layoutType is 'app') */
+    appLayoutHeader?: React.ComponentType;
+    appLayoutFooter?: React.ComponentType;
+    appLayoutDataCollectionNotice?: React.ComponentType;
+    appLayoutBackgroundClassName?: string;
+    
+    /** PageLayout props (used when layoutType is 'page') - app-level defaults */
+    pageLayoutLoginButton?: React.ComponentType<{ absolute?: boolean }>;
     
     /** Optional app name for logging */
     appName?: string;
@@ -75,15 +101,18 @@ export interface AppWrapperProps {
 export function AppWrapper({ 
     Component, 
     pageProps, 
+    layoutType,
     Layout,
+    appLayoutHeader,
+    appLayoutFooter,
+    appLayoutDataCollectionNotice,
+    appLayoutBackgroundClassName,
+    pageLayoutLoginButton,
     appName = 'Application',
     viewport = 'width=device-width, initial-scale=1.0, viewport-fit=cover'
 }: AppWrapperProps) {
-    // Extract translationNamespaces only if Layout is provided
-    // This is only needed for apps that use a Layout component (like ITT Web)
-    const translationNamespaces = Layout 
-        ? ((pageProps as Partial<ExtendedPageProps>)?.translationNamespaces || ['common'])
-        : ['common']; // Default value, not used if no Layout
+    const extendedProps = pageProps as Partial<ExtendedPageProps>;
+    const translationNamespaces = extendedProps?.translationNamespaces || ['common'];
 
     // Initialize logging
     useEffect(() => {
@@ -110,14 +139,52 @@ export function AppWrapper({
         }
     }, []);
 
-    // Render with or without custom Layout
-    const content = Layout ? (
-        <Layout pageTranslationNamespaces={translationNamespaces}>
-            <Component {...pageProps} />
-        </Layout>
-    ) : (
-        <Component {...pageProps} />
-    );
+    // Render content with appropriate layout
+    let content: React.ReactNode;
+    
+    if (layoutType === 'app') {
+        // Use AppLayout from packages
+        content = (
+            <AppLayout
+                pageTranslationNamespaces={translationNamespaces}
+                Header={appLayoutHeader}
+                Footer={appLayoutFooter}
+                DataCollectionNotice={appLayoutDataCollectionNotice}
+                backgroundClassName={appLayoutBackgroundClassName}
+            >
+                <Component {...pageProps} />
+            </AppLayout>
+        );
+    } else if (layoutType === 'page') {
+        // Use PageLayout from packages with props from pageProps
+        // App-level LoginButton takes precedence over page-level (if both provided)
+        const loginButton = pageLayoutLoginButton || extendedProps?.layoutLoginButton;
+        content = (
+            <PageLayout
+                pageTranslationNamespaces={translationNamespaces}
+                titleKey={extendedProps?.layoutTitleKey}
+                mode={extendedProps?.layoutMode}
+                goBackTarget={extendedProps?.layoutGoBackTarget}
+                LoginButton={loginButton}
+                isUnderConstruction={extendedProps?.layoutIsUnderConstruction}
+                constructionMessageKey={extendedProps?.layoutConstructionMessageKey}
+                estimatedCompletion={extendedProps?.layoutEstimatedCompletion}
+                isAuthenticated={extendedProps?.layoutIsAuthenticated}
+            >
+                <Component {...pageProps} />
+            </PageLayout>
+        );
+    } else if (layoutType === 'custom' && Layout) {
+        // Use custom Layout component (backward compatibility)
+        content = (
+            <Layout pageTranslationNamespaces={translationNamespaces}>
+                <Component {...pageProps} />
+            </Layout>
+        );
+    } else {
+        // No layout
+        content = <Component {...pageProps} />;
+    }
 
     return (
         <>

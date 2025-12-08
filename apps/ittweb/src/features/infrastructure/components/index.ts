@@ -1,5 +1,5 @@
 // Re-export layout components
-export { Layout, Header, PageHero } from './layout';
+export { Header, PageHero } from './layout';
 
 // Re-export navigation components
 export { MobileMenu, DropdownMenu } from './navigation';
