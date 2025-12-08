@@ -27,25 +27,6 @@ const appConfig: NextConfig = {
             },
         ],
     },
-    // Handle ES Module dependencies that are loaded as CommonJS
-    // This prevents the experimental warning when @reduxjs/toolkit (ESM) is loaded by CommonJS modules
-    serverExternalPackages: [
-        ...(baseConfig.serverExternalPackages || []),
-        '@reduxjs/toolkit',
-        'redux',
-        'react-redux',
-    ],
-    // Configure experimental features to handle ESM properly
-    experimental: {
-        ...baseConfig.experimental,
-        // Allow Next.js to properly handle ES modules in server components
-        serverComponentsExternalPackages: [
-            ...(baseConfig.experimental?.serverComponentsExternalPackages || []),
-            '@reduxjs/toolkit',
-            'redux',
-            'react-redux',
-        ],
-    },
 };
 
 export default withBundleAnalyzer(appConfig);

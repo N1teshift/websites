@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useAuth } from '@websites/infrastructure/auth/providers';
+import { useSession, signIn, signOut } from 'next-auth/react';
 import { Button, IconButton } from '@websites/ui';
 import { useFallbackTranslation } from '@websites/infrastructure/i18n/client';
 import { Settings } from 'lucide-react';
@@ -7,9 +7,14 @@ import { Settings } from 'lucide-react';
 /**
  * Login button component that appears next to the language switcher
  * Shows "Login" when not authenticated, or logout + settings gear when authenticated
+ * Uses NextAuth for authentication
  */
 const LoginButton = ({ absolute = false }: { absolute?: boolean }) => {
-    const { isAuthenticated, login, logout, isLoading } = useAuth();
+    const { data: session, status } = useSession();
+    const isAuthenticated = !!session;
+    const isLoading = status === 'loading';
+    const login = () => signIn();
+    const logout = () => signOut();
     const router = useRouter();
     const { t } = useFallbackTranslation(['common']);
 

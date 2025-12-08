@@ -45,7 +45,14 @@ export const createBaseNextConfig = (): NextConfig => {
         
         // Prevent bundling of server-only packages that use top-level await
         // next-i18next needs to be external to prevent bundling issues with serverSideTranslations
-        serverExternalPackages: [...SERVER_ONLY_PACKAGES, 'next-i18next'],
+        // Redux packages are ESM and need to be external to prevent CommonJS/ESM conflicts
+        serverExternalPackages: [
+            ...SERVER_ONLY_PACKAGES, 
+            'next-i18next',
+            '@reduxjs/toolkit',
+            'redux',
+            'react-redux',
+        ],
         
         webpack: (config, webpackContext) => {
             // Extract needed properties from Next.js webpack context

@@ -2,6 +2,7 @@ export * from './oauth';
 export * from './session';
 export * from './userService';
 export * from './providers';
+export * from './nextauth';
 
 export type { User } from './userService';
 export type { SessionData } from './session';

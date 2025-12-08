@@ -1,11 +1,17 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
 import DiscordProvider from "next-auth/providers/discord";
+import { createBaseNextAuthConfig, safeCallback } from "@websites/infrastructure/auth";
 import { createComponentLogger, logError } from "@websites/infrastructure/logging";
 
-const nextAuthLogger = createComponentLogger('nextauth');
+const logger = createComponentLogger('nextauth');
 
 export const authOptions: NextAuthOptions = {
-  secret: process.env.NEXTAUTH_SECRET,
+  ...createBaseNextAuthConfig({
+    secret: process.env.NEXTAUTH_SECRET,
+    debug: process.env.NODE_ENV === 'development',
+    loggerComponentName: 'nextauth',
+  }),
+  
   providers: [
     DiscordProvider({
       clientId: process.env.DISCORD_CLIENT_ID || "",
@@ -20,33 +26,12 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
-  session: { strategy: "jwt" },
-  debug: process.env.NODE_ENV === 'development',
-  events: {
-    async signIn(message) {
-      // Use logger for sign-in events (debug level)
-      nextAuthLogger.debug('User signed in', { message });
-      // User data is saved in the JWT callback to ensure we have complete information
-      // including the preferred name from guild nickname if available
-    },
-  },
-  logger: {
-    error(code, ...metadata) {
-      // Use logger for NextAuth errors
-      const meta: Record<string, unknown> = {
-        code: String(code),
-      };
-      if (metadata.length > 0) {
-        meta.metadata = metadata;
-      }
-      nextAuthLogger.error('NextAuth error', undefined, meta);
-    },
-  },
   callbacks: {
     async jwt({ token, account, profile }) {
-      try {
-        // On initial sign-in we have both account and profile
-        if (account && profile) {
+      return await safeCallback(
+        async () => {
+          // On initial sign-in we have both account and profile
+          if (account && profile) {
           interface DiscordProfile {
             id: string;
             email?: string;
@@ -128,36 +113,31 @@ export const authOptions: NextAuthOptions = {
           }
         }
         return token;
-      } catch (error) {
-        // Log error but return token to prevent auth failure
-        logError(error as Error, 'Failed to process JWT callback', {
+        },
+        token,
+        {
           component: 'nextauth',
           operation: 'jwt',
-        });
-        return token;
-      }
+        }
+      );
     },
     async session({ session, token }) {
-      try {
-        // Expose Discord ID and ensure session.user fields reflect our JWT
-        session.discordId = token.discordId;
-        if (session.user) {
-          session.user.name = (token.name as string | undefined) || session.user.name || 'User';
-          session.user.image = (token.picture as string | undefined) || session.user.image || undefined;
-        }
-        return session;
-      } catch (error) {
-        // Log error but return session with fallback values
-        logError(error as Error, 'Failed to process session callback', {
+      return await safeCallback(
+        async () => {
+          // Expose Discord ID and ensure session.user fields reflect our JWT
+          session.discordId = token.discordId;
+          if (session.user) {
+            session.user.name = (token.name as string | undefined) || session.user.name || 'User';
+            session.user.image = (token.picture as string | undefined) || session.user.image || undefined;
+          }
+          return session;
+        },
+        session,
+        {
           component: 'nextauth',
           operation: 'session',
-        });
-        // Return minimal valid session to prevent auth failure
-        if (session.user) {
-          session.user.name = session.user.name || 'User';
         }
-        return session;
-      }
+      );
     },
   },
 };
