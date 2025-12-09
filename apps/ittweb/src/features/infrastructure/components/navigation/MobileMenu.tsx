@@ -172,13 +172,6 @@ export function MobileMenu({
         </div>
 
         <Link
-          href="/development"
-          className="font-medieval-brand-hover block px-3 py-2 rounded-md text-lg"
-          onClick={onClose}
-        >
-          Development
-        </Link>
-        <Link
           href="/download"
           className="font-medieval-brand-hover block px-3 py-2 rounded-md text-lg"
           onClick={onClose}

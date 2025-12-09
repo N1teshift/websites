@@ -19,7 +19,6 @@ const pagesToTest = [
   "/community/archives",
   "/privacy",
   "/download",
-  "/development",
 ];
 
 test.describe("Console Error Checks", () => {

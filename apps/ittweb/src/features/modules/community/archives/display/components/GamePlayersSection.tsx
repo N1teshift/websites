@@ -3,6 +3,9 @@ import Link from "next/link";
 import { formatEloChange } from "@/features/modules/shared/utils";
 import { AnimalKillsDisplay } from "@/features/modules/shared/components";
 import { PlayerItems } from "@/features/modules/game-management/games/components";
+import ClassIcon from "@/features/modules/content/guides/components/ClassIcon";
+import { BASE_TROLL_CLASSES } from "@/features/modules/content/guides/data/units/classes";
+import { DERIVED_CLASSES } from "@/features/modules/content/guides/data/units/derivedClasses";
 import type { GameWithPlayers, GamePlayer } from "@/features/modules/game-management/games/types";
 
 interface GamePlayersSectionProps {
@@ -73,24 +76,100 @@ function PlayerStatBadge({
 }
 
 /**
+ * Convert class name to slug and get class data (handles base classes, subclasses, and superclasses)
+ */
+function getClassDataFromName(
+  className: string | undefined
+): { slug: string; name: string; iconSrc?: string } | undefined {
+  if (!className) return undefined;
+
+  const normalized = className.toLowerCase().trim();
+
+  // First try exact match by name in base classes
+  const baseMatch = BASE_TROLL_CLASSES.find((c) => c.name.toLowerCase() === normalized);
+  if (baseMatch) {
+    return { slug: baseMatch.slug, name: baseMatch.name, iconSrc: baseMatch.iconSrc };
+  }
+
+  // Try matching by slug in base classes (in case it's already a slug)
+  const baseSlugMatch = BASE_TROLL_CLASSES.find((c) => c.slug.toLowerCase() === normalized);
+  if (baseSlugMatch) {
+    return { slug: baseSlugMatch.slug, name: baseSlugMatch.name, iconSrc: baseSlugMatch.iconSrc };
+  }
+
+  // Try exact match by name in derived classes
+  const derivedMatch = DERIVED_CLASSES.find((c) => c.name.toLowerCase() === normalized);
+  if (derivedMatch) {
+    return { slug: derivedMatch.slug, name: derivedMatch.name, iconSrc: derivedMatch.iconSrc };
+  }
+
+  // Try matching by slug in derived classes
+  const derivedSlugMatch = DERIVED_CLASSES.find((c) => c.slug.toLowerCase() === normalized);
+  if (derivedSlugMatch) {
+    return {
+      slug: derivedSlugMatch.slug,
+      name: derivedSlugMatch.name,
+      iconSrc: derivedSlugMatch.iconSrc,
+    };
+  }
+
+  // Try partial match (e.g., "Gurubashi Warrior" might match "gurubashi-warrior")
+  const normalizedWithHyphens = normalized.replace(/\s+/g, "-");
+  const partialBaseMatch = BASE_TROLL_CLASSES.find(
+    (c) => c.slug.toLowerCase() === normalizedWithHyphens
+  );
+  if (partialBaseMatch) {
+    return {
+      slug: partialBaseMatch.slug,
+      name: partialBaseMatch.name,
+      iconSrc: partialBaseMatch.iconSrc,
+    };
+  }
+
+  const partialDerivedMatch = DERIVED_CLASSES.find(
+    (c) => c.slug.toLowerCase() === normalizedWithHyphens
+  );
+  if (partialDerivedMatch) {
+    return {
+      slug: partialDerivedMatch.slug,
+      name: partialDerivedMatch.name,
+      iconSrc: partialDerivedMatch.iconSrc,
+    };
+  }
+
+  return undefined;
+}
+
+/**
  * Player card with detailed stats
  */
 function PlayerCard({ player, isWinner }: { player: GamePlayer; isWinner: boolean }) {
   const hasStats = hasITTStats(player);
   const totalKills = getTotalAnimalKills(player);
+  const classData = getClassDataFromName(player.class);
 
   return (
     <div
       className={`p-2 rounded border ${isWinner ? "bg-green-500/10 border-green-500/20" : "bg-red-500/10 border-red-500/20"}`}
     >
       <div className="flex items-center justify-between mb-1">
-        <Link
-          href={`/players/${encodeURIComponent(player.name)}`}
-          onClick={(e) => e.stopPropagation()}
-          className={`text-sm font-medium hover:underline ${isWinner ? "text-green-300" : "text-red-300"}`}
-        >
-          {player.name}
-        </Link>
+        <div className="flex items-center gap-2">
+          {classData && (
+            <ClassIcon
+              slug={classData.slug}
+              name={classData.name}
+              size={40}
+              className="flex-shrink-0"
+            />
+          )}
+          <Link
+            href={`/players/${encodeURIComponent(player.name)}`}
+            onClick={(e) => e.stopPropagation()}
+            className={`text-sm font-medium hover:underline ${isWinner ? "text-green-300" : "text-red-300"}`}
+          >
+            {player.name}
+          </Link>
+        </div>
         {player.elochange !== undefined && (
           <span className={`text-xs font-semibold ${isWinner ? "text-green-400" : "text-red-400"}`}>
             {formatEloChange(player.elochange)}
