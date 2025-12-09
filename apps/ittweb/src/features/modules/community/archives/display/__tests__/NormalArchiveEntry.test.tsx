@@ -4,7 +4,7 @@ import { NormalArchiveEntry } from "../components/NormalArchiveEntry";
 import type { ArchiveEntry } from "@/types/archive";
 
 // Mock ArchiveMediaSections
-jest.mock("../ArchiveMediaSections", () => ({
+jest.mock("../components/ArchiveMediaSections", () => ({
   ArchiveMediaSections: ({
     entry,
     onImageClick,
@@ -95,15 +95,22 @@ describe("NormalArchiveEntry", () => {
         />
       );
 
-      // Assert
-      expect(screen.getByText(/Added by Test Creator/i)).toBeInTheDocument();
+      // Assert - check for creator name and date
+      expect(screen.getByText(/Added by/i)).toBeInTheDocument();
+      expect(screen.getByText(/Test Creator/i)).toBeInTheDocument();
     });
 
-    it("should render ArchiveMediaSections", () => {
+    it("should render media when entry has images", () => {
+      // Arrange
+      const entryWithImage: ArchiveEntry = {
+        ...baseEntry,
+        images: ["https://example.com/image1.jpg"],
+      };
+
       // Act
       render(
         <NormalArchiveEntry
-          entry={baseEntry}
+          entry={entryWithImage}
           displayText="Test content"
           shouldTruncate={false}
           isExpanded={false}
@@ -112,7 +119,7 @@ describe("NormalArchiveEntry", () => {
       );
 
       // Assert
-      expect(screen.getByTestId("archive-media-sections")).toBeInTheDocument();
+      expect(screen.getByAltText(entryWithImage.title)).toBeInTheDocument();
     });
   });
 
@@ -256,11 +263,18 @@ describe("NormalArchiveEntry", () => {
   });
 
   describe("handles image clicks", () => {
-    it("should pass onImageClick to ArchiveMediaSections", () => {
+    it("should call onImageClick when image is clicked", async () => {
+      // Arrange
+      const user = userEvent.setup();
+      const entryWithImage: ArchiveEntry = {
+        ...baseEntry,
+        images: ["https://example.com/image1.jpg"],
+      };
+
       // Act
       render(
         <NormalArchiveEntry
-          entry={baseEntry}
+          entry={entryWithImage}
           onImageClick={mockOnImageClick}
           displayText="Test content"
           shouldTruncate={false}
@@ -269,8 +283,17 @@ describe("NormalArchiveEntry", () => {
         />
       );
 
+      // Find the image container and click it
+      const imageContainer = screen.getByAltText(entryWithImage.title).closest("div");
+      if (imageContainer) {
+        await user.click(imageContainer);
+      }
+
       // Assert
-      expect(screen.getByText("Click Image")).toBeInTheDocument();
+      expect(mockOnImageClick).toHaveBeenCalledWith(
+        "https://example.com/image1.jpg",
+        entryWithImage.title
+      );
     });
   });
 

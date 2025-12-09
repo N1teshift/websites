@@ -137,6 +137,25 @@ function getClassDataFromName(
     };
   }
 
+  // Handle shapeshifter forms (these are transformations, not actual classes)
+  const shapeshifterForms: Record<string, { slug: string; name: string; iconSrc: string }> = {
+    "tiger form": { slug: "tiger-form", name: "Tiger Form", iconSrc: "/icons/itt/BTNTiger.png" },
+    "panther form": {
+      slug: "panther-form",
+      name: "Panther Form",
+      iconSrc: "/icons/itt/BTNPanther.png",
+    },
+    "bear form": { slug: "bear-form", name: "Bear Form", iconSrc: "/icons/itt/btngrizzlybear.png" },
+    "wolf form": { slug: "wolf-form", name: "Wolf Form", iconSrc: "/icons/itt/btndirewolf.png" },
+    "dire wolf": { slug: "dire-wolf", name: "Dire Wolf", iconSrc: "/icons/itt/btndirewolf.png" },
+    "dire bear": { slug: "dire-bear", name: "Dire Bear", iconSrc: "/icons/itt/btngrizzlybear.png" },
+  };
+
+  const formMatch = shapeshifterForms[normalized];
+  if (formMatch) {
+    return formMatch;
+  }
+
   return undefined;
 }
 

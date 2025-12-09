@@ -4,10 +4,8 @@ import { baseTailwindConfig } from "@websites/config-tailwind";
 export default {
   ...baseTailwindConfig,
   content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/shared/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/features/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/styles/**/*.css",
+    "./src/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/**/*.css",
     "../../packages/ui/src/**/*.{js,ts,jsx,tsx}",
     "../../packages/infrastructure/src/**/*.{js,ts,jsx,tsx}",
   ],

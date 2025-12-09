@@ -7,38 +7,73 @@ import {
 } from "../../../../../__tests__/helpers/mockUserDataService.server";
 import handler from "../index";
 
-// Mock dependencies
-const mockGetGames = jest.fn();
-const mockCreateScheduledGame = jest.fn();
-const mockCreateCompletedGame = jest.fn();
-const mockIsAdmin = jest.fn();
-const mockInfo = jest.fn();
-const mockError = jest.fn();
-const mockWarn = jest.fn();
-const mockDebug = jest.fn();
+// Mock dependencies - use function wrappers to avoid hoisting issues
+let mockGetGames: jest.Mock;
+let mockCreateScheduledGame: jest.Mock;
+let mockCreateCompletedGame: jest.Mock;
+let mockIsAdmin: jest.Mock;
+let mockInfo: jest.Mock;
+let mockError: jest.Mock;
+let mockWarn: jest.Mock;
+let mockDebug: jest.Mock;
+let mockGetServerSession: jest.Mock;
+
+// Initialize mocks - this runs after jest.mock hoisting
+mockGetGames = jest.fn();
+mockCreateScheduledGame = jest.fn();
+mockCreateCompletedGame = jest.fn();
+mockIsAdmin = jest.fn();
+mockInfo = jest.fn();
+mockError = jest.fn();
+mockWarn = jest.fn();
+mockDebug = jest.fn();
+mockGetServerSession = jest.fn();
 
 jest.mock("@/features/modules/game-management/games/lib/gameService", () => ({
-  getGames: (...args: unknown[]) => mockGetGames(...args),
-  createScheduledGame: (...args: unknown[]) => mockCreateScheduledGame(...args),
-  createCompletedGame: (...args: unknown[]) => mockCreateCompletedGame(...args),
+  getGames: jest.fn((...args: unknown[]) => {
+    // Access mock via closure - this will be evaluated when the function is called
+    return mockGetGames(...args);
+  }),
+  createScheduledGame: jest.fn((...args: unknown[]) => {
+    // Access mock via closure - this will be evaluated when the function is called
+    return mockCreateScheduledGame(...args);
+  }),
+  createCompletedGame: jest.fn((...args: unknown[]) => {
+    // Access mock via closure - this will be evaluated when the function is called
+    return mockCreateCompletedGame(...args);
+  }),
 }));
 
-jest.mock("@websites/infrastructure/utils/userRoleUtils", () => ({
-  isAdmin: (...args: unknown[]) => mockIsAdmin(...args),
+jest.mock("@/features/modules/community/users", () => ({
+  isAdmin: jest.fn((...args: unknown[]) => {
+    // Access mock via closure - this will be evaluated when the function is called
+    return mockIsAdmin(...args);
+  }),
 }));
 
 jest.mock("@websites/infrastructure/logging", () => ({
   createComponentLogger: jest.fn(() => ({
-    info: mockInfo,
-    error: mockError,
-    warn: mockWarn,
-    debug: mockDebug,
+    // Access mocks via closure - these will be evaluated when the logger is created
+    get info() {
+      return mockInfo;
+    },
+    get error() {
+      return mockError;
+    },
+    get warn() {
+      return mockWarn;
+    },
+    get debug() {
+      return mockDebug;
+    },
   })),
 }));
 
-const mockGetServerSession = jest.fn();
 jest.mock("next-auth/next", () => ({
-  getServerSession: (...args: unknown[]) => mockGetServerSession(...args),
+  getServerSession: jest.fn((...args: unknown[]) => {
+    // Access mock via closure
+    return mockGetServerSession(...args);
+  }),
 }));
 
 jest.mock("@/pages/api/auth/[...nextauth]", () => ({

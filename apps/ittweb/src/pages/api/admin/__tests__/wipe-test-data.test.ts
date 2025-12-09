@@ -7,19 +7,39 @@ import {
 } from "../../../../../__tests__/helpers/mockUserDataService.server";
 import handler from "../wipe-test-data";
 
-// Mock dependencies
-const mockGetFirestoreAdmin = jest.fn();
-const mockGetStorageAdmin = jest.fn();
-const mockGetStorageBucketName = jest.fn();
-const mockInfo = jest.fn();
-const mockError = jest.fn();
-const mockWarn = jest.fn();
-const mockDebug = jest.fn();
+// Mock dependencies - use function wrappers to avoid hoisting issues
+let mockGetFirestoreAdmin: jest.Mock;
+let mockGetStorageAdmin: jest.Mock;
+let mockGetStorageBucketName: jest.Mock;
+let mockInfo: jest.Mock;
+let mockError: jest.Mock;
+let mockWarn: jest.Mock;
+let mockDebug: jest.Mock;
+let mockGetServerSession: jest.Mock;
+
+// Initialize mocks - this runs after jest.mock hoisting
+mockGetFirestoreAdmin = jest.fn();
+mockGetStorageAdmin = jest.fn();
+mockGetStorageBucketName = jest.fn();
+mockInfo = jest.fn();
+mockError = jest.fn();
+mockWarn = jest.fn();
+mockDebug = jest.fn();
+mockGetServerSession = jest.fn();
 
 jest.mock("@websites/infrastructure/firebase", () => ({
-  getFirestoreAdmin: jest.fn(() => mockGetFirestoreAdmin()),
-  getStorageAdmin: jest.fn(() => mockGetStorageAdmin()),
-  getStorageBucketName: jest.fn(() => mockGetStorageBucketName()),
+  getFirestoreAdmin: jest.fn(() => {
+    // Access mock via closure - this will be evaluated when the function is called
+    return mockGetFirestoreAdmin();
+  }),
+  getStorageAdmin: jest.fn(() => {
+    // Access mock via closure - this will be evaluated when the function is called
+    return mockGetStorageAdmin();
+  }),
+  getStorageBucketName: jest.fn(() => {
+    // Access mock via closure - this will be evaluated when the function is called
+    return mockGetStorageBucketName();
+  }),
   isServerSide: jest.fn(() => true),
   getAdminTimestamp: jest.fn(() => ({
     now: jest.fn(() => ({ toDate: () => new Date("2020-01-01T00:00:00Z") })),
@@ -29,16 +49,27 @@ jest.mock("@websites/infrastructure/firebase", () => ({
 
 jest.mock("@websites/infrastructure/logging", () => ({
   createComponentLogger: jest.fn(() => ({
-    info: mockInfo,
-    error: mockError,
-    warn: mockWarn,
-    debug: mockDebug,
+    // Access mocks via closure - these will be evaluated when the logger is created
+    get info() {
+      return mockInfo;
+    },
+    get error() {
+      return mockError;
+    },
+    get warn() {
+      return mockWarn;
+    },
+    get debug() {
+      return mockDebug;
+    },
   })),
 }));
 
-const mockGetServerSession = jest.fn();
 jest.mock("next-auth/next", () => ({
-  getServerSession: (...args: unknown[]) => mockGetServerSession(...args),
+  getServerSession: jest.fn((...args: unknown[]) => {
+    // Access mock via closure
+    return mockGetServerSession(...args);
+  }),
 }));
 
 jest.mock("@/pages/api/auth/[...nextauth]", () => ({
@@ -47,10 +78,7 @@ jest.mock("@/pages/api/auth/[...nextauth]", () => ({
 
 // userDataService.server is already mocked via the helper import
 
-const mockIsAdmin = jest.fn();
-jest.mock("@websites/infrastructure/utils/userRoleUtils", () => ({
-  isAdmin: (...args: unknown[]) => mockIsAdmin(...args),
-}));
+// Note: isAdmin is checked via the API handler's requireAdmin option, not directly imported
 
 describe("POST /api/admin/wipe-test-data", () => {
   const createRequest = (): NextApiRequest =>

@@ -1,33 +1,64 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import handler from "../[id]";
 
-// Mock dependencies
-const mockGetEntryById = jest.fn();
-const mockUpdateEntry = jest.fn();
-const mockDeleteEntry = jest.fn();
-const mockInfo = jest.fn();
-const mockError = jest.fn();
-const mockWarn = jest.fn();
-const mockDebug = jest.fn();
+// Mock dependencies - use function wrappers to avoid hoisting issues
+let mockGetEntryById: jest.Mock;
+let mockUpdateEntry: jest.Mock;
+let mockDeleteEntry: jest.Mock;
+let mockInfo: jest.Mock;
+let mockError: jest.Mock;
+let mockWarn: jest.Mock;
+let mockDebug: jest.Mock;
+let mockGetServerSession: jest.Mock;
+
+// Initialize mocks - this runs after jest.mock hoisting
+mockGetEntryById = jest.fn();
+mockUpdateEntry = jest.fn();
+mockDeleteEntry = jest.fn();
+mockInfo = jest.fn();
+mockError = jest.fn();
+mockWarn = jest.fn();
+mockDebug = jest.fn();
+mockGetServerSession = jest.fn();
 
 jest.mock("@/features/modules/game-management/entries/lib/entryService", () => ({
-  getEntryById: (...args: unknown[]) => mockGetEntryById(...args),
-  updateEntry: (...args: unknown[]) => mockUpdateEntry(...args),
-  deleteEntry: (...args: unknown[]) => mockDeleteEntry(...args),
+  getEntryById: jest.fn((...args: unknown[]) => {
+    // Access mock via closure - this will be evaluated when the function is called
+    return mockGetEntryById(...args);
+  }),
+  updateEntry: jest.fn((...args: unknown[]) => {
+    // Access mock via closure - this will be evaluated when the function is called
+    return mockUpdateEntry(...args);
+  }),
+  deleteEntry: jest.fn((...args: unknown[]) => {
+    // Access mock via closure - this will be evaluated when the function is called
+    return mockDeleteEntry(...args);
+  }),
 }));
 
 jest.mock("@websites/infrastructure/logging", () => ({
   createComponentLogger: jest.fn(() => ({
-    info: mockInfo,
-    error: mockError,
-    warn: mockWarn,
-    debug: mockDebug,
+    // Access mocks via closure - these will be evaluated when the logger is created
+    get info() {
+      return mockInfo;
+    },
+    get error() {
+      return mockError;
+    },
+    get warn() {
+      return mockWarn;
+    },
+    get debug() {
+      return mockDebug;
+    },
   })),
 }));
 
-const mockGetServerSession = jest.fn();
 jest.mock("next-auth/next", () => ({
-  getServerSession: (...args: unknown[]) => mockGetServerSession(...args),
+  getServerSession: jest.fn((...args: unknown[]) => {
+    // Access mock via closure
+    return mockGetServerSession(...args);
+  }),
 }));
 
 jest.mock("@/pages/api/auth/[...nextauth]", () => ({

@@ -38,13 +38,18 @@ jest.mock("@/features/modules/content/guides/hooks/useItemsData", () => ({
 const mockUseItemsData = jest.requireMock("@/features/modules/content/guides/hooks/useItemsData")
   .useItemsData as jest.Mock;
 
+import {
+  setupMockFetch,
+  getMockFetch,
+  createSuccessResponse,
+} from "@websites/test-utils/mocks/fetch";
+
 describe("useIconMapperData", () => {
   beforeEach(() => {
     mockUseItemsData.mockReturnValue({ items: mockItemsData, isLoading: false });
-    global.fetch = jest.fn().mockResolvedValue({
-      ok: true,
-      json: jest.fn().mockResolvedValue([]),
-    }) as unknown as typeof fetch;
+    setupMockFetch();
+    const mockFetch = getMockFetch();
+    mockFetch.mockResolvedValue(createSuccessResponse([]));
   });
 
   afterEach(() => {

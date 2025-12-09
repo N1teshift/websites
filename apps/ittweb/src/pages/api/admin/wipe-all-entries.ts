@@ -1,4 +1,6 @@
 import type { NextApiRequest } from "next";
+// Import auth config to ensure default auth is registered
+import "@/config/auth";
 import { createPostHandler } from "@websites/infrastructure/api";
 import { createComponentLogger } from "@websites/infrastructure/logging";
 import {

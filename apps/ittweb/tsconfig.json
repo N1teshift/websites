@@ -1,5 +1,5 @@
 {
-  "extends": "./config/tsconfig.base.json",
+  "extends": "@websites/config/tsconfig.base.json",
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
@@ -11,7 +11,8 @@
       "@/config/*": ["./src/config/*"],
       "@websites/config-tailwind": ["../../packages/config-tailwind/src"],
       "@websites/config-tailwind/*": ["../../packages/config-tailwind/src/*"]
-    }
+    },
+    "types": ["jest", "@testing-library/jest-dom"]
   },
   "include": [
     "next-env.d.ts",

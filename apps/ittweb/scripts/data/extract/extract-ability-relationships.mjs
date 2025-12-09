@@ -12,10 +12,10 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { ROOT_DIR } from '../lib/paths.mjs';
+import { ROOT_DIR, WURST_SOURCE_DIR } from '../lib/paths.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const TROLL_UNIT_FILE = path.join(ROOT_DIR, 'island-troll-tribes', 'wurst', 'objects', 'units', 'TrollUnitTextConstant.wurst');
+const TROLL_UNIT_FILE = path.join(WURST_SOURCE_DIR, 'objects', 'units', 'TrollUnitTextConstant.wurst');
 
 /**
  * Normalize ability constant name to slug

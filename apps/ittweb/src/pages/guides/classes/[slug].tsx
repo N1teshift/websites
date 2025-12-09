@@ -12,6 +12,10 @@ import {
   getSupersByParentSlug,
 } from "@/features/modules/content/guides/data/units/derivedClasses";
 import {
+  getUnitsByBaseClass,
+  UnitData,
+} from "@/features/modules/content/guides/data/units/allUnits";
+import {
   getAbilitiesByClass,
   ABILITY_CATEGORIES,
   AbilityData,
@@ -120,6 +124,14 @@ function AbilityCard({ ability }: { ability: AbilityData }) {
 export default function TrollClassDetail({ cls }: Props) {
   const subs = getSubclassesByParentSlug(cls.slug);
   const supers = getSupersByParentSlug(cls.slug);
+  const unitsWithBaseClass = getUnitsByBaseClass(cls.slug);
+  // Filter out base class itself and derived classes (they're already shown separately)
+  const additionalUnits = unitsWithBaseClass.filter(
+    (unit) =>
+      unit.name !== cls.name &&
+      !subs.some((sub) => sub.name === unit.name) &&
+      !supers.some((sup) => sup.name === unit.name)
+  );
   const abilities = getAbilitiesByClass(cls.slug);
   const msOffset = getMoveSpeedOffset("base");
   return (
@@ -167,6 +179,25 @@ export default function TrollClassDetail({ cls }: Props) {
               </ul>
             ) : (
               <p className="text-gray-400">None</p>
+            )}
+            {additionalUnits.length > 0 && (
+              <div className="mt-4">
+                <h3 className="font-medieval-brand text-lg mb-2 text-amber-400">
+                  Additional Units
+                </h3>
+                <ul className="text-gray-300 list-disc pl-5 space-y-1">
+                  {additionalUnits.map((unit) => (
+                    <li key={unit.id}>
+                      <Link
+                        href={`/guides/units/${unit.id.replace(/:/g, "-")}`}
+                        className="link-amber"
+                      >
+                        {unit.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             )}
           </Section>
 

@@ -1,6 +1,11 @@
 import { act, renderHook, waitFor } from "@testing-library/react";
 import { useItemsData } from "../useItemsData";
 import type { ItemData } from "@/types/items";
+import {
+  setupMockFetch,
+  getMockFetch,
+  createSuccessResponse,
+} from "@websites/test-utils/mocks/fetch";
 
 describe("useItemsData", () => {
   const mockItems: ItemData[] = [
@@ -22,7 +27,7 @@ describe("useItemsData", () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    global.fetch = jest.fn();
+    setupMockFetch();
   });
 
   afterEach(() => {
@@ -32,11 +37,8 @@ describe("useItemsData", () => {
   describe("returns expected structure", () => {
     it("should return items, meta, isLoading, error, and refetch", () => {
       // Arrange
-      const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        json: async () => mockApiResponse,
-      } as Response);
+      const mockFetch = getMockFetch();
+      mockFetch.mockResolvedValueOnce(createSuccessResponse(mockApiResponse.data));
 
       // Act
       const { result } = renderHook(() => useItemsData());
@@ -55,11 +57,8 @@ describe("useItemsData", () => {
   describe("refetch function", () => {
     it("should allow manual refetch", async () => {
       // Arrange
-      const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
-      mockFetch.mockResolvedValue({
-        ok: true,
-        json: async () => mockApiResponse,
-      } as Response);
+      const mockFetch = getMockFetch();
+      mockFetch.mockResolvedValue(createSuccessResponse(mockApiResponse.data));
 
       // Act
       const { result } = renderHook(() => useItemsData());
@@ -123,11 +122,8 @@ describe("useItemsData", () => {
   describe("handles loading state", () => {
     it("should eventually set loading to false", async () => {
       // Arrange
-      const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        json: async () => mockApiResponse,
-      } as Response);
+      const mockFetch = getMockFetch();
+      mockFetch.mockResolvedValueOnce(createSuccessResponse(mockApiResponse.data));
 
       // Act
       const { result } = renderHook(() => useItemsData());

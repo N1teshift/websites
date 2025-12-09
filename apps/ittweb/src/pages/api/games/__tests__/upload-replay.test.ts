@@ -4,24 +4,46 @@ import { IncomingForm } from "formidable";
 import { promises as fs } from "fs";
 import { randomUUID } from "crypto";
 
-// Mock dependencies
-const mockCreateCompletedGame = jest.fn();
-const mockGetGames = jest.fn();
-const mockUpdateEloScores = jest.fn();
-const mockParseReplayFile = jest.fn();
-const mockInfo = jest.fn();
-const mockError = jest.fn();
-const mockWarn = jest.fn();
-const mockDebug = jest.fn();
+// Mock dependencies - use function wrappers to avoid hoisting issues
+let mockCreateCompletedGame: jest.Mock;
+let mockGetGames: jest.Mock;
+let mockUpdateEloScores: jest.Mock;
+let mockParseReplayFile: jest.Mock;
+let mockInfo: jest.Mock;
+let mockError: jest.Mock;
+let mockWarn: jest.Mock;
+let mockDebug: jest.Mock;
+
+// Initialize mocks - this runs after jest.mock hoisting
+mockCreateCompletedGame = jest.fn();
+mockGetGames = jest.fn();
+mockUpdateEloScores = jest.fn();
+mockParseReplayFile = jest.fn();
+mockInfo = jest.fn();
+mockError = jest.fn();
+mockWarn = jest.fn();
+mockDebug = jest.fn();
 
 jest.mock("@/features/modules/game-management/games/lib/gameService", () => ({
-  createCompletedGame: (...args: unknown[]) => mockCreateCompletedGame(...args),
-  getGames: (...args: unknown[]) => mockGetGames(...args),
-  updateEloScores: (...args: unknown[]) => mockUpdateEloScores(...args),
+  createCompletedGame: jest.fn((...args: unknown[]) => {
+    // Access mock via closure - this will be evaluated when the function is called
+    return mockCreateCompletedGame(...args);
+  }),
+  getGames: jest.fn((...args: unknown[]) => {
+    // Access mock via closure - this will be evaluated when the function is called
+    return mockGetGames(...args);
+  }),
+  updateEloScores: jest.fn((...args: unknown[]) => {
+    // Access mock via closure - this will be evaluated when the function is called
+    return mockUpdateEloScores(...args);
+  }),
 }));
 
 jest.mock("@/features/modules/game-management/lib/mechanics", () => ({
-  parseReplayFile: (...args: unknown[]) => mockParseReplayFile(...args),
+  parseReplayFile: jest.fn((...args: unknown[]) => {
+    // Access mock via closure - this will be evaluated when the function is called
+    return mockParseReplayFile(...args);
+  }),
 }));
 
 const mockGetStorageAdmin = jest.fn();
@@ -61,10 +83,19 @@ jest.mock("@websites/infrastructure/firebase", () => {
 
 jest.mock("@websites/infrastructure/logging", () => ({
   createComponentLogger: jest.fn(() => ({
-    info: mockInfo,
-    error: mockError,
-    warn: mockWarn,
-    debug: mockDebug,
+    // Access mocks via closure - these will be evaluated when the logger is created
+    get info() {
+      return mockInfo;
+    },
+    get error() {
+      return mockError;
+    },
+    get warn() {
+      return mockWarn;
+    },
+    get debug() {
+      return mockDebug;
+    },
   })),
 }));
 

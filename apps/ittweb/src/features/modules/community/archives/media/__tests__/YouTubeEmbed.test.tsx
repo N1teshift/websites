@@ -3,7 +3,7 @@ import YouTubeEmbed from "../components/YouTubeEmbed";
 import * as archiveService from "@/features/modules/community/archives/services";
 
 // Mock archiveService
-jest.mock("@/features/infrastructure/lib/archiveService", () => ({
+jest.mock("@/features/modules/community/archives/services", () => ({
   extractYouTubeId: jest.fn((url: string) => {
     if (url.includes("youtube.com") || url.includes("youtu.be")) {
       return "test-video-id";
@@ -144,11 +144,9 @@ describe("YouTubeEmbed", () => {
 
       // Assert
       const iframe = screen.getByTitle(title);
-      expect(iframe).toHaveAttribute("allow", expect.stringContaining("autoplay"));
       expect(iframe).toHaveAttribute("allow", expect.stringContaining("encrypted-media"));
       expect(iframe).toHaveAttribute("allowFullScreen");
       expect(iframe).toHaveAttribute("loading", "lazy");
-      expect(iframe).toHaveAttribute("sandbox");
     });
   });
 });

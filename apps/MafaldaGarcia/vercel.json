@@ -4,6 +4,7 @@
   "outputDirectory": ".next",
   "devCommand": "pnpm dev",
   "framework": "nextjs",
+  "ignoreCommand": "git diff HEAD^ HEAD --quiet -- apps/MafaldaGarcia packages/ pnpm-workspace.yaml pnpm-lock.yaml turbo.json",
   "functions": {
     "src/pages/api/**/*.ts": {
       "maxDuration": 30

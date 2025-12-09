@@ -16,18 +16,30 @@ type Props = { unit: UnitData };
 
 const pageNamespaces = ["common"];
 
+// Helper to convert unit ID to URL-safe slug (replace : with -)
+function unitIdToSlug(id: string): string {
+  return id.replace(/:/g, "-");
+}
+
+// Helper to convert slug back to unit ID
+function slugToUnitId(slug: string): string {
+  return slug.replace(/-/g, ":");
+}
+
 export const getStaticPaths: GetStaticPaths = async () => {
+  // Use URL-safe slugs (replace colons with dashes) to avoid encoding issues
   return {
     paths: ALL_UNITS.map((unit) => ({
-      params: { id: encodeURIComponent(unit.id) },
+      params: { id: unitIdToSlug(unit.id) },
     })),
     fallback: false,
   };
 };
 
 export const getStaticProps: GetStaticProps<Props> = async ({ params, locale }) => {
-  const encodedId = String(params?.id || "");
-  const id = decodeURIComponent(encodedId);
+  // Convert slug back to unit ID
+  const slug = String(params?.id || "");
+  const id = slugToUnitId(slug);
   const unit = getUnitById(id);
   if (!unit) {
     return { notFound: true };

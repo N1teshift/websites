@@ -9,8 +9,16 @@ const createJestConfig = nextJest({
 const config = {
   ...baseConfig,
   // App-specific module name mappings
+  // Note: More specific patterns must come before general patterns
   moduleNameMapper: {
-    ...baseConfig.moduleNameMapper,
+    // Map incorrect test mock path to correct Firebase path (must come before baseConfig pattern)
+    // Tests use @websites/infrastructure/api/firebase but it should be @websites/infrastructure/firebase
+    "^@websites/infrastructure/api/firebase$": "<rootDir>/../../packages/infrastructure/src/firebase/index.ts",
+    // Map date-fns to utils/date-fns
+    "^@websites/infrastructure/date-fns$": "<rootDir>/../../packages/infrastructure/src/utils/date-fns",
+    // Force uuid to use CommonJS build instead of ESM browser build
+    "^uuid$": "<rootDir>/../../node_modules/uuid/dist/index.js",
+    // App-specific path mappings
     "^@/(.*)$": "<rootDir>/src/$1",
     "^@/shared/(.*)$": "<rootDir>/src/features/shared/$1",
     "^@/features/(.*)$": "<rootDir>/src/features/$1",
@@ -19,6 +27,8 @@ const config = {
     "^@/config/(.*)$": "<rootDir>/src/config/$1",
     "^@/__tests__/(.*)$": "<rootDir>/__tests__/$1",
     "^(\\.\\.?/.*)\\.js$": "$1",
+    // Base config mappings (less specific patterns come last)
+    ...baseConfig.moduleNameMapper,
   },
   haste: {
     throwOnModuleCollision: false,
@@ -53,7 +63,7 @@ const config = {
     },
   },
   transformIgnorePatterns: [
-    "node_modules/(?!(jose|@panva/hkdf|oidc-token-hash|oauth4webapi|@panva/oauth4webapi)/)",
+    "node_modules/(?!(jose|@panva/hkdf|oidc-token-hash|oauth4webapi|@panva/oauth4webapi|uuid|@azure)/)",
   ],
 };
 

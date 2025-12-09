@@ -20,7 +20,7 @@ jest.mock("@/features/modules/game-management/games/hooks/useGame", () => ({
 }));
 
 // Mock GameLinkedArchiveEntry and NormalArchiveEntry
-jest.mock("../GameLinkedArchiveEntry", () => ({
+jest.mock("../components/GameLinkedArchiveEntry", () => ({
   GameLinkedArchiveEntry: ({
     entry,
     game,
@@ -53,7 +53,7 @@ jest.mock("../GameLinkedArchiveEntry", () => ({
   ),
 }));
 
-jest.mock("../NormalArchiveEntry", () => ({
+jest.mock("../components/NormalArchiveEntry", () => ({
   NormalArchiveEntry: ({
     entry,
     onEdit,

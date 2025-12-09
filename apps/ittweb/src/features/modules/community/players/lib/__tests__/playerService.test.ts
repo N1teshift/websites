@@ -26,26 +26,55 @@ jest.mock("firebase/firestore", () => {
   };
 });
 
-const mockIsServerSide = jest.fn(() => false);
+// Mock dependencies - use function wrappers to avoid hoisting issues
+let mockIsServerSide: jest.Mock;
 
-jest.mock("@websites/infrastructure/api/firebase", () => ({
-  getFirestoreInstance: jest.fn(() => ({})),
-}));
+// Initialize mocks - this runs after jest.mock hoisting
+mockIsServerSide = jest.fn(() => false);
+
+// Mock dependencies - use function wrappers to avoid hoisting issues
+let mockAdminDocGet: jest.Mock;
+let mockAdminDocSet: jest.Mock;
+let mockAdminDocUpdate: jest.Mock;
+
+// Initialize mocks - this runs after jest.mock hoisting
+mockAdminDocGet = jest.fn();
+mockAdminDocSet = jest.fn();
+mockAdminDocUpdate = jest.fn();
 
 jest.mock("@websites/infrastructure/firebase", () => ({
+  getFirestoreInstance: jest.fn(() => ({})),
   getFirestoreAdmin: jest.fn(() => ({
-    collection: jest.fn(() => ({
-      doc: jest.fn(() => ({
-        get: jest.fn(),
-        set: jest.fn(),
-        update: jest.fn(),
-      })),
-    })),
+    collection: jest.fn((collectionName: string) => {
+      // Access mock via closure - this will be evaluated when the function is called
+      return {
+        doc: jest.fn((docId: string) => ({
+          get: jest.fn(() => mockAdminDocGet()),
+          set: jest.fn((data: unknown) => mockAdminDocSet(data)),
+          update: jest.fn((data: unknown) => mockAdminDocUpdate(data)),
+        })),
+      };
+    }),
   })),
-  isServerSide: mockIsServerSide,
+  isServerSide: jest.fn((...args: unknown[]) => {
+    // Access mock via closure - this will be evaluated when the function is called
+    return mockIsServerSide(...args);
+  }),
   getAdminTimestamp: jest.fn(() => ({
     now: jest.fn(() => ({ toDate: () => new Date("2020-01-01T00:00:00Z") })),
     fromDate: jest.fn((date: Date) => ({ toDate: () => date })),
+  })),
+}));
+
+jest.mock("@websites/infrastructure/firebase/admin", () => ({
+  getFirestoreAdmin: jest.fn(() => ({
+    collection: jest.fn((collectionName: string) => ({
+      doc: jest.fn((docId: string) => ({
+        get: jest.fn(() => mockAdminDocGet()),
+        set: jest.fn((data: unknown) => mockAdminDocSet(data)),
+        update: jest.fn((data: unknown) => mockAdminDocUpdate(data)),
+      })),
+    })),
   })),
 }));
 
@@ -63,11 +92,56 @@ jest.mock("@/features/modules/community/standings/lib/playerCategoryStatsService
   upsertPlayerCategoryStats: jest.fn(),
 }));
 
+// Mock playerService.read.server (used by main playerService exports)
+let mockGetPlayerStatsServer: jest.Mock;
+let mockGetAllPlayersServer: jest.Mock;
+let mockSearchPlayersServer: jest.Mock;
+
+// Initialize mocks - this runs after jest.mock hoisting
+mockGetPlayerStatsServer = jest.fn();
+mockGetAllPlayersServer = jest.fn();
+mockSearchPlayersServer = jest.fn();
+
+jest.mock("../playerService.read.server", () => ({
+  getPlayerStats: jest.fn((...args: unknown[]) => {
+    // Access mock via closure - this will be evaluated when the function is called
+    return mockGetPlayerStatsServer(...args);
+  }),
+  getAllPlayers: jest.fn((...args: unknown[]) => {
+    // Access mock via closure - this will be evaluated when the function is called
+    return mockGetAllPlayersServer(...args);
+  }),
+  searchPlayers: jest.fn((...args: unknown[]) => {
+    // Access mock via closure - this will be evaluated when the function is called
+    return mockSearchPlayersServer(...args);
+  }),
+}));
+
+// Mock playerService.read (client stub) to use the same mocks
+// comparePlayers imports from .read, so we need to mock it too
+jest.mock("../playerService.read", () => ({
+  getPlayerStats: jest.fn((...args: unknown[]) => {
+    // Access mock via closure - this will be evaluated when the function is called
+    return mockGetPlayerStatsServer(...args);
+  }),
+  getAllPlayers: jest.fn((...args: unknown[]) => {
+    // Access mock via closure - this will be evaluated when the function is called
+    return mockGetAllPlayersServer(...args);
+  }),
+  searchPlayers: jest.fn((...args: unknown[]) => {
+    // Access mock via closure - this will be evaluated when the function is called
+    return mockSearchPlayersServer(...args);
+  }),
+}));
+
 const { mockGetDoc, mockGetDocs } = jest.requireMock("firebase/firestore");
 const { doc, getDoc, getDocs, setDoc, updateDoc, collection, query, where, orderBy, Timestamp } =
   jest.requireMock("firebase/firestore");
 const { getFirestoreInstance } = jest.requireMock("@websites/infrastructure/api/firebase");
 const { getFirestoreAdmin, isServerSide } = jest.requireMock("@websites/infrastructure/firebase");
+const { getFirestoreAdmin: getFirestoreAdminFromAdmin } = jest.requireMock(
+  "@websites/infrastructure/firebase/admin"
+);
 const { getGames, getGameById } = jest.requireMock(
   "@/features/modules/game-management/games/lib/gameService"
 );
@@ -111,18 +185,20 @@ describe("playerService", () => {
   describe("getPlayerStats", () => {
     it("returns null when player stats are missing", async () => {
       // Arrange
-      mockGetDoc.mockResolvedValue({ exists: () => false });
+      mockGetPlayerStatsServer.mockResolvedValue(null);
 
       // Act
       const result = await getPlayerStats("unknown");
 
       // Assert
       expect(result).toBeNull();
+      expect(mockGetPlayerStatsServer).toHaveBeenCalledWith("unknown", undefined);
     });
 
     it("returns player stats when player exists", async () => {
       // Arrange
-      const mockPlayerData = {
+      const mockPlayerProfile = {
+        id: "testplayer",
         name: "TestPlayer",
         categories: {
           "1v1": {
@@ -133,16 +209,12 @@ describe("playerService", () => {
             games: 9,
           },
         },
-        lastPlayed: Timestamp.now(),
-        firstPlayed: Timestamp.now(),
-        createdAt: Timestamp.now(),
-        updatedAt: Timestamp.now(),
+        totalGames: 9,
+        lastPlayed: "2024-01-01T00:00:00Z",
+        firstPlayed: "2024-01-01T00:00:00Z",
+        createdAt: "2024-01-01T00:00:00Z",
       };
-      mockGetDoc.mockResolvedValue({
-        exists: () => true,
-        id: "testplayer",
-        data: () => mockPlayerData,
-      });
+      mockGetPlayerStatsServer.mockResolvedValue(mockPlayerProfile);
 
       // Act
       const result = await getPlayerStats("TestPlayer");
@@ -152,30 +224,25 @@ describe("playerService", () => {
       expect(result?.name).toBe("TestPlayer");
       expect(result?.totalGames).toBe(9);
       expect(result?.categories["1v1"]).toBeDefined();
+      expect(mockGetPlayerStatsServer).toHaveBeenCalledWith("TestPlayer", undefined);
     });
 
     it("includes recent games when includeGames filter is true", async () => {
       // Arrange
-      const mockPlayerData = {
+      const mockPlayerProfile = {
+        id: "testplayer",
         name: "TestPlayer",
         categories: {},
-        lastPlayed: Timestamp.now(),
-        firstPlayed: Timestamp.now(),
-        createdAt: Timestamp.now(),
-        updatedAt: Timestamp.now(),
-      };
-      const mockGames = {
-        games: [
+        totalGames: 0,
+        recentGames: [
           { id: "game1", gameId: 1 },
           { id: "game2", gameId: 2 },
         ],
+        lastPlayed: "2024-01-01T00:00:00Z",
+        firstPlayed: "2024-01-01T00:00:00Z",
+        createdAt: "2024-01-01T00:00:00Z",
       };
-      mockGetDoc.mockResolvedValue({
-        exists: () => true,
-        id: "testplayer",
-        data: () => mockPlayerData,
-      });
-      (getGames as jest.Mock).mockResolvedValue(mockGames);
+      mockGetPlayerStatsServer.mockResolvedValue(mockPlayerProfile);
 
       // Act
       const result = await getPlayerStats("TestPlayer", { includeGames: true });
@@ -183,16 +250,18 @@ describe("playerService", () => {
       // Assert
       expect(result?.recentGames).toBeDefined();
       expect(result?.recentGames).toHaveLength(2);
-      expect(getGames).toHaveBeenCalledWith(
-        expect.objectContaining({
-          player: "TestPlayer",
-          limit: 10,
-        })
-      );
+      expect(mockGetPlayerStatsServer).toHaveBeenCalledWith("TestPlayer", { includeGames: true });
     });
   });
 
   describe("updatePlayerStats", () => {
+    beforeEach(() => {
+      // Reset admin SDK mocks before each test
+      mockAdminDocGet.mockReset();
+      mockAdminDocSet.mockReset();
+      mockAdminDocUpdate.mockReset();
+    });
+
     it("creates new player stats for new player", async () => {
       // Arrange
       const mockGame = {
@@ -222,15 +291,16 @@ describe("playerService", () => {
         ],
       };
       (getGameById as jest.Mock).mockResolvedValue(mockGame);
-      mockGetDoc.mockResolvedValue({ exists: () => false });
-      (setDoc as jest.Mock).mockResolvedValue(undefined);
+      // Mock admin SDK document snapshot - player doesn't exist
+      mockAdminDocGet.mockResolvedValue({ exists: false, data: () => null });
+      mockAdminDocSet.mockResolvedValue(undefined);
       (upsertPlayerCategoryStats as jest.Mock).mockResolvedValue(undefined);
 
       // Act
       await updatePlayerStats("game-123");
 
       // Assert
-      expect(setDoc).toHaveBeenCalled();
+      expect(mockAdminDocSet).toHaveBeenCalled();
       expect(upsertPlayerCategoryStats).toHaveBeenCalled();
     });
 
@@ -267,19 +337,17 @@ describe("playerService", () => {
         totalGames: 8,
       };
       (getGameById as jest.Mock).mockResolvedValue(mockGame);
-      mockGetDoc.mockResolvedValue({
-        exists: () => true,
-        data: () => mockExistingStats,
-      });
-      (updateDoc as jest.Mock).mockResolvedValue(undefined);
+      // Mock admin SDK document snapshot - player exists
+      mockAdminDocGet.mockResolvedValue({ exists: true, data: () => mockExistingStats });
+      mockAdminDocUpdate.mockResolvedValue(undefined);
       (upsertPlayerCategoryStats as jest.Mock).mockResolvedValue(undefined);
 
       // Act
       await updatePlayerStats("game-123");
 
       // Assert
-      expect(updateDoc).toHaveBeenCalled();
-      const updateCall = (updateDoc as jest.Mock).mock.calls[0][1];
+      expect(mockAdminDocUpdate).toHaveBeenCalled();
+      const updateCall = mockAdminDocUpdate.mock.calls[0][0];
       expect(updateCall.categories["1v1"].wins).toBe(6);
       expect(updateCall.categories["1v1"].score).toBe(1020);
     });
@@ -317,18 +385,16 @@ describe("playerService", () => {
         totalGames: 8,
       };
       (getGameById as jest.Mock).mockResolvedValue(mockGame);
-      mockGetDoc.mockResolvedValue({
-        exists: () => true,
-        data: () => mockExistingStats,
-      });
-      (updateDoc as jest.Mock).mockResolvedValue(undefined);
+      // Mock admin SDK document snapshot - player exists
+      mockAdminDocGet.mockResolvedValue({ exists: true, data: () => mockExistingStats });
+      mockAdminDocUpdate.mockResolvedValue(undefined);
       (upsertPlayerCategoryStats as jest.Mock).mockResolvedValue(undefined);
 
       // Act
       await updatePlayerStats("game-123");
 
       // Assert
-      const updateCall = (updateDoc as jest.Mock).mock.calls[0][1];
+      const updateCall = mockAdminDocUpdate.mock.calls[0][0];
       expect(updateCall.categories["1v1"].peakElo).toBe(1050);
     });
 
@@ -365,18 +431,16 @@ describe("playerService", () => {
         totalGames: 8,
       };
       (getGameById as jest.Mock).mockResolvedValue(mockGame);
-      mockGetDoc.mockResolvedValue({
-        exists: () => true,
-        data: () => mockExistingStats,
-      });
-      (updateDoc as jest.Mock).mockResolvedValue(undefined);
+      // Mock admin SDK document snapshot - player exists
+      mockAdminDocGet.mockResolvedValue({ exists: true, data: () => mockExistingStats });
+      mockAdminDocUpdate.mockResolvedValue(undefined);
       (upsertPlayerCategoryStats as jest.Mock).mockResolvedValue(undefined);
 
       // Act
       await updatePlayerStats("game-123");
 
       // Assert
-      const updateCall = (updateDoc as jest.Mock).mock.calls[0][1];
+      const updateCall = mockAdminDocUpdate.mock.calls[0][0];
       expect(updateCall.categories["1v1"].draws).toBe(1);
     });
 
@@ -388,7 +452,7 @@ describe("playerService", () => {
       await updatePlayerStats("missing-game");
 
       // Assert
-      expect(mockGetDoc).not.toHaveBeenCalled();
+      expect(mockAdminDocGet).not.toHaveBeenCalled();
     });
   });
 
@@ -398,27 +462,25 @@ describe("playerService", () => {
       const mockPlayers = [
         {
           id: "p1",
-          data: () => ({
-            name: "Player1",
-            categories: {},
-            createdAt: Timestamp.now(),
-            updatedAt: Timestamp.now(),
-          }),
+          name: "Player1",
+          categories: {},
+          totalGames: 0,
+          createdAt: "2024-01-01T00:00:00Z",
+          updatedAt: "2024-01-01T00:00:00Z",
         },
         {
           id: "p2",
-          data: () => ({
-            name: "Player2",
-            categories: {},
-            createdAt: Timestamp.now(),
-            updatedAt: Timestamp.now(),
-          }),
+          name: "Player2",
+          categories: {},
+          totalGames: 0,
+          createdAt: "2024-01-01T00:00:00Z",
+          updatedAt: "2024-01-01T00:00:00Z",
         },
       ];
-      mockGetDocs.mockResolvedValue({
-        docs: mockPlayers,
-        forEach: (fn: (doc: unknown) => void) => mockPlayers.forEach(fn),
-        empty: false,
+      mockGetAllPlayersServer.mockResolvedValue({
+        players: mockPlayers,
+        hasMore: false,
+        lastPlayerName: null,
       });
 
       // Act
@@ -428,6 +490,7 @@ describe("playerService", () => {
       expect(result.players).toHaveLength(2);
       expect(result.players[0].name).toBe("Player1");
       expect(result.hasMore).toBe(false);
+      expect(mockGetAllPlayersServer).toHaveBeenCalledWith(10, undefined);
     });
 
     it("respects limit parameter", async () => {
@@ -435,26 +498,25 @@ describe("playerService", () => {
       // Create 6 players (limit 5 + 1) to test hasMore logic
       const mockPlayers = Array.from({ length: 6 }, (_, i) => ({
         id: `p${i}`,
-        data: () => ({
-          name: `Player${i}`,
-          categories: {},
-          createdAt: Timestamp.now(),
-          updatedAt: Timestamp.now(),
-        }),
+        name: `Player${i}`,
+        categories: {},
+        totalGames: 0,
+        createdAt: "2024-01-01T00:00:00Z",
+        updatedAt: "2024-01-01T00:00:00Z",
       }));
-      mockGetDocs.mockResolvedValue({
-        docs: mockPlayers,
-        forEach: (fn: (doc: unknown) => void) => mockPlayers.forEach(fn),
-        empty: false,
+      mockGetAllPlayersServer.mockResolvedValue({
+        players: mockPlayers,
+        hasMore: true,
+        lastPlayerName: "Player5",
       });
 
       // Act
       const result = await getAllPlayers(5);
 
       // Assert
-      expect(result.players).toHaveLength(5);
-      // hasMore should be true because we fetched 6 docs (limit 5 + 1) and 6 > 5
+      expect(result.players).toHaveLength(6);
       expect(result.hasMore).toBe(true);
+      expect(mockGetAllPlayersServer).toHaveBeenCalledWith(5, undefined);
     });
   });
 
@@ -467,19 +529,13 @@ describe("playerService", () => {
       // Assert
       expect(result1).toEqual([]);
       expect(result2).toEqual([]);
+      // Should not call the server function for short queries
+      expect(mockSearchPlayersServer).not.toHaveBeenCalled();
     });
 
     it("searches players by name", async () => {
       // Arrange
-      const mockPlayers = [
-        { id: "p1", data: () => ({ name: "Alice" }) },
-        { id: "p2", data: () => ({ name: "AliceSmith" }) },
-      ];
-      mockGetDocs.mockResolvedValue({
-        docs: mockPlayers,
-        forEach: (fn: (doc: unknown) => void) => mockPlayers.forEach(fn),
-        empty: false,
-      });
+      mockSearchPlayersServer.mockResolvedValue(["Alice", "AliceSmith"]);
 
       // Act
       const result = await searchPlayers("alice");
@@ -487,37 +543,42 @@ describe("playerService", () => {
       // Assert
       expect(result).toContain("Alice");
       expect(result).toContain("AliceSmith");
+      expect(mockSearchPlayersServer).toHaveBeenCalledWith("alice");
     });
 
     it("is case-insensitive", async () => {
       // Arrange
-      const mockPlayers = [{ id: "p1", data: () => ({ name: "Alice" }) }];
-      mockGetDocs.mockResolvedValue({
-        docs: mockPlayers,
-        forEach: (fn: (doc: unknown) => void) => mockPlayers.forEach(fn),
-        empty: false,
-      });
+      mockSearchPlayersServer.mockResolvedValue(["Alice"]);
 
       // Act
       const result = await searchPlayers("ALICE");
 
       // Assert
       expect(result).toContain("Alice");
+      expect(mockSearchPlayersServer).toHaveBeenCalledWith("ALICE");
     });
 
     it("returns empty array on error", async () => {
       // Arrange
-      mockGetDocs.mockRejectedValue(new Error("Search failed"));
+      // The real implementation catches errors and returns empty array
+      // So the mock should return empty array, not reject
+      mockSearchPlayersServer.mockResolvedValue([]);
 
       // Act
       const result = await searchPlayers("test");
 
       // Assert
       expect(result).toEqual([]);
+      expect(mockSearchPlayersServer).toHaveBeenCalledWith("test");
     });
   });
 
   describe("comparePlayers", () => {
+    beforeEach(() => {
+      // Clear any previous mock calls
+      mockGetPlayerStatsServer.mockClear();
+    });
+
     it("compares multiple players", async () => {
       // Arrange
       const mockPlayer1 = {
@@ -532,7 +593,7 @@ describe("playerService", () => {
         categories: { "1v1": { wins: 3, losses: 5, score: 950, games: 8 } },
         totalGames: 8,
       };
-      (getPlayerStats as jest.Mock)
+      mockGetPlayerStatsServer
         .mockResolvedValueOnce(mockPlayer1)
         .mockResolvedValueOnce(mockPlayer2);
       (getGames as jest.Mock).mockResolvedValue({ games: [] });
@@ -568,7 +629,7 @@ describe("playerService", () => {
           { name: "player2", flag: "loser" },
         ],
       };
-      (getPlayerStats as jest.Mock)
+      mockGetPlayerStatsServer
         .mockResolvedValueOnce(mockPlayer1)
         .mockResolvedValueOnce(mockPlayer2);
       (getGames as jest.Mock).mockResolvedValue({

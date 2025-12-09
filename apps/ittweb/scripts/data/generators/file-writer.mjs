@@ -3,12 +3,16 @@
  */
 
 import fs from 'fs';
+import path from 'path';
 import { escapeString } from '../lib/utils.mjs';
 
 /**
  * Write TypeScript file with items
  */
 export function writeItemsFile(filePath, items, category) {
+  // Ensure directory exists before writing
+  const dir = path.dirname(filePath);
+  fs.mkdirSync(dir, { recursive: true });
   const content = `import type { ItemData } from '@/types/items';
 
 export const ${category.toUpperCase().replace(/-/g, '_')}_ITEMS: ItemData[] = [
@@ -103,6 +107,10 @@ ${items.map(item => {
  * Write TypeScript file with abilities
  */
 export function writeAbilitiesFile(filePath, abilities, category) {
+  // Ensure directory exists before writing
+  const dir = path.dirname(filePath);
+  fs.mkdirSync(dir, { recursive: true });
+  
   const constName = category.toUpperCase().replace(/-/g, '_') + '_ABILITIES';
   
   const content = `import type { AbilityData } from './types';
@@ -191,6 +199,10 @@ ${abilities.map(ability => {
  * Write TypeScript file with base classes
  */
 export function writeClassesFile(filePath, classes) {
+  // Ensure directory exists before writing
+  const dir = path.dirname(filePath);
+  fs.mkdirSync(dir, { recursive: true });
+  
   const content = `export type TrollClassData = {
   slug: string;
   name: string;
@@ -246,6 +258,10 @@ export function getClassBySlug(slug: string): TrollClassData | undefined {
  * Write TypeScript file with derived classes
  */
 export function writeDerivedClassesFile(filePath, classes) {
+  // Ensure directory exists before writing
+  const dir = path.dirname(filePath);
+  fs.mkdirSync(dir, { recursive: true });
+  
   const content = `import { BASE_TROLL_CLASSES } from './classes';
 
 export type DerivedClassType = 'sub' | 'super';
@@ -339,6 +355,10 @@ export function getSupersByParentSlug(parentSlug: string): DerivedClassData[] {
  * Write TypeScript file with all units
  */
 export function writeAllUnitsFile(filePath, units) {
+  // Ensure directory exists before writing
+  const dir = path.dirname(filePath);
+  fs.mkdirSync(dir, { recursive: true });
+  
   const content = `export type UnitType = 'troll' | 'animal' | 'boss' | 'building' | 'unit-dummy-item-reward' | 'dummy' | 'other';
 
 export type UnitData = {
@@ -392,6 +412,8 @@ export type UnitData = {
   attackSpeed?: number;
   damage?: number | string;
   craftableItems?: string[];
+  // Troll class relationship
+  baseClass?: string;
 };
 
 export const ALL_UNITS: UnitData[] = [
@@ -528,6 +550,13 @@ ${units.map(unit => {
   }
   if (unit.craftableItems && unit.craftableItems.length > 0) {
     lines.push(`    craftableItems: [${unit.craftableItems.map(item => `'${item}'`).join(', ')}],`);
+  }
+  // Troll class relationship
+  if (unit.baseClass) {
+    lines.push(`    baseClass: '${unit.baseClass}',`);
+  } else if (unit.name === 'Wolf Form' || unit.name === 'Bear Form' || unit.name === 'Escape Artist') {
+    // Debug: Log if baseClass is missing for known units
+    console.log(`⚠️  Missing baseClass for unit: ${unit.name} (type: ${unit.type})`);
   }
   lines.push(`  }`);
   return lines.join('\n');

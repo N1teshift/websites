@@ -1,6 +1,13 @@
 import { act, renderHook, waitFor } from "@testing-library/react";
 import { useGames } from "../useGames";
 import type { Game, GameFilters, GameListResponse } from "../../types";
+import {
+  setupMockFetch,
+  getMockFetch,
+  createSuccessResponse,
+  createErrorResponse,
+  createNetworkError,
+} from "@websites/test-utils/mocks/fetch";
 
 // Mock logger
 jest.mock("@websites/infrastructure/logging", () => ({
@@ -47,7 +54,7 @@ describe("useGames", () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    global.fetch = jest.fn();
+    setupMockFetch();
   });
 
   afterEach(() => {
@@ -57,21 +64,18 @@ describe("useGames", () => {
   describe("fetches games on mount", () => {
     it("should fetch games when hook mounts", async () => {
       // Arrange
-      const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({
-          success: true,
-          data: mockGameListResponse,
-        }),
-      } as Response);
+      const mockFetch = getMockFetch();
+      mockFetch.mockResolvedValueOnce(createSuccessResponse(mockGameListResponse));
 
       // Act
       const { result } = renderHook(() => useGames());
 
       // Assert
       await waitFor(() => expect(result.current.loading).toBe(false));
-      expect(mockFetch).toHaveBeenCalledWith("/api/games?");
+      expect(mockFetch).toHaveBeenCalledWith(
+        expect.stringMatching(/^\/api\/games\?t=\d+$/),
+        expect.any(Object)
+      );
       expect(result.current.games).toEqual(mockGames);
       expect(result.current.error).toBeNull();
     });
@@ -79,13 +83,7 @@ describe("useGames", () => {
     it("should handle empty results", async () => {
       // Arrange
       const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({
-          success: true,
-          data: { games: [], hasMore: false },
-        }),
-      } as Response);
+      mockFetch.mockResolvedValueOnce(createSuccessResponse({ games: [], hasMore: false }));
 
       // Act
       const { result } = renderHook(() => useGames());
@@ -99,7 +97,7 @@ describe("useGames", () => {
     it("should handle network errors", async () => {
       // Arrange
       const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
-      mockFetch.mockRejectedValueOnce(new Error("Network error"));
+      mockFetch.mockRejectedValueOnce(createNetworkError("Network error"));
 
       // Act
       const { result } = renderHook(() => useGames());
@@ -142,21 +140,18 @@ describe("useGames", () => {
     it("should apply gameState filter", async () => {
       // Arrange
       const filters: GameFilters = { gameState: "completed" };
-      const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({
-          success: true,
-          data: mockGameListResponse,
-        }),
-      } as Response);
+      const mockFetch = getMockFetch();
+      mockFetch.mockResolvedValueOnce(createSuccessResponse(mockGameListResponse));
 
       // Act
       const { result } = renderHook(() => useGames(filters));
 
       // Assert
       await waitFor(() => expect(result.current.loading).toBe(false));
-      expect(mockFetch).toHaveBeenCalledWith("/api/games?gameState=completed");
+      expect(mockFetch).toHaveBeenCalledWith(
+        expect.stringMatching(/^\/api\/games\?gameState=completed&t=\d+$/),
+        expect.any(Object)
+      );
     });
 
     it("should apply multiple filters", async () => {
@@ -167,14 +162,8 @@ describe("useGames", () => {
         startDate: "2024-01-01",
         endDate: "2024-01-31",
       };
-      const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({
-          success: true,
-          data: mockGameListResponse,
-        }),
-      } as Response);
+      const mockFetch = getMockFetch();
+      mockFetch.mockResolvedValueOnce(createSuccessResponse(mockGameListResponse));
 
       // Act
       const { result } = renderHook(() => useGames(filters));
@@ -182,20 +171,17 @@ describe("useGames", () => {
       // Assert
       await waitFor(() => expect(result.current.loading).toBe(false));
       expect(mockFetch).toHaveBeenCalledWith(
-        "/api/games?gameState=completed&startDate=2024-01-01&endDate=2024-01-31&category=1v1"
+        expect.stringMatching(
+          /^\/api\/games\?gameState=completed&startDate=2024-01-01&endDate=2024-01-31&category=1v1&t=\d+$/
+        ),
+        expect.any(Object)
       );
     });
 
     it("should refetch when filters change", async () => {
       // Arrange
-      const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
-      mockFetch.mockResolvedValue({
-        ok: true,
-        json: async () => ({
-          success: true,
-          data: mockGameListResponse,
-        }),
-      } as Response);
+      const mockFetch = getMockFetch();
+      mockFetch.mockResolvedValue(createSuccessResponse(mockGameListResponse));
 
       // Act
       const { result, rerender } = renderHook(({ filters }) => useGames(filters), {
@@ -211,19 +197,16 @@ describe("useGames", () => {
       // Assert
       await waitFor(() => expect(result.current.loading).toBe(false));
       expect(mockFetch).toHaveBeenCalledTimes(2);
-      expect(mockFetch).toHaveBeenLastCalledWith("/api/games?gameState=scheduled");
+      expect(mockFetch).toHaveBeenLastCalledWith(
+        expect.stringMatching(/^\/api\/games\?gameState=scheduled&t=\d+$/),
+        expect.any(Object)
+      );
     });
 
     it("should handle rapid filter changes", async () => {
       // Arrange
-      const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
-      mockFetch.mockResolvedValue({
-        ok: true,
-        json: async () => ({
-          success: true,
-          data: mockGameListResponse,
-        }),
-      } as Response);
+      const mockFetch = getMockFetch();
+      mockFetch.mockResolvedValue(createSuccessResponse(mockGameListResponse));
 
       // Act
       const { result, rerender } = renderHook(({ filters }) => useGames(filters), {
@@ -245,14 +228,8 @@ describe("useGames", () => {
     it("should handle same filter value (no unnecessary refetch)", async () => {
       // Arrange
       const filters: GameFilters = { gameState: "completed" };
-      const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
-      mockFetch.mockResolvedValue({
-        ok: true,
-        json: async () => ({
-          success: true,
-          data: mockGameListResponse,
-        }),
-      } as Response);
+      const mockFetch = getMockFetch();
+      mockFetch.mockResolvedValue(createSuccessResponse(mockGameListResponse));
 
       // Act
       const { result, rerender } = renderHook(({ filters }) => useGames(filters), {
@@ -302,14 +279,8 @@ describe("useGames", () => {
 
     it("should set loading to false after fetch completes", async () => {
       // Arrange
-      const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({
-          success: true,
-          data: mockGameListResponse,
-        }),
-      } as Response);
+      const mockFetch = getMockFetch();
+      mockFetch.mockResolvedValueOnce(createSuccessResponse(mockGameListResponse));
 
       // Act
       const { result } = renderHook(() => useGames());
@@ -321,14 +292,8 @@ describe("useGames", () => {
 
     it("should handle multiple rapid fetches", async () => {
       // Arrange
-      const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
-      mockFetch.mockResolvedValue({
-        ok: true,
-        json: async () => ({
-          success: true,
-          data: mockGameListResponse,
-        }),
-      } as Response);
+      const mockFetch = getMockFetch();
+      mockFetch.mockResolvedValue(createSuccessResponse(mockGameListResponse));
 
       // Act
       const { result, rerender } = renderHook(({ filters }) => useGames(filters), {
@@ -369,7 +334,12 @@ describe("useGames", () => {
       const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
       mockFetch.mockResolvedValueOnce({
         ok: false,
+        status: 500,
         statusText: "Internal Server Error",
+        json: async () => ({
+          success: false,
+          error: "Failed to fetch games: Internal Server Error",
+        }),
       } as Response);
 
       // Act
@@ -408,6 +378,10 @@ describe("useGames", () => {
         ok: false,
         status: 403,
         statusText: "Forbidden",
+        json: async () => ({
+          success: false,
+          error: "Failed to fetch games: Forbidden",
+        }),
       } as Response);
 
       // Act
@@ -423,14 +397,8 @@ describe("useGames", () => {
   describe("refetches on filter change", () => {
     it("should trigger refetch when filter changes", async () => {
       // Arrange
-      const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
-      mockFetch.mockResolvedValue({
-        ok: true,
-        json: async () => ({
-          success: true,
-          data: mockGameListResponse,
-        }),
-      } as Response);
+      const mockFetch = getMockFetch();
+      mockFetch.mockResolvedValue(createSuccessResponse(mockGameListResponse));
 
       // Act
       const { result, rerender } = renderHook(({ filters }) => useGames(filters), {
@@ -465,7 +433,10 @@ describe("useGames", () => {
 
       // Assert
       await waitFor(() => expect(result.current.loading).toBe(false));
-      expect(mockFetch).toHaveBeenCalledWith("/api/games?page=2&limit=10");
+      expect(mockFetch).toHaveBeenCalledWith(
+        expect.stringMatching(/^\/api\/games\?page=2&limit=10&t=\d+$/),
+        expect.any(Object)
+      );
       expect(result.current.nextCursor).toBe("cursor123");
     });
   });
@@ -473,14 +444,8 @@ describe("useGames", () => {
   describe("refetch function", () => {
     it("should allow manual refetch", async () => {
       // Arrange
-      const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
-      mockFetch.mockResolvedValue({
-        ok: true,
-        json: async () => ({
-          success: true,
-          data: mockGameListResponse,
-        }),
-      } as Response);
+      const mockFetch = getMockFetch();
+      mockFetch.mockResolvedValue(createSuccessResponse(mockGameListResponse));
 
       // Act
       const { result } = renderHook(() => useGames());

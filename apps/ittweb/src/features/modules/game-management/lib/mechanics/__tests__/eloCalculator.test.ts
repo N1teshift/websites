@@ -16,7 +16,7 @@ jest.mock("@websites/infrastructure/logging", () => ({
 }));
 
 const mockGetGameById = jest.fn();
-jest.mock("../gameService", () => ({
+jest.mock("@/features/modules/game-management/games/lib/gameService", () => ({
   getGameById: (...args: unknown[]) => mockGetGameById(...args),
 }));
 
@@ -27,10 +27,19 @@ jest.mock("../../../players/lib/playerService", () => ({
   updatePlayerStats: (...args: unknown[]) => mockUpdatePlayerStats(...args),
 }));
 
-const mockIsServerSide = jest.fn(() => false);
+// Mock dependencies - use function wrappers to avoid hoisting issues
+let mockIsServerSide: jest.Mock;
+
+// Initialize mocks - this runs after jest.mock hoisting
+mockIsServerSide = jest.fn(() => false);
+
 jest.mock("@websites/infrastructure/firebase", () => ({
+  getFirestoreInstance: jest.fn(() => ({ instance: "client" })),
   getFirestoreAdmin: jest.fn(),
-  isServerSide: mockIsServerSide,
+  isServerSide: jest.fn((...args: unknown[]) => {
+    // Access mock via closure - this will be evaluated when the function is called
+    return mockIsServerSide(...args);
+  }),
 }));
 
 const mockDoc = jest.fn((...args: unknown[]) => ({ path: args.join("/") }));
@@ -42,10 +51,6 @@ jest.mock("firebase/firestore", () => ({
   updateDoc: (...args: unknown[]) => mockUpdateDoc(...args),
   getDocs: (...args: unknown[]) => mockGetDocs(...args),
   collection: (...args: unknown[]) => mockCollection(...args),
-}));
-
-jest.mock("@websites/infrastructure/api/firebase", () => ({
-  getFirestoreInstance: jest.fn(() => ({ instance: "client" })),
 }));
 
 describe("calculateEloChange", () => {

@@ -1,3 +1,6 @@
+// Unmock the logging module so we can test the actual implementation
+jest.unmock("@websites/infrastructure/logging");
+
 import {
   Logger,
   ErrorCategory,

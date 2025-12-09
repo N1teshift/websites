@@ -6,7 +6,7 @@ jest.mock("../../hooks/useClassesData", () => ({
   useClassesData: jest.fn(),
 }));
 
-// Mock PageHero component
+// Mock infrastructure components
 jest.mock("@/features/infrastructure/components", () => ({
   PageHero: ({ title, description }: { title: string; description: string }) => (
     <div data-testid="page-hero">
@@ -14,10 +14,6 @@ jest.mock("@/features/infrastructure/components", () => ({
       <p>{description}</p>
     </div>
   ),
-}));
-
-// Mock Card component
-jest.mock("@/features/infrastructure/components/containers/Card", () => ({
   Card: ({ children, variant, className }: any) => (
     <div data-testid={`card-${variant || "default"}`} className={className}>
       {children}

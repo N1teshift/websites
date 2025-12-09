@@ -1,0 +1,553 @@
+{
+  "generatedAt": "2025-12-09T07:57:04.743Z",
+  "source": "TrollUnitTextConstant.wurst",
+  "totalAbilities": 97,
+  "relationships": {
+    "panic": {
+      "classes": ["basic"],
+      "categories": ["basic"],
+      "spellTypes": ["basic"]
+    },
+    "sleep-outside": {
+      "classes": ["basic"],
+      "categories": ["basic"],
+      "spellTypes": ["basic"]
+    },
+    "building-craft-spellbook-id": {
+      "classes": ["basic"],
+      "categories": ["basic"],
+      "spellTypes": ["basic"]
+    },
+    "hero-glow": {
+      "classes": ["basic"],
+      "categories": ["basic"],
+      "spellTypes": ["basic"]
+    },
+    "track": {
+      "classes": ["hunter"],
+      "categories": ["hunter"],
+      "spellTypes": ["hero"]
+    },
+    "warrior": {
+      "classes": ["hunter"],
+      "categories": ["hunter"],
+      "spellTypes": ["hero"]
+    },
+    "tracker": {
+      "classes": ["hunter"],
+      "categories": ["hunter"],
+      "spellTypes": ["hero"]
+    },
+    "mage-spellbook": {
+      "classes": ["mage"],
+      "categories": ["mage"],
+      "spellTypes": ["hero"]
+    },
+    "elementalist": {
+      "classes": ["mage"],
+      "categories": ["mage"],
+      "spellTypes": ["hero"]
+    },
+    "dreamwalker": {
+      "classes": ["mage"],
+      "categories": ["mage"],
+      "spellTypes": ["hero"]
+    },
+    "dementia-master": {
+      "classes": ["mage", "elementalist", "hypnotist", "dreamwalker"],
+      "categories": ["mage"],
+      "spellTypes": ["hero"]
+    },
+    "priest-spellbook": {
+      "classes": ["priest"],
+      "categories": ["priest"],
+      "spellTypes": ["hero"]
+    },
+    "booster": {
+      "classes": ["priest"],
+      "categories": ["priest"],
+      "spellTypes": ["hero"]
+    },
+    "master-healer": {
+      "classes": ["priest"],
+      "categories": ["priest"],
+      "spellTypes": ["hero"]
+    },
+    "sage": {
+      "classes": ["priest", "booster", "master-healer"],
+      "categories": ["priest"],
+      "spellTypes": ["hero"]
+    },
+    "spirit-beast": {
+      "classes": ["beastmaster"],
+      "categories": ["beastmaster"],
+      "spellTypes": ["hero", "normal"]
+    },
+    "shapeshifter": {
+      "classes": ["beastmaster"],
+      "categories": ["beastmaster"],
+      "spellTypes": ["hero"]
+    },
+    "druid": {
+      "classes": ["beastmaster"],
+      "categories": ["beastmaster"],
+      "spellTypes": ["hero"]
+    },
+    "dire-wolf": {
+      "classes": ["beastmaster"],
+      "categories": ["beastmaster"],
+      "spellTypes": ["hero"]
+    },
+    "dire-bear": {
+      "classes": ["beastmaster"],
+      "categories": ["beastmaster"],
+      "spellTypes": ["hero"]
+    },
+    "cloak": {
+      "classes": ["thief"],
+      "categories": ["thief"],
+      "spellTypes": ["hero"]
+    },
+    "rogue": {
+      "classes": ["thief"],
+      "categories": ["thief"],
+      "spellTypes": ["hero"]
+    },
+    "telethief": {
+      "classes": ["thief"],
+      "categories": ["thief"],
+      "spellTypes": ["hero"]
+    },
+    "assassin": {
+      "classes": ["thief", "escape-artist", "rogue", "telethief", "contortionist"],
+      "categories": ["thief"],
+      "spellTypes": ["hero"]
+    },
+    "scout-spellbook": {
+      "classes": ["scout"],
+      "categories": ["scout"],
+      "spellTypes": ["hero", "normal"]
+    },
+    "observer": {
+      "classes": ["scout"],
+      "categories": ["scout"],
+      "spellTypes": ["hero"]
+    },
+    "spy": {
+      "classes": ["scout", "trapper", "observer", "hawk"],
+      "categories": ["scout"],
+      "spellTypes": ["hero"]
+    },
+    "item-radar": {
+      "classes": ["gatherer"],
+      "categories": ["gatherer"],
+      "spellTypes": ["hero"]
+    },
+    "radar-gatherer": {
+      "classes": ["gatherer"],
+      "categories": ["gatherer"],
+      "spellTypes": ["hero"]
+    },
+    "herb-master": {
+      "classes": ["gatherer"],
+      "categories": ["gatherer"],
+      "spellTypes": ["hero"]
+    },
+    "omnigatherer": {
+      "classes": ["gatherer", "radar-gatherer", "herb-master", "alchemist"],
+      "categories": ["gatherer"],
+      "spellTypes": ["hero"]
+    },
+    "alchemist": {
+      "classes": ["gatherer"],
+      "categories": ["gatherer"],
+      "spellTypes": ["hero"]
+    },
+    "hunter-web": {
+      "classes": ["hunter", "tracker", "juggernaut"],
+      "categories": ["hunter"],
+      "spellTypes": ["normal"]
+    },
+    "negative-blast": {
+      "classes": ["mage"],
+      "categories": ["mage"],
+      "spellTypes": ["normal"]
+    },
+    "the-glow": {
+      "classes": ["priest"],
+      "categories": ["priest"],
+      "spellTypes": ["normal"]
+    },
+    "pet-spells": {
+      "classes": ["beastmaster", "druid", "jungle-tyrant"],
+      "categories": ["beastmaster"],
+      "spellTypes": ["normal"]
+    },
+    "blink": {
+      "classes": ["thief", "escape-artist", "rogue", "contortionist", "telethief"],
+      "categories": ["thief"],
+      "spellTypes": ["normal"]
+    },
+    "thief-spellbook": {
+      "classes": ["thief"],
+      "categories": ["thief"],
+      "spellTypes": ["normal"]
+    },
+    "hawk-swoop": {
+      "classes": ["scout", "hawk", "spy"],
+      "categories": ["scout"],
+      "spellTypes": ["normal"]
+    },
+    "salve-recipe": {
+      "classes": ["gatherer"],
+      "categories": ["gatherer"],
+      "spellTypes": ["normal"]
+    },
+    "juggernaut": {
+      "classes": ["warrior", "tracker"],
+      "categories": ["hunter"],
+      "spellTypes": ["hero"]
+    },
+    "tracker-spellbook": {
+      "classes": ["tracker"],
+      "categories": ["hunter"],
+      "spellTypes": ["hero"]
+    },
+    "elementalist-new-spellbook": {
+      "classes": ["elementalist"],
+      "categories": ["mage"],
+      "spellTypes": ["hero"]
+    },
+    "hypnotist-spellbook": {
+      "classes": ["hypnotist"],
+      "categories": ["mage"],
+      "spellTypes": ["hero"]
+    },
+    "dreamwalker-spellbook": {
+      "classes": ["dreamwalker"],
+      "categories": ["mage"],
+      "spellTypes": ["hero"]
+    },
+    "booster-spellbook": {
+      "classes": ["booster"],
+      "categories": ["priest"],
+      "spellTypes": ["hero"]
+    },
+    "master-healer-spellbook": {
+      "classes": ["master-healer"],
+      "categories": ["priest"],
+      "spellTypes": ["hero"]
+    },
+    "escape-artist-spellbook": {
+      "classes": ["escape-artist"],
+      "categories": ["thief"],
+      "spellTypes": ["hero"]
+    },
+    "rogue-spellbook": {
+      "classes": ["rogue"],
+      "categories": ["thief"],
+      "spellTypes": ["hero"]
+    },
+    "telethief-spellbook": {
+      "classes": ["telethief"],
+      "categories": ["thief"],
+      "spellTypes": ["hero"]
+    },
+    "contortionist-spellbook": {
+      "classes": ["contortionist"],
+      "categories": ["thief"],
+      "spellTypes": ["hero"]
+    },
+    "trapper-spellbook": {
+      "classes": ["trapper"],
+      "categories": ["scout"],
+      "spellTypes": ["hero"]
+    },
+    "observer-ward-area": {
+      "classes": ["observer"],
+      "categories": ["scout"],
+      "spellTypes": ["hero"]
+    },
+    "hawk-spellbook": {
+      "classes": ["hawk"],
+      "categories": ["scout"],
+      "spellTypes": ["hero"]
+    },
+    "tele-radar-gather": {
+      "classes": ["radar-gatherer"],
+      "categories": ["gatherer"],
+      "spellTypes": ["hero"]
+    },
+    "tele-herb-gather": {
+      "classes": ["herb-master"],
+      "categories": ["gatherer"],
+      "spellTypes": ["hero"]
+    },
+    "druid-spellbook": {
+      "classes": ["druid"],
+      "categories": ["beastmaster"],
+      "spellTypes": ["hero"]
+    },
+    "jungle-tyrant": {
+      "classes": [
+        "druid",
+        "dire-wolf",
+        "dire-bear",
+        "shapeshifter-wolf",
+        "shapeshifter-bear",
+        "shapeshifter-panther",
+        "shapeshifter-tiger"
+      ],
+      "categories": [
+        "beastmaster",
+        "shapeshifter-wolf",
+        "shapeshifter-bear",
+        "shapeshifter-panther",
+        "shapeshifter-tiger"
+      ],
+      "spellTypes": ["hero"]
+    },
+    "alchemist-spellbook": {
+      "classes": ["alchemist"],
+      "categories": ["gatherer"],
+      "spellTypes": ["hero"]
+    },
+    "dire-wolf-spellbook": {
+      "classes": ["dire-wolf"],
+      "categories": ["beastmaster"],
+      "spellTypes": ["hero"]
+    },
+    "dire-bear-spellbook": {
+      "classes": ["dire-bear"],
+      "categories": ["beastmaster"],
+      "spellTypes": ["hero"]
+    },
+    "spiked-net": {
+      "classes": ["warrior"],
+      "categories": ["hunter"],
+      "spellTypes": ["normal"]
+    },
+    "whirlwind": {
+      "classes": ["warrior"],
+      "categories": ["hunter"],
+      "spellTypes": ["normal"]
+    },
+    "axe-throw": {
+      "classes": ["warrior"],
+      "categories": ["hunter"],
+      "spellTypes": ["normal"]
+    },
+    "axe-throw-dw": {
+      "classes": ["warrior"],
+      "categories": ["hunter"],
+      "spellTypes": ["normal"]
+    },
+    "warrior-shield-charge": {
+      "classes": ["warrior"],
+      "categories": ["hunter"],
+      "spellTypes": ["normal"]
+    },
+    "weapons-of-choice": {
+      "classes": ["warrior"],
+      "categories": ["hunter"],
+      "spellTypes": ["normal"]
+    },
+    "whirling-axes": {
+      "classes": ["warrior"],
+      "categories": ["hunter"],
+      "spellTypes": ["normal"]
+    },
+    "sub-mage-inherited-spellbook": {
+      "classes": ["elementalist", "hypnotist"],
+      "categories": ["mage"],
+      "spellTypes": ["normal"]
+    },
+    "sub-priest-spellbook": {
+      "classes": ["booster", "master-healer"],
+      "categories": ["priest"],
+      "spellTypes": ["normal"]
+    },
+    "greater-reveal-id": {
+      "classes": ["trapper", "observer"],
+      "categories": ["scout"],
+      "spellTypes": ["normal"]
+    },
+    "observer-spellbook": {
+      "classes": ["observer"],
+      "categories": ["scout"],
+      "spellTypes": ["normal"]
+    },
+    "radar-gatherer-spellbook": {
+      "classes": ["radar-gatherer"],
+      "categories": ["gatherer"],
+      "spellTypes": ["normal"]
+    },
+    "mix-herbs": {
+      "classes": ["herb-master"],
+      "categories": ["gatherer"],
+      "spellTypes": ["normal"]
+    },
+    "create-philosophers-stone": {
+      "classes": ["alchemist", "omnigatherer"],
+      "categories": ["gatherer"],
+      "spellTypes": ["normal"]
+    },
+    "wolf-voracity-coat-corpse-consume": {
+      "classes": ["dire-wolf"],
+      "categories": ["beastmaster"],
+      "spellTypes": ["normal"]
+    },
+    "scavenge-food": {
+      "classes": ["dire-bear"],
+      "categories": ["beastmaster"],
+      "spellTypes": ["normal"]
+    },
+    "shapeshifter-form": {
+      "classes": [
+        "shapeshifter-wolf",
+        "shapeshifter-bear",
+        "shapeshifter-panther",
+        "shapeshifter-tiger"
+      ],
+      "categories": [
+        "shapeshifter-wolf",
+        "shapeshifter-bear",
+        "shapeshifter-panther",
+        "shapeshifter-tiger"
+      ],
+      "spellTypes": ["hero"]
+    },
+    "wolf-hunger": {
+      "classes": ["shapeshifter-wolf"],
+      "categories": ["shapeshifter-wolf"],
+      "spellTypes": ["normal"]
+    },
+    "bear-bulwark": {
+      "classes": ["shapeshifter-bear"],
+      "categories": ["shapeshifter-bear"],
+      "spellTypes": ["normal"]
+    },
+    "armor-bonus-4": {
+      "classes": ["shapeshifter-bear"],
+      "categories": ["shapeshifter-bear"],
+      "spellTypes": ["normal"]
+    },
+    "panther-prowl": {
+      "classes": ["shapeshifter-panther"],
+      "categories": ["shapeshifter-panther"],
+      "spellTypes": ["normal"]
+    },
+    "tiger-vicious-strike": {
+      "classes": ["shapeshifter-tiger"],
+      "categories": ["shapeshifter-tiger"],
+      "spellTypes": ["normal"]
+    },
+    "rage": {
+      "classes": ["juggernaut"],
+      "categories": ["hunter"],
+      "spellTypes": ["hero"]
+    },
+    "dementia-master-spellbook": {
+      "classes": ["dementia-master"],
+      "categories": ["mage"],
+      "spellTypes": ["hero"]
+    },
+    "sage-spellbook": {
+      "classes": ["sage"],
+      "categories": ["priest"],
+      "spellTypes": ["hero"]
+    },
+    "assassinate": {
+      "classes": ["assassin"],
+      "categories": ["thief"],
+      "spellTypes": ["hero"]
+    },
+    "spy-inherited-spellbook": {
+      "classes": ["spy"],
+      "categories": ["scout"],
+      "spellTypes": ["hero"]
+    },
+    "omnigatherer-alchemist-spellbook": {
+      "classes": ["omnigatherer"],
+      "categories": ["gatherer"],
+      "spellTypes": ["hero"]
+    },
+    "juggernaut-spellbook": {
+      "classes": ["juggernaut"],
+      "categories": ["hunter"],
+      "spellTypes": ["normal"]
+    },
+    "dementia-master-inherited-spellbook": {
+      "classes": ["dementia-master"],
+      "categories": ["mage"],
+      "spellTypes": ["normal"]
+    },
+    "sage-inherited-spellbook": {
+      "classes": ["sage"],
+      "categories": ["priest"],
+      "spellTypes": ["normal"]
+    },
+    "jungle-tyrant-evolution": {
+      "classes": ["jungle-tyrant"],
+      "categories": ["beastmaster"],
+      "spellTypes": ["normal"]
+    },
+    "rendo-devour": {
+      "classes": ["jungle-tyrant"],
+      "categories": ["beastmaster"],
+      "spellTypes": ["normal"]
+    },
+    "assassin-spellbook": {
+      "classes": ["assassin"],
+      "categories": ["thief"],
+      "spellTypes": ["normal"]
+    },
+    "hawk-inherited-spellbook": {
+      "classes": ["spy"],
+      "categories": ["scout"],
+      "spellTypes": ["normal"]
+    },
+    "omnigatherer-inherited-spellbook": {
+      "classes": ["omnigatherer"],
+      "categories": ["gatherer"],
+      "spellTypes": ["normal"]
+    }
+  },
+  "spellbooks": {
+    "building-craft-spellbook-id": ["basic"],
+    "mage-spellbook": ["mage"],
+    "priest-spellbook": ["priest"],
+    "scout-spellbook": ["scout"],
+    "thief-spellbook": ["thief"],
+    "tracker-spellbook": ["tracker"],
+    "elementalist-new-spellbook": ["elementalist"],
+    "hypnotist-spellbook": ["hypnotist"],
+    "dreamwalker-spellbook": ["dreamwalker"],
+    "booster-spellbook": ["booster"],
+    "master-healer-spellbook": ["master-healer"],
+    "escape-artist-spellbook": ["escape-artist"],
+    "rogue-spellbook": ["rogue"],
+    "telethief-spellbook": ["telethief"],
+    "contortionist-spellbook": ["contortionist"],
+    "trapper-spellbook": ["trapper"],
+    "hawk-spellbook": ["hawk"],
+    "druid-spellbook": ["druid"],
+    "alchemist-spellbook": ["alchemist"],
+    "dire-wolf-spellbook": ["dire-wolf"],
+    "dire-bear-spellbook": ["dire-bear"],
+    "sub-mage-inherited-spellbook": ["elementalist", "hypnotist"],
+    "sub-priest-spellbook": ["booster", "master-healer"],
+    "observer-spellbook": ["observer"],
+    "radar-gatherer-spellbook": ["radar-gatherer"],
+    "dementia-master-spellbook": ["dementia-master"],
+    "sage-spellbook": ["sage"],
+    "spy-inherited-spellbook": ["spy"],
+    "omnigatherer-alchemist-spellbook": ["omnigatherer"],
+    "juggernaut-spellbook": ["juggernaut"],
+    "dementia-master-inherited-spellbook": ["dementia-master"],
+    "sage-inherited-spellbook": ["sage"],
+    "assassin-spellbook": ["assassin"],
+    "hawk-inherited-spellbook": ["spy"],
+    "omnigatherer-inherited-spellbook": ["omnigatherer"]
+  }
+}

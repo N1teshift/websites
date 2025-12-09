@@ -10,6 +10,23 @@ const useStandingsHook = createDataFetchHook<StandingsResponse, StandingsFilters
     if (filters.limit) queryParams.append("limit", filters.limit.toString());
 
     const response = await fetch(`/api/standings?${queryParams.toString()}`);
+
+    if (!response.ok) {
+      // Try to parse error from response
+      try {
+        const errorData = await response.json();
+        if (errorData.error) {
+          return { success: false, error: errorData.error } as any;
+        }
+      } catch {
+        // If parsing fails, use status text
+      }
+      return {
+        success: false,
+        error: `Failed to fetch standings: ${response.statusText}`,
+      } as any;
+    }
+
     return response.json();
   },
   useSWR: false,

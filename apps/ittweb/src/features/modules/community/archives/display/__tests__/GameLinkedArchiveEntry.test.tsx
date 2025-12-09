@@ -18,8 +18,26 @@ jest.mock("next/link", () => ({
   default: ({ children, href }: any) => <a href={href}>{children}</a>,
 }));
 
-// Mock Card component
-jest.mock("@/features/infrastructure/components/containers/Card", () => ({
+// Mock next/image
+jest.mock("next/image", () => ({
+  __esModule: true,
+  default: ({ src, alt, ...props }: any) => (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img src={src} alt={alt} {...props} />
+  ),
+}));
+
+// Mock next-auth
+jest.mock("next-auth/react", () => ({
+  useSession: jest.fn(() => ({
+    data: null,
+    status: "unauthenticated",
+  })),
+  SessionProvider: ({ children }: any) => children,
+}));
+
+// Mock infrastructure components
+jest.mock("@/features/infrastructure/components", () => ({
   Card: ({ children, className, variant }: any) => (
     <div className={className} data-variant={variant}>
       {children}
@@ -28,16 +46,16 @@ jest.mock("@/features/infrastructure/components/containers/Card", () => ({
 }));
 
 // Mock GameDetailsSection and GamePlayersSection
-jest.mock("../GameDetailsSection", () => ({
+jest.mock("../components/GameDetailsSection", () => ({
   GameDetailsSection: ({ game }: any) => <div data-testid="game-details">Game #{game.gameId}</div>,
 }));
 
-jest.mock("../GamePlayersSection", () => ({
+jest.mock("../components/GamePlayersSection", () => ({
   GamePlayersSection: ({ game }: any) => <div data-testid="game-players">Players</div>,
 }));
 
 // Mock ArchiveMediaSections
-jest.mock("../ArchiveMediaSections", () => ({
+jest.mock("../components/ArchiveMediaSections", () => ({
   ArchiveMediaSections: ({ entry, displayText, onTextExpand, shouldTruncate, isExpanded }: any) => (
     <div data-testid="archive-media-sections">
       {displayText && <div>{displayText}</div>}
@@ -49,12 +67,12 @@ jest.mock("../ArchiveMediaSections", () => ({
 }));
 
 // Mock YouTubeEmbed and TwitchClipEmbed
-jest.mock("../YouTubeEmbed", () => ({
+jest.mock("../../media/components/YouTubeEmbed", () => ({
   __esModule: true,
   default: ({ url }: { url: string }) => <div data-testid="youtube-embed">{url}</div>,
 }));
 
-jest.mock("../TwitchClipEmbed", () => ({
+jest.mock("../../media/components/TwitchClipEmbed", () => ({
   __esModule: true,
   default: ({ url }: { url: string }) => <div data-testid="twitch-embed">{url}</div>,
 }));
@@ -234,10 +252,9 @@ describe("GameLinkedArchiveEntry", () => {
         />
       );
 
-      const card = screen.getByText("Game #1").closest("div");
-      if (card) {
-        await user.click(card);
-      }
+      // Click the "View full game details" button
+      const viewDetailsButton = screen.getByText("View full game details");
+      await user.click(viewDetailsButton);
 
       // Assert
       expect(mockPush).toHaveBeenCalledWith("/games/game1");
@@ -275,17 +292,22 @@ describe("GameLinkedArchiveEntry", () => {
   });
 
   describe("handles edit action", () => {
-    it("should render edit button when onEdit is provided", () => {
+    it("should render edit button when game is scheduled and onGameEdit is provided", () => {
+      // Arrange
+      const scheduledGame = { ...mockGame, gameState: "scheduled" as const };
+      const mockOnGameEdit = jest.fn();
+
       // Act
       render(
         <GameLinkedArchiveEntry
           entry={baseEntry}
-          game={mockGame}
+          game={scheduledGame}
           gameLoading={false}
           gameError={null}
           gameNumber="1"
           gameType={null}
-          onEdit={mockOnEdit}
+          onGameEdit={mockOnGameEdit}
+          userIsAdmin={true}
           displayText="Test content"
           shouldTruncate={false}
           isExpanded={false}
@@ -297,20 +319,23 @@ describe("GameLinkedArchiveEntry", () => {
       expect(screen.getByText("Edit")).toBeInTheDocument();
     });
 
-    it("should call onEdit when edit button is clicked", async () => {
+    it("should call onGameEdit when edit button is clicked", async () => {
       // Arrange
       const user = userEvent.setup();
+      const scheduledGame = { ...mockGame, gameState: "scheduled" as const };
+      const mockOnGameEdit = jest.fn();
 
       // Act
       render(
         <GameLinkedArchiveEntry
           entry={baseEntry}
-          game={mockGame}
+          game={scheduledGame}
           gameLoading={false}
           gameError={null}
           gameNumber="1"
           gameType={null}
-          onEdit={mockOnEdit}
+          onGameEdit={mockOnGameEdit}
+          userIsAdmin={true}
           displayText="Test content"
           shouldTruncate={false}
           isExpanded={false}
@@ -322,23 +347,27 @@ describe("GameLinkedArchiveEntry", () => {
       await user.click(editButton);
 
       // Assert
-      expect(mockOnEdit).toHaveBeenCalledWith(baseEntry);
+      expect(mockOnGameEdit).toHaveBeenCalledWith(scheduledGame);
     });
   });
 
   describe("handles delete action", () => {
-    it("should render delete button when canDelete is true and onDelete is provided", () => {
+    it("should render delete button when game is scheduled and onGameDelete is provided", () => {
+      // Arrange
+      const scheduledGame = { ...mockGame, gameState: "scheduled" as const };
+      const mockOnGameDelete = jest.fn();
+
       // Act
       render(
         <GameLinkedArchiveEntry
           entry={baseEntry}
-          game={mockGame}
+          game={scheduledGame}
           gameLoading={false}
           gameError={null}
           gameNumber="1"
           gameType={null}
-          onDelete={mockOnDelete}
-          canDelete={true}
+          onGameDelete={mockOnGameDelete}
+          userIsAdmin={true}
           displayText="Test content"
           shouldTruncate={false}
           isExpanded={false}
@@ -350,21 +379,23 @@ describe("GameLinkedArchiveEntry", () => {
       expect(screen.getByText("Delete")).toBeInTheDocument();
     });
 
-    it("should call onDelete when delete button is clicked", async () => {
+    it("should call onGameDelete when delete button is clicked", async () => {
       // Arrange
       const user = userEvent.setup();
+      const scheduledGame = { ...mockGame, gameState: "scheduled" as const };
+      const mockOnGameDelete = jest.fn();
 
       // Act
       render(
         <GameLinkedArchiveEntry
           entry={baseEntry}
-          game={mockGame}
+          game={scheduledGame}
           gameLoading={false}
           gameError={null}
           gameNumber="1"
           gameType={null}
-          onDelete={mockOnDelete}
-          canDelete={true}
+          onGameDelete={mockOnGameDelete}
+          userIsAdmin={true}
           displayText="Test content"
           shouldTruncate={false}
           isExpanded={false}
@@ -376,7 +407,7 @@ describe("GameLinkedArchiveEntry", () => {
       await user.click(deleteButton);
 
       // Assert
-      expect(mockOnDelete).toHaveBeenCalledWith(baseEntry);
+      expect(mockOnGameDelete).toHaveBeenCalledWith(scheduledGame);
     });
   });
 

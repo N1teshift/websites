@@ -1,42 +1,77 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import handler from "../[id]";
 
-// Mock dependencies
-const mockGetGameById = jest.fn();
-const mockUpdateGame = jest.fn();
-const mockDeleteGame = jest.fn();
-const mockCheckResourceOwnership = jest.fn();
-const mockInfo = jest.fn();
-const mockError = jest.fn();
-const mockWarn = jest.fn();
-const mockDebug = jest.fn();
+// Mock dependencies - use function wrappers to avoid hoisting issues
+let mockGetGameById: jest.Mock;
+let mockUpdateGame: jest.Mock;
+let mockDeleteGame: jest.Mock;
+let mockCheckResourceOwnership: jest.Mock;
+let mockInfo: jest.Mock;
+let mockError: jest.Mock;
+let mockWarn: jest.Mock;
+let mockDebug: jest.Mock;
+let mockGetServerSession: jest.Mock;
+
+// Initialize mocks - this runs after jest.mock hoisting
+mockGetGameById = jest.fn();
+mockUpdateGame = jest.fn();
+mockDeleteGame = jest.fn();
+mockCheckResourceOwnership = jest.fn();
+mockInfo = jest.fn();
+mockError = jest.fn();
+mockWarn = jest.fn();
+mockDebug = jest.fn();
+mockGetServerSession = jest.fn();
 
 jest.mock("@/features/modules/game-management/games/lib/gameService", () => ({
-  getGameById: (...args: unknown[]) => mockGetGameById(...args),
-  updateGame: (...args: unknown[]) => mockUpdateGame(...args),
-  deleteGame: (...args: unknown[]) => mockDeleteGame(...args),
+  getGameById: jest.fn((...args: unknown[]) => {
+    // Access mock via closure - this will be evaluated when the function is called
+    return mockGetGameById(...args);
+  }),
+  updateGame: jest.fn((...args: unknown[]) => {
+    // Access mock via closure - this will be evaluated when the function is called
+    return mockUpdateGame(...args);
+  }),
+  deleteGame: jest.fn((...args: unknown[]) => {
+    // Access mock via closure - this will be evaluated when the function is called
+    return mockDeleteGame(...args);
+  }),
 }));
 
-jest.mock("@/lib/api", () => {
-  const actual = jest.requireActual("@/lib/api");
+jest.mock("@/lib/api-wrapper", () => {
+  const actual = jest.requireActual("@/lib/api-wrapper");
   return {
     ...actual,
-    checkResourceOwnership: (...args: unknown[]) => mockCheckResourceOwnership(...args),
+    checkResourceOwnership: jest.fn((...args: unknown[]) => {
+      // Access mock via closure - this will be evaluated when the function is called
+      return mockCheckResourceOwnership(...args);
+    }),
   };
 });
 
 jest.mock("@websites/infrastructure/logging", () => ({
   createComponentLogger: jest.fn(() => ({
-    info: mockInfo,
-    error: mockError,
-    warn: mockWarn,
-    debug: mockDebug,
+    // Access mocks via closure - these will be evaluated when the logger is created
+    get info() {
+      return mockInfo;
+    },
+    get error() {
+      return mockError;
+    },
+    get warn() {
+      return mockWarn;
+    },
+    get debug() {
+      return mockDebug;
+    },
   })),
 }));
 
-const mockGetServerSession = jest.fn();
 jest.mock("next-auth/next", () => ({
-  getServerSession: (...args: unknown[]) => mockGetServerSession(...args),
+  getServerSession: jest.fn((...args: unknown[]) => {
+    // Access mock via closure
+    return mockGetServerSession(...args);
+  }),
 }));
 
 jest.mock("@/pages/api/auth/[...nextauth]", () => ({

@@ -1,29 +1,52 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import handler from "../index";
 
-// Mock dependencies
-const mockGetStandings = jest.fn();
-const mockInfo = jest.fn();
-const mockError = jest.fn();
-const mockWarn = jest.fn();
-const mockDebug = jest.fn();
+// Mock dependencies - use function wrappers to avoid hoisting issues
+let mockGetStandings: jest.Mock;
+let mockInfo: jest.Mock;
+let mockError: jest.Mock;
+let mockWarn: jest.Mock;
+let mockDebug: jest.Mock;
+let mockGetServerSession: jest.Mock;
+
+// Initialize mocks - this runs after jest.mock hoisting
+mockGetStandings = jest.fn();
+mockInfo = jest.fn();
+mockError = jest.fn();
+mockWarn = jest.fn();
+mockDebug = jest.fn();
+mockGetServerSession = jest.fn();
 
 jest.mock("@/features/modules/community/standings/lib/standingsService", () => ({
-  getStandings: (...args: unknown[]) => mockGetStandings(...args),
+  getStandings: jest.fn((...args: unknown[]) => {
+    // Access mock via closure - this will be evaluated when the function is called
+    return mockGetStandings(...args);
+  }),
 }));
 
 jest.mock("@websites/infrastructure/logging", () => ({
   createComponentLogger: jest.fn(() => ({
-    info: mockInfo,
-    error: mockError,
-    warn: mockWarn,
-    debug: mockDebug,
+    // Access mocks via closure - these will be evaluated when the logger is created
+    get info() {
+      return mockInfo;
+    },
+    get error() {
+      return mockError;
+    },
+    get warn() {
+      return mockWarn;
+    },
+    get debug() {
+      return mockDebug;
+    },
   })),
 }));
 
-const mockGetServerSession = jest.fn();
 jest.mock("next-auth/next", () => ({
-  getServerSession: (...args: unknown[]) => mockGetServerSession(...args),
+  getServerSession: jest.fn((...args: unknown[]) => {
+    // Access mock via closure
+    return mockGetServerSession(...args);
+  }),
 }));
 
 jest.mock("@/pages/api/auth/[...nextauth]", () => ({

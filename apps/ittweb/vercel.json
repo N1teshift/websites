@@ -5,6 +5,7 @@
   "installCommand": "pnpm install --frozen-lockfile",
   "framework": "nextjs",
   "regions": ["iad1"],
+  "ignoreCommand": "git diff HEAD^ HEAD --quiet -- apps/ittweb packages/ pnpm-workspace.yaml pnpm-lock.yaml turbo.json",
   "functions": {
     "src/pages/api/**/*.ts": {
       "maxDuration": 30

@@ -3,7 +3,7 @@ import { useArchiveMedia, uploadSelectedMedia } from "../useArchiveMedia";
 import * as archiveService from "@/features/modules/community/archives/services";
 
 // Mock archiveService
-jest.mock("@/features/infrastructure/lib/archiveService", () => ({
+jest.mock("@/features/modules/community/archives/services", () => ({
   uploadImage: jest.fn(async (file: File) => `https://example.com/images/${file.name}`),
   uploadImages: jest.fn(async (files: Array<{ file: File; entryId?: string }>) =>
     files.map((f) => `https://example.com/images/${f.file.name}`)

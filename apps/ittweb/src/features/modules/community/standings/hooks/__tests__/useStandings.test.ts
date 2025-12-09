@@ -1,6 +1,13 @@
 import { act, renderHook, waitFor } from "@testing-library/react";
 import { useStandings } from "../useStandings";
 import type { StandingsFilters, StandingsResponse } from "../../types";
+import {
+  setupMockFetch,
+  getMockFetch,
+  createSuccessResponse,
+  createErrorResponse,
+  createNetworkError,
+} from "@websites/test-utils/mocks/fetch";
 
 // Mock logger
 jest.mock("@websites/infrastructure/logging", () => ({
@@ -36,7 +43,7 @@ describe("useStandings", () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    global.fetch = jest.fn();
+    setupMockFetch();
   });
 
   afterEach(() => {
@@ -46,14 +53,8 @@ describe("useStandings", () => {
   describe("fetches standings on mount", () => {
     it("should fetch standings when hook mounts", async () => {
       // Arrange
-      const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({
-          success: true,
-          data: mockStandingsResponse,
-        }),
-      } as Response);
+      const mockFetch = getMockFetch();
+      mockFetch.mockResolvedValueOnce(createSuccessResponse(mockStandingsResponse));
 
       // Act
       const { result } = renderHook(() => useStandings());
@@ -70,14 +71,10 @@ describe("useStandings", () => {
 
     it("should handle empty results", async () => {
       // Arrange
-      const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({
-          success: true,
-          data: { standings: [], total: 0, page: 1, hasMore: false },
-        }),
-      } as Response);
+      const mockFetch = getMockFetch();
+      mockFetch.mockResolvedValueOnce(
+        createSuccessResponse({ standings: [], total: 0, page: 1, hasMore: false })
+      );
 
       // Act
       const { result } = renderHook(() => useStandings());
@@ -91,9 +88,8 @@ describe("useStandings", () => {
 
     it("should handle network errors", async () => {
       // Arrange
-      const networkError = new Error("Network error");
-      const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
-      mockFetch.mockRejectedValueOnce(networkError);
+      const mockFetch = getMockFetch();
+      mockFetch.mockRejectedValueOnce(createNetworkError("Network error"));
 
       // Act
       const { result } = renderHook(() => useStandings());
@@ -109,14 +105,8 @@ describe("useStandings", () => {
     it("should apply category filter", async () => {
       // Arrange
       const filters: StandingsFilters = { category: "1v1" };
-      const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({
-          success: true,
-          data: mockStandingsResponse,
-        }),
-      } as Response);
+      const mockFetch = getMockFetch();
+      mockFetch.mockResolvedValueOnce(createSuccessResponse(mockStandingsResponse));
 
       // Act
       const { result } = renderHook(() => useStandings(filters));
@@ -129,14 +119,8 @@ describe("useStandings", () => {
     it("should apply minGames filter", async () => {
       // Arrange
       const filters: StandingsFilters = { minGames: 10 };
-      const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({
-          success: true,
-          data: mockStandingsResponse,
-        }),
-      } as Response);
+      const mockFetch = getMockFetch();
+      mockFetch.mockResolvedValueOnce(createSuccessResponse(mockStandingsResponse));
 
       // Act
       const { result } = renderHook(() => useStandings(filters));
@@ -149,14 +133,10 @@ describe("useStandings", () => {
     it("should apply pagination filters", async () => {
       // Arrange
       const filters: StandingsFilters = { page: 2, limit: 20 };
-      const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({
-          success: true,
-          data: { ...mockStandingsResponse, page: 2, hasMore: true },
-        }),
-      } as Response);
+      const mockFetch = getMockFetch();
+      mockFetch.mockResolvedValueOnce(
+        createSuccessResponse({ ...mockStandingsResponse, page: 2, hasMore: true })
+      );
 
       // Act
       const { result } = renderHook(() => useStandings(filters));
@@ -176,14 +156,8 @@ describe("useStandings", () => {
         page: 1,
         limit: 20,
       };
-      const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({
-          success: true,
-          data: mockStandingsResponse,
-        }),
-      } as Response);
+      const mockFetch = getMockFetch();
+      mockFetch.mockResolvedValueOnce(createSuccessResponse(mockStandingsResponse));
 
       // Act
       const { result } = renderHook(() => useStandings(filters));
@@ -199,14 +173,8 @@ describe("useStandings", () => {
 
     it("should refetch when filters change", async () => {
       // Arrange
-      const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
-      mockFetch.mockResolvedValue({
-        ok: true,
-        json: async () => ({
-          success: true,
-          data: mockStandingsResponse,
-        }),
-      } as Response);
+      const mockFetch = getMockFetch();
+      mockFetch.mockResolvedValue(createSuccessResponse(mockStandingsResponse));
 
       // Act
       const { result, rerender } = renderHook(({ filters }) => useStandings(filters), {
@@ -256,14 +224,8 @@ describe("useStandings", () => {
 
     it("should set loading to false after fetch completes", async () => {
       // Arrange
-      const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({
-          success: true,
-          data: mockStandingsResponse,
-        }),
-      } as Response);
+      const mockFetch = getMockFetch();
+      mockFetch.mockResolvedValueOnce(createSuccessResponse(mockStandingsResponse));
 
       // Act
       const { result } = renderHook(() => useStandings());
@@ -277,12 +239,14 @@ describe("useStandings", () => {
   describe("handles error state", () => {
     it("should handle HTTP error responses", async () => {
       // Arrange
-      const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
-      mockFetch.mockResolvedValueOnce({
-        ok: false,
-        status: 500,
-        statusText: "Internal Server Error",
-      } as Response);
+      const mockFetch = getMockFetch();
+      mockFetch.mockResolvedValueOnce(
+        createErrorResponse(
+          500,
+          "Internal Server Error",
+          "Failed to fetch standings: Internal Server Error"
+        )
+      );
 
       // Act
       const { result } = renderHook(() => useStandings());
@@ -295,14 +259,15 @@ describe("useStandings", () => {
 
     it("should handle API error responses", async () => {
       // Arrange
-      const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
+      const mockFetch = getMockFetch();
+      // Note: API can return success: false even with ok: true
       mockFetch.mockResolvedValueOnce({
-        ok: true,
+        ...createSuccessResponse(mockStandingsResponse),
         json: async () => ({
           success: false,
           error: "Invalid filters provided",
         }),
-      } as Response);
+      });
 
       // Act
       const { result } = renderHook(() => useStandings());
@@ -317,14 +282,8 @@ describe("useStandings", () => {
   describe("refetch function", () => {
     it("should allow manual refetch", async () => {
       // Arrange
-      const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
-      mockFetch.mockResolvedValue({
-        ok: true,
-        json: async () => ({
-          success: true,
-          data: mockStandingsResponse,
-        }),
-      } as Response);
+      const mockFetch = getMockFetch();
+      mockFetch.mockResolvedValue(createSuccessResponse(mockStandingsResponse));
 
       // Act
       const { result } = renderHook(() => useStandings());

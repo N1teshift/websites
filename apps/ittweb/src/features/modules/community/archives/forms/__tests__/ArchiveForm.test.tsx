@@ -17,12 +17,12 @@ jest.mock("next-auth/react", () => ({
 
 // Mock archiveService
 const mockCreateArchiveEntry = jest.fn();
-jest.mock("@/features/infrastructure/lib/archiveService", () => ({
+jest.mock("@/features/modules/community/archives/services", () => ({
   createArchiveEntry: (...args: any[]) => mockCreateArchiveEntry(...args),
 }));
 
 // Mock ArchiveFormBase
-jest.mock("../ArchiveFormBase", () => ({
+jest.mock("../components/ArchiveFormBase", () => ({
   __esModule: true,
   default: ({ mode, defaultAuthor, onSubmit, onCancel, onSuccess }: any) => (
     <div data-testid="archive-form-base">

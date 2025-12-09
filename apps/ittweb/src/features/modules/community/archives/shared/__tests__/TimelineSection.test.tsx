@@ -5,7 +5,7 @@ import type { ArchiveEntry } from "@/types/archive";
 import React from "react";
 
 // Mock ArchiveEntry component
-jest.mock("../ArchiveEntry", () => ({
+jest.mock("../../display/components/ArchiveEntry", () => ({
   __esModule: true,
   default: ({ entry, onEdit, onDelete, onImageClick }: any) => (
     <div data-testid={`archive-entry-${entry.id}`}>
@@ -20,9 +20,9 @@ jest.mock("../ArchiveEntry", () => ({
 }));
 
 // Mock the index.ts re-export
-jest.mock("../index", () => ({
+jest.mock("../../display/components", () => ({
   __esModule: true,
-  ArchiveEntry: jest.fn(({ entry, onEdit, onDelete, onImageClick }: any) => (
+  ArchiveEntry: ({ entry, onEdit, onDelete, onImageClick }: any) => (
     <div data-testid={`archive-entry-${entry.id}`}>
       <div>{entry.title}</div>
       {onEdit && <button onClick={() => onEdit(entry)}>Edit</button>}
@@ -31,7 +31,7 @@ jest.mock("../index", () => ({
         <button onClick={() => onImageClick("image.jpg", entry.title)}>View Image</button>
       )}
     </div>
-  )),
+  ),
 }));
 
 describe("TimelineSection", () => {

@@ -3,12 +3,11 @@ import userEvent from "@testing-library/user-event";
 import PostDeleteDialog from "../PostDeleteDialog";
 
 // Mock the modal accessibility hook
-jest.mock("@websites/infrastructure/hooks/useModalAccessibility", () => ({
-  useModalAccessibility: jest.fn(() => ({ current: null })),
-}));
+const mockUseModalAccessibility = jest.fn(() => ({ current: null }));
 
-const mockUseModalAccessibility =
-  require("@websites/infrastructure/hooks/useModalAccessibility").useModalAccessibility;
+jest.mock("@websites/infrastructure/hooks", () => ({
+  useModalAccessibility: (...args: any[]) => mockUseModalAccessibility(...args),
+}));
 
 describe("PostDeleteDialog", () => {
   const defaultProps = {

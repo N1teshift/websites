@@ -1,4 +1,6 @@
 import type { NextApiRequest } from "next";
+// Import auth config to ensure default auth is registered
+import "@/config/auth";
 import { createPostHandler } from "@websites/infrastructure/api";
 import { createComponentLogger } from "@websites/infrastructure/logging";
 import {
@@ -24,7 +26,19 @@ export default createPostHandler<{
     }
     const session = context.session;
 
-    const adminDb = getFirestoreAdmin();
+    let adminDb;
+    try {
+      adminDb = getFirestoreAdmin();
+    } catch (error) {
+      logger.error("Failed to initialize Firestore Admin", {
+        error: error instanceof Error ? error.message : String(error),
+        stack: error instanceof Error ? error.stack : undefined,
+      });
+      throw new Error(
+        `Failed to initialize Firestore Admin: ${error instanceof Error ? error.message : String(error)}`
+      );
+    }
+
     const deletedCounts: Record<string, number> = {};
 
     logger.info("Starting test data wipe", { discordId: session.discordId });
@@ -69,6 +83,7 @@ export default createPostHandler<{
                 collection: collectionName,
                 docId: doc.id,
                 error: error instanceof Error ? error.message : String(error),
+                stack: error instanceof Error ? error.stack : undefined,
               });
             }
           };
@@ -79,17 +94,31 @@ export default createPostHandler<{
         deletedCounts[collectionName] = collectionCount;
         logger.info("Deleted collection", { collection: collectionName, count: collectionCount });
       } catch (error) {
-        logger.warn("Failed to delete collection", {
+        logger.error("Failed to delete collection", {
           collection: collectionName,
           error: error instanceof Error ? error.message : String(error),
+          stack: error instanceof Error ? error.stack : undefined,
         });
+        // Continue with other collections even if one fails
       }
     }
 
     // 2. Delete files from Firebase Storage - only the games folder
-    const storage = getStorageAdmin();
-    const bucketName = getStorageBucketName();
-    const bucket = bucketName ? storage.bucket(bucketName) : storage.bucket();
+    let storage;
+    let bucket;
+    try {
+      storage = getStorageAdmin();
+      const bucketName = getStorageBucketName();
+      bucket = bucketName ? storage.bucket(bucketName) : storage.bucket();
+    } catch (error) {
+      logger.error("Failed to initialize Storage Admin", {
+        error: error instanceof Error ? error.message : String(error),
+        stack: error instanceof Error ? error.stack : undefined,
+      });
+      throw new Error(
+        `Failed to initialize Storage Admin: ${error instanceof Error ? error.message : String(error)}`
+      );
+    }
 
     let storageFileCount = 0;
     try {

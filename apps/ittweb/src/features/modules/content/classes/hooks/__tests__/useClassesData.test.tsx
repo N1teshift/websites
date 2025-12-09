@@ -8,13 +8,15 @@ jest.mock("swr", () => ({
 }));
 
 // Mock swrKeys
-jest.mock("@/features/infrastructure/lib/swrConfig", () => ({
+jest.mock("@websites/infrastructure/cache", () => ({
   swrKeys: {
     classes: jest.fn((className, options) => {
       if (className) {
-        return `/api/classes/${className}${options?.category ? `?category=${options.category}` : ""}`;
+        const params = new URLSearchParams(options);
+        return `/api/classes/${encodeURIComponent(className)}?${params.toString()}`;
       }
-      return `/api/classes${options?.category ? `?category=${options.category}` : ""}`;
+      const params = new URLSearchParams(options);
+      return `/api/classes?${params.toString()}`;
     }),
   },
 }));

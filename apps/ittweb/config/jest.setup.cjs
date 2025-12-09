@@ -1,5 +1,7 @@
 // Import base test setup
-require("@websites/test-utils/src/setup");
+require("@websites/test-utils/setup");
+
+const React = require('react');
 
 jest.mock("next/router", () => ({
   useRouter() {
@@ -41,6 +43,8 @@ jest.mock("@websites/infrastructure/firebase", () => ({
   __esModule: true,
   getFirestoreAdmin: jest.fn(() => ({ collection: jest.fn(() => ({ doc: jest.fn(() => ({ get: jest.fn(), collection: jest.fn(() => ({ get: jest.fn() })) })) })) })),
   getFirestoreClient: jest.fn(() => ({})),
+  getFirestoreInstance: jest.fn(() => ({})),
+  getStorageInstance: jest.fn(() => ({})),
   isServerSide: jest.fn(() => false),
   getAdminTimestamp: jest.fn(() => ({
     now: jest.fn(() => ({ toDate: () => new Date("2020-01-01T00:00:00Z") })),
@@ -60,13 +64,7 @@ jest.mock("@/features/infrastructure/api/firebase", () => ({
   __esModule: true,
   getFirestoreInstance: jest.fn(() => ({})),
   getStorageInstance: jest.fn(() => ({})),
-}));
-
-jest.mock("@/features/infrastructure/api/firebase/firebaseClient", () => ({
-  __esModule: true,
   initializeFirebaseApp: jest.fn(),
-  getFirestoreInstance: jest.fn(() => ({})),
-  getStorageInstance: jest.fn(() => ({})),
   getAnalyticsInstance: jest.fn(() => ({})),
 }));
 
@@ -96,6 +94,24 @@ jest.mock('next-auth', () => ({
 jest.mock('next-auth/next', () => ({
   __esModule: true,
   getServerSession: jest.fn(),
+}));
+
+jest.mock('next-auth/react', () => ({
+  __esModule: true,
+  useSession: jest.fn(() => ({
+    data: null,
+    status: "unauthenticated",
+  })),
+  SessionProvider: ({ children }) => children,
+}));
+
+jest.mock('next/image', () => ({
+  __esModule: true,
+  default: ({ src, alt, ...props }) => {
+    // eslint-disable-next-line @next/next/no-img-element
+    const React = require('react');
+    return React.createElement('img', { src, alt, ...props });
+  },
 }));
 
 if (typeof window !== "undefined") {

@@ -22,13 +22,14 @@ jest.mock("firebase/firestore", () => {
   };
 });
 
-jest.mock("@websites/infrastructure/api/firebase", () => ({
-  getFirestoreInstance: jest.fn(() => ({})),
-}));
+// Mock dependencies - use function wrappers to avoid hoisting issues
+let mockIsServerSide: jest.Mock;
 
-const mockIsServerSide = jest.fn(() => false);
+// Initialize mocks - this runs after jest.mock hoisting
+mockIsServerSide = jest.fn(() => false);
 
 jest.mock("@websites/infrastructure/firebase", () => ({
+  getFirestoreInstance: jest.fn(() => ({})),
   getFirestoreAdmin: jest.fn(() => ({
     collection: jest.fn(() => ({
       doc: jest.fn(() => ({
@@ -37,7 +38,10 @@ jest.mock("@websites/infrastructure/firebase", () => ({
       })),
     })),
   })),
-  isServerSide: mockIsServerSide,
+  isServerSide: jest.fn((...args: unknown[]) => {
+    // Access mock via closure - this will be evaluated when the function is called
+    return mockIsServerSide(...args);
+  }),
   getAdminTimestamp: jest.fn(() => ({
     now: jest.fn(() => ({ toDate: () => new Date("2020-01-01T00:00:00Z") })),
     fromDate: jest.fn((date: Date) => ({ toDate: () => date })),
@@ -49,7 +53,7 @@ jest.mock("@websites/infrastructure/logging", () => ({
   logError: jest.fn(),
 }));
 
-jest.mock("../eloCalculator", () => ({
+jest.mock("@/features/modules/game-management/lib/mechanics", () => ({
   updateEloScores: jest.fn(),
 }));
 
@@ -63,7 +67,7 @@ const { collection, doc, addDoc, updateDoc, deleteDoc, query, orderBy, where, li
   jest.requireMock("firebase/firestore");
 const { getFirestoreInstance } = jest.requireMock("@websites/infrastructure/api/firebase");
 const { getFirestoreAdmin, isServerSide } = jest.requireMock("@websites/infrastructure/firebase");
-const { updateEloScores } = jest.requireMock("../eloCalculator");
+const { updateEloScores } = jest.requireMock("@/features/modules/game-management/lib/mechanics");
 
 import * as gameService from "../gameService";
 

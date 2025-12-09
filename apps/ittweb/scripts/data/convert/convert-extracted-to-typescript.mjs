@@ -57,6 +57,28 @@ function main() {
   const unitsData = loadJson(UNITS_FILE);
   const extractedUnitsData = loadJson(EXTRACTED_UNITS_FILE);
   const recipes = loadRecipesMap();
+  
+  // Load troll base class mapping
+  const trollBaseClassMapping = new Map();
+  if (unitsData && unitsData.trollBaseClassMapping) {
+    for (const [unitName, baseClassSlug] of Object.entries(unitsData.trollBaseClassMapping)) {
+      trollBaseClassMapping.set(unitName, baseClassSlug);
+      // Also add lowercase version for case-insensitive matching
+      trollBaseClassMapping.set(unitName.toLowerCase(), baseClassSlug);
+    }
+    console.log(`🔗 Loaded ${trollBaseClassMapping.size} troll base class mappings\n`);
+    // Debug: Check if key units are in mapping
+    const testUnits = ['Wolf Form', 'Bear Form', 'Escape Artist', 'Contortionist'];
+    for (const testUnit of testUnits) {
+      const found = trollBaseClassMapping.get(testUnit) || trollBaseClassMapping.get(testUnit.toLowerCase());
+      if (found) {
+        console.log(`  ✓ Found mapping: "${testUnit}" -> "${found}"`);
+      } else {
+        console.log(`  ✗ Missing mapping: "${testUnit}"`);
+      }
+    }
+    console.log();
+  }
 
   if (!itemsData || !itemsData.items) {
     console.error('❌ No items data found');
@@ -369,7 +391,7 @@ function main() {
     // Track UDIR counter for renaming Unit Dummy Item Reward units
     const udirCounter = new Map();
 
-    const convertedUnits = gameplayUnits.map(u => convertUnit(u, udirCounter, buildingsMap));
+    const convertedUnits = gameplayUnits.map(u => convertUnit(u, udirCounter, buildingsMap, trollBaseClassMapping));
 
     // Deduplicate units by name and type (keep first occurrence)
     const seenUnits = new Map();

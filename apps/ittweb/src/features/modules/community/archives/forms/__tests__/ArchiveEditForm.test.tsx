@@ -5,12 +5,12 @@ import type { ArchiveEntry } from "@/types/archive";
 
 // Mock archiveService
 const mockUpdateArchiveEntry = jest.fn();
-jest.mock("@/features/infrastructure/lib/archiveService", () => ({
+jest.mock("@/features/modules/community/archives/services", () => ({
   updateArchiveEntry: (...args: any[]) => mockUpdateArchiveEntry(...args),
 }));
 
 // Mock ArchiveFormBase
-jest.mock("../ArchiveFormBase", () => ({
+jest.mock("../components/ArchiveFormBase", () => ({
   __esModule: true,
   default: ({ mode, initialEntry, onSubmit, onCancel, onSuccess }: any) => (
     <div data-testid="archive-form-base">

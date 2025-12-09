@@ -15,7 +15,7 @@ jest.mock("next-auth/react", () => ({
 const mockGetArchiveEntries = jest.fn();
 const mockDeleteArchiveEntry = jest.fn();
 
-jest.mock("@/features/infrastructure/lib/archiveService", () => ({
+jest.mock("@/features/modules/community/archives/services", () => ({
   getArchiveEntries: jest.fn(() => mockGetArchiveEntries()),
   deleteArchiveEntry: jest.fn((id: string) => mockDeleteArchiveEntry(id)),
   sortArchiveEntries: jest.fn((entries: ArchiveEntry[]) => entries),

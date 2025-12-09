@@ -1,0 +1,687 @@
+{
+  "generatedAt": "2025-12-09T07:57:04.631Z",
+  "source": "Wurst source files",
+  "totalAbilities": 67,
+  "abilities": {
+    "bark-skin": {
+      "abilityId": "bark-skin",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\beastmaster\\Druid\\BarkSkin.wurst",
+      "cooldown": 45,
+      "duration": 10
+    },
+    "bear-bulwark": {
+      "abilityId": "bear-bulwark",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\beastmaster\\Shapeshifter\\BearBulwark.wurst",
+      "cooldown": 45,
+      "duration": 10
+    },
+    "tiger-vicious-strike": {
+      "abilityId": "tiger-vicious-strike",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\beastmaster\\Shapeshifter\\ViciousStrike.wurst",
+      "cooldown": 15
+    },
+    "rendo-snake-toxin": {
+      "abilityId": "rendo-snake-toxin",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\beastmaster\\UltimateForm\\SnakeToxin.wurst",
+      "cooldown": 60,
+      "duration": 15
+    },
+    "rendo-wolf-bite": {
+      "abilityId": "rendo-wolf-bite",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\beastmaster\\UltimateForm\\WolfBite.wurst",
+      "cooldown": 60,
+      "duration": 15
+    },
+    "item-warp": {
+      "abilityId": "item-warp",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\gatherer\\ItemWarp.wurst",
+      "hotkey": "TOOLTIP_NORM, lvl",
+      "buttonPosition": {
+        "x": 0.1,
+        "y": 0.1
+      }
+    },
+    "tele-radar-gather": {
+      "abilityId": "tele-radar-gather",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\gatherer\\TeleGatherAbilityDefinition.wurst",
+      "hotkey": "TOOLTIP_NORM",
+      "targetsAllowed": "DUMMY_TARGET_ALLOWED",
+      "buttonPosition": {
+        "x": "string hotkey, Pair<int, int> buttonPos",
+        "y": "string hotkey, Pair<int, int> buttonPos"
+      }
+    },
+    "hunter-web": {
+      "abilityId": "hunter-web",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\hunter\\HunterEnsnare.wurst",
+      "hotkey": "COOLDOWN",
+      "visualEffects": {
+        "missileArt": "makeToolTipNorm(hotkey, TOOLTIP_NORM"
+      },
+      "buttonPosition": {
+        "x": "NORMAL_DURATION",
+        "y": "NORMAL_DURATION"
+      }
+    },
+    "rage": {
+      "abilityId": "rage",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\hunter\\juggernaut\\Rage.wurst",
+      "areaOfEffect": 1,
+      "visualEffects": {
+        "artTarget": "new Pair(2, 1"
+      },
+      "buttonPosition": {
+        "x": "toRawCode(BUFF_ID",
+        "y": "toRawCode(BUFF_ID"
+      }
+    },
+    "track": {
+      "abilityId": "track",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\hunter\\Track.wurst",
+      "hotkey": "TOOLTIP_NORM, lvl",
+      "targetsAllowed": "TARGET_ALLOWED",
+      "buttonPosition": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    "hide-beacon": {
+      "abilityId": "hide-beacon",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\hunter\\tracker\\Beacon.wurst",
+      "hotkey": "\"Query \"+TOOLTIP_NORM",
+      "targetsAllowed": "TARGET_ALLOWED",
+      "buttonPosition": {
+        "x": 0.25,
+        "y": 0.25
+      }
+    },
+    "dysentery": {
+      "abilityId": "dysentery",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\hunter\\tracker\\Dysentery.wurst",
+      "hotkey": "TOOLTIP_NORM",
+      "visualEffects": {
+        "missileArt": "commaList(\r\n            TargetsAllowed.organic,\r\n            TargetsAllowed.enemies,\r\n            TargetsAllowed.ground"
+      },
+      "buttonPosition": {
+        "x": "MANACOST",
+        "y": "MANACOST"
+      }
+    },
+    "sniff": {
+      "abilityId": "sniff",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\hunter\\tracker\\Sniff.wurst",
+      "areaOfEffect": "AOE",
+      "hotkey": "TOOLTIP_NORM",
+      "targetsAllowed": "TargetsAllowed.item_t",
+      "visualEffects": {
+        "artEffect": "cripple",
+        "artTarget": "cripple",
+        "artCaster": "cripple"
+      },
+      "buttonPosition": {
+        "x": 1,
+        "y": 1
+      }
+    },
+    "spiked-net": {
+      "abilityId": "spiked-net",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\hunter\\warrior\\SpikedNet.wurst",
+      "hotkey": "COOLDOWN",
+      "visualEffects": {
+        "missileArt": "makeToolTipNorm(hotkey, TT_NORM"
+      },
+      "buttonPosition": {
+        "x": "NORMAL_DURATION",
+        "y": "NORMAL_DURATION"
+      }
+    },
+    "activate-rune": {
+      "abilityId": "activate-rune",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\mage\\dementia\\ActivateRunes.wurst",
+      "hotkey": "barkskinon",
+      "visualEffects": {
+        "artEffect": "COOLDOWN",
+        "artTarget": "COOLDOWN",
+        "artCaster": "COOLDOWN"
+      },
+      "buttonPosition": {
+        "x": "string hotkey, Pair<int, int> buttonPos",
+        "y": "string hotkey, Pair<int, int> buttonPos"
+      }
+    },
+    "dark-gate": {
+      "abilityId": "dark-gate",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\mage\\dementia\\DarkGate.wurst",
+      "hotkey": "immolation",
+      "buttonPosition": {
+        "x": "MANACOST",
+        "y": "MANACOST"
+      }
+    },
+    "soulrend": {
+      "abilityId": "soulrend",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\mage\\DreamWalker\\SoulRend.wurst",
+      "areaOfEffect": 1,
+      "hotkey": "\"D\", new Pair(2, 1",
+      "buttonPosition": {
+        "x": "toRawCode(BUFF_SOULREND_SELF",
+        "y": "toRawCode(BUFF_SOULREND_SELF"
+      }
+    },
+    "bramble": {
+      "abilityId": "bramble",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\mage\\elementalist\\Brambles.wurst",
+      "buttonPosition": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    "earthguardian": {
+      "abilityId": "earthguardian",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\mage\\elementalist\\EarthGuardian.wurst",
+      "manaCost": 20,
+      "cooldown": 35
+    },
+    "frost-blast": {
+      "abilityId": "frost-blast",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\mage\\elementalist\\FrostBlast.wurst",
+      "hotkey": "false",
+      "buttonPosition": {
+        "x": "false",
+        "y": "false"
+      }
+    },
+    "meteor": {
+      "abilityId": "meteor",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\mage\\elementalist\\Meteor.wurst",
+      "areaOfEffect": "IMPACT_RADIUS_MAX",
+      "hotkey": "TOOLTIP_NORMAL_EXT",
+      "buttonPosition": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    "zap": {
+      "abilityId": "zap",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\mage\\elementalist\\Zap.wurst",
+      "areaOfEffect": 1,
+      "hotkey": "makeToolTipNorm(hotkey, TOOLTIP_NORM",
+      "buttonPosition": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    "exhaust": {
+      "abilityId": "exhaust",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\mage\\hypnotist\\Anger.wurst",
+      "damage": 10,
+      "manaCost": 20
+    },
+    "depression-aura": {
+      "abilityId": "depression-aura",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\mage\\hypnotist\\DepressionAura.wurst",
+      "visualEffects": {
+        "artTarget": "TARGET_ALLOWED"
+      },
+      "buttonPosition": {
+        "x": "makeToolTipNormAura(TOOLTIP_NORM",
+        "y": "makeToolTipNormAura(TOOLTIP_NORM"
+      }
+    },
+    "depression-orb": {
+      "abilityId": "depression-orb",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\mage\\hypnotist\\DepressionOrb.wurst",
+      "hotkey": "COOLDOWN",
+      "buttonPosition": {
+        "x": "TOOLTIP_EXTENDED",
+        "y": "TOOLTIP_EXTENDED"
+      }
+    },
+    "hypnosis": {
+      "abilityId": "hypnosis",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\mage\\hypnotist\\Hypnosis.wurst",
+      "hotkey": "COOLDOWN",
+      "buttonPosition": {
+        "x": "DURATION",
+        "y": "DURATION"
+      }
+    },
+    "jealousy": {
+      "abilityId": "jealousy",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\mage\\hypnotist\\Jealousy.wurst",
+      "hotkey": "COOLDOWN",
+      "buttonPosition": {
+        "x": "TOOLTIP_EXTENDED",
+        "y": "TOOLTIP_EXTENDED"
+      }
+    },
+    "seizures": {
+      "abilityId": "seizures",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\mage\\hypnotist\\Seizures.wurst",
+      "hotkey": "COOLDOWN",
+      "visualEffects": {
+        "artTarget": "TARGET_ALLOWED"
+      },
+      "buttonPosition": {
+        "x": "TOOLTIP_EXTENDED",
+        "y": "TOOLTIP_EXTENDED"
+      }
+    },
+    "stupefy": {
+      "abilityId": "stupefy",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\mage\\hypnotist\\StupefyField.wurst",
+      "hotkey": "COOLDOWN",
+      "visualEffects": {
+        "artTarget": "Abilities.flameStrikeTarget",
+        "artCaster": "Abilities.flameStrikeTarget"
+      },
+      "buttonPosition": {
+        "x": "TOOLTIP_EXTENDED",
+        "y": "TOOLTIP_EXTENDED"
+      }
+    },
+    "depress": {
+      "abilityId": "depress",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\mage\\unsub\\Depress.wurst",
+      "hotkey": "COOLDOWN",
+      "visualEffects": {
+        "missileArt": "toRawCode(BUFF_DEPRESSED_ARROW",
+        "artTarget": "Abilities.orbDarkness"
+      },
+      "buttonPosition": {
+        "x": "DURATION",
+        "y": "DURATION"
+      }
+    },
+    "flame-spray": {
+      "abilityId": "flame-spray",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\mage\\unsub\\FlameSpray.wurst",
+      "areaOfEffect": "AREA_OF_EFFECT",
+      "maxTargets": 4,
+      "hotkey": "COOLDOWN",
+      "visualEffects": {
+        "missileArt": "TOOLTIP_EXTENDED",
+        "artEffect": "TOOLTIP_EXTENDED"
+      },
+      "buttonPosition": {
+        "x": "NORMAL_DURATION",
+        "y": "NORMAL_DURATION"
+      }
+    },
+    "mage-fire": {
+      "abilityId": "mage-fire",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\mage\\unsub\\MakeMageFire.wurst",
+      "hotkey": "COOLDOWN",
+      "buttonPosition": {
+        "x": "HERO_DURATION",
+        "y": "HERO_DURATION"
+      }
+    },
+    "metronome-impale": {
+      "abilityId": "metronome-impale",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\mage\\unsub\\Metronome.wurst",
+      "hotkey": 10,
+      "buttonPosition": {
+        "x": 10,
+        "y": 10
+      }
+    },
+    "negative-blast": {
+      "abilityId": "negative-blast",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\mage\\unsub\\NegativeBlast.wurst",
+      "hotkey": "MANACOST",
+      "visualEffects": {
+        "artEffect": "TOOLTIP_EXTENDED"
+      },
+      "buttonPosition": {
+        "x": "NORMAL_DURATION",
+        "y": "NORMAL_DURATION"
+      }
+    },
+    "null-damage": {
+      "abilityId": "null-damage",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\mage\\unsub\\NullDamage.wurst",
+      "hotkey": "MANACOST",
+      "buttonPosition": {
+        "x": "NORMAL_DURATION",
+        "y": "NORMAL_DURATION"
+      }
+    },
+    "reduce-food": {
+      "abilityId": "reduce-food",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\mage\\unsub\\ReduceFood.wurst",
+      "hotkey": "curse",
+      "visualEffects": {
+        "missileArt": "MANACOST",
+        "artEffect": "MANACOST",
+        "artTarget": "MANACOST",
+        "artCaster": "MANACOST"
+      },
+      "buttonPosition": {
+        "x": "\"R\", new Pair(3,0"
+      }
+    },
+    "mix-herbs": {
+      "abilityId": "mix-herbs",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\MixHerb.wurst",
+      "hotkey": "TOOLTIP_NORM",
+      "visualEffects": {
+        "artEffect": 0.01,
+        "artTarget": 0.01,
+        "artCaster": 0.01
+      },
+      "buttonPosition": {
+        "x": 0.01,
+        "y": 0.01
+      }
+    },
+    "omnicure": {
+      "abilityId": "omnicure",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\Omnicure.wurst",
+      "hotkey": "TOOLTIP_NORM",
+      "buttonPosition": {
+        "x": 0.25,
+        "y": 0.25
+      }
+    },
+    "angelic-elemental": {
+      "abilityId": "angelic-elemental",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\priest\\booster\\AngelicElemental.wurst",
+      "hotkey": "TOOLTIP_NORM",
+      "buttonPosition": {
+        "x": "blink",
+        "y": "blink"
+      }
+    },
+    "fortitude": {
+      "abilityId": "fortitude",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\priest\\booster\\Fortitude.wurst",
+      "buttonPosition": {
+        "x": "TARGET_ALLOWED",
+        "y": "TARGET_ALLOWED"
+      }
+    },
+    "increase-metabolism": {
+      "abilityId": "increase-metabolism",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\priest\\booster\\IncreaseMetabolism.wurst",
+      "hotkey": "TOOLTIP_NORM",
+      "buttonPosition": {
+        "x": "\"D\", new Pair(3, 1",
+        "y": "\"D\", new Pair(3, 1"
+      }
+    },
+    "lightning-shield-dummy": {
+      "abilityId": "lightning-shield-dummy",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\priest\\booster\\LightningShield.wurst",
+      "hotkey": "TOOLTIP_NORM",
+      "buttonPosition": {
+        "x": "CAST_RANGE",
+        "y": "CAST_RANGE"
+      }
+    },
+    "spirit-link": {
+      "abilityId": "spirit-link",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\priest\\booster\\SpiritLink.wurst",
+      "areaOfEffect": "AOE",
+      "maxTargets": "UNIT_CAP",
+      "hotkey": "TT_EXTENDED",
+      "buttonPosition": {
+        "x": "\"A\", new Pair(0, 1",
+        "y": "\"A\", new Pair(0, 1"
+      }
+    },
+    "troll-battle-call": {
+      "abilityId": "troll-battle-call",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\priest\\booster\\TrollBattleCall.wurst",
+      "manaCost": 20,
+      "cooldown": 60,
+      "areaOfEffect": "AOE",
+      "duration": 20,
+      "hotkey": "TOOLTIP_NORM",
+      "visualEffects": {
+        "missileArt": "toRawCode(BUFF_ID",
+        "artCaster": "toRawCode(BUFF_ID"
+      },
+      "buttonPosition": {
+        "x": "MANACOST",
+        "y": "MANACOST"
+      }
+    },
+    "reincarnation": {
+      "abilityId": "reincarnation",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\priest\\masterhealer\\Reincarnation.wurst",
+      "buttonPosition": {
+        "x": "MANACOST.toInt(",
+        "y": "MANACOST.toInt("
+      }
+    },
+    "replenish-health-dummy-aura": {
+      "abilityId": "replenish-health-dummy-aura",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\priest\\masterhealer\\ReplenishHealth.wurst",
+      "areaOfEffect": "AOE",
+      "hotkey": "\"D\", new Pair(3, 1",
+      "buttonPosition": {
+        "x": "toRawCode(BUFF_SELF_ID",
+        "y": "toRawCode(BUFF_SELF_ID"
+      }
+    },
+    "self-preservation": {
+      "abilityId": "self-preservation",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\priest\\masterhealer\\SelfPreservation.wurst",
+      "hotkey": "TOOLTIP_NORM",
+      "visualEffects": {
+        "artTarget": "fanofknives",
+        "artCaster": "fanofknives"
+      },
+      "buttonPosition": {
+        "x": 1,
+        "y": 1
+      }
+    },
+    "inner-fire": {
+      "abilityId": "inner-fire",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\priest\\sage\\LightGate.wurst",
+      "hotkey": "TOOLTIP_NORM",
+      "visualEffects": {
+        "artEffect": "waterelemental",
+        "artTarget": "waterelemental",
+        "artCaster": "waterelemental"
+      },
+      "buttonPosition": {
+        "x": "GROW_DURATION",
+        "y": "GROW_DURATION"
+      }
+    },
+    "maximum-fervor": {
+      "abilityId": "maximum-fervor",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\priest\\sage\\MaximumFervor.wurst",
+      "areaOfEffect": 1,
+      "hotkey": "TOOLTIP_NORM",
+      "visualEffects": {
+        "missileArt": "toRawCode(BUFF_ID",
+        "artEffect": 1,
+        "artTarget": "taunt",
+        "artCaster": "taunt"
+      },
+      "buttonPosition": {
+        "x": 1,
+        "y": 1
+      }
+    },
+    "anti-magic": {
+      "abilityId": "anti-magic",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\priest\\unsub\\AntiMagic.wurst",
+      "areaOfEffect": "AOE",
+      "hotkey": "devourmagic",
+      "buttonPosition": {
+        "x": "string hotkey, Pair<int, int> buttonPos",
+        "y": "string hotkey, Pair<int, int> buttonPos"
+      }
+    },
+    "cure-all": {
+      "abilityId": "cure-all",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\priest\\unsub\\CureAll.wurst",
+      "visualEffects": {
+        "artTarget": "TARGET_ALLOWED"
+      },
+      "buttonPosition": {
+        "x": 50,
+        "y": 50
+      }
+    },
+    "healing-wave": {
+      "abilityId": "healing-wave",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\priest\\unsub\\HealingWave.wurst",
+      "hotkey": "TOOLTIP_NORMAL",
+      "targetsAllowed": "air,ground,friend,self,vuln,invu,organic",
+      "buttonPosition": {
+        "x": "ground,friend,self,vuln,invu,organic\"",
+        "y": "ground,friend,self,vuln,invu,organic\""
+      }
+    },
+    "magic-mist": {
+      "abilityId": "magic-mist",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\priest\\unsub\\MagicMist.wurst",
+      "areaOfEffect": "AOE",
+      "visualEffects": {
+        "artEffect": "AOE"
+      },
+      "buttonPosition": {
+        "x": 1,
+        "y": 1
+      }
+    },
+    "mh-mix-energy": {
+      "abilityId": "mh-mix-energy",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\priest\\unsub\\MixSpells.wurst",
+      "hotkey": "TOOLTIP_NORM+\"Heat\"",
+      "buttonPosition": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "ranged-heal": {
+      "abilityId": "ranged-heal",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\priest\\unsub\\RangedHeal.wurst",
+      "hotkey": "TOOLTIP_NORM",
+      "targetsAllowed": "commaList(\r\n            TargetsAllowed.air,\r\n            TargetsAllowed.ground,\r\n            TargetsAllowed.friend,\r\n            TargetsAllowed.vulnerable,\r\n            TargetsAllowed.invulnerable,\r\n            TargetsAllowed.self,\r\n            TargetsAllowed.organic,\r\n            TargetsAllowed.nonancient,\r\n            TargetsAllowed.neutral",
+      "buttonPosition": {
+        "x": "TargetsAllowed.ground,\r\n            TargetsAllowed.friend,\r\n            TargetsAllowed.vulnerable,\r\n            TargetsAllowed.invulnerable,\r\n            TargetsAllowed.self,\r\n            TargetsAllowed.organic,\r\n            TargetsAllowed.nonancient,\r\n            TargetsAllowed.neutral",
+        "y": "TargetsAllowed.ground,\r\n            TargetsAllowed.friend,\r\n            TargetsAllowed.vulnerable,\r\n            TargetsAllowed.invulnerable,\r\n            TargetsAllowed.self,\r\n            TargetsAllowed.organic,\r\n            TargetsAllowed.nonancient,\r\n            TargetsAllowed.neutral"
+      }
+    },
+    "pump-up": {
+      "abilityId": "pump-up",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\PumpUp.wurst",
+      "hotkey": "COOLDOWN",
+      "buttonPosition": {
+        "x": "HERO_DURATION",
+        "y": "HERO_DURATION"
+      }
+    },
+    "id-reveal-dummy": {
+      "abilityId": "id-reveal-dummy",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\scout\\Reveal.wurst",
+      "hotkey": "TOOLTIP_NORM, lvl",
+      "buttonPosition": {
+        "x": "unrobogoblin",
+        "y": "unrobogoblin"
+      }
+    },
+    "trap-explosion": {
+      "abilityId": "trap-explosion",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\scout\\Trap.wurst",
+      "areaOfEffect": "TRAP_EFFECT_RADIUS",
+      "hotkey": "toolTipNorm",
+      "visualEffects": {
+        "missileArt": "BEAR_TRAP_LOCK_DURATION"
+      },
+      "buttonPosition": {
+        "x": "TRAP_EFFECT_RADIUS",
+        "y": "TRAP_EFFECT_RADIUS"
+      }
+    },
+    "ward-area": {
+      "abilityId": "ward-area",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\scout\\WardArea.wurst",
+      "areaOfEffect": "SIGHT_RADIUS.toReal(",
+      "hotkey": "TOOLTIP_NORM, lvl",
+      "buttonPosition": {
+        "x": "throw\"",
+        "y": "throw\""
+      }
+    },
+    "sleep": {
+      "abilityId": "sleep",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\Sleep.wurst",
+      "hotkey": "makeToolTipNorm(hotkey, name"
+    },
+    "cloak": {
+      "abilityId": "cloak",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\thief\\Cloak.wurst",
+      "hotkey": "TOOLTIP_NORM, lvl",
+      "buttonPosition": {
+        "x": "string hotkey, Pair<int, int> buttonPos",
+        "y": "string hotkey, Pair<int, int> buttonPos"
+      }
+    },
+    "nether-fade": {
+      "abilityId": "nether-fade",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\thief\\contortionist\\NetherFade.wurst",
+      "hotkey": "TOOLTIP_NORM",
+      "buttonPosition": {
+        "x": "\"Q\", new Pair(0, 0",
+        "y": "\"Q\", new Pair(0, 0"
+      }
+    },
+    "smoke-stream": {
+      "abilityId": "smoke-stream",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\thief\\contortionist\\SmokeStream.wurst",
+      "hotkey": "TOOLTIP_NORM",
+      "visualEffects": {
+        "artCaster": "Abilities.obsidianRegenAura"
+      },
+      "buttonPosition": {
+        "x": "Abilities.obsidianRegenAura",
+        "y": "Abilities.obsidianRegenAura"
+      }
+    },
+    "camoflage": {
+      "abilityId": "camoflage",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\thief\\escapeArtist\\Camoflage.wurst",
+      "hotkey": "TOOLTIP_NORM",
+      "buttonPosition": {
+        "x": 1,
+        "y": 1
+      }
+    },
+    "jump": {
+      "abilityId": "jump",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\thief\\escapeArtist\\Jump.wurst",
+      "hotkey": "TOOLTIP_NORM",
+      "targetsAllowed": "terrain",
+      "buttonPosition": {
+        "x": "CAST_RANGE",
+        "y": "CAST_RANGE"
+      }
+    },
+    "blur-attack-speed": {
+      "abilityId": "blur-attack-speed",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\thief\\Rogue\\Blur.wurst",
+      "hotkey": "TOOLTIP_NORM",
+      "buttonPosition": {
+        "x": "MANACOST",
+        "y": "MANACOST"
+      }
+    },
+    "blink": {
+      "abilityId": "blink",
+      "source": "..\\..\\..\\island-troll-tribes\\wurst\\objects\\abilities\\thief\\Teleport.wurst",
+      "hotkey": "TOOLTIP_NORM",
+      "buttonPosition": {
+        "x": "MANACOST",
+        "y": "MANACOST"
+      }
+    }
+  }
+}

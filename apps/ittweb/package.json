@@ -46,6 +46,8 @@
   "dependencies": {
     "@tailwindcss/typography": "^0.5.16",
     "@types/formidable": "^3.4.6",
+    "@websites/infrastructure": "workspace:*",
+    "@websites/ui": "workspace:*",
     "autoprefixer": "^10.4.21",
     "buffer": "^6.0.3",
     "clsx": "^2.1.1",
@@ -66,14 +68,11 @@
     "remark-gfm": "^4.0.1",
     "swr": "^2.2.4",
     "tailwind-merge": "^3.4.0",
-    "w3gjs": "^3.0.0",
-    "@websites/infrastructure": "workspace:*",
-    "@websites/ui": "workspace:*"
+    "w3gjs": "^3.0.0"
   },
   "devDependencies": {
-    "@websites/prettier-config": "workspace:*",
-    "@websites/test-utils": "workspace:*",
     "@next/bundle-analyzer": "^16.0.5",
+    "@pinta365/blp": "jsr:^0.1.0",
     "@playwright/test": "^1.57.0",
     "@stryker-mutator/core": "^9.4.0",
     "@stryker-mutator/jest-runner": "^9.4.0",
@@ -86,6 +85,8 @@
     "@types/react-dom": "^18",
     "@websites/config-tailwind": "workspace:*",
     "@websites/eslint-config": "workspace:*",
+    "@websites/prettier-config": "workspace:*",
+    "@websites/test-utils": "workspace:*",
     "eslint": "^9",
     "eslint-config-next": "15.5.7",
     "i18next-scanner": "^4.6.0",

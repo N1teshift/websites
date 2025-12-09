@@ -19,15 +19,19 @@ jest.mock("firebase/firestore", () => {
   };
 });
 
-const mockIsServerSide = jest.fn(() => false);
+// Mock dependencies - use function wrappers to avoid hoisting issues
+let mockIsServerSide: jest.Mock;
 
-jest.mock("@websites/infrastructure/api/firebase", () => ({
-  getFirestoreInstance: jest.fn(() => ({})),
-}));
+// Initialize mocks - this runs after jest.mock hoisting
+mockIsServerSide = jest.fn(() => false);
 
 jest.mock("@websites/infrastructure/firebase", () => ({
+  getFirestoreInstance: jest.fn(() => ({})),
   getFirestoreAdmin: jest.fn(() => ({ collection: jest.fn() })),
-  isServerSide: mockIsServerSide,
+  isServerSide: jest.fn((...args: unknown[]) => {
+    // Access mock via closure - this will be evaluated when the function is called
+    return mockIsServerSide(...args);
+  }),
   getAdminTimestamp: jest.fn(() => ({
     now: jest.fn(() => ({ toDate: () => new Date("2020-01-01T00:00:00Z") })),
     fromDate: jest.fn((date: Date) => ({ toDate: () => date })),

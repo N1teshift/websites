@@ -12,10 +12,10 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { ROOT_DIR, TMP_METADATA_DIR, ensureTmpDirs } from '../lib/paths.mjs';
+import { WURST_SOURCE_DIR, TMP_METADATA_DIR, ensureTmpDirs } from '../lib/paths.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const WURST_DIR = path.join(ROOT_DIR, 'island-troll-tribes', 'wurst');
+const WURST_DIR = WURST_SOURCE_DIR;
 
 ensureTmpDirs();
 

@@ -1,26 +1,46 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import handler from "../../[id]/leave-bot";
 
-// Mock dependencies
-const mockLeaveGame = jest.fn();
-const mockGetUserDataByDiscordIdServer = jest.fn();
-const mockInfo = jest.fn();
-const mockError = jest.fn();
-const mockWarn = jest.fn();
+// Mock dependencies - use function wrappers to avoid hoisting issues
+let mockLeaveGame: jest.Mock;
+let mockGetUserDataByDiscordIdServer: jest.Mock;
+let mockInfo: jest.Mock;
+let mockError: jest.Mock;
+let mockWarn: jest.Mock;
+
+// Initialize mocks - this runs after jest.mock hoisting
+mockLeaveGame = jest.fn();
+mockGetUserDataByDiscordIdServer = jest.fn();
+mockInfo = jest.fn();
+mockError = jest.fn();
+mockWarn = jest.fn();
 
 jest.mock("@/features/modules/game-management/games/lib/gameService.participation", () => ({
-  leaveGame: (...args: unknown[]) => mockLeaveGame(...args),
+  leaveGame: jest.fn((...args: unknown[]) => {
+    // Access mock via closure - this will be evaluated when the function is called
+    return mockLeaveGame(...args);
+  }),
 }));
 
-jest.mock("@/features/infrastructure/lib/userDataService.server", () => ({
-  getUserDataByDiscordIdServer: (...args: unknown[]) => mockGetUserDataByDiscordIdServer(...args),
+jest.mock("@/features/modules/community/users/services/userDataService.server", () => ({
+  getUserDataByDiscordIdServer: jest.fn((...args: unknown[]) => {
+    // Access mock via closure - this will be evaluated when the function is called
+    return mockGetUserDataByDiscordIdServer(...args);
+  }),
 }));
 
 jest.mock("@websites/infrastructure/logging", () => ({
   createComponentLogger: jest.fn(() => ({
-    info: mockInfo,
-    error: mockError,
-    warn: mockWarn,
+    // Access mocks via closure - these will be evaluated when the logger is created
+    get info() {
+      return mockInfo;
+    },
+    get error() {
+      return mockError;
+    },
+    get warn() {
+      return mockWarn;
+    },
   })),
 }));
 

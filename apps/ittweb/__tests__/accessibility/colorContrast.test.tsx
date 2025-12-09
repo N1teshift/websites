@@ -2,10 +2,10 @@ import React from "react";
 import { render } from "@testing-library/react";
 import { describe, it, expect, beforeEach } from "@jest/globals";
 
-// Mock logger - must be before importing helpers
+// Mock logError before importing helpers
 const mockLogError = jest.fn();
-jest.mock("@/features/infrastructure/logging", () => {
-  const actual = jest.requireActual("@/features/infrastructure/logging");
+jest.mock("@websites/infrastructure/logging", () => {
+  const actual = jest.requireActual("@websites/infrastructure/logging");
   return {
     ...actual,
     logError: (...args: unknown[]) => mockLogError(...args),
@@ -17,6 +17,7 @@ import { getContrastRatio, meetsWCAGContrast } from "@websites/infrastructure/ut
 describe("Color Contrast", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockLogError.mockClear();
   });
 
   describe("Basic color contrast calculation", () => {
@@ -277,24 +278,27 @@ describe("Color Contrast", () => {
       // Arrange
       const invalidForeground = "invalid-color";
       const background = "#FFFFFF";
-      const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation();
 
       // Act
       const ratio = getContrastRatio(invalidForeground, background);
 
       // Assert
       expect(ratio).toBe(0);
-      // Verify that an error was logged (logError calls console.error via Logger.error)
-      expect(consoleErrorSpy).toHaveBeenCalledWith(
-        expect.stringContaining("[ERROR] Failed to calculate color contrast"),
+      // Verify that logError was called with the expected error and context
+      expect(mockLogError).toHaveBeenCalledTimes(1);
+      expect(mockLogError).toHaveBeenCalledWith(
+        expect.any(Error),
+        "Failed to calculate color contrast",
         expect.objectContaining({
           component: "accessibilityHelpers",
           operation: "getContrastRatio",
-          error: expect.stringContaining("Unsupported color format"),
+          foreground: invalidForeground,
+          background: background,
         })
       );
-
-      consoleErrorSpy.mockRestore();
+      // Verify the error message contains the expected text
+      const errorArg = mockLogError.mock.calls[0][0] as Error;
+      expect(errorArg.message).toContain("Unsupported color format");
     });
 
     it("should handle missing color values", () => {

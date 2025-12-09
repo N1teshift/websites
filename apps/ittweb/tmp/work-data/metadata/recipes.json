@@ -1,0 +1,3180 @@
+{
+  "generatedAt": "2025-12-09T07:57:04.102Z",
+  "source": "war3map.j",
+  "recipes": [
+    {
+      "itemConst": "LocalObjectIDs_ITEM_BATTLE_AXE",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_BATTLE_AXE",
+        "name": "ITEM_BATTLE_AXE",
+        "objectId": "IM0q"
+      },
+      "itemObjectId": "IM0q",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_GREATER_ESSENCE",
+          "name": "ITEM_GREATER_ESSENCE",
+          "objectId": "IM3k"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_STEEL_AXE",
+          "name": "ITEM_STEEL_AXE",
+          "objectId": "IM3n"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_SPIRIT_WIND",
+          "name": "ITEM_SPIRIT_WIND",
+          "objectId": "IM3m"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_SPIRIT_WATER",
+          "name": "ITEM_SPIRIT_WATER",
+          "objectId": "IM3l"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_MANA_CRYSTAL",
+          "name": "ITEM_MANA_CRYSTAL",
+          "objectId": "IM2o"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_ARMORY",
+        "name": "UNIT_ARMORY",
+        "objectId": "x00m"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_BATTLE_AXE",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_ANABOLIC_BOOTS",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_ANABOLIC_BOOTS",
+        "name": "ITEM_ANABOLIC_BOOTS",
+        "objectId": "IM0i"
+      },
+      "itemObjectId": "IM0i",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_BONE_BOOTS",
+          "name": "ITEM_BONE_BOOTS",
+          "objectId": "IM11"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_SPIRIT_WIND",
+          "name": "ITEM_SPIRIT_WIND",
+          "objectId": "IM3m"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_SPIRIT_WATER",
+          "name": "ITEM_SPIRIT_WATER",
+          "objectId": "IM3l"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_MANA_CRYSTAL",
+          "name": "ITEM_MANA_CRYSTAL",
+          "objectId": "IM2o"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_LESSER_ESSENCE",
+          "name": "ITEM_LESSER_ESSENCE",
+          "objectId": "IM3j"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_ARMORY",
+        "name": "UNIT_ARMORY",
+        "objectId": "x00m"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_ANABOLIC_BOOTS",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_BEARS_TENACITY_BOOTS",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_BEARS_TENACITY_BOOTS",
+        "name": "ITEM_BEARS_TENACITY_BOOTS",
+        "objectId": "IM0u"
+      },
+      "itemObjectId": "IM0u",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_BEAR_SKIN_BOOTS",
+          "name": "ITEM_BEAR_SKIN_BOOTS",
+          "objectId": "IM0t"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_LESSER_ESSENCE",
+          "name": "ITEM_LESSER_ESSENCE",
+          "objectId": "IM3j"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_SPIRIT_WIND",
+          "name": "ITEM_SPIRIT_WIND",
+          "objectId": "IM3m"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_SPIRIT_WATER",
+          "name": "ITEM_SPIRIT_WATER",
+          "objectId": "IM3l"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_MANA_CRYSTAL",
+          "name": "ITEM_MANA_CRYSTAL",
+          "objectId": "IM2o"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_ARMORY",
+        "name": "UNIT_ARMORY",
+        "objectId": "x00m"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_BEARS_TENACITY_BOOTS",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_BEARS_GREED_PAWS",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_BEARS_GREED_PAWS",
+        "name": "ITEM_BEARS_GREED_PAWS",
+        "objectId": "IM0y"
+      },
+      "itemObjectId": "IM0y",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_BEAR_SKIN_GLOVES",
+          "name": "ITEM_BEAR_SKIN_GLOVES",
+          "objectId": "IM0x"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_IRON_INGOT",
+          "name": "ITEM_IRON_INGOT",
+          "objectId": "IM2c"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_LESSER_ESSENCE",
+          "name": "ITEM_LESSER_ESSENCE",
+          "objectId": "IM3j"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_SPIRIT_WIND",
+          "name": "ITEM_SPIRIT_WIND",
+          "objectId": "IM3m"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_SPIRIT_WATER",
+          "name": "ITEM_SPIRIT_WATER",
+          "objectId": "IM3l"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_MANA_CRYSTAL",
+          "name": "ITEM_MANA_CRYSTAL",
+          "objectId": "IM2o"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_ARMORY",
+        "name": "UNIT_ARMORY",
+        "objectId": "x00m"
+      },
+      "quickMakeAbility": null,
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_BEARS_GREED_PAWS_EMPTY",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_BEARS_GREED_PAWS_EMPTY",
+        "name": "ITEM_BEARS_GREED_PAWS_EMPTY",
+        "objectId": "IM06"
+      },
+      "itemObjectId": "IM06",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_BEAR_SKIN_GLOVES",
+          "name": "ITEM_BEAR_SKIN_GLOVES",
+          "objectId": "IM0x"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_IRON_INGOT",
+          "name": "ITEM_IRON_INGOT",
+          "objectId": "IM2c"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_LESSER_ESSENCE",
+          "name": "ITEM_LESSER_ESSENCE",
+          "objectId": "IM3j"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_SPIRIT_WIND",
+          "name": "ITEM_SPIRIT_WIND",
+          "objectId": "IM3m"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_SPIRIT_WATER",
+          "name": "ITEM_SPIRIT_WATER",
+          "objectId": "IM3l"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_MANA_CRYSTAL",
+          "name": "ITEM_MANA_CRYSTAL",
+          "objectId": "IM2o"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_ARMORY",
+        "name": "UNIT_ARMORY",
+        "objectId": "x00m"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_BEARS_GREED_PAWS",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_MAGEFIST",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_MAGEFIST",
+        "name": "ITEM_MAGEFIST",
+        "objectId": "IM24"
+      },
+      "itemObjectId": "IM24",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_BONE_GLOVES",
+          "name": "ITEM_BONE_GLOVES",
+          "objectId": "IM13"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_STEEL_INGOT",
+          "name": "ITEM_STEEL_INGOT",
+          "objectId": "IM3r"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_LESSER_ESSENCE",
+          "name": "ITEM_LESSER_ESSENCE",
+          "objectId": "IM3j"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_SPIRIT_WIND",
+          "name": "ITEM_SPIRIT_WIND",
+          "objectId": "IM3m"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_SPIRIT_WATER",
+          "name": "ITEM_SPIRIT_WATER",
+          "objectId": "IM3l"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_MANA_CRYSTAL",
+          "name": "ITEM_MANA_CRYSTAL",
+          "objectId": "IM2o"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_ARMORY",
+        "name": "UNIT_ARMORY",
+        "objectId": "x00m"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_MAGEFIST",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_WOLFS_BLOODLUST_CLAWS",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_WOLFS_BLOODLUST_CLAWS",
+        "name": "ITEM_WOLFS_BLOODLUST_CLAWS",
+        "objectId": "IM49"
+      },
+      "itemObjectId": "IM49",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_WOLF_SKIN_GLOVES",
+          "name": "ITEM_WOLF_SKIN_GLOVES",
+          "objectId": "IM48"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_STEEL_INGOT",
+          "name": "ITEM_STEEL_INGOT",
+          "objectId": "IM3r"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_GREATER_ESSENCE",
+          "name": "ITEM_GREATER_ESSENCE",
+          "objectId": "IM3k"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_SPIRIT_WIND",
+          "name": "ITEM_SPIRIT_WIND",
+          "objectId": "IM3m"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_SPIRIT_WATER",
+          "name": "ITEM_SPIRIT_WATER",
+          "objectId": "IM3l"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_MANA_CRYSTAL",
+          "name": "ITEM_MANA_CRYSTAL",
+          "objectId": "IM2o"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_ARMORY",
+        "name": "UNIT_ARMORY",
+        "objectId": "x00m"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_WOLFS_BLOODLUST_CLAWS",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_WOLFS_STAMINA_BOOTS",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_WOLFS_STAMINA_BOOTS",
+        "name": "ITEM_WOLFS_STAMINA_BOOTS",
+        "objectId": "IM46"
+      },
+      "itemObjectId": "IM46",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_WOLF_SKIN_BOOTS",
+          "name": "ITEM_WOLF_SKIN_BOOTS",
+          "objectId": "IM45"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_LESSER_ESSENCE",
+          "name": "ITEM_LESSER_ESSENCE",
+          "objectId": "IM3j"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_SPIRIT_WIND",
+          "name": "ITEM_SPIRIT_WIND",
+          "objectId": "IM3m"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_SPIRIT_WATER",
+          "name": "ITEM_SPIRIT_WATER",
+          "objectId": "IM3l"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_MANA_CRYSTAL",
+          "name": "ITEM_MANA_CRYSTAL",
+          "objectId": "IM2o"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_ARMORY",
+        "name": "UNIT_ARMORY",
+        "objectId": "x00m"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_WOLFS_STAMINA_BOOTS",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_BATTLE_STAFF",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_BATTLE_STAFF",
+        "name": "ITEM_BATTLE_STAFF",
+        "objectId": "IM4h"
+      },
+      "itemObjectId": "IM4h",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_IRON_STAFF",
+          "name": "ITEM_IRON_STAFF",
+          "objectId": "IM4g"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_STEEL_INGOT",
+          "name": "ITEM_STEEL_INGOT",
+          "objectId": "IM3r"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_SPIRIT_WIND",
+          "name": "ITEM_SPIRIT_WIND",
+          "objectId": "IM3m"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_SPIRIT_WATER",
+          "name": "ITEM_SPIRIT_WATER",
+          "objectId": "IM3l"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_BONE",
+          "name": "ITEM_BONE",
+          "objectId": "IM10"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_BONE",
+          "name": "ITEM_BONE",
+          "objectId": "IM10"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_ARMORY",
+        "name": "UNIT_ARMORY",
+        "objectId": "x00m"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_BATTLE_STAFF",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_TROLL_PROTECTOR",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_TROLL_PROTECTOR",
+        "name": "ITEM_TROLL_PROTECTOR",
+        "objectId": "IM0b"
+      },
+      "itemObjectId": "IM0b",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_IRON_SHIELD",
+          "name": "ITEM_IRON_SHIELD",
+          "objectId": "IM2d"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_ELK_HIDE",
+          "name": "ITEM_ELK_HIDE",
+          "objectId": "IM1o"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_MANA_CRYSTAL",
+          "name": "ITEM_MANA_CRYSTAL",
+          "objectId": "IM2o"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_ARMORY",
+        "name": "UNIT_ARMORY",
+        "objectId": "x00m"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_TROLL_PROTECTOR",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_BATTLE_SHIELD",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_BATTLE_SHIELD",
+        "name": "ITEM_BATTLE_SHIELD",
+        "objectId": "IM0s"
+      },
+      "itemObjectId": "IM0s",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_BONE_SHIELD",
+          "name": "ITEM_BONE_SHIELD",
+          "objectId": "IM14"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_ELK_HIDE",
+          "name": "ITEM_ELK_HIDE",
+          "objectId": "IM1o"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_STEEL_INGOT",
+          "name": "ITEM_STEEL_INGOT",
+          "objectId": "IM3r"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_SPIRIT_WIND",
+          "name": "ITEM_SPIRIT_WIND",
+          "objectId": "IM3m"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_SPIRIT_WATER",
+          "name": "ITEM_SPIRIT_WATER",
+          "objectId": "IM3l"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_MANA_CRYSTAL",
+          "name": "ITEM_MANA_CRYSTAL",
+          "objectId": "IM2o"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_ARMORY",
+        "name": "UNIT_ARMORY",
+        "objectId": "x00m"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_BATTLE_SHIELD",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_BATTLE_GLOVES",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_BATTLE_GLOVES",
+        "name": "ITEM_BATTLE_GLOVES",
+        "objectId": "IM0r"
+      },
+      "itemObjectId": "IM0r",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_STEEL_GLOVES",
+          "name": "ITEM_STEEL_GLOVES",
+          "objectId": "IM3q"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_SPIRIT_WIND",
+          "name": "ITEM_SPIRIT_WIND",
+          "objectId": "IM3m"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_SPIRIT_WATER",
+          "name": "ITEM_SPIRIT_WATER",
+          "objectId": "IM3l"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_MANA_CRYSTAL",
+          "name": "ITEM_MANA_CRYSTAL",
+          "objectId": "IM2o"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_ARMORY",
+        "name": "UNIT_ARMORY",
+        "objectId": "x00m"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_BATTLE_GLOVES",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_BEAR_PRESENCE_COAT",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_BEAR_PRESENCE_COAT",
+        "name": "ITEM_BEAR_PRESENCE_COAT",
+        "objectId": "IM0w"
+      },
+      "itemObjectId": "IM0w",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_BEAR_SKIN_COAT",
+          "name": "ITEM_BEAR_SKIN_COAT",
+          "objectId": "IM0v"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_STEEL_INGOT",
+          "name": "ITEM_STEEL_INGOT",
+          "objectId": "IM3r"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_SPIRIT_DARKNESS",
+          "name": "ITEM_SPIRIT_DARKNESS",
+          "objectId": "IM3f"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_SPIRIT_WIND",
+          "name": "ITEM_SPIRIT_WIND",
+          "objectId": "IM3m"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_SPIRIT_WATER",
+          "name": "ITEM_SPIRIT_WATER",
+          "objectId": "IM3l"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_MANA_CRYSTAL",
+          "name": "ITEM_MANA_CRYSTAL",
+          "objectId": "IM2o"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_ARMORY",
+        "name": "UNIT_ARMORY",
+        "objectId": "x00m"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_BEAR_PRESENCE_COAT",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_BATTLE_ARMOR",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_BATTLE_ARMOR",
+        "name": "ITEM_BATTLE_ARMOR",
+        "objectId": "IM0p"
+      },
+      "itemObjectId": "IM0p",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_BONE_COAT",
+          "name": "ITEM_BONE_COAT",
+          "objectId": "IM12"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_SPIRIT_WIND",
+          "name": "ITEM_SPIRIT_WIND",
+          "objectId": "IM3m"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_SPIRIT_WATER",
+          "name": "ITEM_SPIRIT_WATER",
+          "objectId": "IM3l"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_MANA_CRYSTAL",
+          "name": "ITEM_MANA_CRYSTAL",
+          "objectId": "IM2o"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_ARMORY",
+        "name": "UNIT_ARMORY",
+        "objectId": "x00m"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_BATTLE_ARMOR",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_WOLF_VORACITY_COAT",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_WOLF_VORACITY_COAT",
+        "name": "ITEM_WOLF_VORACITY_COAT ",
+        "objectId": "IM4a"
+      },
+      "itemObjectId": "IM4a",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_WOLF_SKIN_COAT",
+          "name": "ITEM_WOLF_SKIN_COAT",
+          "objectId": "IM47"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_SPIRIT_DARKNESS",
+          "name": "ITEM_SPIRIT_DARKNESS",
+          "objectId": "IM3f"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_MANA_CRYSTAL",
+          "name": "ITEM_MANA_CRYSTAL",
+          "objectId": "IM2o"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_ARMORY",
+        "name": "UNIT_ARMORY",
+        "objectId": "x00m"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_WOLFS_VORACITY_COAT",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_ROBE_OF_THE_MAGI",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_ROBE_OF_THE_MAGI",
+        "name": "ITEM_ROBE_OF_THE_MAGI",
+        "objectId": "IM09"
+      },
+      "itemObjectId": "IM09",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_BONE_COAT",
+          "name": "ITEM_BONE_COAT",
+          "objectId": "IM12"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_SPIRIT_WIND",
+          "name": "ITEM_SPIRIT_WIND",
+          "objectId": "IM3m"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_SPIRIT_WATER",
+          "name": "ITEM_SPIRIT_WATER",
+          "objectId": "IM3l"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_MANA_CRYSTAL",
+          "name": "ITEM_MANA_CRYSTAL",
+          "objectId": "IM2o"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_ARMORY",
+        "name": "UNIT_ARMORY",
+        "objectId": "x00m"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_ROBE_OF_THE_MAGI",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_MANA_CRYSTAL",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_MANA_CRYSTAL",
+        "name": "ITEM_MANA_CRYSTAL",
+        "objectId": "IM2o"
+      },
+      "itemObjectId": "IM2o",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_SPIRIT_WIND",
+          "name": "ITEM_SPIRIT_WIND",
+          "objectId": "IM3m"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_SPIRIT_WATER",
+          "name": "ITEM_SPIRIT_WATER",
+          "objectId": "IM3l"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_WORKSHOP",
+        "name": "UNIT_WORKSHOP",
+        "objectId": "x02p"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_MANA_CRYSTAL",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_MAGIC",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_MAGIC",
+        "name": "ITEM_MAGIC",
+        "objectId": "IM2k"
+      },
+      "itemObjectId": "IM2k",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_MANA_CRYSTAL",
+          "name": "ITEM_MANA_CRYSTAL",
+          "objectId": "IM2o"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_MANA_CRYSTAL",
+          "name": "ITEM_MANA_CRYSTAL",
+          "objectId": "IM2o"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_WORKSHOP",
+        "name": "UNIT_WORKSHOP",
+        "objectId": "x02p"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_MAGIC",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_POISON_THISTLES",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_POISON_THISTLES",
+        "name": "ITEM_POISON_THISTLES",
+        "objectId": "IM4l"
+      },
+      "itemObjectId": "IM4l",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_THISTLES",
+          "name": "ITEM_THISTLES",
+          "objectId": "IM3~"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_POISON",
+          "name": "ITEM_POISON",
+          "objectId": "IM2{"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_WORKSHOP",
+        "name": "UNIT_WORKSHOP",
+        "objectId": "x02p"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_POISON_THISTLES",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_BONE_GLOVES",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_BONE_GLOVES",
+        "name": "ITEM_BONE_GLOVES",
+        "objectId": "IM13"
+      },
+      "itemObjectId": "IM13",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_ELK_SKIN_GLOVES",
+          "name": "ITEM_ELK_SKIN_GLOVES",
+          "objectId": "IM1r"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_BONE",
+          "name": "ITEM_BONE",
+          "objectId": "IM10"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_BONE",
+          "name": "ITEM_BONE",
+          "objectId": "IM10"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_BONE",
+          "name": "ITEM_BONE",
+          "objectId": "IM10"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_BONE",
+          "name": "ITEM_BONE",
+          "objectId": "IM10"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_BONE",
+          "name": "ITEM_BONE",
+          "objectId": "IM10"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_FORGE",
+        "name": "UNIT_FORGE",
+        "objectId": "x015"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_BONE_GLOVES",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_BONE_BOOTS",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_BONE_BOOTS",
+        "name": "ITEM_BONE_BOOTS",
+        "objectId": "IM11"
+      },
+      "itemObjectId": "IM11",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_ELK_SKIN_BOOTS",
+          "name": "ITEM_ELK_SKIN_BOOTS",
+          "objectId": "IM1p"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_BONE",
+          "name": "ITEM_BONE",
+          "objectId": "IM10"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_BONE",
+          "name": "ITEM_BONE",
+          "objectId": "IM10"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_BONE",
+          "name": "ITEM_BONE",
+          "objectId": "IM10"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_BONE",
+          "name": "ITEM_BONE",
+          "objectId": "IM10"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_BONE",
+          "name": "ITEM_BONE",
+          "objectId": "IM10"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_FORGE",
+        "name": "UNIT_FORGE",
+        "objectId": "x015"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_BONE_BOOTS",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_BONE_COAT",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_BONE_COAT",
+        "name": "ITEM_BONE_COAT",
+        "objectId": "IM12"
+      },
+      "itemObjectId": "IM12",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_ELK_SKIN_COAT",
+          "name": "ITEM_ELK_SKIN_COAT",
+          "objectId": "IM1q"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_BONE",
+          "name": "ITEM_BONE",
+          "objectId": "IM10"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_BONE",
+          "name": "ITEM_BONE",
+          "objectId": "IM10"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_BONE",
+          "name": "ITEM_BONE",
+          "objectId": "IM10"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_BONE",
+          "name": "ITEM_BONE",
+          "objectId": "IM10"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_BONE",
+          "name": "ITEM_BONE",
+          "objectId": "IM10"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_FORGE",
+        "name": "UNIT_FORGE",
+        "objectId": "x015"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_BONE_COAT",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_IRON_BOOTS",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_IRON_BOOTS",
+        "name": "ITEM_IRON_BOOTS",
+        "objectId": "IM29"
+      },
+      "itemObjectId": "IM29",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_ELK_SKIN_BOOTS",
+          "name": "ITEM_ELK_SKIN_BOOTS",
+          "objectId": "IM1p"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_IRON_INGOT",
+          "name": "ITEM_IRON_INGOT",
+          "objectId": "IM2c"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_IRON_INGOT",
+          "name": "ITEM_IRON_INGOT",
+          "objectId": "IM2c"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_FORGE",
+        "name": "UNIT_FORGE",
+        "objectId": "x015"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_IRON_BOOTS",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_MAGE_MASHER",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_MAGE_MASHER",
+        "name": "ITEM_MAGE_MASHER",
+        "objectId": "IM2j"
+      },
+      "itemObjectId": "IM2j",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_STICK",
+          "name": "ITEM_STICK",
+          "objectId": "IM3u"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_SPIRIT_WIND",
+          "name": "ITEM_SPIRIT_WIND",
+          "objectId": "IM3m"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_SPIRIT_WATER",
+          "name": "ITEM_SPIRIT_WATER",
+          "objectId": "IM3l"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_MANA_CRYSTAL",
+          "name": "ITEM_MANA_CRYSTAL",
+          "objectId": "IM2o"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_FORGE",
+        "name": "UNIT_FORGE",
+        "objectId": "x015"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_MAGE_MASHER",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_IRON_COAT",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_IRON_COAT",
+        "name": "ITEM_IRON_COAT",
+        "objectId": "IM2a"
+      },
+      "itemObjectId": "IM2a",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_ELK_SKIN_COAT",
+          "name": "ITEM_ELK_SKIN_COAT",
+          "objectId": "IM1q"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_IRON_INGOT",
+          "name": "ITEM_IRON_INGOT",
+          "objectId": "IM2c"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_IRON_INGOT",
+          "name": "ITEM_IRON_INGOT",
+          "objectId": "IM2c"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_FORGE",
+        "name": "UNIT_FORGE",
+        "objectId": "x015"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_IRON_COAT",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_IRON_GLOVES",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_IRON_GLOVES",
+        "name": "ITEM_IRON_GLOVES",
+        "objectId": "IM2b"
+      },
+      "itemObjectId": "IM2b",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_ELK_SKIN_GLOVES",
+          "name": "ITEM_ELK_SKIN_GLOVES",
+          "objectId": "IM1r"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_IRON_INGOT",
+          "name": "ITEM_IRON_INGOT",
+          "objectId": "IM2c"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_IRON_INGOT",
+          "name": "ITEM_IRON_INGOT",
+          "objectId": "IM2c"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_FORGE",
+        "name": "UNIT_FORGE",
+        "objectId": "x015"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_IRON_GLOVES",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_STEEL_GLOVES",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_STEEL_GLOVES",
+        "name": "ITEM_STEEL_GLOVES",
+        "objectId": "IM3q"
+      },
+      "itemObjectId": "IM3q",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_ELK_SKIN_GLOVES",
+          "name": "ITEM_ELK_SKIN_GLOVES",
+          "objectId": "IM1r"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_STEEL_INGOT",
+          "name": "ITEM_STEEL_INGOT",
+          "objectId": "IM3r"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_STEEL_INGOT",
+          "name": "ITEM_STEEL_INGOT",
+          "objectId": "IM3r"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_FORGE",
+        "name": "UNIT_FORGE",
+        "objectId": "x015"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_STEEL_GLOVES",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_STEEL_BOOTS",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_STEEL_BOOTS",
+        "name": "ITEM_STEEL_BOOTS",
+        "objectId": "IM3o"
+      },
+      "itemObjectId": "IM3o",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_ELK_SKIN_BOOTS",
+          "name": "ITEM_ELK_SKIN_BOOTS",
+          "objectId": "IM1p"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_STEEL_INGOT",
+          "name": "ITEM_STEEL_INGOT",
+          "objectId": "IM3r"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_STEEL_INGOT",
+          "name": "ITEM_STEEL_INGOT",
+          "objectId": "IM3r"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_FORGE",
+        "name": "UNIT_FORGE",
+        "objectId": "x015"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_STEEL_BOOTS",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_STEEL_COAT",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_STEEL_COAT",
+        "name": "ITEM_STEEL_COAT",
+        "objectId": "IM3p"
+      },
+      "itemObjectId": "IM3p",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_ELK_SKIN_COAT",
+          "name": "ITEM_ELK_SKIN_COAT",
+          "objectId": "IM1q"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_STEEL_INGOT",
+          "name": "ITEM_STEEL_INGOT",
+          "objectId": "IM3r"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_STEEL_INGOT",
+          "name": "ITEM_STEEL_INGOT",
+          "objectId": "IM3r"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_FORGE",
+        "name": "UNIT_FORGE",
+        "objectId": "x015"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_STEEL_COAT",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_STEEL_AXE",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_STEEL_AXE",
+        "name": "ITEM_STEEL_AXE",
+        "objectId": "IM3n"
+      },
+      "itemObjectId": "IM3n",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_STICK",
+          "name": "ITEM_STICK",
+          "objectId": "IM3u"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_STEEL_INGOT",
+          "name": "ITEM_STEEL_INGOT",
+          "objectId": "IM3r"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_STEEL_INGOT",
+          "name": "ITEM_STEEL_INGOT",
+          "objectId": "IM3r"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_FORGE",
+        "name": "UNIT_FORGE",
+        "objectId": "x015"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_STEEL_AXE",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_IRON_AXE",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_IRON_AXE",
+        "name": "ITEM_IRON_AXE",
+        "objectId": "IM28"
+      },
+      "itemObjectId": "IM28",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_STICK",
+          "name": "ITEM_STICK",
+          "objectId": "IM3u"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_IRON_INGOT",
+          "name": "ITEM_IRON_INGOT",
+          "objectId": "IM2c"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_IRON_INGOT",
+          "name": "ITEM_IRON_INGOT",
+          "objectId": "IM2c"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_FORGE",
+        "name": "UNIT_FORGE",
+        "objectId": "x015"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_IRON_AXE",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_IRON_STAFF",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_IRON_STAFF",
+        "name": "ITEM_IRON_STAFF",
+        "objectId": "IM4g"
+      },
+      "itemObjectId": "IM4g",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_STICK",
+          "name": "ITEM_STICK",
+          "objectId": "IM3u"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_IRON_INGOT",
+          "name": "ITEM_IRON_INGOT",
+          "objectId": "IM2c"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_IRON_INGOT",
+          "name": "ITEM_IRON_INGOT",
+          "objectId": "IM2c"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_MANA_CRYSTAL",
+          "name": "ITEM_MANA_CRYSTAL",
+          "objectId": "IM2o"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_FORGE",
+        "name": "UNIT_FORGE",
+        "objectId": "x015"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_IRON_STAFF",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_BONE_SHIELD",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_BONE_SHIELD",
+        "name": "ITEM_BONE_SHIELD",
+        "objectId": "IM14"
+      },
+      "itemObjectId": "IM14",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_SHIELD",
+          "name": "ITEM_SHIELD",
+          "objectId": "IM3b"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_BONE",
+          "name": "ITEM_BONE",
+          "objectId": "IM10"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_BONE",
+          "name": "ITEM_BONE",
+          "objectId": "IM10"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_BONE",
+          "name": "ITEM_BONE",
+          "objectId": "IM10"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_BONE",
+          "name": "ITEM_BONE",
+          "objectId": "IM10"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_BONE",
+          "name": "ITEM_BONE",
+          "objectId": "IM10"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_FORGE",
+        "name": "UNIT_FORGE",
+        "objectId": "x015"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_BONE_SHIELD",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_SHIELD",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_SHIELD",
+        "name": "ITEM_SHIELD",
+        "objectId": "IM3b"
+      },
+      "itemObjectId": "IM3b",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_ELK_HIDE",
+          "name": "ITEM_ELK_HIDE",
+          "objectId": "IM1o"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_STICK",
+          "name": "ITEM_STICK",
+          "objectId": "IM3u"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_STICK",
+          "name": "ITEM_STICK",
+          "objectId": "IM3u"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_FORGE",
+        "name": "UNIT_FORGE",
+        "objectId": "x015"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_SHIELD",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_STEEL_SHIELD",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_STEEL_SHIELD",
+        "name": "ITEM_STEEL_SHIELD",
+        "objectId": "IM3s"
+      },
+      "itemObjectId": "IM3s",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_SHIELD",
+          "name": "ITEM_SHIELD",
+          "objectId": "IM3b"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_STEEL_INGOT",
+          "name": "ITEM_STEEL_INGOT",
+          "objectId": "IM3r"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_STEEL_INGOT",
+          "name": "ITEM_STEEL_INGOT",
+          "objectId": "IM3r"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_FORGE",
+        "name": "UNIT_FORGE",
+        "objectId": "x015"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_STEEL_SHIELD",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_IRON_SHIELD",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_IRON_SHIELD",
+        "name": "ITEM_IRON_SHIELD",
+        "objectId": "IM2d"
+      },
+      "itemObjectId": "IM2d",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_SHIELD",
+          "name": "ITEM_SHIELD",
+          "objectId": "IM3b"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_IRON_INGOT",
+          "name": "ITEM_IRON_INGOT",
+          "objectId": "IM2c"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_IRON_INGOT",
+          "name": "ITEM_IRON_INGOT",
+          "objectId": "IM2c"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_FORGE",
+        "name": "UNIT_FORGE",
+        "objectId": "x015"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_IRON_SHIELD",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_STEEL_INGOT",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_STEEL_INGOT",
+        "name": "ITEM_STEEL_INGOT",
+        "objectId": "IM3r"
+      },
+      "itemObjectId": "IM3r",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_IRON_INGOT",
+          "name": "ITEM_IRON_INGOT",
+          "objectId": "IM2c"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_IRON_INGOT",
+          "name": "ITEM_IRON_INGOT",
+          "objectId": "IM2c"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_FLINT",
+          "name": "ITEM_FLINT",
+          "objectId": "IM1y"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_FLINT",
+          "name": "ITEM_FLINT",
+          "objectId": "IM1y"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_FORGE",
+        "name": "UNIT_FORGE",
+        "objectId": "x015"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_STEEL_INGOT",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_IRON_INGOT",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_IRON_INGOT",
+        "name": "ITEM_IRON_INGOT",
+        "objectId": "IM2c"
+      },
+      "itemObjectId": "IM2c",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_STONE",
+          "name": "ITEM_STONE",
+          "objectId": "IM3w"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_FLINT",
+          "name": "ITEM_FLINT",
+          "objectId": "IM1y"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_FORGE",
+        "name": "UNIT_FORGE",
+        "objectId": "x015"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_IRON_INGOT",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_SPEAR",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_SPEAR",
+        "name": "ITEM_SPEAR",
+        "objectId": "IM3e"
+      },
+      "itemObjectId": "IM3e",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_STICK",
+          "name": "ITEM_STICK",
+          "objectId": "IM3u"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_STONE",
+          "name": "ITEM_STONE",
+          "objectId": "IM3w"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_FORGE",
+        "name": "UNIT_FORGE",
+        "objectId": "x015"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_SPEAR",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_IRON_SPEAR",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_IRON_SPEAR",
+        "name": "ITEM_IRON_SPEAR",
+        "objectId": "IM2e"
+      },
+      "itemObjectId": "IM2e",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_STICK",
+          "name": "ITEM_STICK",
+          "objectId": "IM3u"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_IRON_INGOT",
+          "name": "ITEM_IRON_INGOT",
+          "objectId": "IM2c"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_FORGE",
+        "name": "UNIT_FORGE",
+        "objectId": "x015"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_IRON_SPEAR",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_STEEL_SPEAR",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_STEEL_SPEAR",
+        "name": "ITEM_STEEL_SPEAR",
+        "objectId": "IM3t"
+      },
+      "itemObjectId": "IM3t",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_STICK",
+          "name": "ITEM_STICK",
+          "objectId": "IM3u"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_STEEL_INGOT",
+          "name": "ITEM_STEEL_INGOT",
+          "objectId": "IM3r"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_FORGE",
+        "name": "UNIT_FORGE",
+        "objectId": "x015"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_STEEL_SPEAR",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_DARK_SPEAR",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_DARK_SPEAR",
+        "name": "ITEM_DARK_SPEAR",
+        "objectId": "IM1e"
+      },
+      "itemObjectId": "IM1e",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_STICK",
+          "name": "ITEM_STICK",
+          "objectId": "IM3u"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_SPIRIT_DARKNESS",
+          "name": "ITEM_SPIRIT_DARKNESS",
+          "objectId": "IM3f"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_FORGE",
+        "name": "UNIT_FORGE",
+        "objectId": "x015"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_DARK_SPEAR",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_CHAMELEON_HATCHET_STR",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_CHAMELEON_HATCHET_STR",
+        "name": "ITEM_CHAMELEON_HATCHET_STR",
+        "objectId": "IM1f"
+      },
+      "itemObjectId": "IM1f",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_IRON_AXE",
+          "name": "ITEM_IRON_AXE",
+          "objectId": "IM28"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_IRON_INGOT",
+          "name": "ITEM_IRON_INGOT",
+          "objectId": "IM2c"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_SPIRIT_WIND",
+          "name": "ITEM_SPIRIT_WIND",
+          "objectId": "IM3m"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_SPIRIT_WATER",
+          "name": "ITEM_SPIRIT_WATER",
+          "objectId": "IM3l"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_MANA_CRYSTAL",
+          "name": "ITEM_MANA_CRYSTAL",
+          "objectId": "IM2o"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_FORGE",
+        "name": "UNIT_FORGE",
+        "objectId": "x015"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_CHAMELEON_HATCHET",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_SPIRIT_WIND",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_SPIRIT_WIND",
+        "name": "ITEM_SPIRIT_WIND",
+        "objectId": "IM3m"
+      },
+      "itemObjectId": "IM3m",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_RIVER_STEM",
+          "name": "ITEM_RIVER_STEM",
+          "objectId": "IM32"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_RIVER_STEM",
+          "name": "ITEM_RIVER_STEM",
+          "objectId": "IM32"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_MIXING_POT",
+        "name": "UNIT_MIXING_POT",
+        "objectId": "x01y"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_SPIRIT_WIND",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_SPIRIT_DARKNESS",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_SPIRIT_DARKNESS",
+        "name": "ITEM_SPIRIT_DARKNESS",
+        "objectId": "IM3f"
+      },
+      "itemObjectId": "IM3f",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_RIVER_STEM",
+          "name": "ITEM_RIVER_STEM",
+          "objectId": "IM32"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_RIVER_ROOT",
+          "name": "ITEM_RIVER_ROOT",
+          "objectId": "IM31"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_ATHELAS_SEED",
+          "name": "ITEM_ATHELAS_SEED",
+          "objectId": "IM0m"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_ATHELAS_SEED",
+          "name": "ITEM_ATHELAS_SEED",
+          "objectId": "IM0m"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_MIXING_POT",
+        "name": "UNIT_MIXING_POT",
+        "objectId": "x01y"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_SPIRIT_DARKNESS",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_SPIRIT_WATER",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_SPIRIT_WATER",
+        "name": "ITEM_SPIRIT_WATER",
+        "objectId": "IM3l"
+      },
+      "itemObjectId": "IM3l",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_RIVER_ROOT",
+          "name": "ITEM_RIVER_ROOT",
+          "objectId": "IM31"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_RIVER_ROOT",
+          "name": "ITEM_RIVER_ROOT",
+          "objectId": "IM31"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_MIXING_POT",
+        "name": "UNIT_MIXING_POT",
+        "objectId": "x01y"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_SPIRIT_WATER",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_LESSER_ESSENCE",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_LESSER_ESSENCE",
+        "name": "ITEM_LESSER_ESSENCE",
+        "objectId": "IM3j"
+      },
+      "itemObjectId": "IM3j",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_NATIVE_HERB",
+          "name": "ITEM_NATIVE_HERB",
+          "objectId": "IM3h"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_NATIVE_HERB",
+          "name": "ITEM_NATIVE_HERB",
+          "objectId": "IM3h"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_MIXING_POT",
+        "name": "UNIT_MIXING_POT",
+        "objectId": "x01y"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_LESSER_ESSENCE",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_GREATER_ESSENCE",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_GREATER_ESSENCE",
+        "name": "ITEM_GREATER_ESSENCE",
+        "objectId": "IM3k"
+      },
+      "itemObjectId": "IM3k",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_EXOTIC_HERB",
+          "name": "ITEM_EXOTIC_HERB",
+          "objectId": "IM3i"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_EXOTIC_HERB",
+          "name": "ITEM_EXOTIC_HERB",
+          "objectId": "IM3i"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_MIXING_POT",
+        "name": "UNIT_MIXING_POT",
+        "objectId": "x01y"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_GREATER_ESSENCE",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_ELK_SKIN_BOOTS",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_ELK_SKIN_BOOTS",
+        "name": "ITEM_ELK_SKIN_BOOTS",
+        "objectId": "IM1p"
+      },
+      "itemObjectId": "IM1p",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_ELK_HIDE",
+          "name": "ITEM_ELK_HIDE",
+          "objectId": "IM1o"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_ELK_HIDE",
+          "name": "ITEM_ELK_HIDE",
+          "objectId": "IM1o"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_TANNERY",
+        "name": "UNIT_TANNERY",
+        "objectId": "x023"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_ELK_SKIN_BOOTS",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_ELK_SKIN_GLOVES",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_ELK_SKIN_GLOVES",
+        "name": "ITEM_ELK_SKIN_GLOVES",
+        "objectId": "IM1r"
+      },
+      "itemObjectId": "IM1r",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_ELK_HIDE",
+          "name": "ITEM_ELK_HIDE",
+          "objectId": "IM1o"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_ELK_HIDE",
+          "name": "ITEM_ELK_HIDE",
+          "objectId": "IM1o"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_TANNERY",
+        "name": "UNIT_TANNERY",
+        "objectId": "x023"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_ELK_SKIN_GLOVES",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_ELK_SKIN_COAT",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_ELK_SKIN_COAT",
+        "name": "ITEM_ELK_SKIN_COAT",
+        "objectId": "IM1q"
+      },
+      "itemObjectId": "IM1q",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_ELK_HIDE",
+          "name": "ITEM_ELK_HIDE",
+          "objectId": "IM1o"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_ELK_HIDE",
+          "name": "ITEM_ELK_HIDE",
+          "objectId": "IM1o"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_ELK_HIDE",
+          "name": "ITEM_ELK_HIDE",
+          "objectId": "IM1o"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_TANNERY",
+        "name": "UNIT_TANNERY",
+        "objectId": "x023"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_ELK_SKIN_COAT",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_WOLF_SKIN_BOOTS",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_WOLF_SKIN_BOOTS",
+        "name": "ITEM_WOLF_SKIN_BOOTS",
+        "objectId": "IM45"
+      },
+      "itemObjectId": "IM45",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_JUNGLE_WOLF_HIDE",
+          "name": "ITEM_JUNGLE_WOLF_HIDE",
+          "objectId": "IM2g"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_ELK_HIDE",
+          "name": "ITEM_ELK_HIDE",
+          "objectId": "IM1o"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_TANNERY",
+        "name": "UNIT_TANNERY",
+        "objectId": "x023"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_JUNGLE_WOLF_SKIN_BOOTS",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_WOLF_SKIN_GLOVES",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_WOLF_SKIN_GLOVES",
+        "name": "ITEM_WOLF_SKIN_GLOVES",
+        "objectId": "IM48"
+      },
+      "itemObjectId": "IM48",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_JUNGLE_WOLF_HIDE",
+          "name": "ITEM_JUNGLE_WOLF_HIDE",
+          "objectId": "IM2g"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_ELK_HIDE",
+          "name": "ITEM_ELK_HIDE",
+          "objectId": "IM1o"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_TANNERY",
+        "name": "UNIT_TANNERY",
+        "objectId": "x023"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_JUNGLE_WOLF_SKIN_GLOVES",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_WOLF_SKIN_COAT",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_WOLF_SKIN_COAT",
+        "name": "ITEM_WOLF_SKIN_COAT",
+        "objectId": "IM47"
+      },
+      "itemObjectId": "IM47",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_JUNGLE_WOLF_HIDE",
+          "name": "ITEM_JUNGLE_WOLF_HIDE",
+          "objectId": "IM2g"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_ELK_HIDE",
+          "name": "ITEM_ELK_HIDE",
+          "objectId": "IM1o"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_ELK_HIDE",
+          "name": "ITEM_ELK_HIDE",
+          "objectId": "IM1o"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_TANNERY",
+        "name": "UNIT_TANNERY",
+        "objectId": "x023"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_JUNGLE_WOLF_SKIN_COAT",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_BEAR_SKIN_COAT",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_BEAR_SKIN_COAT",
+        "name": "ITEM_BEAR_SKIN_COAT",
+        "objectId": "IM0v"
+      },
+      "itemObjectId": "IM0v",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_JUNGLE_BEAR_HIDE",
+          "name": "ITEM_JUNGLE_BEAR_HIDE",
+          "objectId": "IM2f"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_ELK_HIDE",
+          "name": "ITEM_ELK_HIDE",
+          "objectId": "IM1o"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_ELK_HIDE",
+          "name": "ITEM_ELK_HIDE",
+          "objectId": "IM1o"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_TANNERY",
+        "name": "UNIT_TANNERY",
+        "objectId": "x023"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_JUNGLE_BEAR_SKIN_COAT",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_BEAR_SKIN_BOOTS",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_BEAR_SKIN_BOOTS",
+        "name": "ITEM_BEAR_SKIN_BOOTS",
+        "objectId": "IM0t"
+      },
+      "itemObjectId": "IM0t",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_JUNGLE_BEAR_HIDE",
+          "name": "ITEM_JUNGLE_BEAR_HIDE",
+          "objectId": "IM2f"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_ELK_HIDE",
+          "name": "ITEM_ELK_HIDE",
+          "objectId": "IM1o"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_TANNERY",
+        "name": "UNIT_TANNERY",
+        "objectId": "x023"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_JUNGLE_BEAR_SKIN_BOOTS",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_BEAR_SKIN_GLOVES",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_BEAR_SKIN_GLOVES",
+        "name": "ITEM_BEAR_SKIN_GLOVES",
+        "objectId": "IM0x"
+      },
+      "itemObjectId": "IM0x",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_JUNGLE_BEAR_HIDE",
+          "name": "ITEM_JUNGLE_BEAR_HIDE",
+          "objectId": "IM2f"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_ELK_HIDE",
+          "name": "ITEM_ELK_HIDE",
+          "objectId": "IM1o"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_TANNERY",
+        "name": "UNIT_TANNERY",
+        "objectId": "x023"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_JUNGLE_BEAR_SKIN_GLOVES",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_ARMORY_KIT",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_ARMORY_KIT",
+        "name": "ITEM_ARMORY_KIT",
+        "objectId": "IM0l"
+      },
+      "itemObjectId": "IM0l",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_STICK",
+          "name": "ITEM_STICK",
+          "objectId": "IM3u"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_IRON_INGOT",
+          "name": "ITEM_IRON_INGOT",
+          "objectId": "IM2c"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_IRON_INGOT",
+          "name": "ITEM_IRON_INGOT",
+          "objectId": "IM2c"
+        }
+      ],
+      "craftedAt": null,
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_ARMORY_KIT",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_FIRE_KIT",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_FIRE_KIT",
+        "name": "ITEM_FIRE_KIT",
+        "objectId": "IM1x"
+      },
+      "itemObjectId": "IM1x",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_TINDER",
+          "name": "ITEM_TINDER",
+          "objectId": "IM4!"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_FLINT",
+          "name": "ITEM_FLINT",
+          "objectId": "IM1y"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_STICK",
+          "name": "ITEM_STICK",
+          "objectId": "IM3u"
+        }
+      ],
+      "craftedAt": null,
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_CAMP_FIRE_KIT",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_MAGE_FIRE_KIT",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_MAGE_FIRE_KIT",
+        "name": "ITEM_MAGE_FIRE_KIT",
+        "objectId": "IM2i"
+      },
+      "itemObjectId": "IM2i",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_FIRE_KIT",
+          "name": "ITEM_FIRE_KIT",
+          "objectId": "IM1x"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_MAGIC",
+          "name": "ITEM_MAGIC",
+          "objectId": "IM2k"
+        }
+      ],
+      "craftedAt": null,
+      "quickMakeAbility": null,
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_TENT_KIT",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_TENT_KIT",
+        "name": "ITEM_TENT_KIT",
+        "objectId": "IM3|"
+      },
+      "itemObjectId": "IM3|",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_STICK",
+          "name": "ITEM_STICK",
+          "objectId": "IM3u"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_ELK_HIDE",
+          "name": "ITEM_ELK_HIDE",
+          "objectId": "IM1o"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_STICK",
+          "name": "ITEM_STICK",
+          "objectId": "IM3u"
+        }
+      ],
+      "craftedAt": null,
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_TENT_KIT",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_TROLL_HUT_KIT",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_TROLL_HUT_KIT",
+        "name": "ITEM_TROLL_HUT_KIT",
+        "objectId": "IM41"
+      },
+      "itemObjectId": "IM41",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_TENT_KIT",
+          "name": "ITEM_TENT_KIT",
+          "objectId": "IM3|"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_ELK_HIDE",
+          "name": "ITEM_ELK_HIDE",
+          "objectId": "IM1o"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_CLAY_BALL",
+          "name": "ITEM_CLAY_BALL",
+          "objectId": "IM15"
+        }
+      ],
+      "craftedAt": null,
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_TROLL_HUT_KIT",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_SPIRIT_WARD_KIT",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_SPIRIT_WARD_KIT",
+        "name": "ITEM_SPIRIT_WARD_KIT",
+        "objectId": "IM3g"
+      },
+      "itemObjectId": "IM3g",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_MANA_CRYSTAL",
+          "name": "ITEM_MANA_CRYSTAL",
+          "objectId": "IM2o"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_MANA_CRYSTAL",
+          "name": "ITEM_MANA_CRYSTAL",
+          "objectId": "IM2o"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_MANA_CRYSTAL",
+          "name": "ITEM_MANA_CRYSTAL",
+          "objectId": "IM2o"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_STICK",
+          "name": "ITEM_STICK",
+          "objectId": "IM3u"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_WITCH_DOCTORS_HUT",
+        "name": "UNIT_WITCH_DOCTORS_HUT",
+        "objectId": "x02m"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_SPIRIT_WARD",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_MUD_HUT_KIT",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_MUD_HUT_KIT",
+        "name": "ITEM_MUD_HUT_KIT",
+        "objectId": "IM2s"
+      },
+      "itemObjectId": "IM2s",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_CLAY_BALL",
+          "name": "ITEM_CLAY_BALL",
+          "objectId": "IM15"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_CLAY_BALL",
+          "name": "ITEM_CLAY_BALL",
+          "objectId": "IM15"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_CLAY_BALL",
+          "name": "ITEM_CLAY_BALL",
+          "objectId": "IM15"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_CLAY_BALL",
+          "name": "ITEM_CLAY_BALL",
+          "objectId": "IM15"
+        }
+      ],
+      "craftedAt": null,
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_MUD_HUT_KIT",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_OMNITOWER_KIT",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_OMNITOWER_KIT",
+        "name": "ITEM_OMNITOWER_KIT",
+        "objectId": "IM2x"
+      },
+      "itemObjectId": "IM2x",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_STICK",
+          "name": "ITEM_STICK",
+          "objectId": "IM3u"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_STONE",
+          "name": "ITEM_STONE",
+          "objectId": "IM3w"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_STONE",
+          "name": "ITEM_STONE",
+          "objectId": "IM3w"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_STONE",
+          "name": "ITEM_STONE",
+          "objectId": "IM3w"
+        }
+      ],
+      "craftedAt": null,
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_OMNI_TOWER_KIT",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_POT_KIT",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_POT_KIT",
+        "name": "ITEM_POT_KIT",
+        "objectId": "IM2~"
+      },
+      "itemObjectId": "IM2~",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_STICK",
+          "name": "ITEM_STICK",
+          "objectId": "IM3u"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_CLAY_BALL",
+          "name": "ITEM_CLAY_BALL",
+          "objectId": "IM15"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_CLAY_BALL",
+          "name": "ITEM_CLAY_BALL",
+          "objectId": "IM15"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_CLAY_BALL",
+          "name": "ITEM_CLAY_BALL",
+          "objectId": "IM15"
+        }
+      ],
+      "craftedAt": null,
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_MIXING_POT_KIT",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_WORKSHOP_KIT",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_WORKSHOP_KIT",
+        "name": "ITEM_WORKSHOP_KIT",
+        "objectId": "IM4b"
+      },
+      "itemObjectId": "IM4b",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_STICK",
+          "name": "ITEM_STICK",
+          "objectId": "IM3u"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_STICK",
+          "name": "ITEM_STICK",
+          "objectId": "IM3u"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_TINDER",
+          "name": "ITEM_TINDER",
+          "objectId": "IM4!"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_CLAY_BALL",
+          "name": "ITEM_CLAY_BALL",
+          "objectId": "IM15"
+        }
+      ],
+      "craftedAt": null,
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_WORKSHOP_KIT",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_TELEPORT_BEACON_KIT",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_TELEPORT_BEACON_KIT",
+        "name": "ITEM_TELEPORT_BEACON_KIT",
+        "objectId": "IM3{"
+      },
+      "itemObjectId": "IM3{",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_STONE",
+          "name": "ITEM_STONE",
+          "objectId": "IM3w"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_STONE",
+          "name": "ITEM_STONE",
+          "objectId": "IM3w"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_MANA_CRYSTAL",
+          "name": "ITEM_MANA_CRYSTAL",
+          "objectId": "IM2o"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_STICK",
+          "name": "ITEM_STICK",
+          "objectId": "IM3u"
+        }
+      ],
+      "craftedAt": null,
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_TELEPORT_BEACON_KIT",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_WITCH_DOCTORS_HUT_KIT",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_WITCH_DOCTORS_HUT_KIT",
+        "name": "ITEM_WITCH_DOCTORS_HUT_KIT",
+        "objectId": "IM44"
+      },
+      "itemObjectId": "IM44",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_STICK",
+          "name": "ITEM_STICK",
+          "objectId": "IM3u"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_STICK",
+          "name": "ITEM_STICK",
+          "objectId": "IM3u"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_STICK",
+          "name": "ITEM_STICK",
+          "objectId": "IM3u"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_MANA_CRYSTAL",
+          "name": "ITEM_MANA_CRYSTAL",
+          "objectId": "IM2o"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_MANA_CRYSTAL",
+          "name": "ITEM_MANA_CRYSTAL",
+          "objectId": "IM2o"
+        }
+      ],
+      "craftedAt": null,
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_WITCH_DOCTORS_HUT_KIT",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_FORGE_KIT",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_FORGE_KIT",
+        "name": "ITEM_FORGE_KIT",
+        "objectId": "IM1z"
+      },
+      "itemObjectId": "IM1z",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_FLINT",
+          "name": "ITEM_FLINT",
+          "objectId": "IM1y"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_STONE",
+          "name": "ITEM_STONE",
+          "objectId": "IM3w"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_STONE",
+          "name": "ITEM_STONE",
+          "objectId": "IM3w"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_STONE",
+          "name": "ITEM_STONE",
+          "objectId": "IM3w"
+        }
+      ],
+      "craftedAt": null,
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_FORGE_KIT",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_TANNERY_KIT",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_TANNERY_KIT",
+        "name": "ITEM_TANNERY_KIT",
+        "objectId": "IM3z"
+      },
+      "itemObjectId": "IM3z",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_STICK",
+          "name": "ITEM_STICK",
+          "objectId": "IM3u"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_STICK",
+          "name": "ITEM_STICK",
+          "objectId": "IM3u"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_STONE",
+          "name": "ITEM_STONE",
+          "objectId": "IM3w"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_STONE",
+          "name": "ITEM_STONE",
+          "objectId": "IM3w"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_CLAY_BALL",
+          "name": "ITEM_CLAY_BALL",
+          "objectId": "IM15"
+        }
+      ],
+      "craftedAt": null,
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_TANNERY_KIT",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_TRANSPORT_SHIP_KIT",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_TRANSPORT_SHIP_KIT",
+        "name": "ITEM_TRANSPORT_SHIP_KIT",
+        "objectId": "IM40"
+      },
+      "itemObjectId": "IM40",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_STICK",
+          "name": "ITEM_STICK",
+          "objectId": "IM3u"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_STICK",
+          "name": "ITEM_STICK",
+          "objectId": "IM3u"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_CLAY_BALL",
+          "name": "ITEM_CLAY_BALL",
+          "objectId": "IM15"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_CLAY_BALL",
+          "name": "ITEM_CLAY_BALL",
+          "objectId": "IM15"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_ELK_HIDE",
+          "name": "ITEM_ELK_HIDE",
+          "objectId": "IM1o"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_ELK_HIDE",
+          "name": "ITEM_ELK_HIDE",
+          "objectId": "IM1o"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_WORKSHOP",
+        "name": "UNIT_WORKSHOP",
+        "objectId": "x02p"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_TRANSPORT_SHIP",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_CLOAK_OF_FLAMES",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_CLOAK_OF_FLAMES",
+        "name": "ITEM_CLOAK_OF_FLAMES",
+        "objectId": "IM17"
+      },
+      "itemObjectId": "IM17",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_MAGIC",
+          "name": "ITEM_MAGIC",
+          "objectId": "IM2k"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_BONE_COAT",
+          "name": "ITEM_BONE_COAT",
+          "objectId": "IM12"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_FLINT",
+          "name": "ITEM_FLINT",
+          "objectId": "IM1y"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_WITCH_DOCTORS_HUT",
+        "name": "UNIT_WITCH_DOCTORS_HUT",
+        "objectId": "x02m"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_CLOAK_FLAMES",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_CLOAK_OF_MANA",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_CLOAK_OF_MANA",
+        "name": "ITEM_CLOAK_OF_MANA",
+        "objectId": "IM1b"
+      },
+      "itemObjectId": "IM1b",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_MAGIC",
+          "name": "ITEM_MAGIC",
+          "objectId": "IM2k"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_BONE_COAT",
+          "name": "ITEM_BONE_COAT",
+          "objectId": "IM12"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_MANA_POTION",
+          "name": "ITEM_MANA_POTION",
+          "objectId": "IM2p"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_WITCH_DOCTORS_HUT",
+        "name": "UNIT_WITCH_DOCTORS_HUT",
+        "objectId": "x02m"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_CLOAK_MANA",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_CLOAK_OF_FROST",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_CLOAK_OF_FROST",
+        "name": "ITEM_CLOAK_OF_FROST",
+        "objectId": "IM19"
+      },
+      "itemObjectId": "IM19",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_MAGIC",
+          "name": "ITEM_MAGIC",
+          "objectId": "IM2k"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_BONE_COAT",
+          "name": "ITEM_BONE_COAT",
+          "objectId": "IM12"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_SPIRIT_WATER",
+          "name": "ITEM_SPIRIT_WATER",
+          "objectId": "IM3l"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_WITCH_DOCTORS_HUT",
+        "name": "UNIT_WITCH_DOCTORS_HUT",
+        "objectId": "x02m"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_CLOAK_FROST",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_CLOAK_OF_HEALING",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_CLOAK_OF_HEALING",
+        "name": "ITEM_CLOAK_OF_HEALING",
+        "objectId": "IM1a"
+      },
+      "itemObjectId": "IM1a",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_MAGIC",
+          "name": "ITEM_MAGIC",
+          "objectId": "IM2k"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_BONE_COAT",
+          "name": "ITEM_BONE_COAT",
+          "objectId": "IM12"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_HEALING_POTION",
+          "name": "ITEM_HEALING_POTION",
+          "objectId": "IM2!"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_WITCH_DOCTORS_HUT",
+        "name": "UNIT_WITCH_DOCTORS_HUT",
+        "objectId": "x02m"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_CLOAK_HEALING",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_NECROMANCERS_CLOAK",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_NECROMANCERS_CLOAK",
+        "name": "ITEM_NECROMANCERS_CLOAK",
+        "objectId": "IM18"
+      },
+      "itemObjectId": "IM18",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_MAGIC",
+          "name": "ITEM_MAGIC",
+          "objectId": "IM2k"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_BONE_COAT",
+          "name": "ITEM_BONE_COAT",
+          "objectId": "IM12"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_SCROLL_LIVING_DEAD",
+          "name": "ITEM_SCROLL_LIVING_DEAD",
+          "objectId": "IM37"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_WITCH_DOCTORS_HUT",
+        "name": "UNIT_WITCH_DOCTORS_HUT",
+        "objectId": "x02m"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_NECROMANCERS_CLOAK",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_EMPOWERED_NECROMANCERS_CLOAK",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_EMPOWERED_NECROMANCERS_CLOAK",
+        "name": "ITEM_EMPOWERED_NECROMANCERS_CLOAK",
+        "objectId": "IM4f"
+      },
+      "itemObjectId": "IM4f",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_PANTHER_FANG",
+          "name": "ITEM_PANTHER_FANG",
+          "objectId": "IM0{"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_POISON",
+          "name": "ITEM_POISON",
+          "objectId": "IM2{"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_POISON",
+          "name": "ITEM_POISON",
+          "objectId": "IM2{"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_SPIRIT_WIND",
+          "name": "ITEM_SPIRIT_WIND",
+          "objectId": "IM3m"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_SPIRIT_WATER",
+          "name": "ITEM_SPIRIT_WATER",
+          "objectId": "IM3l"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_MAGIC",
+          "name": "ITEM_MAGIC",
+          "objectId": "IM2k"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_WITCH_DOCTORS_HUT",
+        "name": "UNIT_WITCH_DOCTORS_HUT",
+        "objectId": "x02m"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_VENOM_FANG",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_SCROLL_ENTANGLING_ROOTS",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_SCROLL_ENTANGLING_ROOTS",
+        "name": "ITEM_SCROLL_ENTANGLING_ROOTS",
+        "objectId": "IM35"
+      },
+      "itemObjectId": "IM35",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_TINDER",
+          "name": "ITEM_TINDER",
+          "objectId": "IM4!"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_MANA_CRYSTAL",
+          "name": "ITEM_MANA_CRYSTAL",
+          "objectId": "IM2o"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_WITCH_DOCTORS_HUT",
+        "name": "UNIT_WITCH_DOCTORS_HUT",
+        "objectId": "x02m"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_SCROLL_ROOT",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_SCROLL_STONE_ARMOR",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_SCROLL_STONE_ARMOR",
+        "name": "ITEM_SCROLL_STONE_ARMOR",
+        "objectId": "IM38"
+      },
+      "itemObjectId": "IM38",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_STONE",
+          "name": "ITEM_STONE",
+          "objectId": "IM3w"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_MANA_CRYSTAL",
+          "name": "ITEM_MANA_CRYSTAL",
+          "objectId": "IM2o"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_WITCH_DOCTORS_HUT",
+        "name": "UNIT_WITCH_DOCTORS_HUT",
+        "objectId": "x02m"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_SCROLL_ARMOR",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_SCROLL_TSUNAMI",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_SCROLL_TSUNAMI",
+        "name": "ITEM_SCROLL_TSUNAMI",
+        "objectId": "IM3a"
+      },
+      "itemObjectId": "IM3a",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_SPIRIT_WATER",
+          "name": "ITEM_SPIRIT_WATER",
+          "objectId": "IM3l"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_MANA_CRYSTAL",
+          "name": "ITEM_MANA_CRYSTAL",
+          "objectId": "IM2o"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_WITCH_DOCTORS_HUT",
+        "name": "UNIT_WITCH_DOCTORS_HUT",
+        "objectId": "x02m"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_SCROLL_TSUNAMI",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_SCROLL_LIVING_DEAD",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_SCROLL_LIVING_DEAD",
+        "name": "ITEM_SCROLL_LIVING_DEAD",
+        "objectId": "IM37"
+      },
+      "itemObjectId": "IM37",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_BONE",
+          "name": "ITEM_BONE",
+          "objectId": "IM10"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_MANA_CRYSTAL",
+          "name": "ITEM_MANA_CRYSTAL",
+          "objectId": "IM2o"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_WITCH_DOCTORS_HUT",
+        "name": "UNIT_WITCH_DOCTORS_HUT",
+        "objectId": "x02m"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_SCROLL_LIVING_DEAD",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_POISON",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_POISON",
+        "name": "ITEM_POISON",
+        "objectId": "IM2{"
+      },
+      "itemObjectId": "IM2{",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_MUSHROOM",
+          "name": "ITEM_MUSHROOM",
+          "objectId": "IM2t"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_MUSHROOM",
+          "name": "ITEM_MUSHROOM",
+          "objectId": "IM2t"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_MUSHROOM",
+          "name": "ITEM_MUSHROOM",
+          "objectId": "IM2t"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_WITCH_DOCTORS_HUT",
+        "name": "UNIT_WITCH_DOCTORS_HUT",
+        "objectId": "x02m"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_POISON",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_SCROLL_FIREBALL",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_SCROLL_FIREBALL",
+        "name": "ITEM_SCROLL_FIREBALL",
+        "objectId": "IM36"
+      },
+      "itemObjectId": "IM36",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_FLINT",
+          "name": "ITEM_FLINT",
+          "objectId": "IM1y"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_MANA_CRYSTAL",
+          "name": "ITEM_MANA_CRYSTAL",
+          "objectId": "IM2o"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_WITCH_DOCTORS_HUT",
+        "name": "UNIT_WITCH_DOCTORS_HUT",
+        "objectId": "x02m"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_SCROLL_FIREBALL",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_SCROLL_CYCLONE",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_SCROLL_CYCLONE",
+        "name": "ITEM_SCROLL_CYCLONE",
+        "objectId": "IM34"
+      },
+      "itemObjectId": "IM34",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_SPIRIT_WIND",
+          "name": "ITEM_SPIRIT_WIND",
+          "objectId": "IM3m"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_MANA_CRYSTAL",
+          "name": "ITEM_MANA_CRYSTAL",
+          "objectId": "IM2o"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_WITCH_DOCTORS_HUT",
+        "name": "UNIT_WITCH_DOCTORS_HUT",
+        "objectId": "x02m"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_SCROLL_CYCLONE",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_SCROLL_HASTE",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_SCROLL_HASTE",
+        "name": "ITEM_SCROLL_HASTE",
+        "objectId": "IM39"
+      },
+      "itemObjectId": "IM39",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_ELK_SKIN_BOOTS",
+          "name": "ITEM_ELK_SKIN_BOOTS",
+          "objectId": "IM1p"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_MANA_CRYSTAL",
+          "name": "ITEM_MANA_CRYSTAL",
+          "objectId": "IM2o"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_WITCH_DOCTORS_HUT",
+        "name": "UNIT_WITCH_DOCTORS_HUT",
+        "objectId": "x02m"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_SCROLL_HASTE",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_MAGIC_SEED",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_MAGIC_SEED",
+        "name": "ITEM_MAGIC_SEED",
+        "objectId": "IM2m"
+      },
+      "itemObjectId": "IM2m",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_STICK",
+          "name": "ITEM_STICK",
+          "objectId": "IM3u"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_MANA_CRYSTAL",
+          "name": "ITEM_MANA_CRYSTAL",
+          "objectId": "IM2o"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_WITCH_DOCTORS_HUT",
+        "name": "UNIT_WITCH_DOCTORS_HUT",
+        "objectId": "x02m"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_MAGIC_SEED",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_ENSNARE_TRAP_KIT",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_ENSNARE_TRAP_KIT",
+        "name": "ITEM_ENSNARE_TRAP_KIT",
+        "objectId": "IM1t"
+      },
+      "itemObjectId": "IM1t",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_STICK",
+          "name": "ITEM_STICK",
+          "objectId": "IM3u"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_CLAY_BALL",
+          "name": "ITEM_CLAY_BALL",
+          "objectId": "IM15"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_WORKSHOP",
+        "name": "UNIT_WORKSHOP",
+        "objectId": "x02p"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_BLOW_GUN",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_POISON_SPEAR",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_POISON_SPEAR",
+        "name": "ITEM_POISON_SPEAR",
+        "objectId": "IM2|"
+      },
+      "itemObjectId": "IM2|",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_POISON",
+          "name": "ITEM_POISON",
+          "objectId": "IM2{"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_BONE",
+          "name": "ITEM_BONE",
+          "objectId": "IM10"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_STONE",
+          "name": "ITEM_STONE",
+          "objectId": "IM3w"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_WORKSHOP",
+        "name": "UNIT_WORKSHOP",
+        "objectId": "x02p"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_POISON_SPEAR",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_NETS",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_NETS",
+        "name": "ITEM_NETS",
+        "objectId": "IM2v"
+      },
+      "itemObjectId": "IM2v",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_TINDER",
+          "name": "ITEM_TINDER",
+          "objectId": "IM4!"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_TINDER",
+          "name": "ITEM_TINDER",
+          "objectId": "IM4!"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_WORKSHOP",
+        "name": "UNIT_WORKSHOP",
+        "objectId": "x02p"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_NETS",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_HUNTING_NET",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_HUNTING_NET",
+        "name": "ITEM_HUNTING_NET",
+        "objectId": "IM22"
+      },
+      "itemObjectId": "IM22",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_NETS",
+          "name": "ITEM_NETS",
+          "objectId": "IM2v"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_STONE",
+          "name": "ITEM_STONE",
+          "objectId": "IM3w"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_WORKSHOP",
+        "name": "UNIT_WORKSHOP",
+        "objectId": "x02p"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_HUNTING_NET",
+      "mixingPotManaRequirement": null
+    },
+    {
+      "itemConst": "LocalObjectIDs_ITEM_HEALING_SALVE",
+      "item": {
+        "const": "LocalObjectIDs_ITEM_HEALING_SALVE",
+        "name": "ITEM_HEALING_SALVE",
+        "objectId": "IM33"
+      },
+      "itemObjectId": "IM33",
+      "ingredients": [
+        {
+          "const": "LocalObjectIDs_ITEM_MANA_CRYSTAL",
+          "name": "ITEM_MANA_CRYSTAL",
+          "objectId": "IM2o"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_MANA_CRYSTAL",
+          "name": "ITEM_MANA_CRYSTAL",
+          "objectId": "IM2o"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_SPIRIT_WATER",
+          "name": "ITEM_SPIRIT_WATER",
+          "objectId": "IM3l"
+        },
+        {
+          "const": "LocalObjectIDs_ITEM_SPIRIT_WIND",
+          "name": "ITEM_SPIRIT_WIND",
+          "objectId": "IM3m"
+        }
+      ],
+      "craftedAt": {
+        "const": "LocalObjectIDs_UNIT_WORKSHOP",
+        "name": "UNIT_WORKSHOP",
+        "objectId": "x02p"
+      },
+      "quickMakeAbility": "LocalObjectIDs_ABILITY_QM_EMP",
+      "mixingPotManaRequirement": null
+    }
+  ]
+}

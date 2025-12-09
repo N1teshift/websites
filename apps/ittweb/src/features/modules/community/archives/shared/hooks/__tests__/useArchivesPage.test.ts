@@ -7,7 +7,7 @@ const mockSortArchiveEntries = jest.fn(
   (entries: ArchiveEntry[], order: "newest" | "oldest") => entries
 );
 
-jest.mock("@/features/infrastructure/lib/archiveService", () => ({
+jest.mock("@/features/modules/community/archives/services", () => ({
   sortArchiveEntries: jest.fn((entries: ArchiveEntry[], order: "newest" | "oldest") =>
     mockSortArchiveEntries(entries, order)
   ),

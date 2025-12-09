@@ -3,7 +3,7 @@ import { useArchiveHandlers } from "../useArchiveHandlers";
 import { SectionKey } from "../useArchiveBaseState";
 
 // Mock archiveService
-jest.mock("@/features/infrastructure/lib/archiveService", () => ({
+jest.mock("@/features/modules/community/archives/services", () => ({
   extractYouTubeId: jest.fn((url: string) => {
     if (url.includes("youtube.com") || url.includes("youtu.be")) {
       return "test-youtube-id";

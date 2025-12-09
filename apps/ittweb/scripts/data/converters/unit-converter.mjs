@@ -251,13 +251,75 @@ function calculateDamageRange(damageBase, damageDice) {
 /**
  * Convert extracted unit to TypeScript UnitData format
  */
-export function convertUnit(extractedUnit, udirCounter, buildingsMap) {
+export function convertUnit(extractedUnit, udirCounter, buildingsMap, trollBaseClassMapping) {
   // Use stats from extractedUnit (from enhanced extraction), fallback to extractUnitStats if needed
   const fallbackStats = extractUnitStats(extractedUnit);
   const unitType = determineUnitType(extractedUnit);
   
   let unitName = (extractedUnit.name || '').trim();
   let unitId = extractedUnit.id || slugify(unitName || 'unknown-unit');
+  
+  // Determine base class for troll units
+  let baseClass = undefined;
+  if (unitType === 'troll' && trollBaseClassMapping) {
+    // Try exact name match first (case-sensitive)
+    baseClass = trollBaseClassMapping.get(unitName);
+    
+    // Try lowercase name match
+    if (!baseClass) {
+      baseClass = trollBaseClassMapping.get(unitName.toLowerCase());
+    }
+    
+    // Try slugified name match
+    if (!baseClass) {
+      const slugifiedName = slugify(unitName);
+      baseClass = trollBaseClassMapping.get(slugifiedName);
+    }
+    
+    // Try matching by last word (e.g., "Gurubashi Warrior" -> "Warrior")
+    if (!baseClass && unitName.includes(' ')) {
+      const lastWord = unitName.split(' ').pop();
+      baseClass = trollBaseClassMapping.get(lastWord) || trollBaseClassMapping.get(lastWord.toLowerCase());
+    }
+    
+    // Try matching by first word (e.g., "Dire Wolf" -> "Dire")
+    if (!baseClass && unitName.includes(' ')) {
+      const firstWord = unitName.split(' ')[0];
+      baseClass = trollBaseClassMapping.get(firstWord) || trollBaseClassMapping.get(firstWord.toLowerCase());
+    }
+    
+    // Try case-insensitive fuzzy matching (contains check)
+    if (!baseClass) {
+      const unitNameLower = unitName.toLowerCase();
+      for (const [key, value] of trollBaseClassMapping.entries()) {
+        const keyLower = key.toLowerCase();
+        // Exact match
+        if (keyLower === unitNameLower) {
+          baseClass = value;
+          break;
+        }
+        // Unit name contains key (e.g., "Wolf Form" contains "Wolf")
+        if (unitNameLower.includes(keyLower) && keyLower.length >= 3) {
+          baseClass = value;
+          break;
+        }
+        // Key contains unit name (e.g., "Shapeshifter Wolf" contains "Wolf Form")
+        if (keyLower.includes(unitNameLower) && unitNameLower.length >= 3) {
+          baseClass = value;
+          break;
+        }
+      }
+    }
+    
+    // Debug logging for specific units
+    if (unitName === 'Wolf Form' || unitName === 'Bear Form' || unitName === 'Escape Artist') {
+      if (baseClass) {
+        console.log(`✓ Matched "${unitName}" -> "${baseClass}"`);
+      } else {
+        console.log(`✗ Failed to match "${unitName}" to base class`);
+      }
+    }
+  }
   
   if (unitType === 'unit-dummy-item-reward') {
     const originalId = extractedUnit.id || unitId;
@@ -343,6 +405,8 @@ export function convertUnit(extractedUnit, udirCounter, buildingsMap) {
     attackSpeed: extractedUnit.attackCooldown ?? fallbackStats.attackSpeed ?? undefined,
     damage: damageRange ? `${damageRange.min}-${damageRange.max}` : fallbackStats.damage ?? undefined,
     craftableItems: craftableItems,
+    // Troll class relationship
+    baseClass: baseClass,
   };
 }
 

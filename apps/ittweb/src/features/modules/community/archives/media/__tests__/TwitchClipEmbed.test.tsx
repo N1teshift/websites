@@ -3,7 +3,7 @@ import TwitchClipEmbed from "../components/TwitchClipEmbed";
 import * as archiveService from "@/features/modules/community/archives/services";
 
 // Mock archiveService
-jest.mock("@/features/infrastructure/lib/archiveService", () => ({
+jest.mock("@/features/modules/community/archives/services", () => ({
   extractTwitchClipId: jest.fn((url: string) => {
     if (url.includes("twitch.tv/clip/")) {
       return "test-clip-id";

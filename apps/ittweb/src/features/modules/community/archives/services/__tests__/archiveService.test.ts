@@ -18,12 +18,9 @@ jest.mock("firebase/storage", () => ({
   getDownloadURL: jest.fn(),
 }));
 
-jest.mock("@websites/infrastructure/api/firebase", () => ({
+jest.mock("@websites/infrastructure/firebase", () => ({
   getFirestoreInstance: jest.fn(() => ({})),
   getStorageInstance: jest.fn(() => ({})),
-}));
-
-jest.mock("@websites/infrastructure/firebase", () => ({
   getFirestoreAdmin: jest.fn(() => ({ collection: jest.fn() })),
   isServerSide: jest.fn(() => false),
   getAdminTimestamp: jest.fn(() => ({

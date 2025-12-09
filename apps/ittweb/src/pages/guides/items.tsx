@@ -98,9 +98,9 @@ function ItemCard({ item, category }: { item: ItemData; category?: ItemCategory 
         onClick={(e) => {
           e.stopPropagation();
           e.preventDefault();
-          router.push(
-            `/guides/units/${encodeURIComponent(craftedAtBuilding.id)}?from=item&itemId=${item.id}`
-          );
+          // Convert unit ID to URL-safe slug (replace : with -)
+          const unitSlug = craftedAtBuilding.id.replace(/:/g, "-");
+          router.push(`/guides/units/${unitSlug}?from=item&itemId=${item.id}`);
         }}
         className="flex-shrink-0 hover:opacity-80 transition-opacity cursor-pointer"
       >

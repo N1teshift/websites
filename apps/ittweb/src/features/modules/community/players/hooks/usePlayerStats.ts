@@ -17,6 +17,23 @@ const usePlayerStatsHook = createDataFetchHook<PlayerProfile, UsePlayerStatsPara
     const response = await fetch(
       `/api/players/${encodeURIComponent(name)}?${queryParams.toString()}`
     );
+
+    if (!response.ok) {
+      // Try to parse error from response
+      try {
+        const errorData = await response.json();
+        if (errorData.error) {
+          return { success: false, error: errorData.error } as any;
+        }
+      } catch {
+        // If parsing fails, use status text
+      }
+      return {
+        success: false,
+        error: `Failed to fetch player: ${response.statusText}`,
+      } as any;
+    }
+
     return response.json();
   },
   useSWR: false,

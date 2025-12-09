@@ -1,9 +1,13 @@
 import { act, renderHook, waitFor } from "@testing-library/react";
 import { usePlayerStats } from "../usePlayerStats";
 import type { PlayerProfile, PlayerSearchFilters } from "../../types";
-
-// Mock fetch globally
-global.fetch = jest.fn();
+import {
+  setupMockFetch,
+  getMockFetch,
+  createSuccessResponse,
+  createErrorResponse,
+  createNetworkError,
+} from "@websites/test-utils/mocks/fetch";
 
 // Mock logger
 jest.mock("@websites/infrastructure/logging", () => ({
@@ -35,7 +39,7 @@ describe("usePlayerStats", () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    (global.fetch as jest.MockedFunction<typeof fetch>).mockClear();
+    setupMockFetch();
   });
 
   afterEach(() => {
@@ -46,29 +50,17 @@ describe("usePlayerStats", () => {
     it("should fetch player stats when hook mounts", async () => {
       // Arrange
       const playerName = "TestPlayer";
-      const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({
-          success: true,
-          data: mockPlayerProfile,
-        }),
-      } as Response);
+      const mockFetch = getMockFetch();
+      mockFetch.mockResolvedValue(createSuccessResponse(mockPlayerProfile));
 
       // Act
       const { result } = renderHook(() => usePlayerStats(playerName));
 
-      // Initial state should be loading
-      expect(result.current.loading).toBe(true);
-      expect(result.current.player).toBeNull();
-
-      // Manually trigger fetch since useEffect might not run in test environment
-      await act(async () => {
-        await result.current.refetch();
-      });
+      // Wait for initial fetch
+      await waitFor(() => expect(result.current.loading).toBe(false));
 
       // Assert
-      expect(mockFetch).toHaveBeenCalledWith("/api/players/TestPlayer?");
+      expect(mockFetch).toHaveBeenCalledWith(expect.stringContaining("/api/players/TestPlayer"));
       expect(result.current.loading).toBe(false);
       expect(result.current.player).toEqual(mockPlayerProfile);
       expect(result.current.error).toBeNull();
@@ -77,14 +69,8 @@ describe("usePlayerStats", () => {
     it("should handle URL encoding for player names", async () => {
       // Arrange
       const playerName = "Player With Spaces";
-      const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({
-          success: true,
-          data: mockPlayerProfile,
-        }),
-      } as Response);
+      const mockFetch = getMockFetch();
+      mockFetch.mockResolvedValueOnce(createSuccessResponse(mockPlayerProfile));
 
       // Act
       const { result } = renderHook(() => usePlayerStats(playerName));
@@ -99,9 +85,8 @@ describe("usePlayerStats", () => {
     it("should handle network errors", async () => {
       // Arrange
       const playerName = "TestPlayer";
-      const networkError = new Error("Network error");
-      const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
-      mockFetch.mockRejectedValueOnce(networkError);
+      const mockFetch = getMockFetch();
+      mockFetch.mockRejectedValueOnce(createNetworkError("Network error"));
 
       // Act
       const { result } = renderHook(() => usePlayerStats(playerName));
@@ -120,6 +105,10 @@ describe("usePlayerStats", () => {
         ok: false,
         status: 404,
         statusText: "Not Found",
+        json: async () => ({
+          success: false,
+          error: "Not Found",
+        }),
       } as Response);
 
       // Act
@@ -192,14 +181,8 @@ describe("usePlayerStats", () => {
     it("should set loading to false after fetch completes", async () => {
       // Arrange
       const playerName = "TestPlayer";
-      const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({
-          success: true,
-          data: mockPlayerProfile,
-        }),
-      } as Response);
+      const mockFetch = getMockFetch();
+      mockFetch.mockResolvedValueOnce(createSuccessResponse(mockPlayerProfile));
 
       // Act
       const { result } = renderHook(() => usePlayerStats(playerName));
@@ -211,14 +194,8 @@ describe("usePlayerStats", () => {
 
     it("should handle multiple rapid fetches", async () => {
       // Arrange
-      const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
-      mockFetch.mockResolvedValue({
-        ok: true,
-        json: async () => ({
-          success: true,
-          data: mockPlayerProfile,
-        }),
-      } as Response);
+      const mockFetch = getMockFetch();
+      mockFetch.mockResolvedValue(createSuccessResponse(mockPlayerProfile));
 
       // Act
       const { result, rerender } = renderHook(({ name }) => usePlayerStats(name), {
@@ -263,6 +240,10 @@ describe("usePlayerStats", () => {
         ok: false,
         status: 500,
         statusText: "Internal Server Error",
+        json: async () => ({
+          success: false,
+          error: "Failed to fetch player: Internal Server Error",
+        }),
       } as Response);
 
       // Act
@@ -277,14 +258,15 @@ describe("usePlayerStats", () => {
     it("should handle API error responses", async () => {
       // Arrange
       const playerName = "TestPlayer";
-      const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
+      const mockFetch = getMockFetch();
+      // API can return success: false even with ok: true
       mockFetch.mockResolvedValueOnce({
-        ok: true,
+        ...createSuccessResponse(mockPlayerProfile),
         json: async () => ({
           success: false,
           error: "Player not found",
         }),
-      } as Response);
+      });
 
       // Act
       const { result } = renderHook(() => usePlayerStats(playerName));
@@ -298,12 +280,10 @@ describe("usePlayerStats", () => {
     it("should handle permission errors", async () => {
       // Arrange
       const playerName = "TestPlayer";
-      const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
-      mockFetch.mockResolvedValueOnce({
-        ok: false,
-        status: 403,
-        statusText: "Forbidden",
-      } as Response);
+      const mockFetch = getMockFetch();
+      mockFetch.mockResolvedValueOnce(
+        createErrorResponse(403, "Forbidden", "Failed to fetch player: Forbidden")
+      );
 
       // Act
       const { result } = renderHook(() => usePlayerStats(playerName));
@@ -320,14 +300,8 @@ describe("usePlayerStats", () => {
       // Arrange
       const playerName = "TestPlayer";
       const filters: PlayerSearchFilters = { category: "1v1" };
-      const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({
-          success: true,
-          data: mockPlayerProfile,
-        }),
-      } as Response);
+      const mockFetch = getMockFetch();
+      mockFetch.mockResolvedValueOnce(createSuccessResponse(mockPlayerProfile));
 
       // Act
       const { result } = renderHook(() => usePlayerStats(playerName, filters));
@@ -344,14 +318,8 @@ describe("usePlayerStats", () => {
         startDate: "2024-01-01",
         endDate: "2024-01-31",
       };
-      const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({
-          success: true,
-          data: mockPlayerProfile,
-        }),
-      } as Response);
+      const mockFetch = getMockFetch();
+      mockFetch.mockResolvedValueOnce(createSuccessResponse(mockPlayerProfile));
 
       // Act
       const { result } = renderHook(() => usePlayerStats(playerName, filters));
@@ -366,14 +334,8 @@ describe("usePlayerStats", () => {
       // Arrange
       const playerName = "TestPlayer";
       const filters: PlayerSearchFilters = { includeGames: true };
-      const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({
-          success: true,
-          data: mockPlayerProfile,
-        }),
-      } as Response);
+      const mockFetch = getMockFetch();
+      mockFetch.mockResolvedValueOnce(createSuccessResponse(mockPlayerProfile));
 
       // Act
       const { result } = renderHook(() => usePlayerStats(playerName, filters));
@@ -392,14 +354,8 @@ describe("usePlayerStats", () => {
         endDate: "2024-01-31",
         includeGames: true,
       };
-      const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({
-          success: true,
-          data: mockPlayerProfile,
-        }),
-      } as Response);
+      const mockFetch = getMockFetch();
+      mockFetch.mockResolvedValueOnce(createSuccessResponse(mockPlayerProfile));
 
       // Act
       const { result } = renderHook(() => usePlayerStats(playerName, filters));
@@ -416,14 +372,8 @@ describe("usePlayerStats", () => {
     it("should refetch when filters change", async () => {
       // Arrange
       const playerName = "TestPlayer";
-      const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
-      mockFetch.mockResolvedValue({
-        ok: true,
-        json: async () => ({
-          success: true,
-          data: mockPlayerProfile,
-        }),
-      } as Response);
+      const mockFetch = getMockFetch();
+      mockFetch.mockResolvedValue(createSuccessResponse(mockPlayerProfile));
 
       // Act
       const { result, rerender } = renderHook(
@@ -467,14 +417,8 @@ describe("usePlayerStats", () => {
     it("should allow manual refetch", async () => {
       // Arrange
       const playerName = "TestPlayer";
-      const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
-      mockFetch.mockResolvedValue({
-        ok: true,
-        json: async () => ({
-          success: true,
-          data: mockPlayerProfile,
-        }),
-      } as Response);
+      const mockFetch = getMockFetch();
+      mockFetch.mockResolvedValue(createSuccessResponse(mockPlayerProfile));
 
       // Act
       const { result } = renderHook(() => usePlayerStats(playerName));

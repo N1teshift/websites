@@ -11,7 +11,7 @@ jest.mock("next/image", () => ({
 }));
 
 // Mock YouTubeEmbed and TwitchClipEmbed
-jest.mock("../YouTubeEmbed", () => ({
+jest.mock("../../media/components/YouTubeEmbed", () => ({
   __esModule: true,
   default: ({ url, title }: { url: string; title: string }) => (
     <div data-testid="youtube-embed">
@@ -20,7 +20,7 @@ jest.mock("../YouTubeEmbed", () => ({
   ),
 }));
 
-jest.mock("../TwitchClipEmbed", () => ({
+jest.mock("../../media/components/TwitchClipEmbed", () => ({
   __esModule: true,
   default: ({ url, title }: { url: string; title: string }) => (
     <div data-testid="twitch-embed">

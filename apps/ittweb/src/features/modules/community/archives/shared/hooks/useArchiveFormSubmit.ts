@@ -69,6 +69,7 @@ export function useArchiveFormSubmit({
       });
       if (validationError) {
         setError(validationError);
+        setIsSubmitting(false);
         return;
       }
 

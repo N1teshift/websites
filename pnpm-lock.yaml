@@ -202,6 +202,9 @@ importers:
       '@next/bundle-analyzer':
         specifier: ^16.0.5
         version: 16.0.7
+      '@pinta365/blp':
+        specifier: jsr:^0.1.0
+        version: '@jsr/pinta365__blp@0.1.0'
       '@playwright/test':
         specifier: ^1.57.0
         version: 1.57.0
@@ -2280,6 +2283,9 @@ packages:
 
   '@js-sdsl/ordered-map@4.4.2':
     resolution: {integrity: sha512-iUKgm52T8HOE/makSxjqoWhe95ZJA1/G1sYsGev2JDKUSS14KAgg1LHb+Ba+IPow0xflbnSkOsZcO08C7w1gYw==}
+
+  '@jsr/pinta365__blp@0.1.0':
+    resolution: {integrity: sha512-IEF5ef4Zn2XvoYVG8byTqso/jFbFRX5uA3AQWIz8zfmYPklkYqovimHr14zMuEq4C77OrDSArzuQ9EtunM3cNA==, tarball: https://npm.jsr.io/~/11/@jsr/pinta365__blp/0.1.0.tgz}
 
   '@langchain/core@0.3.79':
     resolution: {integrity: sha512-ZLAs5YMM5N2UXN3kExMglltJrKKoW7hs3KMZFlXUnD7a5DFKBYxPFMeXA4rT+uvTxuJRZPCYX0JKI5BhyAWx4A==}
@@ -10361,6 +10367,8 @@ snapshots:
 
   '@js-sdsl/ordered-map@4.4.2':
     optional: true
+
+  '@jsr/pinta365__blp@0.1.0': {}
 
   '@langchain/core@0.3.79(@opentelemetry/api@1.9.0)(openai@6.10.0(ws@8.18.3)(zod@3.25.76))':
     dependencies:

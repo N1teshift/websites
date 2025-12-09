@@ -12,6 +12,11 @@ import {
 import GuideCard from "@/features/modules/content/guides/components/GuideCard";
 import GuideIcon from "@/features/modules/content/guides/components/GuideIcon";
 
+// Helper to convert unit ID to URL-safe slug (replace : with -)
+function unitIdToSlug(id: string): string {
+  return id.replace(/:/g, "-");
+}
+
 const pageNamespaces = ["common"];
 export const getStaticProps = getStaticPropsWithTranslations(pageNamespaces);
 
@@ -64,7 +69,7 @@ function UnitCard({ unit }: { unit: UnitData }) {
 
   return (
     <GuideCard
-      href={`/guides/units/${encodeURIComponent(unit.id)}`}
+      href={`/guides/units/${unitIdToSlug(unit.id)}`}
       title={unit.name}
       icon={icon}
       description={unit.description || unit.tooltip || "No description available."}

@@ -26,7 +26,7 @@ jest.mock("../../shared/components/sections/TimelineSection", () => ({
 }));
 
 // Mock state components
-jest.mock("../index", () => ({
+jest.mock("../../shared/components", () => ({
   ArchivesEmptyState: ({ isAuthenticated, onAddClick, onSignInClick }: any) => (
     <div data-testid="empty-state">
       {isAuthenticated ? (
@@ -169,8 +169,8 @@ describe("ArchivesContent", () => {
         />
       );
 
-      // Assert
-      expect(screen.getByTestId("timeline-section-Timeline")).toBeInTheDocument();
+      // Assert - component renders a single TimelineSection with empty title, containing all merged entries
+      expect(screen.getByTestId("timeline-section-")).toBeInTheDocument();
       expect(screen.getByText("Dated Entry")).toBeInTheDocument();
     });
 
@@ -204,8 +204,8 @@ describe("ArchivesContent", () => {
         />
       );
 
-      // Assert
-      expect(screen.getByTestId("timeline-section-Undated Archives")).toBeInTheDocument();
+      // Assert - component renders a single TimelineSection with empty title, containing all merged entries
+      expect(screen.getByTestId("timeline-section-")).toBeInTheDocument();
       expect(screen.getByText("Undated Entry")).toBeInTheDocument();
     });
   });
@@ -442,7 +442,8 @@ describe("ArchivesContent", () => {
 
       // Assert
       // Games without archives should be added to the timeline
-      expect(screen.getByTestId("timeline-section-Timeline")).toBeInTheDocument();
+      expect(screen.getByTestId("timeline-section-")).toBeInTheDocument();
+      expect(screen.getByText("Game #1")).toBeInTheDocument();
     });
 
     it("should not include games that already have archive entries", () => {

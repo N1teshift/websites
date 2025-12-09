@@ -1,5 +1,5 @@
 {
-  "extends": "../../packages/config/tsconfig.base.json",
+  "extends": "@websites/config/tsconfig.base.json",
   "compilerOptions": {
     "baseUrl": ".",
     "outDir": "./dist"
@@ -7,4 +7,3 @@
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]
 }
-

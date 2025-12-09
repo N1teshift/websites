@@ -28,7 +28,7 @@ describe("ArchiveDeleteDialog", () => {
       );
 
       // Assert
-      expect(screen.getByText("Delete archive entry?")).toBeInTheDocument();
+      expect(screen.getByText("Delete Entry?")).toBeInTheDocument();
     });
 
     it("should display entry title when provided", () => {
@@ -47,7 +47,7 @@ describe("ArchiveDeleteDialog", () => {
 
       // Assert
       expect(screen.getByText(entryTitle, { exact: false })).toBeInTheDocument();
-      expect(screen.getByText(/will be permanently removed/i)).toBeInTheDocument();
+      expect(screen.getByText(/This action cannot be undone/i)).toBeInTheDocument();
     });
 
     it("should display generic message when title is not provided", () => {
@@ -57,7 +57,7 @@ describe("ArchiveDeleteDialog", () => {
       );
 
       // Assert
-      expect(screen.getByText(/This entry will be permanently removed/i)).toBeInTheDocument();
+      expect(screen.getByText(/Are you sure you want to delete this entry/i)).toBeInTheDocument();
     });
   });
 

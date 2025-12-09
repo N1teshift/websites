@@ -6,7 +6,7 @@ const useGameHook = createUrlDataFetchHook<GameWithPlayers, string>(
   {
     useSWR: false,
     enabled: (id) => !!id,
-    handle404: true,
+    handle404: false,
     cacheBust: true,
     componentName: "useGame",
     operationName: "fetchGame",

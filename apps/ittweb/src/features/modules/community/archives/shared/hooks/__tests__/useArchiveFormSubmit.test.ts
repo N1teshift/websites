@@ -131,7 +131,7 @@ describe("useArchiveFormSubmit", () => {
 
     it("should set isSubmitting during submission", async () => {
       // Arrange
-      let resolveSubmit: () => void;
+      let resolveSubmit: (() => void) | undefined;
       const delayedSubmit = jest.fn(
         () =>
           new Promise<void>((resolve) => {
@@ -148,7 +148,7 @@ describe("useArchiveFormSubmit", () => {
       const event = { preventDefault: jest.fn() } as unknown as React.FormEvent;
 
       // Act
-      act(() => {
+      await act(async () => {
         result.current.handleSubmit(event);
       });
 
@@ -157,11 +157,20 @@ describe("useArchiveFormSubmit", () => {
 
       // Complete submission
       await act(async () => {
-        resolveSubmit!();
-        await new Promise((resolve) => setTimeout(resolve, 0));
+        if (resolveSubmit) {
+          resolveSubmit();
+        }
+        // Wait for the promise chain to complete
+        await new Promise((resolve) => setTimeout(resolve, 50));
       });
 
-      expect(result.current.isSubmitting).toBe(false);
+      // Wait for state to update
+      await waitFor(
+        () => {
+          expect(result.current.isSubmitting).toBe(false);
+        },
+        { timeout: 1000 }
+      );
     });
   });
 

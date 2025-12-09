@@ -1,16 +1,19 @@
 import { serialize } from "next-mdx-remote/serialize";
 import type { MDXRemoteSerializeResult } from "next-mdx-remote";
 import { listPostSlugs, loadAllPosts, loadLatestPostSerialized, loadPostBySlug } from "../posts";
-import { getAllPosts, getLatestPost, getPostBySlug } from "../postService";
+import { getAllPosts, getLatestPost } from "../postService.server";
+import { getPostBySlug } from "../postService";
 import type { Post } from "@/types/post";
 
 jest.mock("remark-gfm", () => jest.fn());
 jest.mock("rehype-slug", () => jest.fn());
 jest.mock("rehype-autolink-headings", () => jest.fn());
-jest.mock("../postService", () => ({
+jest.mock("../postService.server", () => ({
   getAllPosts: jest.fn(),
-  getPostBySlug: jest.fn(),
   getLatestPost: jest.fn(),
+}));
+jest.mock("../postService", () => ({
+  getPostBySlug: jest.fn(),
 }));
 
 jest.mock("next-mdx-remote/serialize", () => ({

@@ -4,6 +4,7 @@
   "outputDirectory": ".next",
   "devCommand": "pnpm dev",
   "framework": "nextjs",
+  "ignoreCommand": "git diff HEAD^ HEAD --quiet -- apps/personalpage packages/ pnpm-workspace.yaml pnpm-lock.yaml turbo.json",
   "functions": {
     "src/pages/api/ai/generateSettings.ts": {
       "maxDuration": 60

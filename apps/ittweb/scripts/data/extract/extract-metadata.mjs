@@ -12,15 +12,176 @@
 import fs from 'fs';
 import path from 'path';
 import { loadJson, writeJson, slugify, getField, validateJsonStructure, validateArrayItems, logWarning } from '../lib/utils.mjs';
-import { TMP_RAW_DIR, TMP_METADATA_DIR, WORK_DIR, ROOT_DIR, ensureTmpDirs } from '../lib/paths.mjs';
+import { TMP_RAW_DIR, TMP_METADATA_DIR, WORK_DIR, ROOT_DIR, WURST_SOURCE_DIR, ensureTmpDirs } from '../lib/paths.mjs';
 
-const WURST_UNIT_TEXT_FILE = path.join(ROOT_DIR, 'external', 'island-troll-tribes', 'wurst', 'objects', 'units', 'TrollUnitTextConstant.wurst');
+const WURST_UNIT_TEXT_FILE = path.join(WURST_SOURCE_DIR, 'objects', 'units', 'TrollUnitTextConstant.wurst');
+const WURST_CLASSES_FILE = path.join(WURST_SOURCE_DIR, 'systems', 'core', 'Classes.wurst');
 
 const EXTRACTED_DIR = TMP_RAW_DIR;
 const OUTPUT_DIR = TMP_METADATA_DIR;
 const WAR3MAP_FILE = path.join(WORK_DIR, 'war3map.j');
 
 ensureTmpDirs();
+
+/**
+ * Extract troll base class mapping from Classes.wurst
+ * Returns a map of unit name -> base class slug
+ */
+function extractTrollBaseClassMapping() {
+  const mapping = new Map(); // unit name -> base class slug
+  
+  if (!fs.existsSync(WURST_CLASSES_FILE)) {
+    logWarning(`Wurst classes file not found: ${WURST_CLASSES_FILE}`);
+    return mapping;
+  }
+  
+  const content = fs.readFileSync(WURST_CLASSES_FILE, 'utf-8');
+  
+  // Map UNIT_* constant names to base class slugs
+  const unitToBaseClass = {
+    // Base classes map to themselves
+    'UNIT_HUNTER': 'hunter',
+    'UNIT_BEASTMASTER': 'beastmaster',
+    'UNIT_MAGE': 'mage',
+    'UNIT_PRIEST': 'priest',
+    'UNIT_THIEF': 'thief',
+    'UNIT_SCOUT': 'scout',
+    'UNIT_GATHERER': 'gatherer',
+  };
+  
+  // Extract trollBaseClass HashMap entries
+  // Pattern: ..put(UNIT_XXX, UNIT_BASE_CLASS)
+  const trollBaseClassRegex = /\.\.put\(UNIT_([A-Z_]+)\s*,\s*UNIT_([A-Z_]+)\)/g;
+  let match;
+  
+  // Map of known unit constant name variations to display names
+  const unitNameVariations = {
+    'WARRIOR': ['Warrior', 'Gurubashi Warrior'],
+    'TRACKER': ['Tracker'],
+    'JUGGERNAUT': ['Juggernaut', 'Gurubashi Champion'],
+    'SHAPESHIFTER_WOLF': ['Wolf Form', 'Shapeshifter Wolf', 'Shapeshifter'],
+    'SHAPESHIFTER_BEAR': ['Bear Form', 'Shapeshifter Bear', 'Shapeshifter'],
+    'SHAPESHIFTER_PANTHER': ['Panther Form', 'Shapeshifter Panther', 'Shapeshifter'],
+    'SHAPESHIFTER_TIGER': ['Tiger Form', 'Shapeshifter Tiger', 'Shapeshifter'],
+    'DIRE_BEAR': ['Dire Bear'],
+    'DIRE_WOLF': ['Dire Wolf'],
+    'ELEMENTALIST': ['Elementalist'],
+    'HYPNOTIST': ['Hypnotist'],
+    'DREAMWALKER': ['Dreamwalker'],
+    'BOOSTER': ['Booster'],
+    'MASTER_HEALER': ['Master Healer'],
+    'ROGUE': ['Rogue'],
+    'TELETHIEF': ['Telethief', 'TeleThief'],
+    'ESCAPE_ARTIST': ['Escape Artist'],
+    'CONTORTIONIST': ['Contortionist'],
+    'OBSERVER': ['Observer'],
+    'TRAPPER': ['Trapper'],
+    'RADAR_GATHERER': ['Radar Gatherer'],
+    'HERB_MASTER': ['Herb Master'],
+    'ALCHEMIST': ['Alchemist'],
+    'OMNIGATHERER': ['Omnigatherer', 'Omni-Gatherer', 'Omni Gatherer'],
+    'DEMENTIA_MASTER': ['Dementia Master'],
+    'SAGE': ['Sage'],
+    'ASSASSIN': ['Assassin'],
+    'SPY': ['Spy'],
+    'JUNGLE_TYRANT': ['Jungle Tyrant'],
+  };
+  
+  while ((match = trollBaseClassRegex.exec(content)) !== null) {
+    const unitConstKey = match[1];
+    const baseClassConst = `UNIT_${match[2]}`;
+    
+    // Get base class slug
+    const baseClassSlug = unitToBaseClass[baseClassConst] || baseClassConst.toLowerCase().replace(/^unit_/, '').replace(/_/g, '-');
+    
+    // Get unit name variations
+    const variations = unitNameVariations[unitConstKey] || [];
+    
+    // If no variations found, generate from constant name
+    if (variations.length === 0) {
+      const unitName = unitConstKey
+        .split('_')
+        .map(word => word.charAt(0) + word.slice(1).toLowerCase())
+        .join(' ');
+      variations.push(unitName);
+    }
+    
+    // Map all variations to base class slug
+    for (const unitName of variations) {
+      // Map exact name (case-sensitive)
+      mapping.set(unitName, baseClassSlug);
+      
+      // Map lowercase version
+      mapping.set(unitName.toLowerCase(), baseClassSlug);
+      
+      // Map slugified version
+      const slugified = slugify(unitName);
+      if (slugified) {
+        mapping.set(slugified, baseClassSlug);
+      }
+      
+      // Map last word if multi-word (e.g., "Gurubashi Warrior" -> "Warrior")
+      if (unitName.includes(' ')) {
+        const lastWord = unitName.split(' ').pop();
+        if (lastWord && lastWord !== unitName) {
+          mapping.set(lastWord, baseClassSlug);
+          mapping.set(lastWord.toLowerCase(), baseClassSlug);
+        }
+      }
+      
+      // Map first word if multi-word (e.g., "Dire Wolf" -> "Dire")
+      if (unitName.includes(' ')) {
+        const firstWord = unitName.split(' ')[0];
+        if (firstWord && firstWord !== unitName) {
+          mapping.set(firstWord, baseClassSlug);
+          mapping.set(firstWord.toLowerCase(), baseClassSlug);
+        }
+      }
+    }
+  }
+  
+  // Also add direct mappings for base classes themselves
+  for (const [constName, slug] of Object.entries(unitToBaseClass)) {
+    const unitName = constName.replace(/^UNIT_/, '').split('_').map(w => w.charAt(0) + w.slice(1).toLowerCase()).join(' ');
+    mapping.set(unitName, slug);
+    mapping.set(unitName.toLowerCase(), slug);
+    mapping.set(slugify(unitName), slug);
+  }
+  
+  // Add explicit mappings for known problematic units that might not match otherwise
+  // These are direct mappings based on the actual unit names in the game
+  const explicitMappings = {
+    'Wolf Form': 'beastmaster',
+    'Bear Form': 'beastmaster',
+    'Panther Form': 'beastmaster',
+    'Tiger Form': 'beastmaster',
+    'Dire Wolf': 'beastmaster',
+    'Dire Bear': 'beastmaster',
+    'Escape Artist': 'thief',
+    'Contortionist': 'thief',
+    'Telethief': 'thief',
+    'TeleThief': 'thief',
+  };
+  
+  for (const [unitName, baseClassSlug] of Object.entries(explicitMappings)) {
+    mapping.set(unitName, baseClassSlug);
+    mapping.set(unitName.toLowerCase(), baseClassSlug);
+    mapping.set(slugify(unitName), baseClassSlug);
+    
+    // Also map individual words
+    if (unitName.includes(' ')) {
+      const words = unitName.split(' ');
+      for (const word of words) {
+        if (word.length >= 3) { // Only map words that are meaningful
+          mapping.set(word, baseClassSlug);
+          mapping.set(word.toLowerCase(), baseClassSlug);
+        }
+      }
+    }
+  }
+  
+  return mapping;
+}
 
 /**
  * Extract class descriptions from TrollUnitTextConstant.wurst
@@ -600,7 +761,7 @@ function extractAbilitiesMetadata() {
   }
   
   // Step 2: Parse Wurst source file to extract ability-to-class mappings
-  const wurstFile = path.join(ROOT_DIR, 'island-troll-tribes', 'wurst', 'objects', 'units', 'TrollUnitTextConstant.wurst');
+  const wurstFile = path.join(WURST_SOURCE_DIR, 'objects', 'units', 'TrollUnitTextConstant.wurst');
   if (fs.existsSync(wurstFile)) {
     const wurstContent = fs.readFileSync(wurstFile, 'utf-8');
     
@@ -684,7 +845,7 @@ function extractAbilitiesMetadata() {
   }
   
   // Step 3: Parse LocalObjectIDs.wurst to get ability constant names
-  const localObjectIdsFile = path.join(ROOT_DIR, 'island-troll-tribes', 'wurst', 'assets', 'LocalObjectIDs.wurst');
+  const localObjectIdsFile = path.join(WURST_SOURCE_DIR, 'assets', 'LocalObjectIDs.wurst');
   if (fs.existsSync(localObjectIdsFile)) {
     const localContent = fs.readFileSync(localObjectIdsFile, 'utf-8');
     // Extract ability constant definitions
@@ -738,6 +899,11 @@ function main() {
     }
   }
   
+  // Extract troll base class mapping from Wurst source
+  console.log('🔗 Extracting troll base class mapping from Wurst source...');
+  const trollBaseClassMapping = extractTrollBaseClassMapping();
+  console.log(`✅ Extracted ${trollBaseClassMapping.size} troll base class mappings\n`);
+  
   // Extract class descriptions from Wurst source
   console.log('📝 Extracting class descriptions from Wurst source...');
   const classDescriptions = extractClassDescriptions();
@@ -759,6 +925,9 @@ function main() {
   
   // Also store descriptions separately for reference
   unitsMetadata.classDescriptions = classDescriptions;
+  
+  // Store troll base class mapping
+  unitsMetadata.trollBaseClassMapping = Object.fromEntries(trollBaseClassMapping);
   
   writeJson(path.join(OUTPUT_DIR, 'units.json'), unitsMetadata);
   console.log(`✅ Extracted ${unitsMetadata.units.length} units metadata\n`);

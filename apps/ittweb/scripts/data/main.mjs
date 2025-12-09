@@ -1,5 +1,5 @@
 /**
- * Master script to generate TypeScript data files directly from external/Work/ decompiled map files
+ * Master script to generate TypeScript data files from war3map files and WURST source
  * 
  * ============================================================================
  * DATA GENERATION PIPELINE ORCHESTRATOR
@@ -7,14 +7,22 @@
  * 
  * This script orchestrates the complete data generation pipeline:
  * 1. Uses static category mappings from category-mappings.json (manually curated)
- * 2. Extracts raw data from war3map files in external/Work/
+ * 2. Extracts raw data from war3map files (configurable via WAR3MAP_DIR env var)
  * 3. Extracts metadata (units, buildings, recipes)
- * 4. Extracts ability details from Wurst source files
+ * 4. Extracts ability details from Wurst source files (configurable via WURST_SOURCE_DIR env var)
  * 5. Extracts ability relationships (class/spellbook mappings)
  * 6. Converts extracted data to TypeScript format (items, abilities, units)
  * 7. Generates icon mapping (iconMap.ts)
  * 8. Fixes icon paths in generated TypeScript files
  * 9. Resolves field references in tooltips (replaces placeholders with actual values)
+ * 
+ * CONFIGURATION:
+ * ============================================================================
+ * Paths can be configured via environment variables:
+ * - WAR3MAP_DIR: Directory containing war3map files (w3t, w3a, w3u, w3b, j)
+ *   Default: external/Work (relative to app root)
+ * - WURST_SOURCE_DIR: Root directory of WURST source files
+ *   Default: island-troll-tribes/wurst (relative to app root)
  * 
  * PIPELINE SCRIPTS (automatically called in order):
  * ============================================================================
@@ -29,7 +37,16 @@
  * 
  * See scripts/data/README.md for detailed documentation.
  * 
- * Usage: node scripts/data/main.mjs
+ * Usage:
+ *   node scripts/data/main.mjs
+ *   
+ *   Paths are configured via environment variables or .env.local file:
+ *   - WAR3MAP_DIR: Directory containing war3map files
+ *   - WURST_SOURCE_DIR: Root directory of WURST source files
+ *   
+ *   Create .env.local in the app root with:
+ *   WAR3MAP_DIR=C:\path\to\war3mapfiles
+ *   WURST_SOURCE_DIR=C:\path\to\wurst
  */
 
 import fs from 'fs';
@@ -202,7 +219,7 @@ async function main() {
   console.log('='.repeat(60));
   console.log('\nThis script will:');
   console.log('  1. Use static category mappings file (category-mappings.json)');
-  console.log('  2. Extract raw data from war3map files in external/Work/');
+  console.log('  2. Extract raw data from war3map files');
   console.log('  3. Extract metadata (units, buildings, recipes)');
     console.log('  4. Extract ability details from Wurst source files');
     console.log('  5. Extract ability relationships (class/spellbook mappings)');

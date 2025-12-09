@@ -124,14 +124,14 @@ export default function ItemDetailPage({ item }: Props) {
                   });
 
                   if (building) {
-                    // Use raw ID - Next.js Link will handle encoding automatically
-                    // This matches the pattern used in src/pages/guides/units.tsx
+                    // Convert unit ID to URL-safe slug (replace : with -)
+                    const unitSlug = building.id.replace(/:/g, "-");
                     // Add query parameters to enable back navigation
                     return (
                       <div>
                         <span className="text-gray-400">Crafted at:</span>{" "}
                         <Link
-                          href={`/guides/units/${encodeURIComponent(building.id)}?from=item&itemId=${item.id}`}
+                          href={`/guides/units/${unitSlug}?from=item&itemId=${item.id}`}
                           className="text-blue-300 hover:text-blue-200 underline transition-colors"
                         >
                           {item.craftedAt}

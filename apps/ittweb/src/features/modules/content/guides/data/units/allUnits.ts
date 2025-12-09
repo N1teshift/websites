@@ -58,6 +58,8 @@ export type UnitData = {
   attackSpeed?: number;
   damage?: number | string;
   craftableItems?: string[];
+  // Troll class relationship
+  baseClass?: string;
 };
 
 export const ALL_UNITS: UnitData[] = [
@@ -4352,6 +4354,7 @@ export const ALL_UNITS: UnitData[] = [
     isFlyer: true,
     attackSpeed: 1.75,
     damage: "11-12",
+    baseClass: "hunter",
   },
   {
     id: "HM17:Obla",
@@ -4394,6 +4397,7 @@ export const ALL_UNITS: UnitData[] = [
     isFlyer: true,
     attackSpeed: 1.95,
     damage: "11-12",
+    baseClass: "hunter",
   },
   {
     id: "HM14:Obla",
@@ -4421,6 +4425,7 @@ export const ALL_UNITS: UnitData[] = [
     isFlyer: true,
     attackSpeed: 1.75,
     damage: "10-11",
+    baseClass: "hunter",
   },
   {
     id: "HM0n:Obla",
@@ -4463,6 +4468,7 @@ export const ALL_UNITS: UnitData[] = [
     isFlyer: true,
     attackSpeed: 1.95,
     damage: "11-12",
+    baseClass: "hunter",
   },
   {
     id: "HM0o:Obla",
@@ -4490,6 +4496,7 @@ export const ALL_UNITS: UnitData[] = [
     isFlyer: true,
     attackSpeed: 1.77,
     damage: "11-12",
+    baseClass: "mage",
   },
   {
     id: "HM0d:Obla",
@@ -4519,6 +4526,7 @@ export const ALL_UNITS: UnitData[] = [
     isFlyer: true,
     attackSpeed: 1.8,
     damage: "11-12",
+    baseClass: "mage",
   },
   {
     id: "HM0l:Obla",
@@ -4546,6 +4554,7 @@ export const ALL_UNITS: UnitData[] = [
     isFlyer: true,
     attackSpeed: 1.8,
     damage: "11-12",
+    baseClass: "mage",
   },
   {
     id: "HM0m:Obla",
@@ -4573,6 +4582,7 @@ export const ALL_UNITS: UnitData[] = [
     isFlyer: true,
     attackSpeed: 1.8,
     damage: "11-12",
+    baseClass: "mage",
   },
   {
     id: "HM0b:Obla",
@@ -4602,6 +4612,7 @@ export const ALL_UNITS: UnitData[] = [
     isFlyer: true,
     attackSpeed: 1.8,
     damage: "14-15",
+    baseClass: "mage",
   },
   {
     id: "HM0v:Obla",
@@ -4629,6 +4640,7 @@ export const ALL_UNITS: UnitData[] = [
     isFlyer: true,
     attackSpeed: 1.8,
     damage: "10-11",
+    baseClass: "priest",
   },
   {
     id: "HM06:Obla",
@@ -4656,6 +4668,7 @@ export const ALL_UNITS: UnitData[] = [
     isFlyer: true,
     attackSpeed: 1.75,
     damage: "10-11",
+    baseClass: "priest",
   },
   {
     id: "HM0q:Obla",
@@ -4683,6 +4696,7 @@ export const ALL_UNITS: UnitData[] = [
     isFlyer: true,
     attackSpeed: 1.8,
     damage: "10-11",
+    baseClass: "priest",
   },
   {
     id: "HM0|:Obla",
@@ -4710,6 +4724,7 @@ export const ALL_UNITS: UnitData[] = [
     isFlyer: true,
     attackSpeed: 1.75,
     damage: "10-11",
+    baseClass: "priest",
   },
   {
     id: "HM04:Obla",
@@ -4737,6 +4752,7 @@ export const ALL_UNITS: UnitData[] = [
     isFlyer: true,
     attackSpeed: 1.77,
     damage: "10-11",
+    baseClass: "beastmaster",
   },
   {
     id: "HM11:Obla",
@@ -4764,6 +4780,7 @@ export const ALL_UNITS: UnitData[] = [
     isFlyer: true,
     attackSpeed: 1.5,
     damage: "8-9",
+    baseClass: "beastmaster",
   },
   {
     id: "HM02:Obla",
@@ -4791,6 +4808,7 @@ export const ALL_UNITS: UnitData[] = [
     isFlyer: true,
     attackSpeed: 1.5,
     damage: "8-9",
+    baseClass: "beastmaster",
   },
   {
     id: "HM0~:Obla",
@@ -4818,6 +4836,7 @@ export const ALL_UNITS: UnitData[] = [
     isFlyer: true,
     attackSpeed: 2.2,
     damage: "13-14",
+    baseClass: "beastmaster",
   },
   {
     id: "HM01:Obla",
@@ -4845,6 +4864,7 @@ export const ALL_UNITS: UnitData[] = [
     isFlyer: true,
     attackSpeed: 2.2,
     damage: "13-14",
+    baseClass: "beastmaster",
   },
   {
     id: "HM1!:Obla",
@@ -4872,6 +4892,7 @@ export const ALL_UNITS: UnitData[] = [
     isFlyer: true,
     attackSpeed: 1.65,
     damage: "12-13",
+    baseClass: "beastmaster",
   },
   {
     id: "HM10:Obla",
@@ -4899,6 +4920,7 @@ export const ALL_UNITS: UnitData[] = [
     isFlyer: true,
     attackSpeed: 1.75,
     damage: "11-12",
+    baseClass: "beastmaster",
   },
   {
     id: "HM0c:Obla",
@@ -4926,6 +4948,7 @@ export const ALL_UNITS: UnitData[] = [
     isFlyer: true,
     attackSpeed: 1.85,
     damage: "10-11",
+    baseClass: "beastmaster",
   },
   {
     id: "HM16:Obla",
@@ -4953,6 +4976,7 @@ export const ALL_UNITS: UnitData[] = [
     isFlyer: true,
     attackSpeed: 1.75,
     damage: "8-9",
+    baseClass: "beastmaster",
   },
   {
     id: "HM13:Obla",
@@ -4980,6 +5004,7 @@ export const ALL_UNITS: UnitData[] = [
     isFlyer: true,
     attackSpeed: 1.8,
     damage: "9-10",
+    baseClass: "thief",
   },
   {
     id: "HM0f:Obla",
@@ -5007,6 +5032,7 @@ export const ALL_UNITS: UnitData[] = [
     isFlyer: true,
     attackSpeed: 1.85,
     damage: "12-13",
+    baseClass: "thief",
   },
   {
     id: "HM0g:Obla",
@@ -5034,6 +5060,7 @@ export const ALL_UNITS: UnitData[] = [
     isFlyer: true,
     attackSpeed: 1.8,
     damage: "9-10",
+    baseClass: "thief",
   },
   {
     id: "HM0a:Obla",
@@ -5061,6 +5088,7 @@ export const ALL_UNITS: UnitData[] = [
     isFlyer: true,
     attackSpeed: 1.85,
     damage: "11-12",
+    baseClass: "thief",
   },
   {
     id: "HM08:Obla",
@@ -5088,6 +5116,7 @@ export const ALL_UNITS: UnitData[] = [
     isFlyer: true,
     attackSpeed: 1.75,
     damage: "11-12",
+    baseClass: "thief",
   },
   {
     id: "HM03:Obla",
@@ -5115,6 +5144,7 @@ export const ALL_UNITS: UnitData[] = [
     isFlyer: true,
     attackSpeed: 1.85,
     damage: "10-11",
+    baseClass: "thief",
   },
   {
     id: "HM0}:Obla",
@@ -5142,6 +5172,7 @@ export const ALL_UNITS: UnitData[] = [
     isFlyer: true,
     attackSpeed: 1.8,
     damage: "9-10",
+    baseClass: "scout",
   },
   {
     id: "HM0s:Obla",
@@ -5196,6 +5227,7 @@ export const ALL_UNITS: UnitData[] = [
     isFlyer: true,
     attackSpeed: 1.8,
     damage: "10-11",
+    baseClass: "scout",
   },
   {
     id: "HM12:Obla",
@@ -5223,6 +5255,7 @@ export const ALL_UNITS: UnitData[] = [
     isFlyer: true,
     attackSpeed: 1.7,
     damage: "10-11",
+    baseClass: "scout",
   },
   {
     id: "HM0h:Obla",
@@ -5250,6 +5283,7 @@ export const ALL_UNITS: UnitData[] = [
     isFlyer: true,
     attackSpeed: 2,
     damage: "9-10",
+    baseClass: "gatherer",
   },
   {
     id: "HM0i:Obla",
@@ -5277,6 +5311,7 @@ export const ALL_UNITS: UnitData[] = [
     isFlyer: true,
     attackSpeed: 1.8,
     damage: "8-9",
+    baseClass: "gatherer",
   },
   {
     id: "HM0w:Obla",
@@ -5304,6 +5339,7 @@ export const ALL_UNITS: UnitData[] = [
     isFlyer: true,
     attackSpeed: 1.8,
     damage: "8-9",
+    baseClass: "gatherer",
   },
   {
     id: "HM0y:Obla",
@@ -5331,6 +5367,7 @@ export const ALL_UNITS: UnitData[] = [
     isFlyer: true,
     attackSpeed: 1.8,
     damage: "8-9",
+    baseClass: "gatherer",
   },
   {
     id: "HM0t:Obla",
@@ -5358,6 +5395,7 @@ export const ALL_UNITS: UnitData[] = [
     isFlyer: true,
     attackSpeed: 1.7,
     damage: "10-11",
+    baseClass: "gatherer",
   },
 ];
 
@@ -5377,4 +5415,8 @@ export function searchUnits(query: string): UnitData[] {
       unit.description?.toLowerCase().includes(lowercaseQuery) ||
       unit.race?.toLowerCase().includes(lowercaseQuery)
   );
+}
+
+export function getUnitsByBaseClass(baseClassSlug: string): UnitData[] {
+  return ALL_UNITS.filter((unit) => unit.baseClass === baseClassSlug && unit.type === "troll");
 }
