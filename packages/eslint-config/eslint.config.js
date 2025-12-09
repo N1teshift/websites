@@ -10,25 +10,35 @@
  */
 
 import js from "@eslint/js";
+import { FlatCompat } from "@eslint/eslintrc";
+import path from "path";
+import { fileURLToPath } from "url";
 import pluginNext from "@next/eslint-plugin-next";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const compat = new FlatCompat({
+  baseDirectory: __dirname,
+});
+
+// Get Next.js TypeScript config via compat layer (for TypeScript ESLint support)
+// We still need this for @typescript-eslint plugin and rules
+const nextTypeScriptConfig = compat.extends("next/typescript");
 
 const config = [
   // Base recommended rules
   js.configs.recommended,
 
+  // Next.js TypeScript config (provides @typescript-eslint plugin)
+  ...nextTypeScriptConfig,
+
   // Next.js flat config - directly imported for proper plugin detection
-  // This ensures Next.js can detect the plugin during build-time checks
+  // This already includes the plugin registration, so we don't need to register it again
   // Spread the array if it's an array, otherwise use directly
   ...(Array.isArray(pluginNext.flatConfig.coreWebVitals)
     ? pluginNext.flatConfig.coreWebVitals
     : [pluginNext.flatConfig.coreWebVitals]),
-
-  // Explicitly register the plugin so Next.js can detect it
-  {
-    plugins: {
-      "@next/next": pluginNext,
-    },
-  },
 
   // Global rules
   {
