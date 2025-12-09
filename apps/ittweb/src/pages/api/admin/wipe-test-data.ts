@@ -29,11 +29,15 @@ export default createPostHandler<{
     let adminDb;
     try {
       adminDb = getFirestoreAdmin();
-    } catch (error) {
-      logger.error("Failed to initialize Firestore Admin", {
-        error: error instanceof Error ? error.message : String(error),
-        stack: error instanceof Error ? error.stack : undefined,
-      });
+    } catch (error: unknown) {
+      logger.error(
+        "Failed to initialize Firestore Admin",
+        error instanceof Error ? error : undefined,
+        {
+          error: error instanceof Error ? error.message : String(error),
+          stack: error instanceof Error ? error.stack : undefined,
+        }
+      );
       throw new Error(
         `Failed to initialize Firestore Admin: ${error instanceof Error ? error.message : String(error)}`
       );
@@ -94,7 +98,7 @@ export default createPostHandler<{
         deletedCounts[collectionName] = collectionCount;
         logger.info("Deleted collection", { collection: collectionName, count: collectionCount });
       } catch (error) {
-        logger.error("Failed to delete collection", {
+        logger.error("Failed to delete collection", error instanceof Error ? error : undefined, {
           collection: collectionName,
           error: error instanceof Error ? error.message : String(error),
           stack: error instanceof Error ? error.stack : undefined,
@@ -111,10 +115,14 @@ export default createPostHandler<{
       const bucketName = getStorageBucketName();
       bucket = bucketName ? storage.bucket(bucketName) : storage.bucket();
     } catch (error) {
-      logger.error("Failed to initialize Storage Admin", {
-        error: error instanceof Error ? error.message : String(error),
-        stack: error instanceof Error ? error.stack : undefined,
-      });
+      logger.error(
+        "Failed to initialize Storage Admin",
+        error instanceof Error ? error : undefined,
+        {
+          error: error instanceof Error ? error.message : String(error),
+          stack: error instanceof Error ? error.stack : undefined,
+        }
+      );
       throw new Error(
         `Failed to initialize Storage Admin: ${error instanceof Error ? error.message : String(error)}`
       );

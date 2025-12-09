@@ -1,14 +1,17 @@
 export type AbilityCategory =
+  | "auradummy"
   | "basic"
-  | "hunter"
   | "beastmaster"
+  | "bonushandler"
+  | "buff"
+  | "building"
+  | "gatherer"
+  | "hunter"
+  | "item"
   | "mage"
   | "priest"
-  | "thief"
   | "scout"
-  | "gatherer"
-  | "item"
-  | "building"
+  | "thief"
   | "unknown";
 
 export type AbilityData = {
@@ -25,4 +28,17 @@ export type AbilityData = {
   duration?: number;
   damage?: string;
   effects?: string[];
+  areaOfEffect?: number;
+  maxTargets?: number;
+  hotkey?: string;
+  targetsAllowed?: string;
+  castTime?: number | string;
+  levels?: Record<string, any>;
+  availableToClasses?: string[];
+  spellbook?: "hero" | "normal";
+  visualEffects?: {
+    attachmentPoints?: (string | number)[];
+    attachmentTarget?: string;
+  };
+  buttonPosition?: { x: number; y: number };
 };

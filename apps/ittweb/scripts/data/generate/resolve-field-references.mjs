@@ -220,8 +220,8 @@ function processTypeScriptFile(filePath, abilityMap) {
   let content = fs.readFileSync(filePath, 'utf-8');
   let modified = false;
   
-  // Find all tooltip and description fields
-  const fieldPattern = /(tooltip|description):\s*['"]([^'"]*(?:\\.[^'"]*)*)['"]/g;
+  // Find all tooltip and description fields (optional trailing comma captured)
+  const fieldPattern = /(tooltip|description):\s*['"]([^'"]*(?:\\.[^'"]*)*)['"]\s*,?/g;
   
   const replacements = [];
   let match;
@@ -254,7 +254,8 @@ function processTypeScriptFile(filePath, abilityMap) {
         .replace(/'/g, "\\'")
         .replace(/"/g, '\\"');
       
-      const newField = `${replacement.fieldName}: '${escapedResolved}',`;
+      const hadTrailingComma = /,\s*$/.test(content.substring(replacement.startIndex, replacement.endIndex));
+      const newField = `${replacement.fieldName}: '${escapedResolved}'${hadTrailingComma ? ',' : ''}`;
       const originalField = content.substring(replacement.startIndex, replacement.endIndex);
       
       content = content.substring(0, replacement.startIndex) + 

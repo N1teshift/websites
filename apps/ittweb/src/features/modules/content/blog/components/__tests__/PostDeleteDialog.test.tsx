@@ -6,7 +6,7 @@ import PostDeleteDialog from "../PostDeleteDialog";
 const mockUseModalAccessibility = jest.fn(() => ({ current: null }));
 
 jest.mock("@websites/infrastructure/hooks", () => ({
-  useModalAccessibility: (...args: any[]) => mockUseModalAccessibility(...args),
+  useModalAccessibility: mockUseModalAccessibility,
 }));
 
 describe("PostDeleteDialog", () => {

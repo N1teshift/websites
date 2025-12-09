@@ -117,77 +117,83 @@ export function writeAbilitiesFile(filePath, abilities, category) {
 
 export const ${constName}: AbilityData[] = [
 ${abilities.map(ability => {
-  const lines = [`  {`];
-  lines.push(`    id: '${ability.id}',`);
-  lines.push(`    name: '${escapeString(ability.name)}',`);
-  lines.push(`    category: '${ability.category}',`);
+  const props = [];
+
+  props.push(`id: '${ability.id}'`);
+  props.push(`name: '${escapeString(ability.name)}'`);
+  props.push(`category: '${ability.category}'`);
   if (ability.classRequirement) {
-    lines.push(`    classRequirement: '${ability.classRequirement}',`);
+    props.push(`classRequirement: '${ability.classRequirement}'`);
   }
   if (ability.description) {
-    lines.push(`    description: '${escapeString(ability.description)}',`);
+    props.push(`description: '${escapeString(ability.description)}'`);
   } else {
-    lines.push(`    description: '',`);
+    props.push(`description: ''`);
   }
   if (ability.tooltip) {
-    lines.push(`    tooltip: '${escapeString(ability.tooltip)}',`);
+    props.push(`tooltip: '${escapeString(ability.tooltip)}'`);
   }
   if (ability.iconPath) {
-    lines.push(`    iconPath: '${ability.iconPath}',`);
+    props.push(`iconPath: '${ability.iconPath}'`);
   }
   if (ability.manaCost !== undefined) {
-    lines.push(`    manaCost: ${ability.manaCost},`);
+    props.push(`manaCost: ${ability.manaCost}`);
   }
   if (ability.cooldown !== undefined) {
-    lines.push(`    cooldown: ${ability.cooldown},`);
+    props.push(`cooldown: ${ability.cooldown}`);
   }
   if (ability.range !== undefined) {
-    lines.push(`    range: ${ability.range},`);
+    props.push(`range: ${ability.range}`);
   }
   if (ability.duration !== undefined) {
-    lines.push(`    duration: ${ability.duration},`);
+    props.push(`duration: ${ability.duration}`);
   }
   if (ability.damage !== undefined) {
-    lines.push(`    damage: '${ability.damage}',`);
+    props.push(`damage: '${ability.damage}'`);
   }
   if (ability.areaOfEffect !== undefined) {
-    lines.push(`    areaOfEffect: ${ability.areaOfEffect},`);
+    props.push(`areaOfEffect: ${ability.areaOfEffect}`);
   }
   if (ability.maxTargets !== undefined) {
-    lines.push(`    maxTargets: ${ability.maxTargets},`);
+    props.push(`maxTargets: ${ability.maxTargets}`);
   }
   if (ability.hotkey) {
-    lines.push(`    hotkey: '${ability.hotkey}',`);
+    props.push(`hotkey: '${ability.hotkey}'`);
   }
   if (ability.targetsAllowed) {
-    lines.push(`    targetsAllowed: '${escapeString(ability.targetsAllowed)}',`);
+    props.push(`targetsAllowed: '${escapeString(ability.targetsAllowed)}'`);
   }
   if (ability.castTime !== undefined) {
     if (typeof ability.castTime === 'string') {
-      lines.push(`    castTime: '${escapeString(ability.castTime)}',`);
+      props.push(`castTime: '${escapeString(ability.castTime)}'`);
     } else {
-      lines.push(`    castTime: ${ability.castTime},`);
+      props.push(`castTime: ${ability.castTime}`);
     }
   }
   if (ability.levels && Object.keys(ability.levels).length > 0) {
     const levelsStr = JSON.stringify(ability.levels, null, 6).split('\n').map((line, idx) => idx === 0 ? line : '      ' + line).join('\n');
-    lines.push(`    levels: ${levelsStr},`);
+    props.push(`levels: ${levelsStr}`);
   }
   if (ability.availableToClasses && ability.availableToClasses.length > 0) {
-    lines.push(`    availableToClasses: [${ability.availableToClasses.map(c => `'${c}'`).join(', ')}],`);
+    props.push(`availableToClasses: [${ability.availableToClasses.map(c => `'${c}'`).join(', ')}]`);
   }
   if (ability.spellbook) {
-    lines.push(`    spellbook: '${ability.spellbook}',`);
+    props.push(`spellbook: '${ability.spellbook}'`);
   }
   if (ability.visualEffects) {
     const visualEffectsStr = JSON.stringify(ability.visualEffects, null, 6).split('\n').map((line, idx) => idx === 0 ? line : '      ' + line).join('\n');
-    lines.push(`    visualEffects: ${visualEffectsStr},`);
+    props.push(`visualEffects: ${visualEffectsStr}`);
   }
   if (ability.buttonPosition) {
-    lines.push(`    buttonPosition: { x: ${ability.buttonPosition.x}, y: ${ability.buttonPosition.y} },`);
+    props.push(`buttonPosition: { x: ${ability.buttonPosition.x}, y: ${ability.buttonPosition.y} }`);
   }
-  lines.push(`  }`);
-  return lines.join('\n');
+
+  const formattedProps = props.map((line, idx) => {
+    const suffix = idx === props.length - 1 ? '' : ',';
+    return `    ${line}${suffix}`;
+  });
+
+  return ['  {', ...formattedProps, '  }'].join('\n');
 }).join(',\n')}
 ];
 `;
@@ -569,6 +575,10 @@ export function getUnitById(id: string): UnitData | undefined {
 
 export function getUnitsByType(type: UnitType): UnitData[] {
   return ALL_UNITS.filter(u => u.type === type);
+}
+
+export function getUnitsByBaseClass(baseClassSlug: string): UnitData[] {
+  return ALL_UNITS.filter(u => u.baseClass === baseClassSlug);
 }
 
 export function searchUnits(query: string): UnitData[] {

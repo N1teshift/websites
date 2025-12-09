@@ -18,15 +18,33 @@ type Props = { item: ItemData };
 
 const pageNamespaces = ["common"];
 
+// Helper to convert item ID to URL-safe and filesystem-safe slug
+function itemIdToSlug(id: string): string {
+  return id
+    .replace(/:/g, "-")
+    .replace(/\|/g, "-")
+    .replace(/[<>:"/\\?*]/g, "-");
+}
+
+// Helper to convert slug back to item ID
+function slugToItemId(slug: string): string {
+  const matchingItem = ITEMS_DATA.find((i) => itemIdToSlug(i.id) === slug);
+  if (matchingItem) return matchingItem.id;
+  const exactMatch = ITEMS_DATA.find((i) => i.id === slug);
+  if (exactMatch) return exactMatch.id;
+  return slug;
+}
+
 export const getStaticPaths: GetStaticPaths = async () => {
   return {
-    paths: ITEMS_DATA.map((item) => ({ params: { id: item.id } })),
+    paths: ITEMS_DATA.map((item) => ({ params: { id: itemIdToSlug(item.id) } })),
     fallback: false,
   };
 };
 
 export const getStaticProps: GetStaticProps<Props> = async ({ params, locale }) => {
-  const id = String(params?.id || "");
+  const slug = String(params?.id || "");
+  const id = slugToItemId(slug);
   const item = getItemById(id);
   if (!item) {
     return { notFound: true };

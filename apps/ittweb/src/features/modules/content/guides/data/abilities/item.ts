@@ -250,7 +250,7 @@ export const ITEM_ABILITIES: AbilityData[] = [
     description: "",
     tooltip:
       "Your next attack will tear out a chunk of flesh from your target, recovering 1 raw meat and applying a bleed effect which does |cffFF020230.0|r damage and slows target briefly.\nYour auto attacks lower the cooldown by |cff7DBEF10.5|r seconds.\nHas |cff7DBEF112.0|r seconds cooldown.",
-    iconPath: "btnghoulfrenzy.png",
+    iconPath: "pasbtnghoulfrenzy.png",
     targetsAllowed: "ground,enemy,neutral",
   },
   {
@@ -1361,7 +1361,7 @@ export const ITEM_ABILITIES: AbilityData[] = [
     name: "Build Magic palm Tree",
     category: "item",
     description: "",
-    iconPath: "btntemp.png",
+    iconPath: "btncancel.png",
     range: 100,
     duration: 5,
     levels: {
@@ -1532,7 +1532,7 @@ export const ITEM_ABILITIES: AbilityData[] = [
     description: "",
     tooltip:
       "Mur'gul Hunter throws a harpoon at the target with the lowest amount of hp.\nDoes |cffFF020240.0|r damage and applies |cff0F61453|r stacks of poison.",
-    iconPath: "btnnagaweaponup2.png",
+    iconPath: "btnnagaarmorup2.png",
     cooldown: 10,
     range: 800,
     targetsAllowed: "air,enemies,ground,neutral,organic,terrain",

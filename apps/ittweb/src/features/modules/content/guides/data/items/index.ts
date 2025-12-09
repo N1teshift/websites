@@ -49,3 +49,5 @@ export function searchItems(query: string): ItemData[] {
       item.recipe?.some((ingredient) => ingredient.toLowerCase().includes(lowercaseQuery))
   );
 }
+
+// getItemByReplayId and getItemsByReplayIds are exported from replayItemUtils.ts

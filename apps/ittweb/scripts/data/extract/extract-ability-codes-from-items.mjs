@@ -18,7 +18,7 @@ const ROOT_DIR = path.join(__dirname, '..', '..');
 
 const ITEMS_FILE = path.join(TMP_RAW_DIR, 'items.json');
 const ABILITIES_FILE = path.join(TMP_RAW_DIR, 'abilities.json');
-const ABILITY_ID_MAPPER_FILE = path.join(ROOT_DIR, 'src', 'features', 'modules', 'guides', 'data', 'items', 'abilityIdMapper.ts');
+const ABILITY_ID_MAPPER_FILE = path.join(ROOT_DIR, 'src', 'features', 'modules', 'content', 'guides', 'data', 'items', 'abilityIdMapper.ts');
 
 /**
  * Extract ability codes from text (pattern: <XXXX,DataXX>)

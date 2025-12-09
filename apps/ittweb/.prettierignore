@@ -39,6 +39,9 @@ yarn.lock
 *.tsbuildinfo
 tsconfig.tsbuildinfo
 
+# Temporary work files
+tmp/
+
 # OS
 Thumbs.db
 

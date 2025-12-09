@@ -41,7 +41,7 @@ export const GATHERER_ABILITIES: AbilityData[] = [
     classRequirement: "gatherer",
     description: "",
     tooltip:
-      "Slot 1: Mushroom |nSlot 2: Tinder |nSlot 3: River Root |nCreates a salve with 2 uses that heals for <A0EG,DataA1> over <A0EG,HeroDur1> seconds.",
+      "Slot 1: Mushroom |nSlot 2: Tinder |nSlot 3: River Root |nCreates a salve with 2 uses that heals for <A0EG,DataA1> over 25 seconds.",
     iconPath: "btnhealingsalve.png",
     range: 1,
     levels: {
@@ -57,7 +57,7 @@ export const GATHERER_ABILITIES: AbilityData[] = [
     classRequirement: "gatherer",
     description: "",
     tooltip:
-      "Slot 1: Mushroom |nSlot 2: Athelas Seed |nSlot 3: Athelas Seed |nCreates a salve that sleeps target enemy troll for <A0DH,HeroDur1> seconds.",
+      "Slot 1: Mushroom |nSlot 2: Athelas Seed |nSlot 3: Athelas Seed |nCreates a salve that sleeps target enemy troll for 3 seconds.",
     iconPath: "pasbtnelunesblessing.png",
     range: 1,
     levels: {

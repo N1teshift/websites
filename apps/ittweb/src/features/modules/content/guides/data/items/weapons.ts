@@ -87,7 +87,7 @@ export const WEAPONS_ITEMS: ItemData[] = [
       "You were gifted this legendary trident by Princess Naelyssa, heir to the Coral Throne, after rescuing her from the clutches of the Ancient Makrura.\nTidebringer is no mere weapon; it is a herald of the tides, capable of commanding currents and summoning |cffFF6347Tsunami|r.\n+|cff1FBF0010 |rAttack Damage\n+|cff1FBF008 |rStrength\n+|cff1FBF008 |rIntelligence|cffFF6347\n\nTsunami\n|rGrants the unit the ability to cast Tsunami, sending a gigantic wave dealing |cffFF020235|r damage to units in a line. When casted at close range, it deals |cffFF020220|r extra damage to buildings and can instantly put out fires. Has |cff7DBEF115|r seconds cooldown.",
     tooltip:
       "You were gifted this legendary trident by Princess Naelyssa, heir to the Coral Throne, after rescuing her from the clutches of the Ancient Makrura.\nTidebringer is no mere weapon; it is a herald of the tides, capable of commanding currents and summoning |cffFF6347Tsunami|r.\n+|cff1FBF0010 |rAttack Damage\n+|cff1FBF008 |rStrength\n+|cff1FBF008 |rIntelligence|cffFF6347\n\nTsunami\n|rGrants the unit the ability to cast Tsunami, sending a gigantic wave dealing |cffFF020235|r damage to units in a line. When casted at close range, it deals |cffFF020220|r extra damage to buildings and can instantly put out fires. Has |cff7DBEF115|r seconds cooldown.",
-    iconPath: "btnnagaweaponup2.png",
+    iconPath: "btnnagaarmorup2.png",
     lumberCost: 35,
     hotkey: "A",
     stockReplenishInterval: 120,

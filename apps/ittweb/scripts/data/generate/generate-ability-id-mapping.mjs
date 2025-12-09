@@ -17,7 +17,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT_DIR = path.join(__dirname, '..', '..');
 
 const ABILITIES_FILE = path.join(TMP_RAW_DIR, 'abilities.json');
-const OUTPUT_FILE = path.join(ROOT_DIR, 'src', 'features', 'modules', 'guides', 'data', 'items', 'abilityIdMapper.ts');
+const OUTPUT_FILE = path.join(ROOT_DIR, 'src', 'features', 'modules', 'content', 'guides', 'data', 'items', 'abilityIdMapper.ts');
 
 /**
  * Extract first 4 characters from ability ID (raw ID format)

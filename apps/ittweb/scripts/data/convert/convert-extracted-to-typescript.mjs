@@ -14,8 +14,8 @@ import { convertItem, loadRecipesMap } from '../converters/item-converter.mjs';
 import { convertAbility } from '../converters/ability-converter.mjs';
 import { convertUnit, convertBaseClass, convertDerivedClass } from '../converters/unit-converter.mjs';
 import { writeItemsFile, writeAbilitiesFile, writeClassesFile, writeDerivedClassesFile, writeAllUnitsFile } from '../generators/file-writer.mjs';
-import { generateItemsIndex, generateAbilitiesIndex, generateUnitsIndex, generateAbilitiesTypes, generateItemsIconUtils } from '../generators/index-generator.mjs';
-import { TMP_RAW_DIR, TMP_METADATA_DIR, ITEMS_TS_DIR, ABILITIES_TS_DIR, UNITS_TS_DIR } from '../lib/paths.mjs';
+import { generateItemsIndex, generateAbilitiesIndex, generateUnitsIndex, generateAbilitiesTypes, generateItemsIconUtils, generateDataIndex } from '../generators/index-generator.mjs';
+import { TMP_RAW_DIR, TMP_METADATA_DIR, ITEMS_TS_DIR, ABILITIES_TS_DIR, UNITS_TS_DIR, DATA_TS_DIR } from '../lib/paths.mjs';
 
 const RECIPES_FILE = path.join(TMP_METADATA_DIR, 'recipes.json');
 const BUILDINGS_FILE = path.join(TMP_METADATA_DIR, 'buildings.json');
@@ -325,6 +325,14 @@ function main() {
     console.log(`✅ Wrote ${abilities.length} abilities to ${fileName}`);
   }
 
+  // Ensure all categories from abilityFileMap exist in abilitiesByCategory
+  // This ensures types.ts includes all expected categories, even if they're empty
+  for (const categoryKey of Object.keys(abilityFileMap)) {
+    if (!abilitiesByCategory[categoryKey]) {
+      abilitiesByCategory[categoryKey] = [];
+    }
+  }
+
   console.log('\n✅ Conversion complete!');
 
   const missingAbilityCategorySlugs = getMissingAbilityCategorySlugs();
@@ -444,8 +452,9 @@ function main() {
   generateItemsIndex(ITEMS_TS_DIR, itemsByCategory);
   generateAbilitiesIndex(ABILITIES_TS_DIR, abilitiesByCategory);
   generateUnitsIndex(UNITS_TS_DIR);
-  generateAbilitiesTypes(ABILITIES_TS_DIR);
+  generateAbilitiesTypes(ABILITIES_TS_DIR, abilitiesByCategory);
   generateItemsIconUtils(ITEMS_TS_DIR);
+  generateDataIndex(DATA_TS_DIR);
 
   console.log(`\n📊 Summary:`);
   console.log(`  Items: ${convertedItems.length}`);

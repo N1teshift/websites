@@ -297,7 +297,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: "unknown",
     description: "",
     tooltip:
-      "The Troll can sleep inside the tent to restore |cff00EAFF80|r mana. Has |cff6495ED<AMdc,Cool1>|r seconds cooldown.",
+      "The Troll can sleep inside the tent to restore |cff00EAFF80|r mana. Has |cff6495ED10|r seconds cooldown.",
     cooldown: 10,
     range: 300,
     duration: 6,
@@ -318,7 +318,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     category: "unknown",
     description: "",
     tooltip:
-      "The Troll can sleep inside the hut to restore |cff00EAFF200|r mana. Has |cff6495ED<AMdd,Cool1>|r seconds cooldown.",
+      "The Troll can sleep inside the hut to restore |cff00EAFF200|r mana. Has |cff6495ED10|r seconds cooldown.",
     cooldown: 10,
     range: 300,
     duration: 6,
@@ -590,7 +590,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     description: "",
     tooltip:
       "Grabs a nearby corpse and stores it for later use. Unattended corpses will rot after two minutes.|n|cffFFD700Current Capacity: 1 / 8|r",
-    iconPath: "btncorpsegrab1.png",
+    iconPath: "btncorpsegrab0.png",
     range: 128,
     areaOfEffect: 800,
     hotkey: "C",
@@ -610,7 +610,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     description: "",
     tooltip:
       "Grabs a nearby corpse and stores it for later use. Unattended corpses will rot after two minutes.|n|cffFFD700Current Capacity: 2 / 8|r",
-    iconPath: "btncorpsegrab2.png",
+    iconPath: "btncorpsegrab0.png",
     range: 128,
     areaOfEffect: 800,
     hotkey: "C",
@@ -630,7 +630,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     description: "",
     tooltip:
       "Grabs a nearby corpse and stores it for later use. Unattended corpses will rot after two minutes.|n|cffFFD700Current Capacity: 3 / 8|r",
-    iconPath: "btncorpsegrab3.png",
+    iconPath: "btncorpsegrab0.png",
     range: 128,
     areaOfEffect: 800,
     hotkey: "C",
@@ -650,7 +650,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     description: "",
     tooltip:
       "Grabs a nearby corpse and stores it for later use. Unattended corpses will rot after two minutes.|n|cffFFD700Current Capacity: 4 / 8|r",
-    iconPath: "btncorpsegrab4.png",
+    iconPath: "btncorpsegrab0.png",
     range: 128,
     areaOfEffect: 800,
     hotkey: "C",
@@ -670,7 +670,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     description: "",
     tooltip:
       "Grabs a nearby corpse and stores it for later use. Unattended corpses will rot after two minutes.|n|cffFFD700Current Capacity: 5 / 8|r",
-    iconPath: "btncorpsegrab5.png",
+    iconPath: "btncorpsegrab0.png",
     range: 128,
     areaOfEffect: 800,
     hotkey: "C",
@@ -690,7 +690,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     description: "",
     tooltip:
       "Grabs a nearby corpse and stores it for later use. Unattended corpses will rot after two minutes.|n|cffFFD700Current Capacity: 6 / 8|r",
-    iconPath: "btncorpsegrab6.png",
+    iconPath: "btncorpsegrab0.png",
     range: 128,
     areaOfEffect: 800,
     hotkey: "C",
@@ -710,7 +710,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     description: "",
     tooltip:
       "Grabs a nearby corpse and stores it for later use. Unattended corpses will rot after two minutes.|n|cffFFD700Current Capacity: 7 / 8|r",
-    iconPath: "btncorpsegrab7.png",
+    iconPath: "btncorpsegrab0.png",
     range: 128,
     areaOfEffect: 800,
     hotkey: "C",
@@ -1189,7 +1189,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     description: "",
     tooltip:
       "Alchemist can use energy of The Philosopher's Stone to conjure spell effects of potions",
-    iconPath: "btntemp.png",
+    iconPath: "btncancel.png",
     hotkey: "R",
     levels: {
       "1": {
@@ -1779,7 +1779,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     name: "Panther Instinct Dummy Cast",
     category: "unknown",
     description: "",
-    iconPath: "btnevasion.png",
+    iconPath: "pasbtnevasion.png",
     range: 99999,
     duration: 4,
     levels: {
@@ -1798,7 +1798,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     description: "",
     tooltip:
       "Rendo uses the Panther inner instinct to predict incoming attack and dodge their damage. Lasts |cff7DBEF14|r seconds, has |cff7DBEF160|r seconds cooldown.",
-    iconPath: "btnevasion.png",
+    iconPath: "pasbtnevasion.png",
     manaCost: 20,
     cooldown: 1,
     levels: {
@@ -2449,7 +2449,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     description: "",
     tooltip:
       "Reduce target damage by |cffFF020250%|r, attack speed by |cffFE890D25%|r and movement speed by |cffFE890D10%|r for |cff7DBEF110|r/|cff7DBEF130|r seconds. Has |cff7DBEF145|r seconds cooldown.",
-    iconPath: "btncripple.png",
+    iconPath: "btncancel.png",
     manaCost: 20,
     cooldown: 45,
     duration: 30,
@@ -3465,7 +3465,7 @@ export const UNKNOWN_ABILITIES: AbilityData[] = [
     description: "",
     tooltip:
       "Makes the Rogue move as fast as he can, leaving blurs.\nIf an enemy comes in contact with blurs, its attack accuracy is temporarily decreased by |cffFE890D20%|r.\nWhile active, Rogue gains |cffFE890D20%|rincreased attack speed.\nEvery time Rogue gets hit by a troll, cooldown is reduced by 1.\n Lasts |cff7DBEF111|r seconds, has |cff7DBEF140|r seconds cooldown.",
-    iconPath: "btnevasion.png",
+    iconPath: "pasbtnevasion.png",
     manaCost: 30,
     cooldown: 40,
     duration: 11,

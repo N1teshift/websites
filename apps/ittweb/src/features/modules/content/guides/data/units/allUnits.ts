@@ -66,7 +66,7 @@ export const ALL_UNITS: UnitData[] = [
   {
     id: "x031:ewsp",
     name: "Effect Dummy Unit",
-    iconPath: "btntemp.png",
+    iconPath: "btncancel.png",
     race: "commoner",
     classification: "_",
     type: "dummy",
@@ -90,7 +90,7 @@ export const ALL_UNITS: UnitData[] = [
   {
     id: "x032:ewsp",
     name: "Dummy Caster",
-    iconPath: "btntemp.png",
+    iconPath: "btncancel.png",
     race: "commoner",
     classification: "_",
     type: "dummy",
@@ -126,7 +126,7 @@ export const ALL_UNITS: UnitData[] = [
   {
     id: "x006:ewsp",
     name: "UNIT_CLOAK_OF_FLAMES_DUMMY",
-    iconPath: "btntemp.png",
+    iconPath: "btncancel.png",
     race: "commoner",
     classification: "_",
     type: "dummy",
@@ -245,7 +245,7 @@ export const ALL_UNITS: UnitData[] = [
     name: "UDIR_6",
     tooltip:
       "You were gifted this legendary trident by Princess Naelyssa, heir to the Coral Throne, after rescuing her from the clutches of the Ancient Makrura.\nTidebringer is no mere weapon; it is a herald of the tides, capable of commanding currents and summoning |cffFF6347Tsunami|r.\n+|cff1FBF0010 |rAttack Damage\n+|cff1FBF008 |rStrength\n+|cff1FBF008 |rIntelligence|cffFF6347\n\nTsunami\n|rGrants the unit the ability to cast Tsunami, sending a gigantic wave dealing |cffFF020235|r damage to units in a line. When casted at close range, it deals |cffFF020220|r extra damage to buildings and can instantly put out fires. Has |cff7DBEF115|r seconds cooldown.",
-    iconPath: "btnnagaweaponup2.png",
+    iconPath: "btnnagaarmorup2.png",
     race: "commoner",
     classification: "_",
     type: "unit-dummy-item-reward",
@@ -740,7 +740,7 @@ export const ALL_UNITS: UnitData[] = [
   {
     id: "x001:ewsp",
     name: "UNIT_UNIT_AXE_THROW_DUMMY",
-    iconPath: "btntemp.png",
+    iconPath: "btncancel.png",
     race: "commoner",
     classification: "_",
     type: "dummy",
@@ -3765,7 +3765,7 @@ export const ALL_UNITS: UnitData[] = [
     id: "x02!:nwwg",
     name: "Snake",
     tooltip: "Raw meat that needs to be cooked",
-    iconPath: "btnwindserpent.png",
+    iconPath: "btnwindserpentpassive.png",
     race: "orc",
     type: "animal",
     hp: 45,
@@ -3839,7 +3839,7 @@ export const ALL_UNITS: UnitData[] = [
   {
     id: "x002:ewsp",
     name: "UNIT_ENVENOMED_HARPOON_DUMMY",
-    iconPath: "btntemp.png",
+    iconPath: "btncancel.png",
     race: "commoner",
     classification: "_",
     type: "dummy",
@@ -5407,6 +5407,10 @@ export function getUnitsByType(type: UnitType): UnitData[] {
   return ALL_UNITS.filter((u) => u.type === type);
 }
 
+export function getUnitsByBaseClass(baseClassSlug: string): UnitData[] {
+  return ALL_UNITS.filter((u) => u.baseClass === baseClassSlug);
+}
+
 export function searchUnits(query: string): UnitData[] {
   const lowercaseQuery = query.toLowerCase();
   return ALL_UNITS.filter(
@@ -5415,8 +5419,4 @@ export function searchUnits(query: string): UnitData[] {
       unit.description?.toLowerCase().includes(lowercaseQuery) ||
       unit.race?.toLowerCase().includes(lowercaseQuery)
   );
-}
-
-export function getUnitsByBaseClass(baseClassSlug: string): UnitData[] {
-  return ALL_UNITS.filter((unit) => unit.baseClass === baseClassSlug && unit.type === "troll");
 }

@@ -307,7 +307,7 @@ export const AURADUMMY_ABILITIES: AbilityData[] = [
     name: "Aura Dummy: Frost Cloak Target",
     category: "auradummy",
     description: "",
-    iconPath: "btnfrost.png",
+    iconPath: "btnfrostbearpassive.png",
     targetsAllowed: "self",
     visualEffects: {
       attachmentPoints: ["chest"],

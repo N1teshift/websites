@@ -6,11 +6,12 @@
 import fs from 'fs';
 import path from 'path';
 import { getRootDir, parseJSString, escapeString, getAllIconFiles, readItemsFromTS, readAbilitiesFromTS, readUnitsFromTS } from '../lib/utils.mjs';
-import { ITEMS_TS_DIR, ABILITIES_TS_DIR, UNITS_TS_DIR } from '../lib/paths.mjs';
+import { ITEMS_TS_DIR, ABILITIES_TS_DIR, UNITS_TS_DIR, DATA_TS_DIR } from '../lib/paths.mjs';
+import { generateDataIndex } from '../generators/index-generator.mjs';
 
 const ROOT_DIR = getRootDir();
 const ICONS_DIR = path.join(ROOT_DIR, 'public', 'icons', 'itt');
-const ICON_MAP_FILE = path.join(ROOT_DIR, 'src', 'features', 'modules', 'guides', 'data', 'iconMap.ts');
+const ICON_MAP_FILE = path.join(DATA_TS_DIR, 'iconMap.ts');
 
 const UNITS_FILE = path.join(UNITS_TS_DIR, 'allUnits.ts');
 
@@ -193,6 +194,9 @@ function main() {
   console.log(`   Items mapped: ${itemsCount}`);
   console.log(`   Abilities mapped: ${abilityCount}`);
   console.log(`   Units mapped: ${unitsCount}`);
+  
+  // Regenerate data/index.ts to include iconMap export
+  generateDataIndex(DATA_TS_DIR);
 }
 
 main();

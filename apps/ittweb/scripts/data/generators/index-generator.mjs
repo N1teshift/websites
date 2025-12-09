@@ -58,6 +58,36 @@ export function searchItems(query: string): ItemData[] {
     item.recipe?.some(ingredient => ingredient.toLowerCase().includes(lowercaseQuery))
   );
 }
+
+/**
+ * Get item by replay ID (numeric ID from game replay)
+ * TODO: Implement proper replay ID to item ID mapping
+ */
+export function getItemByReplayId(replayId: number): ItemData | undefined {
+  if (!replayId || replayId === 0) return undefined;
+  // TODO: Implement replay ID mapping
+  // For now, return undefined - this needs to be implemented based on replay format
+  return undefined;
+}
+
+/**
+ * Get items by replay IDs (array of numeric IDs from game replay)
+ * Filters out zeros and invalid IDs
+ */
+export function getItemsByReplayIds(replayIds: number[]): ItemData[] {
+  if (!replayIds || replayIds.length === 0) return [];
+  
+  const items: ItemData[] = [];
+  for (const replayId of replayIds) {
+    if (replayId && replayId !== 0) {
+      const item = getItemByReplayId(replayId);
+      if (item) {
+        items.push(item);
+      }
+    }
+  }
+  return items;
+}
 `;
   
   fs.writeFileSync(path.join(itemsDir, 'index.ts'), content, 'utf-8');
@@ -162,20 +192,19 @@ export * from './allUnits';
 
 /**
  * Generate abilities types.ts file
+ * Automatically includes all categories found in the data
  */
-export function generateAbilitiesTypes(abilitiesDir) {
+export function generateAbilitiesTypes(abilitiesDir, abilitiesByCategory) {
+  // Get all categories from the data, sorted alphabetically for consistency
+  const categories = Object.keys(abilitiesByCategory || {}).sort();
+  
+  // Generate the type union string
+  const categoryTypeUnion = categories
+    .map(cat => `  | '${cat}'`)
+    .join('\n');
+  
   const content = `export type AbilityCategory = 
-  | 'basic' 
-  | 'hunter' 
-  | 'beastmaster' 
-  | 'mage' 
-  | 'priest' 
-  | 'thief' 
-  | 'scout' 
-  | 'gatherer' 
-  | 'item'
-  | 'building'
-  | 'unknown';
+${categoryTypeUnion};
 
 export type AbilityData = {
   id: string;
@@ -191,11 +220,24 @@ export type AbilityData = {
   duration?: number;
   damage?: string;
   effects?: string[];
+  areaOfEffect?: number;
+  maxTargets?: number;
+  hotkey?: string;
+  targetsAllowed?: string;
+  castTime?: number | string;
+  levels?: Record<string, any>;
+  availableToClasses?: string[];
+  spellbook?: 'hero' | 'normal';
+  visualEffects?: {
+    attachmentPoints?: (string | number)[];
+    attachmentTarget?: string;
+  };
+  buttonPosition?: { x: number; y: number };
 };
 `;
   
   fs.writeFileSync(path.join(abilitiesDir, 'types.ts'), content, 'utf-8');
-  console.log('✅ Generated abilities/types.ts');
+  console.log(`✅ Generated abilities/types.ts with ${categories.length} categories: ${categories.join(', ')}`);
 }
 
 /**
@@ -221,6 +263,35 @@ export function getItemIconPathFromRecord(item: ItemData): string {
   
   fs.writeFileSync(path.join(itemsDir, 'iconUtils.ts'), content, 'utf-8');
   console.log('✅ Generated items/iconUtils.ts');
+}
+
+
+/**
+ * Generate top-level data index.ts file (abilities, items, units, icon map, lazy loader)
+ */
+export function generateDataIndex(dataDir) {
+  const exports = [
+    "export * from './abilities';",
+    "export * from './items';",
+    "export * from './units';",
+  ];
+
+  // Only export iconMap if it exists in this directory
+  const iconMapPath = path.join(dataDir, 'iconMap.ts');
+  if (fs.existsSync(iconMapPath)) {
+    exports.push("export * from './iconMap';");
+  }
+
+  // Only export lazyLoader if it exists in this directory
+  const lazyLoaderPath = path.join(dataDir, 'lazyLoader.ts');
+  if (fs.existsSync(lazyLoaderPath)) {
+    exports.push("export * from './lazyLoader';");
+  }
+
+  const content = exports.join('\n') + '\n';
+
+  fs.writeFileSync(path.join(dataDir, 'index.ts'), content, 'utf-8');
+  console.log('✅ Generated data/index.ts');
 }
 
 

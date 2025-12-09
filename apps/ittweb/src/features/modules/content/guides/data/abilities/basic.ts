@@ -7,7 +7,7 @@ export const BASIC_ABILITIES: AbilityData[] = [
     category: "basic",
     description: "",
     tooltip:
-      "The Troll can sleep outside to restore |cff00EAFF80|r mana but lose |cffFF020220|r health point and |cffFE890D15|r heat. This can kill you if any of your stats reach 0. Has |cff6495ED<AMd5,Cool1>|r seconds cooldown.",
+      "The Troll can sleep outside to restore |cff00EAFF80|r mana but lose |cffFF020220|r health point and |cffFE890D15|r heat. This can kill you if any of your stats reach 0. Has |cff6495ED10|r seconds cooldown.",
     cooldown: 10,
     range: 300,
     duration: 6,

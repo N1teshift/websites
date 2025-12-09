@@ -17,8 +17,26 @@ type Props = { ability: AbilityData };
 
 const pageNamespaces = ["common"];
 
+// Helper to convert ability ID to URL-safe and filesystem-safe slug
+function abilityIdToSlug(id: string): string {
+  return id
+    .replace(/:/g, "-")
+    .replace(/\|/g, "-")
+    .replace(/[<>:"/\\?*]/g, "-");
+}
+
+// Helper to convert slug back to ability ID
+function slugToAbilityId(slug: string): string {
+  const matchingAbility = ABILITIES.find((a) => abilityIdToSlug(a.id) === slug);
+  if (matchingAbility) return matchingAbility.id;
+  const exactMatch = ABILITIES.find((a) => a.id === slug);
+  if (exactMatch) return exactMatch.id;
+  return slug;
+}
+
 export const getStaticProps: GetStaticProps<Props> = async ({ params, locale }) => {
-  const id = String(params?.id || "");
+  const slug = String(params?.id || "");
+  const id = slugToAbilityId(slug);
   const ability = getAbilityById(id);
   if (!ability) {
     return { notFound: true };
@@ -28,7 +46,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params, locale }) 
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const paths = ABILITIES.map((a) => ({ params: { id: a.id } }));
+  const paths = ABILITIES.map((a) => ({ params: { id: abilityIdToSlug(a.id) } }));
   return { paths, fallback: false };
 };
 

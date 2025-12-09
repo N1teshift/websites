@@ -7,7 +7,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Load the icon map manually by parsing the file
-const iconMapPath = path.join(__dirname, "src/features/modules/guides/data/iconMap.ts");
+const iconMapPath = path.join(__dirname, "src/features/modules/content/guides/data/iconMap.ts");
 const iconMapContent = fs.readFileSync(iconMapPath, "utf8");
 
 // Parse the ICON_MAP manually
@@ -115,7 +115,7 @@ try {
 }
 
 // Load abilities - try a different approach by checking individual files
-const abilitiesDir = path.join(__dirname, "src/features/modules/guides/data/abilities");
+const abilitiesDir = path.join(__dirname, "src/features/modules/content/guides/data/abilities");
 const abilityNames = [];
 
 // Read all ability files
@@ -153,7 +153,10 @@ abilityFiles.forEach((file) => {
 });
 
 // Load troll classes
-const classesPath = path.join(__dirname, "src/features/modules/guides/data/units/classes.ts");
+const classesPath = path.join(
+  __dirname,
+  "src/features/modules/content/guides/data/units/classes.ts"
+);
 const classesContent = fs.readFileSync(classesPath, "utf8");
 
 const baseClassNames = [];
@@ -168,7 +171,7 @@ if (baseNameMatches) {
 // Load derived classes
 const derivedClassesPath = path.join(
   __dirname,
-  "src/features/modules/guides/data/units/derivedClasses.ts"
+  "src/features/modules/content/guides/data/units/derivedClasses.ts"
 );
 const derivedClassesContent = fs.readFileSync(derivedClassesPath, "utf8");
 

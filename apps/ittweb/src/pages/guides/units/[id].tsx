@@ -16,14 +16,29 @@ type Props = { unit: UnitData };
 
 const pageNamespaces = ["common"];
 
-// Helper to convert unit ID to URL-safe slug (replace : with -)
+// Helper to convert unit ID to URL-safe and filesystem-safe slug
+// Replaces invalid filename characters with safe alternatives
 function unitIdToSlug(id: string): string {
-  return id.replace(/:/g, "-");
+  return id
+    .replace(/:/g, "-") // Replace colons with dashes
+    .replace(/\|/g, "-") // Replace pipes with dashes (Windows invalid character)
+    .replace(/[<>:"/\\?*]/g, "-"); // Replace other Windows invalid characters
 }
 
 // Helper to convert slug back to unit ID
+// Since both colons and pipes are converted to dashes, we need to find the original
+// by matching the slug against all units
 function slugToUnitId(slug: string): string {
-  return slug.replace(/-/g, ":");
+  // Find the unit whose ID, when converted to slug, matches the given slug
+  const matchingUnit = ALL_UNITS.find((u) => unitIdToSlug(u.id) === slug);
+  if (matchingUnit) return matchingUnit.id;
+
+  // Fallback: try exact match (in case slug is already a valid ID)
+  const exactMatch = ALL_UNITS.find((u) => u.id === slug);
+  if (exactMatch) return exactMatch.id;
+
+  // Last resort: return slug as-is (shouldn't happen if data is consistent)
+  return slug;
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {

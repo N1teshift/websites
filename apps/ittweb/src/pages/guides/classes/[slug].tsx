@@ -11,10 +11,7 @@ import {
   getSubclassesByParentSlug,
   getSupersByParentSlug,
 } from "@/features/modules/content/guides/data/units/derivedClasses";
-import {
-  getUnitsByBaseClass,
-  UnitData,
-} from "@/features/modules/content/guides/data/units/allUnits";
+import { getUnitsByBaseClass } from "@/features/modules/content/guides/data/units/allUnits";
 import {
   getAbilitiesByClass,
   ABILITY_CATEGORIES,
