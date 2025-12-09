@@ -8,11 +8,8 @@
  * but may not be ready yet.
  */
 
-import {
-  getFirestoreAdmin,
-  isServerSide,
-  getFirestoreInstance,
-} from "@websites/infrastructure/firebase";
+import { getFirestoreAdmin, isServerSide } from "@websites/infrastructure/firebase/admin";
+import { getFirestoreInstance } from "@websites/infrastructure/firebase";
 import { collection, getDocs } from "firebase/firestore";
 import { createComponentLogger } from "@websites/infrastructure/logging";
 

@@ -1,5 +1,7 @@
 import type { NextApiRequest } from "next";
-import { createApiHandler } from "@/lib/api-wrapper";
+import { createApiHandler } from "@websites/infrastructure/api";
+// Import auth config to ensure default auth is registered
+import "@/config/auth";
 import { getClassStats } from "@/features/modules/analytics-group/analytics/lib/analyticsService";
 
 /**

@@ -92,6 +92,8 @@ export interface GamePlayer {
   killsWolf?: number;
   killsBear?: number;
   killsPanther?: number;
+  // Player inventory items (schema v4+)
+  items?: number[]; // Item IDs from replay metadata
   createdAt: Timestamp | string;
 }
 
@@ -215,6 +217,8 @@ export interface CreateCompletedGame {
     killsWolf?: number;
     killsBear?: number;
     killsPanther?: number;
+    // Player inventory items (schema v4+)
+    items?: number[]; // Item IDs from replay metadata
   }>;
   // Optional archive content when archiving
   archiveContent?: GameArchiveContent;

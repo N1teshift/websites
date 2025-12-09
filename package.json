@@ -10,6 +10,7 @@
     "format": "turbo run format",
     "format:check": "turbo run format:check",
     "type-check": "turbo run type-check",
+    "verify": "turbo run verify",
     "test": "turbo run test",
     "clean": "turbo run clean && pnpm --filter '{apps/*}' exec rm -rf .next node_modules && pnpm --filter '{packages/*}' exec rm -rf node_modules",
     "verify:builds": "powershell -ExecutionPolicy Bypass -File ./scripts/verify-builds.ps1",

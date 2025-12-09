@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { Card } from "@/features/infrastructure/components";
 import { Tooltip } from "@/features/infrastructure/components";
+import { PlayerItems } from "./PlayerItems";
 import type { GamePlayer } from "../types";
 
 interface PlayerStatsTableProps {
@@ -143,6 +144,11 @@ export function PlayerStatsTable({ players, title = "Player Statistics" }: Playe
                   <span>🦌 Kills</span>
                 </Tooltip>
               </th>
+              <th className="text-center py-2 px-2">
+                <Tooltip content="Player inventory items">
+                  <span>🎒 Items</span>
+                </Tooltip>
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -217,6 +223,9 @@ export function PlayerStatsTable({ players, title = "Player Statistics" }: Playe
                       <span className="text-gray-600">-</span>
                     )}
                   </td>
+                  <td className="text-center py-2 px-2">
+                    <PlayerItems items={player.items} />
+                  </td>
                 </tr>
               );
             })}
@@ -258,6 +267,12 @@ export function PlayerStatsTable({ players, title = "Player Statistics" }: Playe
                 <div>💰 {formatStat(player.goldAcquired)}</div>
                 <div>🦌 {totalKills || "-"}</div>
               </div>
+              {player.items && player.items.length > 0 && (
+                <div className="mt-2 pt-2 border-t border-amber-500/10">
+                  <div className="text-xs text-gray-400 mb-1">Items:</div>
+                  <PlayerItems items={player.items} />
+                </div>
+              )}
             </div>
           );
         })}

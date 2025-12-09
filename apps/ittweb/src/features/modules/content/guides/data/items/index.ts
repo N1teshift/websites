@@ -8,6 +8,13 @@ import { BUILDINGS_ITEMS } from "./buildings";
 import { UNKNOWN_ITEMS } from "./unknown";
 
 export { getItemIconPathFromRecord } from "./iconUtils";
+export {
+  itemIdToRawCode,
+  rawCodeToItemSlug,
+  itemIdToSlug,
+  getItemByReplayId,
+  getItemsByReplayIds,
+} from "./replayItemUtils";
 
 export const ITEMS_DATA: ItemData[] = [
   ...(RAW_MATERIALS_ITEMS || []),

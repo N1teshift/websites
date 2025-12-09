@@ -139,6 +139,12 @@ export function convertGamePlayerDoc(docData: Record<string, unknown>, id: strin
     killsWolf: typeof docData.killsWolf === "number" ? docData.killsWolf : undefined,
     killsBear: typeof docData.killsBear === "number" ? docData.killsBear : undefined,
     killsPanther: typeof docData.killsPanther === "number" ? docData.killsPanther : undefined,
+    // Player inventory items (schema v4+)
+    items: Array.isArray(docData.items)
+      ? docData.items
+          .map((id) => (typeof id === "number" ? id : Number(id)))
+          .filter((id) => !isNaN(id))
+      : undefined,
     createdAt: timestampToIso(
       docData.createdAt as Timestamp | { toDate?: () => Date } | string | Date | undefined
     ),

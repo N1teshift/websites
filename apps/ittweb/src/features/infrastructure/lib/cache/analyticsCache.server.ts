@@ -11,7 +11,7 @@
  * - Cache invalidation when games are created/updated
  */
 
-import { getFirestoreAdmin, isServerSide } from "@websites/infrastructure/firebase";
+import { getFirestoreAdmin, isServerSide } from "@websites/infrastructure/firebase/admin";
 import { createComponentLogger } from "@websites/infrastructure/logging";
 import type { CacheEntry, CacheConfig } from "./analyticsCache";
 import { generateCacheKey } from "./analyticsCache";

@@ -1,7 +1,16 @@
-export { default as ActivityTimelineChart } from "./ActivityTimelineChart";
-export { default as AssessmentTimelineChart } from "./AssessmentTimelineChart";
-export { default as ClassPerformanceChart } from "./ClassPerformanceChart";
-export { default as ClassPerformanceChartEnhanced } from "./ClassPerformanceChartEnhanced";
+// Export dynamically imported chart components (client-only)
+// This prevents recharts from being processed during static generation
+export {
+  ActivityTimelineChart,
+  AssessmentTimelineChart,
+  ClassPerformanceChart,
+  ClassPerformanceChartEnhanced,
+  // Re-export types for convenience
+  type ChartMode,
+  type AllScoreTypes,
+  type EnglishTestScoreType,
+} from "./charts.client";
+
 export { default as CollapsibleSection } from "./CollapsibleSection";
 export { default as ColumnCustomizer } from "./ColumnCustomizer";
 export { default as DateRangeFilter } from "./DateRangeFilter";

@@ -2,12 +2,17 @@
 // Note: We use webpack externals configuration instead of 'server-only' package
 // because 'server-only' is designed for App Router, not Pages Router
 
-import { initializeApp, getApps, cert, App } from 'firebase-admin/app';
-import { getFirestore, Firestore, Timestamp as AdminTimestamp } from 'firebase-admin/firestore';
-import { getStorage, Storage } from 'firebase-admin/storage';
-import { createComponentLogger } from '../logging';
+import { initializeApp, getApps, cert, App } from "firebase-admin/app";
+import {
+  getFirestore,
+  Firestore,
+  Timestamp as AdminTimestamp,
+} from "firebase-admin/firestore";
+import { getStorage, Storage } from "firebase-admin/storage";
+import { createComponentLogger } from "../logging";
+import { isServerSide } from "./utils";
 
-const logger = createComponentLogger('firebase.admin');
+const logger = createComponentLogger("firebase.admin");
 
 let adminApp: App | null = null;
 let adminDb: Firestore | null = null;
@@ -31,28 +36,32 @@ export function initializeFirebaseAdmin(): App {
   }
 
   // Try to initialize with service account credentials from environment
-  const serviceAccountKey = 
+  const serviceAccountKey =
     process.env.FIREBASE_SERVICE_ACCOUNT_KEY ||
     process.env.FIREBASE_SERVICE_ACCOUNT_KEY_MAIN ||
     process.env.FIREBASE_SERVICE_ACCOUNT_KEY_TESTRESULTS ||
     process.env.GOOGLE_SERVICE_ACCOUNT_KEY;
-  
+
   // Try to get project ID from env vars first, then extract from service account JSON
-  let projectId = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || process.env.FIREBASE_PROJECT_ID;
-  
+  let projectId =
+    process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID ||
+    process.env.FIREBASE_PROJECT_ID;
+
   // If we have a service account key but no project ID, try to extract it from the JSON
   if (serviceAccountKey && !projectId) {
     try {
       const credentials = JSON.parse(serviceAccountKey);
       if (credentials.project_id) {
         projectId = credentials.project_id;
-        logger.debug('Extracted project_id from service account JSON', { projectId });
+        logger.debug("Extracted project_id from service account JSON", {
+          projectId,
+        });
       }
     } catch {
       // If parsing fails, we'll handle it below
     }
   }
-  
+
   if (!storageBucketName) {
     storageBucketName =
       process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET ||
@@ -73,15 +82,19 @@ export function initializeFirebaseAdmin(): App {
         credential: cert(credentials),
         projectId,
         storageBucket: storageBucketName,
-        databaseURL: process.env.FIREBASE_DATABASE_URL || 
-                     process.env.FIREBASE_DATABASE_URL_MAIN || 
-                     process.env.FIREBASE_DATABASE_URL_TESTRESULTS,
+        databaseURL:
+          process.env.FIREBASE_DATABASE_URL ||
+          process.env.FIREBASE_DATABASE_URL_MAIN ||
+          process.env.FIREBASE_DATABASE_URL_TESTRESULTS,
       });
       return adminApp;
     } catch (error) {
-      logger.warn('Failed to initialize Firebase Admin with service account, falling back to Application Default Credentials', { 
-        error: error instanceof Error ? error.message : String(error) 
-      });
+      logger.warn(
+        "Failed to initialize Firebase Admin with service account, falling back to Application Default Credentials",
+        {
+          error: error instanceof Error ? error.message : String(error),
+        },
+      );
       // Fall through to Application Default Credentials
     }
   }
@@ -91,13 +104,15 @@ export function initializeFirebaseAdmin(): App {
     adminApp = initializeApp({
       projectId,
       storageBucket: storageBucketName,
-      databaseURL: process.env.FIREBASE_DATABASE_URL || process.env.FIREBASE_DATABASE_URL_MAIN,
+      databaseURL:
+        process.env.FIREBASE_DATABASE_URL ||
+        process.env.FIREBASE_DATABASE_URL_MAIN,
     });
     return adminApp;
   } catch (error) {
     throw new Error(
       `Firebase Admin initialization failed: ${error instanceof Error ? error.message : String(error)}. ` +
-      'Please set FIREBASE_SERVICE_ACCOUNT_KEY or use Application Default Credentials.'
+        "Please set FIREBASE_SERVICE_ACCOUNT_KEY or use Application Default Credentials.",
     );
   }
 }
@@ -130,7 +145,9 @@ export function getStorageAdmin(): Storage {
  */
 export function getStorageBucketName(): string | undefined {
   if (!storageBucketName) {
-    const projectId = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || process.env.FIREBASE_PROJECT_ID;
+    const projectId =
+      process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID ||
+      process.env.FIREBASE_PROJECT_ID;
     storageBucketName =
       process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET ||
       process.env.FIREBASE_STORAGE_BUCKET ||
@@ -140,11 +157,10 @@ export function getStorageBucketName(): string | undefined {
 }
 
 /**
- * Check if we're running on the server
+ * Re-export isServerSide for backward compatibility
+ * Prefer importing from './utils' in new code
  */
-export function isServerSide(): boolean {
-  return typeof window === 'undefined';
-}
+export { isServerSide } from "./utils";
 
 /**
  * Get Admin Timestamp utility
@@ -152,5 +168,3 @@ export function isServerSide(): boolean {
 export function getAdminTimestamp() {
   return AdminTimestamp;
 }
-
-

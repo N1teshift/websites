@@ -5,7 +5,7 @@
  * These functions use Firebase Admin SDK and should only be used in API routes.
  */
 
-import { getFirestoreAdmin } from "@websites/infrastructure/firebase";
+import { getFirestoreAdmin } from "@websites/infrastructure/firebase/admin";
 import { logError } from "@websites/infrastructure/logging";
 import { invalidateAnalyticsCache } from "@/features/infrastructure/lib/cache/analyticsCache.server";
 

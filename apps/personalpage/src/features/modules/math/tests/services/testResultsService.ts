@@ -1,6 +1,6 @@
 import admin from "firebase-admin";
 import { TestResultData, TestStatDocument } from "@math/types/testsTypes";
-import { getFirestoreAdmin } from "@websites/infrastructure/firebase";
+import { getFirestoreAdmin } from "@websites/infrastructure/firebase/admin";
 // import { commitBatch, processInChunks, type BatchOperationResult } from "@/features/infrastructure/api/firebase"; // These utilities don't exist
 import {
   prepareFirestoreData,

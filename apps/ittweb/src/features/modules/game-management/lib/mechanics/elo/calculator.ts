@@ -131,7 +131,8 @@ export async function updateEloScores(gameId: string): Promise<void> {
     }
 
     // Update game players with ELO changes
-    const { getFirestoreAdmin, isServerSide } = await import("@websites/infrastructure/firebase");
+    const { getFirestoreAdmin, isServerSide } =
+      await import("@websites/infrastructure/firebase/admin");
     const { doc, updateDoc, getDocs, collection } = await import("firebase/firestore");
     const { getFirestoreInstance } = await import("@websites/infrastructure/firebase");
 
@@ -298,7 +299,8 @@ export async function recalculateFromGame(gameId: string): Promise<void> {
 
     // Roll back player stats to ELOs before the target game
     // This is done by updating player stats directly
-    const { getFirestoreAdmin, isServerSide } = await import("@websites/infrastructure/firebase");
+    const { getFirestoreAdmin, isServerSide } =
+      await import("@websites/infrastructure/firebase/admin");
     const { doc, updateDoc, getDocs, collection, query, where } =
       await import("firebase/firestore");
     const { getFirestoreInstance } = await import("@websites/infrastructure/firebase");

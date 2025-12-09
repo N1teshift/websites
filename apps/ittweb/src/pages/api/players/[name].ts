@@ -1,5 +1,7 @@
 import type { NextApiRequest } from "next";
-import { createApiHandler } from "@/lib/api-wrapper";
+import { createApiHandler } from "@websites/infrastructure/api";
+// Import auth config to ensure default auth is registered
+import "@/config/auth";
 import { getPlayerStats } from "@/features/modules/community/players/lib/playerService";
 import type { PlayerSearchFilters } from "@/features/modules/community/players/types";
 

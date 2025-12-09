@@ -4,13 +4,16 @@ How to create API routes using `createApiHandler` or manual handlers.
 
 ## Using `createApiHandler` (Recommended)
 
+**Important:** All API handlers should import from `@websites/infrastructure/api` and include `@/config/auth` to ensure default authentication is configured.
+
 ### Public GET Endpoint
 
 ```typescript
 // src/pages/api/my-entities/[id].ts
 import type { NextApiRequest } from "next";
-import { createApiHandler, requireSession } from "@/features/infrastructure/api/routeHandlers";
-import { parseRequiredQueryString } from "@/features/infrastructure/api/queryParser";
+import { createApiHandler, parseRequiredQueryString } from "@websites/infrastructure/api";
+// Import auth config to ensure default auth is registered
+import "@/config/auth";
 import { getMyEntity } from "@/features/modules/my-entities/lib/myEntityService";
 
 // Public GET endpoint
@@ -40,8 +43,9 @@ export default createApiHandler(
 ```typescript
 // src/pages/api/my-entities/index.ts
 import type { NextApiRequest } from "next";
-import { createPostHandler, requireSession } from "@/features/infrastructure/api/routeHandlers";
-import { zodValidator } from "@/features/infrastructure/api/zodValidation";
+import { createPostHandler, requireSession, zodValidator } from "@websites/infrastructure/api";
+// Import auth config to ensure default auth is registered
+import "@/config/auth";
 import { z } from "zod";
 import { createMyEntity } from "@/features/modules/my-entities/lib/myEntityService";
 
@@ -66,8 +70,46 @@ export default createPostHandler(
     return { id: entityId };
   },
   {
-    requireAuth: true, // Automatically checks authentication
+    requireAuth: true, // Automatically checks authentication using default auth config
     validateBody: zodValidator(CreateMyEntitySchema),
+    logRequests: true,
+  }
+);
+```
+
+### Optional Authentication (Mixed Public/Private Routes)
+
+For routes that are public but need to access session when available (e.g., GET is public, POST requires auth):
+
+```typescript
+// src/pages/api/my-entities/index.ts
+import type { NextApiRequest } from "next";
+import { createGetPostHandler, requireSession } from "@websites/infrastructure/api";
+// Import auth config to ensure default auth is registered
+import "@/config/auth";
+import { getMyEntities, createMyEntity } from "@/features/modules/my-entities/lib/myEntityService";
+
+export default createGetPostHandler(
+  async (req: NextApiRequest, res, context) => {
+    if (req.method === "GET") {
+      // Public - no auth required
+      return await getMyEntities();
+    }
+
+    if (req.method === "POST") {
+      // Requires authentication - session is available from context
+      // even though requireAuth: false, because default auth is registered
+      const session = requireSession(context);
+
+      const entityId = await createMyEntity({
+        createdByDiscordId: session.discordId || "",
+      });
+
+      return { id: entityId };
+    }
+  },
+  {
+    requireAuth: false, // GET is public, POST checks auth manually
     logRequests: true,
   }
 );
@@ -80,8 +122,13 @@ export default createPostHandler(
 ```typescript
 // src/pages/api/admin/my-entities/[id].ts
 import type { NextApiRequest } from "next";
-import { createPostHandler, requireSession } from "@/features/infrastructure/api/routeHandlers";
-import { parseRequiredQueryString } from "@/features/infrastructure/api/queryParser";
+import {
+  createPostHandler,
+  requireSession,
+  parseRequiredQueryString,
+} from "@websites/infrastructure/api";
+// Import auth config to ensure default auth is registered
+import "@/config/auth";
 import { deleteMyEntity } from "@/features/modules/my-entities/lib/myEntityService";
 
 export default createPostHandler(
@@ -94,7 +141,7 @@ export default createPostHandler(
     return { success: true };
   },
   {
-    requireAdmin: true, // Automatically requires auth AND admin role
+    requireAdmin: true, // Automatically requires auth AND admin role using default auth config
     logRequests: true,
   }
 );

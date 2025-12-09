@@ -35,6 +35,9 @@ export function useGames(filters: GameFilters = {}): UseGamesResult {
       if (filters.page) queryParams.append("page", filters.page.toString());
       if (filters.limit) queryParams.append("limit", filters.limit.toString());
       if (filters.cursor) queryParams.append("cursor", filters.cursor);
+      if ((filters as { includePlayers?: boolean }).includePlayers) {
+        queryParams.append("includePlayers", "true");
+      }
 
       // Add cache-busting timestamp to ensure fresh data
       queryParams.append("t", Date.now().toString());

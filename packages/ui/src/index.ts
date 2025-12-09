@@ -19,10 +19,9 @@ export {
 } from "./components/Input";
 export { default as JSONFileUpload } from "./components/JSONFileUpload";
 export { default as LanguageSwitcher } from "./components/LanguageSwitcher";
-export { default as PageLayout } from "./components/PageLayout";
 export { default as AppLayout } from "./components/AppLayout";
-// Backward compatibility: Layout is now PageLayout
-export { default as Layout } from "./components/PageLayout";
+export { default as PageHeader } from "./components/PageHeader";
+export { default as UnderConstruction } from "./components/UnderConstruction";
 export { default as LoadingOverlay } from "./components/LoadingOverlay";
 export { default as LoadingScreen } from "./components/LoadingScreen";
 export { default as Modal } from "./components/Modal";

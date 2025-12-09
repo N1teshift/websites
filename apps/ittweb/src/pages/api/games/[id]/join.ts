@@ -1,5 +1,11 @@
 import type { NextApiRequest } from "next";
-import { createPostHandler, requireSession, parseRequiredQueryString } from "@/lib/api-wrapper";
+import {
+  createPostHandler,
+  requireSession,
+  parseRequiredQueryString,
+} from "@websites/infrastructure/api";
+// Import auth config to ensure default auth is registered
+import "@/config/auth";
 import { joinGame } from "@/features/modules/game-management/games/lib/gameService";
 import { createComponentLogger } from "@websites/infrastructure/logging";
 
@@ -25,5 +31,6 @@ export default createPostHandler<{ success: boolean }>(
   {
     requireAuth: true,
     logRequests: true,
+    // authConfig is now provided by default registration - no need to specify manually
   }
 );

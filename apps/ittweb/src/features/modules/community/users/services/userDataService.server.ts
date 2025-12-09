@@ -10,7 +10,7 @@
  * For client-side usage, use functions from userDataService.ts
  */
 
-import { getFirestoreAdmin, isServerSide } from "@websites/infrastructure/firebase";
+import { getFirestoreAdmin, isServerSide } from "@websites/infrastructure/firebase/admin";
 import { UserData, CreateUserData } from "@/types/userData";
 import { createComponentLogger, logError } from "@websites/infrastructure/logging";
 

@@ -8,7 +8,7 @@ import {
   getStudentFullName,
   calculateBoardSolvingCumulative,
 } from "../../utils/progressReportUtils";
-import ActivityTimelineChart from "../common/ActivityTimelineChart";
+import { ActivityTimelineChart } from "../common";
 import DateRangeFilter, { DateRange } from "../common/DateRangeFilter";
 import MultiSelectFilter from "../common/MultiSelectFilter";
 import CollapsibleSection from "../common/CollapsibleSection";

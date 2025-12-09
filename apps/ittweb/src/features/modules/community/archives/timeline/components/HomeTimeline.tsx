@@ -51,7 +51,7 @@ const HomeTimeline = forwardRef<HomeTimelineHandle>((_props, ref) => {
     sortOrder: "newest",
   });
 
-  // Fetch games
+  // Fetch games with players for timeline display
   const {
     games,
     loading: gamesLoading,
@@ -60,7 +60,8 @@ const HomeTimeline = forwardRef<HomeTimelineHandle>((_props, ref) => {
   } = useGames({
     ...gameFilters,
     limit: 100,
-  });
+    includePlayers: true,
+  } as GameFilters & { includePlayers?: boolean });
 
   // Game state management
   const { localGames, setLocalGames, gamesMap, addNewGame, markGameRecentlyUpdated } =

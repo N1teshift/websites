@@ -10,7 +10,9 @@ import type {
   ReplayParserOptions,
   ReplayParserResult,
   ITTPlayerStats,
+  ParsingSummary,
 } from "./types";
+import type { GamePlayerFlag } from "@/features/modules/game-management/games/types";
 
 const logger = createComponentLogger("games/replayParser");
 
@@ -77,6 +79,7 @@ export async function parseReplayFile(
     });
 
     const matchedIttPlayers = new Set<ITTPlayerStats>();
+    const matchedSlotIndices = new Set<number>();
 
     const gameData: CreateGame = {
       gameId: options.scheduledGameId || parsed.randomseed || Date.now(),
@@ -89,25 +92,32 @@ export async function parseReplayFile(
       category: options.fallbackCategory || deriveCategory(players),
       players: players.map((player) => {
         const stats = derivedStats.get(player.id) || {};
-        const flag = deriveFlag(player.teamid, winningTeamId, player, w3mmdData.lookup);
 
-        // Find ITT stats for this player by matching slot index or name
-        // Find ITT stats for this player
-        // Priority 1: Match by Slot Index (most reliable)
-        let ittPlayer = ittMetadata?.players.find((p) => p.slotIndex === player.id);
+        // Find ITT stats for this player using improved matching strategy
+        // Priority 1: Match by Exact Name (most reliable)
+        let ittPlayer = ittMetadata?.players.find(
+          (p) =>
+            p.name === player.name &&
+            !matchedIttPlayers.has(p) &&
+            !matchedSlotIndices.has(p.slotIndex)
+        );
 
-        // Priority 2: Match by Exact Name (if no slot match)
+        // Priority 2: Match by Name with # replaced by _ (common pattern)
         if (!ittPlayer && ittMetadata?.players) {
+          const playerNameWithUnderscore = player.name?.replace(/#/g, "_");
           ittPlayer = ittMetadata.players.find(
-            (p) => p.name === player.name && !matchedIttPlayers.has(p)
+            (p) =>
+              p.name === playerNameWithUnderscore &&
+              !matchedIttPlayers.has(p) &&
+              !matchedSlotIndices.has(p.slotIndex)
           );
         }
 
-        // Priority 3: Match by Normalized Name (fallback)
+        // Priority 3: Match by Normalized Name (fallback - removes all non-alphanumeric)
         if (!ittPlayer && ittMetadata?.players) {
           const normalizedPlayerName = (player.name || "").toLowerCase().replace(/[^a-z0-9]/g, "");
           ittPlayer = ittMetadata.players.find((p) => {
-            if (matchedIttPlayers.has(p)) return false;
+            if (matchedIttPlayers.has(p) || matchedSlotIndices.has(p.slotIndex)) return false;
             const normalizedIttName = p.name.toLowerCase().replace(/[^a-z0-9]/g, "");
             return normalizedIttName === normalizedPlayerName;
           });
@@ -115,11 +125,31 @@ export async function parseReplayFile(
 
         if (ittPlayer) {
           matchedIttPlayers.add(ittPlayer);
+          matchedSlotIndices.add(ittPlayer.slotIndex);
         } else if (ittMetadata) {
           logger.warn("Could not match player to ITT metadata", {
             name: player.name,
             id: player.id,
           });
+        }
+
+        // Derive flag: prefer ITT metadata result field, fallback to deriveFlag
+        let flag: GamePlayerFlag;
+        if (ittPlayer?.result) {
+          const result = ittPlayer.result.toUpperCase();
+          if (result === "WIN") {
+            flag = "winner";
+          } else if (result === "LOSS" || result === "LEAVE") {
+            flag = "loser";
+          } else if (result === "DRAW") {
+            flag = "drawer";
+          } else {
+            // Unknown result value, fall back to deriveFlag
+            flag = deriveFlag(player.teamid, winningTeamId, player, w3mmdData.lookup);
+          }
+        } else {
+          // No ITT result, use deriveFlag
+          flag = deriveFlag(player.teamid, winningTeamId, player, w3mmdData.lookup);
         }
 
         // Merge ITT stats if found
@@ -137,6 +167,7 @@ export async function parseReplayFile(
               killsWolf: ittPlayer.killsWolf ?? 0,
               killsBear: ittPlayer.killsBear ?? 0,
               killsPanther: ittPlayer.killsPanther ?? 0,
+              items: ittPlayer.items,
             }
           : {};
 
@@ -168,6 +199,55 @@ export async function parseReplayFile(
     );
     logger.info("Game flags distribution", flagCounts);
 
+    // Generate parsing summary
+    const playersWithStats = gameData.players.filter(
+      (p) => p.damageDealt !== undefined || p.kills !== undefined || p.deaths !== undefined
+    ).length;
+
+    const playersWithITTStats = gameData.players.filter(
+      (p) => p.damageDealt !== undefined || p.selfHealing !== undefined || p.killsElk !== undefined
+    ).length;
+
+    const warnings: string[] = [];
+
+    if (!ittMetadata) {
+      warnings.push("ITT metadata not found - using fallback data for player stats");
+    } else if (ittMetadata.players.length !== gameData.players.length) {
+      warnings.push(
+        `ITT metadata found for ${ittMetadata.players.length} players, but replay has ${gameData.players.length} players`
+      );
+    }
+
+    if (playersWithITTStats < gameData.players.length) {
+      warnings.push(
+        `${gameData.players.length - playersWithITTStats} player(s) missing ITT-specific stats`
+      );
+    }
+
+    if (w3mmdActions.length === 0) {
+      warnings.push("W3MMD data not found - some stats may be unavailable");
+    }
+
+    const summary: ParsingSummary = {
+      success: true,
+      gameData: {
+        playersDetected: gameData.players.length,
+        playersWithStats,
+        playersWithITTStats,
+        winners: flagCounts.winner || 0,
+        losers: flagCounts.loser || 0,
+        drawers: flagCounts.drawer || 0,
+      },
+      metadata: {
+        w3mmdFound: w3mmdActions.length > 0,
+        w3mmdActionCount: w3mmdActions.length,
+        ittMetadataFound: !!ittMetadata,
+        ittSchemaVersion: ittMetadata?.schema,
+        ittVersion: ittMetadata?.version,
+      },
+      warnings,
+    };
+
     return {
       gameData,
       w3mmd: {
@@ -175,6 +255,7 @@ export async function parseReplayFile(
         lookup: w3mmdData.lookup,
       },
       ittMetadata,
+      summary,
     };
   } catch (error) {
     const err = error as Error;

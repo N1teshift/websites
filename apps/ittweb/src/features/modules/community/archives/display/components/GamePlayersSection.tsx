@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { formatEloChange } from "@/features/modules/shared/utils";
 import { AnimalKillsDisplay } from "@/features/modules/shared/components";
+import { PlayerItems } from "@/features/modules/game-management/games/components";
 import type { GameWithPlayers, GamePlayer } from "@/features/modules/game-management/games/types";
 
 interface GamePlayersSectionProps {
@@ -97,31 +98,42 @@ function PlayerCard({ player, isWinner }: { player: GamePlayer; isWinner: boolea
         )}
       </div>
 
-      {hasStats && (
+      {(hasStats || player.items !== undefined) && (
         <div className="mt-2 pt-2 border-t border-amber-500/10 space-y-1">
-          <div className="flex flex-wrap gap-x-3 gap-y-1">
-            <PlayerStatBadge icon="🗡️" value={player.damageDealt} label="DMG" />
-            <PlayerStatBadge icon="💚" value={player.selfHealing} label="Heal" />
-            <PlayerStatBadge icon="💙" value={player.allyHealing} label="Ally" />
-            <PlayerStatBadge icon="🥩" value={player.meatEaten} label="Meat" />
-            <PlayerStatBadge icon="💰" value={player.goldAcquired} label="Gold" />
-          </div>
+          {hasStats && (
+            <>
+              <div className="flex flex-wrap gap-x-3 gap-y-1">
+                <PlayerStatBadge icon="🗡️" value={player.damageDealt} label="DMG" />
+                <PlayerStatBadge icon="💚" value={player.selfHealing} label="Heal" />
+                <PlayerStatBadge icon="💙" value={player.allyHealing} label="Ally" />
+                <PlayerStatBadge icon="🥩" value={player.meatEaten} label="Meat" />
+                <PlayerStatBadge icon="💰" value={player.goldAcquired} label="Gold" />
+              </div>
 
-          {/* Animal kills breakdown */}
-          {totalKills > 0 && (
+              {/* Animal kills breakdown */}
+              {totalKills > 0 && (
+                <div className="mt-1.5">
+                  <AnimalKillsDisplay
+                    kills={{
+                      elk: player.killsElk,
+                      hawk: player.killsHawk,
+                      snake: player.killsSnake,
+                      wolf: player.killsWolf,
+                      bear: player.killsBear,
+                      panther: player.killsPanther,
+                    }}
+                    compact={true}
+                    showLabels={false}
+                  />
+                </div>
+              )}
+            </>
+          )}
+
+          {/* Player items - show even if empty (with empty slots) */}
+          {player.items !== undefined && (
             <div className="mt-1.5">
-              <AnimalKillsDisplay
-                kills={{
-                  elk: player.killsElk,
-                  hawk: player.killsHawk,
-                  snake: player.killsSnake,
-                  wolf: player.killsWolf,
-                  bear: player.killsBear,
-                  panther: player.killsPanther,
-                }}
-                compact={true}
-                showLabels={false}
-              />
+              <PlayerItems items={player.items} showEmptySlots={true} />
             </div>
           )}
         </div>

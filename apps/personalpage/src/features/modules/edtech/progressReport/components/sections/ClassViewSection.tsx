@@ -3,10 +3,7 @@ import { useFallbackTranslation } from "@websites/infrastructure/i18n/client";
 import { StudentData, Assessment } from "../../types/ProgressReportTypes";
 import { formatPercentage, getStudentFullName } from "../../utils/progressReportUtils";
 import { getLatestAssessmentById, getUniqueAssessments } from "../../utils/assessmentColumnUtils";
-import ClassPerformanceChartEnhanced, {
-  ChartMode,
-  AllScoreTypes,
-} from "../common/ClassPerformanceChartEnhanced";
+import { ClassPerformanceChartEnhanced, type ChartMode, type AllScoreTypes } from "../common";
 import ColumnCustomizer, { ColumnCategoryShortcuts } from "../common/ColumnCustomizer";
 import CollapsibleSection from "../common/CollapsibleSection";
 import ClassSelectorWithSearch from "../common/shared/ClassSelectorWithSearch";

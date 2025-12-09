@@ -12,7 +12,7 @@ import {
   getAdminTimestamp,
   getStorageAdmin,
   getStorageBucketName,
-} from "@websites/infrastructure/firebase";
+} from "@websites/infrastructure/firebase/admin";
 import type { CreateCompletedGame } from "@/features/modules/game-management/games/types";
 import { IncomingForm, Fields, Files, File as FormidableFile } from "formidable";
 import { promises as fs } from "fs";

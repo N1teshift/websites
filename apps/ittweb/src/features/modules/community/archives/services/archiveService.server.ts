@@ -1,4 +1,4 @@
-import { getFirestoreAdmin, isServerSide } from "@websites/infrastructure/firebase";
+import { getFirestoreAdmin, isServerSide } from "@websites/infrastructure/firebase/admin";
 import { createComponentLogger, logError } from "@websites/infrastructure/logging";
 import { timestampToIso } from "@websites/infrastructure/utils";
 import { ArchiveEntry } from "@/types/archive";

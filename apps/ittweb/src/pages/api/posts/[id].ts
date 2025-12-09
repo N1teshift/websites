@@ -1,7 +1,7 @@
 import type { NextApiRequest } from "next";
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "../auth/[...nextauth]";
-import { createApiHandler, zodValidator } from "@/lib/api-wrapper";
+import { createApiHandler, requireSession, zodValidator } from "@websites/infrastructure/api";
+// Import auth config to ensure default auth is registered
+import "@/config/auth";
 import { UpdatePostSchema } from "@/features/modules/content/blog/lib";
 import {
   getPostById,
@@ -23,7 +23,7 @@ const logger = createComponentLogger("api/posts/[id]");
  * DELETE /api/posts/[id] - Delete post (requires authentication and permission)
  */
 export default createApiHandler<Post | { success: boolean }>(
-  async (req: NextApiRequest, res) => {
+  async (req: NextApiRequest, res, context) => {
     const { id } = req.query;
 
     if (!id || typeof id !== "string") {
@@ -41,8 +41,9 @@ export default createApiHandler<Post | { success: boolean }>(
 
     if (req.method === "PUT" || req.method === "PATCH") {
       // Update a post (requires authentication and permission)
-      const session = await getServerSession(req, res, authOptions);
-      if (!session || !session.discordId) {
+      // Session is available from context when default auth is registered
+      const session = requireSession(context);
+      if (!session.discordId) {
         throw new Error("Authentication required");
       }
 
@@ -71,8 +72,9 @@ export default createApiHandler<Post | { success: boolean }>(
 
     if (req.method === "DELETE") {
       // Delete a post (requires authentication and permission)
-      const session = await getServerSession(req, res, authOptions);
-      if (!session || !session.discordId) {
+      // Session is available from context when default auth is registered
+      const session = requireSession(context);
+      if (!session.discordId) {
         throw new Error("Authentication required");
       }
 

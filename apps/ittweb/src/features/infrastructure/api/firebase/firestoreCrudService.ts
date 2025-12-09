@@ -9,12 +9,8 @@
  */
 
 import { collection, addDoc, getDocs, updateDoc, deleteDoc, doc } from "firebase/firestore";
-import {
-  getFirestoreInstance,
-  getFirestoreAdmin,
-  isServerSide,
-  getDocument,
-} from "@websites/infrastructure/firebase";
+import { getFirestoreInstance, getDocument } from "@websites/infrastructure/firebase";
+import { getFirestoreAdmin, isServerSide } from "@websites/infrastructure/firebase/admin";
 import { createComponentLogger, logError } from "@websites/infrastructure/logging";
 import { createTimestampFactoryAsync, type TimestampFactory } from "@websites/infrastructure/utils";
 

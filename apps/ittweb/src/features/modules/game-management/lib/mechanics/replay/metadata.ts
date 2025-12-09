@@ -77,12 +77,42 @@ function parseITTPayload(payload: string, schemaVersion?: number): ITTPlayerStat
 
     const parts = line.slice("player:".length).split("|");
 
-    // Schema v3 format: slot|name|race|class|team|result|dmg|selfHeal|allyHeal|gold|meat|elk|hawk|snake|wolf|bear|panther
-    if (parts.length >= 17 && schemaVersion && schemaVersion >= 3) {
+    // Schema v4 format: slot|name|race|class|team|result|dmg|selfHeal|allyHeal|gold|meat|elk|hawk|snake|wolf|bear|panther|items
+    if (parts.length >= 18 && schemaVersion && schemaVersion >= 4) {
+      const itemsStr = parts[17];
+      const items = itemsStr ? itemsStr.split(",").map((id) => parseInt(id, 10) || 0) : [];
+      const result = parts[5] || ""; // WIN, LOSS, LEAVE, etc.
+
       players.push({
         slotIndex: parseInt(parts[0], 10) || 0,
         name: parts[1] || "",
         trollClass: parts[3] || undefined,
+        team: parseInt(parts[4], 10) || 0,
+        result: result.toUpperCase(), // WIN, LOSS, LEAVE, etc.
+        damageTroll: parseInt(parts[6], 10) || 0,
+        selfHealing: parseInt(parts[7], 10) || 0,
+        allyHealing: parseInt(parts[8], 10) || 0,
+        goldAcquired: parseInt(parts[9], 10) || 0,
+        meatEaten: parseInt(parts[10], 10) || 0,
+        killsElk: parseInt(parts[11], 10) || 0,
+        killsHawk: parseInt(parts[12], 10) || 0,
+        killsSnake: parseInt(parts[13], 10) || 0,
+        killsWolf: parseInt(parts[14], 10) || 0,
+        killsBear: parseInt(parts[15], 10) || 0,
+        killsPanther: parseInt(parts[16], 10) || 0,
+        items,
+      });
+    }
+    // Schema v3 format: slot|name|race|class|team|result|dmg|selfHeal|allyHeal|gold|meat|elk|hawk|snake|wolf|bear|panther
+    else if (parts.length >= 17 && schemaVersion && schemaVersion >= 3) {
+      const result = parts[5] || ""; // WIN, LOSS, LEAVE, etc.
+
+      players.push({
+        slotIndex: parseInt(parts[0], 10) || 0,
+        name: parts[1] || "",
+        trollClass: parts[3] || undefined,
+        team: parseInt(parts[4], 10) || 0,
+        result: result.toUpperCase(), // WIN, LOSS, LEAVE, etc.
         damageTroll: parseInt(parts[6], 10) || 0,
         selfHealing: parseInt(parts[7], 10) || 0,
         allyHealing: parseInt(parts[8], 10) || 0,
@@ -98,9 +128,13 @@ function parseITTPayload(payload: string, schemaVersion?: number): ITTPlayerStat
     }
     // Schema v2 format: slot|name|race|team|result|dmg|selfHeal|allyHeal|gold|meat|elk|hawk|snake|wolf|bear|panther
     else if (parts.length >= 16) {
+      const result = parts[4] || ""; // WIN, LOSS, LEAVE, etc. (v2 has result at index 4)
+
       players.push({
         slotIndex: parseInt(parts[0], 10) || 0,
         name: parts[1] || "",
+        team: parseInt(parts[3], 10) || 0,
+        result: result.toUpperCase(), // WIN, LOSS, LEAVE, etc.
         damageTroll: parseInt(parts[5], 10) || 0,
         selfHealing: parseInt(parts[6], 10) || 0,
         allyHealing: parseInt(parts[7], 10) || 0,

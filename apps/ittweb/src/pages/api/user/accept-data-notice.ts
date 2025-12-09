@@ -1,5 +1,7 @@
 import type { NextApiRequest } from "next";
 import { createPostHandler, requireSession } from "@websites/infrastructure/api";
+// Import auth config to ensure default auth is registered
+import "@/config/auth";
 import { updateDataCollectionNoticeAcceptanceServer } from "@/features/modules/community/users/services/userDataService.server";
 import { createComponentLogger } from "@websites/infrastructure/logging";
 
@@ -22,5 +24,6 @@ export default createPostHandler<{ success: boolean }>(
   {
     requireAuth: true,
     logRequests: true,
+    // authConfig is now provided by default registration - no need to specify manually
   }
 );

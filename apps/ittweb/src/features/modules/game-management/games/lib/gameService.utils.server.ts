@@ -5,7 +5,7 @@
  * Client-safe utilities are in gameService.utils.ts
  */
 
-import { getFirestoreAdmin } from "@websites/infrastructure/firebase";
+import { getFirestoreAdmin } from "@websites/infrastructure/firebase/admin";
 import { createComponentLogger, logError } from "@websites/infrastructure/logging";
 import { queryWithIndexFallback } from "@/features/infrastructure/api/firebase/queryWithIndexFallback";
 

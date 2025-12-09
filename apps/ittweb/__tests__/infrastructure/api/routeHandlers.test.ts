@@ -102,6 +102,153 @@ describe("createApiHandler", () => {
     expect(res.json).toHaveBeenCalledWith({ success: false, error: "Invalid request body" });
   });
 
+  describe("Default Auth Config Registry", () => {
+    beforeEach(() => {
+      // Clear any registered default auth config before each test
+      // We need to access the internal registry, but since it's not exported,
+      // we'll test through the public API by registering and unregistering
+      jest.resetModules();
+    });
+
+    it("uses default auth config when no explicit authConfig provided", async () => {
+      const mockSession = { user: { name: "Test User" }, discordId: "123" };
+      mockGetServerSession.mockResolvedValue(mockSession);
+
+      const { createApiHandler, registerDefaultAuthConfig } =
+        await import("@websites/infrastructure/api");
+
+      // Register a default auth config
+      registerDefaultAuthConfig({
+        getSession: mockGetServerSession as any,
+        checkAdmin: async () => false,
+      });
+
+      // Create handler without explicit authConfig
+      const handler = createApiHandler(
+        async (req, res, context) => {
+          return { sessionAvailable: !!context?.session };
+        },
+        { requireAuth: false }
+      );
+
+      const res = createResponse();
+      await handler({ method: "GET", url: "/test", body: null, query: {} } as NextApiRequest, res);
+
+      // Should have fetched session using default config
+      expect(mockGetServerSession).toHaveBeenCalled();
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith({
+        success: true,
+        data: { sessionAvailable: true },
+      });
+    });
+
+    it("explicit authConfig overrides default auth config", async () => {
+      const mockSession1 = { user: { name: "User 1" }, discordId: "123" };
+      const mockSession2 = { user: { name: "User 2" }, discordId: "456" };
+      const mockGetSession1 = jest.fn().mockResolvedValue(mockSession1);
+      const mockGetSession2 = jest.fn().mockResolvedValue(mockSession2);
+
+      const { createApiHandler, registerDefaultAuthConfig } =
+        await import("@websites/infrastructure/api");
+
+      // Register default
+      registerDefaultAuthConfig({
+        getSession: mockGetSession1 as any,
+      });
+
+      // Create handler with explicit authConfig
+      const handler = createApiHandler(
+        async (req, res, context) => {
+          return { session: context?.session };
+        },
+        {
+          requireAuth: false,
+          authConfig: {
+            getSession: mockGetSession2 as any,
+          },
+        }
+      );
+
+      const res = createResponse();
+      await handler({ method: "GET", url: "/test", body: null, query: {} } as NextApiRequest, res);
+
+      // Should use explicit config, not default
+      expect(mockGetSession2).toHaveBeenCalled();
+      expect(mockGetSession1).not.toHaveBeenCalled();
+      expect(res.json).toHaveBeenCalledWith({
+        success: true,
+        data: { session: mockSession2 },
+      });
+    });
+
+    it("session available with requireAuth false when default config registered", async () => {
+      const mockSession = { user: { name: "Test User" }, discordId: "123" };
+      mockGetServerSession.mockResolvedValue(mockSession);
+
+      const { createGetPostHandler, registerDefaultAuthConfig } =
+        await import("@websites/infrastructure/api");
+
+      registerDefaultAuthConfig({
+        getSession: mockGetServerSession as any,
+      });
+
+      // Handler with requireAuth: false but needs session for POST
+      const handler = createGetPostHandler(
+        async (req, res, context) => {
+          if (req.method === "POST") {
+            if (!context?.session) {
+              throw new Error("Authentication required");
+            }
+            return { created: true, userId: context.session.discordId };
+          }
+          return { public: true };
+        },
+        { requireAuth: false }
+      );
+
+      // Test POST - should have session available
+      const res = createResponse();
+      await handler({ method: "POST", url: "/test", body: {}, query: {} } as NextApiRequest, res);
+
+      expect(mockGetServerSession).toHaveBeenCalled();
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith({
+        success: true,
+        data: { created: true, userId: "123" },
+      });
+    });
+
+    it("works without default auth config (backward compatible)", async () => {
+      const { createApiHandler } = await import("@websites/infrastructure/api");
+
+      const handler = createApiHandler(async () => "ok", { requireAuth: false });
+      const res = createResponse();
+
+      await handler({ method: "GET", url: "/test", body: null, query: {} } as NextApiRequest, res);
+
+      // Should work fine without any auth config
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith({ success: true, data: "ok" });
+    });
+
+    it("requires auth config when requireAuth true and no default registered", async () => {
+      const { createApiHandler } = await import("@websites/infrastructure/api");
+
+      const handler = createApiHandler(async () => "ok", { requireAuth: true });
+      const res = createResponse();
+
+      await handler({ method: "GET", url: "/test", body: null, query: {} } as NextApiRequest, res);
+
+      // Should fail with 500 - missing auth config
+      expect(res.status).toHaveBeenCalledWith(500);
+      expect(res.json).toHaveBeenCalledWith({
+        success: false,
+        error: "Server configuration error: authentication required but not configured",
+      });
+    });
+  });
+
   describe("Authentication", () => {
     it("rejects unauthenticated requests when requireAuth is true", async () => {
       mockGetServerSession.mockResolvedValue(null);

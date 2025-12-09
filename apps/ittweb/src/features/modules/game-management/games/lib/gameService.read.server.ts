@@ -5,7 +5,7 @@
  * These functions use Firebase Admin SDK and should only be used in API routes.
  */
 
-import { getFirestoreAdmin } from "@websites/infrastructure/firebase";
+import { getFirestoreAdmin } from "@websites/infrastructure/firebase/admin";
 import { createComponentLogger, logError } from "@websites/infrastructure/logging";
 import type { Game, GamePlayer, GameWithPlayers, GameFilters, GameListResponse } from "../types";
 import { convertGameDoc, convertGamePlayerDoc } from "./gameService.utils";

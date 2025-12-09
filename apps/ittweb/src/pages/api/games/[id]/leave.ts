@@ -1,5 +1,11 @@
 import type { NextApiRequest } from "next";
-import { createPostHandler, requireSession, parseRequiredQueryString } from "@/lib/api-wrapper";
+import {
+  createPostHandler,
+  requireSession,
+  parseRequiredQueryString,
+} from "@websites/infrastructure/api";
+// Import auth config to ensure default auth is registered
+import "@/config/auth";
 import { leaveGame } from "@/features/modules/game-management/games/lib/gameService";
 import { createComponentLogger } from "@websites/infrastructure/logging";
 

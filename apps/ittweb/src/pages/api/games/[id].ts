@@ -1,118 +1,54 @@
-import type { NextApiRequest, NextApiResponse } from "next";
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "../auth/[...nextauth]";
-import {
-  createApiHandler,
-  checkResourceOwnership,
-  parseRequiredQueryString,
-} from "@/lib/api-wrapper";
-import {
-  getGameById,
-  updateGame,
-  deleteGame,
-} from "@/features/modules/game-management/games/lib/gameService";
-import type { UpdateGame } from "@/features/modules/game-management/games/types";
+import type { NextApiRequest } from "next";
+import { createApiHandler } from "@websites/infrastructure/api";
+// Import auth config to ensure default auth is registered
+import "@/config/auth";
+import { getGameById, deleteGame } from "@/features/modules/game-management/games/lib/gameService";
 import { createComponentLogger } from "@websites/infrastructure/logging";
 
 const logger = createComponentLogger("api/games/[id]");
 
 /**
- * GET /api/games/[id] - Get a single game
+ * GET /api/games/[id] - Get a game by ID (public)
+ * DELETE /api/games/[id] - Delete a game by ID (requires authentication)
  */
-const handleGet = async (req: NextApiRequest): Promise<ReturnType<typeof getGameById>> => {
-  const id = parseRequiredQueryString(req, "id");
-  const game = await getGameById(id);
-  if (!game) {
-    // Return 404 for not found or deleted games
-    const error = new Error("Game not found");
-    (error as Error & { statusCode?: number }).statusCode = 404;
-    throw error;
-  }
-  return game;
-};
-
-/**
- * PUT /api/games/[id] - Update a game (requires authentication and permission)
- */
-const handlePut = async (req: NextApiRequest, res: NextApiResponse) => {
-  // Get session manually since this is a mixed-method route (GET is public)
-  const session = await getServerSession(req, res, authOptions);
-  if (!session || !session.discordId) {
-    throw new Error("Authentication required");
-  }
-
-  const id = parseRequiredQueryString(req, "id");
-  const game = await getGameById(id);
-  if (!game) {
-    throw new Error("Game not found");
-  }
-
-  // Check if user owns the resource or is admin
-  const hasAccess = await checkResourceOwnership(
-    game as unknown as { [key: string]: unknown },
-    session
-  );
-  if (!hasAccess) {
-    throw new Error("You do not have permission to edit this game");
-  }
-
-  const updates = req.body as UpdateGame;
-  await updateGame(id, updates);
-  logger.info("Game updated via API", { id, userId: session.discordId });
-  return {}; // Wrapped as { success: true, data: {} }
-};
-
-/**
- * DELETE /api/games/[id] - Delete a game (requires authentication and permission)
- */
-const handleDelete = async (req: NextApiRequest, res: NextApiResponse) => {
-  // Get session manually since this is a mixed-method route (GET is public)
-  const session = await getServerSession(req, res, authOptions);
-  if (!session || !session.discordId) {
-    throw new Error("Authentication required");
-  }
-
-  const id = parseRequiredQueryString(req, "id");
-  const game = await getGameById(id);
-  if (!game) {
-    throw new Error("Game not found");
-  }
-
-  // Check if user owns the resource or is admin
-  const hasAccess = await checkResourceOwnership(
-    game as unknown as { [key: string]: unknown },
-    session
-  );
-  if (!hasAccess) {
-    throw new Error("You do not have permission to delete this game");
-  }
-
-  await deleteGame(id);
-  logger.info("Game deleted via API", { id, userId: session.discordId });
-  return {}; // Wrapped as { success: true, data: {} }
-};
-
 export default createApiHandler(
-  async (req: NextApiRequest, res: NextApiResponse) => {
+  async (req: NextApiRequest, res, context) => {
+    const id = req.query.id as string;
+
+    if (!id) {
+      throw new Error("Game ID is required");
+    }
+
     if (req.method === "GET") {
-      return await handleGet(req);
+      const game = await getGameById(id);
+      if (!game) {
+        const error = new Error("Game not found") as Error & { statusCode?: number };
+        error.statusCode = 404;
+        throw error;
+      }
+      return game;
     }
-    if (req.method === "PUT") {
-      return await handlePut(req, res);
-    }
+
     if (req.method === "DELETE") {
-      return await handleDelete(req, res);
+      // Require authentication for deletion
+      if (!context?.session) {
+        throw new Error("Authentication required");
+      }
+
+      await deleteGame(id);
+      logger.info("Game deleted", { id });
+      return { message: "Game deleted successfully" };
     }
+
     throw new Error("Method not allowed");
   },
   {
-    methods: ["GET", "PUT", "DELETE"],
-    requireAuth: false, // GET is public, PUT/DELETE check auth manually (mixed-method route)
+    methods: ["GET", "DELETE"],
+    requireAuth: false, // GET is public, DELETE will check auth manually
     logRequests: true,
-    // Cache for 2 minutes - game details may be updated
     cacheControl: {
       public: true,
-      maxAge: 120,
+      maxAge: 60,
       mustRevalidate: true,
     },
   }

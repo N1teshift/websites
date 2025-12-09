@@ -1,5 +1,11 @@
 import type { NextApiRequest } from "next";
-import { createPostHandler, requireSession, parseRequiredQueryString } from "@/lib/api-wrapper";
+import {
+  createPostHandler,
+  requireSession,
+  parseRequiredQueryString,
+} from "@websites/infrastructure/api";
+// Import auth config to ensure default auth is registered
+import "@/config/auth";
 import {
   getGameById,
   updateEloScores,
@@ -11,7 +17,7 @@ import {
   getAdminTimestamp,
   getStorageAdmin,
   getStorageBucketName,
-} from "@websites/infrastructure/firebase";
+} from "@websites/infrastructure/firebase/admin";
 import { timestampToIso, removeUndefined } from "@websites/infrastructure/utils";
 import type { CreateCompletedGame } from "@/features/modules/game-management/games/types";
 import { IncomingForm, Fields, Files, File as FormidableFile } from "formidable";
@@ -287,6 +293,8 @@ export default createPostHandler<{ gameId: string; message: string }>(
         killsWolf: player.killsWolf,
         killsBear: player.killsBear,
         killsPanther: player.killsPanther,
+        // Player inventory items (schema v4+)
+        items: player.items,
         createdAt: adminTimestampNow,
       } as Record<string, unknown>);
 

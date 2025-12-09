@@ -4,9 +4,13 @@ import {
   parseQueryString,
   parseQueryInt,
   parseQueryEnum,
+  parseQueryBoolean,
   createCustomValidator,
   formatZodErrors,
 } from "@websites/infrastructure/api";
+// Import auth config to ensure default auth is registered
+// This allows handlers with requireAuth: false to still access session
+import "@/config/auth";
 import {
   CreateScheduledGameSchema,
   CreateCompletedGameSchema,
@@ -15,6 +19,7 @@ import {
   createScheduledGame,
   createCompletedGame,
   getGames,
+  getGamesWithPlayers,
 } from "@/features/modules/game-management/games/lib/gameService";
 import type {
   CreateScheduledGame,
@@ -51,8 +56,16 @@ export default createGetPostHandler<GameListResponse | { id: string }>(
         cursor: parseQueryString(req, "cursor"),
       };
 
-      const result = await getGames(filters);
-      return result;
+      // Check if players should be included
+      const includePlayers = parseQueryBoolean(req, "includePlayers", false);
+
+      if (includePlayers) {
+        const result = await getGamesWithPlayers(filters);
+        return result;
+      } else {
+        const result = await getGames(filters);
+        return result;
+      }
     }
 
     if (req.method === "POST") {

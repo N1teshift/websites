@@ -12,7 +12,27 @@ import { getUserDataByDiscordIdServer } from "@/features/modules/community/users
 import { isAdmin } from "@/features/modules/community/users";
 
 /**
+ * @deprecated This wrapper is deprecated. Use @websites/infrastructure/api directly instead.
+ *
+ * The default auth configuration is now registered automatically via @/config/auth.
+ * All handlers should import from @websites/infrastructure/api and rely on the default auth config.
+ *
+ * Migration example:
+ * ```typescript
+ * // Old (deprecated):
+ * import { createPostHandler } from "@/lib/api-wrapper";
+ *
+ * // New:
+ * import { createPostHandler } from "@websites/infrastructure/api";
+ * import "@/config/auth"; // Ensures default auth is registered
+ * ```
+ *
+ * This wrapper will be removed in a future major version.
+ */
+
+/**
  * Create ittweb-specific auth config
+ * @deprecated Use getIttwebAuthConfig from @/lib/auth-config instead
  */
 function getIttwebAuthConfig() {
   return {
@@ -28,6 +48,8 @@ function getIttwebAuthConfig() {
 
 /**
  * Create an API handler with ittweb auth configuration
+ * @deprecated Use createApiHandler from @websites/infrastructure/api directly.
+ * The default auth config is now registered automatically.
  */
 export const createApiHandler = <T = unknown>(
   handler: ApiHandler<T>,
@@ -42,6 +64,7 @@ export const createApiHandler = <T = unknown>(
 
 /**
  * Helper to create GET-only API handlers
+ * @deprecated Use createGetHandler from @websites/infrastructure/api directly.
  */
 export const createGetHandler = <T = unknown>(
   handler: ApiHandler<T>,
@@ -52,6 +75,7 @@ export const createGetHandler = <T = unknown>(
 
 /**
  * Helper to create POST-only API handlers
+ * @deprecated Use createPostHandler from @websites/infrastructure/api directly.
  */
 export const createPostHandler = <T = unknown>(
   handler: ApiHandler<T>,
@@ -62,6 +86,7 @@ export const createPostHandler = <T = unknown>(
 
 /**
  * Helper to create handlers that accept both GET and POST
+ * @deprecated Use createGetPostHandler from @websites/infrastructure/api directly.
  */
 export const createGetPostHandler = <T = unknown>(
   handler: ApiHandler<T>,

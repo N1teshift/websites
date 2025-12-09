@@ -2,11 +2,22 @@
 
 Common patterns for API route handlers.
 
+**Important:** All handlers should import from `@websites/infrastructure/api` and include `@/config/auth`:
+
+```typescript
+import { createPostHandler, requireSession } from "@websites/infrastructure/api";
+// Import auth config to ensure default auth is registered
+import "@/config/auth";
+```
+
 ## Authentication & Authorization
 
 **Public Endpoint:**
 
 ```typescript
+import { createGetHandler } from "@websites/infrastructure/api";
+import "@/config/auth";
+
 export default createGetHandler(
   async (req: NextApiRequest) => {
     // Public - no auth required
@@ -22,6 +33,9 @@ export default createGetHandler(
 **Authenticated Endpoint:**
 
 ```typescript
+import { createPostHandler, requireSession } from "@websites/infrastructure/api";
+import "@/config/auth";
+
 export default createPostHandler(
   async (req: NextApiRequest, res, context) => {
     const session = requireSession(context); // Guaranteed to exist
@@ -29,7 +43,34 @@ export default createPostHandler(
     return await createData(req.body);
   },
   {
-    requireAuth: true,
+    requireAuth: true, // Uses default auth config automatically
+  }
+);
+```
+
+**Optional Authentication (Mixed Routes):**
+
+For routes where GET is public but POST needs auth:
+
+```typescript
+import { createGetPostHandler, requireSession } from "@websites/infrastructure/api";
+import "@/config/auth";
+
+export default createGetPostHandler(
+  async (req: NextApiRequest, res, context) => {
+    if (req.method === "GET") {
+      return await getPublicData();
+    }
+
+    if (req.method === "POST") {
+      // Session is available even with requireAuth: false
+      // because default auth config is registered
+      const session = requireSession(context);
+      return await createData(req.body);
+    }
+  },
+  {
+    requireAuth: false, // GET is public, POST checks auth manually
   }
 );
 ```
@@ -37,13 +78,16 @@ export default createPostHandler(
 **Admin-Only Endpoint:**
 
 ```typescript
+import { createPostHandler, requireSession } from "@websites/infrastructure/api";
+import "@/config/auth";
+
 export default createPostHandler(
   async (req: NextApiRequest, res, context) => {
     const session = requireSession(context); // Guaranteed to exist and be admin
     return await adminOperation(req.body);
   },
   {
-    requireAdmin: true, // Automatically requires auth + admin role
+    requireAdmin: true, // Automatically requires auth + admin role using default auth config
   }
 );
 ```
@@ -52,10 +96,12 @@ export default createPostHandler(
 
 ```typescript
 import {
+  createGetHandler,
   parseQueryString,
   parseQueryInt,
   parsePagination,
-} from "@/features/infrastructure/api/queryParser";
+} from "@websites/infrastructure/api";
+import "@/config/auth";
 
 export default createGetHandler(async (req: NextApiRequest) => {
   const search = parseQueryString(req, "q");
@@ -71,7 +117,8 @@ export default createGetHandler(async (req: NextApiRequest) => {
 **📘 See [Zod Validation Migration Guide](../../operations/zod-validation-migration.md) for comprehensive validation patterns.**
 
 ```typescript
-import { zodValidator } from "@/features/infrastructure/api/zodValidation";
+import { createPostHandler, zodValidator } from "@websites/infrastructure/api";
+import "@/config/auth";
 import { z } from "zod";
 
 // Define schema in src/features/infrastructure/api/schemas.ts
@@ -96,7 +143,13 @@ export default createPostHandler(
 ## Resource Ownership Check
 
 ```typescript
-import { checkResourceOwnership } from "@/features/infrastructure/api/routeHandlers";
+import {
+  createPostHandler,
+  requireSession,
+  parseRequiredQueryString,
+} from "@websites/infrastructure/api";
+import "@/config/auth";
+import { checkResourceOwnership } from "@/lib/api-wrapper";
 
 export default createPostHandler(
   async (req: NextApiRequest, res, context) => {

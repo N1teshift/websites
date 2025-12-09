@@ -5,7 +5,7 @@ import {
   getFirestoreAdmin,
   getStorageAdmin,
   getStorageBucketName,
-} from "@websites/infrastructure/firebase";
+} from "@websites/infrastructure/firebase/admin";
 
 const logger = createComponentLogger("api/admin/wipe-all-entries");
 

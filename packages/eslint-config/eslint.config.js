@@ -21,12 +21,38 @@ const compat = new FlatCompat({
   baseDirectory: __dirname,
 });
 
+// Get Next.js configs via compat layer
+const nextConfigs = compat.extends("next/core-web-vitals", "next/typescript");
+
+// Extract the Next.js plugin from the compat configs for explicit reference
+// This ensures Next.js can detect the plugin during build-time checks
+let nextPlugin = null;
+for (const config of nextConfigs) {
+  if (config.plugins?.["@next/next"]) {
+    nextPlugin = config.plugins["@next/next"];
+    break;
+  }
+}
+
 const config = [
   // Base recommended rules
   js.configs.recommended,
 
-  // Next.js configs (using compat layer for now)
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
+  // Next.js configs (using compat layer for rules)
+  ...nextConfigs,
+
+  // Explicitly reference Next.js plugin for build-time detection
+  // Next.js checks for plugin presence during build, and FlatCompat
+  // might not expose it in a way Next.js can detect
+  ...(nextPlugin
+    ? [
+        {
+          plugins: {
+            "@next/next": nextPlugin,
+          },
+        },
+      ]
+    : []),
 
   // Global rules
   {

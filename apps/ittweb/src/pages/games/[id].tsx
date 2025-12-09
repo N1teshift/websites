@@ -1,5 +1,6 @@
 import React from "react";
 import { useRouter } from "next/router";
+import type { GetServerSideProps } from "next";
 import { useGame } from "@/features/modules/game-management/games/hooks/useGame";
 import { GameDetail } from "@/features/modules/game-management/games/components/GameDetail";
 import { Card, ErrorBoundary } from "@/features/infrastructure/components";
@@ -8,6 +9,14 @@ import GameDeleteDialog from "@/features/modules/game-management/scheduled-games
 import UploadReplayModal from "@/features/modules/game-management/scheduled-games/components/UploadReplayModal";
 import { useGameActions } from "@/features/modules/game-management/games/hooks/useGameActions";
 import { useGamePermissions } from "@/features/modules/game-management/games/hooks/useGamePermissions";
+
+// This page is client-side only and fetches data dynamically
+// getServerSideProps tells Next.js to render this route on-demand (server-side rendering)
+export const getServerSideProps: GetServerSideProps = async () => {
+  return {
+    props: {},
+  };
+};
 
 export default function GameDetailPage() {
   const router = useRouter();
