@@ -16,6 +16,7 @@ interface ArchiveEntryProps {
   onGameDelete?: (game: GameWithPlayers) => void;
   onGameJoin?: (gameId: string) => Promise<void>;
   onGameLeave?: (gameId: string) => Promise<void>;
+  onGameUploadReplay?: (game: GameWithPlayers) => void;
   isJoining?: boolean;
   isLeaving?: boolean;
   userIsAdmin?: boolean;
@@ -32,6 +33,7 @@ function ArchiveEntryComponent({
   onGameDelete,
   onGameJoin,
   onGameLeave,
+  onGameUploadReplay,
   isJoining,
   isLeaving,
   userIsAdmin,
@@ -159,6 +161,7 @@ function ArchiveEntryComponent({
         onGameDelete={onGameDelete}
         onGameJoin={onGameJoin}
         onGameLeave={onGameLeave}
+        onGameUploadReplay={onGameUploadReplay}
         isJoining={isJoining}
         isLeaving={isLeaving}
         userIsAdmin={userIsAdmin}

@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { Card } from "@/features/infrastructure/components";
 import { formatDuration, formatEloChange } from "@/features/modules/shared/utils";
+import { removeBattleTag } from "@/features/modules/shared/utils/playerNameUtils";
 import type { GameWithPlayers } from "@/features/modules/game-management/games/types";
 
 interface GameDetailsSectionProps {
@@ -41,12 +42,8 @@ export function GameDetailsSection({ game }: GameDetailsSectionProps) {
             <p className="text-amber-300">{game.category || "N/A"}</p>
           </div>
           <div>
-            <span className="text-gray-500">Creator:</span>
-            <p className="text-amber-300">{game.creatorName}</p>
-          </div>
-          <div>
-            <span className="text-gray-500">Owner:</span>
-            <p className="text-amber-300">{game.ownername}</p>
+            <span className="text-gray-500">Lobby Owner:</span>
+            <p className="text-amber-300">{removeBattleTag(game.ownername)}</p>
           </div>
         </div>
 
@@ -86,7 +83,7 @@ export function GameDetailsSection({ game }: GameDetailsSectionProps) {
                   href={`/players/${encodeURIComponent(player.name)}`}
                   className="text-amber-300 hover:text-amber-200"
                 >
-                  {player.name}
+                  {removeBattleTag(player.name)}
                 </Link>
                 <div className="text-sm text-gray-400">
                   {player.elochange !== undefined && (
@@ -112,7 +109,7 @@ export function GameDetailsSection({ game }: GameDetailsSectionProps) {
                   href={`/players/${encodeURIComponent(player.name)}`}
                   className="text-amber-300 hover:text-amber-200"
                 >
-                  {player.name}
+                  {removeBattleTag(player.name)}
                 </Link>
                 <div className="text-sm text-gray-400">
                   {player.elochange !== undefined && (
@@ -138,7 +135,7 @@ export function GameDetailsSection({ game }: GameDetailsSectionProps) {
                   href={`/players/${encodeURIComponent(player.name)}`}
                   className="text-amber-300 hover:text-amber-200"
                 >
-                  {player.name}
+                  {removeBattleTag(player.name)}
                 </Link>
                 <div className="text-sm text-gray-400">
                   {player.elochange !== undefined && (

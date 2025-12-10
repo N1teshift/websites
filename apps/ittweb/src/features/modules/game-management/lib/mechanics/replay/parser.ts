@@ -89,7 +89,7 @@ export async function parseReplayFile(
       map: parsed.map?.path || parsed.map?.file || "Unknown",
       creatorName: parsed.creator || "Unknown",
       ownername: parsed.creator || "Unknown",
-      category: options.fallbackCategory || deriveCategory(players),
+      category: deriveCategory(players), // Always derive from replay by analyzing team composition
       players: players.map((player) => {
         const stats = derivedStats.get(player.id) || {};
 
@@ -183,11 +183,45 @@ export async function parseReplayFile(
           name: player.name || `Player ${player.id}`,
           pid: player.id,
           flag,
+          teamid: player.teamid, // Store teamid for post-processing
           ...stats,
           ...ittStats,
         };
       }),
     };
+
+    // Post-process: Fix drawer flags - if a team has any losers, all drawers on that team should be losers
+    const playersByTeam = new Map<number, typeof gameData.players>();
+    gameData.players.forEach((player) => {
+      const teamid = (player as any).teamid;
+      if (!playersByTeam.has(teamid)) {
+        playersByTeam.set(teamid, []);
+      }
+      playersByTeam.get(teamid)!.push(player);
+    });
+
+    // For each team, check if any player is a loser
+    playersByTeam.forEach((teamPlayers, teamid) => {
+      const hasLoser = teamPlayers.some((p) => p.flag === "loser");
+      if (hasLoser) {
+        // If team has a loser, change all drawers on that team to losers
+        teamPlayers.forEach((player) => {
+          if (player.flag === "drawer") {
+            logger.debug("Converting drawer to loser", {
+              playerName: player.name,
+              teamid,
+              reason: "Teammate is a loser",
+            });
+            player.flag = "loser";
+          }
+        });
+      }
+    });
+
+    // Remove teamid from player objects (it was only needed for post-processing)
+    gameData.players.forEach((player) => {
+      delete (player as any).teamid;
+    });
 
     // Log summary of win/loss distribution
     const flagCounts = gameData.players.reduce(

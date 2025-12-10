@@ -86,9 +86,10 @@ const FIX_ICON_PATHS_SCRIPT = path.join(__dirname, 'generate', 'fix-icon-paths.m
 const RESOLVE_FIELD_REFERENCES_SCRIPT = path.join(__dirname, 'generate', 'resolve-field-references.mjs');
 
 /**
- * Clean a directory by removing all .ts files
+ * Clean a directory by removing all .ts files, except utility files
+ * Utility files contain static code that should not be regenerated
  */
-function cleanDirectory(dir) {
+function cleanDirectory(dir, excludeFiles = []) {
   if (!fs.existsSync(dir)) {
     console.log(`📁 Directory doesn't exist: ${dir}`);
     return;
@@ -98,7 +99,7 @@ function cleanDirectory(dir) {
   let removedCount = 0;
 
   for (const file of files) {
-    if (file.endsWith('.ts')) {
+    if (file.endsWith('.ts') && !excludeFiles.includes(file)) {
       const filePath = path.join(dir, file);
       fs.unlinkSync(filePath);
       removedCount++;
@@ -116,9 +117,10 @@ function cleanDirectory(dir) {
 function resetDataDirectories() {
   console.log('\n🧹 Resetting data directories...\n');
 
-  cleanDirectory(ITEMS_TS_DIR);
-  cleanDirectory(ABILITIES_TS_DIR);
-  cleanDirectory(UNITS_TS_DIR);
+  // Exclude utility files from deletion (they contain static code)
+  cleanDirectory(ITEMS_TS_DIR, ['iconUtils.ts', 'replayItemUtils.ts']);
+  cleanDirectory(ABILITIES_TS_DIR, []);
+  cleanDirectory(UNITS_TS_DIR, []);
 
   // Remove iconMap.ts from data directory
   const iconMapPath = path.join(DATA_TS_DIR, 'iconMap.ts');

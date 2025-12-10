@@ -27,6 +27,7 @@ interface HomeTimelineContentProps {
   onGameDelete: (game: GameWithPlayers) => void;
   onGameJoin: (gameId: string) => Promise<void>;
   onGameLeave: (gameId: string) => Promise<void>;
+  onGameUploadReplay: (game: GameWithPlayers) => void;
 }
 
 /**
@@ -56,6 +57,7 @@ export function HomeTimelineContent({
   onGameDelete,
   onGameJoin,
   onGameLeave,
+  onGameUploadReplay,
 }: HomeTimelineContentProps) {
   return (
     <ArchivesContent
@@ -80,6 +82,7 @@ export function HomeTimelineContent({
       onGameDelete={onGameDelete as (game: Game) => void}
       onGameJoin={onGameJoin}
       onGameLeave={onGameLeave}
+      onGameUploadReplay={onGameUploadReplay as (game: Game) => void}
       isJoining={typeof isJoining === "string" ? true : isJoining || false}
       isLeaving={typeof isLeaving === "string" ? true : isLeaving || false}
       userIsAdmin={canManageEntries}

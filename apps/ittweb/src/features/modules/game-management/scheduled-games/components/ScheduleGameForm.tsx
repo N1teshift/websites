@@ -1,6 +1,6 @@
 import React, { useState, FormEvent } from "react";
 import {
-  TeamSize,
+  GameCategory,
   GameType,
   CreateScheduledGame,
 } from "@/features/modules/game-management/games/types";
@@ -42,8 +42,9 @@ export default function ScheduleGameForm({
   const [selectedDate, setSelectedDate] = useState(currentDate);
   const [selectedTime, setSelectedTime] = useState(currentTime);
   const [selectedTimezone, setSelectedTimezone] = useState(userTimezone);
-  const [teamSize, setTeamSize] = useState<TeamSize>("1v1");
-  const [customTeamSize, setCustomTeamSize] = useState("");
+  const [category, setCategory] = useState<GameCategory>("1v1");
+  const [isCustomCategory, setIsCustomCategory] = useState(false);
+  const [customCategory, setCustomCategory] = useState("");
   const [gameType, setGameType] = useState<GameType>("normal");
   const [gameVersion, setGameVersion] = useState<string>("v3.28");
   const [gameLength, setGameLength] = useState<number>(1800); // Default 30 minutes (1800 seconds)
@@ -74,11 +75,18 @@ export default function ScheduleGameForm({
     // Convert local date/time to UTC
     const utcDateTime = convertLocalToUTC(selectedDate, selectedTime, selectedTimezone);
 
+    // Determine final category value
+    const finalCategory = isCustomCategory ? customCategory : category;
+
+    if (!finalCategory || (isCustomCategory && !customCategory.trim())) {
+      setError("Please enter a team size/category");
+      return;
+    }
+
     const gameData: CreateScheduledGame = {
       scheduledDateTime: utcDateTime,
       timezone: selectedTimezone,
-      teamSize,
-      customTeamSize: teamSize === "custom" ? customTeamSize : undefined,
+      category: finalCategory,
       gameType,
       gameVersion,
       gameLength,
@@ -153,33 +161,51 @@ export default function ScheduleGameForm({
             <p className="text-sm text-gray-400">Selected timezone: {tzAbbreviation}</p>
           </div>
 
-          {/* Team Size */}
+          {/* Team Size / Category */}
           <div>
-            <label className="block text-amber-500 mb-2">Team Size *</label>
+            <label className="block text-amber-500 mb-2">Team Size / Category *</label>
             <div className="grid grid-cols-4 gap-2">
-              {(["1v1", "2v2", "3v3", "4v4", "5v5", "6v6", "custom"] as TeamSize[]).map((size) => (
+              {(["1v1", "2v2", "3v3", "4v4", "5v5", "6v6", "custom"] as const).map((size) => (
                 <label key={size} className="flex items-center cursor-pointer">
                   <input
                     type="radio"
-                    name="teamSize"
+                    name="category"
                     value={size}
-                    checked={teamSize === size}
-                    onChange={(e) => setTeamSize(e.target.value as TeamSize)}
+                    checked={!isCustomCategory && category === size}
+                    onChange={(e) => {
+                      setIsCustomCategory(false);
+                      setCategory(e.target.value as GameCategory);
+                    }}
                     className="mr-2"
                   />
                   <span className="text-white">{size === "custom" ? "Custom" : size}</span>
                 </label>
               ))}
             </div>
-            {teamSize === "custom" && (
+            {isCustomCategory && (
               <input
                 type="text"
-                value={customTeamSize}
-                onChange={(e) => setCustomTeamSize(e.target.value)}
-                placeholder="e.g., 2v2v2, 3v3v3, etc."
+                value={customCategory}
+                onChange={(e) => setCustomCategory(e.target.value)}
+                placeholder="e.g., 2v2v2, 3v3v3, ffa, etc."
                 required
                 className="w-full mt-2 bg-gray-800 border border-gray-600 rounded px-3 py-2 text-white focus:border-amber-500 focus:outline-none"
               />
+            )}
+            {!isCustomCategory && (
+              <label className="flex items-center cursor-pointer mt-2">
+                <input
+                  type="radio"
+                  name="category"
+                  checked={isCustomCategory}
+                  onChange={() => {
+                    setIsCustomCategory(true);
+                    setCustomCategory("");
+                  }}
+                  className="mr-2"
+                />
+                <span className="text-white text-sm">Use custom category</span>
+              </label>
             )}
           </div>
 

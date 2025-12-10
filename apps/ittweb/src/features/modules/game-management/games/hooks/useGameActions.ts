@@ -18,8 +18,7 @@ interface UseGameActionsResult {
   // Handlers
   handleEdit: (game: GameWithPlayers) => void;
   handleEditSubmit: (updates: {
-    teamSize: string;
-    customTeamSize?: string;
+    category: string;
     gameType: string;
     gameVersion?: string;
     gameLength?: number;
@@ -57,8 +56,7 @@ export function useGameActions(refetch?: () => void | Promise<void>): UseGameAct
   };
 
   const handleEditSubmit = async (updates: {
-    teamSize: string;
-    customTeamSize?: string;
+    category: string;
     gameType: string;
     gameVersion?: string;
     gameLength?: number;

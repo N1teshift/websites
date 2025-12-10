@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { formatEloChange } from "@/features/modules/shared/utils";
+import { removeBattleTag } from "@/features/modules/shared/utils/playerNameUtils";
 import { AnimalKillsDisplay } from "@/features/modules/shared/components";
 import { PlayerItems } from "@/features/modules/game-management/games/components";
 import ClassIcon from "@/features/modules/content/guides/components/ClassIcon";
@@ -186,7 +187,7 @@ function PlayerCard({ player, isWinner }: { player: GamePlayer; isWinner: boolea
             onClick={(e) => e.stopPropagation()}
             className={`text-sm font-medium hover:underline ${isWinner ? "text-green-300" : "text-red-300"}`}
           >
-            {player.name}
+            {removeBattleTag(player.name)}
           </Link>
         </div>
         {player.elochange !== undefined && (

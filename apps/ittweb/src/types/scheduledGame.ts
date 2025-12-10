@@ -1,6 +1,7 @@
 import { Timestamp } from "firebase/firestore";
 import type {
   TeamSize,
+  GameCategory,
   GameType,
   GameMode,
   GameParticipant,
@@ -28,8 +29,9 @@ export interface ScheduledGame {
   scheduledDateTime: Timestamp | string; // ISO 8601 string in UTC or Timestamp
   scheduledDateTimeString: string; // ISO 8601 string (for querying)
   timezone: string; // IANA timezone identifier (e.g., 'America/New_York')
-  teamSize: TeamSize; // '1v1' | '2v2' | '3v3' | '4v4' | '5v5' | '6v6' | 'custom'
-  customTeamSize?: string; // Only used when teamSize is 'custom'
+  category?: GameCategory; // Unified category field (preferred)
+  teamSize?: TeamSize; // @deprecated Use category instead
+  customTeamSize?: string; // @deprecated Use category instead
   gameType: GameType; // 'elo' | 'normal'
   gameVersion?: string; // Game version (e.g., 'v3.28')
   gameLength?: number; // Game length in seconds
@@ -63,8 +65,9 @@ export interface CreateScheduledGame {
   scheduledDateTime: string; // ISO 8601 string in UTC
   scheduledDateTimeString: string; // ISO 8601 string (for querying)
   timezone: string; // IANA timezone identifier
-  teamSize: TeamSize;
-  customTeamSize?: string;
+  category?: GameCategory; // Unified category field (preferred)
+  teamSize?: TeamSize; // @deprecated Use category instead
+  customTeamSize?: string; // @deprecated Use category instead
   gameType: GameType;
   gameVersion?: string;
   gameLength?: number; // Game length in seconds

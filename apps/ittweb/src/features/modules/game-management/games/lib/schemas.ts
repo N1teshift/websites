@@ -43,8 +43,9 @@ export const CreateScheduledGameSchema = z.object({
     .string()
     .datetime("scheduledDateTime must be a valid ISO 8601 datetime string"),
   timezone: z.string().min(1, "timezone must be a non-empty string (IANA timezone identifier)"),
-  teamSize: z.enum(["1v1", "2v2", "3v3", "4v4", "5v5", "6v6", "custom"]),
-  customTeamSize: z.string().optional(), // Required when teamSize is 'custom'
+  category: z.string().min(1, "category must be a non-empty string").optional(), // Unified category field (preferred)
+  teamSize: z.enum(["1v1", "2v2", "3v3", "4v4", "5v5", "6v6", "custom"]).optional(), // @deprecated Use category instead
+  customTeamSize: z.string().optional(), // @deprecated Use category instead
   gameType: z.enum(["elo", "normal"]),
   gameVersion: z.string().optional(),
   gameLength: z.number().int().positive().optional(), // Game length in seconds

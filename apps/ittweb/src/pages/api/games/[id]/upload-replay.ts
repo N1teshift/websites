@@ -109,9 +109,6 @@ export default createPostHandler<{ gameId: string; message: string }>(
     const replayUrl = `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${encodeURIComponent(filePath)}?alt=media&token=${token}`;
 
     // Parse replay file
-    const scheduledCategory =
-      game.teamSize === "custom" ? game.customTeamSize || undefined : game.teamSize;
-
     const scheduledDateTimeString = game.scheduledDateTime
       ? typeof game.scheduledDateTime === "string"
         ? game.scheduledDateTime
@@ -123,7 +120,7 @@ export default createPostHandler<{ gameId: string; message: string }>(
       const parsed = await parseReplayFile(fileBuffer, {
         scheduledGameId: game.gameId,
         fallbackDatetime: scheduledDateTimeString,
-        fallbackCategory: scheduledCategory,
+        // Category is always derived from replay by analyzing team composition
       });
 
       // Convert parsed data to CreateCompletedGame format
@@ -162,7 +159,7 @@ export default createPostHandler<{ gameId: string; message: string }>(
             map: manualData.map || "Unknown",
             creatorName: game.creatorName,
             ownername: manualData.ownername || game.creatorName,
-            category: manualData.category || scheduledCategory,
+            category: manualData.category || undefined, // Will be derived from replay if not provided
             replayUrl,
             replayFileName: originalName,
             createdByDiscordId: game.createdByDiscordId || null,

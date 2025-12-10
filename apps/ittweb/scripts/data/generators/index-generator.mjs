@@ -19,6 +19,7 @@ import { BUILDINGS_ITEMS } from './buildings';
 import { UNKNOWN_ITEMS } from './unknown';
 
 export { getItemIconPathFromRecord } from './iconUtils';
+export { getItemByReplayId, getItemsByReplayIds } from './replayItemUtils';
 
 export const ITEMS_DATA: ItemData[] = [
   ...(RAW_MATERIALS_ITEMS || []),
@@ -59,35 +60,7 @@ export function searchItems(query: string): ItemData[] {
   );
 }
 
-/**
- * Get item by replay ID (numeric ID from game replay)
- * TODO: Implement proper replay ID to item ID mapping
- */
-export function getItemByReplayId(replayId: number): ItemData | undefined {
-  if (!replayId || replayId === 0) return undefined;
-  // TODO: Implement replay ID mapping
-  // For now, return undefined - this needs to be implemented based on replay format
-  return undefined;
-}
-
-/**
- * Get items by replay IDs (array of numeric IDs from game replay)
- * Filters out zeros and invalid IDs
- */
-export function getItemsByReplayIds(replayIds: number[]): ItemData[] {
-  if (!replayIds || replayIds.length === 0) return [];
-  
-  const items: ItemData[] = [];
-  for (const replayId of replayIds) {
-    if (replayId && replayId !== 0) {
-      const item = getItemByReplayId(replayId);
-      if (item) {
-        items.push(item);
-      }
-    }
-  }
-  return items;
-}
+// getItemByReplayId and getItemsByReplayIds are exported from replayItemUtils.ts
 `;
   
   fs.writeFileSync(path.join(itemsDir, 'index.ts'), content, 'utf-8');

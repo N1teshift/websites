@@ -6,9 +6,11 @@ import { Timestamp } from "firebase/firestore";
 export type GamePlayerFlag = "winner" | "loser" | "drawer";
 
 /**
- * Game category/mode
+ * Game category/format - unified for both scheduled and completed games
+ * Standard formats: "1v1", "2v2", "3v3", "4v4", "5v5", "6v6", "ffa"
+ * Custom formats: Any string (e.g., "2v2v2", "3v3v3v3", "custom-format")
  */
-export type GameCategory = "1v1" | "2v2" | "3v3" | "4v4" | "5v5" | "6v6" | "ffa" | string;
+export type GameCategory = string;
 
 /**
  * Game type - scheduled or completed
@@ -116,8 +118,9 @@ export interface Game {
   scheduledDateTime?: Timestamp | string; // ISO 8601 string in UTC or Timestamp
   scheduledDateTimeString?: string; // ISO 8601 string (for querying)
   timezone?: string; // IANA timezone identifier (e.g., 'America/New_York')
-  teamSize?: TeamSize;
-  customTeamSize?: string; // Only used when teamSize is 'custom'
+  category?: GameCategory; // Unified category field (preferred)
+  teamSize?: TeamSize; // @deprecated Use category instead
+  customTeamSize?: string; // @deprecated Use category instead (only used when teamSize is 'custom')
   gameType?: GameType; // 'elo' | 'normal'
   gameVersion?: string; // Game version (e.g., 'v3.28')
   gameLength?: number; // Game length in seconds
@@ -161,8 +164,9 @@ export interface CreateScheduledGame {
   gameId?: number; // Single numeric identifier (auto-generated if not provided)
   scheduledDateTime: string; // ISO 8601 string in UTC
   timezone: string; // IANA timezone identifier
-  teamSize: TeamSize;
-  customTeamSize?: string;
+  category?: GameCategory; // Unified category field (preferred)
+  teamSize?: TeamSize; // @deprecated Use category instead
+  customTeamSize?: string; // @deprecated Use category instead
   gameType: GameType;
   gameVersion?: string;
   gameLength?: number; // Game length in seconds
@@ -237,8 +241,9 @@ export interface UpdateGame {
   scheduledDateTime?: Timestamp | string;
   scheduledDateTimeString?: string;
   timezone?: string;
-  teamSize?: TeamSize;
-  customTeamSize?: string;
+  category?: GameCategory; // Unified category field (preferred)
+  teamSize?: TeamSize; // @deprecated Use category instead
+  customTeamSize?: string; // @deprecated Use category instead
   gameType?: GameType;
   gameVersion?: string;
   gameLength?: number;

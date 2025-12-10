@@ -14,12 +14,19 @@ export function deriveCategory(players: Player[]): GameCategory | undefined {
     return acc;
   }, {});
 
-  const counts = Object.values(teamCounts).sort((a, b) => b - a);
-  if (counts.length === 2 && counts[0] === counts[1]) {
-    return `${counts[0]}v${counts[1]}` as GameCategory;
-  }
+  // Get team IDs and sort them to preserve team order (team 1, team 2, etc.)
+  const teamIds = Object.keys(teamCounts)
+    .map(Number)
+    .sort((a, b) => a - b);
+
+  // Get counts in team order (not sorted by size)
+  const counts = teamIds.map((teamId) => teamCounts[teamId]);
+
+  // Single team: 1v1 or Xp format
   if (counts.length === 1) {
     return counts[0] === 1 ? "1v1" : (`${counts[0]}p` as GameCategory);
   }
-  return "ffa";
+
+  // Two or more teams: output in team order (e.g., "2v3", "3v3v3", "2v2v2v2")
+  return counts.join("v") as GameCategory;
 }

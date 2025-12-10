@@ -25,8 +25,7 @@ interface UseGameEditDeleteReturn {
   setPendingDeleteGame: (game: GameWithPlayers | null) => void;
   handleGameEdit: (game: GameWithPlayers) => void;
   handleGameEditSubmit: (updates: {
-    teamSize: string;
-    customTeamSize?: string;
+    category: string;
     gameType: string;
     gameVersion?: string;
     gameLength?: number;
@@ -75,8 +74,7 @@ export function useGameEditDelete({
 
   const handleGameEditSubmit = useCallback(
     async (updates: {
-      teamSize: string;
-      customTeamSize?: string;
+      category: string;
       gameType: string;
       gameVersion?: string;
       gameLength?: number;

@@ -25,17 +25,29 @@ export function useTimelineEntries({ setEntries, setLoading, setError }: UseTime
       const cacheBuster = `?t=${Date.now()}`;
       const [archiveEntriesResponse, regularEntriesResponse] = await Promise.all([
         fetch(`/api/archives${cacheBuster}`).catch((err) => {
-          logger.error(
-            "Failed to fetch archive entries",
-            err instanceof Error ? err : new Error(String(err))
-          );
+          // Don't log network errors in development as they're often due to dev server timing
+          const isNetworkError =
+            err instanceof TypeError &&
+            (err.message.includes("NetworkError") || err.message.includes("Failed to fetch"));
+          if (!isNetworkError || process.env.NODE_ENV === "production") {
+            logger.error(
+              "Failed to fetch archive entries",
+              err instanceof Error ? err : new Error(String(err))
+            );
+          }
           return null;
         }),
         fetch(`/api/entries${cacheBuster}`).catch((err) => {
-          logger.error(
-            "Failed to fetch regular entries",
-            err instanceof Error ? err : new Error(String(err))
-          );
+          // Don't log network errors in development as they're often due to dev server timing
+          const isNetworkError =
+            err instanceof TypeError &&
+            (err.message.includes("NetworkError") || err.message.includes("Failed to fetch"));
+          if (!isNetworkError || process.env.NODE_ENV === "production") {
+            logger.error(
+              "Failed to fetch regular entries",
+              err instanceof Error ? err : new Error(String(err))
+            );
+          }
           return null;
         }),
       ]);

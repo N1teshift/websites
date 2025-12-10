@@ -109,8 +109,9 @@ export default function GameDetailPage() {
               createdByDiscordId: editingGame.createdByDiscordId || "",
               scheduledDateTime: editingGame.scheduledDateTime || "",
               timezone: editingGame.timezone || "UTC",
-              teamSize: editingGame.teamSize || "1v1",
-              customTeamSize: editingGame.customTeamSize,
+              category: editingGame.category,
+              teamSize: editingGame.teamSize, // Keep for backward compat
+              customTeamSize: editingGame.customTeamSize, // Keep for backward compat
               gameType: editingGame.gameType || "normal",
               gameVersion: editingGame.gameVersion,
               gameLength: editingGame.gameLength,

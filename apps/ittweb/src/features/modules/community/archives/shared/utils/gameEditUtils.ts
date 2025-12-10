@@ -5,8 +5,7 @@ import { createComponentLogger } from "@websites/infrastructure/logging";
 const logger = createComponentLogger("gameEditUtils");
 
 interface GameEditUpdates {
-  teamSize: string;
-  customTeamSize?: string;
+  category: string;
   gameType: string;
   gameVersion?: string;
   gameLength?: number;
@@ -32,7 +31,7 @@ export async function submitGameEdit(
   const optimisticGame = {
     ...gameToUpdate,
     ...updates,
-    customTeamSize: updates.teamSize === "custom" ? updates.customTeamSize : undefined,
+    category: updates.category,
   };
 
   setLocalGames((prevGames) =>

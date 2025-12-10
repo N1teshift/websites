@@ -58,7 +58,7 @@ export interface ITTMetadata {
 export interface ReplayParserOptions {
   scheduledGameId?: number;
   fallbackDatetime?: string;
-  fallbackCategory?: GameCategory;
+  // Category is always derived from replay by analyzing team composition
 }
 
 export interface ParsingSummary {

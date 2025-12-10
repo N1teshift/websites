@@ -5,20 +5,21 @@ import EntryEditModal from "@/features/modules/game-management/entries/component
 import EditGameForm from "@/features/modules/game-management/scheduled-games/components/EditGameForm";
 import GameDeleteDialog from "@/features/modules/game-management/scheduled-games/components/GameDeleteDialog";
 import ArchiveDeleteDialog from "@/features/modules/community/archives/forms/components/ArchiveDeleteDialog";
+import UploadReplayModal from "@/features/modules/game-management/scheduled-games/components/UploadReplayModal";
 
 interface HomeTimelineModalsProps {
   editingEntry: ArchiveEntry | null;
   editingGame: GameWithPlayers | null;
   pendingDeleteEntry: ArchiveEntry | null;
   pendingDeleteGame: GameWithPlayers | null;
+  uploadingReplayGame: GameWithPlayers | null;
   isDeleting: boolean;
   isDeletingGame: boolean;
   extractEntryId: (archiveEntryId: string) => string | null;
   onEditSuccess: (entryId?: string) => Promise<void>;
   onEditCancel: () => void;
   onGameEditSubmit: (updates: {
-    teamSize: string;
-    customTeamSize?: string;
+    category: string;
     gameType: string;
     gameVersion?: string;
     gameLength?: number;
@@ -29,6 +30,8 @@ interface HomeTimelineModalsProps {
   onEntryDeleteCancel: () => void;
   onGameDeleteConfirm: () => Promise<void>;
   onGameDeleteCancel: () => void;
+  onGameUploadReplaySuccess: () => Promise<void>;
+  onGameUploadReplayClose: () => void;
 }
 
 /**
@@ -39,6 +42,7 @@ export function HomeTimelineModals({
   editingGame,
   pendingDeleteEntry,
   pendingDeleteGame,
+  uploadingReplayGame,
   isDeleting,
   isDeletingGame,
   extractEntryId,
@@ -50,6 +54,8 @@ export function HomeTimelineModals({
   onEntryDeleteCancel,
   onGameDeleteConfirm,
   onGameDeleteCancel,
+  onGameUploadReplaySuccess,
+  onGameUploadReplayClose,
 }: HomeTimelineModalsProps) {
   return (
     <>
@@ -92,6 +98,15 @@ export function HomeTimelineModals({
           isLoading={isDeletingGame}
           onConfirm={onGameDeleteConfirm}
           onCancel={onGameDeleteCancel}
+        />
+      )}
+
+      {/* Upload Replay Modal */}
+      {uploadingReplayGame && (
+        <UploadReplayModal
+          game={uploadingReplayGame}
+          onClose={onGameUploadReplayClose}
+          onSuccess={onGameUploadReplaySuccess}
         />
       )}
     </>

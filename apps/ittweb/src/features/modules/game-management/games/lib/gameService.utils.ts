@@ -53,6 +53,7 @@ export function convertGameDoc(docData: Record<string, unknown>, id: string): Ga
           ? docData.scheduledDateTimeString
           : undefined,
       timezone: typeof docData.timezone === "string" ? docData.timezone : undefined,
+      category: typeof docData.category === "string" ? docData.category : undefined,
       teamSize: docData.teamSize as TeamSize | undefined,
       customTeamSize:
         typeof docData.customTeamSize === "string" ? docData.customTeamSize : undefined,

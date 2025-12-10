@@ -1,13 +1,13 @@
 import React, { useState, FormEvent, useEffect } from "react";
-import type { TeamSize, GameType, Game } from "@/features/modules/game-management/games/types";
+import type { GameCategory, GameType, Game } from "@/features/modules/game-management/games/types";
 import { formatDateTimeInTimezone } from "../utils/timezoneUtils";
 import { timestampToIso } from "@websites/infrastructure/utils";
+import { getGameCategory } from "@/features/modules/game-management/games/lib/gameCategory.utils";
 
 interface EditGameFormProps {
   game: Game;
   onSubmit: (updates: {
-    teamSize: TeamSize;
-    customTeamSize?: string;
+    category: GameCategory;
     gameType: GameType;
     gameVersion?: string;
     gameLength?: number;
@@ -31,8 +31,13 @@ export default function EditGameForm({
   onCancel,
   isSubmitting = false,
 }: EditGameFormProps) {
-  const [teamSize, setTeamSize] = useState<TeamSize>(game.teamSize || "1v1");
-  const [customTeamSize, setCustomTeamSize] = useState(game.customTeamSize || "");
+  // Initialize category from game (with fallback to teamSize for backward compat)
+  const initialCategory = getGameCategory(game) || "1v1";
+  const isStandardCategory = ["1v1", "2v2", "3v3", "4v4", "5v5", "6v6"].includes(initialCategory);
+
+  const [category, setCategory] = useState<GameCategory>(isStandardCategory ? initialCategory : "");
+  const [isCustomCategory, setIsCustomCategory] = useState(!isStandardCategory);
+  const [customCategory, setCustomCategory] = useState(isStandardCategory ? "" : initialCategory);
   const [gameType, setGameType] = useState<GameType>(game.gameType || "normal");
   const [gameVersion, setGameVersion] = useState<string>(game.gameVersion || "v3.28");
   const [gameLength, setGameLength] = useState<number>(game.gameLength || 1800);
@@ -40,8 +45,16 @@ export default function EditGameForm({
   const [error, setError] = useState("");
 
   useEffect(() => {
-    setTeamSize(game.teamSize || "1v1");
-    setCustomTeamSize(game.customTeamSize || "");
+    const gameCategory = getGameCategory(game) || "1v1";
+    const isStandard = ["1v1", "2v2", "3v3", "4v4", "5v5", "6v6"].includes(gameCategory);
+    setIsCustomCategory(!isStandard);
+    if (isStandard) {
+      setCategory(gameCategory);
+      setCustomCategory("");
+    } else {
+      setCategory("");
+      setCustomCategory(gameCategory);
+    }
     setGameType(game.gameType || "normal");
     setGameVersion(game.gameVersion || "v3.28");
     setGameLength(game.gameLength || 1800);
@@ -52,15 +65,16 @@ export default function EditGameForm({
     e.preventDefault();
     setError("");
 
-    // Validation
-    if (teamSize === "custom" && !customTeamSize.trim()) {
-      setError("Please specify custom team size");
+    // Determine final category value
+    const finalCategory = isCustomCategory ? customCategory : category;
+
+    if (!finalCategory || (isCustomCategory && !customCategory.trim())) {
+      setError("Please enter a team size/category");
       return;
     }
 
     const updates = {
-      teamSize,
-      customTeamSize: teamSize === "custom" ? customTeamSize : undefined,
+      category: finalCategory,
       gameType,
       gameVersion,
       gameLength,
@@ -115,33 +129,51 @@ export default function EditGameForm({
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Team Size */}
+          {/* Team Size / Category */}
           <div>
-            <label className="block text-amber-500 mb-2">Team Size *</label>
+            <label className="block text-amber-500 mb-2">Team Size / Category *</label>
             <div className="grid grid-cols-4 gap-2">
-              {(["1v1", "2v2", "3v3", "4v4", "5v5", "6v6", "custom"] as TeamSize[]).map((size) => (
+              {(["1v1", "2v2", "3v3", "4v4", "5v5", "6v6", "custom"] as const).map((size) => (
                 <label key={size} className="flex items-center cursor-pointer">
                   <input
                     type="radio"
-                    name="teamSize"
+                    name="category"
                     value={size}
-                    checked={teamSize === size}
-                    onChange={(e) => setTeamSize(e.target.value as TeamSize)}
+                    checked={!isCustomCategory && category === size}
+                    onChange={(e) => {
+                      setIsCustomCategory(false);
+                      setCategory(e.target.value as GameCategory);
+                    }}
                     className="mr-2"
                   />
                   <span className="text-white">{size === "custom" ? "Custom" : size}</span>
                 </label>
               ))}
             </div>
-            {teamSize === "custom" && (
+            {isCustomCategory && (
               <input
                 type="text"
-                value={customTeamSize}
-                onChange={(e) => setCustomTeamSize(e.target.value)}
-                placeholder="e.g., 2v2v2, 3v3v3, etc."
+                value={customCategory}
+                onChange={(e) => setCustomCategory(e.target.value)}
+                placeholder="e.g., 2v2v2, 3v3v3, ffa, etc."
                 required
                 className="w-full mt-2 bg-gray-800 border border-gray-600 rounded px-3 py-2 text-white focus:border-amber-500 focus:outline-none"
               />
+            )}
+            {!isCustomCategory && (
+              <label className="flex items-center cursor-pointer mt-2">
+                <input
+                  type="radio"
+                  name="category"
+                  checked={isCustomCategory}
+                  onChange={() => {
+                    setIsCustomCategory(true);
+                    setCustomCategory("");
+                  }}
+                  className="mr-2"
+                />
+                <span className="text-white text-sm">Use custom category</span>
+              </label>
             )}
           </div>
 

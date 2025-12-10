@@ -18,6 +18,9 @@ export function useGames(filters: GameFilters = {}): UseGamesResult {
   const [hasMore, setHasMore] = useState(false);
   const [nextCursor, setNextCursor] = useState<string | undefined>();
 
+  // Extract includePlayers to avoid issues with dependency array
+  const includePlayers = (filters as { includePlayers?: boolean }).includePlayers;
+
   const fetchGames = async () => {
     try {
       setLoading(true);
@@ -35,7 +38,7 @@ export function useGames(filters: GameFilters = {}): UseGamesResult {
       if (filters.page) queryParams.append("page", filters.page.toString());
       if (filters.limit) queryParams.append("limit", filters.limit.toString());
       if (filters.cursor) queryParams.append("cursor", filters.cursor);
-      if ((filters as { includePlayers?: boolean }).includePlayers) {
+      if (includePlayers) {
         queryParams.append("includePlayers", "true");
       }
 
@@ -60,11 +63,22 @@ export function useGames(filters: GameFilters = {}): UseGamesResult {
       setNextCursor(result.nextCursor);
     } catch (err) {
       const error = err instanceof Error ? err : new Error("Unknown error");
-      logError(error, "Failed to fetch games", {
-        component: "useGames",
-        operation: "fetchGames",
-        filters,
-      });
+
+      // Don't log network errors in development as they're often due to dev server timing
+      // Only log if it's not a network error or if we're in production
+      const isNetworkError =
+        error.message.includes("NetworkError") ||
+        error.message.includes("Failed to fetch") ||
+        error.name === "TypeError";
+
+      if (!isNetworkError || process.env.NODE_ENV === "production") {
+        logError(error, "Failed to fetch games", {
+          component: "useGames",
+          operation: "fetchGames",
+          filters,
+        });
+      }
+
       setError(error);
     } finally {
       setLoading(false);
@@ -84,6 +98,8 @@ export function useGames(filters: GameFilters = {}): UseGamesResult {
     filters.teamFormat,
     filters.page,
     filters.limit,
+    filters.cursor,
+    includePlayers,
   ]);
 
   return {

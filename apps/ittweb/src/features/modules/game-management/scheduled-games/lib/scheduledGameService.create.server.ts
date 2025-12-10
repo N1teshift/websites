@@ -10,6 +10,7 @@ import { CreateScheduledGame } from "@/types/scheduledGame";
 import { createComponentLogger, logError } from "@websites/infrastructure/logging";
 import { removeUndefined, createTimestampFactoryAsync } from "@websites/infrastructure/utils";
 import { getNextScheduledGameId } from "./scheduledGameService.utils.server";
+import { normalizeCategoryFromTeamSize } from "../../games/lib/gameCategory.utils";
 
 const GAMES_COLLECTION = "games"; // Unified games collection (scheduled and completed)
 const logger = createComponentLogger("scheduledGameService");
@@ -22,10 +23,16 @@ export async function createScheduledGame(gameData: CreateScheduledGame): Promis
     // Get the next available scheduled game ID
     const scheduledGameId = await getNextScheduledGameId();
 
+    // Derive category from teamSize if category not provided (backward compatibility)
+    const category =
+      gameData.category ||
+      normalizeCategoryFromTeamSize(gameData.teamSize, gameData.customTeamSize);
+
     logger.info("Creating scheduled game", {
       scheduledGameId,
       scheduledDateTime: gameData.scheduledDateTime,
-      teamSize: gameData.teamSize,
+      category,
+      teamSize: gameData.teamSize, // Still log for debugging
     });
 
     const cleanedData = removeUndefined(gameData as unknown as Record<string, unknown>);
@@ -42,6 +49,7 @@ export async function createScheduledGame(gameData: CreateScheduledGame): Promis
       ...cleanedData,
       gameId: scheduledGameId,
       gameState: "scheduled",
+      category, // Always populate category
       creatorName: cleanedData.creatorName || "Unknown",
       createdByDiscordId: cleanedData.createdByDiscordId || "",
       scheduledDateTime,

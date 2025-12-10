@@ -12,6 +12,8 @@ import { GamePlayersSection } from "./GamePlayersSection";
 import YouTubeEmbed from "../../media/components/YouTubeEmbed";
 import TwitchClipEmbed from "../../media/components/TwitchClipEmbed";
 import { createComponentLogger } from "@websites/infrastructure/logging";
+import { getGameCategory } from "@/features/modules/game-management/games/lib/gameCategory.utils";
+import { removeBattleTag } from "@/features/modules/shared/utils/playerNameUtils";
 
 /**
  * Extract version from map path
@@ -45,6 +47,7 @@ interface GameLinkedArchiveEntryProps {
   onGameDelete?: (game: GameWithPlayers) => void;
   onGameJoin?: (gameId: string) => Promise<void>;
   onGameLeave?: (gameId: string) => Promise<void>;
+  onGameUploadReplay?: (game: GameWithPlayers) => void;
   isJoining?: string | boolean;
   isLeaving?: string | boolean;
   userIsAdmin?: boolean;
@@ -69,6 +72,7 @@ export function GameLinkedArchiveEntry({
   onGameDelete,
   onGameJoin,
   onGameLeave,
+  onGameUploadReplay,
   isJoining = false,
   isLeaving = false,
   userIsAdmin = false,
@@ -95,6 +99,33 @@ export function GameLinkedArchiveEntry({
   const canDeleteGame = React.useMemo(() => {
     return game?.gameState === "scheduled" && (userIsAdmin || userIsCreator);
   }, [game?.gameState, userIsAdmin, userIsCreator]);
+
+  const canUploadReplay = React.useMemo(() => {
+    return game?.gameState === "scheduled" && (userIsAdmin || userIsCreator || userIsParticipant);
+  }, [game?.gameState, userIsAdmin, userIsCreator, userIsParticipant]);
+
+  // Check if scheduled game has passed (scheduled time + game duration < now)
+  const gameHasPassed = React.useMemo(() => {
+    if (!game || game.gameState !== "scheduled") return false;
+
+    const scheduledDateIso =
+      game.scheduledDateTimeString ||
+      (game.scheduledDateTime ? timestampToIso(game.scheduledDateTime) : null);
+
+    if (!scheduledDateIso) return false;
+
+    const scheduledTime = new Date(scheduledDateIso).getTime();
+    const gameDurationMs = game.gameLength ? game.gameLength * 1000 : 0; // gameLength is in seconds
+    const gameEndTime = scheduledTime + gameDurationMs;
+    const now = Date.now();
+
+    return gameEndTime < now;
+  }, [game?.gameState, game?.scheduledDateTimeString, game?.scheduledDateTime, game?.gameLength]);
+
+  // Determine if we should show "Waiting for replay" tag
+  const shouldShowWaitingForReplay = React.useMemo(() => {
+    return game?.gameState === "scheduled" && gameHasPassed && canUploadReplay;
+  }, [game?.gameState, gameHasPassed, canUploadReplay]);
 
   if (gameLoading && entry.linkedGameDocumentId) {
     return (
@@ -137,30 +168,33 @@ export function GameLinkedArchiveEntry({
             </div>
           </div>
           {game && (
-            <span className="px-3 py-1 text-xs bg-amber-500/30 border border-amber-400/50 rounded text-amber-300 font-medium">
+            <span
+              className={`px-3 py-1 text-xs border rounded font-medium ${
+                game.gameState === "completed"
+                  ? "bg-green-500/30 border-green-400/50 text-green-300"
+                  : shouldShowWaitingForReplay
+                    ? "bg-blue-500/30 border-blue-400/50 text-blue-300"
+                    : "bg-amber-500/30 border-amber-400/50 text-amber-300"
+              }`}
+            >
               {game.gameState === "completed"
                 ? "Completed game"
-                : game.gameState === "scheduled"
-                  ? "Scheduled game"
-                  : "Game"}
+                : shouldShowWaitingForReplay
+                  ? "Waiting for replay"
+                  : game.gameState === "scheduled"
+                    ? "Scheduled game"
+                    : "Game"}
             </span>
           )}
         </div>
 
         {game && (
           <>
-            {/* Game Details Grid */}
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-2 text-xs mt-4 p-3 bg-black/30 rounded border border-amber-500/20">
+            {/* Game Details Row */}
+            <div className="flex flex-wrap gap-x-4 gap-y-2 text-xs mt-4 p-3 bg-black/30 rounded border border-amber-500/20">
               {game.gameState === "completed" ? (
                 <>
-                  {/* 1. Creator */}
-                  {game.creatorName && (
-                    <div>
-                      <span className="text-gray-400">Creator:</span>{" "}
-                      <span className="text-amber-300 font-medium">{game.creatorName}</span>
-                    </div>
-                  )}
-                  {/* 2. Version */}
+                  {/* 1. Version */}
                   {game.map &&
                     (() => {
                       const version = extractVersionFromMap(
@@ -173,14 +207,14 @@ export function GameLinkedArchiveEntry({
                         </div>
                       ) : null;
                     })()}
-                  {/* 3. Team Size */}
+                  {/* 2. Team Size */}
                   {game.category && (
                     <div>
                       <span className="text-gray-400">Team Size:</span>{" "}
                       <span className="text-amber-300 font-medium">{game.category}</span>
                     </div>
                   )}
-                  {/* 4. Duration */}
+                  {/* 3. Duration */}
                   {game.duration && (
                     <div>
                       <span className="text-gray-400">Duration:</span>{" "}
@@ -189,40 +223,36 @@ export function GameLinkedArchiveEntry({
                       </span>
                     </div>
                   )}
-                  {/* 5. Owner */}
+                  {/* 4. Lobby Owner */}
                   {game.ownername && (
                     <div>
-                      <span className="text-gray-400">Owner:</span>{" "}
-                      <span className="text-amber-300 font-medium">{game.ownername}</span>
+                      <span className="text-gray-400">Lobby Owner:</span>{" "}
+                      <span className="text-amber-300 font-medium">
+                        {removeBattleTag(game.ownername)}
+                      </span>
                     </div>
                   )}
                 </>
               ) : game.gameState === "scheduled" ? (
                 <>
-                  {/* 1. Creator */}
-                  {game.creatorName && (
-                    <div>
-                      <span className="text-gray-400">Creator:</span>{" "}
-                      <span className="text-amber-300 font-medium">{game.creatorName}</span>
-                    </div>
-                  )}
-                  {/* 2. Version */}
+                  {/* 1. Version */}
                   {game.gameVersion && (
                     <div>
                       <span className="text-gray-400">Version:</span>{" "}
                       <span className="text-amber-300 font-medium">{game.gameVersion}</span>
                     </div>
                   )}
-                  {/* 3. Team Size */}
-                  {game.teamSize && (
-                    <div>
-                      <span className="text-gray-400">Team Size:</span>{" "}
-                      <span className="text-amber-300 font-medium">
-                        {game.teamSize === "custom" ? game.customTeamSize : game.teamSize}
-                      </span>
-                    </div>
-                  )}
-                  {/* 4. Duration */}
+                  {/* 2. Team Size */}
+                  {(() => {
+                    const category = getGameCategory(game);
+                    return category ? (
+                      <div>
+                        <span className="text-gray-400">Team Size:</span>{" "}
+                        <span className="text-amber-300 font-medium">{category}</span>
+                      </div>
+                    ) : null;
+                  })()}
+                  {/* 3. Duration */}
                   {game.gameLength && (
                     <div>
                       <span className="text-gray-400">Duration:</span>{" "}
@@ -231,7 +261,7 @@ export function GameLinkedArchiveEntry({
                       </span>
                     </div>
                   )}
-                  {/* 5. Scheduled */}
+                  {/* 4. Scheduled */}
                   {(game.scheduledDateTimeString || game.scheduledDateTime) && (
                     <div>
                       <span className="text-gray-400">Scheduled:</span>{" "}
@@ -449,12 +479,24 @@ export function GameLinkedArchiveEntry({
                       Delete
                     </button>
                   )}
+                  {canUploadReplay && onGameUploadReplay && (
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        onGameUploadReplay(game);
+                      }}
+                      className="text-blue-400 hover:text-blue-300 underline font-medium transition-colors"
+                    >
+                      Upload Replay
+                    </button>
+                  )}
                 </>
               )}
               {game?.id ? (
                 <button
                   onClick={handleViewDetailsClick}
-                  className="text-amber-300 font-medium hover:text-amber-200 transition-colors flex items-center gap-1 cursor-pointer"
+                  className="text-amber-300 font-medium hover:text-amber-200 underline transition-colors flex items-center gap-1 cursor-pointer"
                 >
                   View full game details
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

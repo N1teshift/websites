@@ -3,6 +3,7 @@ import type { Game } from "@/features/modules/game-management/games/types";
 import { formatDateTimeInTimezone, getUserTimezone } from "../utils/timezoneUtils";
 import { timestampToIso } from "@websites/infrastructure/utils";
 import { useSession } from "next-auth/react";
+import { getGameCategory } from "@/features/modules/game-management/games/lib/gameCategory.utils";
 
 interface ScheduledGameCardProps {
   game: Game;
@@ -201,8 +202,7 @@ function ScheduledGameCardComponent({
         <div className="flex-1">
           <div className="flex items-center gap-3 mb-2">
             <h3 className="text-xl font-medieval-brand text-amber-400">
-              {game.teamSize === "custom" ? game.customTeamSize : game.teamSize} -{" "}
-              {game.gameType === "elo" ? "ELO" : "Normal"}
+              {getGameCategory(game) || "Unknown"} - {game.gameType === "elo" ? "ELO" : "Normal"}
             </h3>
             {game.scheduledGameId && (
               <span className="text-sm text-gray-400">#{game.scheduledGameId}</span>

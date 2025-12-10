@@ -29,6 +29,7 @@ interface ArchivesContentProps {
   onGameDelete?: (game: Game) => void;
   onGameJoin?: (gameId: string) => Promise<void>;
   onGameLeave?: (gameId: string) => Promise<void>;
+  onGameUploadReplay?: (game: Game) => void;
   isJoining?: boolean;
   isLeaving?: boolean;
   userIsAdmin?: boolean;
@@ -55,6 +56,7 @@ const ArchivesContent: React.FC<ArchivesContentProps> = memo(
     onGameDelete,
     onGameJoin,
     onGameLeave,
+    onGameUploadReplay,
     isJoining,
     isLeaving,
     userIsAdmin,
@@ -216,6 +218,7 @@ const ArchivesContent: React.FC<ArchivesContentProps> = memo(
               onGameDelete={onGameDelete}
               onGameJoin={onGameJoin}
               onGameLeave={onGameLeave}
+              onGameUploadReplay={onGameUploadReplay}
               isJoining={isJoining}
               isLeaving={isLeaving}
               userIsAdmin={userIsAdmin}

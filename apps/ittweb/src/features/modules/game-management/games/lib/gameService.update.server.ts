@@ -11,6 +11,7 @@ import { removeUndefined, createTimestampFactoryAsync } from "@websites/infrastr
 import { invalidateAnalyticsCache } from "@websites/infrastructure/cache/analyticsCache.server";
 import type { UpdateGame } from "../types";
 import { updateEloScores } from "@/features/modules/game-management/lib/mechanics";
+import { normalizeCategoryFromTeamSize } from "./gameCategory.utils";
 
 const GAMES_COLLECTION = "games";
 
@@ -23,8 +24,30 @@ export async function updateGame(id: string, updates: UpdateGame): Promise<void>
     const updateData: Record<string, unknown> = { ...cleanedUpdates };
     const timestampFactory = await createTimestampFactoryAsync();
 
+    // Handle category: prefer category field, or derive from teamSize for backward compat
+    if (updates.category) {
+      updateData.category = updates.category;
+    } else if (updates.teamSize) {
+      // Derive category from teamSize for backward compatibility
+      const category = normalizeCategoryFromTeamSize(updates.teamSize, updates.customTeamSize);
+      if (category) {
+        updateData.category = category;
+      }
+    }
+
+    // Remove deprecated fields from update data
+    delete updateData.teamSize;
+    delete updateData.customTeamSize;
+
     if (cleanedUpdates.datetime) {
       updateData.datetime = timestampFactory.fromDate(new Date(cleanedUpdates.datetime as string));
+    }
+
+    if (cleanedUpdates.scheduledDateTime && typeof cleanedUpdates.scheduledDateTime === "string") {
+      updateData.scheduledDateTime = timestampFactory.fromDate(
+        new Date(cleanedUpdates.scheduledDateTime as string)
+      );
+      updateData.scheduledDateTimeString = cleanedUpdates.scheduledDateTime;
     }
 
     const adminDb = getFirestoreAdmin();

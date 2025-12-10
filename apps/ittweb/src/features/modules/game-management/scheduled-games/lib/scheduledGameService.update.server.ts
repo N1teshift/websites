@@ -9,6 +9,7 @@ import { getFirestoreAdmin } from "@websites/infrastructure/firebase/admin";
 import { CreateScheduledGame } from "@/types/scheduledGame";
 import { createComponentLogger, logError } from "@websites/infrastructure/logging";
 import { createTimestampFactoryAsync } from "@websites/infrastructure/utils";
+import { normalizeCategoryFromTeamSize } from "../../games/lib/gameCategory.utils";
 
 const GAMES_COLLECTION = "games"; // Unified games collection (scheduled and completed)
 const logger = createComponentLogger("scheduledGameService");
@@ -56,7 +57,18 @@ export async function updateScheduledGame(
 
     // Handle other optional fields from CreateScheduledGame (only if they're strings/numbers, not Timestamps)
     if (updates.timezone !== undefined) updateData.timezone = updates.timezone;
-    if (updates.teamSize !== undefined) updateData.teamSize = updates.teamSize;
+
+    // Handle category (preferred) or derive from teamSize (backward compatibility)
+    if (updates.category !== undefined) {
+      updateData.category = updates.category;
+    } else if (updates.teamSize !== undefined) {
+      // Derive category from teamSize if category not provided
+      const category = normalizeCategoryFromTeamSize(updates.teamSize, updates.customTeamSize);
+      if (category) {
+        updateData.category = category;
+      }
+      updateData.teamSize = updates.teamSize;
+    }
     if (updates.customTeamSize !== undefined) updateData.customTeamSize = updates.customTeamSize;
     if (updates.gameType !== undefined) updateData.gameType = updates.gameType;
     if (updates.gameVersion !== undefined) updateData.gameVersion = updates.gameVersion;

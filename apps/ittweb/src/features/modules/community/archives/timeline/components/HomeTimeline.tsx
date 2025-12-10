@@ -127,6 +127,35 @@ const HomeTimeline = forwardRef<HomeTimelineHandle>((_props, ref) => {
     refetchGames,
   });
 
+  // Game upload replay state
+  const [uploadingReplayGame, setUploadingReplayGame] = React.useState<GameWithPlayers | null>(
+    null
+  );
+
+  const handleGameUploadReplay = React.useCallback(
+    (game: GameWithPlayers) => {
+      if (!isAuthenticated) {
+        return;
+      }
+      if (game.gameState !== "scheduled") {
+        setError("Can only upload replay for scheduled games");
+        return;
+      }
+      setUploadingReplayGame(game);
+    },
+    [isAuthenticated, setError]
+  );
+
+  const handleGameUploadReplaySuccess = React.useCallback(async () => {
+    setUploadingReplayGame(null);
+    // Refetch games to get updated data
+    await refetchGames();
+  }, [refetchGames]);
+
+  const handleGameUploadReplayClose = React.useCallback(() => {
+    setUploadingReplayGame(null);
+  }, []);
+
   // Combine errors from both hooks
   const gameDeleteError = joinLeaveError || editDeleteError;
   const setGameDeleteError = (error: string | null) => {
@@ -195,6 +224,7 @@ const HomeTimeline = forwardRef<HomeTimelineHandle>((_props, ref) => {
         onGameDelete={handleGameDelete}
         onGameJoin={handleGameJoin}
         onGameLeave={handleGameLeave}
+        onGameUploadReplay={handleGameUploadReplay}
       />
 
       <ImageModal isOpen={showImageModal} image={modalImage} onClose={handleImageModalClose} />
@@ -204,6 +234,7 @@ const HomeTimeline = forwardRef<HomeTimelineHandle>((_props, ref) => {
         editingGame={editingGame}
         pendingDeleteEntry={pendingDeleteEntry}
         pendingDeleteGame={pendingDeleteGame}
+        uploadingReplayGame={uploadingReplayGame}
         isDeleting={isDeleting}
         isDeletingGame={isDeletingGame}
         extractEntryId={extractEntryId}
@@ -215,6 +246,8 @@ const HomeTimeline = forwardRef<HomeTimelineHandle>((_props, ref) => {
         onEntryDeleteCancel={handleEntryDeleteCancel}
         onGameDeleteConfirm={handleGameDeleteConfirm}
         onGameDeleteCancel={handleGameDeleteCancel}
+        onGameUploadReplaySuccess={handleGameUploadReplaySuccess}
+        onGameUploadReplayClose={handleGameUploadReplayClose}
       />
 
       <DeleteErrorDisplay error={gameDeleteError} onDismiss={() => setGameDeleteError(null)} />
