@@ -1,13 +1,12 @@
 import React from "react";
-import MapFileUploader from "./MapFileUploader";
+import MapFileUploader from "../input/MapFileUploader";
 import TerrainVisualizer from "./TerrainVisualizer";
-import { MapPersistenceHeader } from "./MapPersistenceHeader";
-import { useMapPersistence } from "./useMapPersistence";
-import { useMapUIState } from "./useMapUIState";
-import type { SimpleMapData } from "../types/map";
+import { useMapPersistence } from "../../hooks/useMapPersistence";
+import { useMapUIState } from "../../hooks/useMapUIState";
+import type { SimpleMapData } from "../../types/map";
 
 export default function TerrainVisualizerContainer() {
-  const [map, setMap, clearPersisted] = useMapPersistence();
+  const [map, setMap] = useMapPersistence();
   const [uiState, setUiState] = useMapUIState();
 
   const handleJsonLoaded = (data: unknown) => {
@@ -19,7 +18,6 @@ export default function TerrainVisualizerContainer() {
       <div className="max-w-2xl mx-auto mb-2">
         <MapFileUploader onJsonLoaded={handleJsonLoaded} />
       </div>
-      <MapPersistenceHeader onClear={clearPersisted} />
       <div>
         <TerrainVisualizer
           map={map}

@@ -1,17 +1,17 @@
 import React from "react";
-import MapControls from "./MapControls";
-import MapContainer from "./MapContainer";
-import MapInfoPanel from "./MapInfoPanel";
-import TileInfoPanel from "./TileInfoPanel";
-import FlagVisualizer from "./FlagVisualizer";
-import FlagLegend from "./FlagLegend";
-import ElevationLegend from "./ElevationLegend";
-import CliffLegend from "./CliffLegend";
-import WaterLegend from "./WaterLegend";
-import TerrainLegendCard from "./TerrainLegendCard";
-import HeightDistributionChart from "./HeightDistributionChart";
-import type { SimpleMapData, SimpleTile } from "../types/map";
-import { normalizeJsonToSimpleMap } from "../utils/mapUtils";
+import MapControls from "../controls/MapControls";
+import MapContainerCanvas from "../map/MapContainerCanvas";
+import MapInfoPanel from "../panels/MapInfoPanel";
+import TileInfoPanel from "../panels/TileInfoPanel";
+import FlagVisualizer from "../controls/FlagVisualizer";
+import FlagLegend from "../legends/FlagLegend";
+import ElevationLegend from "../legends/ElevationLegend";
+import CliffLegend from "../legends/CliffLegend";
+import WaterLegend from "../legends/WaterLegend";
+import TerrainLegendCard from "../legends/TerrainLegendCard";
+import HeightDistributionChart from "../controls/HeightDistributionChart";
+import type { SimpleMapData, SimpleTile } from "../../types/map";
+import { normalizeJsonToSimpleMap } from "../../utils/mapUtils";
 
 export default function TerrainVisualizer({
   map,
@@ -66,6 +66,7 @@ export default function TerrainVisualizer({
   const [t2, setT2] = React.useState<number | undefined>(initialT2);
   const [sliceEnabled, setSliceEnabled] = React.useState(!!initialSliceEnabled);
   const [debugMode, setDebugMode] = React.useState(false);
+  const [viewportSize, setViewportSize] = React.useState<number>(700);
 
   React.useEffect(() => {
     if (!map) {
@@ -124,6 +125,28 @@ export default function TerrainVisualizer({
     return counts;
   }, [simpleMap]);
 
+  // Make viewport square by matching height to width
+  React.useEffect(() => {
+    const updateSize = () => {
+      if (containerRef.current) {
+        const width = containerRef.current.clientWidth;
+        setViewportSize(width);
+      }
+    };
+
+    updateSize();
+    window.addEventListener("resize", updateSize);
+    const resizeObserver = new ResizeObserver(updateSize);
+    if (containerRef.current) {
+      resizeObserver.observe(containerRef.current);
+    }
+
+    return () => {
+      window.removeEventListener("resize", updateSize);
+      resizeObserver.disconnect();
+    };
+  }, []);
+
   // Auto Fit removed
 
   return (
@@ -158,10 +181,9 @@ export default function TerrainVisualizer({
           onFit={() => {
             if (!simpleMap || !containerRef.current) return;
             const pad = 16;
-            const cw = containerRef.current.clientWidth - pad * 2;
-            const ch = 480; // approx visible height
-            const zx = cw / (simpleMap.width * 16);
-            const zy = ch / (simpleMap.height * 16);
+            const size = viewportSize - pad * 2; // square viewport
+            const zx = size / (simpleMap.width * 16);
+            const zy = size / (simpleMap.height * 16);
             const next = Math.max(0.1, Math.min(4, Math.min(zx, zy)));
             const v = +next.toFixed(2);
             setZoom(v);
@@ -170,16 +192,16 @@ export default function TerrainVisualizer({
           onFitWidth={() => {
             if (!simpleMap || !containerRef.current) return;
             const pad = 16;
-            const cw = containerRef.current.clientWidth - pad * 2;
-            const zx = cw / (simpleMap.width * 16);
+            const size = viewportSize - pad * 2; // square viewport
+            const zx = size / (simpleMap.width * 16);
             const v = +Math.max(0.1, Math.min(4, zx)).toFixed(2);
             setZoom(v);
             onZoomChange?.(v);
           }}
           onFitHeight={() => {
             if (!simpleMap) return;
-            const ch = 480; // matches viewportHeightPx
-            const zy = ch / (simpleMap.height * 16);
+            const size = viewportSize; // square viewport
+            const zy = size / (simpleMap.height * 16);
             const v = +Math.max(0.1, Math.min(4, zy)).toFixed(2);
             setZoom(v);
             onZoomChange?.(v);
@@ -311,8 +333,8 @@ export default function TerrainVisualizer({
       )}
 
       <div className="relative" ref={containerRef}>
-        <MapContainer
-          onHover={setHoveredTile}
+        <MapContainerCanvas
+          onHover={(tile) => setHoveredTile(tile)}
           onHoverInfo={({ tile, x, y }) => {
             if (!simpleMap || !tile) {
               setHoverUi(null);
@@ -322,10 +344,10 @@ export default function TerrainVisualizer({
             const t = simpleMap.tiles[ty * simpleMap.width + tx];
             setHoverUi({ x, y, data: { ...t, x: tx, y: ty } });
           }}
-          onSelect={setSelectedTile}
+          onSelect={(tile) => setSelectedTile(tile)}
           map={simpleMap ?? undefined}
           zoom={zoom}
-          viewportHeightPx={480}
+          viewportHeightPx={viewportSize}
           onZoomChange={(z) => {
             setZoom(z);
             onZoomChange?.(z);

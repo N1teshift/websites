@@ -1,7 +1,7 @@
 import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 import HeightDistributionChart from "../HeightDistributionChart";
-import type { SimpleMapData } from "../../types/map";
+import type { SimpleMapData } from "../../../types/map";
 
 describe("HeightDistributionChart", () => {
   it("shows an empty state when no map is provided", () => {

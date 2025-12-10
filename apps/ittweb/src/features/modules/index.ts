@@ -51,7 +51,7 @@ export {
   StatsCard,
 } from "./content/guides/components";
 export {
-  MapContainer,
+  MapContainerCanvas,
   MapControls,
   MapFileUploader,
   MapInfoPanel,

@@ -28,7 +28,7 @@ Development and simulation tools.
 ## Usage
 
 ```typescript
-import { MapContainer, TerrainVisualizer } from "@/features/modules/tools-group/map-analyzer";
+import { MapContainerCanvas, TerrainVisualizer } from "@/features/modules/tools-group/map-analyzer";
 ```
 
 ## Related Documentation

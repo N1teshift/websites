@@ -1,5 +1,5 @@
 import React from "react";
-import type { SimpleMapData } from "../types/map";
+import type { SimpleMapData } from "../../types/map";
 
 export default function HeightDistributionChart({
   map,

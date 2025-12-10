@@ -1,5 +1,5 @@
 import React from "react";
-import type { SimpleMapData } from "../types/map";
+import type { SimpleMapData } from "../../types/map";
 
 export default function MapInfoPanel({ map }: { map?: SimpleMapData | null }) {
   const width = map?.width ?? 0;

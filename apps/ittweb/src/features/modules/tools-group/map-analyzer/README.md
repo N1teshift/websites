@@ -6,7 +6,7 @@
 
 ### Components
 
-- `MapContainer` - Main map visualization container with interactive features
+- `MapContainerCanvas` - Low-level map rendering component with canvas-based visualization
 - `MapControls` - Zoom, pan, and layer control interface
 - `MapFileUploader` - .w3x map file upload component with validation
 - `MapInfoPanel` - Map metadata and statistics display
@@ -38,10 +38,10 @@
 ### Basic Map Analysis
 
 ```typescript
-import { MapContainer } from '@/features/modules/map-analyzer/components';
+import { TerrainVisualizerContainer } from '@/features/modules/map-analyzer/components';
 
-// Full-featured map analyzer
-<MapContainer />
+// Full-featured map analyzer with file upload and visualization
+<TerrainVisualizerContainer />
 ```
 
 ### Individual Components
