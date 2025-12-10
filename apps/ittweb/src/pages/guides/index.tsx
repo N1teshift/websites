@@ -71,6 +71,15 @@ export default function Guides() {
                       Units
                     </Link>
                   </li>
+                  <li>
+                    •{" "}
+                    <Link
+                      href="/guides/elo-calculation"
+                      className="text-amber-400 hover:text-amber-300"
+                    >
+                      Elo Calculation
+                    </Link>
+                  </li>
                 </ul>
               </div>
             </div>

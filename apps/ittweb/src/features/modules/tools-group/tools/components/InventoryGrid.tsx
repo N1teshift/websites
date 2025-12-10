@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import GuideIcon from "@/features/modules/content/guides/components/GuideIcon";
 import type { DragPayload, TrollSide } from "@/features/modules/tools-group/tools/types";
 import type { ItemData } from "@/types/items";
@@ -100,7 +101,19 @@ export default function InventoryGrid({
                 </span>
               </>
             ) : (
-              <span className="text-amber-300/60 text-xs">Empty</span>
+              <Image
+                src="/icons/itt/nightelf-inventory-slotfiller.png"
+                alt="Empty slot"
+                width={64}
+                height={64}
+                className="w-full h-full object-cover opacity-50"
+                unoptimized
+                onError={(e) => {
+                  // Fallback if icon fails to load
+                  const target = e.target as HTMLImageElement;
+                  target.style.display = "none";
+                }}
+              />
             )}
           </div>
         );

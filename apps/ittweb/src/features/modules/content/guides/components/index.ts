@@ -5,3 +5,4 @@ export { default as ClassModel } from "./ClassModel";
 export { ColoredText } from "./ColoredText";
 export { default as GuideIcon } from "./GuideIcon";
 export { default as StatsCard } from "./StatsCard";
+export { MathFormula } from "./MathFormula";

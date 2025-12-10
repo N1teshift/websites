@@ -23,6 +23,20 @@ const CACHE_COLLECTION = "analyticsCache";
 const DEFAULT_CACHE_CONFIG: CacheConfig = { ttlSeconds: 300, version: 1 };
 
 /**
+ * Remove undefined values from an object
+ * Firestore doesn't allow undefined values in documents
+ */
+function removeUndefinedValues<T extends Record<string, unknown>>(obj: T): T {
+  const cleaned: Record<string, unknown> = {};
+  for (const [key, value] of Object.entries(obj)) {
+    if (value !== undefined) {
+      cleaned[key] = value;
+    }
+  }
+  return cleaned as T;
+}
+
+/**
  * Get cached analytics result
  * Returns null if cache miss or expired
  *
@@ -108,11 +122,14 @@ export async function setCachedAnalytics<T>(
     const now = new Date();
     const expiresAt = new Date(now.getTime() + config.ttlSeconds * 1000);
 
+    // Remove undefined values from filters - Firestore doesn't allow undefined
+    const cleanedFilters = removeUndefinedValues(filters);
+
     const entry: CacheEntry<T> = {
       data,
       computedAt: now.toISOString(),
       expiresAt: expiresAt.toISOString(),
-      filters,
+      filters: cleanedFilters,
       version: config.version || 1,
     };
 

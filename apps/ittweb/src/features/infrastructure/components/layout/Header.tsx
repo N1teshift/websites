@@ -20,6 +20,7 @@ export default function Header() {
     { href: "/guides/abilities", label: "Abilities" },
     { href: "/guides/items", label: "Items" },
     { href: "/guides/units", label: "Units" },
+    { href: "/guides/elo-calculation", label: "Elo Calculation" },
   ];
 
   const communityItems = [

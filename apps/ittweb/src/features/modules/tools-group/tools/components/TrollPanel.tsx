@@ -9,8 +9,11 @@ import type {
 import {
   BASE_TROLL_CLASSES,
   getClassBySlug,
-  TrollClassData,
 } from "@/features/modules/content/guides/data/units/classes";
+import {
+  DERIVED_CLASSES,
+  getDerivedClassBySlug,
+} from "@/features/modules/content/guides/data/units/derivedClasses";
 import {
   ATTR_START_MULTIPLIER,
   MOVESPEED_PER_LEVEL,
@@ -24,6 +27,71 @@ import type { ItemData } from "@/types/items";
 import StatsPanel, {
   TrollComputedStats,
 } from "@/features/modules/tools-group/tools/components/StatsPanel";
+
+// Unified type for class stats calculation (works with both base and derived classes)
+type ClassStatsData = {
+  slug: string;
+  name: string;
+  iconSrc?: string;
+  growth: { strength: number; agility: number; intelligence: number };
+  baseAttackSpeed: number;
+  baseMoveSpeed: number;
+  baseHp: number;
+  baseMana: number;
+};
+
+// Helper function to get class data from either base or derived classes
+function getAnyClassBySlug(slug: string): ClassStatsData | undefined {
+  // Try base classes first
+  const baseClass = getClassBySlug(slug);
+  if (baseClass) {
+    return {
+      slug: baseClass.slug,
+      name: baseClass.name,
+      iconSrc: baseClass.iconSrc,
+      growth: baseClass.growth,
+      baseAttackSpeed: baseClass.baseAttackSpeed,
+      baseMoveSpeed: baseClass.baseMoveSpeed,
+      baseHp: baseClass.baseHp,
+      baseMana: baseClass.baseMana,
+    };
+  }
+
+  // Try derived classes
+  const derivedClass = getDerivedClassBySlug(slug);
+  if (derivedClass) {
+    return {
+      slug: derivedClass.slug,
+      name: derivedClass.name,
+      iconSrc: derivedClass.iconSrc,
+      growth: derivedClass.growth,
+      baseAttackSpeed: derivedClass.baseAttackSpeed,
+      baseMoveSpeed: derivedClass.baseMoveSpeed,
+      baseHp: derivedClass.baseHp,
+      baseMana: derivedClass.baseMana,
+    };
+  }
+
+  return undefined;
+}
+
+// Get all available classes (base + derived), sorted for display
+function getAllAvailableClasses(): Array<{ slug: string; name: string; iconSrc?: string }> {
+  const allClasses: Array<{ slug: string; name: string; iconSrc?: string }> = [];
+
+  // Add base classes first
+  BASE_TROLL_CLASSES.forEach((c) => {
+    allClasses.push({ slug: c.slug, name: c.name, iconSrc: c.iconSrc });
+  });
+
+  // Add derived classes (subclasses and superclasses)
+  DERIVED_CLASSES.forEach((c) => {
+    allClasses.push({ slug: c.slug, name: c.name, iconSrc: c.iconSrc });
+  });
+
+  // Sort alphabetically by name for easier navigation
+  return allClasses.sort((a, b) => a.name.localeCompare(b.name));
+}
 
 export default function TrollPanel({
   title,
@@ -44,7 +112,8 @@ export default function TrollPanel({
   onClearSlot: (index: number) => void;
   onDropToSlot: (side: TrollSide, index: number, payload: DragPayload) => void;
 }) {
-  const clazz: TrollClassData | undefined = getClassBySlug(loadout.classSlug);
+  const clazz = React.useMemo(() => getAnyClassBySlug(loadout.classSlug), [loadout.classSlug]);
+  const allClasses = React.useMemo(() => getAllAvailableClasses(), []);
 
   const itemSums = React.useMemo(() => {
     return (loadout.inventory.filter(Boolean) as ItemData[]).reduce(
@@ -100,7 +169,7 @@ export default function TrollPanel({
               value={loadout.classSlug}
               onChange={(e) => onChangeClass(e.target.value)}
             >
-              {BASE_TROLL_CLASSES.map((c) => (
+              {allClasses.map((c) => (
                 <option key={c.slug} value={c.slug}>
                   {c.name}
                 </option>
