@@ -127,7 +127,7 @@ const ArchivesContent: React.FC<ArchivesContentProps> = memo(
 
           return {
             id: `game-${game.id}`,
-            title: `Game #${game.gameId}`,
+            title: `Game #${game.gameId}${game.gamename ? ` - ${game.gamename}` : ""}`,
             content: "",
             creatorName: game.creatorName || "System",
             linkedGameDocumentId: game.id, // Set the document ID so ArchiveEntry component can fetch full game data

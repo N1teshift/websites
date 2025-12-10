@@ -17,20 +17,18 @@ Map terrain analysis and visualization tools.
 
 ### tools/
 
-Icon mapper and other development tools.
+Development and simulation tools.
 
 **Exports**:
 
-- Components for icon mapping and inventory simulation
-- Hooks: `useIconMapperData`
-- Utilities for icon mapping
+- Components for inventory simulation and duel simulator
+- Utilities for tool data processing
 - Types for tool data structures
 
 ## Usage
 
 ```typescript
 import { MapContainer, TerrainVisualizer } from "@/features/modules/tools-group/map-analyzer";
-import { IconMapperStats } from "@/features/modules/tools-group/tools";
 ```
 
 ## Related Documentation

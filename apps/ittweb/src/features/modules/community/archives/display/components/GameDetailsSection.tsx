@@ -18,7 +18,10 @@ export function GameDetailsSection({ game }: GameDetailsSectionProps) {
   return (
     <div className="space-y-6">
       <Card variant="medieval" className="p-6">
-        <h1 className="text-2xl font-bold text-amber-400 mb-4">Game #{game.gameId}</h1>
+        <h1 className="text-2xl font-bold text-amber-400 mb-4">
+          Game #{game.gameId}
+          {game.gamename ? ` - ${game.gamename}` : ""}
+        </h1>
 
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
           <div>

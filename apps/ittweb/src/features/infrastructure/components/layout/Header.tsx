@@ -33,7 +33,6 @@ export default function Header() {
     { href: "/analytics/meta", label: "Meta Statistics" },
     { href: "/tools/duel-simulator", label: "Duel Simulator" },
     { href: "/tools/map-analyzer", label: "Map Analyzer" },
-    { href: "/tools/icon-mapper", label: "Icon Mapper" },
   ];
 
   return (

@@ -14,7 +14,6 @@ const pagesToTest = [
   "/guides/troll-classes",
   "/tools",
   "/tools/duel-simulator",
-  "/tools/icon-mapper",
   "/tools/map-analyzer",
   "/community/archives",
   "/privacy",

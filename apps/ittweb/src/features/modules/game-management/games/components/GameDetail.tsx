@@ -121,6 +121,7 @@ export function GameDetail({
       <Card variant="medieval" className="p-6">
         <h1 className="text-2xl font-bold text-amber-400 mb-4">
           {isScheduled ? "Scheduled " : ""}Game #{game.gameId}
+          {!isScheduled && game.gamename ? ` - ${game.gamename}` : ""}
         </h1>
 
         <div className="grid grid-cols-5 gap-4 text-sm">

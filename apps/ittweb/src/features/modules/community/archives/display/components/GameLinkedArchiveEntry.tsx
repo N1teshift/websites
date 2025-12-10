@@ -163,7 +163,11 @@ export function GameLinkedArchiveEntry({
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-1">
               <h3 className="text-xl font-bold text-amber-300">
-                {game ? `Game #${game.gameId}` : gameNumber ? `Game #${gameNumber}` : entry.title}
+                {game
+                  ? `Game #${game.gameId}${game.gamename ? ` - ${game.gamename}` : ""}`
+                  : gameNumber
+                    ? `Game #${gameNumber}`
+                    : entry.title}
               </h3>
             </div>
           </div>

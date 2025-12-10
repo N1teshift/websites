@@ -202,6 +202,9 @@ function PlayerCard({ player, isWinner }: { player: GamePlayer; isWinner: boolea
             className={`text-sm font-medium hover:underline ${isWinner ? "text-green-300" : "text-red-300"}`}
           >
             {removeBattleTag(player.name)}
+            {player.eloAfter !== undefined && (
+              <span className="ml-2 text-xs text-gray-400">({player.eloAfter})</span>
+            )}
           </Link>
         </div>
         {player.elochange !== undefined && (

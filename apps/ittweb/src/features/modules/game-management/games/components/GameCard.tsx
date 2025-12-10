@@ -56,7 +56,10 @@ function GameCardComponent({ game }: GameCardProps) {
       <Link href={`/games/${game.id}`} className="block">
         <div className="flex justify-between items-start mb-2">
           <div>
-            <h3 className="text-xl font-semibold text-amber-400 mb-1">Game #{game.gameId}</h3>
+            <h3 className="text-xl font-semibold text-amber-400 mb-1">
+              Game #{game.gameId}
+              {game.gamename ? ` - ${game.gamename}` : ""}
+            </h3>
             <p className="text-sm text-gray-400">
               {formattedDate} {formattedTime && formattedTime}
             </p>

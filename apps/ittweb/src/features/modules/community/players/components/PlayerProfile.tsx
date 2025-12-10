@@ -108,7 +108,10 @@ export function PlayerProfile({ name, filters }: PlayerProfileProps) {
                 className="block p-2 hover:bg-amber-500/10 rounded transition-colors"
               >
                 <div className="flex justify-between items-center">
-                  <span className="text-amber-300">Game #{game.gameId}</span>
+                  <span className="text-amber-300">
+                    Game #{game.gameId}
+                    {game.gamename ? ` - ${game.gamename}` : ""}
+                  </span>
                   <span className="text-gray-400 text-sm">
                     {new Date(game.datetime as string).toLocaleDateString()}
                   </span>

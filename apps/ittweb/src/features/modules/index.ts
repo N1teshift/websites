@@ -82,7 +82,7 @@ export {
   ScheduledGamesList as ScheduledGameFilters,
 } from "./game-management/scheduled-games/components";
 export { Leaderboard, CategorySelector } from "./community/standings/components";
-export { IconMapperMappingsList as IconMapper, StatsPanel } from "./tools-group/tools/components";
+export { StatsPanel } from "./tools-group/tools/components";
 export { DateRangeFilter, PlayerFilter, TeamFormatFilter } from "./shared/components";
 export type { GameFilters } from "./game-management/games/types";
 
@@ -100,7 +100,6 @@ export {
 } from "./community/archives/shared/hooks";
 export { useNewPostForm, useEditPostForm } from "./content/blog/hooks";
 export { useMetaData, useMetaFilters } from "./analytics-group/meta/components";
-export { useIconMapperData } from "./tools-group/tools/hooks";
 
 // Service exports
 export {
