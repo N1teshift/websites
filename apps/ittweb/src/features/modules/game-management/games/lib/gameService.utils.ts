@@ -146,6 +146,12 @@ export function convertGamePlayerDoc(docData: Record<string, unknown>, id: strin
           .map((id) => (typeof id === "number" ? id : Number(id)))
           .filter((id) => !isNaN(id))
       : undefined,
+    // Item charges/stacks (schema v6+, parallel array to items)
+    itemCharges: Array.isArray(docData.itemCharges)
+      ? docData.itemCharges
+          .map((charge) => (typeof charge === "number" ? charge : Number(charge)))
+          .filter((charge) => !isNaN(charge))
+      : undefined,
     createdAt: timestampToIso(
       docData.createdAt as Timestamp | { toDate?: () => Date } | string | Date | undefined
     ),

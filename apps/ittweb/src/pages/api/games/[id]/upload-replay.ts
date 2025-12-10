@@ -292,6 +292,14 @@ export default createPostHandler<{ gameId: string; message: string }>(
         killsPanther: player.killsPanther,
         // Player inventory items (schema v4+)
         items: player.items,
+        // Item charges/stacks (schema v6+, parallel array to items)
+        // Include itemCharges if items exist - default to 1 charge per item if not provided or empty
+        itemCharges:
+          player.items && player.items.length > 0
+            ? player.itemCharges && player.itemCharges.length > 0
+              ? player.itemCharges
+              : player.items.map(() => 1) // Default to 1 charge per item if not provided or empty
+            : player.itemCharges,
         createdAt: adminTimestampNow,
       } as Record<string, unknown>);
 

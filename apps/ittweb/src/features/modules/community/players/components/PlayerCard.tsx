@@ -2,6 +2,7 @@ import React, { useMemo, useCallback } from "react";
 import Link from "next/link";
 import { Timestamp } from "firebase/firestore";
 import { Card } from "@/features/infrastructure/components";
+import { removeBattleTag } from "@/features/modules/shared/utils/playerNameUtils";
 import type { PlayerStats, CategoryStats } from "../types";
 
 interface PlayerCardProps {
@@ -72,7 +73,7 @@ function PlayerCardComponent({
       className={cardClassName}
       onClick={onClick ? handleCardClick : undefined}
     >
-      <h3 className="text-xl font-semibold text-amber-400 mb-3">{player.name}</h3>
+      <h3 className="text-xl font-semibold text-amber-400 mb-3">{removeBattleTag(player.name)}</h3>
 
       <div className="space-y-2 text-sm">
         <div className="flex justify-between">

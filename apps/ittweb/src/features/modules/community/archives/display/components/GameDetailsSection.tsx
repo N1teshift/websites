@@ -43,7 +43,9 @@ export function GameDetailsSection({ game }: GameDetailsSectionProps) {
           </div>
           <div>
             <span className="text-gray-500">Lobby Owner:</span>
-            <p className="text-amber-300">{removeBattleTag(game.ownername)}</p>
+            <p className="text-amber-300">
+              {game.ownername ? removeBattleTag(game.ownername) : "N/A"}
+            </p>
           </div>
         </div>
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useCallback, useImperativeHandle, forwardRef } from "react";
-import type { GameFilters } from "@/features/modules/game-management/games/types";
+import type { GameFilters, GameWithPlayers } from "@/features/modules/game-management/games/types";
 import ImageModal from "@/features/modules/community/archives/shared/components/sections/ImageModal";
 import { HomeTimelineModals } from "./HomeTimelineModals";
 import { DeleteErrorDisplay } from "../../display/components";

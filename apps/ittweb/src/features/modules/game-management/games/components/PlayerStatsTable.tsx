@@ -2,6 +2,8 @@ import React from "react";
 import Link from "next/link";
 import { Card } from "@/features/infrastructure/components";
 import { Tooltip } from "@/features/infrastructure/components";
+import { removeBattleTag } from "../../../shared/utils/playerNameUtils";
+import { formatEloChange } from "../../../shared/utils";
 import { PlayerItems } from "./PlayerItems";
 import type { GamePlayer } from "../types";
 
@@ -116,37 +118,42 @@ export function PlayerStatsTable({ players, title = "Player Statistics" }: Playe
               <th className="text-left py-2 px-2">Player</th>
               <th className="text-center py-2 px-2">
                 <Tooltip content="Damage dealt to enemy trolls">
-                  <span>🗡️ Dmg</span>
+                  <span>Dmg</span>
                 </Tooltip>
               </th>
               <th className="text-center py-2 px-2">
                 <Tooltip content="Self healing">
-                  <span>💚 Self</span>
+                  <span>Self</span>
                 </Tooltip>
               </th>
               <th className="text-center py-2 px-2">
                 <Tooltip content="Ally healing">
-                  <span>💙 Ally</span>
+                  <span>Ally</span>
                 </Tooltip>
               </th>
               <th className="text-center py-2 px-2">
                 <Tooltip content="Meat eaten">
-                  <span>🥩 Meat</span>
+                  <span>Meat</span>
                 </Tooltip>
               </th>
               <th className="text-center py-2 px-2">
                 <Tooltip content="Gold acquired from selling">
-                  <span>💰 Gold</span>
+                  <span>Gold</span>
                 </Tooltip>
               </th>
               <th className="text-center py-2 px-2">
                 <Tooltip content="Total animal kills (hover for breakdown)">
-                  <span>🦌 Kills</span>
+                  <span>Kills</span>
                 </Tooltip>
               </th>
               <th className="text-center py-2 px-2">
                 <Tooltip content="Player inventory items">
-                  <span>🎒 Items</span>
+                  <span>Items</span>
+                </Tooltip>
+              </th>
+              <th className="text-center py-2 px-2">
+                <Tooltip content="ELO rating change">
+                  <span>ELO</span>
                 </Tooltip>
               </th>
             </tr>
@@ -168,11 +175,8 @@ export function PlayerStatsTable({ players, title = "Player Statistics" }: Playe
                       href={`/players/${encodeURIComponent(player.name)}`}
                       className="text-amber-300 hover:text-amber-200"
                     >
-                      {player.name}
+                      {removeBattleTag(player.name)}
                     </Link>
-                    {player.flag === "winner" && (
-                      <span className="ml-2 text-xs text-green-400">👑</span>
-                    )}
                   </td>
                   <td className="text-center py-2 px-2">
                     <StatCell
@@ -224,7 +228,16 @@ export function PlayerStatsTable({ players, title = "Player Statistics" }: Playe
                     )}
                   </td>
                   <td className="text-center py-2 px-2">
-                    <PlayerItems items={player.items} />
+                    <PlayerItems items={player.items} itemCharges={player.itemCharges} />
+                  </td>
+                  <td className="text-center py-2 px-2">
+                    {player.elochange !== undefined ? (
+                      <span className={player.elochange >= 0 ? "text-green-400" : "text-red-400"}>
+                        {formatEloChange(player.elochange)}
+                      </span>
+                    ) : (
+                      <span className="text-gray-600">-</span>
+                    )}
                   </td>
                 </tr>
               );
@@ -254,7 +267,7 @@ export function PlayerStatsTable({ players, title = "Player Statistics" }: Playe
                   href={`/players/${encodeURIComponent(player.name)}`}
                   className="text-amber-300 hover:text-amber-200 font-medium"
                 >
-                  {player.name}
+                  {removeBattleTag(player.name)}
                 </Link>
                 {player.flag === "winner" && <span className="text-green-400">👑 Winner</span>}
                 {player.flag === "loser" && <span className="text-red-400">Loser</span>}
@@ -270,7 +283,7 @@ export function PlayerStatsTable({ players, title = "Player Statistics" }: Playe
               {player.items && player.items.length > 0 && (
                 <div className="mt-2 pt-2 border-t border-amber-500/10">
                   <div className="text-xs text-gray-400 mb-1">Items:</div>
-                  <PlayerItems items={player.items} />
+                  <PlayerItems items={player.items} itemCharges={player.itemCharges} />
                 </div>
               )}
             </div>

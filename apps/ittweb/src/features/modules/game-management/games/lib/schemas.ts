@@ -22,6 +22,22 @@ const GamePlayerSchema = z.object({
   gold: z.number().optional(),
   damageDealt: z.number().optional(),
   damageTaken: z.number().optional(),
+  // ITT-specific stats (schema v2+)
+  selfHealing: z.number().int().optional(),
+  allyHealing: z.number().int().optional(),
+  meatEaten: z.number().int().optional(),
+  goldAcquired: z.number().int().optional(),
+  // Animal kill counts
+  killsElk: z.number().int().optional(),
+  killsHawk: z.number().int().optional(),
+  killsSnake: z.number().int().optional(),
+  killsWolf: z.number().int().optional(),
+  killsBear: z.number().int().optional(),
+  killsPanther: z.number().int().optional(),
+  // Player inventory items (schema v4+)
+  items: z.array(z.number().int()).optional(),
+  // Item charges/stacks (schema v6+, parallel array to items)
+  itemCharges: z.array(z.number().int()).optional(),
 });
 
 /**

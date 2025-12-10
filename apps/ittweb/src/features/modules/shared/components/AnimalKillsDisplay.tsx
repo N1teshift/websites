@@ -79,12 +79,14 @@ export function AnimalKillsDisplay({
 
   if (compact) {
     // Compact inline display (for small spaces like player cards)
+    // Shows count as badge in bottom-right corner of icon
     return (
       <div className={`flex flex-wrap gap-1.5 ${className}`}>
         {animals.map(({ key, count }) => {
           const config = ANIMAL_CONFIG[key];
+          const killCount = count ?? 0;
           return (
-            <span key={key} className="flex items-center gap-1 text-xs text-gray-400">
+            <div key={key} className="relative w-10 h-10">
               <Image
                 src={config.icon}
                 alt={config.name}
@@ -93,8 +95,14 @@ export function AnimalKillsDisplay({
                 className="w-10 h-10"
                 unoptimized
               />
-              <span>{count ?? 0}</span>
-            </span>
+              {killCount > 0 && (
+                <div className="absolute bottom-0 right-0 w-4 h-4 bg-black border border-amber-700 rounded flex items-center justify-center">
+                  <span className="text-[10px] text-amber-400 font-bold leading-none">
+                    {killCount}
+                  </span>
+                </div>
+              )}
+            </div>
           );
         })}
       </div>

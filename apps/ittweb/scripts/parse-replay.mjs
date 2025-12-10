@@ -64,20 +64,20 @@ for (const replayPath of replayFiles) {
         const result = await parseReplayFile(buffer);
         
         // Note: RangeErrors from w3gjs are automatically suppressed during parsing
-        const { gameData, w3mmd, ittMetadata, debugMatching, parsingSteps } = result;
+        const { gameData, w3mmd, ittMetadata, positionData, debugMatching, parsingSteps } = result;
 
         // Write debug log
         await writeDebugLog(projectRoot, debugMatching);
 
         // Validate results
-        const checks = validateResults(gameData, w3mmd, ittMetadata);
+        const checks = validateResults(gameData, w3mmd, ittMetadata, positionData);
 
         // Display results
-        displayResults(gameData, w3mmd, ittMetadata, checks, verbose);
+        displayResults(gameData, w3mmd, ittMetadata, positionData, checks, verbose);
 
         // Save to JSON file
         const outputPath = replayPath.replace('.w3g', '_parsed.json');
-        const outputData = formatOutputData(fileName, checks, gameData, w3mmd, ittMetadata, debugMatching, parsingSteps);
+        const outputData = formatOutputData(fileName, checks, gameData, w3mmd, ittMetadata, positionData, debugMatching, parsingSteps);
         await writeFile(outputPath, JSON.stringify(outputData, null, 2));
         console.log(`\n💾 Results saved to: ${basename(outputPath)}`);
 

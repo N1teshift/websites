@@ -6,6 +6,7 @@ import { PageHero, ErrorBoundary } from "@/features/infrastructure/components";
 import { Card } from "@/features/infrastructure/components";
 import { ClassWinRateChart } from "@/features/modules/analytics-group/analytics/components";
 import { LoadingScreen, EmptyState } from "@/features/infrastructure/components";
+import { removeBattleTag } from "@/features/modules/shared/utils/playerNameUtils";
 import type {
   ClassStats,
   ClassWinRateData,
@@ -200,9 +201,9 @@ export default function ClassDetailPage() {
                           <Link
                             href={`/players/${encodeURIComponent(player.playerName)}`}
                             className="text-amber-300 hover:text-amber-400 hover:underline"
-                            aria-label={`View ${player.playerName}'s profile`}
+                            aria-label={`View ${removeBattleTag(player.playerName)}'s profile`}
                           >
-                            {player.playerName}
+                            {removeBattleTag(player.playerName)}
                           </Link>
                         </td>
                         <td className="py-2 px-4 text-right text-white">

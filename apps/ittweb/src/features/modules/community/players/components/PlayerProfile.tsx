@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Timestamp } from "firebase/firestore";
 import { Card } from "@/features/infrastructure/components";
 import { EmptyState } from "@/features/infrastructure/components";
+import { removeBattleTag } from "@/features/modules/shared/utils/playerNameUtils";
 import { usePlayerStats } from "../hooks/usePlayerStats";
 import { PlayerITTStatsCard } from "./PlayerITTStatsCard";
 import type { PlayerSearchFilters } from "../types";
@@ -47,7 +48,9 @@ export function PlayerProfile({ name, filters }: PlayerProfileProps) {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl md:text-4xl font-bold text-amber-400">{player.name}</h1>
+      <h1 className="text-2xl md:text-4xl font-bold text-amber-400">
+        {removeBattleTag(player.name)}
+      </h1>
 
       {/* Lifetime ITT Statistics */}
       <PlayerITTStatsCard playerName={player.name} lastPlayed={lastPlayedDate} />
@@ -118,7 +121,7 @@ export function PlayerProfile({ name, filters }: PlayerProfileProps) {
         player.totalGames === 0 && (
           <EmptyState
             title="No Games Played"
-            message={`${player.name} hasn't played any games yet.`}
+            message={`${removeBattleTag(player.name)} hasn't played any games yet.`}
           />
         )
       )}

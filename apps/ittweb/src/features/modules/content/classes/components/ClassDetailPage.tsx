@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { PageHero } from "@/features/infrastructure/components";
 import { Card } from "@/features/infrastructure/components";
+import { removeBattleTag } from "@/features/modules/shared/utils/playerNameUtils";
 import type { ClassStats } from "@/features/modules/analytics-group/analytics/types";
 
 interface ClassDetailPageProps {
@@ -157,7 +158,7 @@ export function ClassDetailPage({ pageNamespaces: _pageNamespaces }: ClassDetail
                           href={`/players/${encodeURIComponent(player.playerName)}`}
                           className="text-amber-300 hover:text-amber-400 hover:underline"
                         >
-                          {player.playerName}
+                          {removeBattleTag(player.playerName)}
                         </Link>
                       </td>
                       <td className="py-2 px-4 text-right text-white">

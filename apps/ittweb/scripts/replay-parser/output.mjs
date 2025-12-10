@@ -8,13 +8,14 @@ import { join } from 'node:path';
 /**
  * Validate parsing results
  */
-export function validateResults(gameData, w3mmd, ittMetadata) {
+export function validateResults(gameData, w3mmd, ittMetadata, positionData) {
     const checks = {
         fileLoaded: true,
         gameDataExtracted: !!gameData,
         playersDetected: gameData?.players?.length > 0,
         w3mmdFound: w3mmd?.raw?.length > 0,
         ittMetadataFound: !!ittMetadata,
+        positionDataFound: !!positionData,
         allPlayersMatched: true,
         allPlayersHaveStats: true
     };
@@ -38,7 +39,7 @@ export function validateResults(gameData, w3mmd, ittMetadata) {
  * Format output data for JSON file
  * Structured to show parsing pipeline step-by-step
  */
-export function formatOutputData(fileName, checks, gameData, w3mmd, ittMetadata, debugMatching, parsingSteps) {
+export function formatOutputData(fileName, checks, gameData, w3mmd, ittMetadata, positionData, debugMatching, parsingSteps) {
     const output = {
         file: fileName,
         parsedAt: new Date().toISOString(),
@@ -74,6 +75,7 @@ export function formatOutputData(fileName, checks, gameData, w3mmd, ittMetadata,
     // Also include legacy format for backward compatibility
     output.gameData = gameData;
     output.ittMetadata = ittMetadata || null;
+    output.positionData = positionData || null;
     output.w3mmd = {
         actionCount: w3mmd.raw.length,
         sample: w3mmd.raw.slice(0, 5)
@@ -100,7 +102,7 @@ export async function writeDebugLog(projectRoot, debugLines) {
 /**
  * Display parsing results
  */
-export function displayResults(gameData, w3mmd, ittMetadata, checks, verbose) {
+export function displayResults(gameData, w3mmd, ittMetadata, positionData, checks, verbose) {
     console.log('\n✅ PARSING SUCCESSFUL\n');
 
     console.log('📊 GAME METADATA');
@@ -157,6 +159,21 @@ export function displayResults(gameData, w3mmd, ittMetadata, checks, verbose) {
         console.log(`   ITT Version: ${ittMetadata.version}`);
         console.log(`   Players in Metadata: ${ittMetadata.players.length}`);
     }
+    
+    console.log('\n📍 POSITION DATA');
+    console.log(`   Position Data: ${positionData ? '✅ Yes' : '❌ No'}`);
+    if (positionData) {
+        const playerSlots = Object.keys(positionData);
+        console.log(`   Players with Position Data: ${playerSlots.length}`);
+        for (const slot of playerSlots) {
+            const positions = positionData[slot];
+            const totalPositions = positions.length;
+            const timeSpan = totalPositions > 0 
+                ? `${positions[0].timeSeconds}s - ${positions[positions.length - 1].timeSeconds}s`
+                : 'N/A';
+            console.log(`   Slot ${slot}: ${totalPositions} positions (${timeSpan})`);
+        }
+    }
 
     console.log('\n🔍 VALIDATION CHECKS');
     console.log(`   ✅ File loaded: ${checks.fileLoaded}`);
@@ -164,6 +181,7 @@ export function displayResults(gameData, w3mmd, ittMetadata, checks, verbose) {
     console.log(`   ${checks.playersDetected ? '✅' : '❌'} Players detected: ${checks.playersDetected}`);
     console.log(`   ${checks.w3mmdFound ? '✅' : '❌'} W3MMD data found: ${checks.w3mmdFound}`);
     console.log(`   ${checks.ittMetadataFound ? '✅' : '❌'} ITT metadata found: ${checks.ittMetadataFound}`);
+    console.log(`   ${checks.positionDataFound ? '✅' : '❌'} Position data found: ${checks.positionDataFound}`);
     console.log(`   ${checks.allPlayersHaveStats ? '✅' : '⚠️'} All players have stats: ${checks.allPlayersHaveStats}`);
 
     if (verbose) {

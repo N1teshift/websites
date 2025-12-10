@@ -2,6 +2,7 @@ import React, { Suspense } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { Card } from "@/features/infrastructure/components";
+import { removeBattleTag } from "@/features/modules/shared/utils/playerNameUtils";
 import type { PlayerComparison, PlayerStats, CategoryStats } from "../types";
 
 const ELOComparisonChart = dynamic(() => import("./ELOComparisonChart"), {
@@ -46,7 +47,9 @@ export function ComparisonResults({ comparison, error }: ComparisonResultsProps)
                 variant="medieval"
                 className="p-6 hover:border-amber-500/50 transition-colors cursor-pointer h-full"
               >
-                <h3 className="text-xl font-semibold text-amber-400 mb-3">{player.name}</h3>
+                <h3 className="text-xl font-semibold text-amber-400 mb-3">
+                  {removeBattleTag(player.name)}
+                </h3>
 
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">

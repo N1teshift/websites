@@ -317,7 +317,7 @@ export function GameLinkedArchiveEntry({
                             : "bg-gray-700/50 text-gray-300"
                         }`}
                       >
-                        {participant.name}
+                        {removeBattleTag(participant.name)}
                       </span>
                     ))}
                   </div>

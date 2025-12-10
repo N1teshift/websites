@@ -96,6 +96,8 @@ export interface GamePlayer {
   killsPanther?: number;
   // Player inventory items (schema v4+)
   items?: number[]; // Item IDs from replay metadata
+  // Item charges/stacks (schema v6+, parallel array to items)
+  itemCharges?: number[]; // Item charges/stacks - same length as items array
   createdAt: Timestamp | string;
 }
 
@@ -135,7 +137,6 @@ export interface Game {
   gamename?: string;
   map?: string;
   ownername?: string; // Legacy field from replay file: typically same as creatorName
-  category?: GameCategory;
   replayUrl?: string;
   replayFileName?: string;
   playerNames?: string[]; // Array of player names for quick access
@@ -223,6 +224,8 @@ export interface CreateCompletedGame {
     killsPanther?: number;
     // Player inventory items (schema v4+)
     items?: number[]; // Item IDs from replay metadata
+    // Item charges/stacks (schema v6+, parallel array to items)
+    itemCharges?: number[]; // Item charges/stacks - same length as items array
   }>;
   // Optional archive content when archiving
   archiveContent?: GameArchiveContent;
@@ -256,7 +259,6 @@ export interface UpdateGame {
   gamename?: string;
   map?: string;
   ownername?: string;
-  category?: GameCategory;
   replayUrl?: string;
   replayFileName?: string;
   playerNames?: string[];

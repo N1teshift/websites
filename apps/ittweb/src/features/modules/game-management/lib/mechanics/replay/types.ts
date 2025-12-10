@@ -1,5 +1,5 @@
 import type Player from "w3gjs/dist/types/Player";
-import type { CreateGame, GameCategory } from "@/features/modules/game-management/games/types";
+import type { CreateGame } from "@/features/modules/game-management/games/types";
 
 export interface ParsedReplay {
   randomseed?: number;
@@ -42,7 +42,8 @@ export interface ITTPlayerStats {
   killsWolf: number;
   killsBear: number;
   killsPanther: number;
-  items?: number[];
+  items?: number[]; // Item IDs
+  itemCharges?: number[]; // Item charges/stacks (parallel array to items, schema v6+)
 }
 
 /**

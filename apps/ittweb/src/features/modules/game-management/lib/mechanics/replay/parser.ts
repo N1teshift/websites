@@ -168,6 +168,7 @@ export async function parseReplayFile(
               killsBear: ittPlayer.killsBear ?? 0,
               killsPanther: ittPlayer.killsPanther ?? 0,
               items: ittPlayer.items,
+              itemCharges: ittPlayer.itemCharges,
             }
           : {};
 

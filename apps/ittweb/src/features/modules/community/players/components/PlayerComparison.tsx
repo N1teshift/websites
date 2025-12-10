@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import { PageHero } from "@/features/infrastructure/components";
 import { Card } from "@/features/infrastructure/components";
 import { EmptyState } from "@/features/infrastructure/components";
+import { removeBattleTag } from "@/features/modules/shared/utils/playerNameUtils";
 import type { PlayerComparison as PlayerComparisonType, CategoryStats } from "../types";
 
 // Lazy load Recharts components to reduce initial bundle size
@@ -172,7 +173,9 @@ export function PlayerComparison({ pageNamespaces: _pageNamespaces }: PlayerComp
                   variant="medieval"
                   className="p-6 hover:border-amber-500/50 transition-colors cursor-pointer h-full"
                 >
-                  <h3 className="text-xl font-semibold text-amber-400 mb-3">{player.name}</h3>
+                  <h3 className="text-xl font-semibold text-amber-400 mb-3">
+                    {removeBattleTag(player.name)}
+                  </h3>
 
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">

@@ -1,8 +1,8 @@
 import React from "react";
-import Link from "next/link";
 import { Card } from "@/features/infrastructure/components";
 import { Tooltip } from "@/features/infrastructure/components";
-import { formatDuration, formatEloChange } from "../../../shared/utils";
+import { formatDuration } from "../../../shared/utils";
+import { removeBattleTag } from "../../../shared/utils/playerNameUtils";
 import { timestampToIso } from "@websites/infrastructure/utils";
 import { formatDateTimeInTimezone } from "@/features/modules/game-management/scheduled-games/utils/timezoneUtils";
 import { PlayerStatsTable } from "./PlayerStatsTable";
@@ -35,6 +35,19 @@ function parseDate(value: string | undefined): Date | null {
   }
 
   return null;
+}
+
+/**
+ * Extract version from map path
+ * Example: "Maps/Download/Island.Troll.Tribes.v3.25.8.w3x" -> "v3.25.8"
+ */
+function extractVersionFromMap(map: string | undefined): string | null {
+  if (!map || typeof map !== "string") return null;
+
+  // Match version pattern like v3.25.8, v3.28, etc.
+  // Pattern: v followed by digits and dots
+  const versionMatch = map.match(/v\d+(\.\d+)*/i);
+  return versionMatch ? versionMatch[0] : null;
 }
 
 /**
@@ -103,10 +116,6 @@ export function GameDetail({
 
   const gameDate = completedDate; // Only used for completed games now
 
-  const winners = game.players?.filter((p) => p.flag === "winner") || [];
-  const losers = game.players?.filter((p) => p.flag === "loser") || [];
-  const drawers = game.players?.filter((p) => p.flag === "drawer") || [];
-
   return (
     <div className="space-y-6">
       <Card variant="medieval" className="p-6">
@@ -114,7 +123,7 @@ export function GameDetail({
           {isScheduled ? "Scheduled " : ""}Game #{game.gameId}
         </h1>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
+        <div className="grid grid-cols-5 gap-4 text-sm">
           {isScheduled && formattedScheduledDate && (
             <div>
               <span className="text-gray-500">Scheduled:</span>
@@ -141,15 +150,13 @@ export function GameDetail({
           )}
           {!isScheduled && game.map && (
             <div>
-              <span className="text-gray-500">Map:</span>
-              <p className="text-amber-300">
-                {typeof game.map === "string" ? game.map.split("\\").pop() || game.map : game.map}
-              </p>
+              <span className="text-gray-500">Version:</span>
+              <p className="text-amber-300">{extractVersionFromMap(game.map) || "N/A"}</p>
             </div>
           )}
           {!isScheduled && (
             <div>
-              <span className="text-gray-500">Category:</span>
+              <span className="text-gray-500">Team Size:</span>
               <p className="text-amber-300">{game.category || "N/A"}</p>
             </div>
           )}
@@ -166,14 +173,10 @@ export function GameDetail({
             </div>
           )}
           {/* Status field removed - using gameState instead */}
-          <div>
-            <span className="text-gray-500">Creator:</span>
-            <p className="text-amber-300">{game.creatorName}</p>
-          </div>
           {!isScheduled && game.ownername && (
             <div>
-              <span className="text-gray-500">Owner:</span>
-              <p className="text-amber-300">{game.ownername}</p>
+              <span className="text-gray-500">Lobby Owner:</span>
+              <p className="text-amber-300">{removeBattleTag(game.ownername)}</p>
             </div>
           )}
         </div>
@@ -186,7 +189,7 @@ export function GameDetail({
             <div className="flex flex-wrap gap-2">
               {game.participants.map((participant, idx) => (
                 <span key={idx} className="px-3 py-1 bg-amber-500/10 rounded text-amber-300">
-                  {participant.name}
+                  {removeBattleTag(participant.name)}
                 </span>
               ))}
             </div>
@@ -281,84 +284,6 @@ export function GameDetail({
           </div>
         )}
       </Card>
-
-      {!isScheduled && winners.length > 0 && (
-        <Card variant="medieval" className="p-6">
-          <h2 className="text-xl font-semibold text-green-400 mb-4">Winners</h2>
-          <div className="space-y-2">
-            {winners.map((player) => (
-              <div
-                key={player.id}
-                className="flex justify-between items-center p-2 bg-green-500/10 rounded"
-              >
-                <Link
-                  href={`/players/${encodeURIComponent(player.name)}`}
-                  className="text-amber-300 hover:text-amber-200"
-                >
-                  {player.name}
-                </Link>
-                <div className="text-sm text-gray-400">
-                  {player.elochange !== undefined && (
-                    <span className="text-green-400">{formatEloChange(player.elochange)}</span>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-        </Card>
-      )}
-
-      {!isScheduled && losers.length > 0 && (
-        <Card variant="medieval" className="p-6">
-          <h2 className="text-xl font-semibold text-red-400 mb-4">Losers</h2>
-          <div className="space-y-2">
-            {losers.map((player) => (
-              <div
-                key={player.id}
-                className="flex justify-between items-center p-2 bg-red-500/10 rounded"
-              >
-                <Link
-                  href={`/players/${encodeURIComponent(player.name)}`}
-                  className="text-amber-300 hover:text-amber-200"
-                >
-                  {player.name}
-                </Link>
-                <div className="text-sm text-gray-400">
-                  {player.elochange !== undefined && (
-                    <span className="text-red-400">{formatEloChange(player.elochange)}</span>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-        </Card>
-      )}
-
-      {!isScheduled && drawers.length > 0 && (
-        <Card variant="medieval" className="p-6">
-          <h2 className="text-xl font-semibold text-yellow-400 mb-4">Draw</h2>
-          <div className="space-y-2">
-            {drawers.map((player) => (
-              <div
-                key={player.id}
-                className="flex justify-between items-center p-2 bg-yellow-500/10 rounded"
-              >
-                <Link
-                  href={`/players/${encodeURIComponent(player.name)}`}
-                  className="text-amber-300 hover:text-amber-200"
-                >
-                  {player.name}
-                </Link>
-                <div className="text-sm text-gray-400">
-                  {player.elochange !== undefined && (
-                    <span className="text-yellow-400">{formatEloChange(player.elochange)}</span>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-        </Card>
-      )}
 
       {/* Player Statistics Table - shows ITT-specific stats if available */}
       {!isScheduled && game.players && game.players.length > 0 && (

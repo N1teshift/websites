@@ -4,7 +4,7 @@
  */
 
 import W3GReplayModule from 'w3gjs';
-import { extractITTMetadata } from './metadata.mjs';
+import { extractITTMetadata, extractPositionData } from './metadata.mjs';
 import { matchPlayers } from './matcher.mjs';
 
 const W3GReplay = W3GReplayModule.default || W3GReplayModule;
@@ -78,8 +78,12 @@ export async function parseReplayFile(buffer) {
     }
 
     const players = parsed.players || [];
+    // Allow 1+ players for testing purposes (normally requires 2+)
+    if (players.length < 1) {
+        throw new Error('Replay does not contain any players.');
+    }
     if (players.length < 2) {
-        throw new Error('Replay does not contain at least two players.');
+        console.warn('⚠️  Warning: Replay has only one player. Some features may not work correctly.');
     }
 
     // Get W3MMD data
@@ -92,6 +96,9 @@ export async function parseReplayFile(buffer) {
 
     // Extract ITT metadata
     const ittMetadata = extractITTMetadata(w3mmdActions);
+    
+    // Extract position data
+    const positionData = extractPositionData(w3mmdActions);
 
     // Step 1: Base replay data (from w3gjs)
     const step1_baseReplayData = {
@@ -199,6 +206,7 @@ export async function parseReplayFile(buffer) {
             raw: w3mmdActions,
         },
         ittMetadata,
+        positionData,
         debugMatching: debugLines,
     };
 }

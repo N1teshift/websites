@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { PageHero } from "@/features/infrastructure/components";
 import { Card } from "@/features/infrastructure/components";
+import { removeBattleTag } from "@/features/modules/shared/utils/playerNameUtils";
 import { useClassesData } from "../hooks/useClassesData";
 
 interface ClassesPageProps {
@@ -106,7 +107,7 @@ export function ClassesPage({ pageNamespaces: _pageNamespaces }: ClassesPageProp
                       <div className="mt-3 pt-3 border-t border-amber-500/20">
                         <span className="text-xs text-gray-400">Top Player:</span>
                         <p className="text-amber-300 text-sm font-medium">
-                          {classStat.topPlayers[0].playerName}
+                          {removeBattleTag(classStat.topPlayers[0].playerName)}
                         </p>
                         <p className="text-xs text-gray-400">
                           {classStat.topPlayers[0].wins}W - {classStat.topPlayers[0].losses}L (

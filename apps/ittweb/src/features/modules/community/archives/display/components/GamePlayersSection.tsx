@@ -138,6 +138,19 @@ function getClassDataFromName(
     };
   }
 
+  // Handle subclasses that are listed in subclasses array but not in DERIVED_CLASSES
+  // Check if the class name matches a subclass in any base class
+  for (const baseClass of BASE_TROLL_CLASSES) {
+    if (baseClass.subclasses && baseClass.subclasses.includes(normalized)) {
+      // Found as a subclass, return with the subclass slug and name
+      // The icon will be resolved by GuideIcon using the name
+      return {
+        slug: normalized,
+        name: className, // Use original case
+      };
+    }
+  }
+
   // Handle shapeshifter forms (these are transformations, not actual classes)
   const shapeshifterForms: Record<string, { slug: string; name: string; iconSrc: string }> = {
     "tiger form": { slug: "tiger-form", name: "Tiger Form", iconSrc: "/icons/itt/BTNTiger.png" },
@@ -178,6 +191,7 @@ function PlayerCard({ player, isWinner }: { player: GamePlayer; isWinner: boolea
             <ClassIcon
               slug={classData.slug}
               name={classData.name}
+              iconSrc={classData.iconSrc}
               size={40}
               className="flex-shrink-0"
             />
@@ -232,7 +246,11 @@ function PlayerCard({ player, isWinner }: { player: GamePlayer; isWinner: boolea
           {/* Player items - show even if empty (with empty slots) */}
           {player.items !== undefined && (
             <div className="mt-1.5">
-              <PlayerItems items={player.items} showEmptySlots={true} />
+              <PlayerItems
+                items={player.items}
+                itemCharges={player.itemCharges}
+                showEmptySlots={true}
+              />
             </div>
           )}
         </div>

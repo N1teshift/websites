@@ -43,3 +43,7 @@ tsconfig.tsbuildinfo
 # OS
 Thumbs.db
 
+# Replay files
+**/*.w3g
+**/*_parsed.json
+
