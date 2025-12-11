@@ -124,6 +124,24 @@ export default createPostHandler<{ gameId: string; message: string }>(
       });
 
       // Convert parsed data to CreateCompletedGame format
+      const buildingEvents = parsed.ittMetadata?.buildingEvents;
+      if (buildingEvents && buildingEvents.length > 0) {
+        logger.info("Building events found in replay", {
+          count: buildingEvents.length,
+          gameId: game.gameId,
+          schema: parsed.ittMetadata?.schema,
+        });
+      }
+
+      const craftEvents = parsed.ittMetadata?.craftEvents;
+      if (craftEvents && craftEvents.length > 0) {
+        logger.info("Craft events found in replay", {
+          count: craftEvents.length,
+          gameId: game.gameId,
+          schema: parsed.ittMetadata?.schema,
+        });
+      }
+
       parsedGameData = {
         gameId: game.gameId,
         datetime: parsed.gameData.datetime,
@@ -138,6 +156,10 @@ export default createPostHandler<{ gameId: string; message: string }>(
         createdByDiscordId: game.createdByDiscordId || null,
         players: parsed.gameData.players,
         verified: false,
+        // Include building events from ITT metadata (schema v7+)
+        buildingEvents,
+        // Include craft events from ITT metadata (schema v8+)
+        craftEvents,
       };
     } catch (parserError) {
       const parseErr = parserError as Error;
@@ -202,6 +224,12 @@ export default createPostHandler<{ gameId: string; message: string }>(
       playerNames,
       playerCount,
       verified: parsedGameData.verified ?? false,
+      ...(parsedGameData.buildingEvents && parsedGameData.buildingEvents.length > 0
+        ? { buildingEvents: parsedGameData.buildingEvents }
+        : {}),
+      ...(parsedGameData.craftEvents && parsedGameData.craftEvents.length > 0
+        ? { craftEvents: parsedGameData.craftEvents }
+        : {}),
       updatedAt: adminTimestamp.now(),
       // Keep scheduled fields for history
       // scheduledDateTime is already in the document

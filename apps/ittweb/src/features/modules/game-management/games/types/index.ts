@@ -68,6 +68,7 @@ export interface GamePlayer {
   gameId: string;
   name: string;
   pid: number;
+  team?: number;
   flag: GamePlayerFlag;
   category?: GameCategory;
   elochange?: number;
@@ -142,6 +143,20 @@ export interface Game {
   playerNames?: string[]; // Array of player names for quick access
   playerCount?: number; // Number of players in the game
   verified?: boolean;
+  // Building events from replay metadata (schema v7+)
+  buildingEvents?: Array<{
+    team: number;
+    timeSeconds: number;
+    buildingId: number;
+    status: "START" | "FINISH" | "CANCEL" | "DESTROY";
+  }>;
+  // Craft events from replay metadata (schema v8+)
+  craftEvents?: Array<{
+    team: number;
+    timeSeconds: number;
+    itemId: number;
+    status: "SUCCESS" | "FAIL";
+  }>;
 
   // Archive content (only when gameState === 'completed' and game has been archived)
   archiveContent?: GameArchiveContent;
@@ -229,6 +244,20 @@ export interface CreateCompletedGame {
   }>;
   // Optional archive content when archiving
   archiveContent?: GameArchiveContent;
+  // Building events from replay metadata (schema v7+)
+  buildingEvents?: Array<{
+    team: number;
+    timeSeconds: number;
+    buildingId: number;
+    status: "START" | "FINISH" | "CANCEL" | "DESTROY";
+  }>;
+  // Craft events from replay metadata (schema v8+)
+  craftEvents?: Array<{
+    team: number;
+    timeSeconds: number;
+    itemId: number;
+    status: "SUCCESS" | "FAIL";
+  }>;
 }
 
 /**

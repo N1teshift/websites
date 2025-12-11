@@ -47,6 +47,26 @@ export interface ITTPlayerStats {
 }
 
 /**
+ * Building event from metadata payload (schema v7+)
+ */
+export interface BuildingEvent {
+  team: number;
+  timeSeconds: number;
+  buildingId: number;
+  status: "START" | "FINISH" | "CANCEL" | "DESTROY";
+}
+
+/**
+ * Craft event from metadata payload (schema v8+)
+ */
+export interface CraftEvent {
+  team: number;
+  timeSeconds: number;
+  itemId: number;
+  status: "SUCCESS" | "FAIL";
+}
+
+/**
  * Parsed ITT metadata from W3MMD custom messages
  */
 export interface ITTMetadata {
@@ -54,6 +74,8 @@ export interface ITTMetadata {
   schema?: number;
   payload?: string;
   players: ITTPlayerStats[];
+  buildingEvents?: BuildingEvent[]; // Building events (schema v7+)
+  craftEvents?: CraftEvent[]; // Craft events (schema v8+)
 }
 
 export interface ReplayParserOptions {

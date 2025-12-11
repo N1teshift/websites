@@ -145,6 +145,8 @@ export async function parseReplayFile(buffer) {
             killsPanther: p.killsPanther,
             items: p.items,
         })),
+        buildingEvents: ittMetadata.buildingEvents,
+        craftEvents: ittMetadata.craftEvents,
     } : null;
 
     // Step 4: Player matching

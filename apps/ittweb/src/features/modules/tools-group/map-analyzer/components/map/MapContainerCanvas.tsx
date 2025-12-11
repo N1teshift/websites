@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import type { BasicTile } from "../panels/TileInfoPanel";
-import type { SimpleMapData, SimpleTile } from "../../types/map";
+import type { SimpleTile } from "../../types/map";
+import type { OptimizedMapData } from "../../types/mapOptimized";
 
 const BASE_TILE_SIZE = 16;
 
@@ -8,7 +9,7 @@ interface MapContainerCanvasProps {
   onHover: (tile: BasicTile | null) => void;
   onHoverInfo?: (info: { tile: BasicTile; x: number; y: number }) => void;
   onSelect: (tile: BasicTile | null) => void;
-  map?: SimpleMapData | null;
+  map?: OptimizedMapData | null;
   zoom?: number;
   viewportHeightPx?: number;
   onZoomChange?: (z: number) => void;
@@ -187,8 +188,7 @@ export default function MapContainerCanvas({
     // Batch similar operations for better performance
     for (let y = startY; y <= endY; y++) {
       for (let x = startX; x <= endX; x++) {
-        const index = y * width + x;
-        const tile = map.tiles[index];
+        const tile = map.tiles[y][x];
         if (!tile) continue;
 
         const tileX = x * tileSize - scrollLeft;

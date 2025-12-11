@@ -11,7 +11,9 @@ import WaterLegend from "../legends/WaterLegend";
 import TerrainLegendCard from "../legends/TerrainLegendCard";
 import HeightDistributionChart from "../controls/HeightDistributionChart";
 import type { SimpleMapData, SimpleTile } from "../../types/map";
-import { normalizeJsonToSimpleMap } from "../../utils/mapUtils";
+import type { OptimizedMapData } from "../../types/mapOptimized";
+import { normalizeJsonToSimpleMap, correctIsWaterFromFlags } from "../../utils/mapUtils";
+import { toOptimizedMapData, getTile, getAllTiles } from "../../utils/mapOptimizationUtils";
 
 export default function TerrainVisualizer({
   map,
@@ -49,10 +51,11 @@ export default function TerrainVisualizer({
   const [zoom, setZoom] = React.useState(initialZoom);
   const [showTerrainLegend, setShowTerrainLegend] = React.useState(false);
   const [showHeightDistribution, setShowHeightDistribution] = React.useState(false);
+  const [showLegends, setShowLegends] = React.useState(true);
   const [selectedFlags, setSelectedFlags] = React.useState<number[]>([]);
   const [hoveredTile, setHoveredTile] = React.useState<{ x: number; y: number } | null>(null);
   const [selectedTile, setSelectedTile] = React.useState<{ x: number; y: number } | null>(null);
-  const [simpleMap, setSimpleMap] = React.useState<SimpleMapData | null>(null);
+  const [optimizedMap, setOptimizedMap] = React.useState<OptimizedMapData | null>(null);
   const containerRef = React.useRef<HTMLDivElement>(null);
   const [scrollPos, setScrollPos] = React.useState<{ left: number; top: number }>({
     left: 0,
@@ -70,43 +73,64 @@ export default function TerrainVisualizer({
 
   React.useEffect(() => {
     if (!map) {
-      setSimpleMap(null);
+      setOptimizedMap(null);
       return;
     }
     try {
+      // Check if map is already OptimizedMapData format (2D structure)
+      const mapObj = map as Record<string, unknown>;
+      if (
+        typeof mapObj?.width === "number" &&
+        typeof mapObj?.height === "number" &&
+        Array.isArray(mapObj?.tiles) &&
+        mapObj.tiles.length > 0 &&
+        Array.isArray(mapObj.tiles[0])
+      ) {
+        // Already OptimizedMapData format - use directly
+        setOptimizedMap(map as OptimizedMapData);
+        return;
+      }
+
+      // Otherwise, normalize and convert
       const normalized = normalizeJsonToSimpleMap(map);
-      setSimpleMap(normalized);
+      // Mark as corrected since normalizeJsonToSimpleMap applies the row-shifting transformation
+      const optimized = toOptimizedMapData(normalized, true);
+      setOptimizedMap(optimized);
     } catch (e) {
       // If map is already normalized SimpleMapData, accept it
       const mapObj = map as Record<string, unknown>;
       if (
         typeof mapObj?.width === "number" &&
         typeof mapObj?.height === "number" &&
-        Array.isArray(mapObj?.tiles)
+        Array.isArray(mapObj?.tiles) &&
+        !Array.isArray(mapObj.tiles[0]) // flat array
       ) {
-        setSimpleMap(map as SimpleMapData);
+        // SimpleMapData format - correct isWater flags and convert
+        const correctedMap = correctIsWaterFromFlags(map as SimpleMapData);
+        const optimized = toOptimizedMapData(correctedMap, true);
+        setOptimizedMap(optimized);
       } else {
         console.warn("Unsupported JSON format for visualizer", e);
-        setSimpleMap(null);
+        setOptimizedMap(null);
       }
     }
   }, [map]);
 
   const hoveredDetails = React.useMemo(() => {
-    if (!simpleMap || !hoveredTile) return null;
+    if (!optimizedMap || !hoveredTile) return null;
     const { x, y } = hoveredTile;
-    if (x < 0 || y < 0 || x >= simpleMap.width || y >= simpleMap.height) return null;
-    const t = simpleMap.tiles[y * simpleMap.width + x];
+    const t = getTile(optimizedMap, x, y);
+    if (!t) return null;
     return { x, y, ...t };
-  }, [simpleMap, hoveredTile]);
+  }, [optimizedMap, hoveredTile]);
 
   const selectedDetails = React.useMemo(() => {
-    if (!simpleMap || !selectedTile) return null;
+    if (!optimizedMap || !selectedTile) return null;
     const { x, y } = selectedTile;
-    if (x < 0 || y < 0 || x >= simpleMap.width || y >= simpleMap.height) return null;
-    const t = simpleMap.tiles[y * simpleMap.width + x];
+    const t = getTile(optimizedMap, x, y);
+    if (!t) return null;
     return { x, y, ...t };
-  }, [simpleMap, selectedTile]);
+  }, [optimizedMap, selectedTile]);
 
   const [hoverUi, setHoverUi] = React.useState<{
     x: number;
@@ -115,15 +139,18 @@ export default function TerrainVisualizer({
   } | null>(null);
 
   const cliffCounts = React.useMemo(() => {
-    if (!simpleMap) return undefined;
+    if (!optimizedMap) return undefined;
     const counts: Record<number, number> = {};
-    for (const tile of simpleMap.tiles) {
-      if (!tile.isWater && typeof tile.cliffLevel === "number") {
-        counts[tile.cliffLevel] = (counts[tile.cliffLevel] ?? 0) + 1;
+    for (let y = 0; y < optimizedMap.height; y++) {
+      for (let x = 0; x < optimizedMap.width; x++) {
+        const tile = optimizedMap.tiles[y][x];
+        if (!tile.isWater && typeof tile.cliffLevel === "number") {
+          counts[tile.cliffLevel] = (counts[tile.cliffLevel] ?? 0) + 1;
+        }
       }
     }
     return counts;
-  }, [simpleMap]);
+  }, [optimizedMap]);
 
   // Make viewport square by matching height to width
   React.useEffect(() => {
@@ -154,7 +181,7 @@ export default function TerrainVisualizer({
       <h2 className="font-medieval-brand text-2xl mb-3">Terrain Visualizer</h2>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 h-[180px] mb-4">
-        <MapInfoPanel map={simpleMap} />
+        <MapInfoPanel map={optimizedMap} />
         <TileInfoPanel
           title="Hovered Tile"
           tile={hoveredTile}
@@ -179,29 +206,29 @@ export default function TerrainVisualizer({
             onZoomChange?.(1);
           }}
           onFit={() => {
-            if (!simpleMap || !containerRef.current) return;
+            if (!optimizedMap || !containerRef.current) return;
             const pad = 16;
             const size = viewportSize - pad * 2; // square viewport
-            const zx = size / (simpleMap.width * 16);
-            const zy = size / (simpleMap.height * 16);
+            const zx = size / (optimizedMap.width * 16);
+            const zy = size / (optimizedMap.height * 16);
             const next = Math.max(0.1, Math.min(4, Math.min(zx, zy)));
             const v = +next.toFixed(2);
             setZoom(v);
             onZoomChange?.(v);
           }}
           onFitWidth={() => {
-            if (!simpleMap || !containerRef.current) return;
+            if (!optimizedMap || !containerRef.current) return;
             const pad = 16;
             const size = viewportSize - pad * 2; // square viewport
-            const zx = size / (simpleMap.width * 16);
+            const zx = size / (optimizedMap.width * 16);
             const v = +Math.max(0.1, Math.min(4, zx)).toFixed(2);
             setZoom(v);
             onZoomChange?.(v);
           }}
           onFitHeight={() => {
-            if (!simpleMap) return;
+            if (!optimizedMap) return;
             const size = viewportSize; // square viewport
-            const zy = size / (simpleMap.height * 16);
+            const zy = size / (optimizedMap.height * 16);
             const v = +Math.max(0.1, Math.min(4, zy)).toFixed(2);
             setZoom(v);
             onZoomChange?.(v);
@@ -212,8 +239,17 @@ export default function TerrainVisualizer({
             onRenderModeChange?.(m);
           }}
           onExport={() => {
-            if (!simpleMap) return;
-            const blob = new Blob([JSON.stringify(simpleMap)], { type: "application/json" });
+            if (!optimizedMap) return;
+            // Export OptimizedMapData (2D structure) with corrected flag
+            // Ensure the exported map is marked as corrected
+            const exportData: OptimizedMapData = {
+              ...optimizedMap,
+              version: "1.0",
+              corrected: true,
+            };
+            const blob = new Blob([JSON.stringify(exportData, null, 2)], {
+              type: "application/json",
+            });
             const url = URL.createObjectURL(blob);
             const a = document.createElement("a");
             a.href = url;
@@ -224,6 +260,13 @@ export default function TerrainVisualizer({
             URL.revokeObjectURL(url);
           }}
         />
+        <button
+          className={`px-3 py-1 rounded text-white ${showLegends ? "bg-blue-600" : "bg-gray-600"}`}
+          onClick={() => setShowLegends((s) => !s)}
+          title="Toggle legend visibility"
+        >
+          {showLegends ? "Hide Legend" : "Show Legend"}
+        </button>
         <div className="flex gap-2">
           <button
             className={`px-3 py-1 rounded text-white ${showTerrainLegend ? "bg-green-600" : "bg-gray-600"}`}
@@ -312,7 +355,7 @@ export default function TerrainVisualizer({
             </label>
           </div>
           <HeightDistributionChart
-            map={simpleMap}
+            map={optimizedMap}
             t1={t1}
             t2={t2}
             onSelectThreshold={(val) => {
@@ -336,16 +379,20 @@ export default function TerrainVisualizer({
         <MapContainerCanvas
           onHover={(tile) => setHoveredTile(tile)}
           onHoverInfo={({ tile, x, y }) => {
-            if (!simpleMap || !tile) {
+            if (!optimizedMap || !tile) {
               setHoverUi(null);
               return;
             }
             const { x: tx, y: ty } = tile;
-            const t = simpleMap.tiles[ty * simpleMap.width + tx];
-            setHoverUi({ x, y, data: { ...t, x: tx, y: ty } });
+            const t = getTile(optimizedMap, tx, ty);
+            if (t) {
+              setHoverUi({ x, y, data: { ...t, x: tx, y: ty } });
+            } else {
+              setHoverUi(null);
+            }
           }}
           onSelect={(tile) => setSelectedTile(tile)}
-          map={simpleMap ?? undefined}
+          map={optimizedMap ?? undefined}
           zoom={zoom}
           viewportHeightPx={viewportSize}
           onZoomChange={(z) => {
@@ -360,13 +407,17 @@ export default function TerrainVisualizer({
           }}
           renderMode={renderMode}
           minHeight={(() => {
-            if (!simpleMap) return undefined;
-            const land = simpleMap.tiles.filter((t) => !t.isWater).map((t) => t.groundHeight);
+            if (!optimizedMap) return undefined;
+            const land = getAllTiles(optimizedMap)
+              .filter((t) => !t.isWater)
+              .map((t) => t.groundHeight);
             return land.length ? Math.min(...land) : undefined;
           })()}
           maxHeight={(() => {
-            if (!simpleMap) return undefined;
-            const land = simpleMap.tiles.filter((t) => !t.isWater).map((t) => t.groundHeight);
+            if (!optimizedMap) return undefined;
+            const land = getAllTiles(optimizedMap)
+              .filter((t) => !t.isWater)
+              .map((t) => t.groundHeight);
             return land.length ? Math.max(...land) : undefined;
           })()}
           selectedFlags={selectedFlags}
@@ -374,40 +425,46 @@ export default function TerrainVisualizer({
           sliceMin={t1}
           sliceMax={t2}
         />
-        <div className="absolute bottom-4 left-4 z-20 space-y-2">
-          <FlagLegend selectedFlags={selectedFlags} />
-          <ElevationLegend
-            visible={true}
-            min={(() => {
-              if (!simpleMap) return 0;
-              const land = simpleMap.tiles.filter((t) => !t.isWater).map((t) => t.groundHeight);
-              return land.length ? Math.min(...land) : 0;
-            })()}
-            max={(() => {
-              if (!simpleMap) return 0;
-              const land = simpleMap.tiles.filter((t) => !t.isWater).map((t) => t.groundHeight);
-              return land.length ? Math.max(...land) : 0;
-            })()}
-          />
-          <WaterLegend
-            visible={renderMode !== "elevation"}
-            min={(() => {
-              if (!simpleMap) return 0;
-              const depths = simpleMap.tiles
-                .filter((t) => t.isWater)
-                .map((t) => (t.waterHeight ?? 0) - t.groundHeight);
-              return depths.length ? Math.min(...depths) : 0;
-            })()}
-            max={(() => {
-              if (!simpleMap) return 0;
-              const depths = simpleMap.tiles
-                .filter((t) => t.isWater)
-                .map((t) => (t.waterHeight ?? 0) - t.groundHeight);
-              return depths.length ? Math.max(...depths) : 0;
-            })()}
-          />
-          <CliffLegend visible={renderMode === "cliffs"} counts={cliffCounts} />
-        </div>
+        {showLegends && (
+          <div className="absolute bottom-4 left-4 z-20 space-y-2">
+            <FlagLegend selectedFlags={selectedFlags} />
+            <ElevationLegend
+              visible={true}
+              min={(() => {
+                if (!optimizedMap) return 0;
+                const land = getAllTiles(optimizedMap)
+                  .filter((t) => !t.isWater)
+                  .map((t) => t.groundHeight);
+                return land.length ? Math.min(...land) : 0;
+              })()}
+              max={(() => {
+                if (!optimizedMap) return 0;
+                const land = getAllTiles(optimizedMap)
+                  .filter((t) => !t.isWater)
+                  .map((t) => t.groundHeight);
+                return land.length ? Math.max(...land) : 0;
+              })()}
+            />
+            <WaterLegend
+              visible={renderMode !== "elevation"}
+              min={(() => {
+                if (!optimizedMap) return 0;
+                const depths = getAllTiles(optimizedMap)
+                  .filter((t) => t.isWater)
+                  .map((t) => (t.waterHeight ?? 0) - t.groundHeight);
+                return depths.length ? Math.min(...depths) : 0;
+              })()}
+              max={(() => {
+                if (!optimizedMap) return 0;
+                const depths = getAllTiles(optimizedMap)
+                  .filter((t) => t.isWater)
+                  .map((t) => (t.waterHeight ?? 0) - t.groundHeight);
+                return depths.length ? Math.max(...depths) : 0;
+              })()}
+            />
+            <CliffLegend visible={renderMode === "cliffs"} counts={cliffCounts} />
+          </div>
+        )}
         {debugMode && (
           <div className="absolute top-4 left-4 z-20 bg-red-600 text-white px-3 py-1 rounded">
             Debug Mode: Flag overlays and metrics for diagnostics

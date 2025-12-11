@@ -3,6 +3,8 @@ export * from "./PlayerFilter";
 export * from "./TeamFormatFilter";
 export * from "./GameFilters";
 export * from "./AnimalKillsDisplay";
+export * from "./BuildingOrderDisplay";
+export * from "./CraftOrderDisplay";
 export * from "./skeletons";
 export * from "./notices";
 export * from "./layout";

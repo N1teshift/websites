@@ -152,10 +152,31 @@ export async function createCompletedGame(gameData: CreateCompletedGame): Promis
         : {}),
       verified: gameData.verified ?? false,
       ...(gameData.archiveContent ? { archiveContent: gameData.archiveContent } : {}),
+      ...(gameData.buildingEvents && gameData.buildingEvents.length > 0
+        ? { buildingEvents: gameData.buildingEvents }
+        : {}),
+      ...(gameData.craftEvents && gameData.craftEvents.length > 0
+        ? { craftEvents: gameData.craftEvents }
+        : {}),
       createdAt: adminTimestamp.now(),
       updatedAt: adminTimestamp.now(),
       isDeleted: false,
     };
+
+    if (gameData.buildingEvents && gameData.buildingEvents.length > 0) {
+      logger.info("Saving building events to Firestore", {
+        gameId: gameData.gameId,
+        eventCount: gameData.buildingEvents.length,
+      });
+    }
+
+    if (gameData.craftEvents && gameData.craftEvents.length > 0) {
+      logger.info("Saving craft events to Firestore", {
+        gameId: gameData.gameId,
+        eventCount: gameData.craftEvents.length,
+      });
+    }
+
     const gameDocRef = await adminDb.collection(GAMES_COLLECTION).add(baseGameDoc);
 
     // Create player documents in subcollection
@@ -283,6 +304,12 @@ export async function createGame(gameData: CreateGame): Promise<string> {
           }
         : {}),
       verified: false,
+      ...(gameData.buildingEvents && gameData.buildingEvents.length > 0
+        ? { buildingEvents: gameData.buildingEvents }
+        : {}),
+      ...(gameData.craftEvents && gameData.craftEvents.length > 0
+        ? { craftEvents: gameData.craftEvents }
+        : {}),
       createdAt: adminTimestamp.now(),
       updatedAt: adminTimestamp.now(),
     };

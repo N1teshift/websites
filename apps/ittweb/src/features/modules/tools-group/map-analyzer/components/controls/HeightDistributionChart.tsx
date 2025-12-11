@@ -1,5 +1,6 @@
 import React from "react";
-import type { SimpleMapData } from "../../types/map";
+import type { OptimizedMapData } from "../../types/mapOptimized";
+import { getAllTiles } from "../../utils/mapOptimizationUtils";
 
 export default function HeightDistributionChart({
   map,
@@ -7,14 +8,16 @@ export default function HeightDistributionChart({
   t2,
   onSelectThreshold,
 }: {
-  map?: SimpleMapData | null;
+  map?: OptimizedMapData | null;
   t1?: number;
   t2?: number;
   onSelectThreshold?: (value: number) => void;
 }) {
   const buckets = React.useMemo(() => {
     if (!map) return [] as { h: number; count: number }[];
-    const heights = map.tiles.filter((t) => !t.isWater).map((t) => t.groundHeight);
+    const heights = getAllTiles(map)
+      .filter((t) => !t.isWater)
+      .map((t) => t.groundHeight);
     if (!heights.length) return [];
     const min = Math.min(...heights);
     const max = Math.max(...heights);

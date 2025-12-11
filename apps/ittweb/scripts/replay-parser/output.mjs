@@ -158,6 +158,9 @@ export function displayResults(gameData, w3mmd, ittMetadata, positionData, check
         console.log(`   Schema Version: ${ittMetadata.schema}`);
         console.log(`   ITT Version: ${ittMetadata.version}`);
         console.log(`   Players in Metadata: ${ittMetadata.players.length}`);
+        if (ittMetadata.buildingEvents && ittMetadata.buildingEvents.length > 0) {
+            console.log(`   Building Events: ✅ ${ittMetadata.buildingEvents.length} events`);
+        }
     }
     
     console.log('\n📍 POSITION DATA');
@@ -206,6 +209,29 @@ export function displayResults(gameData, w3mmd, ittMetadata, positionData, check
 
             if (kills.length > 0) {
                 console.log(`      Kills: ${kills.join(', ')}`);
+            }
+            console.log('');
+        }
+
+        // Display building events if available
+        if (ittMetadata && ittMetadata.buildingEvents && ittMetadata.buildingEvents.length > 0) {
+            console.log('🏗️  BUILDING EVENTS\n');
+            const statusCounts = {};
+            for (const event of ittMetadata.buildingEvents) {
+                statusCounts[event.status] = (statusCounts[event.status] || 0) + 1;
+            }
+            console.log(`   Total Events: ${ittMetadata.buildingEvents.length}`);
+            console.log(`   Status Breakdown:`);
+            for (const [status, count] of Object.entries(statusCounts)) {
+                console.log(`      ${status}: ${count}`);
+            }
+            console.log(`   Sample Events (first 5):`);
+            for (let i = 0; i < Math.min(5, ittMetadata.buildingEvents.length); i++) {
+                const event = ittMetadata.buildingEvents[i];
+                console.log(`      ${event.timeSeconds}s - Team ${event.team} - Building ${event.buildingId} - ${event.status}`);
+            }
+            if (ittMetadata.buildingEvents.length > 5) {
+                console.log(`   ... and ${ittMetadata.buildingEvents.length - 5} more events`);
             }
             console.log('');
         }

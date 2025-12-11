@@ -1,13 +1,21 @@
 import type { GameWithPlayers } from "../types";
 import { createUrlDataFetchHook } from "@websites/infrastructure/hooks";
+import { swrKeys } from "@websites/infrastructure/cache";
 
 const useGameHook = createUrlDataFetchHook<GameWithPlayers, string>(
   (id: string) => `/api/games/${id}`,
   {
-    useSWR: false,
+    useSWR: true,
+    swrKey: (id: string) => (id ? swrKeys.game(id) : null),
+    swrConfig: {
+      // Static data - cache for 5 minutes (300000ms)
+      revalidateOnFocus: false,
+      revalidateOnReconnect: true,
+      dedupingInterval: 300000,
+    },
     enabled: (id) => !!id,
     handle404: false,
-    cacheBust: true,
+    // Removed cacheBust - SWR will handle caching properly
     componentName: "useGame",
     operationName: "fetchGame",
   }

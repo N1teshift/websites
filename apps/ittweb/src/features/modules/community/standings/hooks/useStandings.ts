@@ -1,5 +1,6 @@
 import type { StandingsResponse, StandingsFilters } from "../types";
 import { createDataFetchHook } from "@websites/infrastructure/hooks";
+import { swrKeys } from "@websites/infrastructure/cache";
 
 const useStandingsHook = createDataFetchHook<StandingsResponse, StandingsFilters>({
   fetchFn: async (filters) => {
@@ -29,7 +30,22 @@ const useStandingsHook = createDataFetchHook<StandingsResponse, StandingsFilters
 
     return response.json();
   },
-  useSWR: false,
+  useSWR: true,
+  swrKey: (filters) => {
+    // Convert filters to Record<string, string> format for swrKeys
+    const filterParams: Record<string, string> = {};
+    if (filters.category) filterParams.category = filters.category;
+    if (filters.minGames) filterParams.minGames = filters.minGames.toString();
+    if (filters.page) filterParams.page = filters.page.toString();
+    if (filters.limit) filterParams.limit = filters.limit.toString();
+    return swrKeys.standings(filterParams);
+  },
+  swrConfig: {
+    // Static data - cache for 5 minutes (300000ms)
+    revalidateOnFocus: false,
+    revalidateOnReconnect: true,
+    dedupingInterval: 300000,
+  },
   componentName: "useStandings",
   operationName: "fetchStandings",
 });

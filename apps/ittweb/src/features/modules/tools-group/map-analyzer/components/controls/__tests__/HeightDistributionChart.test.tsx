@@ -1,7 +1,7 @@
 import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 import HeightDistributionChart from "../HeightDistributionChart";
-import type { SimpleMapData } from "../../../types/map";
+import type { OptimizedMapData } from "../../../types/mapOptimized";
 
 describe("HeightDistributionChart", () => {
   it("shows an empty state when no map is provided", () => {
@@ -10,14 +10,18 @@ describe("HeightDistributionChart", () => {
   });
 
   it("renders buckets for land tiles and supports threshold selection", () => {
-    const map: SimpleMapData = {
+    const map: OptimizedMapData = {
       width: 2,
       height: 2,
       tiles: [
-        { isWater: false, groundHeight: 0 },
-        { isWater: false, groundHeight: 5 },
-        { isWater: false, groundHeight: 10 },
-        { isWater: true, groundHeight: 0, waterHeight: 3 },
+        [
+          { isWater: false, groundHeight: 0 },
+          { isWater: false, groundHeight: 5 },
+        ],
+        [
+          { isWater: false, groundHeight: 10 },
+          { isWater: true, groundHeight: 0, waterHeight: 3 },
+        ],
       ],
     };
     const onSelectThreshold = jest.fn();

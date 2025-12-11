@@ -1,12 +1,14 @@
 import React from "react";
-import type { SimpleMapData } from "../../types/map";
+import type { OptimizedMapData } from "../../types/mapOptimized";
+import { getAllTiles } from "../../utils/mapOptimizationUtils";
 
-export default function MapInfoPanel({ map }: { map?: SimpleMapData | null }) {
+export default function MapInfoPanel({ map }: { map?: OptimizedMapData | null }) {
   const width = map?.width ?? 0;
   const height = map?.height ?? 0;
   const total = width * height;
-  const waterTiles = map?.tiles?.filter((t) => t.isWater) ?? [];
-  const landTiles = map?.tiles?.filter((t) => !t.isWater) ?? [];
+  const allTiles = map ? getAllTiles(map) : [];
+  const waterTiles = allTiles.filter((t) => t.isWater);
+  const landTiles = allTiles.filter((t) => !t.isWater);
   const water = waterTiles.length;
   const land = landTiles.length;
 
@@ -24,8 +26,8 @@ export default function MapInfoPanel({ map }: { map?: SimpleMapData | null }) {
     ? waterDepths.reduce((a, b) => a + b, 0) / waterDepths.length
     : 0;
 
-  const ramps = map?.tiles?.reduce((acc, t) => acc + (t.isRamp ? 1 : 0), 0) ?? 0;
-  const noWater = map?.tiles?.reduce((acc, t) => acc + (t.isNoWater ? 1 : 0), 0) ?? 0;
+  const ramps = allTiles.reduce((acc, t) => acc + (t.isRamp ? 1 : 0), 0);
+  const noWater = allTiles.reduce((acc, t) => acc + (t.isNoWater ? 1 : 0), 0);
 
   return (
     <div className="bg-black/30 border border-amber-500/30 rounded p-3 text-gray-200 text-sm space-y-1">

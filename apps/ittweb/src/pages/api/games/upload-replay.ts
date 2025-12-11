@@ -142,6 +142,24 @@ export default createPostHandler<{ id: string; gameId: number; message: string }
     }
 
     // Create completed game from parsed data (without replayUrl first)
+    const buildingEvents = parsedResult.ittMetadata?.buildingEvents;
+    if (buildingEvents && buildingEvents.length > 0) {
+      logger.info("Building events found in replay", {
+        count: buildingEvents.length,
+        gameId,
+        schema: parsedResult.ittMetadata?.schema,
+      });
+    }
+
+    const craftEvents = parsedResult.ittMetadata?.craftEvents;
+    if (craftEvents && craftEvents.length > 0) {
+      logger.info("Craft events found in replay", {
+        count: craftEvents.length,
+        gameId,
+        schema: parsedResult.ittMetadata?.schema,
+      });
+    }
+
     const gameData: CreateCompletedGame = {
       gameId,
       datetime: parsedGameData.datetime,
@@ -154,6 +172,10 @@ export default createPostHandler<{ id: string; gameId: number; message: string }
       createdByDiscordId: session.discordId || null,
       players: parsedGameData.players,
       verified: false,
+      // Include building events from ITT metadata (schema v7+)
+      buildingEvents,
+      // Include craft events from ITT metadata (schema v8+)
+      craftEvents,
     };
 
     // Create the game first to get the Firestore document ID

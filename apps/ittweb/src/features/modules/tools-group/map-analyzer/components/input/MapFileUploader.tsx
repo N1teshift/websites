@@ -1,4 +1,5 @@
 import React from "react";
+import { normalizeJsonToSimpleMap, correctIsWaterFromFlags } from "../../utils/mapUtils";
 
 export default function MapFileUploader({
   onJsonLoaded,
@@ -73,15 +74,63 @@ export default function MapFileUploader({
         const buf = Buffer.from(arrayBuf);
         const result = TerrainTranslator.warToJson(buf);
         if (!result || !("json" in result)) throw new Error("Translator returned no JSON");
-        const parsed = result.json;
+        const rawJson = result.json;
+
+        // Debug: Log the format to help diagnose water flag issues
+        const parsedObj = rawJson as Record<string, unknown>;
+        if (parsedObj.flags && Array.isArray(parsedObj.flags)) {
+          const flags = parsedObj.flags as number[];
+          const WATER_FLAG = 0x20000000;
+          const waterFlags = flags.filter((f) => (f & WATER_FLAG) !== 0);
+          console.log(
+            `[Map Upload] Format: Raw with flags array. Total flags: ${flags.length}, Water flags: ${waterFlags.length}`
+          );
+          if (waterFlags.length === 0 && flags.length > 0) {
+            const maxFlag = Math.max(...flags);
+            console.warn(
+              `[Map Upload] No water flags detected! Max flag value: ${maxFlag} (0x${maxFlag.toString(16)}). Expected WATER_FLAG: ${WATER_FLAG} (0x${WATER_FLAG.toString(16)})`
+            );
+          }
+        } else if (parsedObj.tiles && Array.isArray(parsedObj.tiles)) {
+          const tiles = parsedObj.tiles as Array<Record<string, unknown>>;
+          const waterTiles = tiles.filter((t) => t.isWater === true);
+          console.log(
+            `[Map Upload] Format: Pre-processed tiles. Total tiles: ${tiles.length}, Water tiles: ${waterTiles.length}`
+          );
+          if (waterTiles.length === 0 && tiles.length > 0) {
+            const sampleTile = tiles[0];
+            console.warn(`[Map Upload] No water tiles detected! Sample tile:`, sampleTile);
+          }
+        } else {
+          console.log(`[Map Upload] Unknown format. Keys:`, Object.keys(parsedObj));
+        }
+
+        // Normalize the JSON to ensure water flags are correctly extracted
+        // This converts raw format (with flags array) to SimpleMapData format
+        let normalizedJson: unknown;
+        try {
+          const normalized = normalizeJsonToSimpleMap(rawJson);
+          // Apply correction to fix any incorrectly set isWater flags
+          const corrected = correctIsWaterFromFlags(normalized);
+          normalizedJson = corrected;
+
+          const waterTiles = corrected.tiles.filter((t) => t.isWater === true);
+          console.log(
+            `[Map Upload] After normalization: ${waterTiles.length} water tiles detected out of ${corrected.tiles.length} total`
+          );
+        } catch (normalizeError) {
+          console.warn("[Map Upload] Failed to normalize JSON, using raw format:", normalizeError);
+          normalizedJson = rawJson;
+        }
+
         const id = `${file.name.replace(/\.[^/.]+$/, "")}_${Date.now().toString(36)}`;
         try {
-          localStorage.setItem(`itt_map_data_${id}`, JSON.stringify(parsed));
+          localStorage.setItem(`itt_map_data_${id}`, JSON.stringify(normalizedJson));
         } catch {
           // Ignore localStorage errors
         }
         persistList([{ id, name: file.name }, ...saved.filter((s) => s.id !== id)].slice(0, 50));
-        onJsonLoaded?.(parsed);
+        onJsonLoaded?.(normalizedJson);
         setIsMinimized(true);
       } else {
         console.warn("Unsupported file type:", file.name);

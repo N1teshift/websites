@@ -7,6 +7,8 @@ import { PlayerItems } from "@/features/modules/game-management/games/components
 import ClassIcon from "@/features/modules/content/guides/components/ClassIcon";
 import { BASE_TROLL_CLASSES } from "@/features/modules/content/guides/data/units/classes";
 import { DERIVED_CLASSES } from "@/features/modules/content/guides/data/units/derivedClasses";
+import { BuildingOrderSection } from "./BuildingOrderSection";
+import { CraftOrderSection } from "./CraftOrderSection";
 import type { GameWithPlayers, GamePlayer } from "@/features/modules/game-management/games/types";
 
 interface GamePlayersSectionProps {
@@ -203,7 +205,7 @@ function PlayerCard({ player, isWinner }: { player: GamePlayer; isWinner: boolea
           >
             {removeBattleTag(player.name)}
             {player.eloAfter !== undefined && (
-              <span className="ml-2 text-xs text-gray-400">({player.eloAfter})</span>
+              <span className="ml-2 text-xs text-gray-400">({player.eloAfter.toFixed(2)})</span>
             )}
           </Link>
         </div>
@@ -273,6 +275,10 @@ export function GamePlayersSection({ game }: GamePlayersSectionProps) {
 
   return (
     <div className="mt-4 space-y-2">
+      {/* Building Order Section - above player cards */}
+      <BuildingOrderSection game={game} />
+      {/* Crafting Order Section - between building order and player cards */}
+      <CraftOrderSection game={game} />
       {/* Winners and Losers side by side for compact display */}
       {(winners.length > 0 || losers.length > 0) && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2">

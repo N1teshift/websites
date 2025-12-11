@@ -92,6 +92,40 @@ export function convertGameDoc(docData: Record<string, unknown>, id: string): Ga
     playerNames,
     playerCount,
     verified: typeof docData.verified === "boolean" ? docData.verified : false,
+    // Building events from replay metadata (schema v7+)
+    buildingEvents: Array.isArray(docData.buildingEvents)
+      ? docData.buildingEvents.map((event: unknown) => {
+          const e = event as Record<string, unknown>;
+          return {
+            team: typeof e.team === "number" ? e.team : Number(e.team) || 0,
+            timeSeconds:
+              typeof e.timeSeconds === "number" ? e.timeSeconds : Number(e.timeSeconds) || 0,
+            buildingId: typeof e.buildingId === "number" ? e.buildingId : Number(e.buildingId) || 0,
+            status: (typeof e.status === "string" &&
+            (e.status === "START" ||
+              e.status === "FINISH" ||
+              e.status === "CANCEL" ||
+              e.status === "DESTROY")
+              ? e.status
+              : "START") as "START" | "FINISH" | "CANCEL" | "DESTROY",
+          };
+        })
+      : undefined,
+    // Craft events from replay metadata (schema v8+)
+    craftEvents: Array.isArray(docData.craftEvents)
+      ? docData.craftEvents.map((event: unknown) => {
+          const e = event as Record<string, unknown>;
+          return {
+            team: typeof e.team === "number" ? e.team : Number(e.team) || 0,
+            timeSeconds:
+              typeof e.timeSeconds === "number" ? e.timeSeconds : Number(e.timeSeconds) || 0,
+            itemId: typeof e.itemId === "number" ? e.itemId : Number(e.itemId) || 0,
+            status: (typeof e.status === "string" && (e.status === "SUCCESS" || e.status === "FAIL")
+              ? e.status
+              : "SUCCESS") as "SUCCESS" | "FAIL",
+          };
+        })
+      : undefined,
   };
 
   // Add archive content if present
@@ -111,6 +145,7 @@ export function convertGamePlayerDoc(docData: Record<string, unknown>, id: strin
     gameId: typeof docData.gameId === "string" ? docData.gameId : String(docData.gameId || ""),
     name: typeof docData.name === "string" ? docData.name : String(docData.name || ""),
     pid: typeof docData.pid === "number" ? docData.pid : Number(docData.pid) || 0,
+    team: typeof docData.team === "number" ? docData.team : Number(docData.team) || 0,
     flag:
       typeof docData.flag === "string" &&
       (docData.flag === "winner" || docData.flag === "loser" || docData.flag === "drawer")

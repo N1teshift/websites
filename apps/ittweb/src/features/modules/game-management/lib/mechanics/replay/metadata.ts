@@ -1,4 +1,4 @@
-import type { ITTMetadata, ITTPlayerStats } from "./types";
+import type { ITTMetadata, ITTPlayerStats, BuildingEvent, CraftEvent } from "./types";
 
 /**
  * Extract ITT-specific metadata from W3MMD custom messages
@@ -53,14 +53,16 @@ export function extractITTMetadata(w3mmdActions: unknown[]): ITTMetadata | undef
     ? parseInt(customData.get("itt_schema")!, 10)
     : undefined;
 
-  // Parse the payload to extract player stats
-  const players = parseITTPayload(payload, schemaVersion);
+  // Parse the payload to extract player stats, building events, and craft events
+  const { players, buildingEvents, craftEvents } = parseITTPayload(payload, schemaVersion);
 
   return {
     version: customData.get("itt_version"),
     schema: schemaVersion,
     payload,
     players,
+    buildingEvents,
+    craftEvents,
   };
 }
 
@@ -80,11 +82,18 @@ function parseItemWithCharges(itemStr: string): { itemId: number; charges: numbe
 }
 
 /**
- * Parse ITT metadata payload to extract player stats
- * Supports schema v2, v3, v4, v5, and v6 formats
+ * Parse ITT metadata payload to extract player stats, building events, and craft events
+ * Supports schema v2, v3, v4, v5, v6, v7, and v8 formats
+ * Building events (v7+): build:<team>|<timeSeconds>|<unitTypeId>|<status>
+ * Craft events (v8+): craft:<team>|<timeSeconds>|<itemId>|<status>
  */
-function parseITTPayload(payload: string, schemaVersion?: number): ITTPlayerStats[] {
+function parseITTPayload(
+  payload: string,
+  schemaVersion?: number
+): { players: ITTPlayerStats[]; buildingEvents?: BuildingEvent[]; craftEvents?: CraftEvent[] } {
   const players: ITTPlayerStats[] = [];
+  const buildingEvents: BuildingEvent[] = [];
+  const craftEvents: CraftEvent[] = [];
   const lines = payload.split("\n");
 
   for (const line of lines) {
@@ -218,5 +227,83 @@ function parseITTPayload(payload: string, schemaVersion?: number): ITTPlayerStat
     }
   }
 
-  return players;
+  // Parse building events (schema version 7+)
+  if (schemaVersion && schemaVersion >= 7) {
+    for (const line of lines) {
+      if (!line.startsWith("build:")) continue;
+
+      try {
+        const parts = line.slice("build:".length).split("|");
+        if (parts.length !== 4) continue;
+
+        const team = parseInt(parts[0], 10);
+        const timeSeconds = parseInt(parts[1], 10);
+        const buildingId = parseInt(parts[2], 10);
+        const status = parts[3]?.toUpperCase() || "";
+
+        if (
+          isNaN(team) ||
+          isNaN(timeSeconds) ||
+          isNaN(buildingId) ||
+          !status ||
+          !["START", "FINISH", "CANCEL", "DESTROY"].includes(status)
+        ) {
+          continue; // Skip invalid entries
+        }
+
+        buildingEvents.push({
+          team,
+          timeSeconds,
+          buildingId,
+          status: status as BuildingEvent["status"],
+        });
+      } catch {
+        // Skip malformed building event data
+        continue;
+      }
+    }
+  }
+
+  // Parse craft events (schema version 8+)
+  if (schemaVersion && schemaVersion >= 8) {
+    for (const line of lines) {
+      if (!line.startsWith("craft:")) continue;
+
+      try {
+        const parts = line.slice("craft:".length).split("|");
+        if (parts.length !== 4) continue;
+
+        const team = parseInt(parts[0], 10);
+        const timeSeconds = parseInt(parts[1], 10);
+        const itemId = parseInt(parts[2], 10);
+        const status = parts[3]?.toUpperCase() || "";
+
+        if (
+          isNaN(team) ||
+          isNaN(timeSeconds) ||
+          isNaN(itemId) ||
+          !status ||
+          !["SUCCESS", "FAIL"].includes(status)
+        ) {
+          continue; // Skip invalid entries
+        }
+
+        craftEvents.push({
+          team,
+          timeSeconds,
+          itemId,
+          status: status as CraftEvent["status"],
+        });
+      } catch {
+        // Skip malformed craft event data
+        continue;
+      }
+    }
+  }
+
+  return {
+    players,
+    buildingEvents: buildingEvents.length > 0 ? buildingEvents : undefined,
+    craftEvents: craftEvents.length > 0 ? craftEvents : undefined,
+  };
 }
