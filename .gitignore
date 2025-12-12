@@ -47,3 +47,7 @@ Thumbs.db
 **/*.w3g
 **/*_parsed.json
 
+# Build verification outputs
+build-results.json
+build-verification.log
+build-status.txt

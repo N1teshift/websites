@@ -82,7 +82,6 @@ jobs:
       - name: Run tests
         id: test
         run: pnpm test
-        continue-on-error: true
 
       - name: Check test results
         if: always()
@@ -243,8 +242,9 @@ jobs:
           if [ -f bundle-sizes.json ]; then
             EXCEEDED=$(node -e "try { const d=require('./bundle-sizes.json'); console.log(d.exceeded?.length || 0); } catch(e) { console.log('0'); }" 2>/dev/null || echo "0")
             if [ "$EXCEEDED" -gt 0 ]; then
-              echo "⚠️ Some bundles exceed budgets (non-blocking)"
+              echo "❌ Some bundles exceed budgets"
               echo "Review the bundle size analysis above for details."
+              exit 1
             else
               echo "✅ All bundles are within budget"
             fi
@@ -278,13 +278,18 @@ jobs:
 
       - name: Check for changeset
         run: |
-          if [ -z "$(git diff --name-only origin/${{ github.base_ref }}...HEAD | grep -E '\.changeset/.*\.md$')" ]; then
-            echo "⚠️  No changeset found. If this PR modifies packages, please add a changeset."
-            echo "Run: pnpm changeset"
-            # Don't fail, just warn (uncomment next line to make it required)
-            # exit 1
-          else
+          PACKAGE_CHANGES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD | grep '^packages/' || true)
+          CHANGESETS=$(git diff --name-only origin/${{ github.base_ref }}...HEAD | grep -E '\.changeset/.*\.md$' || true)
+
+          if [ -n "$PACKAGE_CHANGES" ] && [ -z "$CHANGESETS" ]; then
+            echo "❌ Package changes detected but no changeset. Run: pnpm changeset"
+            exit 1
+          fi
+
+          if [ -n "$CHANGESETS" ]; then
             echo "✅ Changeset found"
+          else
+            echo "ℹ️ No package changes detected; changeset not required"
           fi
 
   # Combined status check
