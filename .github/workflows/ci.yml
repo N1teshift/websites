@@ -30,7 +30,7 @@ jobs:
     if: true  # Change to 'false' to disable quality checks
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -63,7 +63,7 @@ jobs:
     if: true  # Change to 'false' to disable test checks
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -113,7 +113,7 @@ jobs:
     if: true  # Change to 'false' to disable build checks
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -173,7 +173,7 @@ jobs:
     if: true && github.event_name == 'pull_request'  # Change 'true' to 'false' to disable bundle size checks
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -258,7 +258,7 @@ jobs:
     if: true && github.event_name == 'pull_request'  # Change 'true' to 'false' to disable changeset checks
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
