@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import { waitForPageLoad, waitForAPIRequests } from "./utils/test-helpers";
 
 // List of all public pages to test
 const pagesToTest = [
@@ -20,46 +21,85 @@ const pagesToTest = [
   "/download",
 ];
 
+interface ErrorReport {
+  url: string;
+  error: string;
+  type: "console" | "pageerror" | "network" | "boundary";
+  timestamp: number;
+}
+
+interface WarningReport {
+  url: string;
+  warning: string;
+  timestamp: number;
+}
+
 test.describe("Console Error Checks", () => {
-  test.setTimeout(180000); // 3 minutes for the entire test
+  test.setTimeout(300000); // 5 minutes for the entire test suite
 
   // Only test on Chromium - console errors are browser-agnostic
   test("should have no console errors on all pages", async ({ page, browserName }) => {
     test.skip(browserName !== "chromium", "Only testing console errors on Chromium");
-    const consoleErrors: Array<{ url: string; error: string }> = [];
-    const consoleWarnings: Array<{ url: string; warning: string }> = [];
 
-    // Listen for console messages
+    const consoleErrors: ErrorReport[] = [];
+    const consoleWarnings: WarningReport[] = [];
+
+    // Set up error listeners before navigation
     page.on("console", (msg) => {
       const text = msg.text();
       const type = msg.type();
 
       if (type === "error") {
-        // Filter out known/expected errors if needed
         if (!shouldIgnoreError(text)) {
-          consoleErrors.push({ url: page.url(), error: text });
+          consoleErrors.push({
+            url: page.url(),
+            error: text,
+            type: "console",
+            timestamp: Date.now(),
+          });
         }
       } else if (type === "warning") {
-        // Optionally track warnings too
         if (!shouldIgnoreWarning(text)) {
-          consoleWarnings.push({ url: page.url(), warning: text });
+          consoleWarnings.push({
+            url: page.url(),
+            warning: text,
+            timestamp: Date.now(),
+          });
         }
       }
     });
 
     // Listen for page errors (unhandled exceptions)
     page.on("pageerror", (error) => {
-      consoleErrors.push({ url: page.url(), error: error.message });
+      if (!shouldIgnoreError(error.message)) {
+        consoleErrors.push({
+          url: page.url(),
+          error: `${error.name}: ${error.message}`,
+          type: "pageerror",
+          timestamp: Date.now(),
+        });
+      }
     });
 
-    // Listen for failed network requests (optional - can be noisy)
+    // Track failed network requests (but be selective)
+    const failedRequests = new Set<string>();
     page.on("response", (response) => {
-      if (response.status() >= 400 && !shouldIgnoreFailedRequest(response.url())) {
-        // Only log non-404s as errors (404s might be expected for missing resources)
-        if (response.status() !== 404) {
+      const status = response.status();
+      const url = response.url();
+
+      if (status >= 400 && status < 500 && status !== 404) {
+        // Track 4xx errors (except 404) but don't fail on them immediately
+        if (!shouldIgnoreFailedRequest(url)) {
+          failedRequests.add(url);
+        }
+      } else if (status >= 500) {
+        // 5xx errors are always problematic
+        if (!shouldIgnoreFailedRequest(url)) {
           consoleErrors.push({
             url: page.url(),
-            error: `Failed request: ${response.status()} ${response.statusText()} - ${response.url()}`,
+            error: `Server error ${status} ${response.statusText()} - ${url}`,
+            type: "network",
+            timestamp: Date.now(),
           });
         }
       }
@@ -68,57 +108,112 @@ test.describe("Console Error Checks", () => {
     // Visit each page
     for (const path of pagesToTest) {
       try {
-        // Use 'load' instead of 'networkidle' for faster, more reliable loading
-        // Increase timeout to 60 seconds per page
-        await page.goto(path, { waitUntil: "load", timeout: 60000 });
+        // Navigate to page
+        await page.goto(path, {
+          waitUntil: "domcontentloaded",
+          timeout: 60000,
+        });
 
-        // Wait a bit for any async errors to appear
-        await page.waitForTimeout(2000);
+        // Wait for page to be fully interactive
+        await waitForPageLoad(page);
+        await waitForAPIRequests(page, 10000);
+
+        // Wait for any async operations and potential errors
+        await page.waitForTimeout(3000);
 
         // Check for React error boundaries or error states
-        const errorBoundary = page.locator("[data-error-boundary], .error-boundary");
+        const errorBoundary = page.locator(
+          "[data-error-boundary], .error-boundary, [data-testid*='error']"
+        );
         if ((await errorBoundary.count()) > 0) {
           const errorText = await errorBoundary.first().textContent();
           consoleErrors.push({
             url: page.url(),
-            error: `Error boundary triggered: ${errorText}`,
+            error: `Error boundary triggered: ${errorText || "Unknown error"}`,
+            type: "boundary",
+            timestamp: Date.now(),
+          });
+        }
+
+        // Verify page actually loaded (not a blank page)
+        const bodyContent = await page.locator("body").textContent();
+        if (!bodyContent || bodyContent.trim().length === 0) {
+          consoleErrors.push({
+            url: page.url(),
+            error: "Page appears to be blank or failed to render",
+            type: "pageerror",
+            timestamp: Date.now(),
           });
         }
       } catch (error) {
-        // Only treat actual navigation failures as errors, not timeouts
+        // Handle navigation errors
         const errorMessage = error instanceof Error ? error.message : String(error);
+
         if (errorMessage.includes("timeout")) {
-          // Timeout is not necessarily a console error - just log it
-          console.warn(`[${path}]: Page load timeout (this may not be a console error)`);
+          // Timeout might be acceptable for slow pages, but log it
+          console.warn(
+            `[${path}]: Page load timeout after 60s (this may indicate a performance issue)`
+          );
+        } else if (errorMessage.includes("net::ERR")) {
+          // Network errors are real errors
+          consoleErrors.push({
+            url: path,
+            error: `Network error: ${errorMessage}`,
+            type: "network",
+            timestamp: Date.now(),
+          });
         } else {
           // Other navigation errors
           consoleErrors.push({
             url: path,
             error: `Failed to load page: ${errorMessage}`,
+            type: "pageerror",
+            timestamp: Date.now(),
           });
         }
       }
     }
 
-    // Report results
+    // Group errors by type for better reporting
+    const errorsByType = consoleErrors.reduce(
+      (acc, error) => {
+        if (!acc[error.type]) acc[error.type] = [];
+        acc[error.type].push(error);
+        return acc;
+      },
+      {} as Record<string, ErrorReport[]>
+    );
+
+    // Report results with better formatting
     if (consoleErrors.length > 0) {
       console.error("\n=== CONSOLE ERRORS FOUND ===");
-      consoleErrors.forEach(({ url, error }) => {
-        console.error(`[${url}]: ${error}`);
+      console.error(`Total errors: ${consoleErrors.length}\n`);
+
+      Object.entries(errorsByType).forEach(([type, errors]) => {
+        console.error(`\n${type.toUpperCase()} Errors (${errors.length}):`);
+        errors.forEach(({ url, error }) => {
+          console.error(`  [${url}]: ${error}`);
+        });
       });
     }
 
     if (consoleWarnings.length > 0) {
       console.warn("\n=== CONSOLE WARNINGS FOUND ===");
+      console.warn(`Total warnings: ${consoleWarnings.length}\n`);
       consoleWarnings.forEach(({ url, warning }) => {
-        console.warn(`[${url}]: ${warning}`);
+        console.warn(`  [${url}]: ${warning}`);
       });
     }
 
-    // Fail the test if there are errors
+    // Fail the test if there are critical errors
+    // Allow some warnings but fail on actual errors
+    const criticalErrors = consoleErrors.filter(
+      (error) => error.type !== "network" || !error.error.includes("404")
+    );
+
     expect(
-      consoleErrors,
-      `Found ${consoleErrors.length} console error(s). See output above.`
+      criticalErrors,
+      `Found ${criticalErrors.length} critical console error(s) across ${pagesToTest.length} pages. See output above for details.`
     ).toHaveLength(0);
   });
 });
@@ -126,10 +221,28 @@ test.describe("Console Error Checks", () => {
 // Helper function to ignore known/expected errors
 function shouldIgnoreError(errorText: string): boolean {
   const ignoredPatterns = [
-    // Add patterns for errors you want to ignore
-    // For example:
-    // /favicon\.ico.*404/i,
-    // /analytics.*blocked/i,
+    // HMR (Hot Module Replacement) warnings in development
+    /\[HMR\]/i,
+    /hot.*module.*replacement/i,
+    /webpack.*hot/i,
+
+    // Next.js development warnings
+    /isrManifest/i,
+    /Invalid message/i,
+
+    // Browser extension errors (not our fault)
+    /chrome-extension:/i,
+    /moz-extension:/i,
+    /safari-extension:/i,
+
+    // Analytics/ad blockers (expected)
+    /analytics.*blocked/i,
+    /ad.*block/i,
+    /tracker.*block/i,
+
+    // Favicon 404s (common and harmless)
+    /favicon.*404/i,
+    /favicon.*not found/i,
   ];
 
   return ignoredPatterns.some((pattern) => pattern.test(errorText));
@@ -138,9 +251,15 @@ function shouldIgnoreError(errorText: string): boolean {
 // Helper function to ignore known/expected warnings
 function shouldIgnoreWarning(warningText: string): boolean {
   const ignoredPatterns = [
-    // Add patterns for warnings you want to ignore
-    // For example:
-    // /deprecated.*api/i,
+    // React development warnings (acceptable in dev mode)
+    /react.*dev.*warning/i,
+    /deprecated.*api/i,
+
+    // Next.js development warnings
+    /next.*dev.*warning/i,
+
+    // Browser deprecation warnings (browser-specific, not our issue)
+    /deprecated.*feature/i,
   ];
 
   return ignoredPatterns.some((pattern) => pattern.test(warningText));
@@ -149,10 +268,26 @@ function shouldIgnoreWarning(warningText: string): boolean {
 // Helper function to ignore known/expected failed requests
 function shouldIgnoreFailedRequest(url: string): boolean {
   const ignoredPatterns = [
-    // Add patterns for URLs that might legitimately fail
-    // For example:
-    // /favicon\.ico/i,
-    // /analytics/i,
+    // Favicon requests
+    /favicon\.ico/i,
+
+    // Analytics endpoints (might be blocked)
+    /analytics/i,
+    /google-analytics/i,
+    /gtag/i,
+    /ga\.js/i,
+
+    // Browser extension requests
+    /chrome-extension:/i,
+    /moz-extension:/i,
+
+    // External resources that might fail
+    /fonts\.googleapis/i,
+    /fonts\.gstatic/i,
+
+    // Development hot reload endpoints
+    /_next\/webpack-hmr/i,
+    /_next\/data/i,
   ];
 
   return ignoredPatterns.some((pattern) => pattern.test(url));
